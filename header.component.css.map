@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/template/header.component.css"],
+  "sourcesContent": ["::ng-deep .darkmode-toggle:hover .p-button-icon {\r\n    color: var(--p-cyan-400) !important;\r\n}\r\n\r\n::ng-deep html.dark-mode .darkmode-toggle:hover .p-button-icon {\r\n    color: var(--p-amber-400) !important;\r\n}"],
+  "mappings": ";AAAA,UAAU,CAAC,eAAe,OAAO,CAAC;AAC9B,SAAO,IAAI;AACf;AAEA,UAAU,IAAI,CAAC,UAAU,CAJd,eAI8B,OAAO,CAJd;AAK9B,SAAO,IAAI;AACf;",
+  "names": []
+}

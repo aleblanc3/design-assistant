@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/components/ia-diagram/ia-diagram.component.css"],
+  "sourcesContent": [".fullscreen-overlay {\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    z-index: 200;\r\n    display: flex;\r\n    flex-direction: column;\r\n}\r\n\r\n.z-200 {\r\n    z-index: 200 !important;\r\n}"],
+  "mappings": ";AAAA,CAAC;AACG,YAAU;AACV,OAAK;AACL,QAAM;AACN,SAAO;AACP,UAAQ;AACR,WAAS;AACT,WAAS;AACT,kBAAgB;AACpB;AAEA,CAAC;AACG,WAAS;AACb;",
+  "names": []
+}
