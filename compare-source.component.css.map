@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/components/compare-source/compare-source.component.css"],
+  "sourcesContent": [".diff-container {\r\n    border: 1px solid #dee2e6;\r\n    border-radius: 4px;\r\n    padding: 1rem;\r\n    overflow-y: scroll;\r\n    height: 75vh;\r\n    position: relative;\r\n}\r\n\r\n.diff-container.original {\r\n    border-color: #f3a59d;\r\n}\r\n\r\n.diff-container.modified {\r\n    border-color: #83d5a8;\r\n}"],
+  "mappings": ";AAAA,CAAC;AACG,UAAQ,IAAI,MAAM;AAClB,iBAAe;AACf,WAAS;AACT,cAAY;AACZ,UAAQ;AACR,YAAU;AACd;AAEA,CATC,cASc,CAAC;AACZ,gBAAc;AAClB;AAEA,CAbC,cAac,CAAC;AACZ,gBAAc;AAClB;",
+  "names": []
+}
