@@ -310,7 +310,7 @@ var FetchService = class _FetchService {
     "cra-test-arc.canada.ca",
     "test.canada.ca",
     //"gc-proto.github.io", //CORS error but redirects to test.canada.ca which works
-    "preview.adobecqms.net"
+    "canada-preview.adobecqms.net"
   ]);
   getAllowedHosts(mode) {
     const allowed = /* @__PURE__ */ new Set();
@@ -8460,4 +8460,4 @@ export {
   AiPromptService,
   OpenRouterService
 };
-//# sourceMappingURL=chunk-L4ZQJ5MZ.js.map
+//# sourceMappingURL=chunk-54TV6LFN.js.map

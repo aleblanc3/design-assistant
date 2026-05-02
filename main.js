@@ -40,7 +40,7 @@ import {
   RadioButtonModule,
   TimesCircleIcon,
   environment
-} from "./chunk-L4ZQJ5MZ.js";
+} from "./chunk-54TV6LFN.js";
 import {
   Checkbox,
   CheckboxModule,
@@ -23457,7 +23457,7 @@ var ProjectStateService = class _ProjectStateService {
       const url = new URL(productionUrl);
       const path = url.pathname;
       if (type === "preview") {
-        return `https://preview.adobecqms.net${path}`;
+        return `https://canada-preview.adobecqms.net${path}`;
       } else {
         const repoSuffix = type === "baseline" ? `${repo}-baseline` : repo;
         let prototypeUrl = `https://${owner}.github.io/${repoSuffix}${path}`;
@@ -84892,7 +84892,7 @@ var routes = [
   },
   {
     path: "dev/prompt-editor",
-    loadComponent: () => import("./chunk-VAWRH2P5.js").then((m) => m.PromptEditorComponent),
+    loadComponent: () => import("./chunk-WBXF6L37.js").then((m) => m.PromptEditorComponent),
     title: "dev.prompts._title"
   },
   {
