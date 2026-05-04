@@ -78104,7 +78104,7 @@ var CompareComponent = class _CompareComponent {
       this.compareService.selectedPage.set(page);
       if (!this.compareService.selectedPage)
         return;
-      const validVersions = ["ai", "preview"];
+      const validVersions = ["ai"];
       try {
         const liveResponse = yield this.fetchService.fetchStatus(this.compareService.selectedPage(), "prod");
         if (liveResponse.ok) {
@@ -78174,7 +78174,11 @@ var CompareComponent = class _CompareComponent {
       if (this.compareService.selectedBefore() === "preview") {
         const url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "preview");
         const previewContent = yield this.fetchService.fetchPreview(url);
-        this.compareService.originalHtml.set(__spreadProps(__spreadValues({}, yield this.htmlNormalizationService.normalizeHTML(previewContent, "string")), {
+        const normalizedContent = yield this.htmlNormalizationService.normalizeHTML(previewContent, "string");
+        console.log(url);
+        console.log(previewContent);
+        console.log(normalizedContent);
+        this.compareService.originalHtml.set(__spreadProps(__spreadValues({}, normalizedContent), {
           url,
           version: this.compareService.selectedBefore()
         }));
@@ -78200,6 +78204,9 @@ var CompareComponent = class _CompareComponent {
         const url2 = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "preview");
         const previewContent = yield this.fetchService.fetchPreview(url2);
         const normalizedContent = yield this.htmlNormalizationService.normalizeHTML(previewContent, "string");
+        console.log(url2);
+        console.log(previewContent);
+        console.log(normalizedContent);
         this.compareService.modifiedHtml.set(__spreadProps(__spreadValues({}, normalizedContent), {
           url: url2,
           version: this.compareService.selectedBefore()
