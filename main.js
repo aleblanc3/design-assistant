@@ -40,7 +40,7 @@ import {
   RadioButtonModule,
   TimesCircleIcon,
   environment
-} from "./chunk-XGQC4SXF.js";
+} from "./chunk-2SIU5M3U.js";
 import {
   Checkbox,
   CheckboxModule,
@@ -78115,10 +78115,15 @@ var CompareComponent = class _CompareComponent {
         console.warn("Live URL not accessible:", error);
       }
       const previewUrl = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "preview");
+      console.log("Generated preview URL:", previewUrl);
       try {
         const previewExists = yield this.fetchService.fetchPreviewStatus(previewUrl);
+        console.log("fetchPreviewStatus result:", previewExists);
         if (previewExists) {
+          console.log("Adding preview to validVersions");
           validVersions.push("preview");
+        } else {
+          console.log("Preview exists returned false, not adding to validVersions");
         }
       } catch (error) {
         console.warn("Preview URL not accessible:", error);
@@ -84918,7 +84923,7 @@ var routes = [
   },
   {
     path: "dev/prompt-editor",
-    loadComponent: () => import("./chunk-YH6PPSZW.js").then((m) => m.PromptEditorComponent),
+    loadComponent: () => import("./chunk-2OXEWB3R.js").then((m) => m.PromptEditorComponent),
     title: "dev.prompts._title"
   },
   {
