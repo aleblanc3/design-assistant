@@ -78173,8 +78173,11 @@ var CompareComponent = class _CompareComponent {
         return;
       if (this.compareService.selectedBefore() === "preview") {
         const url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "preview");
-        const stringContent = this.fetchService.fetchPreview(url);
-        console.log(stringContent);
+        const previewContent = yield this.fetchService.fetchPreview(url);
+        this.compareService.originalHtml.set(__spreadProps(__spreadValues({}, yield this.htmlNormalizationService.normalizeHTML(previewContent, "string")), {
+          url,
+          version: this.compareService.selectedBefore()
+        }));
       } else {
         let url = this.compareService.selectedPage();
         if (this.compareService.selectedBefore() === "baseline") {
@@ -78193,7 +78196,14 @@ var CompareComponent = class _CompareComponent {
       this.compareService.selectedAfter.set(version2);
       if (!this.compareService.selectedPage)
         return;
-      else if (this.compareService.selectedAfter() === "ai") {
+      if (this.compareService.selectedBefore() === "preview") {
+        const url2 = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "preview");
+        const previewContent = yield this.fetchService.fetchPreview(url2);
+        this.compareService.originalHtml.set(__spreadProps(__spreadValues({}, yield this.htmlNormalizationService.normalizeHTML(previewContent, "string")), {
+          url: url2,
+          version: this.compareService.selectedBefore()
+        }));
+      } else if (this.compareService.selectedAfter() === "ai") {
         this.compareService.modifiedHtml.set(__spreadProps(__spreadValues({}, this.compareService.originalHtml()), {
           version: this.compareService.selectedAfter()
         }));
