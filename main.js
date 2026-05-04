@@ -78199,7 +78199,8 @@ var CompareComponent = class _CompareComponent {
       if (this.compareService.selectedBefore() === "preview") {
         const url2 = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "preview");
         const previewContent = yield this.fetchService.fetchPreview(url2);
-        this.compareService.originalHtml.set(__spreadProps(__spreadValues({}, yield this.htmlNormalizationService.normalizeHTML(previewContent, "string")), {
+        const normalizedContent = yield this.htmlNormalizationService.normalizeHTML(previewContent, "string");
+        this.compareService.modifiedHtml.set(__spreadProps(__spreadValues({}, normalizedContent), {
           url: url2,
           version: this.compareService.selectedBefore()
         }));
