@@ -40,7 +40,7 @@ import {
   RadioButtonModule,
   TimesCircleIcon,
   environment
-} from "./chunk-2SIU5M3U.js";
+} from "./chunk-R7LR7HX5.js";
 import {
   Checkbox,
   CheckboxModule,
@@ -75322,6 +75322,9 @@ var CompareService = class _CompareService {
   selectedBefore = signal("live");
   selectedAfter = signal("prototype");
   selectedView = signal("diff");
+  loading = signal(false);
+  loadingBefore = signal(false);
+  loadingAfter = signal(false);
   // Clear HTML content cache
   clearCache() {
     this.originalHtml.set(void 0);
@@ -76646,7 +76649,6 @@ var CompareRenderedComponent = class _CompareRenderedComponent {
   ngOnChanges(changes) {
     return __async(this, null, function* () {
       if (changes["beforeContent"] || changes["afterContent"]) {
-        console.log("Change detected!");
         const shadowRoot = this.shadowDOM();
         const viewType = this.webSelectedView();
         if (this.beforeContent && !this.afterContent)
@@ -78102,59 +78104,59 @@ var CompareComponent = class _CompareComponent {
   }
   onPageSelectionChange(page) {
     return __async(this, null, function* () {
-      this.compareService.selectedPage.set(page);
-      if (!this.compareService.selectedPage)
-        return;
-      const validVersions = ["ai"];
+      this.compareService.loading.set(true);
       try {
-        const liveResponse = yield this.fetchService.fetchStatus(this.compareService.selectedPage(), "prod");
-        if (liveResponse.ok) {
-          validVersions.push("live");
-        }
-      } catch (error) {
-        console.warn("Live URL not accessible:", error);
-      }
-      const previewUrl = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "preview");
-      console.log("Generated preview URL:", previewUrl);
-      try {
-        const previewExists = yield this.fetchService.fetchPreviewStatus(previewUrl);
-        console.log("fetchPreviewStatus result:", previewExists);
-        if (previewExists) {
-          console.log("Adding preview to validVersions");
-          validVersions.push("preview");
-        } else {
-          console.log("Preview exists returned false, not adding to validVersions");
-        }
-      } catch (error) {
-        console.warn("Preview URL not accessible:", error);
-      }
-      const prototypeUrl = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "current");
-      if (prototypeUrl) {
+        this.compareService.selectedPage.set(page);
+        if (!this.compareService.selectedPage)
+          return;
+        const validVersions = ["ai"];
         try {
-          const protoResponse = yield this.fetchService.fetchStatus(prototypeUrl, "proto");
-          if (protoResponse.ok) {
-            validVersions.push("prototype");
+          const liveResponse = yield this.fetchService.fetchStatus(this.compareService.selectedPage(), "prod");
+          if (liveResponse.ok) {
+            validVersions.push("live");
           }
         } catch (error) {
-          console.warn("Prototype URL not accessible:", error);
+          console.warn("Live URL not accessible:", error);
         }
-      }
-      if (this.projectState.getProject().github.hasBaselineRepo) {
-        const baselineUrl = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "baseline");
-        if (baselineUrl) {
+        const previewUrl = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "preview");
+        try {
+          const previewExists = yield this.fetchService.fetchPreviewStatus(previewUrl);
+          if (previewExists) {
+            validVersions.push("preview");
+          }
+        } catch (error) {
+          console.warn("Preview URL not accessible:", error);
+        }
+        const prototypeUrl = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "current");
+        if (prototypeUrl) {
           try {
-            const baselineResponse = yield this.fetchService.fetchStatus(baselineUrl, "proto");
-            if (baselineResponse.ok) {
-              validVersions.push("baseline");
+            const protoResponse = yield this.fetchService.fetchStatus(prototypeUrl, "proto");
+            if (protoResponse.ok) {
+              validVersions.push("prototype");
             }
           } catch (error) {
-            console.warn("Baseline URL not accessible:", error);
+            console.warn("Prototype URL not accessible:", error);
           }
         }
+        if (this.projectState.getProject().github.hasBaselineRepo) {
+          const baselineUrl = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "baseline");
+          if (baselineUrl) {
+            try {
+              const baselineResponse = yield this.fetchService.fetchStatus(baselineUrl, "proto");
+              if (baselineResponse.ok) {
+                validVersions.push("baseline");
+              }
+            } catch (error) {
+              console.warn("Baseline URL not accessible:", error);
+            }
+          }
+        }
+        this.allOptions = validVersions;
+        this.onBeforeSelectionChange(this.compareService.selectedBefore());
+        this.onAfterSelectionChange(this.compareService.selectedAfter());
+      } finally {
+        this.compareService.loading.set(false);
       }
-      this.allOptions = validVersions;
-      this.onBeforeSelectionChange(this.compareService.selectedBefore());
-      this.onAfterSelectionChange(this.compareService.selectedAfter());
     });
   }
   // Version dropdown options & on change
@@ -78173,70 +78175,74 @@ var CompareComponent = class _CompareComponent {
   }
   onBeforeSelectionChange(version2) {
     return __async(this, null, function* () {
-      this.compareService.selectedBefore.set(version2);
-      if (!this.compareService.selectedPage)
-        return;
-      if (this.compareService.selectedBefore() === "preview") {
-        const url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "preview");
-        const previewContent = yield this.fetchService.fetchPreview(url);
-        const normalizedContent = yield this.htmlNormalizationService.normalizeHTML(previewContent, "string");
-        console.log(url);
-        console.log(previewContent);
-        console.log(normalizedContent);
-        this.compareService.originalHtml.set(__spreadProps(__spreadValues({}, normalizedContent), {
-          url,
-          version: this.compareService.selectedBefore()
-        }));
-      } else {
-        let url = this.compareService.selectedPage();
-        if (this.compareService.selectedBefore() === "baseline") {
-          url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "baseline");
-        } else if (this.compareService.selectedBefore() === "prototype") {
-          url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "current");
+      this.compareService.loadingBefore.set(true);
+      try {
+        this.compareService.selectedBefore.set(version2);
+        if (!this.compareService.selectedPage)
+          return;
+        if (this.compareService.selectedBefore() === "preview") {
+          const url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "preview");
+          const previewContent = yield this.fetchService.fetchPreview(url);
+          const normalizedContent = yield this.htmlNormalizationService.normalizeHTML(previewContent, "string");
+          this.compareService.originalHtml.set(__spreadProps(__spreadValues({}, normalizedContent), {
+            url,
+            version: this.compareService.selectedBefore()
+          }));
+        } else {
+          let url = this.compareService.selectedPage();
+          if (this.compareService.selectedBefore() === "baseline") {
+            url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "baseline");
+          } else if (this.compareService.selectedBefore() === "prototype") {
+            url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "current");
+          }
+          this.compareService.originalHtml.set(__spreadProps(__spreadValues({}, yield this.htmlNormalizationService.normalizeHTML(url, "url")), {
+            version: this.compareService.selectedBefore()
+          }));
         }
-        this.compareService.originalHtml.set(__spreadProps(__spreadValues({}, yield this.htmlNormalizationService.normalizeHTML(url, "url")), {
-          version: this.compareService.selectedBefore()
-        }));
+      } finally {
+        this.compareService.loadingBefore.set(false);
       }
     });
   }
   onAfterSelectionChange(version2) {
     return __async(this, null, function* () {
-      this.compareService.selectedAfter.set(version2);
-      if (!this.compareService.selectedPage)
-        return;
-      if (this.compareService.selectedAfter() === "preview") {
-        const url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "preview");
-        const previewContent = yield this.fetchService.fetchPreview(url);
-        const normalizedContent = yield this.htmlNormalizationService.normalizeHTML(previewContent, "string");
-        console.log(url);
-        console.log(previewContent);
-        console.log(normalizedContent);
-        this.compareService.modifiedHtml.set(__spreadProps(__spreadValues({}, normalizedContent), {
-          url,
-          version: this.compareService.selectedAfter()
-        }));
-      } else if (this.compareService.selectedAfter() === "ai") {
-        this.compareService.modifiedHtml.set(__spreadProps(__spreadValues({}, this.compareService.originalHtml()), {
-          version: this.compareService.selectedAfter()
-        }));
-      } else {
-        let url = this.compareService.selectedPage();
-        if (this.compareService.selectedAfter() === "baseline") {
-          url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "baseline");
-        } else if (this.compareService.selectedAfter() === "prototype") {
-          url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "current");
+      this.compareService.loadingAfter.set(true);
+      try {
+        this.compareService.selectedAfter.set(version2);
+        if (!this.compareService.selectedPage)
+          return;
+        if (this.compareService.selectedAfter() === "preview") {
+          const url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "preview");
+          const previewContent = yield this.fetchService.fetchPreview(url);
+          const normalizedContent = yield this.htmlNormalizationService.normalizeHTML(previewContent, "string");
+          this.compareService.modifiedHtml.set(__spreadProps(__spreadValues({}, normalizedContent), {
+            url,
+            version: this.compareService.selectedAfter()
+          }));
+        } else if (this.compareService.selectedAfter() === "ai") {
+          this.compareService.modifiedHtml.set(__spreadProps(__spreadValues({}, this.compareService.originalHtml()), {
+            version: this.compareService.selectedAfter()
+          }));
+        } else {
+          let url = this.compareService.selectedPage();
+          if (this.compareService.selectedAfter() === "baseline") {
+            url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "baseline");
+          } else if (this.compareService.selectedAfter() === "prototype") {
+            url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "current");
+          }
+          this.compareService.modifiedHtml.set(__spreadProps(__spreadValues({}, yield this.htmlNormalizationService.normalizeHTML(url, "url")), {
+            version: this.compareService.selectedAfter()
+          }));
         }
-        this.compareService.modifiedHtml.set(__spreadProps(__spreadValues({}, yield this.htmlNormalizationService.normalizeHTML(url, "url")), {
-          version: this.compareService.selectedAfter()
-        }));
+      } finally {
+        this.compareService.loadingAfter.set(false);
       }
     });
   }
   static \u0275fac = function CompareComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _CompareComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CompareComponent, selectors: [["aida-page-assistant-compare"]], decls: 64, vars: 46, consts: [["id", "wb-cont"], [1, "flex", "flex-column", "gap-3"], [1, "flex", "flex-column", "xl:flex-row", "gap-3", "min-w-min"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "xl:w-6", "min-w-min"], [1, "text-2xl", "my-1"], [1, "my-1"], [1, "flex", "flex-column", "lg:flex-row", "lg:align-items-center", "gap-2"], [1, "flex", "flex-column", "text-color-secondary", "hover:text-primary", "max-w-max"], [1, "text-xs", "my-1"], ["inputId", "page", "optionLabel", "label", "optionValue", "value", 1, "w-20rem", "sm:w-27rem", 3, "ngModelChange", "options", "ngModel"], ["for", "page"], [1, "flex", "flex-column", "sm:flex-row", "sm:align-content-center", "gap-1", "sm:gap-3", "lg:gap-2"], ["inputId", "before", "optionLabel", "label", "optionValue", "value", 1, "w-20rem", "sm:w-13rem", 3, "ngModelChange", "options", "ngModel"], ["for", "before"], ["inputId", "after", "optionLabel", "label", "optionValue", "value", 1, "w-20rem", "sm:w-13rem", 3, "ngModelChange", "options", "ngModel"], ["for", "after"], [1, "flex", "justify-content-between", "w-full", "gap-2", "mt-4"], [1, "flex", "gap-2"], ["label", "Reset", "icon", "pi pi-trash", "severity", "danger", 3, "onClick"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min"], ["value", "0", 1, "mt-3"], ["value", "0"], [1, "pi", "pi-eye", "mr-1"], ["value", "1"], [1, "pi", "pi-code", "mr-1"], [1, "shadow-1"], [3, "beforeContent", "afterContent"]], template: function CompareComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CompareComponent, selectors: [["aida-page-assistant-compare"]], decls: 64, vars: 49, consts: [["id", "wb-cont"], [1, "flex", "flex-column", "gap-3"], [1, "flex", "flex-column", "xl:flex-row", "gap-3", "min-w-min"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "xl:w-6", "min-w-min"], [1, "text-2xl", "my-1"], [1, "my-1"], [1, "flex", "flex-column", "lg:flex-row", "lg:align-items-center", "gap-2"], [1, "flex", "flex-column", "text-color-secondary", "hover:text-primary", "max-w-max"], [1, "text-xs", "my-1"], ["inputId", "page", "optionLabel", "label", "optionValue", "value", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-27rem", 3, "ngModelChange", "options", "ngModel", "loading"], ["for", "page"], [1, "flex", "flex-column", "sm:flex-row", "sm:align-content-center", "gap-1", "sm:gap-3", "lg:gap-2"], ["inputId", "before", "optionLabel", "label", "optionValue", "value", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-13rem", 3, "ngModelChange", "options", "ngModel", "loading"], ["for", "before"], ["inputId", "after", "optionLabel", "label", "optionValue", "value", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-13rem", 3, "ngModelChange", "options", "ngModel", "loading"], ["for", "after"], [1, "flex", "justify-content-between", "w-full", "gap-2", "mt-4"], [1, "flex", "gap-2"], ["label", "Reset", "icon", "pi pi-trash", "severity", "danger", 3, "onClick"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min"], ["value", "0", 1, "mt-3"], ["value", "0"], [1, "pi", "pi-eye", "mr-1"], ["value", "1"], [1, "pi", "pi-code", "mr-1"], [1, "shadow-1"], [3, "beforeContent", "afterContent"]], template: function CompareComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "h1", 0);
       \u0275\u0275text(1);
@@ -78319,35 +78325,35 @@ var CompareComponent = class _CompareComponent {
     }
     if (rf & 2) {
       \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 22, "compare._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 25, "compare._title"));
       \u0275\u0275advance(6);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(8, 24, "compare.pageOptions._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(8, 27, "compare.pageOptions._title"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(11, 26, "compare.pageOptions.description"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(11, 29, "compare.pageOptions.description"));
       \u0275\u0275advance(5);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(16, 28, "compare.pageOptions.selection"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(16, 31, "compare.pageOptions.selection"));
       \u0275\u0275advance(3);
-      \u0275\u0275property("options", ctx.pageOptions)("ngModel", ctx.compareService.selectedPage());
+      \u0275\u0275property("options", ctx.pageOptions)("ngModel", ctx.compareService.selectedPage())("loading", ctx.compareService.loading());
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(21, 30, "compare.pageOptions.page"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(21, 33, "compare.pageOptions.page"));
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(25, 32, "compare.pageOptions.versions"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(25, 35, "compare.pageOptions.versions"));
       \u0275\u0275advance(4);
-      \u0275\u0275property("options", ctx.beforeOptions)("ngModel", ctx.compareService.selectedBefore());
+      \u0275\u0275property("options", ctx.beforeOptions)("ngModel", ctx.compareService.selectedBefore())("loading", ctx.compareService.loading() || ctx.compareService.loadingBefore());
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(31, 34, "compare.pageOptions.before"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(31, 37, "compare.pageOptions.before"));
       \u0275\u0275advance(3);
-      \u0275\u0275property("options", ctx.afterOptions)("ngModel", ctx.compareService.selectedAfter());
+      \u0275\u0275property("options", ctx.afterOptions)("ngModel", ctx.compareService.selectedAfter())("loading", ctx.compareService.loading() || ctx.compareService.loadingAfter());
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(36, 36, "compare.pageOptions.after"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(36, 39, "compare.pageOptions.after"));
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(40, 38, "compare.aiOptions._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(40, 41, "compare.aiOptions._title"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(43, 40, "compare.aiOptions.description"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(43, 43, "compare.aiOptions.description"));
       \u0275\u0275advance(11);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(54, 42, "compare.tab.rendered"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(54, 45, "compare.tab.rendered"));
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(58, 44, "compare.tab.source"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(58, 47, "compare.tab.source"));
       \u0275\u0275advance(4);
       \u0275\u0275property("beforeContent", ctx.compareService.originalHtml())("afterContent", ctx.compareService.modifiedHtml());
       \u0275\u0275advance(2);
@@ -78382,7 +78388,8 @@ var CompareComponent = class _CompareComponent {
           <span class="text-xs my-1">{{ 'compare.pageOptions.selection' | translate }}</span>\r
           <p-iftalabel>\r
             <p-select inputId="page" [options]="pageOptions" [ngModel]="compareService.selectedPage()" (ngModelChange)="onPageSelectionChange($event)"\r
-                      optionLabel="label" optionValue="value" class="w-20rem sm:w-27rem" />\r
+                      optionLabel="label" optionValue="value" class="w-20rem sm:w-27rem"\r
+                      [loading]="compareService.loading()" loadingIcon="pi pi-spin pi-spinner" />\r
             <label for="page">{{'compare.pageOptions.page' | translate}}</label>\r
           </p-iftalabel>\r
         </div>\r
@@ -78393,13 +78400,15 @@ var CompareComponent = class _CompareComponent {
             <!--Before-->\r
             <p-iftalabel>\r
               <p-select inputId="before" [options]="beforeOptions" [ngModel]="compareService.selectedBefore()" (ngModelChange)="onBeforeSelectionChange($event)"\r
-                        optionLabel="label" optionValue="value" class="w-20rem sm:w-13rem" />\r
+                        optionLabel="label" optionValue="value" class="w-20rem sm:w-13rem"\r
+                        [loading]="compareService.loading() || compareService.loadingBefore()" loadingIcon="pi pi-spin pi-spinner" />\r
               <label for="before">{{'compare.pageOptions.before' | translate}}</label>\r
             </p-iftalabel>\r
             <!--After-->\r
             <p-iftalabel>\r
               <p-select inputId="after" [options]="afterOptions" [ngModel]="compareService.selectedAfter()" (ngModelChange)="onAfterSelectionChange($event)"\r
-                        optionLabel="label" optionValue="value" class="w-20rem sm:w-13rem" />\r
+                        optionLabel="label" optionValue="value" class="w-20rem sm:w-13rem"\r
+                        [loading]="compareService.loading() || compareService.loadingAfter()" loadingIcon="pi pi-spin pi-spinner" />\r
               <label for="after">{{'compare.pageOptions.after' | translate}}</label>\r
             </p-iftalabel>\r
           </div>\r
@@ -84923,7 +84932,7 @@ var routes = [
   },
   {
     path: "dev/prompt-editor",
-    loadComponent: () => import("./chunk-2OXEWB3R.js").then((m) => m.PromptEditorComponent),
+    loadComponent: () => import("./chunk-DDEKEY4T.js").then((m) => m.PromptEditorComponent),
     title: "dev.prompts._title"
   },
   {

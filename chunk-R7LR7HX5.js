@@ -405,7 +405,7 @@ var FetchService = class _FetchService {
       if (delayBetweenRequests > 0) {
         yield this.delay(delayBetweenRequests);
       }
-      return this.fetchWithRetry(url, "HEAD", retries, delay);
+      return this.fetchWithRetry(url, "HEAD", retries, delay, true);
     });
   }
   fetchJSON(url, fields) {
@@ -414,7 +414,7 @@ var FetchService = class _FetchService {
       const jsonUrl = url.replace(".html", `/jcr:content.json?nocache=${date}`);
       const result = {};
       try {
-        const response = yield this.fetchWithRetry(jsonUrl, "GET", 3, "none");
+        const response = yield this.fetchWithRetry(jsonUrl, "GET", 3, "none", true);
         const json = yield response.json();
         for (const field of fields) {
           result[field] = json[field] ?? void 0;
@@ -8514,4 +8514,4 @@ export {
   AiPromptService,
   OpenRouterService
 };
-//# sourceMappingURL=chunk-2SIU5M3U.js.map
+//# sourceMappingURL=chunk-R7LR7HX5.js.map
