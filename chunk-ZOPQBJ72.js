@@ -310,7 +310,8 @@ var FetchService = class _FetchService {
     "cra-test-arc.canada.ca",
     "test.canada.ca",
     //"gc-proto.github.io", //CORS error but redirects to test.canada.ca which works
-    "canada-preview.adobecqms.net"
+    "canada-preview.adobecqms.net",
+    "aleblanc3.github.io"
   ]);
   getAllowedHosts(mode) {
     const allowed = /* @__PURE__ */ new Set();
@@ -661,6 +662,35 @@ var FetchService = class _FetchService {
       }
     }).filter((href) => !!href).filter((href) => new URL(href).origin === baseDomain);
     return [...new Set(links)];
+  }
+  //Get preview content
+  fetchPreview(targetUrl) {
+    return new Promise((resolve, reject) => {
+      const previewUrl = `https://aleblanc3.github.io/test/test.html?fetch=${encodeURIComponent(targetUrl)}`;
+      const popup = window.open(previewUrl, "_blank", "width=1,height=1,left=9999,top=9999");
+      if (!popup) {
+        reject(new Error("Popup blocked. Please allow popups for this site."));
+        return;
+      }
+      const handler = (event) => {
+        if (event.origin !== "https://aleblanc3.github.io")
+          return;
+        window.removeEventListener("message", handler);
+        clearTimeout(timeout);
+        popup.close();
+        if (event.data.success) {
+          resolve(event.data.html);
+        } else {
+          reject(new Error(event.data.error || "Failed to fetch preview content"));
+        }
+      };
+      window.addEventListener("message", handler);
+      const timeout = setTimeout(() => {
+        window.removeEventListener("message", handler);
+        popup.close();
+        reject(new Error("Timeout waiting for preview content"));
+      }, 1e4);
+    });
   }
   static \u0275fac = function FetchService_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _FetchService)();
@@ -8460,4 +8490,4 @@ export {
   AiPromptService,
   OpenRouterService
 };
-//# sourceMappingURL=chunk-54TV6LFN.js.map
+//# sourceMappingURL=chunk-ZOPQBJ72.js.map

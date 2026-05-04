@@ -40,7 +40,7 @@ import {
   RadioButtonModule,
   TimesCircleIcon,
   environment
-} from "./chunk-54TV6LFN.js";
+} from "./chunk-ZOPQBJ72.js";
 import {
   Checkbox,
   CheckboxModule,
@@ -23457,7 +23457,7 @@ var ProjectStateService = class _ProjectStateService {
       const url = new URL(productionUrl);
       const path = url.pathname;
       if (type === "preview") {
-        return `https://canada-preview.adobecqms.net${path}`;
+        return `https://aleblanc3.github.io/test/${path}`;
       } else {
         const repoSuffix = type === "baseline" ? `${repo}-baseline` : repo;
         let prototypeUrl = `https://${owner}.github.io/${repoSuffix}${path}`;
@@ -78121,6 +78121,7 @@ var CompareComponent = class _CompareComponent {
         }
       } catch (error) {
         console.warn("Preview URL not accessible:", error);
+        validVersions.push("preview");
       }
       const prototypeUrl = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "current");
       if (prototypeUrl) {
@@ -78170,15 +78171,21 @@ var CompareComponent = class _CompareComponent {
       this.compareService.selectedBefore.set(version2);
       if (!this.compareService.selectedPage)
         return;
-      let url = this.compareService.selectedPage();
-      if (this.compareService.selectedBefore() === "baseline") {
-        url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "baseline");
-      } else if (this.compareService.selectedBefore() === "prototype") {
-        url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "current");
+      if (this.compareService.selectedBefore() === "preview") {
+        const url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "preview");
+        const stringContent = this.fetchService.fetchPreview(url);
+        console.log(stringContent);
+      } else {
+        let url = this.compareService.selectedPage();
+        if (this.compareService.selectedBefore() === "baseline") {
+          url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "baseline");
+        } else if (this.compareService.selectedBefore() === "prototype") {
+          url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "current");
+        }
+        this.compareService.originalHtml.set(__spreadProps(__spreadValues({}, yield this.htmlNormalizationService.normalizeHTML(url, "url")), {
+          version: this.compareService.selectedBefore()
+        }));
       }
-      this.compareService.originalHtml.set(__spreadProps(__spreadValues({}, yield this.htmlNormalizationService.normalizeHTML(url, "url")), {
-        version: this.compareService.selectedBefore()
-      }));
     });
   }
   onAfterSelectionChange(version2) {
@@ -84892,7 +84899,7 @@ var routes = [
   },
   {
     path: "dev/prompt-editor",
-    loadComponent: () => import("./chunk-WBXF6L37.js").then((m) => m.PromptEditorComponent),
+    loadComponent: () => import("./chunk-T4X2Z2NE.js").then((m) => m.PromptEditorComponent),
     title: "dev.prompts._title"
   },
   {
