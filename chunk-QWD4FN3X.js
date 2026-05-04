@@ -666,14 +666,14 @@ var FetchService = class _FetchService {
   //Get preview content
   fetchPreview(targetUrl) {
     return new Promise((resolve, reject) => {
-      const previewUrl = `https://aleblanc3.github.io/test/test.html?fetch=${encodeURIComponent(targetUrl)}`;
+      const previewUrl = `https://canada-preview.adobecqms.net/en/revenue-agency/web-services-test/amber/test.html?fetch=${encodeURIComponent(targetUrl)}`;
       const popup = window.open(previewUrl, "_blank", "width=1,height=1,left=9999,top=9999");
       if (!popup) {
         reject(new Error("Popup blocked. Please allow popups for this site."));
         return;
       }
       const handler = (event) => {
-        if (event.origin !== "https://aleblanc3.github.io")
+        if (event.origin !== "https://canada-preview.adobecqms.net")
           return;
         window.removeEventListener("message", handler);
         clearTimeout(timeout);
@@ -8490,4 +8490,4 @@ export {
   AiPromptService,
   OpenRouterService
 };
-//# sourceMappingURL=chunk-ZOPQBJ72.js.map
+//# sourceMappingURL=chunk-QWD4FN3X.js.map
