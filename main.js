@@ -23457,7 +23457,7 @@ var ProjectStateService = class _ProjectStateService {
       const url = new URL(productionUrl);
       const path = url.pathname;
       if (type === "preview") {
-        return `https://aleblanc3.github.io/test/${path}`;
+        return `https://aleblanc3.github.io/test${path}`;
       } else {
         const repoSuffix = type === "baseline" ? `${repo}-baseline` : repo;
         let prototypeUrl = `https://${owner}.github.io/${repoSuffix}${path}`;
@@ -78200,7 +78200,7 @@ var CompareComponent = class _CompareComponent {
       this.compareService.selectedAfter.set(version2);
       if (!this.compareService.selectedPage)
         return;
-      if (this.compareService.selectedBefore() === "preview") {
+      if (this.compareService.selectedAfter() === "preview") {
         const url2 = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "preview");
         const previewContent = yield this.fetchService.fetchPreview(url2);
         const normalizedContent = yield this.htmlNormalizationService.normalizeHTML(previewContent, "string");
