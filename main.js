@@ -78201,30 +78201,31 @@ var CompareComponent = class _CompareComponent {
       if (!this.compareService.selectedPage)
         return;
       if (this.compareService.selectedAfter() === "preview") {
-        const url2 = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "preview");
-        const previewContent = yield this.fetchService.fetchPreview(url2);
+        const url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "preview");
+        const previewContent = yield this.fetchService.fetchPreview(url);
         const normalizedContent = yield this.htmlNormalizationService.normalizeHTML(previewContent, "string");
-        console.log(url2);
+        console.log(url);
         console.log(previewContent);
         console.log(normalizedContent);
         this.compareService.modifiedHtml.set(__spreadProps(__spreadValues({}, normalizedContent), {
-          url: url2,
+          url,
           version: this.compareService.selectedAfter()
         }));
       } else if (this.compareService.selectedAfter() === "ai") {
         this.compareService.modifiedHtml.set(__spreadProps(__spreadValues({}, this.compareService.originalHtml()), {
           version: this.compareService.selectedAfter()
         }));
+      } else {
+        let url = this.compareService.selectedPage();
+        if (this.compareService.selectedAfter() === "baseline") {
+          url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "baseline");
+        } else if (this.compareService.selectedAfter() === "prototype") {
+          url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "current");
+        }
+        this.compareService.modifiedHtml.set(__spreadProps(__spreadValues({}, yield this.htmlNormalizationService.normalizeHTML(url, "url")), {
+          version: this.compareService.selectedAfter()
+        }));
       }
-      let url = this.compareService.selectedPage();
-      if (this.compareService.selectedAfter() === "baseline") {
-        url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "baseline");
-      } else if (this.compareService.selectedAfter() === "prototype") {
-        url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "current");
-      }
-      this.compareService.modifiedHtml.set(__spreadProps(__spreadValues({}, yield this.htmlNormalizationService.normalizeHTML(url, "url")), {
-        version: this.compareService.selectedAfter()
-      }));
     });
   }
   static \u0275fac = function CompareComponent_Factory(__ngFactoryType__) {
