@@ -78104,7 +78104,7 @@ var CompareComponent = class _CompareComponent {
       this.compareService.selectedPage.set(page);
       if (!this.compareService.selectedPage)
         return;
-      const validVersions = ["ai"];
+      const validVersions = ["ai", "preview"];
       try {
         const liveResponse = yield this.fetchService.fetchStatus(this.compareService.selectedPage(), "prod");
         if (liveResponse.ok) {
