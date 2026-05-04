@@ -78209,7 +78209,7 @@ var CompareComponent = class _CompareComponent {
         console.log(normalizedContent);
         this.compareService.modifiedHtml.set(__spreadProps(__spreadValues({}, normalizedContent), {
           url: url2,
-          version: this.compareService.selectedBefore()
+          version: this.compareService.selectedAfter()
         }));
       } else if (this.compareService.selectedAfter() === "ai") {
         this.compareService.modifiedHtml.set(__spreadProps(__spreadValues({}, this.compareService.originalHtml()), {
