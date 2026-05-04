@@ -692,6 +692,30 @@ var FetchService = class _FetchService {
       }, 1e4);
     });
   }
+  fetchPreviewStatus(targetUrl) {
+    return new Promise((resolve) => {
+      const previewUrl = `https://canada-preview.adobecqms.net/en/revenue-agency/web-services-test/amber/test.html?${encodeURIComponent(targetUrl)}&check=true`;
+      const popup = window.open(previewUrl, "_blank", "width=1,height=1,left=9999,top=9999");
+      if (!popup) {
+        resolve(false);
+        return;
+      }
+      const handler = (event) => {
+        if (event.origin !== "https://canada-preview.adobecqms.net")
+          return;
+        window.removeEventListener("message", handler);
+        clearTimeout(timeout);
+        popup.close();
+        resolve(event.data.success || false);
+      };
+      window.addEventListener("message", handler);
+      const timeout = setTimeout(() => {
+        window.removeEventListener("message", handler);
+        popup.close();
+        resolve(false);
+      }, 5e3);
+    });
+  }
   static \u0275fac = function FetchService_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _FetchService)();
   };
@@ -8490,4 +8514,4 @@ export {
   AiPromptService,
   OpenRouterService
 };
-//# sourceMappingURL=chunk-QWD4FN3X.js.map
+//# sourceMappingURL=chunk-XGQC4SXF.js.map

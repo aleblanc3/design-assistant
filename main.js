@@ -40,7 +40,7 @@ import {
   RadioButtonModule,
   TimesCircleIcon,
   environment
-} from "./chunk-QWD4FN3X.js";
+} from "./chunk-XGQC4SXF.js";
 import {
   Checkbox,
   CheckboxModule,
@@ -78087,6 +78087,7 @@ var CompareComponent = class _CompareComponent {
     marker("compare.pageOptions.live");
     marker("compare.pageOptions.prototype");
     marker("compare.pageOptions.baseline");
+    marker("compare.pageOptions.preview");
     marker("compare.pageOptions.ai");
     marker("compare.view.comparison");
     marker("compare.view.linebyline");
@@ -78115,13 +78116,12 @@ var CompareComponent = class _CompareComponent {
       }
       const previewUrl = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "preview");
       try {
-        const previewResponse = yield this.fetchService.fetchStatus(previewUrl, "proto");
-        if (previewResponse.ok) {
+        const previewExists = yield this.fetchService.fetchPreviewStatus(previewUrl);
+        if (previewExists) {
           validVersions.push("preview");
         }
       } catch (error) {
         console.warn("Preview URL not accessible:", error);
-        validVersions.push("preview");
       }
       const prototypeUrl = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "current");
       if (prototypeUrl) {
@@ -84918,7 +84918,7 @@ var routes = [
   },
   {
     path: "dev/prompt-editor",
-    loadComponent: () => import("./chunk-HGPCZO66.js").then((m) => m.PromptEditorComponent),
+    loadComponent: () => import("./chunk-YH6PPSZW.js").then((m) => m.PromptEditorComponent),
     title: "dev.prompts._title"
   },
   {
