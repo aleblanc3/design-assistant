@@ -75315,6 +75315,8 @@ var InventoryComponent = class _InventoryComponent {
 // src/app/views/compare-assistant/compare.service.ts
 var CompareService = class _CompareService {
   // HTML content cache
+  htmlCache = signal(/* @__PURE__ */ new Map());
+  statusCache = signal(/* @__PURE__ */ new Map());
   originalHtml = signal(void 0);
   modifiedHtml = signal(void 0);
   // User selections & defaults
@@ -75325,8 +75327,30 @@ var CompareService = class _CompareService {
   loading = signal(false);
   loadingBefore = signal(false);
   loadingAfter = signal(false);
+  loadingAll = signal(false);
+  // Helpers to get & set HTML cache
+  getCachedHtml(url) {
+    return this.htmlCache().get(url);
+  }
+  setCachedHtml(url, html) {
+    const cache = new Map(this.htmlCache());
+    cache.set(url, html);
+    this.htmlCache.set(cache);
+  }
+  // Helpers to get & set status cache
+  getCachedStatus(url) {
+    return this.statusCache().get(url);
+  }
+  setCachedStatus(url, status) {
+    const cache = new Map(this.statusCache());
+    cache.set(url, status);
+    this.statusCache.set(cache);
+    console.log("Cached status:", url, status);
+  }
   // Clear HTML content cache
   clearCache() {
+    this.htmlCache.set(/* @__PURE__ */ new Map());
+    this.statusCache.set(/* @__PURE__ */ new Map());
     this.originalHtml.set(void 0);
     this.modifiedHtml.set(void 0);
   }
@@ -78109,53 +78133,128 @@ var CompareComponent = class _CompareComponent {
         this.compareService.selectedPage.set(page);
         if (!this.compareService.selectedPage)
           return;
+        this.compareService.originalHtml.set(void 0);
+        this.compareService.modifiedHtml.set(void 0);
         const validVersions = ["ai"];
-        try {
-          const liveResponse = yield this.fetchService.fetchStatus(this.compareService.selectedPage(), "prod");
-          if (liveResponse.ok) {
+        const cachedLive = this.compareService.getCachedStatus(this.compareService.selectedPage());
+        if (cachedLive !== void 0) {
+          if (cachedLive)
             validVersions.push("live");
+        } else {
+          try {
+            const liveResponse = yield this.fetchService.fetchStatus(this.compareService.selectedPage(), "prod");
+            this.compareService.setCachedStatus(this.compareService.selectedPage(), liveResponse.ok);
+            if (liveResponse.ok) {
+              validVersions.push("live");
+            }
+          } catch (error) {
+            this.compareService.setCachedStatus(this.compareService.selectedPage(), false);
           }
-        } catch (error) {
-          console.warn("Live URL not accessible:", error);
         }
         const previewUrl = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "preview");
-        try {
-          const previewExists = yield this.fetchService.fetchPreviewStatus(previewUrl);
-          if (previewExists) {
+        const cachedPreview = this.compareService.getCachedStatus(previewUrl);
+        if (cachedPreview !== void 0) {
+          if (cachedPreview)
             validVersions.push("preview");
+        } else if (previewUrl) {
+          try {
+            const previewExists = yield this.fetchService.fetchPreviewStatus(previewUrl);
+            this.compareService.setCachedStatus(previewUrl, previewExists);
+            if (previewExists) {
+              validVersions.push("preview");
+            }
+          } catch (error) {
+            this.compareService.setCachedStatus(previewUrl, false);
           }
-        } catch (error) {
-          console.warn("Preview URL not accessible:", error);
         }
         const prototypeUrl = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "current");
-        if (prototypeUrl) {
+        const cachedPrototype = this.compareService.getCachedStatus(prototypeUrl);
+        if (cachedPrototype !== void 0) {
+          if (cachedPrototype)
+            validVersions.push("prototype");
+        } else if (prototypeUrl) {
           try {
             const protoResponse = yield this.fetchService.fetchStatus(prototypeUrl, "proto");
+            this.compareService.setCachedStatus(prototypeUrl, protoResponse.ok);
             if (protoResponse.ok) {
               validVersions.push("prototype");
             }
           } catch (error) {
-            console.warn("Prototype URL not accessible:", error);
+            this.compareService.setCachedStatus(prototypeUrl, false);
           }
         }
         if (this.projectState.getProject().github.hasBaselineRepo) {
           const baselineUrl = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "baseline");
-          if (baselineUrl) {
+          const cachedBaseline = this.compareService.getCachedStatus(baselineUrl);
+          if (cachedBaseline !== void 0) {
+            if (cachedBaseline)
+              validVersions.push("baseline");
+          } else if (baselineUrl) {
             try {
               const baselineResponse = yield this.fetchService.fetchStatus(baselineUrl, "proto");
+              this.compareService.setCachedStatus(baselineUrl, baselineResponse.ok);
               if (baselineResponse.ok) {
                 validVersions.push("baseline");
               }
             } catch (error) {
-              console.warn("Baseline URL not accessible:", error);
+              this.compareService.setCachedStatus(baselineUrl, false);
             }
           }
         }
         this.allOptions = validVersions;
-        this.onBeforeSelectionChange(this.compareService.selectedBefore());
-        this.onAfterSelectionChange(this.compareService.selectedAfter());
+        yield this.onBeforeSelectionChange(this.compareService.selectedBefore());
+        yield this.onAfterSelectionChange(this.compareService.selectedAfter());
       } finally {
         this.compareService.loading.set(false);
+      }
+    });
+  }
+  setCacheForAll() {
+    return __async(this, null, function* () {
+      this.compareService.loadingAll.set(true);
+      try {
+        const allUrls = this.projectState.getAllUrls("inScope", "primary");
+        for (const url of allUrls) {
+          if (!this.compareService.getCachedStatus(url)) {
+            try {
+              const liveResponse = yield this.fetchService.fetchStatus(url, "prod", 1, 0);
+              this.compareService.setCachedStatus(url, liveResponse.ok);
+            } catch {
+              this.compareService.setCachedStatus(url, false);
+            }
+          }
+          const previewUrl = this.projectState.generatePrototypeUrl(url, "preview");
+          if (previewUrl && !this.compareService.getCachedStatus(previewUrl)) {
+            try {
+              const previewExists = yield this.fetchService.fetchPreviewStatus(previewUrl);
+              this.compareService.setCachedStatus(previewUrl, previewExists);
+            } catch {
+              this.compareService.setCachedStatus(previewUrl, false);
+            }
+          }
+          const prototypeUrl = this.projectState.generatePrototypeUrl(url, "current");
+          if (prototypeUrl && !this.compareService.getCachedStatus(prototypeUrl)) {
+            try {
+              const protoResponse = yield this.fetchService.fetchStatus(prototypeUrl, "proto", 1, 0);
+              this.compareService.setCachedStatus(prototypeUrl, protoResponse.ok);
+            } catch {
+              this.compareService.setCachedStatus(prototypeUrl, false);
+            }
+          }
+          if (this.projectState.getProject().github.hasBaselineRepo) {
+            const baselineUrl = this.projectState.generatePrototypeUrl(url, "baseline");
+            if (baselineUrl && !this.compareService.getCachedStatus(baselineUrl)) {
+              try {
+                const baselineResponse = yield this.fetchService.fetchStatus(baselineUrl, "proto", 1, 0);
+                this.compareService.setCachedStatus(baselineUrl, baselineResponse.ok);
+              } catch {
+                this.compareService.setCachedStatus(baselineUrl, false);
+              }
+            }
+          }
+        }
+      } finally {
+        this.compareService.loadingAll.set(false);
       }
     });
   }
@@ -78182,12 +78281,19 @@ var CompareComponent = class _CompareComponent {
           return;
         if (this.compareService.selectedBefore() === "preview") {
           const url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "preview");
+          const cached = this.compareService.getCachedHtml(url);
+          if (cached) {
+            this.compareService.originalHtml.set(cached);
+            return;
+          }
           const previewContent = yield this.fetchService.fetchPreview(url);
           const normalizedContent = yield this.htmlNormalizationService.normalizeHTML(previewContent, "string");
-          this.compareService.originalHtml.set(__spreadProps(__spreadValues({}, normalizedContent), {
+          const result = __spreadProps(__spreadValues({}, normalizedContent), {
             url,
-            version: this.compareService.selectedBefore()
-          }));
+            version: version2
+          });
+          this.compareService.setCachedHtml(url, result);
+          this.compareService.originalHtml.set(result);
         } else {
           let url = this.compareService.selectedPage();
           if (this.compareService.selectedBefore() === "baseline") {
@@ -78195,9 +78301,16 @@ var CompareComponent = class _CompareComponent {
           } else if (this.compareService.selectedBefore() === "prototype") {
             url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "current");
           }
-          this.compareService.originalHtml.set(__spreadProps(__spreadValues({}, yield this.htmlNormalizationService.normalizeHTML(url, "url")), {
-            version: this.compareService.selectedBefore()
-          }));
+          const cached = this.compareService.getCachedHtml(url);
+          if (cached) {
+            this.compareService.originalHtml.set(cached);
+            return;
+          }
+          const result = __spreadProps(__spreadValues({}, yield this.htmlNormalizationService.normalizeHTML(url, "url")), {
+            version: version2
+          });
+          this.compareService.setCachedHtml(url, result);
+          this.compareService.originalHtml.set(result);
         }
       } finally {
         this.compareService.loadingBefore.set(false);
@@ -78213,12 +78326,19 @@ var CompareComponent = class _CompareComponent {
           return;
         if (this.compareService.selectedAfter() === "preview") {
           const url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "preview");
+          const cached = this.compareService.getCachedHtml(url);
+          if (cached) {
+            this.compareService.modifiedHtml.set(cached);
+            return;
+          }
           const previewContent = yield this.fetchService.fetchPreview(url);
           const normalizedContent = yield this.htmlNormalizationService.normalizeHTML(previewContent, "string");
-          this.compareService.modifiedHtml.set(__spreadProps(__spreadValues({}, normalizedContent), {
+          const result = __spreadProps(__spreadValues({}, normalizedContent), {
             url,
-            version: this.compareService.selectedAfter()
-          }));
+            version: version2
+          });
+          this.compareService.setCachedHtml(url, result);
+          this.compareService.modifiedHtml.set(result);
         } else if (this.compareService.selectedAfter() === "ai") {
           this.compareService.modifiedHtml.set(__spreadProps(__spreadValues({}, this.compareService.originalHtml()), {
             version: this.compareService.selectedAfter()
@@ -78230,9 +78350,16 @@ var CompareComponent = class _CompareComponent {
           } else if (this.compareService.selectedAfter() === "prototype") {
             url = this.projectState.generatePrototypeUrl(this.compareService.selectedPage(), "current");
           }
-          this.compareService.modifiedHtml.set(__spreadProps(__spreadValues({}, yield this.htmlNormalizationService.normalizeHTML(url, "url")), {
-            version: this.compareService.selectedAfter()
-          }));
+          const cached = this.compareService.getCachedHtml(url);
+          if (cached) {
+            this.compareService.modifiedHtml.set(cached);
+            return;
+          }
+          const result = __spreadProps(__spreadValues({}, yield this.htmlNormalizationService.normalizeHTML(url, "url")), {
+            version: version2
+          });
+          this.compareService.setCachedHtml(url, result);
+          this.compareService.modifiedHtml.set(result);
         }
       } finally {
         this.compareService.loadingAfter.set(false);
@@ -78242,7 +78369,7 @@ var CompareComponent = class _CompareComponent {
   static \u0275fac = function CompareComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _CompareComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CompareComponent, selectors: [["aida-page-assistant-compare"]], decls: 64, vars: 49, consts: [["id", "wb-cont"], [1, "flex", "flex-column", "gap-3"], [1, "flex", "flex-column", "xl:flex-row", "gap-3", "min-w-min"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "xl:w-6", "min-w-min"], [1, "text-2xl", "my-1"], [1, "my-1"], [1, "flex", "flex-column", "lg:flex-row", "lg:align-items-center", "gap-2"], [1, "flex", "flex-column", "text-color-secondary", "hover:text-primary", "max-w-max"], [1, "text-xs", "my-1"], ["inputId", "page", "optionLabel", "label", "optionValue", "value", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-27rem", 3, "ngModelChange", "options", "ngModel", "loading"], ["for", "page"], [1, "flex", "flex-column", "sm:flex-row", "sm:align-content-center", "gap-1", "sm:gap-3", "lg:gap-2"], ["inputId", "before", "optionLabel", "label", "optionValue", "value", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-13rem", 3, "ngModelChange", "options", "ngModel", "loading"], ["for", "before"], ["inputId", "after", "optionLabel", "label", "optionValue", "value", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-13rem", 3, "ngModelChange", "options", "ngModel", "loading"], ["for", "after"], [1, "flex", "justify-content-between", "w-full", "gap-2", "mt-4"], [1, "flex", "gap-2"], ["label", "Reset", "icon", "pi pi-trash", "severity", "danger", 3, "onClick"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min"], ["value", "0", 1, "mt-3"], ["value", "0"], [1, "pi", "pi-eye", "mr-1"], ["value", "1"], [1, "pi", "pi-code", "mr-1"], [1, "shadow-1"], [3, "beforeContent", "afterContent"]], template: function CompareComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CompareComponent, selectors: [["aida-page-assistant-compare"]], decls: 63, vars: 48, consts: [["id", "wb-cont"], [1, "flex", "flex-column", "gap-3"], [1, "flex", "flex-column", "xl:flex-row", "gap-3", "min-w-min"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "xl:w-6", "min-w-min"], [1, "text-2xl", "my-1"], [1, "my-1"], [1, "flex", "flex-column", "lg:flex-row", "lg:align-items-center", "gap-2"], [1, "flex", "flex-column", "text-color-secondary", "hover:text-primary", "max-w-max"], [1, "text-xs", "my-1"], ["inputId", "page", "optionLabel", "label", "optionValue", "value", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-27rem", 3, "ngModelChange", "options", "ngModel", "loading"], ["for", "page"], [1, "flex", "flex-column", "sm:flex-row", "sm:align-content-center", "gap-1", "sm:gap-3", "lg:gap-2"], ["inputId", "before", "optionLabel", "label", "optionValue", "value", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-13rem", 3, "ngModelChange", "options", "ngModel", "loading"], ["for", "before"], ["inputId", "after", "optionLabel", "label", "optionValue", "value", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-13rem", 3, "ngModelChange", "options", "ngModel", "loading"], ["for", "after"], [1, "flex", "justify-content-between", "w-full", "gap-2", "mt-4"], [1, "flex", "gap-2"], ["label", "Load all pages into cache", "icon", "pi pi-download", "severity", "success", 3, "onClick", "loading"], ["label", "Reset cache", "icon", "pi pi-trash", "severity", "danger", 3, "onClick"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min"], ["value", "0", 1, "mt-3"], ["value", "0"], [1, "pi", "pi-eye", "mr-1"], ["value", "1"], [1, "pi", "pi-code", "mr-1"], [1, "shadow-1"], [3, "beforeContent", "afterContent"]], template: function CompareComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "h1", 0);
       \u0275\u0275text(1);
@@ -78303,63 +78430,65 @@ var CompareComponent = class _CompareComponent {
       \u0275\u0275element(45, "div", 17);
       \u0275\u0275elementStart(46, "div", 17)(47, "p-button", 18);
       \u0275\u0275listener("onClick", function CompareComponent_Template_p_button_onClick_47_listener() {
+        return ctx.setCacheForAll();
+      });
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(48, "p-button", 19);
+      \u0275\u0275listener("onClick", function CompareComponent_Template_p_button_onClick_48_listener() {
         return ctx.compareService.clearCache();
       });
       \u0275\u0275elementEnd()()()()();
-      \u0275\u0275elementStart(48, "div", 19)(49, "p-tabs", 20)(50, "p-tablist")(51, "p-tab", 21);
-      \u0275\u0275element(52, "i", 22);
-      \u0275\u0275text(53);
-      \u0275\u0275pipe(54, "translate");
+      \u0275\u0275elementStart(49, "div", 20)(50, "p-tabs", 21)(51, "p-tablist")(52, "p-tab", 22);
+      \u0275\u0275element(53, "i", 23);
+      \u0275\u0275text(54);
+      \u0275\u0275pipe(55, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(55, "p-tab", 23);
-      \u0275\u0275element(56, "i", 24);
-      \u0275\u0275text(57);
-      \u0275\u0275pipe(58, "translate");
+      \u0275\u0275elementStart(56, "p-tab", 24);
+      \u0275\u0275element(57, "i", 25);
+      \u0275\u0275text(58);
+      \u0275\u0275pipe(59, "translate");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(59, "p-tabpanels", 25)(60, "p-tabpanel", 21);
-      \u0275\u0275element(61, "aida-compare-rendered", 26);
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(62, "p-tabpanel", 23);
-      \u0275\u0275element(63, "aida-compare-source", 26);
+      \u0275\u0275elementStart(60, "p-tabpanels", 26)(61, "p-tabpanel", 22);
+      \u0275\u0275element(62, "aida-compare-rendered", 27);
       \u0275\u0275elementEnd()()()()();
     }
     if (rf & 2) {
       \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 25, "compare._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 24, "compare._title"));
       \u0275\u0275advance(6);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(8, 27, "compare.pageOptions._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(8, 26, "compare.pageOptions._title"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(11, 29, "compare.pageOptions.description"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(11, 28, "compare.pageOptions.description"));
       \u0275\u0275advance(5);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(16, 31, "compare.pageOptions.selection"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(16, 30, "compare.pageOptions.selection"));
       \u0275\u0275advance(3);
-      \u0275\u0275property("options", ctx.pageOptions)("ngModel", ctx.compareService.selectedPage())("loading", ctx.compareService.loading());
+      \u0275\u0275property("options", ctx.pageOptions)("ngModel", ctx.compareService.selectedPage())("loading", ctx.compareService.loading() || ctx.compareService.loadingAll());
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(21, 33, "compare.pageOptions.page"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(21, 32, "compare.pageOptions.page"));
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(25, 35, "compare.pageOptions.versions"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(25, 34, "compare.pageOptions.versions"));
       \u0275\u0275advance(4);
-      \u0275\u0275property("options", ctx.beforeOptions)("ngModel", ctx.compareService.selectedBefore())("loading", ctx.compareService.loading() || ctx.compareService.loadingBefore());
+      \u0275\u0275property("options", ctx.beforeOptions)("ngModel", ctx.compareService.selectedBefore())("loading", ctx.compareService.loading() || ctx.compareService.loadingAll() || ctx.compareService.loadingBefore());
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(31, 37, "compare.pageOptions.before"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(31, 36, "compare.pageOptions.before"));
       \u0275\u0275advance(3);
-      \u0275\u0275property("options", ctx.afterOptions)("ngModel", ctx.compareService.selectedAfter())("loading", ctx.compareService.loading() || ctx.compareService.loadingAfter());
+      \u0275\u0275property("options", ctx.afterOptions)("ngModel", ctx.compareService.selectedAfter())("loading", ctx.compareService.loading() || ctx.compareService.loadingAll() || ctx.compareService.loadingAfter());
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(36, 39, "compare.pageOptions.after"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(36, 38, "compare.pageOptions.after"));
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(40, 41, "compare.aiOptions._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(40, 40, "compare.aiOptions._title"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(43, 43, "compare.aiOptions.description"));
-      \u0275\u0275advance(11);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(54, 45, "compare.tab.rendered"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(43, 42, "compare.aiOptions.description"));
+      \u0275\u0275advance(5);
+      \u0275\u0275property("loading", ctx.compareService.loadingAll());
+      \u0275\u0275advance(7);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(55, 44, "compare.tab.rendered"));
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(58, 47, "compare.tab.source"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(59, 46, "compare.tab.source"));
       \u0275\u0275advance(4);
-      \u0275\u0275property("beforeContent", ctx.compareService.originalHtml())("afterContent", ctx.compareService.modifiedHtml());
-      \u0275\u0275advance(2);
       \u0275\u0275property("beforeContent", ctx.compareService.originalHtml())("afterContent", ctx.compareService.modifiedHtml());
     }
-  }, dependencies: [CommonModule, FormsModule, NgControlStatus, NgModel, TranslateModule, TranslatePipe, ButtonModule, Button, TabsModule, Tabs, TabPanels, TabPanel, TabList, Tab, IftaLabelModule, IftaLabel, SelectModule, Select, CompareRenderedComponent, CompareSourceComponent], encapsulation: 2 });
+  }, dependencies: [CommonModule, FormsModule, NgControlStatus, NgModel, TranslateModule, TranslatePipe, ButtonModule, Button, TabsModule, Tabs, TabPanels, TabPanel, TabList, Tab, IftaLabelModule, IftaLabel, SelectModule, Select, CompareRenderedComponent], encapsulation: 2 });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(CompareComponent, [{
@@ -78389,7 +78518,7 @@ var CompareComponent = class _CompareComponent {
           <p-iftalabel>\r
             <p-select inputId="page" [options]="pageOptions" [ngModel]="compareService.selectedPage()" (ngModelChange)="onPageSelectionChange($event)"\r
                       optionLabel="label" optionValue="value" class="w-20rem sm:w-27rem"\r
-                      [loading]="compareService.loading()" loadingIcon="pi pi-spin pi-spinner" />\r
+                      [loading]="compareService.loading() || compareService.loadingAll()" loadingIcon="pi pi-spin pi-spinner" />\r
             <label for="page">{{'compare.pageOptions.page' | translate}}</label>\r
           </p-iftalabel>\r
         </div>\r
@@ -78401,14 +78530,14 @@ var CompareComponent = class _CompareComponent {
             <p-iftalabel>\r
               <p-select inputId="before" [options]="beforeOptions" [ngModel]="compareService.selectedBefore()" (ngModelChange)="onBeforeSelectionChange($event)"\r
                         optionLabel="label" optionValue="value" class="w-20rem sm:w-13rem"\r
-                        [loading]="compareService.loading() || compareService.loadingBefore()" loadingIcon="pi pi-spin pi-spinner" />\r
+                        [loading]="compareService.loading() || compareService.loadingAll() || compareService.loadingBefore()" loadingIcon="pi pi-spin pi-spinner" />\r
               <label for="before">{{'compare.pageOptions.before' | translate}}</label>\r
             </p-iftalabel>\r
             <!--After-->\r
             <p-iftalabel>\r
               <p-select inputId="after" [options]="afterOptions" [ngModel]="compareService.selectedAfter()" (ngModelChange)="onAfterSelectionChange($event)"\r
                         optionLabel="label" optionValue="value" class="w-20rem sm:w-13rem"\r
-                        [loading]="compareService.loading() || compareService.loadingAfter()" loadingIcon="pi pi-spin pi-spinner" />\r
+                        [loading]="compareService.loading() || compareService.loadingAll() || compareService.loadingAfter()" loadingIcon="pi pi-spin pi-spinner" />\r
               <label for="after">{{'compare.pageOptions.after' | translate}}</label>\r
             </p-iftalabel>\r
           </div>\r
@@ -78445,7 +78574,13 @@ var CompareComponent = class _CompareComponent {
                     (onClick)="shareLink()"\r
                     *ngIf="canShare" /-->\r
           <p-button\r
-                    label="Reset"\r
+                    label="Load all pages into cache"\r
+                    icon="pi pi-download"\r
+                    severity="success"\r
+                    (onClick)="this.setCacheForAll()"\r
+                    [loading]="compareService.loadingAll()" />\r
+          <p-button\r
+                    label="Reset cache"\r
                     icon="pi pi-trash"\r
                     severity="danger"\r
                     (onClick)="this.compareService.clearCache()" />\r
@@ -78466,9 +78601,9 @@ var CompareComponent = class _CompareComponent {
           <aida-compare-rendered [beforeContent]="compareService.originalHtml()" [afterContent]="compareService.modifiedHtml()"></aida-compare-rendered>\r
         </p-tabpanel>\r
         <!-- Source code -->\r
-        <p-tabpanel value="1">\r
+        <!--p-tabpanel value="1">\r
           <aida-compare-source [beforeContent]="compareService.originalHtml()" [afterContent]="compareService.modifiedHtml()"></aida-compare-source>\r
-        </p-tabpanel>\r
+        </p-tabpanel-->\r
         <!-- Problems -->\r
         <!--p-tabpanel value="2">\r
           <aida-compare-problems [beforeContent]="compareService.originalHtml()" [afterContent]="compareService.modifiedHtml()"></aida-compare-problems>\r
