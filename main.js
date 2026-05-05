@@ -76145,6 +76145,29 @@ var CompareRenderedService = class _CompareRenderedService {
     return __async(this, null, function* () {
       const parser = new DOMParser();
       const diffDoc = parser.parseFromString(diffResult, "text/html");
+      diffDoc.querySelectorAll("ins, del").forEach((diffEl) => {
+        const parent = diffEl.parentElement;
+        if (parent && parent.tagName !== "BODY" && parent.tagName !== "UL" && parent.tagName !== "OL" && parent.tagName !== "SUMMARY" && parent.tagName !== "DETAILS" && !parent.classList.contains("diffmod") && !parent.classList.contains("diffins") && !parent.classList.contains("diffdel") && parent.children.length === 1 && parent.textContent?.trim() === diffEl.textContent?.trim()) {
+          parent.replaceWith(diffEl);
+          const inlineElements = ["STRONG", "EM", "B", "I", "MARK", "CODE", "ABBR", "SPAN"];
+          if (inlineElements.includes(parent.tagName)) {
+            const parentClone = parent.cloneNode(false);
+            while (diffEl.firstChild) {
+              parentClone.appendChild(diffEl.firstChild);
+            }
+            diffEl.appendChild(parentClone);
+            parent.replaceWith(diffEl);
+          } else {
+            parent.replaceWith(diffEl);
+          }
+        }
+        if (diffEl.matches("ins:not(.diffins):not(.diffmod)") || diffEl.matches("del:not(.diffdel):not(.diffmod)")) {
+          while (diffEl.firstChild) {
+            diffEl.parentNode?.insertBefore(diffEl.firstChild, diffEl);
+          }
+          diffEl.remove();
+        }
+      });
       diffDoc.querySelectorAll("del > del, ins > ins").forEach((el) => {
         const parent = el.parentElement;
         if (parent && parent.textContent?.trim() === el.textContent?.trim()) {
@@ -76157,25 +76180,95 @@ var CompareRenderedService = class _CompareRenderedService {
           parent.replaceWith(el);
         }
       });
-      const uniqueElements = Array.from(diffDoc.querySelectorAll("ins.diffins, del.diffdel, del.diffmod, .updated-link")).map((el, index) => {
-        if (el.matches("del.diffmod") && el.nextElementSibling?.matches("ins.diffmod")) {
-          const wrapper = diffDoc.createElement("span");
-          wrapper.classList.add("diff-group");
-          const matchingIns = el.nextElementSibling;
-          el.parentNode?.insertBefore(wrapper, el);
-          wrapper.appendChild(el);
-          wrapper.appendChild(matchingIns);
-          el = wrapper;
-        }
-        const parent = el.parentElement;
-        return {
-          element: el,
-          outerHTML: parent?.innerHTML?.replace(/\n/g, "").trim() || "",
-          id: index + 1
-        };
+      ["ul", "ol"].forEach((listType) => {
+        diffDoc.querySelectorAll(listType).forEach((list) => {
+          Array.from(list.childNodes).forEach((child) => {
+            if (child.nodeType === Node.ELEMENT_NODE) {
+              const el = child;
+              if (el.matches("ins.diffins, del.diffdel, ins.diffmod, del.diffmod") && el.parentElement?.tagName === listType.toUpperCase()) {
+                const li = diffDoc.createElement("li");
+                el.parentNode?.insertBefore(li, el);
+                li.appendChild(el);
+              }
+            }
+          });
+        });
       });
-      uniqueElements.forEach(({ element, id }) => {
-        element.setAttribute("data-id", `${id}`);
+      ["div", "section", "article", "aside", "nav", "main", "header", "footer"].forEach((containerType) => {
+        diffDoc.querySelectorAll(containerType).forEach((container) => {
+          Array.from(container.childNodes).forEach((child) => {
+            if (child.nodeType === Node.ELEMENT_NODE) {
+              const el = child;
+              if (el.matches("ins.diffins, del.diffdel, ins.diffmod, del.diffmod") && el.parentElement?.tagName === containerType.toUpperCase()) {
+                const p = diffDoc.createElement("p");
+                el.parentNode?.insertBefore(p, el);
+                p.appendChild(el);
+              }
+            }
+          });
+        });
+      });
+      diffDoc.querySelectorAll("del.diffmod").forEach((del) => {
+        if (del.parentElement?.classList.contains("diff-group")) {
+          return;
+        }
+        const wrapper = diffDoc.createElement("span");
+        wrapper.classList.add("diff-group");
+        del.parentNode?.insertBefore(wrapper, del);
+        wrapper.appendChild(del);
+        let nextEl = wrapper.nextElementSibling;
+        while (nextEl?.matches("ins.diffmod")) {
+          const toMove = nextEl;
+          nextEl = nextEl.nextElementSibling;
+          wrapper.appendChild(toMove);
+        }
+        if (!wrapper.querySelector("ins.diffmod")) {
+          let searchNode = del.parentElement;
+          let depth = 0;
+          while (searchNode && searchNode.tagName !== "BODY" && depth < 3) {
+            const nextBlock = searchNode.nextElementSibling;
+            if (nextBlock) {
+              const firstIns = nextBlock.querySelector("ins.diffmod");
+              if (firstIns) {
+                const insText = firstIns.textContent?.trim() || "";
+                const delText = del.textContent?.trim() || "";
+                if (insText.length < 50 || Math.abs(insText.length - delText.length) < 20) {
+                  wrapper.appendChild(firstIns);
+                  break;
+                }
+              }
+            }
+            searchNode = searchNode.parentElement;
+            depth++;
+          }
+        }
+      });
+      diffDoc.querySelectorAll("ins.diffmod").forEach((ins) => {
+        if (ins.parentElement?.classList.contains("diff-group")) {
+          return;
+        }
+        ins.classList.remove("diffmod");
+        ins.classList.add("diffins");
+      });
+      ["ins.diffins", "del.diffdel"].forEach((selector) => {
+        let changed = true;
+        while (changed) {
+          changed = false;
+          diffDoc.querySelectorAll(selector).forEach((el) => {
+            const next = el.nextSibling;
+            if (next && next.nodeType === Node.ELEMENT_NODE && next.matches(selector)) {
+              while (next.firstChild) {
+                el.appendChild(next.firstChild);
+              }
+              next.remove();
+              changed = true;
+            }
+          });
+        }
+      });
+      const uniqueElements = Array.from(diffDoc.querySelectorAll("ins.diffins, del.diffdel, span.diff-group, .updated-link"));
+      uniqueElements.forEach((element, index) => {
+        element.setAttribute("data-id", `${index + 1}`);
       });
       return diffDoc.body.innerHTML;
     });
@@ -76188,9 +76281,9 @@ var CompareRenderedService = class _CompareRenderedService {
         target = target.parentElement;
       }
       if (target?.tagName === "A") {
+        event2.preventDefault();
         const href = target.getAttribute("href") ?? "";
         if (href.startsWith("#")) {
-          event2.preventDefault();
           const sectionId = target.getAttribute("href")?.substring(1);
           const targetSection = shadowRoot.getElementById(sectionId ?? "");
           if (targetSection) {
@@ -76199,9 +76292,6 @@ var CompareRenderedService = class _CompareRenderedService {
               block: "start"
             });
           }
-        }
-        if (!href.startsWith("#")) {
-          event2.preventDefault();
         }
       }
       const changeElements = this.getDataIdElements(shadowRoot);
@@ -76217,9 +76307,9 @@ var CompareRenderedService = class _CompareRenderedService {
         this.lastSelection = { count: 1, startId: null, endId: null };
       }
     };
-    shadowRoot.addEventListener("click", clickHandler);
+    shadowRoot.addEventListener("click", clickHandler, true);
     return () => {
-      shadowRoot.removeEventListener("click", clickHandler);
+      shadowRoot.removeEventListener("click", clickHandler, true);
     };
   }
   //Handle text selection inside Shadow DOM
@@ -76659,30 +76749,97 @@ var CompareRenderedComponent = class _CompareRenderedComponent {
   compareRenderedService = inject(CompareRenderedService);
   translate = inject(TranslateService);
   locationStrategy = inject(LocationStrategy);
-  beforeContent;
-  afterContent;
-  getUrl() {
-    if (this.webSelectedView() === WebViewType.Original) {
-      return this.beforeContent?.url;
-    } else if (this.webSelectedView() === WebViewType.Modified) {
-      return this.afterContent?.url;
-    } else
-      return null;
-  }
-  // Run diff when inputs change
-  ngOnChanges(changes) {
-    return __async(this, null, function* () {
-      if (changes["beforeContent"] || changes["afterContent"]) {
-        const shadowRoot = this.shadowDOM();
-        const viewType = this.webSelectedView();
-        if (this.beforeContent && !this.afterContent)
-          this.afterContent = this.beforeContent;
-        if (!this.beforeContent && this.afterContent)
-          this.beforeContent = this.afterContent;
-        if (this.beforeContent && this.afterContent && shadowRoot) {
-          yield this.compareRenderedService.generateShadowDOMContent(shadowRoot, viewType, this.beforeContent.html, this.afterContent.html);
+  // Inputs
+  beforeContent = input();
+  afterContent = input();
+  //@Input() beforeContent: htmlProcessingResult | undefined;
+  //@Input() afterContent: htmlProcessingResult | undefined;
+  // Outputs
+  contentChanged = new EventEmitter();
+  // Get DOM elements from template
+  liveContainer;
+  // Signals
+  shadowDOM = signal(null);
+  // Effects
+  constructor() {
+    effect(() => __async(this, null, function* () {
+      const viewType = this.webSelectedView();
+      const shadowRoot = this.shadowDOM();
+      const beforeContent = this.beforeContent();
+      const afterContent = this.afterContent();
+      if (this.beforeContent && !this.afterContent)
+        this.afterContent = this.beforeContent;
+      if (!this.beforeContent && this.afterContent)
+        this.beforeContent = this.afterContent;
+      if (beforeContent && afterContent && shadowRoot) {
+        yield this.compareRenderedService.generateShadowDOMContent(shadowRoot, viewType, beforeContent.html, afterContent.html);
+        if (this.shadowClickHandler) {
+          this.shadowClickHandler();
+          console.log("Reset shadow click handler");
+        }
+        this.shadowClickHandler = this.compareRenderedService.handleDocumentClick(shadowRoot, (index) => {
+          this.currentIndex = index;
+        });
+        if (this.shadowSelectionHandler) {
+          this.shadowSelectionHandler();
+          console.log("Reset shadow selection handler");
+        }
+        this.shadowSelectionHandler = this.compareRenderedService.handleSelection(shadowRoot);
+        this.elements = this.compareRenderedService.getDataIdElements(shadowRoot);
+        if (this.elements.length > 0) {
+          this.focusOnIndex(this.currentIndex);
+        } else {
         }
       }
+    }));
+  }
+  //Runs when view is initialized
+  ngAfterViewInit() {
+    const shadowRoot = this.compareRenderedService.initializeShadowDOM(this.liveContainer.nativeElement);
+    if (shadowRoot) {
+      this.shadowDOM.set(shadowRoot);
+      console.log("Shadow DOM is initialized.");
+    }
+  }
+  //Runs when component is destroyed
+  ngOnDestroy() {
+    if (this.shadowDOM) {
+      this.compareRenderedService.clearShadowDOM(this.shadowDOM());
+      this.shadowDOM.set(null);
+    }
+    if (this.shadowClickHandler) {
+      this.shadowClickHandler();
+    }
+    if (this.shadowSelectionHandler) {
+      this.shadowSelectionHandler();
+    }
+  }
+  //Web page view options
+  WebViewType = WebViewType;
+  webSelectedView = signal(WebViewType.Diff);
+  get webViewOptions() {
+    return [
+      {
+        label: `compare.pageOptions.${this.beforeContent()?.version ?? "before"}`,
+        value: WebViewType.Original,
+        icon: "pi pi-file"
+      },
+      {
+        label: "compare.view.comparison",
+        value: WebViewType.Diff,
+        icon: "pi pi-sort-alt"
+      },
+      {
+        label: `compare.pageOptions.${this.afterContent()?.version ?? "after"}`,
+        value: WebViewType.Modified,
+        icon: "pi pi-file-edit"
+      }
+    ];
+  }
+  //Change web page view
+  onWebViewChange(viewType) {
+    return __async(this, null, function* () {
+      this.webSelectedView.set(viewType);
     });
   }
   /* START OF TOOLBAR FUNCTIONS */
@@ -76751,43 +76908,55 @@ var CompareRenderedComponent = class _CompareRenderedComponent {
     return this.translate.instant("compare.rendered.itemsSelected", { count });
   }
   // 2. Accept
-  acceptItems = [
-    {
-      label: "Accept all",
-      icon: "pi pi-check-circle",
-      command: () => {
-      }
-    },
-    {
-      separator: true
-    },
-    {
-      label: this.translate.instant("compare.button.undo"),
-      icon: "pi pi-refresh",
-      command: () => {
+  toolbarAccept() {
+    this.processDiffChange("accept");
+  }
+  get acceptItems() {
+    return [
+      {
+        label: "Accept all",
+        icon: "pi pi-check-circle",
+        command: () => {
+        },
+        disabled: true
       },
-      disabled: true
-    }
-  ];
-  rejectItems = [
-    // 3. Reject
-    {
-      label: "Reject all",
-      icon: "pi pi-times-circle",
-      command: () => {
-      }
-    },
-    {
-      separator: true
-    },
-    {
-      label: this.translate.instant("compare.button.undo"),
-      icon: "pi pi-refresh",
-      command: () => {
+      {
+        separator: true
       },
-      disabled: true
-    }
-  ];
+      {
+        label: this.translate.instant("compare.button.undo"),
+        icon: "pi pi-refresh",
+        command: () => {
+        },
+        disabled: true
+      }
+    ];
+  }
+  // 3. Reject
+  toolbarReject() {
+    this.processDiffChange("reject");
+  }
+  get rejectItems() {
+    return [
+      {
+        label: "Reject all",
+        icon: "pi pi-times-circle",
+        command: () => {
+        },
+        disabled: true
+      },
+      {
+        separator: true
+      },
+      {
+        label: this.translate.instant("compare.button.undo"),
+        icon: "pi pi-refresh",
+        command: () => {
+        },
+        disabled: true
+      }
+    ];
+  }
   // 4. Legend
   baseLegendItems = signal([
     { text: "compare.rendered.legend.previousVersion", colour: "#F3A59D", style: "highlight" },
@@ -76808,8 +76977,8 @@ var CompareRenderedComponent = class _CompareRenderedComponent {
   get legendItems() {
     const view = this.webSelectedView();
     const items = this.baseLegendItems();
-    const beforeFlags = this.beforeContent?.found;
-    const afterFlags = this.afterContent?.found;
+    const beforeFlags = this.beforeContent()?.found;
+    const afterFlags = this.afterContent()?.found;
     return items.map((item) => {
       if (item.text === "compare.rendered.legend.previousVersion") {
         if (view === WebViewType.Modified) {
@@ -76873,33 +77042,16 @@ var CompareRenderedComponent = class _CompareRenderedComponent {
       setTimeout(() => this.toggleCopy = false, 1e3);
     }).catch((err) => console.error("Clipboard copy failed:", err));
   }
-  /* END OF TOOLBAR FUNCTIONS */
-  constructor() {
-    effect(() => __async(this, null, function* () {
-      const viewType = this.webSelectedView();
-      const shadowRoot = this.shadowDOM();
-      if (this.beforeContent && this.afterContent && shadowRoot) {
-        yield this.compareRenderedService.generateShadowDOMContent(shadowRoot, viewType, this.beforeContent.html, this.afterContent.html);
-        if (this.shadowClickHandler) {
-          this.shadowClickHandler();
-          console.log("Reset shadow click handler");
-        }
-        this.shadowClickHandler = this.compareRenderedService.handleDocumentClick(shadowRoot, (index) => {
-          this.currentIndex = index;
-        });
-        if (this.shadowSelectionHandler) {
-          this.shadowSelectionHandler();
-          console.log("Reset shadow selection handler");
-        }
-        this.shadowSelectionHandler = this.compareRenderedService.handleSelection(shadowRoot);
-        this.elements = this.compareRenderedService.getDataIdElements(shadowRoot);
-        if (this.elements.length > 0) {
-          this.focusOnIndex(this.currentIndex);
-        } else {
-        }
-      }
-    }));
+  // 7. Before/After - Open URL
+  getUrl() {
+    if (this.webSelectedView() === WebViewType.Original) {
+      return this.beforeContent()?.url;
+    } else if (this.webSelectedView() === WebViewType.Modified) {
+      return this.afterContent()?.url;
+    } else
+      return null;
   }
+  /* END OF TOOLBAR FUNCTIONS */
   //this.toggleEdit = false;
   //Disable undo button
   /*
@@ -76942,108 +77094,9 @@ var CompareRenderedComponent = class _CompareRenderedComponent {
   
   
   */
-  //Web view options
-  WebViewType = WebViewType;
-  webSelectedView = signal(WebViewType.Diff);
-  get webViewOptions() {
-    return [
-      {
-        label: `compare.pageOptions.${this.beforeContent?.version ?? "before"}`,
-        value: WebViewType.Original,
-        icon: "pi pi-file"
-      },
-      {
-        label: "compare.view.comparison",
-        value: WebViewType.Diff,
-        icon: "pi pi-sort-alt"
-      },
-      {
-        label: `compare.pageOptions.${this.afterContent?.version ?? "after"}`,
-        value: WebViewType.Modified,
-        icon: "pi pi-file-edit"
-      }
-    ];
-  }
-  //Change web view
-  onWebViewChange(viewType) {
-    return __async(this, null, function* () {
-      this.webSelectedView.set(viewType);
-    });
-  }
-  //Get DOM elements from template
-  liveContainer;
-  shadowDOM = signal(null);
-  sourceContainerSignal = signal(null);
-  //Runs when view is initialized
-  ngAfterViewInit() {
-    const shadowRoot = this.compareRenderedService.initializeShadowDOM(this.liveContainer.nativeElement);
-    if (shadowRoot) {
-      this.shadowDOM.set(shadowRoot);
-      console.log("Shadow DOM is initialized.");
-    }
-  }
   /*
-      ngOnInit(): void {
-          this.observeDarkMode();
-  
-          //Translations
-          const undoText = this.translate.instant('page.compare.button.undo');
-          //Button array
-          this.acceptItems = [
-              {
-                  label: 'Accept all',
-                  icon: 'pi pi-check-circle',
-                  command: () => {
-                      this.toolbarAcceptAll();
-                  },
-              },
-              {
-                  separator: true,
-              },
-              {
-                  label: undoText,
-                  icon: 'pi pi-refresh',
-                  command: () => {
-                      this.uploadState.undoLastChange();
-                  },
-                  disabled: true,
-              },
-          ];
-          this.rejectItems = [
-              {
-                  label: 'Reject all',
-                  icon: 'pi pi-times-circle',
-                  command: () => {
-                      this.toolbarRejectAll();
-                  },
-              },
-              {
-                  separator: true,
-              },
-              {
-                  label: undoText,
-                  icon: 'pi pi-refresh',
-                  command: () => {
-                      this.uploadState.undoLastChange();
-                  },
-                  disabled: true,
-              },
-          ];
-      }
-      ngOnDestroy(): void {
-          if (this.shadowDOM) {
-              this.compareRenderedService.clearShadowDOM(this.shadowDOM()!);
-              this.shadowDOM.set(null);
-          }
-          this.sourceContainerSignal.set(null);
-          this.darkModeObserver?.disconnect();
-          if (this.shadowClickHandler) {
-              this.shadowClickHandler();
-          }
-          if (this.shadowSelectionHandler) {
-              this.shadowSelectionHandler();
-          }
-      }
+      
+      
   
       clearAll(event: Event) {
           console.log('Clicked reset');
@@ -77117,26 +77170,9 @@ var CompareRenderedComponent = class _CompareRenderedComponent {
               .catch((err) => console.error('Clipboard copy failed:', err));
       }
   
-      private darkModeObserver?: MutationObserver;
-      private observeDarkMode(): void {
-          this.darkModeObserver = new MutationObserver(() => {
-              this.sourceDiffService.loadPrismTheme();
-          });
-  
-          //Checks for any changes to classes on <html> ie. dark-mode
-          this.darkModeObserver.observe(document.documentElement, {
-              attributes: true,
-              attributeFilter: ['class'],
-          });
-      }
+      
   
       */
-  toolbarAccept() {
-    this.processDiffChange("accept");
-  }
-  toolbarReject() {
-    this.processDiffChange("reject");
-  }
   processDiffChange(mode) {
     const shadowRoot = this.shadowDOM();
     if (!shadowRoot) {
@@ -77209,6 +77245,14 @@ var CompareRenderedComponent = class _CompareRenderedComponent {
       endId: null
     };
     const updatedHtml = diffContainer.innerHTML;
+    const beforeContent = this.beforeContent();
+    const afterContent = this.afterContent();
+    if (!beforeContent || !afterContent)
+      return;
+    this.contentChanged.emit({
+      beforeContent: mode === "accept" ? __spreadProps(__spreadValues({}, beforeContent), { html: updatedHtml, url: "Change accepted" }) : beforeContent,
+      afterContent: mode === "reject" ? __spreadProps(__spreadValues({}, afterContent), { html: updatedHtml, url: "Change rejected" }) : afterContent
+    });
   }
   static \u0275fac = function CompareRenderedComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _CompareRenderedComponent)();
@@ -77221,7 +77265,7 @@ var CompareRenderedComponent = class _CompareRenderedComponent {
       let _t;
       \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.liveContainer = _t.first);
     }
-  }, inputs: { beforeContent: "beforeContent", afterContent: "afterContent" }, features: [\u0275\u0275NgOnChangesFeature], decls: 15, vars: 5, consts: [["liveContainer", ""], [1, "flex", "flex-column", "text-color-secondary", "max-w-max"], ["for", "views'", 1, "mb-1", "font-semibold", "block"], ["role", "radiogroup", "id", "views", 1, "flex", "flex-row", "gap-3", "my-1"], [1, "field-radiobutton"], [1, "sticky", "top-0", "z-5", "p-0", "flex", "flex-wrap", "lg:flex-nowrap", "justify-content-between", "gap-5"], [1, "flex", "flex-row", "align-items-center", "gap-2"], [1, "flex", "flex-wrap", "justify-content-end", "align-items-center", "gap-2", "min-w-min"], [1, "flex", "align-items-center", "gap-2"], [1, "diff-container", "p-0", 3, "ngClass"], ["size", "large", 3, "ngModelChange", "inputId", "name", "value", "ngModel"], [1, "cursor-pointer", "font-semibold", "flex", "align-items-center", "gap-1", 3, "for"], [1, "flex", "flex-nowrap", "align-items-center"], ["icon", "pi pi-chevron-left", "text", "", "severity", "primary", "showDelay", "1000", "hideDelay", "300", 3, "onClick", "ariaLabel", "pTooltip"], [1, "white-space-nowrap"], ["icon", "pi pi-chevron-right", "text", "", "severity", "primary", "showDelay", "1000", "hideDelay", "300", 3, "onClick", "ariaLabel", "pTooltip"], ["label", "Accept", "icon", "pi pi-check", "severity", "success", "outlined", "", "size", "small", "tooltipPosition", "top", "showDelay", "1000", "hideDelay", "300", 1, "secondary-outline", 3, "onClick", "model", "buttonProps", "menuButtonProps", "pTooltip"], ["label", "Reject", "icon", "pi pi-times", "severity", "danger", "outlined", "", "size", "small", "tooltipPosition", "top", "showDelay", "1000", "hideDelay", "300", 1, "secondary-outline", 3, "onClick", "model", "buttonProps", "menuButtonProps", "pTooltip"], [1, "text-color-secondary", "pl-1"], ["offIcon", "pi pi-pen-to-square", "onIcon", "pi pi-save", "styleClass", "font-bold border-none w-6rem", 3, "ngModelChange", "onChange", "ngModel", "offLabel", "onLabel", "ariaLabel"], ["offIcon", "pi pi-clipboard", "onIcon", "", "styleClass", "font-bold border-none w-9rem", 3, "ngModelChange", "onChange", "ngModel", "offLabel", "onLabel", "ariaLabel"], ["target", "_blank", "rel", "noopener noreferrer", 1, "p-togglebutton", "border-none", "no-underline", "font-bold", 3, "href"], [1, "flex", "flex-row", "gap-2", "align-items-center"], [1, "pi", "pi-external-link"], [1, "legend-box", 3, "ngStyle"], [1, "legend-text"]], template: function CompareRenderedComponent_Template(rf, ctx) {
+  }, inputs: { beforeContent: [1, "beforeContent"], afterContent: [1, "afterContent"] }, outputs: { contentChanged: "contentChanged" }, decls: 15, vars: 5, consts: [["liveContainer", ""], [1, "flex", "flex-column", "text-color-secondary", "max-w-max"], ["for", "views'", 1, "mb-1", "font-semibold", "block"], ["role", "radiogroup", "id", "views", 1, "flex", "flex-row", "gap-3", "my-1"], [1, "field-radiobutton"], [1, "sticky", "top-0", "z-5", "p-0", "mb-2", "flex", "flex-wrap", "lg:flex-nowrap", "justify-content-between", "gap-5"], [1, "flex", "flex-row", "align-items-center", "gap-2"], [1, "flex", "flex-wrap", "justify-content-end", "align-items-center", "gap-2", "min-w-min"], [1, "flex", "align-items-center", "gap-2"], [1, "diff-container", "p-0", 3, "ngClass"], ["size", "large", 3, "ngModelChange", "inputId", "name", "value", "ngModel"], [1, "cursor-pointer", "font-semibold", "flex", "align-items-center", "gap-1", 3, "for"], [1, "flex", "flex-nowrap", "align-items-center"], ["icon", "pi pi-chevron-left", "text", "", "severity", "primary", "showDelay", "1000", "hideDelay", "300", 3, "onClick", "ariaLabel", "pTooltip"], [1, "white-space-nowrap"], ["icon", "pi pi-chevron-right", "text", "", "severity", "primary", "showDelay", "1000", "hideDelay", "300", 3, "onClick", "ariaLabel", "pTooltip"], ["label", "Accept", "icon", "pi pi-check", "severity", "success", "outlined", "", "size", "small", "tooltipPosition", "top", "showDelay", "1000", "hideDelay", "300", 1, "secondary-outline", 3, "onClick", "model", "buttonProps", "menuButtonProps", "pTooltip"], ["label", "Reject", "icon", "pi pi-times", "severity", "danger", "outlined", "", "size", "small", "tooltipPosition", "top", "showDelay", "1000", "hideDelay", "300", 1, "secondary-outline", 3, "onClick", "model", "buttonProps", "menuButtonProps", "pTooltip"], [1, "text-color-secondary", "pl-1"], ["offIcon", "pi pi-pen-to-square", "onIcon", "pi pi-save", "styleClass", "font-bold border-none w-6rem", 3, "ngModelChange", "onChange", "ngModel", "offLabel", "onLabel", "ariaLabel"], ["offIcon", "pi pi-clipboard", "onIcon", "", "styleClass", "font-bold border-none w-9rem", 3, "ngModelChange", "onChange", "ngModel", "offLabel", "onLabel", "ariaLabel"], ["target", "_blank", "rel", "noopener noreferrer", 1, "p-togglebutton", "border-none", "no-underline", "font-bold", 3, "href"], [1, "flex", "flex-row", "gap-2", "align-items-center"], [1, "pi", "pi-external-link"], [1, "legend-box", 3, "ngStyle"], [1, "legend-text"]], template: function CompareRenderedComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "div", 1)(1, "label", 2);
       \u0275\u0275text(2);
@@ -77281,7 +77325,7 @@ var CompareRenderedComponent = class _CompareRenderedComponent {
         }\r
     </div>\r
     <!--Toolbar options-->\r
-    <div class="sticky top-0 z-5 p-0 flex flex-wrap lg:flex-nowrap justify-content-between gap-5">\r
+    <div class="sticky top-0 z-5 p-0 mb-2 flex flex-wrap lg:flex-nowrap justify-content-between gap-5">\r
 \r
         @if(webSelectedView() === WebViewType.Diff){\r
         <div class="flex flex-row align-items-center gap-2">\r
@@ -77383,10 +77427,8 @@ var CompareRenderedComponent = class _CompareRenderedComponent {
     <!--Shadow DOM-->\r
     <div #liveContainer class="diff-container p-0" [ngClass]="webSelectedView()"></div>\r
 </div>`, styles: ['@import "https://use.fontawesome.com/releases/v5.15.4/css/all.css";\n\n/* src/app/components/compare-rendered/compare-rendered.component.css */\n@font-face {\n  font-family: "Glyphicons Halflings";\n  src: url(https://www.canada.ca/etc/designs/canada/wet-boew/fonts/glyphicons-halflings-regular.woff2) format("woff2");\n}\n.diff-container {\n  border: 1px solid #dee2e6;\n  border-radius: 4px;\n  padding: 1rem;\n  overflow-y: scroll;\n  height: 75vh;\n  position: relative;\n}\n.diff-container.original {\n  border-color: #f3a59d;\n}\n.diff-container.modified {\n  border-color: #83d5a8;\n}\n.legend-box {\n  width: 16px;\n  height: 16px;\n  border-radius: 4px;\n  flex-shrink: 0;\n}\n/*# sourceMappingURL=compare-rendered.component.css.map */\n'] }]
-  }], () => [], { beforeContent: [{
-    type: Input
-  }], afterContent: [{
-    type: Input
+  }], () => [], { contentChanged: [{
+    type: Output
   }], liveContainer: [{
     type: ViewChild,
     args: ["liveContainer", { static: false }]
@@ -78366,10 +78408,15 @@ var CompareComponent = class _CompareComponent {
       }
     });
   }
+  // Handle accept/reject changes
+  onContentChanged(event2) {
+    this.compareService.originalHtml.set(event2.beforeContent);
+    this.compareService.modifiedHtml.set(event2.afterContent);
+  }
   static \u0275fac = function CompareComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _CompareComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CompareComponent, selectors: [["aida-page-assistant-compare"]], decls: 63, vars: 48, consts: [["id", "wb-cont"], [1, "flex", "flex-column", "gap-3"], [1, "flex", "flex-column", "xl:flex-row", "gap-3", "min-w-min"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "xl:w-6", "min-w-min"], [1, "text-2xl", "my-1"], [1, "my-1"], [1, "flex", "flex-column", "lg:flex-row", "lg:align-items-center", "gap-2"], [1, "flex", "flex-column", "text-color-secondary", "hover:text-primary", "max-w-max"], [1, "text-xs", "my-1"], ["inputId", "page", "optionLabel", "label", "optionValue", "value", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-27rem", 3, "ngModelChange", "options", "ngModel", "loading"], ["for", "page"], [1, "flex", "flex-column", "sm:flex-row", "sm:align-content-center", "gap-1", "sm:gap-3", "lg:gap-2"], ["inputId", "before", "optionLabel", "label", "optionValue", "value", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-13rem", 3, "ngModelChange", "options", "ngModel", "loading"], ["for", "before"], ["inputId", "after", "optionLabel", "label", "optionValue", "value", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-13rem", 3, "ngModelChange", "options", "ngModel", "loading"], ["for", "after"], [1, "flex", "justify-content-between", "w-full", "gap-2", "mt-4"], [1, "flex", "gap-2"], ["label", "Load all pages into cache", "icon", "pi pi-download", "severity", "success", 3, "onClick", "loading"], ["label", "Reset cache", "icon", "pi pi-trash", "severity", "danger", 3, "onClick"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min"], ["value", "0", 1, "mt-3"], ["value", "0"], [1, "pi", "pi-eye", "mr-1"], ["value", "1"], [1, "pi", "pi-code", "mr-1"], [1, "shadow-1"], [3, "beforeContent", "afterContent"]], template: function CompareComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CompareComponent, selectors: [["aida-page-assistant-compare"]], decls: 59, vars: 45, consts: [["id", "wb-cont"], [1, "flex", "flex-column", "gap-3"], [1, "flex", "flex-column", "xl:flex-row", "gap-3", "min-w-min"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "xl:w-6", "min-w-min"], [1, "text-2xl", "my-1"], [1, "my-1"], [1, "flex", "flex-column", "lg:flex-row", "lg:align-items-center", "gap-2"], [1, "flex", "flex-column", "text-color-secondary", "hover:text-primary", "max-w-max"], [1, "text-xs", "my-1"], ["inputId", "page", "optionLabel", "label", "optionValue", "value", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-27rem", 3, "ngModelChange", "options", "ngModel", "loading"], ["for", "page"], [1, "flex", "flex-column", "sm:flex-row", "sm:align-content-center", "gap-1", "sm:gap-3", "lg:gap-2"], ["inputId", "before", "optionLabel", "label", "optionValue", "value", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-13rem", 3, "ngModelChange", "options", "ngModel", "loading"], ["for", "before"], ["inputId", "after", "optionLabel", "label", "optionValue", "value", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-13rem", 3, "ngModelChange", "options", "ngModel", "loading"], ["for", "after"], [1, "flex", "justify-content-between", "w-full", "gap-2", "mt-4"], [1, "flex", "gap-2"], ["label", "Load all pages into cache", "icon", "pi pi-download", "severity", "success", 3, "onClick", "loading"], ["label", "Reset cache", "icon", "pi pi-trash", "severity", "danger", 3, "onClick"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min"], ["value", "0", 1, "mt-3"], ["value", "0"], [1, "pi", "pi-eye", "mr-1"], [1, "shadow-1"], [3, "contentChanged", "beforeContent", "afterContent"]], template: function CompareComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "h1", 0);
       \u0275\u0275text(1);
@@ -78442,49 +78489,44 @@ var CompareComponent = class _CompareComponent {
       \u0275\u0275element(53, "i", 23);
       \u0275\u0275text(54);
       \u0275\u0275pipe(55, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(56, "p-tab", 24);
-      \u0275\u0275element(57, "i", 25);
-      \u0275\u0275text(58);
-      \u0275\u0275pipe(59, "translate");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(60, "p-tabpanels", 26)(61, "p-tabpanel", 22);
-      \u0275\u0275element(62, "aida-compare-rendered", 27);
-      \u0275\u0275elementEnd()()()()();
+      \u0275\u0275elementStart(56, "p-tabpanels", 24)(57, "p-tabpanel", 22)(58, "aida-compare-rendered", 25);
+      \u0275\u0275listener("contentChanged", function CompareComponent_Template_aida_compare_rendered_contentChanged_58_listener($event) {
+        return ctx.onContentChanged($event);
+      });
+      \u0275\u0275elementEnd()()()()()();
     }
     if (rf & 2) {
       \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 24, "compare._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 23, "compare._title"));
       \u0275\u0275advance(6);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(8, 26, "compare.pageOptions._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(8, 25, "compare.pageOptions._title"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(11, 28, "compare.pageOptions.description"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(11, 27, "compare.pageOptions.description"));
       \u0275\u0275advance(5);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(16, 30, "compare.pageOptions.selection"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(16, 29, "compare.pageOptions.selection"));
       \u0275\u0275advance(3);
       \u0275\u0275property("options", ctx.pageOptions)("ngModel", ctx.compareService.selectedPage())("loading", ctx.compareService.loading() || ctx.compareService.loadingAll());
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(21, 32, "compare.pageOptions.page"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(21, 31, "compare.pageOptions.page"));
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(25, 34, "compare.pageOptions.versions"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(25, 33, "compare.pageOptions.versions"));
       \u0275\u0275advance(4);
       \u0275\u0275property("options", ctx.beforeOptions)("ngModel", ctx.compareService.selectedBefore())("loading", ctx.compareService.loading() || ctx.compareService.loadingAll() || ctx.compareService.loadingBefore());
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(31, 36, "compare.pageOptions.before"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(31, 35, "compare.pageOptions.before"));
       \u0275\u0275advance(3);
       \u0275\u0275property("options", ctx.afterOptions)("ngModel", ctx.compareService.selectedAfter())("loading", ctx.compareService.loading() || ctx.compareService.loadingAll() || ctx.compareService.loadingAfter());
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(36, 38, "compare.pageOptions.after"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(36, 37, "compare.pageOptions.after"));
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(40, 40, "compare.aiOptions._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(40, 39, "compare.tools._title"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(43, 42, "compare.aiOptions.description"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(43, 41, "compare.tools.description"));
       \u0275\u0275advance(5);
       \u0275\u0275property("loading", ctx.compareService.loadingAll());
       \u0275\u0275advance(7);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(55, 44, "compare.tab.rendered"));
-      \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(59, 46, "compare.tab.source"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(55, 43, "compare.tab.rendered"));
       \u0275\u0275advance(4);
       \u0275\u0275property("beforeContent", ctx.compareService.originalHtml())("afterContent", ctx.compareService.modifiedHtml());
     }
@@ -78545,8 +78587,8 @@ var CompareComponent = class _CompareComponent {
       </div>\r
     </div>\r
     <div class="surface-card border-round-lg shadow-2 p-4 w-full xl:w-6 min-w-min">\r
-      <h2 class="text-2xl my-1">{{ 'compare.aiOptions._title' | translate }}</h2>\r
-      <p class="my-1">{{ "compare.aiOptions.description" | translate }}</p>\r
+      <h2 class="text-2xl my-1">{{ 'compare.tools._title' | translate }}</h2>\r
+      <p class="my-1">{{ "compare.tools.description" | translate }}</p>\r
 \r
       <div class="flex justify-content-between w-full gap-2 mt-4">\r
         <div class="flex gap-2">\r
@@ -78592,13 +78634,13 @@ var CompareComponent = class _CompareComponent {
     <p-tabs value="0" class="mt-3">\r
       <p-tablist>\r
         <p-tab value="0"><i class="pi pi-eye mr-1"></i>{{ 'compare.tab.rendered' | translate }}</p-tab>\r
-        <p-tab value="1"><i class="pi pi-code mr-1"></i>{{ 'compare.tab.source' | translate }}</p-tab>\r
+        <!--p-tab value="1"><i class="pi pi-code mr-1"></i>{{ 'compare.tab.source' | translate }}</p-tab-->\r
         <!--p-tab value="2"><i class="pi pi-exclamation-triangle mr-1"></i>{{ 'compare.tab.problems' | translate }}</p-tab-->\r
       </p-tablist>\r
       <p-tabpanels class="shadow-1">\r
         <!-- Rendered page -->\r
         <p-tabpanel value="0">\r
-          <aida-compare-rendered [beforeContent]="compareService.originalHtml()" [afterContent]="compareService.modifiedHtml()"></aida-compare-rendered>\r
+          <aida-compare-rendered [beforeContent]="compareService.originalHtml()" [afterContent]="compareService.modifiedHtml()" (contentChanged)="onContentChanged($event)"></aida-compare-rendered>\r
         </p-tabpanel>\r
         <!-- Source code -->\r
         <!--p-tabpanel value="1">\r
