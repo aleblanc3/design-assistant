@@ -1,15 +1,17 @@
 import {
   CheckboxModule
-} from "./chunk-FDCWAJTY.js";
+} from "./chunk-ZPRXA4FQ.js";
+import {
+  RouterLink,
+  marker
+} from "./chunk-WPUR2K7L.js";
 import {
   ButtonModule,
   CommonModule,
   FormsModule,
-  RouterLink,
   TranslateModule,
-  TranslatePipe,
-  marker
-} from "./chunk-PHIIS6EE.js";
+  TranslatePipe
+} from "./chunk-ZLW5LXTH.js";
 import {
   Component,
   setClassMetadata,
@@ -25,7 +27,7 @@ import {
   ɵɵsanitizeHtml,
   ɵɵtext,
   ɵɵtextInterpolate
-} from "./chunk-WJ2KUPA4.js";
+} from "./chunk-4H6JJ3MH.js";
 
 // src/app/views/standalone/components/dev-tools/dev-tools.component.ts
 var DevToolsComponent = class _DevToolsComponent {
@@ -70,7 +72,7 @@ var DevToolsComponent = class _DevToolsComponent {
   static \u0275fac = function DevToolsComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _DevToolsComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _DevToolsComponent, selectors: [["aida-dev-tools"]], decls: 29, vars: 24, consts: [[3, "innerHTML"], [1, "grid", "py-2", "px-4", "lg:px-6"], [1, "col-12", "md:col-6", "lg:col-4"], ["routerLink", "/dev/color-generator", 1, "text-xl", "font-semibold"], [1, "text-color-secondary", "mt-2"], ["routerLink", "/dev/design-patterns", 1, "text-xl", "font-semibold"], ["routerLink", "/dev/prompt-editor", 1, "text-xl", "font-semibold"]], template: function DevToolsComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _DevToolsComponent, selectors: [["aida-dev-tools"]], decls: 34, vars: 30, consts: [[3, "innerHTML"], [1, "grid", "py-2", "px-4", "lg:px-6"], [1, "col-12", "md:col-6", "lg:col-4"], ["routerLink", "/dev/monitoring", 1, "text-xl", "font-semibold"], [1, "text-color-secondary", "mt-2"], ["routerLink", "/dev/color-generator", 1, "text-xl", "font-semibold"], ["routerLink", "/dev/design-patterns", 1, "text-xl", "font-semibold"], ["routerLink", "/dev/prompt-editor", 1, "text-xl", "font-semibold"]], template: function DevToolsComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "h2");
       \u0275\u0275text(1);
@@ -78,51 +80,60 @@ var DevToolsComponent = class _DevToolsComponent {
       \u0275\u0275elementEnd();
       \u0275\u0275element(3, "p", 0);
       \u0275\u0275pipe(4, "translate");
-      \u0275\u0275elementStart(5, "p");
-      \u0275\u0275text(6, "TEST");
+      \u0275\u0275elementStart(5, "div", 1)(6, "div", 2)(7, "a", 3);
+      \u0275\u0275text(8);
+      \u0275\u0275pipe(9, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(7, "div", 1)(8, "div", 2)(9, "a", 3);
-      \u0275\u0275text(10);
-      \u0275\u0275pipe(11, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(12, "p", 4);
-      \u0275\u0275text(13);
-      \u0275\u0275pipe(14, "translate");
+      \u0275\u0275elementStart(10, "p", 4);
+      \u0275\u0275text(11);
+      \u0275\u0275pipe(12, "translate");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(15, "div", 2)(16, "a", 5);
-      \u0275\u0275text(17);
-      \u0275\u0275pipe(18, "translate");
+      \u0275\u0275elementStart(13, "div", 2)(14, "a", 5);
+      \u0275\u0275text(15);
+      \u0275\u0275pipe(16, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(19, "p", 4);
-      \u0275\u0275text(20);
-      \u0275\u0275pipe(21, "translate");
+      \u0275\u0275elementStart(17, "p", 4);
+      \u0275\u0275text(18);
+      \u0275\u0275pipe(19, "translate");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(22, "div", 2)(23, "a", 6);
-      \u0275\u0275text(24);
-      \u0275\u0275pipe(25, "translate");
+      \u0275\u0275elementStart(20, "div", 2)(21, "a", 6);
+      \u0275\u0275text(22);
+      \u0275\u0275pipe(23, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(26, "p", 4);
-      \u0275\u0275text(27);
-      \u0275\u0275pipe(28, "translate");
+      \u0275\u0275elementStart(24, "p", 4);
+      \u0275\u0275text(25);
+      \u0275\u0275pipe(26, "translate");
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(27, "div", 2)(28, "a", 7);
+      \u0275\u0275text(29);
+      \u0275\u0275pipe(30, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(31, "p", 4);
+      \u0275\u0275text(32);
+      \u0275\u0275pipe(33, "translate");
       \u0275\u0275elementEnd()()();
     }
     if (rf & 2) {
       \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 8, "dev._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 10, "dev._title"));
       \u0275\u0275advance(2);
-      \u0275\u0275property("innerHTML", \u0275\u0275pipeBind1(4, 10, "dev.description"), \u0275\u0275sanitizeHtml);
-      \u0275\u0275advance(7);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(11, 12, "dev.colors._title"));
+      \u0275\u0275property("innerHTML", \u0275\u0275pipeBind1(4, 12, "dev.description"), \u0275\u0275sanitizeHtml);
+      \u0275\u0275advance(5);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(9, 14, "dev.monitoring._title"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(14, 14, "dev.colors.description"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(12, 16, "dev.monitoring.description"));
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(18, 16, "dev.patterns._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(16, 18, "dev.colors._title"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(21, 18, "dev.patterns.description"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(19, 20, "dev.colors.description"));
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(25, 20, "dev.prompts._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(23, 22, "dev.patterns._title"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(28, 22, "dev.prompts.description"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(26, 24, "dev.patterns.description"));
+      \u0275\u0275advance(4);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(30, 26, "dev.prompts._title"));
+      \u0275\u0275advance(3);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(33, 28, "dev.prompts.description"));
     }
   }, dependencies: [TranslateModule, TranslatePipe, CommonModule, FormsModule, CheckboxModule, RouterLink, ButtonModule], encapsulation: 2 });
 };
@@ -132,8 +143,11 @@ var DevToolsComponent = class _DevToolsComponent {
     args: [{ selector: "aida-dev-tools", imports: [TranslateModule, CommonModule, FormsModule, CheckboxModule, RouterLink, ButtonModule], template: `
     <h2>{{ 'dev._title' | translate}}</h2>
     <p [innerHTML]="'dev.description' | translate"></p>
-    <p>TEST</p>
-    <div class="grid py-2 px-4 lg:px-6">      
+    <div class="grid py-2 px-4 lg:px-6">
+      <div class="col-12 md:col-6 lg:col-4">
+          <a routerLink="/dev/monitoring" class="text-xl font-semibold">{{'dev.monitoring._title' | translate}}</a>
+          <p class="text-color-secondary mt-2">{{'dev.monitoring.description' | translate}}</p>
+        </div>
         <div class="col-12 md:col-6 lg:col-4">
           <a routerLink="/dev/color-generator" class="text-xl font-semibold">{{'dev.colors._title' | translate}}</a>
           <p class="text-color-secondary mt-2">{{'dev.colors.description' | translate}}</p>
@@ -151,10 +165,10 @@ var DevToolsComponent = class _DevToolsComponent {
   }], null, null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(DevToolsComponent, { className: "DevToolsComponent", filePath: "src/app/views/standalone/components/dev-tools/dev-tools.component.ts", lineNumber: 34 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(DevToolsComponent, { className: "DevToolsComponent", filePath: "src/app/views/standalone/components/dev-tools/dev-tools.component.ts", lineNumber: 37 });
 })();
 
 export {
   DevToolsComponent
 };
-//# sourceMappingURL=chunk-R2ZLZDFL.js.map
+//# sourceMappingURL=chunk-TFXNHHVG.js.map

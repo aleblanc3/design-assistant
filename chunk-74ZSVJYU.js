@@ -1,7 +1,7 @@
 import {
   Breadcrumb,
   BreadcrumbModule
-} from "./chunk-AWV5PA24.js";
+} from "./chunk-H3JVCYZI.js";
 import {
   IftaLabel,
   IftaLabelModule,
@@ -10,21 +10,27 @@ import {
   TabPanel,
   Tabs,
   TabsModule
-} from "./chunk-C7IJWWJT.js";
+} from "./chunk-G2XEEEKX.js";
+import {
+  Message,
+  MessageModule,
+  Textarea,
+  TextareaModule,
+  UserSettingsService
+} from "./chunk-2C4SANN4.js";
+import "./chunk-FL5HWTGW.js";
+import {
+  RouterLink,
+  marker
+} from "./chunk-WPUR2K7L.js";
 import {
   InputText,
   InputTextModule,
-  Message,
-  MessageModule,
   Select,
   SelectModule,
-  Textarea,
-  TextareaModule,
   Tooltip,
-  TooltipModule,
-  UserSettingsService
-} from "./chunk-GXRH6D34.js";
-import "./chunk-FL5HWTGW.js";
+  TooltipModule
+} from "./chunk-XAYNXU3L.js";
 import {
   Button,
   ButtonModule,
@@ -34,11 +40,9 @@ import {
   NgControlStatus,
   NgModel,
   PrimeTemplate,
-  RouterLink,
   TranslateModule,
-  TranslatePipe,
-  marker
-} from "./chunk-PHIIS6EE.js";
+  TranslatePipe
+} from "./chunk-ZLW5LXTH.js";
 import "./chunk-JKR6TEEB.js";
 import {
   Component,
@@ -76,7 +80,7 @@ import {
   ɵɵtwoWayListener,
   ɵɵtwoWayProperty,
   ɵɵviewQuery
-} from "./chunk-WJ2KUPA4.js";
+} from "./chunk-4H6JJ3MH.js";
 import "./chunk-XHF6QEKU.js";
 import "./chunk-RRA4XQT4.js";
 import "./chunk-CYNOUPYD.js";
@@ -1162,4 +1166,4 @@ var DesignPatternsComponent = class _DesignPatternsComponent {
 export {
   DesignPatternsComponent
 };
-//# sourceMappingURL=chunk-2WPZEYC6.js.map
+//# sourceMappingURL=chunk-74ZSVJYU.js.map

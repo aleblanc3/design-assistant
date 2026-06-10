@@ -1,22 +1,4 @@
 import {
-  DevToolsComponent
-} from "./chunk-R2ZLZDFL.js";
-import {
-  Divider,
-  DividerModule,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupAddonModule,
-  InputGroupModule,
-  SelectButton,
-  SelectButtonModule,
-  Tag,
-  TagModule,
-  ToggleButton,
-  ToggleButtonModule,
-  UserSettingsComponent
-} from "./chunk-32XRPSSY.js";
-import {
   COLUMN_GROUPS,
   Chip,
   ChipModule,
@@ -38,14 +20,42 @@ import {
   ProjectPhase,
   RadioButton,
   RadioButtonModule,
-  TimesCircleIcon,
-  environment
-} from "./chunk-R7LR7HX5.js";
+  TimesCircleIcon
+} from "./chunk-KIOKYOUE.js";
+import {
+  DevToolsComponent
+} from "./chunk-TFXNHHVG.js";
 import {
   Checkbox,
   CheckboxModule,
   MinusIcon
-} from "./chunk-FDCWAJTY.js";
+} from "./chunk-ZPRXA4FQ.js";
+import {
+  Card,
+  CardModule,
+  ProgressBar,
+  ProgressBarModule
+} from "./chunk-6XO2EKBD.js";
+import {
+  environment
+} from "./chunk-MYYNWJMU.js";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupAddonModule,
+  InputGroupModule,
+  SelectButton,
+  SelectButtonModule,
+  ToggleButton,
+  ToggleButtonModule,
+  UserSettingsComponent
+} from "./chunk-UGBXRURZ.js";
+import {
+  Divider,
+  DividerModule,
+  Tag,
+  TagModule
+} from "./chunk-7O4WWBR7.js";
 import {
   ChevronLeftIcon,
   IftaLabel,
@@ -56,18 +66,40 @@ import {
   TabPanels,
   Tabs,
   TabsModule
-} from "./chunk-C7IJWWJT.js";
+} from "./chunk-G2XEEEKX.js";
+import {
+  ChevronRightIcon,
+  Message,
+  MessageModule,
+  Textarea,
+  TextareaModule,
+  UserSettingsService
+} from "./chunk-2C4SANN4.js";
+import "./chunk-FL5HWTGW.js";
+import {
+  ActivatedRoute,
+  DomRendererFactory2,
+  DomSanitizer,
+  Router,
+  RouterLink,
+  RouterLinkActive,
+  RouterModule,
+  RouterOutlet,
+  Title,
+  TitleStrategy,
+  bootstrapApplication,
+  marker,
+  provideRouter,
+  withInMemoryScrolling
+} from "./chunk-WPUR2K7L.js";
 import {
   ChevronDownIcon,
-  ChevronRightIcon,
   IconField,
   IconFieldModule,
   InputIcon,
   InputIconModule,
   InputText,
   InputTextModule,
-  Message,
-  MessageModule,
   ObjectUtils,
   Overlay,
   Scroller,
@@ -75,18 +107,13 @@ import {
   SearchIcon,
   Select,
   SelectModule,
-  Textarea,
-  TextareaModule,
   TimesIcon,
   Tooltip,
   TooltipModule,
   UniqueComponentId,
-  UserSettingsService,
   zindexutils
-} from "./chunk-GXRH6D34.js";
-import "./chunk-FL5HWTGW.js";
+} from "./chunk-XAYNXU3L.js";
 import {
-  ActivatedRoute,
   AutoFocus,
   AutoFocusModule,
   Badge,
@@ -107,14 +134,11 @@ import {
   DecimalPipe,
   DefaultValueAccessor,
   DomHandler,
-  DomRendererFactory2,
-  DomSanitizer,
   FilterMatchMode,
   FilterOperator,
   FilterService,
   Footer,
   FormsModule,
-  Header,
   HttpClient,
   HttpHeaders,
   LocationStrategy,
@@ -137,16 +161,9 @@ import {
   PrimeTemplate,
   RequiredValidator,
   Ripple,
-  Router,
-  RouterLink,
-  RouterLinkActive,
-  RouterModule,
-  RouterOutlet,
   SharedModule,
   SlicePipe,
   SpinnerIcon,
-  Title,
-  TitleStrategy,
   TranslateLoader,
   TranslateModule,
   TranslatePipe,
@@ -158,7 +175,6 @@ import {
   addStyle,
   appendChild,
   blockBodyScroll,
-  bootstrapApplication,
   calculateScrollbarWidth,
   createElement,
   find,
@@ -181,20 +197,17 @@ import {
   isIOS,
   isPlatformBrowser,
   isTouchDevice,
-  marker,
   nestedPosition,
   provideHttpClient,
   providePrimeNG,
-  provideRouter,
   registerLocaleData,
   relativePosition,
   removeChild,
   removeClass,
   setAttribute,
   unblockBodyScroll,
-  uuid,
-  withInMemoryScrolling
-} from "./chunk-PHIIS6EE.js";
+  uuid
+} from "./chunk-ZLW5LXTH.js";
 import {
   animate,
   animateChild,
@@ -326,7 +339,7 @@ import {
   ɵɵtwoWayListener,
   ɵɵtwoWayProperty,
   ɵɵviewQuery
-} from "./chunk-WJ2KUPA4.js";
+} from "./chunk-4H6JJ3MH.js";
 import {
   preset_default
 } from "./chunk-XHF6QEKU.js";
@@ -1292,9 +1305,9 @@ var require_core = __commonJS({
         return options.noHighlightRe.test(languageName);
       }
       function blockLanguage(block) {
-        let classes26 = block.className + " ";
-        classes26 += block.parentNode ? block.parentNode.className : "";
-        const match = options.languageDetectRe.exec(classes26);
+        let classes24 = block.className + " ";
+        classes24 += block.parentNode ? block.parentNode.className : "";
+        const match = options.languageDetectRe.exec(classes24);
         if (match) {
           const language = getLanguage(match[1]);
           if (!language) {
@@ -1303,7 +1316,7 @@ var require_core = __commonJS({
           }
           return language ? match[1] : "no-highlight";
         }
-        return classes26.split(/\s+/).find((_class) => shouldNotHighlight(_class) || getLanguage(_class));
+        return classes24.split(/\s+/).find((_class) => shouldNotHighlight(_class) || getLanguage(_class));
       }
       function highlight2(codeOrLanguageName, optionsOrCode, ignoreIllegals) {
         let code = "";
@@ -19066,7 +19079,7 @@ var AsyncAnimationRendererFactory = class _AsyncAnimationRendererFactory {
    * @internal
    */
   loadImpl() {
-    const loadFn = () => this.moduleImpl ?? import("./chunk-MP2FRD3V.js").then((m) => m);
+    const loadFn = () => this.moduleImpl ?? import("./chunk-W66UJBZM.js").then((m) => m);
     let moduleImplPromise;
     if (this.loadingSchedulerFn) {
       moduleImplPromise = this.loadingSchedulerFn(loadFn);
@@ -21187,445 +21200,8 @@ var AvatarGroupModule = class _AvatarGroupModule {
   }], null, null);
 })();
 
-// node_modules/primeng/fesm2022/primeng-progressbar.mjs
-var _c03 = ["content"];
-var _c1 = (a0, a1) => ({
-  "p-progressbar p-component": true,
-  "p-progressbar-determinate": a0,
-  "p-progressbar-indeterminate": a1
-});
-var _c2 = (a0) => ({
-  $implicit: a0
-});
-function ProgressBar_div_1_div_2_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div");
-    \u0275\u0275text(1);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext(2);
-    \u0275\u0275styleProp("display", ctx_r0.value != null && ctx_r0.value !== 0 ? "flex" : "none");
-    \u0275\u0275attribute("data-pc-section", "label");
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate2("", ctx_r0.value, "", ctx_r0.unit, "");
-  }
-}
-function ProgressBar_div_1_ng_container_3_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function ProgressBar_div_1_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 3)(1, "div", 4);
-    \u0275\u0275template(2, ProgressBar_div_1_div_2_Template, 2, 5, "div", 5)(3, ProgressBar_div_1_ng_container_3_Template, 1, 0, "ng-container", 6);
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275classMap(ctx_r0.valueStyleClass);
-    \u0275\u0275styleProp("width", ctx_r0.value + "%")("background", ctx_r0.color);
-    \u0275\u0275property("ngClass", "p-progressbar-value p-progressbar-value-animate");
-    \u0275\u0275attribute("data-pc-section", "value");
-    \u0275\u0275advance(2);
-    \u0275\u0275property("ngIf", ctx_r0.showValue && !ctx_r0.contentTemplate && !ctx_r0._contentTemplate);
-    \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r0.contentTemplate || ctx_r0._contentTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(11, _c2, ctx_r0.value));
-  }
-}
-function ProgressBar_div_2_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 7);
-    \u0275\u0275element(1, "div", 8);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275classMap(ctx_r0.valueStyleClass);
-    \u0275\u0275property("ngClass", "p-progressbar-indeterminate-container");
-    \u0275\u0275attribute("data-pc-section", "container");
-    \u0275\u0275advance();
-    \u0275\u0275styleProp("background", ctx_r0.color);
-    \u0275\u0275attribute("data-pc-section", "value");
-  }
-}
-var theme2 = ({
-  dt
-}) => `
-.p-progressbar {
-    position: relative;
-    overflow: hidden;
-    height: ${dt("progressbar.height")};
-    background: ${dt("progressbar.background")};
-    border-radius: ${dt("progressbar.border.radius")};
-}
-
-.p-progressbar-value {
-    margin: 0;
-    background: ${dt("progressbar.value.background")};
-}
-
-.p-progressbar-label {
-    color: ${dt("progressbar.label.color")};
-    font-size: ${dt("progressbar.label.font.size")};
-    font-weight: ${dt("progressbar.label.font.weight")};
-}
-
-.p-progressbar-determinate .p-progressbar-value {
-    height: 100%;
-    width: 0%;
-    position: absolute;
-    display: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    transition: width 1s ease-in-out;
-}
-
-.p-progressbar-determinate .p-progressbar-label {
-    display: inline-flex;
-}
-
-.p-progressbar-indeterminate .p-progressbar-value::before {
-    content: "";
-    position: absolute;
-    background: inherit;
-    top: 0;
-    inset-inline-start: 0;
-    bottom: 0;
-    will-change: inset-inline-start, inset-inline-end;
-    animation: p-progressbar-indeterminate-anim 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
-}
-
-.p-progressbar-indeterminate .p-progressbar-value::after {
-    content: "";
-    position: absolute;
-    background: inherit;
-    top: 0;
-    inset-inline-start: 0;
-    bottom: 0;
-    will-change: inset-inline-start, inset-inline-end;
-    animation: p-progressbar-indeterminate-anim-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
-    animation-delay: 1.15s;
-}
-
-@-webkit-keyframes p-progressbar-indeterminate-anim {
-    0% {
-        inset-inline-start: -35%;
-        inset-inline-end: 100%;
-    }
-    60% {
-        inset-inline-start: 100%;
-        inset-inline-end: -90%;
-    }
-    100% {
-        inset-inline-start: 100%;
-        inset-inline-end: -90%;
-    }
-}
-@keyframes p-progressbar-indeterminate-anim {
-    0% {
-        inset-inline-start: -35%;
-        inset-inline-end: 100%;
-    }
-    60% {
-        inset-inline-start: 100%;
-        inset-inline-end: -90%;
-    }
-    100% {
-        inset-inline-start: 100%;
-        inset-inline-end: -90%;
-    }
-}
-@-webkit-keyframes p-progressbar-indeterminate-anim-short {
-    0% {
-        inset-inline-start: -200%;
-        inset-inline-end: 100%;
-    }
-    60% {
-        inset-inline-start: 107%;
-        inset-inline-end: -8%;
-    }
-    100% {
-        inset-inline-start: 107%;
-        inset-inline-end: -8%;
-    }
-}
-@keyframes p-progressbar-indeterminate-anim-short {
-    0% {
-        inset-inline-start: -200%;
-        inset-inline-end: 100%;
-    }
-    60% {
-        inset-inline-start: 107%;
-        inset-inline-end: -8%;
-    }
-    100% {
-        inset-inline-start: 107%;
-        inset-inline-end: -8%;
-    }
-}
-`;
-var classes3 = {
-  root: ({
-    instance
-  }) => ["p-progressbar p-component", {
-    "p-progressbar-determinate": instance.determinate,
-    "p-progressbar-indeterminate": instance.indeterminate
-  }],
-  value: "p-progressbar-value",
-  label: "p-progressbar-label"
-};
-var ProgressBarStyle = class _ProgressBarStyle extends BaseStyle {
-  name = "progressbar";
-  theme = theme2;
-  classes = classes3;
-  static \u0275fac = /* @__PURE__ */ (() => {
-    let \u0275ProgressBarStyle_BaseFactory;
-    return function ProgressBarStyle_Factory(__ngFactoryType__) {
-      return (\u0275ProgressBarStyle_BaseFactory || (\u0275ProgressBarStyle_BaseFactory = \u0275\u0275getInheritedFactory(_ProgressBarStyle)))(__ngFactoryType__ || _ProgressBarStyle);
-    };
-  })();
-  static \u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({
-    token: _ProgressBarStyle,
-    factory: _ProgressBarStyle.\u0275fac
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(ProgressBarStyle, [{
-    type: Injectable
-  }], null, null);
-})();
-var ProgressBarClasses;
-(function(ProgressBarClasses2) {
-  ProgressBarClasses2["root"] = "p-progressbar";
-  ProgressBarClasses2["value"] = "p-progressbar-value";
-  ProgressBarClasses2["label"] = "p-progressbar-label";
-})(ProgressBarClasses || (ProgressBarClasses = {}));
-var ProgressBar = class _ProgressBar extends BaseComponent {
-  /**
-   * Current value of the progress.
-   * @group Props
-   */
-  value;
-  /**
-   * Whether to display the progress bar value.
-   * @group Props
-   */
-  showValue = true;
-  /**
-   * Style class of the element.
-   * @group Props
-   */
-  styleClass;
-  /**
-   * Style class of the value element.
-   * @group Props
-   */
-  valueStyleClass;
-  /**
-   * Inline style of the element.
-   * @group Props
-   */
-  style;
-  /**
-   * Unit sign appended to the value.
-   * @group Props
-   */
-  unit = "%";
-  /**
-   * Defines the mode of the progress
-   * @group Props
-   */
-  mode = "determinate";
-  /**
-   * Color for the background of the progress.
-   * @group Props
-   */
-  color;
-  /**
-   * Template of the content.
-   * @group templates
-   */
-  contentTemplate;
-  _componentStyle = inject(ProgressBarStyle);
-  templates;
-  _contentTemplate;
-  ngAfterContentInit() {
-    this.templates?.forEach((item) => {
-      switch (item.getType()) {
-        case "content":
-          this._contentTemplate = item.template;
-          break;
-        default:
-          this._contentTemplate = item.template;
-      }
-    });
-  }
-  static \u0275fac = /* @__PURE__ */ (() => {
-    let \u0275ProgressBar_BaseFactory;
-    return function ProgressBar_Factory(__ngFactoryType__) {
-      return (\u0275ProgressBar_BaseFactory || (\u0275ProgressBar_BaseFactory = \u0275\u0275getInheritedFactory(_ProgressBar)))(__ngFactoryType__ || _ProgressBar);
-    };
-  })();
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({
-    type: _ProgressBar,
-    selectors: [["p-progressBar"], ["p-progressbar"], ["p-progress-bar"]],
-    contentQueries: function ProgressBar_ContentQueries(rf, ctx, dirIndex) {
-      if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c03, 4);
-        \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
-      }
-      if (rf & 2) {
-        let _t;
-        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.contentTemplate = _t.first);
-        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.templates = _t);
-      }
-    },
-    inputs: {
-      value: [2, "value", "value", numberAttribute],
-      showValue: [2, "showValue", "showValue", booleanAttribute],
-      styleClass: "styleClass",
-      valueStyleClass: "valueStyleClass",
-      style: "style",
-      unit: "unit",
-      mode: "mode",
-      color: "color"
-    },
-    features: [\u0275\u0275ProvidersFeature([ProgressBarStyle]), \u0275\u0275InheritDefinitionFeature],
-    decls: 3,
-    vars: 15,
-    consts: [["role", "progressbar", 3, "ngStyle", "ngClass"], ["style", "display:flex", 3, "ngClass", "class", "width", "background", 4, "ngIf"], [3, "ngClass", "class", 4, "ngIf"], [2, "display", "flex", 3, "ngClass"], [1, "p-progressbar-label"], [3, "display", 4, "ngIf"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], [3, "ngClass"], [1, "p-progressbar-value", "p-progressbar-value-animate"]],
-    template: function ProgressBar_Template(rf, ctx) {
-      if (rf & 1) {
-        \u0275\u0275elementStart(0, "div", 0);
-        \u0275\u0275template(1, ProgressBar_div_1_Template, 4, 13, "div", 1)(2, ProgressBar_div_2_Template, 2, 7, "div", 2);
-        \u0275\u0275elementEnd();
-      }
-      if (rf & 2) {
-        \u0275\u0275classMap(ctx.styleClass);
-        \u0275\u0275property("ngStyle", ctx.style)("ngClass", \u0275\u0275pureFunction2(12, _c1, ctx.mode === "determinate", ctx.mode === "indeterminate"));
-        \u0275\u0275attribute("aria-valuemin", 0)("aria-valuenow", ctx.value)("aria-valuemax", 100)("data-pc-name", "progressbar")("data-pc-section", "root")("aria-label", ctx.value + ctx.unit);
-        \u0275\u0275advance();
-        \u0275\u0275property("ngIf", ctx.mode === "determinate");
-        \u0275\u0275advance();
-        \u0275\u0275property("ngIf", ctx.mode === "indeterminate");
-      }
-    },
-    dependencies: [CommonModule, NgClass, NgIf, NgTemplateOutlet, NgStyle, SharedModule],
-    encapsulation: 2,
-    changeDetection: 0
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(ProgressBar, [{
-    type: Component,
-    args: [{
-      selector: "p-progressBar, p-progressbar, p-progress-bar",
-      standalone: true,
-      imports: [CommonModule, SharedModule],
-      template: `
-        <div
-            role="progressbar"
-            [class]="styleClass"
-            [ngStyle]="style"
-            [attr.aria-valuemin]="0"
-            [attr.aria-valuenow]="value"
-            [attr.aria-valuemax]="100"
-            [attr.data-pc-name]="'progressbar'"
-            [attr.data-pc-section]="'root'"
-            [ngClass]="{
-                'p-progressbar p-component': true,
-                'p-progressbar-determinate': mode === 'determinate',
-                'p-progressbar-indeterminate': mode === 'indeterminate'
-            }"
-            [attr.aria-label]="value + unit"
-        >
-            <div *ngIf="mode === 'determinate'" [ngClass]="'p-progressbar-value p-progressbar-value-animate'" [class]="valueStyleClass" [style.width]="value + '%'" style="display:flex" [style.background]="color" [attr.data-pc-section]="'value'">
-                <div class="p-progressbar-label">
-                    <div *ngIf="showValue && !contentTemplate && !_contentTemplate" [style.display]="value != null && value !== 0 ? 'flex' : 'none'" [attr.data-pc-section]="'label'">{{ value }}{{ unit }}</div>
-                    <ng-container *ngTemplateOutlet="contentTemplate || _contentTemplate; context: { $implicit: value }"></ng-container>
-                </div>
-            </div>
-            <div *ngIf="mode === 'indeterminate'" [ngClass]="'p-progressbar-indeterminate-container'" [class]="valueStyleClass" [attr.data-pc-section]="'container'">
-                <div class="p-progressbar-value p-progressbar-value-animate" [style.background]="color" [attr.data-pc-section]="'value'"></div>
-            </div>
-        </div>
-    `,
-      changeDetection: ChangeDetectionStrategy.OnPush,
-      encapsulation: ViewEncapsulation.None,
-      providers: [ProgressBarStyle]
-    }]
-  }], null, {
-    value: [{
-      type: Input,
-      args: [{
-        transform: numberAttribute
-      }]
-    }],
-    showValue: [{
-      type: Input,
-      args: [{
-        transform: booleanAttribute
-      }]
-    }],
-    styleClass: [{
-      type: Input
-    }],
-    valueStyleClass: [{
-      type: Input
-    }],
-    style: [{
-      type: Input
-    }],
-    unit: [{
-      type: Input
-    }],
-    mode: [{
-      type: Input
-    }],
-    color: [{
-      type: Input
-    }],
-    contentTemplate: [{
-      type: ContentChild,
-      args: ["content", {
-        descendants: false
-      }]
-    }],
-    templates: [{
-      type: ContentChildren,
-      args: [PrimeTemplate]
-    }]
-  });
-})();
-var ProgressBarModule = class _ProgressBarModule {
-  static \u0275fac = function ProgressBarModule_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _ProgressBarModule)();
-  };
-  static \u0275mod = /* @__PURE__ */ \u0275\u0275defineNgModule({
-    type: _ProgressBarModule,
-    imports: [ProgressBar, SharedModule],
-    exports: [ProgressBar, SharedModule]
-  });
-  static \u0275inj = /* @__PURE__ */ \u0275\u0275defineInjector({
-    imports: [ProgressBar, SharedModule, SharedModule]
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(ProgressBarModule, [{
-    type: NgModule,
-    args: [{
-      imports: [ProgressBar, SharedModule],
-      exports: [ProgressBar, SharedModule]
-    }]
-  }], null, null);
-})();
-
 // package.json
-var version = "0.5.4";
+var version = "0.5.7";
 
 // src/app/services/storage/cloud-storage.service.ts
 var CloudStorageService = class _CloudStorageService {
@@ -21996,6 +21572,15 @@ var ProjectStorageService = class _ProjectStorageService {
       });
     });
   }
+  // Add parent references back
+  rebuildParents(nodes, parent) {
+    for (const node of nodes) {
+      node.parent = parent;
+      if (node.children?.length) {
+        this.rebuildParents(node.children, node);
+      }
+    }
+  }
   // Update list of local projects in localStorage
   updateLocalProjectList(key2, project) {
     const savedProjects = JSON.parse(this.localStorageService.getData(this.SAVED_PROJECTS_KEY) || "[]");
@@ -22063,6 +21648,7 @@ var ProjectStorageService = class _ProjectStorageService {
           console.error("Failed to load project");
           return null;
         }
+        this.rebuildParents(project.projectData, void 0);
         this.setActiveProject(key2, storageType);
         console.log(`Project "${key2}" loaded successfully`);
         return project;
@@ -22664,6 +22250,57 @@ var UpdService = class _UpdService {
   }], null, null);
 })();
 
+// src/app/services/usage.service.ts
+var UsageService = class _UsageService {
+  http = inject(HttpClient);
+  settingsService = inject(UserSettingsService);
+  apiUrl = environment.usageFunctionUrl;
+  trackMetadata(projectId, org, pageUrl, originalDescEN, originalDescFR, originalKeywordsEN, originalKeywordsFR, review, promptConfig) {
+    return __async(this, null, function* () {
+      try {
+        yield firstValueFrom(this.http.post(this.apiUrl, {
+          feature: "metadata",
+          projectId,
+          org,
+          userId: this.settingsService.userId(),
+          pageUrl,
+          model: review.model,
+          promptConfig,
+          generatedAt: new Date(review.generatedAt).toISOString(),
+          originalDescEN,
+          originalDescFR,
+          originalKeywordsEN,
+          originalKeywordsFR,
+          aiDescEN: review.en.description.ai,
+          aiDescFR: review.fr.description.ai,
+          aiKeywordsEN: review.en.keywords.ai,
+          aiKeywordsFR: review.fr.keywords.ai,
+          finalDescEN: review.en.description.edited ?? review.en.description.ai,
+          finalDescFR: review.fr.description.edited ?? review.fr.description.ai,
+          finalKeywordsEN: review.en.keywords.edited ?? review.en.keywords.ai,
+          finalKeywordsFR: review.fr.keywords.edited ?? review.fr.keywords.ai,
+          statusDescEN: review.en.description.status,
+          statusDescFR: review.fr.description.status,
+          statusKeywordsEN: review.en.keywords.status,
+          statusKeywordsFR: review.fr.keywords.status
+        }));
+      } catch (error) {
+        console.warn("Usage tracking failed silently:", error);
+      }
+    });
+  }
+  static \u0275fac = function UsageService_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _UsageService)();
+  };
+  static \u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({ token: _UsageService, factory: _UsageService.\u0275fac, providedIn: "root" });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(UsageService, [{
+    type: Injectable,
+    args: [{ providedIn: "root" }]
+  }], null, null);
+})();
+
 // src/app/services/project-state.service.ts
 var ProjectStateService = class _ProjectStateService {
   translate = inject(TranslateService);
@@ -22672,6 +22309,7 @@ var ProjectStateService = class _ProjectStateService {
   fetchService = inject(FetchService);
   airtableService = inject(AirtableService);
   updService = inject(UpdService);
+  usageService = inject(UsageService);
   // Main project state
   project = signal({
     id: this.generateId(),
@@ -22809,7 +22447,7 @@ var ProjectStateService = class _ProjectStateService {
       }));
     }
   }
-  setMetadataReview(url, review) {
+  setMetadataReview(url, review, promptConfig) {
     const tree = this.getProjectTree();
     const node = this.findNodeByUrl(tree, url);
     if (node?.data) {
@@ -22818,6 +22456,7 @@ var ProjectStateService = class _ProjectStateService {
         lastModified: /* @__PURE__ */ new Date(),
         projectData: [...p.projectData]
       }));
+      this.usageService.trackMetadata(this.project().id, this.project().org ?? "DEFAULT", url, node.data.metadata?.description, node.data.metadata?.descriptionFR, node.data.metadata?.keywords, node.data.metadata?.keywordsFR, review, promptConfig ?? {});
     }
   }
   setExportDate() {
@@ -22976,7 +22615,7 @@ var ProjectStateService = class _ProjectStateService {
   getProjectToSave() {
     const currentProject = this.project();
     return __spreadProps(__spreadValues({}, currentProject), {
-      projectData: this.removeParents(currentProject.projectData)
+      projectData: this.projectStorageService.removeParents(currentProject.projectData)
     });
   }
   /**
@@ -23038,40 +22677,6 @@ var ProjectStateService = class _ProjectStateService {
       return true;
     });
   }
-  // Load from localStorage
-  loadFromLocalStorage(projectKey) {
-    let key2 = projectKey;
-    if (!key2) {
-      const projects = JSON.parse(localStorage.getItem("savedProjects") || "[]");
-      if (projects.length === 0) {
-        console.warn("No projects found in localStorage");
-        return false;
-      }
-      key2 = projects[0].key;
-    }
-    const saved = localStorage.getItem(key2);
-    if (!saved) {
-      console.warn(`No project found for key: ${key2}`);
-      return false;
-    }
-    try {
-      const project = JSON.parse(saved);
-      if (project.version !== version) {
-        console.warn(`Project version (${project.version}) differs from app version (${version}). Some features may not work correctly.`);
-      }
-      project.created = new Date(project.created);
-      project.lastModified = new Date(project.lastModified);
-      project.lastSaved = new Date(project.lastSaved);
-      project.lastExported = project.lastExported ? new Date(project.lastExported) : null;
-      this.project.set(project);
-      this.saveStatus.set("saved");
-      console.log("Project loaded from localStorage:", key2);
-      return true;
-    } catch (error) {
-      console.error("Failed to load project from localStorage:", error);
-      return false;
-    }
-  }
   // Export as JSON
   exportProjectAsJson() {
     const project = this.getProjectToSave();
@@ -23104,24 +22709,6 @@ var ProjectStateService = class _ProjectStateService {
     } catch (error) {
       console.error("Failed to import project:", error);
       return false;
-    }
-  }
-  // Remove circular parent references for serialization
-  removeParents(nodes) {
-    return nodes.map((node) => {
-      const _a = node, { parent } = _a, rest = __objRest(_a, ["parent"]);
-      return __spreadProps(__spreadValues({}, rest), {
-        children: node.children ? this.removeParents(node.children) : []
-      });
-    });
-  }
-  // Add parent references back
-  rebuildParents(nodes, parent) {
-    for (const node of nodes) {
-      node.parent = parent;
-      if (node.children?.length) {
-        this.rebuildParents(node.children, node);
-      }
     }
   }
   // Reset project
@@ -23180,7 +22767,7 @@ var ProjectStateService = class _ProjectStateService {
           isMoved: data.status.isMoved,
           isROT: data.status.isROT,
           linksToPortal: data.status.linksToPortal,
-          noindex: data.status.noindexEN && data.status.noindexFR ? "both" : data.status.noindexEN ? "en-only" : data.status.noindexFR ? "fr-only" : "none",
+          noindex: data.status.noindexEN === "to-reindex" || data.status.noindexFR === "to-reindex" ? "to-reindex" : data.status.noindexEN === "to-deindex" || data.status.noindexFR === "to-deindex" ? "to-deindex" : data.status.noindexEN && data.status.noindexFR ? "both" : data.status.noindexEN ? "en-only" : data.status.noindexFR ? "fr-only" : "none",
           archiveStatus: data.status.archiveStatus,
           //Data
           template: data.metadata?.template || "",
@@ -23694,13 +23281,21 @@ var ProjectStateService = class _ProjectStateService {
     return "en";
   }
   // Restore moved pages to their original position and remove new pages
-  getBaselineTree(nodes) {
+  getBaselineTree(nodes, mode = "full") {
     const clonedTree = structuredClone(nodes);
-    this.rebuildParents(clonedTree, void 0);
+    this.projectStorageService.rebuildParents(clonedTree, void 0);
+    if (mode === "full") {
+      const root = this.findNodeWhere(clonedTree, (n) => n.data?.originalParent == null);
+      if (root?.parent) {
+        root.parent.children = root.parent.children?.filter((c) => c !== root) ?? [];
+        root.parent = void 0;
+        clonedTree.unshift(root);
+      }
+    }
     let hasMovedNodes = true;
     while (hasMovedNodes) {
       const movedNodes = [];
-      this.collectMovedNodes(clonedTree, movedNodes);
+      this.collectMovedNodes(clonedTree, movedNodes, true, mode);
       if (movedNodes.length === 0) {
         hasMovedNodes = false;
         break;
@@ -23720,15 +23315,31 @@ var ProjectStateService = class _ProjectStateService {
   // Remove ROT pages
   getFinalTree(nodes) {
     const clonedTree = structuredClone(nodes);
-    this.rebuildParents(clonedTree, void 0);
+    this.projectStorageService.rebuildParents(clonedTree, void 0);
     this.removeROTPages(clonedTree);
     return clonedTree;
   }
-  collectMovedNodes(nodes, movedNodes) {
+  // Remove collapsed or hidden pages
+  getDisplayTree(nodes, collapsedUrls, hiddenUrls) {
+    const clonedTree = structuredClone(nodes);
+    this.projectStorageService.rebuildParents(clonedTree, void 0);
+    if (hiddenUrls.size > 0)
+      this.applyHiddenState(clonedTree, hiddenUrls);
+    if (collapsedUrls.size > 0)
+      this.applyCollapsedState(clonedTree, collapsedUrls);
+    return clonedTree;
+  }
+  collectMovedNodes(nodes, movedNodes, isTopLevel = false, mode = "full") {
     for (let i = nodes.length - 1; i >= 0; i--) {
       const node = nodes[i];
       const currentParentUrl = node.parent?.data?.url ?? "";
       const originalParentUrl = node.data?.originalParent ?? "";
+      if (isTopLevel && mode === "custom" && i === 0) {
+        if (node.children?.length) {
+          this.collectMovedNodes(node.children, movedNodes, false, mode);
+        }
+        continue;
+      }
       if (currentParentUrl !== originalParentUrl) {
         movedNodes.push({
           node,
@@ -23760,6 +23371,42 @@ var ProjectStateService = class _ProjectStateService {
       }
     }
   }
+  findNodeWhere(nodes, condition) {
+    for (const node of nodes) {
+      if (condition(node))
+        return node;
+      if (node.children?.length) {
+        const found = this.findNodeWhere(node.children, condition);
+        if (found)
+          return found;
+      }
+    }
+    return null;
+  }
+  applyCollapsedState(nodes, collapsedUrls) {
+    for (const node of nodes) {
+      if (collapsedUrls.has(node.data?.url)) {
+        node.data.collapsedChildren = node.children ?? [];
+        node.children = [];
+      } else if (node.children?.length) {
+        this.applyCollapsedState(node.children, collapsedUrls);
+      }
+    }
+  }
+  applyHiddenState(nodes, hiddenUrls) {
+    for (let i = nodes.length - 1; i >= 0; i--) {
+      const node = nodes[i];
+      if (hiddenUrls.has(node.data?.url)) {
+        if (node.parent) {
+          node.parent.data.hiddenChildrenUrls = node.parent.data.hiddenChildrenUrls ?? [];
+          node.parent.data.hiddenChildrenUrls.push(node.data.url);
+        }
+        nodes.splice(i, 1);
+      } else if (node.children?.length) {
+        this.applyHiddenState(node.children, hiddenUrls);
+      }
+    }
+  }
   static \u0275fac = function ProjectStateService_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _ProjectStateService)();
   };
@@ -23773,11 +23420,11 @@ var ProjectStateService = class _ProjectStateService {
 })();
 
 // node_modules/primeng/fesm2022/primeng-menu.mjs
-var _c04 = ["pMenuItemContent", ""];
-var _c12 = (a0) => ({
+var _c03 = ["pMenuItemContent", ""];
+var _c1 = (a0) => ({
   "p-disabled": a0
 });
-var _c22 = (a0) => ({
+var _c2 = (a0) => ({
   $implicit: a0
 });
 var _c3 = () => ({
@@ -23797,10 +23444,10 @@ function MenuItemContent_ng_container_1_a_1_Template(rf, ctx) {
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext(2);
     const itemContent_r3 = \u0275\u0275reference(4);
-    \u0275\u0275property("target", ctx_r1.item.target)("ngClass", \u0275\u0275pureFunction1(9, _c12, ctx_r1.item.disabled));
+    \u0275\u0275property("target", ctx_r1.item.target)("ngClass", \u0275\u0275pureFunction1(9, _c1, ctx_r1.item.disabled));
     \u0275\u0275attribute("title", ctx_r1.item.title)("href", ctx_r1.item.url || null, \u0275\u0275sanitizeUrl)("data-automationid", ctx_r1.item.automationId)("tabindex", -1)("data-pc-section", "action");
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", itemContent_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction1(11, _c22, ctx_r1.item));
+    \u0275\u0275property("ngTemplateOutlet", itemContent_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction1(11, _c2, ctx_r1.item));
   }
 }
 function MenuItemContent_ng_container_1_a_2_ng_container_1_Template(rf, ctx) {
@@ -23817,10 +23464,10 @@ function MenuItemContent_ng_container_1_a_2_Template(rf, ctx) {
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext(2);
     const itemContent_r3 = \u0275\u0275reference(4);
-    \u0275\u0275property("routerLink", ctx_r1.item.routerLink)("queryParams", ctx_r1.item.queryParams)("routerLinkActiveOptions", ctx_r1.item.routerLinkActiveOptions || \u0275\u0275pureFunction0(17, _c3))("target", ctx_r1.item.target)("ngClass", \u0275\u0275pureFunction1(18, _c12, ctx_r1.item.disabled))("fragment", ctx_r1.item.fragment)("queryParamsHandling", ctx_r1.item.queryParamsHandling)("preserveFragment", ctx_r1.item.preserveFragment)("skipLocationChange", ctx_r1.item.skipLocationChange)("replaceUrl", ctx_r1.item.replaceUrl)("state", ctx_r1.item.state);
+    \u0275\u0275property("routerLink", ctx_r1.item.routerLink)("queryParams", ctx_r1.item.queryParams)("routerLinkActiveOptions", ctx_r1.item.routerLinkActiveOptions || \u0275\u0275pureFunction0(17, _c3))("target", ctx_r1.item.target)("ngClass", \u0275\u0275pureFunction1(18, _c1, ctx_r1.item.disabled))("fragment", ctx_r1.item.fragment)("queryParamsHandling", ctx_r1.item.queryParamsHandling)("preserveFragment", ctx_r1.item.preserveFragment)("skipLocationChange", ctx_r1.item.skipLocationChange)("replaceUrl", ctx_r1.item.replaceUrl)("state", ctx_r1.item.state);
     \u0275\u0275attribute("data-automationid", ctx_r1.item.automationId)("tabindex", -1)("data-pc-section", "action")("title", ctx_r1.item.title);
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", itemContent_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction1(20, _c22, ctx_r1.item));
+    \u0275\u0275property("ngTemplateOutlet", itemContent_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction1(20, _c2, ctx_r1.item));
   }
 }
 function MenuItemContent_ng_container_1_Template(rf, ctx) {
@@ -23853,7 +23500,7 @@ function MenuItemContent_ng_container_2_Template(rf, ctx) {
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext();
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r1.itemTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c22, ctx_r1.item));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r1.itemTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c2, ctx_r1.item));
   }
 }
 function MenuItemContent_ng_template_3_span_0_Template(rf, ctx) {
@@ -23922,7 +23569,7 @@ var _c11 = (a0) => ({
   "p-menu p-component": true,
   "p-menu-overlay": a0
 });
-var _c122 = (a0, a1) => ({
+var _c12 = (a0, a1) => ({
   showTransitionParams: a0,
   hideTransitionParams: a1
 });
@@ -24019,7 +23666,7 @@ function Menu_div_0_5_ng_template_0_li_1_Template(rf, ctx) {
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", !ctx_r1.submenuHeaderTemplate && !ctx_r1._submenuHeaderTemplate);
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", (tmp_13_0 = ctx_r1.submenuHeaderTemplate) !== null && tmp_13_0 !== void 0 ? tmp_13_0 : ctx_r1._submenuHeaderTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(10, _c22, submenu_r3));
+    \u0275\u0275property("ngTemplateOutlet", (tmp_13_0 = ctx_r1.submenuHeaderTemplate) !== null && tmp_13_0 !== void 0 ? tmp_13_0 : ctx_r1._submenuHeaderTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(10, _c2, submenu_r3));
   }
 }
 function Menu_div_0_5_ng_template_0_ng_template_2_li_0_Template(rf, ctx) {
@@ -24199,7 +23846,7 @@ function Menu_div_0_Template(rf, ctx) {
     let tmp_19_0;
     const ctx_r1 = \u0275\u0275nextContext();
     \u0275\u0275classMap(ctx_r1.styleClass);
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(18, _c11, ctx_r1.popup))("ngStyle", ctx_r1.style)("@overlayAnimation", \u0275\u0275pureFunction1(23, _c13, \u0275\u0275pureFunction2(20, _c122, ctx_r1.showTransitionOptions, ctx_r1.hideTransitionOptions)))("@.disabled", ctx_r1.popup !== true);
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(18, _c11, ctx_r1.popup))("ngStyle", ctx_r1.style)("@overlayAnimation", \u0275\u0275pureFunction1(23, _c13, \u0275\u0275pureFunction2(20, _c12, ctx_r1.showTransitionOptions, ctx_r1.hideTransitionOptions)))("@.disabled", ctx_r1.popup !== true);
     \u0275\u0275attribute("data-pc-name", "menu")("id", ctx_r1.id);
     \u0275\u0275advance(2);
     \u0275\u0275property("ngIf", (tmp_10_0 = ctx_r1.startTemplate) !== null && tmp_10_0 !== void 0 ? tmp_10_0 : ctx_r1._startTemplate);
@@ -24213,7 +23860,7 @@ function Menu_div_0_Template(rf, ctx) {
     \u0275\u0275property("ngIf", (tmp_19_0 = ctx_r1.endTemplate) !== null && tmp_19_0 !== void 0 ? tmp_19_0 : ctx_r1._endTemplate);
   }
 }
-var theme3 = ({
+var theme2 = ({
   dt
 }) => `
 .p-menu {
@@ -24300,7 +23947,7 @@ var theme3 = ({
     position: absolute;
 }
 `;
-var classes4 = {
+var classes3 = {
   root: ({
     props
   }) => ["p-menu p-component", {
@@ -24324,8 +23971,8 @@ var classes4 = {
 };
 var MenuStyle = class _MenuStyle extends BaseStyle {
   name = "menu";
-  theme = theme3;
-  classes = classes4;
+  theme = theme2;
+  classes = classes3;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275MenuStyle_BaseFactory;
     return function MenuStyle_Factory(__ngFactoryType__) {
@@ -24422,7 +24069,7 @@ var MenuItemContent = class _MenuItemContent {
     outputs: {
       onMenuItemClick: "onMenuItemClick"
     },
-    attrs: _c04,
+    attrs: _c03,
     decls: 5,
     vars: 3,
     consts: [["itemContent", ""], ["htmlLabel", ""], [1, "p-menu-item-content", 3, "click"], [4, "ngIf"], ["class", "p-menu-item-link", "pRipple", "", 3, "target", "ngClass", 4, "ngIf"], ["routerLinkActive", "p-menu-item-link-active", "class", "p-menu-item-link", "pRipple", "", 3, "routerLink", "queryParams", "routerLinkActiveOptions", "target", "ngClass", "fragment", "queryParamsHandling", "preserveFragment", "skipLocationChange", "replaceUrl", "state", 4, "ngIf"], ["pRipple", "", 1, "p-menu-item-link", 3, "target", "ngClass"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], ["routerLinkActive", "p-menu-item-link-active", "pRipple", "", 1, "p-menu-item-link", 3, "routerLink", "queryParams", "routerLinkActiveOptions", "target", "ngClass", "fragment", "queryParamsHandling", "preserveFragment", "skipLocationChange", "replaceUrl", "state"], ["class", "p-menu-item-icon", 3, "ngClass", "class", "ngStyle", 4, "ngIf"], ["class", "p-menu-item-label", 4, "ngIf", "ngIfElse"], [3, "styleClass", "value", 4, "ngIf"], [1, "p-menu-item-icon", 3, "ngClass", "ngStyle"], [1, "p-menu-item-label"], [1, "p-menu-item-label", 3, "innerHTML"], [3, "styleClass", "value"]],
@@ -25616,9 +25263,9 @@ var FocusTrapModule = class _FocusTrapModule {
 })();
 
 // node_modules/primeng/fesm2022/primeng-dialog.mjs
-var _c05 = ["header"];
+var _c04 = ["header"];
 var _c16 = ["content"];
-var _c23 = ["footer"];
+var _c22 = ["footer"];
 var _c32 = ["closeicon"];
 var _c42 = ["maximizeicon"];
 var _c52 = ["minimizeicon"];
@@ -25641,7 +25288,7 @@ var _c112 = (a0) => ({
   "p-dialog p-component": true,
   "p-dialog-maximized": a0
 });
-var _c123 = () => ({
+var _c122 = () => ({
   display: "flex",
   "flex-direction": "column",
   "pointer-events": "auto"
@@ -25982,7 +25629,7 @@ function Dialog_div_0_div_1_Template(rf, ctx) {
     const ctx_r1 = \u0275\u0275nextContext(2);
     \u0275\u0275styleMap(ctx_r1.style);
     \u0275\u0275classMap(ctx_r1.styleClass);
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(13, _c112, ctx_r1.maximizable && ctx_r1.maximized))("ngStyle", \u0275\u0275pureFunction0(15, _c123))("pFocusTrapDisabled", ctx_r1.focusTrap === false)("@animation", \u0275\u0275pureFunction1(19, _c142, \u0275\u0275pureFunction2(16, _c132, ctx_r1.transformOptions, ctx_r1.transitionOptions)));
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(13, _c112, ctx_r1.maximizable && ctx_r1.maximized))("ngStyle", \u0275\u0275pureFunction0(15, _c122))("pFocusTrapDisabled", ctx_r1.focusTrap === false)("@animation", \u0275\u0275pureFunction1(19, _c142, \u0275\u0275pureFunction2(16, _c132, ctx_r1.transformOptions, ctx_r1.transitionOptions)));
     \u0275\u0275attribute("role", ctx_r1.role)("aria-labelledby", ctx_r1.ariaLabelledBy)("aria-modal", true);
     \u0275\u0275advance(2);
     \u0275\u0275property("ngIf", ctx_r1._headlessTemplate || ctx_r1.headlessTemplate || ctx_r1.headlessT)("ngIfElse", notHeadless_r7);
@@ -26003,7 +25650,7 @@ function Dialog_div_0_Template(rf, ctx) {
     \u0275\u0275property("ngIf", ctx_r1.visible);
   }
 }
-var theme4 = ({
+var theme3 = ({
   dt
 }) => `
 .p-dialog {
@@ -26199,7 +25846,7 @@ var inlineStyles = {
     pointerEvents: "auto"
   }
 };
-var classes5 = {
+var classes4 = {
   mask: ({
     instance
   }) => {
@@ -26228,8 +25875,8 @@ var classes5 = {
 };
 var DialogStyle = class _DialogStyle extends BaseStyle {
   name = "dialog";
-  theme = theme4;
-  classes = classes5;
+  theme = theme3;
+  classes = classes4;
   inlineStyles = inlineStyles;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275DialogStyle_BaseFactory;
@@ -27121,9 +26768,9 @@ var Dialog = class _Dialog extends BaseComponent {
     selectors: [["p-dialog"]],
     contentQueries: function Dialog_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c05, 4);
+        \u0275\u0275contentQuery(dirIndex, _c04, 4);
         \u0275\u0275contentQuery(dirIndex, _c16, 4);
-        \u0275\u0275contentQuery(dirIndex, _c23, 4);
+        \u0275\u0275contentQuery(dirIndex, _c22, 4);
         \u0275\u0275contentQuery(dirIndex, _c32, 4);
         \u0275\u0275contentQuery(dirIndex, _c42, 4);
         \u0275\u0275contentQuery(dirIndex, _c52, 4);
@@ -27146,7 +26793,7 @@ var Dialog = class _Dialog extends BaseComponent {
       if (rf & 1) {
         \u0275\u0275viewQuery(_c72, 5);
         \u0275\u0275viewQuery(_c16, 5);
-        \u0275\u0275viewQuery(_c23, 5);
+        \u0275\u0275viewQuery(_c22, 5);
       }
       if (rf & 2) {
         let _t;
@@ -27635,9 +27282,9 @@ var DialogModule = class _DialogModule {
 })();
 
 // node_modules/primeng/fesm2022/primeng-confirmdialog.mjs
-var _c06 = ["header"];
+var _c05 = ["header"];
 var _c17 = ["footer"];
-var _c24 = ["rejecticon"];
+var _c23 = ["rejecticon"];
 var _c33 = ["accepticon"];
 var _c43 = ["message"];
 var _c53 = ["icon"];
@@ -27904,7 +27551,7 @@ function ConfirmDialog_ng_template_4_Template(rf, ctx) {
     \u0275\u0275conditional(!ctx_r1.footerTemplate && !ctx_r1._footerTemplate ? 1 : -1);
   }
 }
-var theme5 = ({
+var theme4 = ({
   dt
 }) => `
 .p-confirmdialog .p-dialog-content {
@@ -27920,7 +27567,7 @@ var theme5 = ({
     height: ${dt("confirmdialog.icon.size")};
 }
 `;
-var classes6 = {
+var classes5 = {
   root: "p-confirmdialog",
   icon: "p-confirmdialog-icon",
   message: "p-confirmdialog-message",
@@ -27929,8 +27576,8 @@ var classes6 = {
 };
 var ConfirmDialogStyle = class _ConfirmDialogStyle extends BaseStyle {
   name = "confirmdialog";
-  theme = theme5;
-  classes = classes6;
+  theme = theme4;
+  classes = classes5;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275ConfirmDialogStyle_BaseFactory;
     return function ConfirmDialogStyle_Factory(__ngFactoryType__) {
@@ -28406,9 +28053,9 @@ var ConfirmDialog = class _ConfirmDialog extends BaseComponent {
     contentQueries: function ConfirmDialog_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
         \u0275\u0275contentQuery(dirIndex, Footer, 5);
-        \u0275\u0275contentQuery(dirIndex, _c06, 4);
+        \u0275\u0275contentQuery(dirIndex, _c05, 4);
         \u0275\u0275contentQuery(dirIndex, _c17, 4);
-        \u0275\u0275contentQuery(dirIndex, _c24, 4);
+        \u0275\u0275contentQuery(dirIndex, _c23, 4);
         \u0275\u0275contentQuery(dirIndex, _c33, 4);
         \u0275\u0275contentQuery(dirIndex, _c43, 4);
         \u0275\u0275contentQuery(dirIndex, _c53, 4);
@@ -28815,9 +28462,9 @@ var ConfirmDialogModule = class _ConfirmDialogModule {
 })();
 
 // node_modules/primeng/fesm2022/primeng-autocomplete.mjs
-var _c07 = ["item"];
+var _c06 = ["item"];
 var _c18 = ["empty"];
-var _c25 = ["header"];
+var _c24 = ["header"];
 var _c34 = ["footer"];
 var _c44 = ["selecteditem"];
 var _c54 = ["group"];
@@ -28827,7 +28474,7 @@ var _c84 = ["loadingicon"];
 var _c94 = ["clearicon"];
 var _c104 = ["dropdownicon"];
 var _c113 = ["container"];
-var _c124 = ["focusInput"];
+var _c123 = ["focusInput"];
 var _c133 = ["multiIn"];
 var _c143 = ["multiContainer"];
 var _c152 = ["ddBtn"];
@@ -28856,7 +28503,7 @@ var _c232 = (a0, a1) => ({
 var _c242 = (a0) => ({
   options: a0
 });
-var _c252 = () => ({});
+var _c25 = () => ({});
 var _c26 = (a0, a1) => ({
   $implicit: a0,
   index: a1
@@ -29296,7 +28943,7 @@ function AutoComplete_ng_template_9_ng_container_4_Template(rf, ctx) {
     const buildInItems_r15 = \u0275\u0275reference(6);
     const ctx_r2 = \u0275\u0275nextContext();
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", buildInItems_r15)("ngTemplateOutletContext", \u0275\u0275pureFunction2(3, _c232, ctx_r2.visibleOptions(), \u0275\u0275pureFunction0(2, _c252)));
+    \u0275\u0275property("ngTemplateOutlet", buildInItems_r15)("ngTemplateOutletContext", \u0275\u0275pureFunction2(3, _c232, ctx_r2.visibleOptions(), \u0275\u0275pureFunction0(2, _c25)));
   }
 }
 function AutoComplete_ng_template_9_ng_template_5_ng_template_2_ng_container_0_span_2_Template(rf, ctx) {
@@ -29494,7 +29141,7 @@ function AutoComplete_ng_template_9_Template(rf, ctx) {
     \u0275\u0275textInterpolate1(" ", ctx_r2.selectedMessageText, " ");
   }
 }
-var theme6 = ({
+var theme5 = ({
   dt
 }) => `
 .p-autocomplete {
@@ -29798,7 +29445,7 @@ var inlineStyles2 = {
     position: "relative"
   }
 };
-var classes7 = {
+var classes6 = {
   root: ({
     instance
   }) => ({
@@ -29848,8 +29495,8 @@ var classes7 = {
 };
 var AutoCompleteStyle = class _AutoCompleteStyle extends BaseStyle {
   name = "autocomplete";
-  theme = theme6;
-  classes = classes7;
+  theme = theme5;
+  classes = classes6;
   inlineStyles = inlineStyles2;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275AutoCompleteStyle_BaseFactory;
@@ -31158,9 +30805,9 @@ var AutoComplete = class _AutoComplete extends BaseComponent {
     selectors: [["p-autoComplete"], ["p-autocomplete"], ["p-auto-complete"]],
     contentQueries: function AutoComplete_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c07, 5);
+        \u0275\u0275contentQuery(dirIndex, _c06, 5);
         \u0275\u0275contentQuery(dirIndex, _c18, 5);
-        \u0275\u0275contentQuery(dirIndex, _c25, 5);
+        \u0275\u0275contentQuery(dirIndex, _c24, 5);
         \u0275\u0275contentQuery(dirIndex, _c34, 5);
         \u0275\u0275contentQuery(dirIndex, _c44, 5);
         \u0275\u0275contentQuery(dirIndex, _c54, 5);
@@ -31190,7 +30837,7 @@ var AutoComplete = class _AutoComplete extends BaseComponent {
     viewQuery: function AutoComplete_Query(rf, ctx) {
       if (rf & 1) {
         \u0275\u0275viewQuery(_c113, 5);
-        \u0275\u0275viewQuery(_c124, 5);
+        \u0275\u0275viewQuery(_c123, 5);
         \u0275\u0275viewQuery(_c133, 5);
         \u0275\u0275viewQuery(_c143, 5);
         \u0275\u0275viewQuery(_c152, 5);
@@ -32311,7 +31958,7 @@ var KeyFilterModule = class _KeyFilterModule {
 })();
 
 // src/app/components/add-collaborators/add-collaborators.component.ts
-var _c08 = (a0) => ({ name: a0 });
+var _c07 = (a0) => ({ name: a0 });
 var _c110 = (a0) => ({ number: a0 });
 var _forTrack0 = ($index, $item) => $item.id;
 function AddCollaboratorsComponent_Conditional_0_Conditional_3_For_2_Conditional_5_Template(rf, ctx) {
@@ -32330,7 +31977,7 @@ function AddCollaboratorsComponent_Conditional_0_Conditional_3_For_2_Conditional
   if (rf & 2) {
     const collab_r2 = \u0275\u0275nextContext().$implicit;
     const ctx_r2 = \u0275\u0275nextContext(3);
-    \u0275\u0275property("pTooltip", \u0275\u0275pipeBind2(1, 1, "collaborators.remove", \u0275\u0275pureFunction1(4, _c08, ctx_r2.collaboratorService.getCollaboratorName(collab_r2))));
+    \u0275\u0275property("pTooltip", \u0275\u0275pipeBind2(1, 1, "collaborators.remove", \u0275\u0275pureFunction1(4, _c07, ctx_r2.collaboratorService.getCollaboratorName(collab_r2))));
   }
 }
 function AddCollaboratorsComponent_Conditional_0_Conditional_3_For_2_Template(rf, ctx) {
@@ -32986,7 +32633,7 @@ ${bodyFr}`;
 })();
 
 // src/app/views/project-assistant/dashboard.component.ts
-var _c09 = (a0) => ({ "border-2 border-primary": a0 });
+var _c08 = (a0) => ({ "border-2 border-primary": a0 });
 var _c111 = (a0, a1) => ({ "text-green-500": a0, "text-red-500": a1 });
 var _c27 = (a0, a1, a2) => ({ "bg-primary text-0": a0, "bg-primary-50 text-primary-500 border-2 border-primary": a1, "surface-200 text-600": a2 });
 var _forTrack02 = ($index, $item) => $item.name;
@@ -33530,11 +33177,11 @@ var DashboardComponent = class _DashboardComponent {
       \u0275\u0275advance(5);
       \u0275\u0275conditional(ctx.projectData.github.hasBaselineRepo ? 47 : 48);
       \u0275\u0275advance(3);
-      \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(32, _c09, ctx.projectData.phase === ctx.ProjectPhase.Discover));
+      \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(32, _c08, ctx.projectData.phase === ctx.ProjectPhase.Discover));
       \u0275\u0275advance(27);
       \u0275\u0275textInterpolate(ctx.projectData.inScopePages);
       \u0275\u0275advance(3);
-      \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(34, _c09, ctx.projectData.phase === ctx.ProjectPhase.Assess));
+      \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(34, _c08, ctx.projectData.phase === ctx.ProjectPhase.Assess));
       \u0275\u0275advance(9);
       \u0275\u0275conditional(!ctx.production ? 89 : 90);
       \u0275\u0275advance(2);
@@ -33542,13 +33189,13 @@ var DashboardComponent = class _DashboardComponent {
       \u0275\u0275advance(3);
       \u0275\u0275conditional(ctx.projectData.github.repo ? 94 : 95);
       \u0275\u0275advance(3);
-      \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(36, _c09, ctx.projectData.phase === ctx.ProjectPhase.Design));
+      \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(36, _c08, ctx.projectData.phase === ctx.ProjectPhase.Design));
       \u0275\u0275advance(9);
       \u0275\u0275conditional(!ctx.production ? 106 : 107);
       \u0275\u0275advance(2);
       \u0275\u0275conditional(!ctx.production ? 108 : -1);
       \u0275\u0275advance();
-      \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(38, _c09, ctx.projectData.phase === ctx.ProjectPhase.Approve));
+      \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(38, _c08, ctx.projectData.phase === ctx.ProjectPhase.Approve));
       \u0275\u0275advance(3);
       \u0275\u0275property("ngClass", \u0275\u0275pureFunction2(40, _c111, ctx.selectedItems.length / ctx.checklist.length * 100 === 100, ctx.selectedItems.length / ctx.checklist.length * 100 !== 100));
       \u0275\u0275advance(6);
@@ -33884,472 +33531,24 @@ var DashboardComponent = class _DashboardComponent {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(DashboardComponent, { className: "DashboardComponent", filePath: "src/app/views/project-assistant/dashboard.component.ts", lineNumber: 32 });
 })();
 
-// node_modules/primeng/fesm2022/primeng-card.mjs
-var _c010 = ["header"];
-var _c114 = ["title"];
-var _c28 = ["subtitle"];
-var _c35 = ["content"];
-var _c45 = ["footer"];
-var _c55 = ["*", [["p-header"]], [["p-footer"]]];
-var _c65 = ["*", "p-header", "p-footer"];
-function Card_div_1_ng_container_2_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function Card_div_1_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 8);
-    \u0275\u0275projection(1, 1);
-    \u0275\u0275template(2, Card_div_1_ng_container_2_Template, 1, 0, "ng-container", 6);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275advance(2);
-    \u0275\u0275property("ngTemplateOutlet", ctx_r0.headerTemplate || ctx_r0._headerTemplate);
-  }
-}
-function Card_div_3_ng_container_1_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainerStart(0);
-    \u0275\u0275text(1);
-    \u0275\u0275elementContainerEnd();
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(ctx_r0.header);
-  }
-}
-function Card_div_3_ng_container_2_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function Card_div_3_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 9);
-    \u0275\u0275template(1, Card_div_3_ng_container_1_Template, 2, 1, "ng-container", 10)(2, Card_div_3_ng_container_2_Template, 1, 0, "ng-container", 6);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275advance();
-    \u0275\u0275property("ngIf", ctx_r0.header && !ctx_r0._titleTemplate && !ctx_r0.titleTemplate);
-    \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r0.titleTemplate || ctx_r0._titleTemplate);
-  }
-}
-function Card_div_4_ng_container_1_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainerStart(0);
-    \u0275\u0275text(1);
-    \u0275\u0275elementContainerEnd();
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(ctx_r0.subheader);
-  }
-}
-function Card_div_4_ng_container_2_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function Card_div_4_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 11);
-    \u0275\u0275template(1, Card_div_4_ng_container_1_Template, 2, 1, "ng-container", 10)(2, Card_div_4_ng_container_2_Template, 1, 0, "ng-container", 6);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275advance();
-    \u0275\u0275property("ngIf", ctx_r0.subheader && !ctx_r0._subtitleTemplate && !ctx_r0.subtitleTemplate);
-    \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r0.subtitleTemplate || ctx_r0._subtitleTemplate);
-  }
-}
-function Card_ng_container_7_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function Card_div_8_ng_container_2_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function Card_div_8_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 12);
-    \u0275\u0275projection(1, 2);
-    \u0275\u0275template(2, Card_div_8_ng_container_2_Template, 1, 0, "ng-container", 6);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275advance(2);
-    \u0275\u0275property("ngTemplateOutlet", ctx_r0.footerTemplate || ctx_r0._footerTemplate);
-  }
-}
-var theme7 = ({
-  dt
-}) => `
-.p-card {
-    background: ${dt("card.background")};
-    color: ${dt("card.color")};
-    box-shadow: ${dt("card.shadow")};
-    border-radius: ${dt("card.border.radius")};
-    display: flex;
-    flex-direction: column;
-}
-
-.p-card-caption {
-    display: flex;
-    flex-direction: column;
-    gap: ${dt("card.caption.gap")};
-}
-
-.p-card-body {
-    padding: ${dt("card.body.padding")};
-    display: flex;
-    flex-direction: column;
-    gap: ${dt("card.body.gap")};
-}
-
-.p-card-title {
-    font-size: ${dt("card.title.font.size")};
-    font-weight: ${dt("card.title.font.weight")};
-}
-
-.p-card-subtitle {
-    color: ${dt("card.subtitle.color")};
-}
-`;
-var classes8 = {
-  root: "p-card p-component",
-  header: "p-card-header",
-  body: "p-card-body",
-  caption: "p-card-caption",
-  title: "p-card-title",
-  subtitle: "p-card-subtitle",
-  content: "p-card-content",
-  footer: "p-card-footer"
-};
-var CardStyle = class _CardStyle extends BaseStyle {
-  name = "card";
-  theme = theme7;
-  classes = classes8;
-  static \u0275fac = /* @__PURE__ */ (() => {
-    let \u0275CardStyle_BaseFactory;
-    return function CardStyle_Factory(__ngFactoryType__) {
-      return (\u0275CardStyle_BaseFactory || (\u0275CardStyle_BaseFactory = \u0275\u0275getInheritedFactory(_CardStyle)))(__ngFactoryType__ || _CardStyle);
-    };
-  })();
-  static \u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({
-    token: _CardStyle,
-    factory: _CardStyle.\u0275fac
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(CardStyle, [{
-    type: Injectable
-  }], null, null);
-})();
-var CardClasses;
-(function(CardClasses2) {
-  CardClasses2["root"] = "p-card";
-  CardClasses2["header"] = "p-card-header";
-  CardClasses2["body"] = "p-card-body";
-  CardClasses2["caption"] = "p-card-caption";
-  CardClasses2["title"] = "p-card-title";
-  CardClasses2["subtitle"] = "p-card-subtitle";
-  CardClasses2["content"] = "p-card-content";
-  CardClasses2["footer"] = "p-card-footer";
-})(CardClasses || (CardClasses = {}));
-var Card = class _Card extends BaseComponent {
-  /**
-   * Header of the card.
-   * @group Props
-   */
-  header;
-  /**
-   * Subheader of the card.
-   * @group Props
-   */
-  subheader;
-  /**
-   * Inline style of the element.
-   * @group Props
-   */
-  set style(value) {
-    if (!equals(this._style(), value)) {
-      this._style.set(value);
-    }
-  }
-  /**
-   * Class of the element.
-   * @group Props
-   */
-  styleClass;
-  headerFacet;
-  footerFacet;
-  headerTemplate;
-  titleTemplate;
-  subtitleTemplate;
-  contentTemplate;
-  footerTemplate;
-  _headerTemplate;
-  _titleTemplate;
-  _subtitleTemplate;
-  _contentTemplate;
-  _footerTemplate;
-  _style = signal(null);
-  _componentStyle = inject(CardStyle);
-  getBlockableElement() {
-    return this.el.nativeElement.children[0];
-  }
-  templates;
-  ngAfterContentInit() {
-    this.templates.forEach((item) => {
-      switch (item.getType()) {
-        case "header":
-          this._headerTemplate = item.template;
-          break;
-        case "title":
-          this._titleTemplate = item.template;
-          break;
-        case "subtitle":
-          this._subtitleTemplate = item.template;
-          break;
-        case "content":
-          this._contentTemplate = item.template;
-          break;
-        case "footer":
-          this._footerTemplate = item.template;
-          break;
-        default:
-          this._contentTemplate = item.template;
-          break;
-      }
-    });
-  }
-  static \u0275fac = /* @__PURE__ */ (() => {
-    let \u0275Card_BaseFactory;
-    return function Card_Factory(__ngFactoryType__) {
-      return (\u0275Card_BaseFactory || (\u0275Card_BaseFactory = \u0275\u0275getInheritedFactory(_Card)))(__ngFactoryType__ || _Card);
-    };
-  })();
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({
-    type: _Card,
-    selectors: [["p-card"]],
-    contentQueries: function Card_ContentQueries(rf, ctx, dirIndex) {
-      if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, Header, 5);
-        \u0275\u0275contentQuery(dirIndex, Footer, 5);
-        \u0275\u0275contentQuery(dirIndex, _c010, 4);
-        \u0275\u0275contentQuery(dirIndex, _c114, 4);
-        \u0275\u0275contentQuery(dirIndex, _c28, 4);
-        \u0275\u0275contentQuery(dirIndex, _c35, 4);
-        \u0275\u0275contentQuery(dirIndex, _c45, 4);
-        \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
-      }
-      if (rf & 2) {
-        let _t;
-        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.headerFacet = _t.first);
-        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.footerFacet = _t.first);
-        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.headerTemplate = _t.first);
-        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.titleTemplate = _t.first);
-        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.subtitleTemplate = _t.first);
-        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.contentTemplate = _t.first);
-        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.footerTemplate = _t.first);
-        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.templates = _t);
-      }
-    },
-    inputs: {
-      header: "header",
-      subheader: "subheader",
-      style: "style",
-      styleClass: "styleClass"
-    },
-    features: [\u0275\u0275ProvidersFeature([CardStyle]), \u0275\u0275InheritDefinitionFeature],
-    ngContentSelectors: _c65,
-    decls: 9,
-    vars: 10,
-    consts: [[3, "ngClass", "ngStyle"], ["class", "p-card-header", 4, "ngIf"], [1, "p-card-body"], ["class", "p-card-title", 4, "ngIf"], ["class", "p-card-subtitle", 4, "ngIf"], [1, "p-card-content"], [4, "ngTemplateOutlet"], ["class", "p-card-footer", 4, "ngIf"], [1, "p-card-header"], [1, "p-card-title"], [4, "ngIf"], [1, "p-card-subtitle"], [1, "p-card-footer"]],
-    template: function Card_Template(rf, ctx) {
-      if (rf & 1) {
-        \u0275\u0275projectionDef(_c55);
-        \u0275\u0275elementStart(0, "div", 0);
-        \u0275\u0275template(1, Card_div_1_Template, 3, 1, "div", 1);
-        \u0275\u0275elementStart(2, "div", 2);
-        \u0275\u0275template(3, Card_div_3_Template, 3, 2, "div", 3)(4, Card_div_4_Template, 3, 2, "div", 4);
-        \u0275\u0275elementStart(5, "div", 5);
-        \u0275\u0275projection(6);
-        \u0275\u0275template(7, Card_ng_container_7_Template, 1, 0, "ng-container", 6);
-        \u0275\u0275elementEnd();
-        \u0275\u0275template(8, Card_div_8_Template, 3, 1, "div", 7);
-        \u0275\u0275elementEnd()();
-      }
-      if (rf & 2) {
-        \u0275\u0275classMap(ctx.styleClass);
-        \u0275\u0275property("ngClass", "p-card p-component")("ngStyle", ctx._style());
-        \u0275\u0275attribute("data-pc-name", "card");
-        \u0275\u0275advance();
-        \u0275\u0275property("ngIf", ctx.headerFacet || ctx.headerTemplate || ctx._headerTemplate);
-        \u0275\u0275advance(2);
-        \u0275\u0275property("ngIf", ctx.header || ctx.titleTemplate || ctx._titleTemplate);
-        \u0275\u0275advance();
-        \u0275\u0275property("ngIf", ctx.subheader || ctx.subtitleTemplate || ctx._subtitleTemplate);
-        \u0275\u0275advance(3);
-        \u0275\u0275property("ngTemplateOutlet", ctx.contentTemplate || ctx._contentTemplate);
-        \u0275\u0275advance();
-        \u0275\u0275property("ngIf", ctx.footerFacet || ctx.footerTemplate || ctx._footerTemplate);
-      }
-    },
-    dependencies: [CommonModule, NgClass, NgIf, NgTemplateOutlet, NgStyle, SharedModule],
-    encapsulation: 2,
-    changeDetection: 0
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(Card, [{
-    type: Component,
-    args: [{
-      selector: "p-card",
-      standalone: true,
-      imports: [CommonModule, SharedModule],
-      template: `
-        <div [ngClass]="'p-card p-component'" [ngStyle]="_style()" [class]="styleClass" [attr.data-pc-name]="'card'">
-            <div class="p-card-header" *ngIf="headerFacet || headerTemplate || _headerTemplate">
-                <ng-content select="p-header"></ng-content>
-                <ng-container *ngTemplateOutlet="headerTemplate || _headerTemplate"></ng-container>
-            </div>
-            <div class="p-card-body">
-                <div class="p-card-title" *ngIf="header || titleTemplate || _titleTemplate">
-                    <ng-container *ngIf="header && !_titleTemplate && !titleTemplate">{{ header }}</ng-container>
-                    <ng-container *ngTemplateOutlet="titleTemplate || _titleTemplate"></ng-container>
-                </div>
-                <div class="p-card-subtitle" *ngIf="subheader || subtitleTemplate || _subtitleTemplate">
-                    <ng-container *ngIf="subheader && !_subtitleTemplate && !subtitleTemplate">{{ subheader }}</ng-container>
-                    <ng-container *ngTemplateOutlet="subtitleTemplate || _subtitleTemplate"></ng-container>
-                </div>
-                <div class="p-card-content">
-                    <ng-content></ng-content>
-                    <ng-container *ngTemplateOutlet="contentTemplate || _contentTemplate"></ng-container>
-                </div>
-                <div class="p-card-footer" *ngIf="footerFacet || footerTemplate || _footerTemplate">
-                    <ng-content select="p-footer"></ng-content>
-                    <ng-container *ngTemplateOutlet="footerTemplate || _footerTemplate"></ng-container>
-                </div>
-            </div>
-        </div>
-    `,
-      changeDetection: ChangeDetectionStrategy.OnPush,
-      encapsulation: ViewEncapsulation.None,
-      providers: [CardStyle]
-    }]
-  }], null, {
-    header: [{
-      type: Input
-    }],
-    subheader: [{
-      type: Input
-    }],
-    style: [{
-      type: Input
-    }],
-    styleClass: [{
-      type: Input
-    }],
-    headerFacet: [{
-      type: ContentChild,
-      args: [Header]
-    }],
-    footerFacet: [{
-      type: ContentChild,
-      args: [Footer]
-    }],
-    headerTemplate: [{
-      type: ContentChild,
-      args: ["header", {
-        descendants: false
-      }]
-    }],
-    titleTemplate: [{
-      type: ContentChild,
-      args: ["title", {
-        descendants: false
-      }]
-    }],
-    subtitleTemplate: [{
-      type: ContentChild,
-      args: ["subtitle", {
-        descendants: false
-      }]
-    }],
-    contentTemplate: [{
-      type: ContentChild,
-      args: ["content", {
-        descendants: false
-      }]
-    }],
-    footerTemplate: [{
-      type: ContentChild,
-      args: ["footer", {
-        descendants: false
-      }]
-    }],
-    templates: [{
-      type: ContentChildren,
-      args: [PrimeTemplate]
-    }]
-  });
-})();
-var CardModule = class _CardModule {
-  static \u0275fac = function CardModule_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _CardModule)();
-  };
-  static \u0275mod = /* @__PURE__ */ \u0275\u0275defineNgModule({
-    type: _CardModule,
-    imports: [Card, SharedModule],
-    exports: [Card, SharedModule]
-  });
-  static \u0275inj = /* @__PURE__ */ \u0275\u0275defineInjector({
-    imports: [Card, SharedModule, SharedModule]
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(CardModule, [{
-    type: NgModule,
-    args: [{
-      imports: [Card, SharedModule],
-      exports: [Card, SharedModule]
-    }]
-  }], null, null);
-})();
-
 // node_modules/primeng/fesm2022/primeng-tieredmenu.mjs
-var _c011 = ["sublist"];
-var _c115 = (a0, a1) => ({
+var _c09 = ["sublist"];
+var _c114 = (a0, a1) => ({
   "p-tieredmenu-submenu": a0,
   "p-tieredmenu-root-list": a1
 });
-var _c29 = (a0) => ({
+var _c28 = (a0) => ({
   "p-tieredmenu-item-link": true,
   "p-disabled": a0
 });
-var _c36 = () => ({
+var _c35 = () => ({
   exact: false
 });
-var _c46 = (a0, a1) => ({
+var _c45 = (a0, a1) => ({
   $implicit: a0,
   hasSubmenu: a1
 });
-var _c56 = (a0) => ({
+var _c55 = (a0) => ({
   display: a0
 });
 function TieredMenuSub_ng_template_2_li_0_Template(rf, ctx) {
@@ -34457,7 +33656,7 @@ function TieredMenuSub_ng_template_2_li_1_ng_container_3_a_1_Template(rf, ctx) {
     const htmlLabel_r5 = \u0275\u0275reference(4);
     const processedItem_r2 = \u0275\u0275nextContext(3).$implicit;
     const ctx_r2 = \u0275\u0275nextContext();
-    \u0275\u0275property("target", ctx_r2.getItemProp(processedItem_r2, "target"))("ngClass", \u0275\u0275pureFunction1(11, _c29, ctx_r2.getItemProp(processedItem_r2, "disabled")));
+    \u0275\u0275property("target", ctx_r2.getItemProp(processedItem_r2, "target"))("ngClass", \u0275\u0275pureFunction1(11, _c28, ctx_r2.getItemProp(processedItem_r2, "disabled")));
     \u0275\u0275attribute("href", ctx_r2.getItemProp(processedItem_r2, "url"), \u0275\u0275sanitizeUrl)("data-automationid", ctx_r2.getItemProp(processedItem_r2, "automationId"))("data-pc-section", "action")("tabindex", -1);
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.getItemProp(processedItem_r2, "icon"));
@@ -34562,7 +33761,7 @@ function TieredMenuSub_ng_template_2_li_1_ng_container_3_a_2_Template(rf, ctx) {
     const htmlLabel_r6 = \u0275\u0275reference(4);
     const processedItem_r2 = \u0275\u0275nextContext(3).$implicit;
     const ctx_r2 = \u0275\u0275nextContext();
-    \u0275\u0275property("routerLink", ctx_r2.getItemProp(processedItem_r2, "routerLink"))("queryParams", ctx_r2.getItemProp(processedItem_r2, "queryParams"))("routerLinkActive", "p-tieredmenu-item-link-active")("routerLinkActiveOptions", ctx_r2.getItemProp(processedItem_r2, "routerLinkActiveOptions") || \u0275\u0275pureFunction0(20, _c36))("target", ctx_r2.getItemProp(processedItem_r2, "target"))("ngClass", \u0275\u0275pureFunction1(21, _c29, ctx_r2.getItemProp(processedItem_r2, "disabled")))("fragment", ctx_r2.getItemProp(processedItem_r2, "fragment"))("queryParamsHandling", ctx_r2.getItemProp(processedItem_r2, "queryParamsHandling"))("preserveFragment", ctx_r2.getItemProp(processedItem_r2, "preserveFragment"))("skipLocationChange", ctx_r2.getItemProp(processedItem_r2, "skipLocationChange"))("replaceUrl", ctx_r2.getItemProp(processedItem_r2, "replaceUrl"))("state", ctx_r2.getItemProp(processedItem_r2, "state"));
+    \u0275\u0275property("routerLink", ctx_r2.getItemProp(processedItem_r2, "routerLink"))("queryParams", ctx_r2.getItemProp(processedItem_r2, "queryParams"))("routerLinkActive", "p-tieredmenu-item-link-active")("routerLinkActiveOptions", ctx_r2.getItemProp(processedItem_r2, "routerLinkActiveOptions") || \u0275\u0275pureFunction0(20, _c35))("target", ctx_r2.getItemProp(processedItem_r2, "target"))("ngClass", \u0275\u0275pureFunction1(21, _c28, ctx_r2.getItemProp(processedItem_r2, "disabled")))("fragment", ctx_r2.getItemProp(processedItem_r2, "fragment"))("queryParamsHandling", ctx_r2.getItemProp(processedItem_r2, "queryParamsHandling"))("preserveFragment", ctx_r2.getItemProp(processedItem_r2, "preserveFragment"))("skipLocationChange", ctx_r2.getItemProp(processedItem_r2, "skipLocationChange"))("replaceUrl", ctx_r2.getItemProp(processedItem_r2, "replaceUrl"))("state", ctx_r2.getItemProp(processedItem_r2, "state"));
     \u0275\u0275attribute("data-automationid", ctx_r2.getItemProp(processedItem_r2, "automationId"))("tabindex", -1)("data-pc-section", "action");
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.getItemProp(processedItem_r2, "icon"));
@@ -34606,7 +33805,7 @@ function TieredMenuSub_ng_template_2_li_1_ng_container_4_Template(rf, ctx) {
     const processedItem_r2 = \u0275\u0275nextContext(2).$implicit;
     const ctx_r2 = \u0275\u0275nextContext();
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r2.itemTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c46, processedItem_r2.item, ctx_r2.getItemProp(processedItem_r2, "items")));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r2.itemTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c45, processedItem_r2.item, ctx_r2.getItemProp(processedItem_r2, "items")));
   }
 }
 function TieredMenuSub_ng_template_2_li_1_p_tieredmenusub_5_Template(rf, ctx) {
@@ -34627,7 +33826,7 @@ function TieredMenuSub_ng_template_2_li_1_p_tieredmenusub_5_Template(rf, ctx) {
   if (rf & 2) {
     const processedItem_r2 = \u0275\u0275nextContext(2).$implicit;
     const ctx_r2 = \u0275\u0275nextContext();
-    \u0275\u0275property("items", processedItem_r2.items)("itemTemplate", ctx_r2.itemTemplate)("autoDisplay", ctx_r2.autoDisplay)("menuId", ctx_r2.menuId)("activeItemPath", ctx_r2.activeItemPath())("focusedItemId", ctx_r2.focusedItemId)("ariaLabelledBy", ctx_r2.getItemId(processedItem_r2))("level", ctx_r2.level + 1)("inlineStyles", \u0275\u0275pureFunction1(9, _c56, ctx_r2.isItemActive(processedItem_r2) ? "flex" : "none"));
+    \u0275\u0275property("items", processedItem_r2.items)("itemTemplate", ctx_r2.itemTemplate)("autoDisplay", ctx_r2.autoDisplay)("menuId", ctx_r2.menuId)("activeItemPath", ctx_r2.activeItemPath())("focusedItemId", ctx_r2.focusedItemId)("ariaLabelledBy", ctx_r2.getItemId(processedItem_r2))("level", ctx_r2.level + 1)("inlineStyles", \u0275\u0275pureFunction1(9, _c55, ctx_r2.isItemActive(processedItem_r2) ? "flex" : "none"));
   }
 }
 function TieredMenuSub_ng_template_2_li_1_Template(rf, ctx) {
@@ -34683,7 +33882,7 @@ function TieredMenuSub_ng_template_2_Template(rf, ctx) {
     \u0275\u0275property("ngIf", ctx_r2.isItemVisible(processedItem_r2) && !ctx_r2.getItemProp(processedItem_r2, "separator"));
   }
 }
-var _c66 = ["submenuicon"];
+var _c65 = ["submenuicon"];
 var _c75 = ["item"];
 var _c85 = ["rootmenu"];
 var _c95 = ["container"];
@@ -34692,11 +33891,11 @@ var _c105 = (a0, a1) => ({
   "p-tieredmenu-mobile": a0,
   "p-tieredmenu-overlay": a1
 });
-var _c116 = (a0, a1) => ({
+var _c115 = (a0, a1) => ({
   showTransitionParams: a0,
   hideTransitionParams: a1
 });
-var _c125 = (a0) => ({
+var _c124 = (a0) => ({
   value: "visible",
   params: a0
 });
@@ -34744,13 +33943,13 @@ function TieredMenu_div_0_Template(rf, ctx) {
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext();
     \u0275\u0275classMap(ctx_r1.styleClass);
-    \u0275\u0275property("id", ctx_r1.id)("ngClass", \u0275\u0275pureFunction2(22, _c105, ctx_r1.queryMatches, ctx_r1.popup))("ngStyle", ctx_r1.style)("@overlayAnimation", \u0275\u0275pureFunction1(28, _c125, \u0275\u0275pureFunction2(25, _c116, ctx_r1.showTransitionOptions, ctx_r1.hideTransitionOptions)))("@.disabled", ctx_r1.popup !== true);
+    \u0275\u0275property("id", ctx_r1.id)("ngClass", \u0275\u0275pureFunction2(22, _c105, ctx_r1.queryMatches, ctx_r1.popup))("ngStyle", ctx_r1.style)("@overlayAnimation", \u0275\u0275pureFunction1(28, _c124, \u0275\u0275pureFunction2(25, _c115, ctx_r1.showTransitionOptions, ctx_r1.hideTransitionOptions)))("@.disabled", ctx_r1.popup !== true);
     \u0275\u0275attribute("data-pc-section", "root")("data-pc-name", "tieredmenu");
     \u0275\u0275advance(2);
     \u0275\u0275property("root", true)("items", ctx_r1.processedItems)("itemTemplate", ctx_r1.itemTemplate || ctx_r1._itemTemplate)("menuId", ctx_r1.id)("tabindex", !ctx_r1.disabled ? ctx_r1.tabindex : -1)("ariaLabel", ctx_r1.ariaLabel)("ariaLabelledBy", ctx_r1.ariaLabelledBy)("baseZIndex", ctx_r1.baseZIndex)("autoZIndex", ctx_r1.autoZIndex)("autoDisplay", ctx_r1.autoDisplay)("popup", ctx_r1.popup)("focusedItemId", ctx_r1.focused ? ctx_r1.focusedItemId : void 0)("activeItemPath", ctx_r1.activeItemPath());
   }
 }
-var theme8 = ({
+var theme6 = ({
   dt
 }) => `
 .p-tieredmenu {
@@ -34906,7 +34105,7 @@ var theme8 = ({
     transform: rotate(-90deg);
 }
 `;
-var classes9 = {
+var classes7 = {
   root: ({
     instance,
     props
@@ -34934,8 +34133,8 @@ var classes9 = {
 };
 var TieredMenuStyle = class _TieredMenuStyle extends BaseStyle {
   name = "tieredmenu";
-  theme = theme8;
-  classes = classes9;
+  theme = theme6;
+  classes = classes7;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275TieredMenuStyle_BaseFactory;
     return function TieredMenuStyle_Factory(__ngFactoryType__) {
@@ -35090,7 +34289,7 @@ var TieredMenuSub = class _TieredMenuSub extends BaseComponent {
     selectors: [["p-tieredMenuSub"], ["p-tieredmenusub"]],
     viewQuery: function TieredMenuSub_Query(rf, ctx) {
       if (rf & 1) {
-        \u0275\u0275viewQuery(_c011, 7);
+        \u0275\u0275viewQuery(_c09, 7);
       }
       if (rf & 2) {
         let _t;
@@ -35143,7 +34342,7 @@ var TieredMenuSub = class _TieredMenuSub extends BaseComponent {
         \u0275\u0275elementEnd();
       }
       if (rf & 2) {
-        \u0275\u0275property("ngClass", \u0275\u0275pureFunction2(10, _c115, !ctx.root, ctx.root))("id", ctx.menuId + "_list")("tabindex", ctx.tabindex)("ngStyle", ctx.inlineStyles);
+        \u0275\u0275property("ngClass", \u0275\u0275pureFunction2(10, _c114, !ctx.root, ctx.root))("id", ctx.menuId + "_list")("tabindex", ctx.tabindex)("ngStyle", ctx.inlineStyles);
         \u0275\u0275attribute("aria-label", ctx.ariaLabel)("aria-labelledBy", ctx.ariaLabelledBy)("aria-activedescendant", ctx.focusedItemId)("aria-orientation", "vertical")("data-pc-section", "menu");
         \u0275\u0275advance(2);
         \u0275\u0275property("ngForOf", ctx.items);
@@ -36173,7 +35372,7 @@ var TieredMenu = class _TieredMenu extends BaseComponent {
     selectors: [["p-tieredMenu"], ["p-tieredmenu"], ["p-tiered-menu"]],
     contentQueries: function TieredMenu_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c66, 4);
+        \u0275\u0275contentQuery(dirIndex, _c65, 4);
         \u0275\u0275contentQuery(dirIndex, _c75, 4);
         \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
       }
@@ -36426,11 +35625,11 @@ var TieredMenuModule = class _TieredMenuModule {
 })();
 
 // node_modules/primeng/fesm2022/primeng-splitbutton.mjs
-var _c012 = ["content"];
-var _c117 = ["dropdownicon"];
-var _c210 = ["container"];
-var _c37 = ["defaultbtn"];
-var _c47 = ["menu"];
+var _c010 = ["content"];
+var _c116 = ["dropdownicon"];
+var _c29 = ["container"];
+var _c36 = ["defaultbtn"];
+var _c46 = ["menu"];
 function SplitButton_ng_container_2_ng_container_2_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementContainer(0);
@@ -36511,7 +35710,7 @@ function SplitButton_ng_container_7_Template(rf, ctx) {
     \u0275\u0275property("ngTemplateOutlet", ctx_r2.dropdownIconTemplate || ctx_r2._dropdownIconTemplate);
   }
 }
-var theme9 = ({
+var theme7 = ({
   dt
 }) => `
 .p-splitbutton {
@@ -36563,7 +35762,7 @@ var theme9 = ({
     box-shadow: ${dt("splitbutton.raised.shadow")};
 }
 `;
-var classes10 = {
+var classes8 = {
   root: ({
     props
   }) => ["p-splitbutton p-component", {
@@ -36576,8 +35775,8 @@ var classes10 = {
 };
 var SplitButtonStyle = class _SplitButtonStyle extends BaseStyle {
   name = "splitbutton";
-  theme = theme9;
-  classes = classes10;
+  theme = theme7;
+  classes = classes8;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275SplitButtonStyle_BaseFactory;
     return function SplitButtonStyle_Factory(__ngFactoryType__) {
@@ -36864,8 +36063,8 @@ var SplitButton = class _SplitButton extends BaseComponent {
     selectors: [["p-splitbutton"], ["p-splitButton"], ["p-split-button"]],
     contentQueries: function SplitButton_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c012, 4);
-        \u0275\u0275contentQuery(dirIndex, _c117, 4);
+        \u0275\u0275contentQuery(dirIndex, _c010, 4);
+        \u0275\u0275contentQuery(dirIndex, _c116, 4);
         \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
       }
       if (rf & 2) {
@@ -36877,9 +36076,9 @@ var SplitButton = class _SplitButton extends BaseComponent {
     },
     viewQuery: function SplitButton_Query(rf, ctx) {
       if (rf & 1) {
-        \u0275\u0275viewQuery(_c210, 5);
-        \u0275\u0275viewQuery(_c37, 5);
-        \u0275\u0275viewQuery(_c47, 5);
+        \u0275\u0275viewQuery(_c29, 5);
+        \u0275\u0275viewQuery(_c36, 5);
+        \u0275\u0275viewQuery(_c46, 5);
       }
       if (rf & 2) {
         let _t;
@@ -37262,19 +36461,19 @@ var SplitButtonModule = class _SplitButtonModule {
 })();
 
 // node_modules/primeng/fesm2022/primeng-datepicker.mjs
-var _c013 = ["date"];
-var _c118 = ["header"];
-var _c211 = ["footer"];
-var _c38 = ["disabledDate"];
-var _c48 = ["decade"];
-var _c57 = ["previousicon"];
-var _c67 = ["nexticon"];
+var _c011 = ["date"];
+var _c117 = ["header"];
+var _c210 = ["footer"];
+var _c37 = ["disabledDate"];
+var _c47 = ["decade"];
+var _c56 = ["previousicon"];
+var _c66 = ["nexticon"];
 var _c76 = ["triggericon"];
 var _c86 = ["clearicon"];
 var _c96 = ["decrementicon"];
 var _c106 = ["incrementicon"];
-var _c119 = ["inputicon"];
-var _c126 = ["container"];
+var _c118 = ["inputicon"];
+var _c125 = ["container"];
 var _c134 = ["inputfield"];
 var _c144 = ["contentWrapper"];
 var _c153 = [[["p-header"]], [["p-footer"]]];
@@ -37309,7 +36508,7 @@ var _c243 = (a0, a1) => ({
   "p-datepicker-month-selected": a0,
   "p-disabled": a1
 });
-var _c253 = (a0, a1) => ({
+var _c252 = (a0, a1) => ({
   "p-datepicker-year": true,
   "p-datepicker-year-selected": a0,
   "p-disabled": a1
@@ -37968,7 +37167,7 @@ function DatePicker_div_3_ng_container_4_div_4_span_1_Template(rf, ctx) {
   if (rf & 2) {
     const y_r23 = ctx.$implicit;
     const ctx_r1 = \u0275\u0275nextContext(4);
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction2(3, _c253, ctx_r1.isYearSelected(y_r23), ctx_r1.isYearDisabled(y_r23)));
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction2(3, _c252, ctx_r1.isYearSelected(y_r23), ctx_r1.isYearDisabled(y_r23)));
     \u0275\u0275advance();
     \u0275\u0275textInterpolate1(" ", y_r23, " ");
     \u0275\u0275advance();
@@ -38602,7 +37801,7 @@ function DatePicker_div_3_Template(rf, ctx) {
     \u0275\u0275property("ngTemplateOutlet", ctx_r1.footerTemplate || ctx_r1._footerTemplate);
   }
 }
-var theme10 = ({
+var theme8 = ({
   dt
 }) => `
 .p-datepicker {
@@ -39029,7 +38228,7 @@ var inlineStyles3 = {
     position: props.appendTo === "self" ? "relative" : void 0
   })
 };
-var classes11 = {
+var classes9 = {
   root: ({
     instance
   }) => ({
@@ -39125,8 +38324,8 @@ var classes11 = {
 };
 var DatePickerStyle = class _DatePickerStyle extends BaseStyle {
   name = "datepicker";
-  theme = theme10;
-  classes = classes11;
+  theme = theme8;
+  classes = classes9;
   inlineStyles = inlineStyles3;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275DatePickerStyle_BaseFactory;
@@ -42169,18 +41368,18 @@ var DatePicker = class _DatePicker extends BaseComponent {
     selectors: [["p-datePicker"], ["p-datepicker"], ["p-date-picker"]],
     contentQueries: function DatePicker_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c013, 4);
-        \u0275\u0275contentQuery(dirIndex, _c118, 4);
-        \u0275\u0275contentQuery(dirIndex, _c211, 4);
-        \u0275\u0275contentQuery(dirIndex, _c38, 4);
-        \u0275\u0275contentQuery(dirIndex, _c48, 4);
-        \u0275\u0275contentQuery(dirIndex, _c57, 4);
-        \u0275\u0275contentQuery(dirIndex, _c67, 4);
+        \u0275\u0275contentQuery(dirIndex, _c011, 4);
+        \u0275\u0275contentQuery(dirIndex, _c117, 4);
+        \u0275\u0275contentQuery(dirIndex, _c210, 4);
+        \u0275\u0275contentQuery(dirIndex, _c37, 4);
+        \u0275\u0275contentQuery(dirIndex, _c47, 4);
+        \u0275\u0275contentQuery(dirIndex, _c56, 4);
+        \u0275\u0275contentQuery(dirIndex, _c66, 4);
         \u0275\u0275contentQuery(dirIndex, _c76, 4);
         \u0275\u0275contentQuery(dirIndex, _c86, 4);
         \u0275\u0275contentQuery(dirIndex, _c96, 4);
         \u0275\u0275contentQuery(dirIndex, _c106, 4);
-        \u0275\u0275contentQuery(dirIndex, _c119, 4);
+        \u0275\u0275contentQuery(dirIndex, _c118, 4);
         \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
       }
       if (rf & 2) {
@@ -42202,7 +41401,7 @@ var DatePicker = class _DatePicker extends BaseComponent {
     },
     viewQuery: function DatePicker_Query(rf, ctx) {
       if (rf & 1) {
-        \u0275\u0275viewQuery(_c126, 5);
+        \u0275\u0275viewQuery(_c125, 5);
         \u0275\u0275viewQuery(_c134, 5);
         \u0275\u0275viewQuery(_c144, 5);
       }
@@ -43257,10 +42456,10 @@ var DatePickerModule = class _DatePickerModule {
 })();
 
 // node_modules/primeng/fesm2022/primeng-inputnumber.mjs
-var _c014 = ["clearicon"];
-var _c120 = ["incrementbuttonicon"];
-var _c213 = ["decrementbuttonicon"];
-var _c39 = ["input"];
+var _c012 = ["clearicon"];
+var _c119 = ["incrementbuttonicon"];
+var _c211 = ["decrementbuttonicon"];
+var _c38 = ["input"];
 function InputNumber_ng_container_2_TimesIcon_1_Template(rf, ctx) {
   if (rf & 1) {
     const _r2 = \u0275\u0275getCurrentView();
@@ -43624,7 +42823,7 @@ function InputNumber_button_5_Template(rf, ctx) {
     \u0275\u0275property("ngIf", !ctx_r2.decrementButtonIcon);
   }
 }
-var theme11 = ({
+var theme9 = ({
   dt
 }) => `
 .p-inputnumber {
@@ -43814,7 +43013,7 @@ p-inputnumber.ng-invalid.ng-dirty > .p-inputtext::placeholder {
     color: ${dt("inputtext.invalid.placeholder.color")};
 }
 `;
-var classes12 = {
+var classes10 = {
   root: ({
     instance
   }) => ({
@@ -43843,8 +43042,8 @@ var classes12 = {
 };
 var InputNumberStyle = class _InputNumberStyle extends BaseStyle {
   name = "inputnumber";
-  theme = theme11;
-  classes = classes12;
+  theme = theme9;
+  classes = classes10;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275InputNumberStyle_BaseFactory;
     return function InputNumberStyle_Factory(__ngFactoryType__) {
@@ -45049,9 +44248,9 @@ var InputNumber = class _InputNumber extends BaseComponent {
     selectors: [["p-inputNumber"], ["p-inputnumber"], ["p-input-number"]],
     contentQueries: function InputNumber_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c014, 4);
-        \u0275\u0275contentQuery(dirIndex, _c120, 4);
-        \u0275\u0275contentQuery(dirIndex, _c213, 4);
+        \u0275\u0275contentQuery(dirIndex, _c012, 4);
+        \u0275\u0275contentQuery(dirIndex, _c119, 4);
+        \u0275\u0275contentQuery(dirIndex, _c211, 4);
         \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
       }
       if (rf & 2) {
@@ -45064,7 +44263,7 @@ var InputNumber = class _InputNumber extends BaseComponent {
     },
     viewQuery: function InputNumber_Query(rf, ctx) {
       if (rf & 1) {
-        \u0275\u0275viewQuery(_c39, 5);
+        \u0275\u0275viewQuery(_c38, 5);
       }
       if (rf & 2) {
         let _t;
@@ -45591,15 +44790,15 @@ var InputNumberModule = class _InputNumberModule {
 })();
 
 // node_modules/primeng/fesm2022/primeng-paginator.mjs
-var _c015 = ["dropdownicon"];
-var _c121 = ["firstpagelinkicon"];
-var _c214 = ["previouspagelinkicon"];
-var _c310 = ["lastpagelinkicon"];
-var _c49 = ["nextpagelinkicon"];
-var _c58 = (a0) => ({
+var _c013 = ["dropdownicon"];
+var _c120 = ["firstpagelinkicon"];
+var _c213 = ["previouspagelinkicon"];
+var _c39 = ["lastpagelinkicon"];
+var _c48 = ["nextpagelinkicon"];
+var _c57 = (a0) => ({
   "p-disabled": a0
 });
-var _c68 = (a0) => ({
+var _c67 = (a0) => ({
   $implicit: a0
 });
 var _c77 = (a0) => ({
@@ -45620,7 +44819,7 @@ function Paginator_div_0_div_1_Template(rf, ctx) {
     const ctx_r1 = \u0275\u0275nextContext(2);
     \u0275\u0275attribute("data-pc-section", "start");
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r1.templateLeft)("ngTemplateOutletContext", \u0275\u0275pureFunction1(3, _c68, ctx_r1.paginatorState));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r1.templateLeft)("ngTemplateOutletContext", \u0275\u0275pureFunction1(3, _c67, ctx_r1.paginatorState));
   }
 }
 function Paginator_div_0_span_2_Template(rf, ctx) {
@@ -45676,7 +44875,7 @@ function Paginator_div_0_button_3_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("disabled", ctx_r1.isFirstPage() || ctx_r1.empty())("ngClass", \u0275\u0275pureFunction1(5, _c58, ctx_r1.isFirstPage() || ctx_r1.empty()));
+    \u0275\u0275property("disabled", ctx_r1.isFirstPage() || ctx_r1.empty())("ngClass", \u0275\u0275pureFunction1(5, _c57, ctx_r1.isFirstPage() || ctx_r1.empty()));
     \u0275\u0275attribute("aria-label", ctx_r1.getAriaLabel("firstPageLabel"));
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", !ctx_r1.firstPageLinkIconTemplate && !ctx_r1._firstPageLinkIconTemplate);
@@ -45765,7 +44964,7 @@ function Paginator_div_0_p_select_8_ng_container_2_ng_template_1_Template(rf, ct
   if (rf & 2) {
     const item_r7 = ctx.$implicit;
     const ctx_r1 = \u0275\u0275nextContext(4);
-    \u0275\u0275property("ngTemplateOutlet", ctx_r1.jumpToPageItemTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c68, item_r7));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r1.jumpToPageItemTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c67, item_r7));
   }
 }
 function Paginator_div_0_p_select_8_ng_container_2_Template(rf, ctx) {
@@ -45884,7 +45083,7 @@ function Paginator_div_0_button_12_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("disabled", ctx_r1.isLastPage() || ctx_r1.empty())("ngClass", \u0275\u0275pureFunction1(5, _c58, ctx_r1.isLastPage() || ctx_r1.empty()));
+    \u0275\u0275property("disabled", ctx_r1.isLastPage() || ctx_r1.empty())("ngClass", \u0275\u0275pureFunction1(5, _c57, ctx_r1.isLastPage() || ctx_r1.empty()));
     \u0275\u0275attribute("aria-label", ctx_r1.getAriaLabel("lastPageLabel"));
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", !ctx_r1.lastPageLinkIconTemplate && !ctx_r1._lastPageLinkIconTemplate);
@@ -45920,7 +45119,7 @@ function Paginator_div_0_p_select_14_ng_container_1_ng_template_1_Template(rf, c
   if (rf & 2) {
     const item_r11 = ctx.$implicit;
     const ctx_r1 = \u0275\u0275nextContext(4);
-    \u0275\u0275property("ngTemplateOutlet", ctx_r1.dropdownItemTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c68, item_r11));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r1.dropdownItemTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c67, item_r11));
   }
 }
 function Paginator_div_0_p_select_14_ng_container_1_Template(rf, ctx) {
@@ -45993,7 +45192,7 @@ function Paginator_div_0_div_15_Template(rf, ctx) {
     const ctx_r1 = \u0275\u0275nextContext(2);
     \u0275\u0275attribute("data-pc-section", "end");
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r1.templateRight)("ngTemplateOutletContext", \u0275\u0275pureFunction1(3, _c68, ctx_r1.paginatorState));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r1.templateRight)("ngTemplateOutletContext", \u0275\u0275pureFunction1(3, _c67, ctx_r1.paginatorState));
   }
 }
 function Paginator_div_0_Template(rf, ctx) {
@@ -46033,7 +45232,7 @@ function Paginator_div_0_Template(rf, ctx) {
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r1.showFirstLastIcon);
     \u0275\u0275advance();
-    \u0275\u0275property("disabled", ctx_r1.isFirstPage() || ctx_r1.empty())("ngClass", \u0275\u0275pureFunction1(25, _c58, ctx_r1.isFirstPage() || ctx_r1.empty()));
+    \u0275\u0275property("disabled", ctx_r1.isFirstPage() || ctx_r1.empty())("ngClass", \u0275\u0275pureFunction1(25, _c57, ctx_r1.isFirstPage() || ctx_r1.empty()));
     \u0275\u0275attribute("aria-label", ctx_r1.getAriaLabel("prevPageLabel"));
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", !ctx_r1.previousPageLinkIconTemplate && !ctx_r1._previousPageLinkIconTemplate);
@@ -46044,7 +45243,7 @@ function Paginator_div_0_Template(rf, ctx) {
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r1.showJumpToPageDropdown);
     \u0275\u0275advance();
-    \u0275\u0275property("disabled", ctx_r1.isLastPage() || ctx_r1.empty())("ngClass", \u0275\u0275pureFunction1(27, _c58, ctx_r1.isLastPage() || ctx_r1.empty()));
+    \u0275\u0275property("disabled", ctx_r1.isLastPage() || ctx_r1.empty())("ngClass", \u0275\u0275pureFunction1(27, _c57, ctx_r1.isLastPage() || ctx_r1.empty()));
     \u0275\u0275attribute("aria-label", ctx_r1.getAriaLabel("nextPageLabel"));
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", !ctx_r1.nextPageLinkIconTemplate && !ctx_r1._nextPageLinkIconTemplate);
@@ -46060,7 +45259,7 @@ function Paginator_div_0_Template(rf, ctx) {
     \u0275\u0275property("ngIf", ctx_r1.templateRight);
   }
 }
-var theme12 = ({
+var theme10 = ({
   dt
 }) => `
 .p-paginator {
@@ -46160,7 +45359,7 @@ var theme12 = ({
     max-width: ${dt("paginator.jump.to.page.input.max.width")};
 }
 `;
-var classes13 = {
+var classes11 = {
   paginator: ({
     instance,
     key: key2
@@ -46209,8 +45408,8 @@ var classes13 = {
 };
 var PaginatorStyle = class _PaginatorStyle extends BaseStyle {
   name = "paginator";
-  theme = theme12;
-  classes = classes13;
+  theme = theme10;
+  classes = classes11;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275PaginatorStyle_BaseFactory;
     return function PaginatorStyle_Factory(__ngFactoryType__) {
@@ -46615,11 +45814,11 @@ var Paginator = class _Paginator extends BaseComponent {
     selectors: [["p-paginator"]],
     contentQueries: function Paginator_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c015, 4);
-        \u0275\u0275contentQuery(dirIndex, _c121, 4);
-        \u0275\u0275contentQuery(dirIndex, _c214, 4);
-        \u0275\u0275contentQuery(dirIndex, _c310, 4);
-        \u0275\u0275contentQuery(dirIndex, _c49, 4);
+        \u0275\u0275contentQuery(dirIndex, _c013, 4);
+        \u0275\u0275contentQuery(dirIndex, _c120, 4);
+        \u0275\u0275contentQuery(dirIndex, _c213, 4);
+        \u0275\u0275contentQuery(dirIndex, _c39, 4);
+        \u0275\u0275contentQuery(dirIndex, _c48, 4);
         \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
       }
       if (rf & 2) {
@@ -46953,19 +46152,19 @@ var PaginatorModule = class _PaginatorModule {
 })();
 
 // node_modules/primeng/fesm2022/primeng-table.mjs
-var _c016 = ["header"];
-var _c127 = ["headergrouped"];
-var _c215 = ["body"];
-var _c311 = ["loadingbody"];
-var _c410 = ["caption"];
-var _c59 = ["footer"];
-var _c69 = ["footergrouped"];
+var _c014 = ["header"];
+var _c121 = ["headergrouped"];
+var _c214 = ["body"];
+var _c310 = ["loadingbody"];
+var _c49 = ["caption"];
+var _c58 = ["footer"];
+var _c68 = ["footergrouped"];
 var _c78 = ["summary"];
 var _c87 = ["colgroup"];
 var _c97 = ["expandedrow"];
 var _c107 = ["groupheader"];
 var _c1110 = ["groupfooter"];
-var _c128 = ["frozenexpandedrow"];
+var _c126 = ["frozenexpandedrow"];
 var _c135 = ["frozenheader"];
 var _c145 = ["frozenbody"];
 var _c154 = ["frozenfooter"];
@@ -46974,11 +46173,11 @@ var _c174 = ["emptymessage"];
 var _c184 = ["paginatorleft"];
 var _c193 = ["paginatorright"];
 var _c203 = ["paginatordropdownitem"];
-var _c216 = ["loadingicon"];
+var _c215 = ["loadingicon"];
 var _c224 = ["reorderindicatorupicon"];
 var _c234 = ["reorderindicatordownicon"];
 var _c244 = ["sorticon"];
-var _c254 = ["checkboxicon"];
+var _c253 = ["checkboxicon"];
 var _c262 = ["headercheckboxicon"];
 var _c272 = ["paginatordropdownicon"];
 var _c282 = ["paginatorfirstpagelinkicon"];
@@ -48050,7 +47249,7 @@ var _c552 = ["filtericon"];
 var _c562 = ["removeruleicon"];
 var _c572 = ["addruleicon"];
 var _c582 = ["clearfiltericon"];
-var _c592 = ["clearBtn"];
+var _c59 = ["clearBtn"];
 var _c60 = (a0) => ({
   hasFilter: a0
 });
@@ -48590,7 +47789,7 @@ function ColumnFilterFormElement_ng_template_1_Template(rf, ctx) {
     \u0275\u0275property("ngSwitchCase", "date");
   }
 }
-var theme13 = ({
+var theme11 = ({
   dt
 }) => `
 .p-datatable {
@@ -49203,7 +48402,7 @@ p-datatable-gridlines .p-datatable-tbody > tr:last-child > td {
     outline-offset: ${dt("datatable.row.toggle.button.focus.ring.offset")};
 }
 `;
-var classes14 = {
+var classes12 = {
   root: ({
     instance
   }) => ({
@@ -49319,8 +48518,8 @@ var inlineStyles4 = {
 };
 var TableStyle = class _TableStyle extends BaseStyle {
   name = "datatable";
-  theme = theme13;
-  classes = classes14;
+  theme = theme11;
+  classes = classes12;
   inlineStyles = inlineStyles4;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275TableStyle_BaseFactory;
@@ -51885,19 +51084,19 @@ var Table = class _Table extends BaseComponent {
     selectors: [["p-table"]],
     contentQueries: function Table_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c016, 4);
-        \u0275\u0275contentQuery(dirIndex, _c127, 4);
-        \u0275\u0275contentQuery(dirIndex, _c215, 4);
-        \u0275\u0275contentQuery(dirIndex, _c311, 4);
-        \u0275\u0275contentQuery(dirIndex, _c410, 4);
-        \u0275\u0275contentQuery(dirIndex, _c59, 4);
-        \u0275\u0275contentQuery(dirIndex, _c69, 4);
+        \u0275\u0275contentQuery(dirIndex, _c014, 4);
+        \u0275\u0275contentQuery(dirIndex, _c121, 4);
+        \u0275\u0275contentQuery(dirIndex, _c214, 4);
+        \u0275\u0275contentQuery(dirIndex, _c310, 4);
+        \u0275\u0275contentQuery(dirIndex, _c49, 4);
+        \u0275\u0275contentQuery(dirIndex, _c58, 4);
+        \u0275\u0275contentQuery(dirIndex, _c68, 4);
         \u0275\u0275contentQuery(dirIndex, _c78, 4);
         \u0275\u0275contentQuery(dirIndex, _c87, 4);
         \u0275\u0275contentQuery(dirIndex, _c97, 4);
         \u0275\u0275contentQuery(dirIndex, _c107, 4);
         \u0275\u0275contentQuery(dirIndex, _c1110, 4);
-        \u0275\u0275contentQuery(dirIndex, _c128, 4);
+        \u0275\u0275contentQuery(dirIndex, _c126, 4);
         \u0275\u0275contentQuery(dirIndex, _c135, 4);
         \u0275\u0275contentQuery(dirIndex, _c145, 4);
         \u0275\u0275contentQuery(dirIndex, _c154, 4);
@@ -51906,11 +51105,11 @@ var Table = class _Table extends BaseComponent {
         \u0275\u0275contentQuery(dirIndex, _c184, 4);
         \u0275\u0275contentQuery(dirIndex, _c193, 4);
         \u0275\u0275contentQuery(dirIndex, _c203, 4);
-        \u0275\u0275contentQuery(dirIndex, _c216, 4);
+        \u0275\u0275contentQuery(dirIndex, _c215, 4);
         \u0275\u0275contentQuery(dirIndex, _c224, 4);
         \u0275\u0275contentQuery(dirIndex, _c234, 4);
         \u0275\u0275contentQuery(dirIndex, _c244, 4);
-        \u0275\u0275contentQuery(dirIndex, _c254, 4);
+        \u0275\u0275contentQuery(dirIndex, _c253, 4);
         \u0275\u0275contentQuery(dirIndex, _c262, 4);
         \u0275\u0275contentQuery(dirIndex, _c272, 4);
         \u0275\u0275contentQuery(dirIndex, _c282, 4);
@@ -56487,9 +55686,9 @@ var ColumnFilter = class _ColumnFilter extends BaseComponent {
     selectors: [["p-columnFilter"]],
     contentQueries: function ColumnFilter_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c016, 4);
+        \u0275\u0275contentQuery(dirIndex, _c014, 4);
         \u0275\u0275contentQuery(dirIndex, _c542, 4);
-        \u0275\u0275contentQuery(dirIndex, _c59, 4);
+        \u0275\u0275contentQuery(dirIndex, _c58, 4);
         \u0275\u0275contentQuery(dirIndex, _c552, 4);
         \u0275\u0275contentQuery(dirIndex, _c562, 4);
         \u0275\u0275contentQuery(dirIndex, _c572, 4);
@@ -56511,7 +55710,7 @@ var ColumnFilter = class _ColumnFilter extends BaseComponent {
     viewQuery: function ColumnFilter_Query(rf, ctx) {
       if (rf & 1) {
         \u0275\u0275viewQuery(Button, 5, ElementRef);
-        \u0275\u0275viewQuery(_c592, 5);
+        \u0275\u0275viewQuery(_c59, 5);
       }
       if (rf & 2) {
         let _t;
@@ -57179,10 +56378,10 @@ var TableModule = class _TableModule {
 })();
 
 // node_modules/primeng/fesm2022/primeng-timeline.mjs
-var _c017 = ["content"];
-var _c129 = ["opposite"];
-var _c217 = ["marker"];
-var _c312 = (a0) => ({
+var _c015 = ["content"];
+var _c127 = ["opposite"];
+var _c216 = ["marker"];
+var _c311 = (a0) => ({
   $implicit: a0
 });
 function Timeline_div_0_ng_container_2_Template(rf, ctx) {
@@ -57205,7 +56404,7 @@ function Timeline_div_0_ng_container_4_Template(rf, ctx) {
     const event_r1 = \u0275\u0275nextContext().$implicit;
     const ctx_r1 = \u0275\u0275nextContext();
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r1.markerTemplate || ctx_r1._markerTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c312, event_r1));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r1.markerTemplate || ctx_r1._markerTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c311, event_r1));
   }
 }
 function Timeline_div_0_ng_template_5_Template(rf, ctx) {
@@ -57247,7 +56446,7 @@ function Timeline_div_0_Template(rf, ctx) {
     \u0275\u0275advance();
     \u0275\u0275attribute("data-pc-section", "opposite");
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r1.oppositeTemplate || ctx_r1._oppositeTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(11, _c312, event_r1));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r1.oppositeTemplate || ctx_r1._oppositeTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(11, _c311, event_r1));
     \u0275\u0275advance();
     \u0275\u0275attribute("data-pc-section", "separator");
     \u0275\u0275advance();
@@ -57257,10 +56456,10 @@ function Timeline_div_0_Template(rf, ctx) {
     \u0275\u0275advance();
     \u0275\u0275attribute("data-pc-section", "content");
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r1.contentTemplate || ctx_r1._contentTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(13, _c312, event_r1));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r1.contentTemplate || ctx_r1._contentTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(13, _c311, event_r1));
   }
 }
-var theme14 = ({
+var theme12 = ({
   dt
 }) => `
 .p-timeline {
@@ -57416,7 +56615,7 @@ var theme14 = ({
     flex-direction: column-reverse;
 }
 `;
-var classes15 = {
+var classes13 = {
   root: ({
     props
   }) => ["p-timeline p-component", "p-timeline-" + props.align, "p-timeline-" + props.layout],
@@ -57429,8 +56628,8 @@ var classes15 = {
 };
 var TimelineStyle = class _TimelineStyle extends BaseStyle {
   name = "timeline";
-  theme = theme14;
-  classes = classes15;
+  theme = theme12;
+  classes = classes13;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275TimelineStyle_BaseFactory;
     return function TimelineStyle_Factory(__ngFactoryType__) {
@@ -57535,9 +56734,9 @@ var Timeline = class _Timeline extends BaseComponent {
     selectors: [["p-timeline"]],
     contentQueries: function Timeline_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c017, 4);
-        \u0275\u0275contentQuery(dirIndex, _c129, 4);
-        \u0275\u0275contentQuery(dirIndex, _c217, 4);
+        \u0275\u0275contentQuery(dirIndex, _c015, 4);
+        \u0275\u0275contentQuery(dirIndex, _c127, 4);
+        \u0275\u0275contentQuery(dirIndex, _c216, 4);
         \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
       }
       if (rf & 2) {
@@ -57916,7 +57115,7 @@ var SetupProjectComponent = class _SetupProjectComponent {
 })();
 
 // src/app/views/project-assistant/switch-project.component.ts
-var _c018 = () => ({ "font-size": "0.75rem" });
+var _c016 = () => ({ "font-size": "0.75rem" });
 var _forTrack03 = ($index, $item) => $item.key + $item.storageType;
 function SwitchProjectComponent_Conditional_6_Template(rf, ctx) {
   if (rf & 1) {
@@ -57969,7 +57168,7 @@ function SwitchProjectComponent_Conditional_22_For_2_ng_template_2_Conditional_2
     \u0275\u0275element(0, "p-tag", 42);
   }
   if (rf & 2) {
-    \u0275\u0275styleMap(\u0275\u0275pureFunction0(2, _c018));
+    \u0275\u0275styleMap(\u0275\u0275pureFunction0(2, _c016));
   }
 }
 function SwitchProjectComponent_Conditional_22_For_2_ng_template_2_Conditional_3_Template(rf, ctx) {
@@ -57977,7 +57176,7 @@ function SwitchProjectComponent_Conditional_22_For_2_ng_template_2_Conditional_3
     \u0275\u0275element(0, "p-tag", 42);
   }
   if (rf & 2) {
-    \u0275\u0275styleMap(\u0275\u0275pureFunction0(2, _c018));
+    \u0275\u0275styleMap(\u0275\u0275pureFunction0(2, _c016));
   }
 }
 function SwitchProjectComponent_Conditional_22_For_2_ng_template_2_Conditional_4_Template(rf, ctx) {
@@ -57985,7 +57184,7 @@ function SwitchProjectComponent_Conditional_22_For_2_ng_template_2_Conditional_4
     \u0275\u0275element(0, "p-tag", 43);
   }
   if (rf & 2) {
-    \u0275\u0275styleMap(\u0275\u0275pureFunction0(2, _c018));
+    \u0275\u0275styleMap(\u0275\u0275pureFunction0(2, _c016));
   }
 }
 function SwitchProjectComponent_Conditional_22_For_2_ng_template_2_Conditional_5_Template(rf, ctx) {
@@ -57993,7 +57192,7 @@ function SwitchProjectComponent_Conditional_22_For_2_ng_template_2_Conditional_5
     \u0275\u0275element(0, "p-tag", 44);
   }
   if (rf & 2) {
-    \u0275\u0275styleMap(\u0275\u0275pureFunction0(2, _c018));
+    \u0275\u0275styleMap(\u0275\u0275pureFunction0(2, _c016));
   }
 }
 function SwitchProjectComponent_Conditional_22_For_2_ng_template_2_Conditional_6_Template(rf, ctx) {
@@ -58001,7 +57200,7 @@ function SwitchProjectComponent_Conditional_22_For_2_ng_template_2_Conditional_6
     \u0275\u0275element(0, "p-tag", 45);
   }
   if (rf & 2) {
-    \u0275\u0275styleMap(\u0275\u0275pureFunction0(2, _c018));
+    \u0275\u0275styleMap(\u0275\u0275pureFunction0(2, _c016));
   }
 }
 function SwitchProjectComponent_Conditional_22_For_2_ng_template_2_Conditional_7_Template(rf, ctx) {
@@ -58009,7 +57208,7 @@ function SwitchProjectComponent_Conditional_22_For_2_ng_template_2_Conditional_7
     \u0275\u0275element(0, "p-tag", 46);
   }
   if (rf & 2) {
-    \u0275\u0275styleMap(\u0275\u0275pureFunction0(2, _c018));
+    \u0275\u0275styleMap(\u0275\u0275pureFunction0(2, _c016));
   }
 }
 function SwitchProjectComponent_Conditional_22_For_2_ng_template_2_Conditional_9_Template(rf, ctx) {
@@ -58889,13 +58088,13 @@ var SwitchProjectComponent = class _SwitchProjectComponent {
 })();
 
 // node_modules/primeng/fesm2022/primeng-drawer.mjs
-var _c019 = ["header"];
-var _c130 = ["footer"];
-var _c218 = ["content"];
-var _c313 = ["closeicon"];
-var _c411 = ["headless"];
+var _c017 = ["header"];
+var _c128 = ["footer"];
+var _c217 = ["content"];
+var _c312 = ["closeicon"];
+var _c410 = ["headless"];
 var _c510 = ["maskRef"];
-var _c610 = ["container"];
+var _c69 = ["container"];
 var _c79 = ["closeButton"];
 var _c88 = ["*"];
 var _c98 = (a0, a1, a2, a3, a4, a5) => ({
@@ -59082,7 +58281,7 @@ function Drawer_div_0_Template(rf, ctx) {
     \u0275\u0275conditional(ctx_r1.headlessTemplate || ctx_r1._headlessTemplate ? 2 : 3);
   }
 }
-var theme15 = ({
+var theme13 = ({
   dt
 }) => `
 .p-drawer {
@@ -59300,7 +58499,7 @@ var inlineStyles5 = {
     alignItems: instance.position === "top" ? "flex-start" : instance.position === "bottom" ? "flex-end" : "center"
   })
 };
-var classes16 = {
+var classes14 = {
   mask: ({
     instance
   }) => ({
@@ -59324,8 +58523,8 @@ var classes16 = {
 };
 var DrawerStyle = class _DrawerStyle extends BaseStyle {
   name = "drawer";
-  theme = theme15;
-  classes = classes16;
+  theme = theme13;
+  classes = classes14;
   inlineStyles = inlineStyles5;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275DrawerStyle_BaseFactory;
@@ -59738,11 +58937,11 @@ var Drawer = class _Drawer extends BaseComponent {
     selectors: [["p-drawer"]],
     contentQueries: function Drawer_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c019, 4);
-        \u0275\u0275contentQuery(dirIndex, _c130, 4);
-        \u0275\u0275contentQuery(dirIndex, _c218, 4);
-        \u0275\u0275contentQuery(dirIndex, _c313, 4);
-        \u0275\u0275contentQuery(dirIndex, _c411, 4);
+        \u0275\u0275contentQuery(dirIndex, _c017, 4);
+        \u0275\u0275contentQuery(dirIndex, _c128, 4);
+        \u0275\u0275contentQuery(dirIndex, _c217, 4);
+        \u0275\u0275contentQuery(dirIndex, _c312, 4);
+        \u0275\u0275contentQuery(dirIndex, _c410, 4);
         \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
       }
       if (rf & 2) {
@@ -59758,7 +58957,7 @@ var Drawer = class _Drawer extends BaseComponent {
     viewQuery: function Drawer_Query(rf, ctx) {
       if (rf & 1) {
         \u0275\u0275viewQuery(_c510, 5);
-        \u0275\u0275viewQuery(_c610, 5);
+        \u0275\u0275viewQuery(_c69, 5);
         \u0275\u0275viewQuery(_c79, 5);
       }
       if (rf & 2) {
@@ -60077,7 +59276,7 @@ var IaDiagramService = class _IaDiagramService {
 })();
 
 // src/app/components/setup-repo/setup-repo.component.ts
-var _c020 = (a0) => ({ "ng-invalid ng-dirty": a0 });
+var _c018 = (a0) => ({ "ng-invalid ng-dirty": a0 });
 function SetupRepoComponent_Conditional_10_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "p-message", 5);
@@ -60282,7 +59481,7 @@ var SetupRepoComponent = class _SetupRepoComponent {
       \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 15, "project.github._title"));
       \u0275\u0275advance(5);
       \u0275\u0275twoWayProperty("ngModel", ctx.gitHubOwner);
-      \u0275\u0275property("pKeyFilter", ctx.ownerFilter)("ngClass", \u0275\u0275pureFunction1(23, _c020, ctx.ownerError));
+      \u0275\u0275property("pKeyFilter", ctx.ownerFilter)("ngClass", \u0275\u0275pureFunction1(23, _c018, ctx.ownerError));
       \u0275\u0275advance(2);
       \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(9, 17, "project.github.label.owner"));
       \u0275\u0275advance(2);
@@ -60353,11 +59552,11 @@ var SetupRepoComponent = class _SetupRepoComponent {
 })();
 
 // node_modules/primeng/fesm2022/primeng-confirmpopup.mjs
-var _c021 = ["content"];
-var _c131 = ["accepticon"];
-var _c219 = ["rejecticon"];
-var _c314 = ["headless"];
-var _c412 = (a0, a1) => ({
+var _c019 = ["content"];
+var _c129 = ["accepticon"];
+var _c218 = ["rejecticon"];
+var _c313 = ["headless"];
+var _c411 = (a0, a1) => ({
   showTransitionParams: a0,
   hideTransitionParams: a1
 });
@@ -60365,7 +59564,7 @@ var _c511 = (a0) => ({
   value: "open",
   params: a0
 });
-var _c611 = (a0) => ({
+var _c610 = (a0) => ({
   $implicit: a0
 });
 function ConfirmPopup_div_0_ng_container_1_ng_container_1_Template(rf, ctx) {
@@ -60382,7 +59581,7 @@ function ConfirmPopup_div_0_ng_container_1_Template(rf, ctx) {
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext(2);
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r1.headlessTemplate || ctx_r1._headlessTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c611, ctx_r1.confirmation));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r1.headlessTemplate || ctx_r1._headlessTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c610, ctx_r1.confirmation));
   }
 }
 function ConfirmPopup_div_0_ng_template_2_ng_container_2_ng_container_1_Template(rf, ctx) {
@@ -60399,7 +59598,7 @@ function ConfirmPopup_div_0_ng_template_2_ng_container_2_Template(rf, ctx) {
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext(3);
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r1.contentTemplate || ctx_r1._contentTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c611, ctx_r1.confirmation));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r1.contentTemplate || ctx_r1._contentTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c610, ctx_r1.confirmation));
   }
 }
 function ConfirmPopup_div_0_ng_template_2_ng_template_3_i_0_Template(rf, ctx) {
@@ -60546,12 +59745,12 @@ function ConfirmPopup_div_0_Template(rf, ctx) {
     const notHeadless_r6 = \u0275\u0275reference(3);
     const ctx_r1 = \u0275\u0275nextContext();
     \u0275\u0275classMap(ctx_r1.styleClass);
-    \u0275\u0275property("ngClass", "p-confirmpopup p-component")("ngStyle", ctx_r1.style)("@animation", \u0275\u0275pureFunction1(10, _c511, \u0275\u0275pureFunction2(7, _c412, ctx_r1.showTransitionOptions, ctx_r1.hideTransitionOptions)));
+    \u0275\u0275property("ngClass", "p-confirmpopup p-component")("ngStyle", ctx_r1.style)("@animation", \u0275\u0275pureFunction1(10, _c511, \u0275\u0275pureFunction2(7, _c411, ctx_r1.showTransitionOptions, ctx_r1.hideTransitionOptions)));
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r1.headlessTemplate || ctx_r1._headlessTemplate)("ngIfElse", notHeadless_r6);
   }
 }
-var theme16 = ({
+var theme14 = ({
   dt
 }) => `
 .p-confirmpopup {
@@ -60660,7 +59859,7 @@ var theme16 = ({
     border-top-color: ${dt("confirmpopup.border.color")};
 }
 `;
-var classes17 = {
+var classes15 = {
   root: "p-confirmpopup p-component",
   content: "p-confirmpopup-content",
   icon: "p-confirmpopup-icon",
@@ -60671,8 +59870,8 @@ var classes17 = {
 };
 var ConfirmPopupStyle = class _ConfirmPopupStyle extends BaseStyle {
   name = "confirmpopup";
-  theme = theme16;
-  classes = classes17;
+  theme = theme14;
+  classes = classes15;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275ConfirmPopupStyle_BaseFactory;
     return function ConfirmPopupStyle_Factory(__ngFactoryType__) {
@@ -61023,10 +60222,10 @@ var ConfirmPopup = class _ConfirmPopup extends BaseComponent {
     selectors: [["p-confirmPopup"], ["p-confirmpopup"], ["p-confirm-popup"]],
     contentQueries: function ConfirmPopup_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c021, 4);
-        \u0275\u0275contentQuery(dirIndex, _c131, 4);
-        \u0275\u0275contentQuery(dirIndex, _c219, 4);
-        \u0275\u0275contentQuery(dirIndex, _c314, 4);
+        \u0275\u0275contentQuery(dirIndex, _c019, 4);
+        \u0275\u0275contentQuery(dirIndex, _c129, 4);
+        \u0275\u0275contentQuery(dirIndex, _c218, 4);
+        \u0275\u0275contentQuery(dirIndex, _c313, 4);
         \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
       }
       if (rf & 2) {
@@ -61270,17 +60469,17 @@ var ConfirmPopupModule = class _ConfirmPopupModule {
 })();
 
 // node_modules/primeng/fesm2022/primeng-popover.mjs
-var _c022 = ["content"];
-var _c136 = ["*"];
-var _c220 = (a0, a1) => ({
+var _c020 = ["content"];
+var _c130 = ["*"];
+var _c219 = (a0, a1) => ({
   showTransitionParams: a0,
   hideTransitionParams: a1
 });
-var _c315 = (a0, a1) => ({
+var _c314 = (a0, a1) => ({
   value: a0,
   params: a1
 });
-var _c413 = (a0) => ({
+var _c412 = (a0) => ({
   closeCallback: a0
 });
 function Popover_div_0_3_ng_template_0_Template(rf, ctx) {
@@ -61324,13 +60523,13 @@ function Popover_div_0_Template(rf, ctx) {
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext();
     \u0275\u0275classMap(ctx_r1.styleClass);
-    \u0275\u0275property("ngClass", "p-popover p-component")("ngStyle", ctx_r1.style)("@animation", \u0275\u0275pureFunction2(13, _c315, ctx_r1.overlayVisible ? "open" : "close", \u0275\u0275pureFunction2(10, _c220, ctx_r1.showTransitionOptions, ctx_r1.hideTransitionOptions)));
+    \u0275\u0275property("ngClass", "p-popover p-component")("ngStyle", ctx_r1.style)("@animation", \u0275\u0275pureFunction2(13, _c314, ctx_r1.overlayVisible ? "open" : "close", \u0275\u0275pureFunction2(10, _c219, ctx_r1.showTransitionOptions, ctx_r1.hideTransitionOptions)));
     \u0275\u0275attribute("aria-modal", ctx_r1.overlayVisible)("aria-label", ctx_r1.ariaLabel)("aria-labelledBy", ctx_r1.ariaLabelledBy);
     \u0275\u0275advance(3);
-    \u0275\u0275property("ngTemplateOutlet", ctx_r1.contentTemplate || ctx_r1._contentTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(16, _c413, ctx_r1.onCloseClick.bind(ctx_r1)));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r1.contentTemplate || ctx_r1._contentTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(16, _c412, ctx_r1.onCloseClick.bind(ctx_r1)));
   }
 }
-var theme17 = ({
+var theme15 = ({
   dt
 }) => `
 .p-popover {
@@ -61413,14 +60612,14 @@ var theme17 = ({
 }
 
 `;
-var classes18 = {
+var classes16 = {
   root: "p-popover p-component",
   content: "p-popover-content"
 };
 var PopoverStyle = class _PopoverStyle extends BaseStyle {
   name = "popover";
-  theme = theme17;
-  classes = classes18;
+  theme = theme15;
+  classes = classes16;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275PopoverStyle_BaseFactory;
     return function PopoverStyle_Factory(__ngFactoryType__) {
@@ -61791,7 +60990,7 @@ var Popover = class _Popover extends BaseComponent {
     selectors: [["p-popover"]],
     contentQueries: function Popover_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c022, 4);
+        \u0275\u0275contentQuery(dirIndex, _c020, 4);
         \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
       }
       if (rf & 2) {
@@ -61826,7 +61025,7 @@ var Popover = class _Popover extends BaseComponent {
       onHide: "onHide"
     },
     features: [\u0275\u0275ProvidersFeature([PopoverStyle]), \u0275\u0275InheritDefinitionFeature],
-    ngContentSelectors: _c136,
+    ngContentSelectors: _c130,
     decls: 1,
     vars: 1,
     consts: [["role", "dialog", 3, "ngClass", "ngStyle", "class", "click", 4, "ngIf"], ["role", "dialog", 3, "click", "ngClass", "ngStyle"], [1, "p-popover-content", 3, "click", "mousedown"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"]],
@@ -62264,7 +61463,7 @@ var BreadcrumbValidationService = class _BreadcrumbValidationService {
         if (!url)
           continue;
         try {
-          const doc = yield this.fetchService.fetchContent(url, "prod", 3, "random");
+          const doc = yield this.fetchService.fetchContent(url, "prod", 3, "none");
           const breadcrumb = this.fetchService.getBreadcrumb(doc, "https://www.canada.ca");
           const metadata = this.fetchService.extractPageMetadata(doc, url);
           this.metadataCache.set(url, metadata);
@@ -62350,7 +61549,7 @@ var BreadcrumbValidationService = class _BreadcrumbValidationService {
             continue;
           }
           try {
-            const doc = yield this.fetchService.fetchContent(parent.url, "prod", 3, "random");
+            const doc = yield this.fetchService.fetchContent(parent.url, "prod", 3, "none");
             const metadata = this.fetchService.extractPageMetadata(doc, parent.url);
             this.metadataCache.set(parent.url, metadata);
             const links = Array.from(doc.querySelectorAll("a")).map((a) => a.getAttribute("href")).filter((href) => !!href).map((href) => {
@@ -62437,7 +61636,7 @@ var BreadcrumbValidationService = class _BreadcrumbValidationService {
             if (crumb.url) {
               try {
                 console.warn("Missing metadata. Starting new fetch.");
-                const doc = yield this.fetchService.fetchContent(crumb.url, "prod", 3, "random");
+                const doc = yield this.fetchService.fetchContent(crumb.url, "prod", 3, "none");
                 metadata = this.fetchService.extractPageMetadata(doc, crumb.url);
                 this.metadataCache.set(crumb.url, metadata);
               } catch (error) {
@@ -62627,7 +61826,7 @@ var TreeNodeStyleService = class _TreeNodeStyleService {
 })();
 
 // src/app/components/add-pages/add-pages.component.ts
-var _c023 = () => ({ width: "50vw" });
+var _c021 = () => ({ width: "50vw" });
 var _forTrack04 = ($index, $item) => $item.href;
 var _forTrack12 = ($index, $item) => $item.originalHref;
 var _forTrack2 = ($index, $item) => $item.url;
@@ -63360,8 +62559,6 @@ var AddPagesComponent = class _AddPagesComponent {
   breadcrumbValidation = inject(BreadcrumbValidationService);
   treeNodeStyleService = inject(TreeNodeStyleService);
   translate = inject(TranslateService);
-  //iaRelationship = inject(IaRelationshipService);
-  //iaTree = inject(IaTreeService);
   fetchService = inject(FetchService);
   confirmationService = inject(ConfirmationService);
   // Output event
@@ -63882,7 +63079,7 @@ var AddPagesComponent = class _AddPagesComponent {
       \u0275\u0275advance();
       \u0275\u0275conditional(ctx.validationState.isValidating || ctx.validationState.isValidated ? 19 : -1);
       \u0275\u0275advance();
-      \u0275\u0275styleMap(\u0275\u0275pureFunction0(32, _c023));
+      \u0275\u0275styleMap(\u0275\u0275pureFunction0(32, _c021));
       \u0275\u0275twoWayProperty("visible", ctx.showBreadcrumbDialog);
       \u0275\u0275property("modal", true)("closable", !ctx.breadcrumbState.isValidating)("closeOnEscape", !ctx.breadcrumbState.isValidating)("header", \u0275\u0275pipeBind1(21, 30, "addPages.breadcrumb.validating"));
       \u0275\u0275advance(3);
@@ -64238,7 +63435,7 @@ var AddPagesComponent = class _AddPagesComponent {
 })();
 
 // src/app/components/find-pages/components/get-task-urls.component.ts
-var _c024 = (a0) => ({ number: a0 });
+var _c022 = (a0) => ({ number: a0 });
 var _forTrack05 = ($index, $item) => $item.url;
 function GetTaskUrlsComponent_ng_template_11_Template(rf, ctx) {
   if (rf & 1) {
@@ -64342,7 +63539,7 @@ function GetTaskUrlsComponent_Conditional_19_Template(rf, ctx) {
     \u0275\u0275advance(3);
     \u0275\u0275property("label", \u0275\u0275pipeBind1(5, 5, "findPages.task.addToProject"));
     \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(8, 7, "findPages.task.addToProject.description", \u0275\u0275pureFunction1(10, _c024, ctx_r4.selectedTaskUrlsCount())));
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(8, 7, "findPages.task.addToProject.description", \u0275\u0275pureFunction1(10, _c022, ctx_r4.selectedTaskUrlsCount())));
     \u0275\u0275advance(3);
     \u0275\u0275repeater(ctx_r4.taskUrls());
   }
@@ -64751,7 +63948,7 @@ var GetChildPagesService = class _GetChildPagesService {
 })();
 
 // src/app/components/find-pages/components/get-child-pages.component.ts
-var _c025 = (a0) => ({ number: a0 });
+var _c023 = (a0) => ({ number: a0 });
 var _forTrack06 = ($index, $item) => $item.url;
 function GetChildPagesComponent_Conditional_14_ng_template_2_Template(rf, ctx) {
   if (rf & 1) {
@@ -64846,7 +64043,7 @@ function GetChildPagesComponent_Conditional_15_Template(rf, ctx) {
     \u0275\u0275advance(3);
     \u0275\u0275property("label", \u0275\u0275pipeBind1(5, 5, "findPages.task.addToProject"));
     \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(8, 7, "findPages.task.addToProject.description", \u0275\u0275pureFunction1(10, _c025, ctx_r2.selectedChildUrlsCount())));
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(8, 7, "findPages.task.addToProject.description", \u0275\u0275pureFunction1(10, _c023, ctx_r2.selectedChildUrlsCount())));
     \u0275\u0275advance(3);
     \u0275\u0275repeater(ctx_r2.childUrls());
   }
@@ -65026,32 +64223,56 @@ var FindPagesComponent = class _FindPagesComponent {
   static \u0275fac = function FindPagesComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _FindPagesComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _FindPagesComponent, selectors: [["aida-find-pages"]], decls: 5, vars: 3, consts: [[1, "text-2xl", "my-1"]], template: function FindPagesComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _FindPagesComponent, selectors: [["aida-find-pages"]], decls: 19, vars: 12, consts: [[1, "text-2xl", "my-1"], [1, "text-color-secondary"], ["value", "0"], ["value", "1"], [1, "p-0"]], template: function FindPagesComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "h2", 0);
       \u0275\u0275text(1);
       \u0275\u0275pipe(2, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275element(3, "aida-get-task-urls")(4, "aida-get-child-pages");
+      \u0275\u0275elementStart(3, "p", 1);
+      \u0275\u0275text(4);
+      \u0275\u0275pipe(5, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(6, "p-tabs", 2)(7, "p-tablist")(8, "p-tab", 2);
+      \u0275\u0275text(9);
+      \u0275\u0275pipe(10, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(11, "p-tab", 3);
+      \u0275\u0275text(12);
+      \u0275\u0275pipe(13, "translate");
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(14, "p-tabpanels", 4)(15, "p-tabpanel", 2);
+      \u0275\u0275element(16, "aida-get-task-urls");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(17, "p-tabpanel", 3);
+      \u0275\u0275element(18, "aida-get-child-pages");
+      \u0275\u0275elementEnd()()();
     }
     if (rf & 2) {
       \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 1, "findPages._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 4, "findPages._title"));
+      \u0275\u0275advance(3);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(5, 6, "findPages.description"));
+      \u0275\u0275advance(5);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(10, 8, "findPages.task._nav"));
+      \u0275\u0275advance(3);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(13, 10, "findPages.findChildren._nav"));
     }
-  }, dependencies: [TranslateModule, TranslatePipe, GetTaskUrlsComponent, GetChildPagesComponent], encapsulation: 2 });
+  }, dependencies: [TranslateModule, TranslatePipe, TabsModule, Tabs, TabPanels, TabPanel, TabList, Tab, GetTaskUrlsComponent, GetChildPagesComponent], encapsulation: 2 });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(FindPagesComponent, [{
     type: Component,
     args: [{ selector: "aida-find-pages", imports: [
       TranslateModule,
+      TabsModule,
       GetTaskUrlsComponent,
       GetChildPagesComponent
-    ], template: '<h2 class="text-2xl my-1">{{"findPages._title" | translate}}</h2>\r\n<!--p class="text-color-secondary">{{"findPages.description" | translate}}</p-->\r\n\r\n<!--Find pages by task-->\r\n<aida-get-task-urls />\r\n\r\n<!--Find child pages-->\r\n<aida-get-child-pages />\r\n\r\n<!--Find pages by keyword or regex (grep search/regex helper)-->\r\n\r\n<!--Find parent for new page-->' }]
+    ], template: '<h2 class="text-2xl my-1">{{"findPages._title" | translate}}</h2>\r\n<p class="text-color-secondary">{{"findPages.description" | translate}}</p>\r\n\r\n<p-tabs value="0">\r\n    <p-tablist>\r\n        <p-tab value="0">{{"findPages.task._nav" | translate }}</p-tab>\r\n        <p-tab value="1">{{"findPages.findChildren._nav" | translate }}</p-tab>\r\n    </p-tablist>\r\n    <p-tabpanels class="p-0">\r\n        <!--Find pages by task-->\r\n        <p-tabpanel value="0">\r\n            <aida-get-task-urls />\r\n        </p-tabpanel>\r\n        <!--Find child pages-->\r\n        <p-tabpanel value="1">\r\n            <aida-get-child-pages />\r\n        </p-tabpanel>\r\n    </p-tabpanels>\r\n</p-tabs>\r\n\r\n\r\n<!--Find pages by keyword or regex (grep search/regex helper)-->\r\n\r\n<!--Find parent for new page-->' }]
   }], null, null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(FindPagesComponent, { className: "FindPagesComponent", filePath: "src/app/components/find-pages/find-pages.component.ts", lineNumber: 17 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(FindPagesComponent, { className: "FindPagesComponent", filePath: "src/app/components/find-pages/find-pages.component.ts", lineNumber: 18 });
 })();
 
 // src/app/views/project-assistant/edit-project.component.ts
@@ -65264,7 +64485,7 @@ var EditProjectComponent = class _EditProjectComponent {
             <aida-add-pages />\r
         </div>\r
         <!--Find Pages Card-->\r
-        <div class="surface-card border-round-lg shadow-2 p-4 w-full lg:w-6 min-w-min">\r
+        <div class="surface-card border-round-lg shadow-2 p-4 w-full lg:w-6  min-w-min">\r
             <aida-find-pages />\r
         </div>\r
     </div>\r
@@ -65417,16 +64638,16 @@ var ImportPageComponent = class _ImportPageComponent {
 })();
 
 // node_modules/primeng/fesm2022/primeng-organizationchart.mjs
-var _c026 = ["pOrganizationChartNode", ""];
-var _c137 = (a0, a1) => ({
+var _c024 = ["pOrganizationChartNode", ""];
+var _c131 = (a0, a1) => ({
   "p-organizationchart-node": true,
   "p-organizationchart-node-selectable": a0,
   "p-organizationchart-node-selected": a1
 });
-var _c221 = (a0) => ({
+var _c220 = (a0) => ({
   $implicit: a0
 });
-var _c316 = (a0) => ({
+var _c315 = (a0) => ({
   "p-organizationchart-connector-top": a0
 });
 function OrganizationChartNode_tbody_0_div_4_Template(rf, ctx) {
@@ -65455,7 +64676,7 @@ function OrganizationChartNode_tbody_0_div_5_Template(rf, ctx) {
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext(2);
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r1.chart.getTemplateForNode(ctx_r1.node))("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c221, ctx_r1.node));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r1.chart.getTemplateForNode(ctx_r1.node))("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c220, ctx_r1.node));
   }
 }
 function OrganizationChartNode_tbody_0_ng_container_6_a_1_ng_container_1_ChevronDownIcon_1_Template(rf, ctx) {
@@ -65507,7 +64728,7 @@ function OrganizationChartNode_tbody_0_ng_container_6_a_1_span_2_Template(rf, ct
     const ctx_r1 = \u0275\u0275nextContext(4);
     \u0275\u0275attribute("data-pc-section", "nodeTogglerIcon");
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r1.chart.togglerIconTemplate || ctx_r1.chart._togglerIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(3, _c221, ctx_r1.node.expanded));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r1.chart.togglerIconTemplate || ctx_r1.chart._togglerIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(3, _c220, ctx_r1.node.expanded));
   }
 }
 function OrganizationChartNode_tbody_0_ng_container_6_a_1_Template(rf, ctx) {
@@ -65579,10 +64800,10 @@ function OrganizationChartNode_tbody_0_ng_container_12_ng_template_1_Template(rf
   if (rf & 2) {
     const first_r4 = ctx.first;
     const last_r5 = ctx.last;
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(4, _c316, !first_r4));
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(4, _c315, !first_r4));
     \u0275\u0275attribute("data-pc-section", "lineLeft");
     \u0275\u0275advance(2);
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(6, _c316, !last_r5));
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(6, _c315, !last_r5));
     \u0275\u0275attribute("data-pc-section", "lineRight");
   }
 }
@@ -65642,7 +64863,7 @@ function OrganizationChartNode_tbody_0_Template(rf, ctx) {
     \u0275\u0275attribute("colspan", ctx_r1.colspan)("data-pc-section", "cell");
     \u0275\u0275advance();
     \u0275\u0275classMap(ctx_r1.node.styleClass);
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction2(26, _c137, ctx_r1.chart.selectionMode && ctx_r1.node.selectable !== false, ctx_r1.isSelected()));
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction2(26, _c131, ctx_r1.chart.selectionMode && ctx_r1.node.selectable !== false, ctx_r1.isSelected()));
     \u0275\u0275attribute("data-pc-section", "node");
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", !ctx_r1.chart.getTemplateForNode(ctx_r1.node));
@@ -65671,7 +64892,7 @@ function OrganizationChartNode_tbody_0_Template(rf, ctx) {
     \u0275\u0275property("ngForOf", ctx_r1.node.children);
   }
 }
-var _c414 = ["togglericon"];
+var _c413 = ["togglericon"];
 var _c512 = (a0) => ({
   "p-organizationchart p-component": true,
   "p-organizationchart-preservespace": a0
@@ -65685,7 +64906,7 @@ function OrganizationChart_table_1_Template(rf, ctx) {
     \u0275\u0275property("collapsible", ctx_r0.collapsible)("node", ctx_r0.root);
   }
 }
-var theme18 = ({
+var theme16 = ({
   dt
 }) => `
 .p-organizationchart-table {
@@ -65800,7 +65021,7 @@ var theme18 = ({
     border-start-start-radius: ${dt("organizationchart.connector.border.radius")};
 }
 `;
-var classes19 = {
+var classes17 = {
   root: "p-organizationchart p-component",
   table: "p-organizationchart-table",
   node: ({
@@ -65828,8 +65049,8 @@ var classes19 = {
 };
 var OrganizationChartStyle = class _OrganizationChartStyle extends BaseStyle {
   name = "organizationchart";
-  theme = theme18;
-  classes = classes19;
+  theme = theme16;
+  classes = classes17;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275OrganizationChartStyle_BaseFactory;
     return function OrganizationChartStyle_Factory(__ngFactoryType__) {
@@ -65924,7 +65145,7 @@ var OrganizationChartNode = class _OrganizationChartNode {
       last: [2, "last", "last", booleanAttribute],
       collapsible: [2, "collapsible", "collapsible", booleanAttribute]
     },
-    attrs: _c026,
+    attrs: _c024,
     decls: 1,
     vars: 1,
     consts: [[4, "ngIf"], [3, "click", "ngClass"], [1, "p-organizationchart-connectors", 3, "ngStyle"], [1, "p-organizationchart-connector-down"], [1, "p-organizationchart-node-children", 3, "ngStyle"], ["colspan", "2", 4, "ngFor", "ngForOf"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], ["tabindex", "0", "class", "p-organizationchart-node-toggle-button", 3, "click", "keydown.enter", "keydown.space", 4, "ngIf"], ["tabindex", "0", 1, "p-organizationchart-node-toggle-button", 3, "click", "keydown.enter", "keydown.space"], ["class", "p-organizationchart-node-toggle-button-icon", 4, "ngIf"], [3, "styleClass", 4, "ngIf"], [3, "styleClass"], [1, "p-organizationchart-node-toggle-button-icon"], ["ngFor", "", 3, "ngForOf"], [1, "p-organizationchart-connector-left", 3, "ngClass"], [1, "p-organizationchart-connector-right", 3, "ngClass"], ["colspan", "2"], ["pOrganizationChartNode", "", 1, "p-organizationchart-table", 3, "node", "collapsible"]],
@@ -66247,7 +65468,7 @@ var OrganizationChart = class _OrganizationChart extends BaseComponent {
     selectors: [["p-organizationChart"], ["p-organization-chart"], ["p-organizationchart"]],
     contentQueries: function OrganizationChart_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c414, 4);
+        \u0275\u0275contentQuery(dirIndex, _c413, 4);
         \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
       }
       if (rf & 2) {
@@ -66392,10 +65613,12 @@ var OrganizationChartModule = class _OrganizationChartModule {
 })();
 
 // src/app/components/ia-diagram/ia-diagram.component.ts
+var _c025 = ["menu"];
+var _c136 = (a0) => ({ number: a0 });
 function IaDiagramComponent_ng_template_14_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 10);
-    \u0275\u0275element(1, "i", 12);
+    \u0275\u0275elementStart(0, "div", 12);
+    \u0275\u0275element(1, "i", 16);
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275elementEnd();
   }
@@ -66404,18 +65627,39 @@ function IaDiagramComponent_ng_template_14_Conditional_0_Template(rf, ctx) {
     \u0275\u0275property("pTooltip", \u0275\u0275pipeBind1(2, 1, "iaDiagram.tooltip.orphan"));
   }
 }
-function IaDiagramComponent_ng_template_14_Template(rf, ctx) {
+function IaDiagramComponent_ng_template_14_Conditional_4_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, IaDiagramComponent_ng_template_14_Conditional_0_Template, 3, 3, "div", 10);
-    \u0275\u0275elementStart(1, "p");
-    \u0275\u0275element(2, "a", 11);
-    \u0275\u0275elementEnd();
+    \u0275\u0275element(0, "i", 15);
+    \u0275\u0275pipe(1, "translate");
   }
   if (rf & 2) {
-    const node_r1 = ctx.$implicit;
-    \u0275\u0275conditional(node_r1.data.status.isOrphan ? 0 : -1);
-    \u0275\u0275advance(2);
-    \u0275\u0275property("href", node_r1.data.url, \u0275\u0275sanitizeUrl)("innerHTML", node_r1.data.h1, \u0275\u0275sanitizeHtml);
+    const node_r3 = \u0275\u0275nextContext().$implicit;
+    \u0275\u0275property("pTooltip", \u0275\u0275pipeBind2(1, 1, "iaDiagram.tooltip.hiddenPages", \u0275\u0275pureFunction1(4, _c136, (node_r3.data.collapsedChildren == null ? null : node_r3.data.collapsedChildren.length) + (node_r3.data.hiddenChildrenUrls == null ? null : node_r3.data.hiddenChildrenUrls.length))));
+  }
+}
+function IaDiagramComponent_ng_template_14_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r2 = \u0275\u0275getCurrentView();
+    \u0275\u0275template(0, IaDiagramComponent_ng_template_14_Conditional_0_Template, 3, 3, "div", 12);
+    \u0275\u0275elementStart(1, "p-button", 13);
+    \u0275\u0275listener("click", function IaDiagramComponent_ng_template_14_Template_p_button_click_1_listener($event) {
+      const node_r3 = \u0275\u0275restoreView(_r2).$implicit;
+      const ctx_r3 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r3.onMenuClick($event, node_r3));
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(2, "p");
+    \u0275\u0275element(3, "a", 14);
+    \u0275\u0275elementEnd();
+    \u0275\u0275template(4, IaDiagramComponent_ng_template_14_Conditional_4_Template, 2, 6, "i", 15);
+  }
+  if (rf & 2) {
+    const node_r3 = ctx.$implicit;
+    \u0275\u0275conditional(node_r3.data.status.isOrphan ? 0 : -1);
+    \u0275\u0275advance(3);
+    \u0275\u0275property("href", node_r3.data.url, \u0275\u0275sanitizeUrl)("innerHTML", node_r3.data.h1, \u0275\u0275sanitizeHtml);
+    \u0275\u0275advance();
+    \u0275\u0275conditional((node_r3.data.collapsedChildren == null ? null : node_r3.data.collapsedChildren.length) || (node_r3.data.hiddenChildrenUrls == null ? null : node_r3.data.hiddenChildrenUrls.length) ? 4 : -1);
   }
 }
 var IaDiagramComponent = class _IaDiagramComponent {
@@ -66424,13 +65668,23 @@ var IaDiagramComponent = class _IaDiagramComponent {
   iaDiagram = inject(IaDiagramService);
   treeNodeStyleService = inject(TreeNodeStyleService);
   projectTree = computed(() => {
-    const tree = this.projectState.getProject().projectData;
+    let tree = this.projectState.getProject().projectData;
+    if (this.selectedTree() !== "full") {
+      const custom = this.projectState.findNodeByUrl(tree, this.selectedTree());
+      if (custom) {
+        tree = [custom];
+      }
+      ;
+    }
     if (this.selectedView() === "baseline") {
-      return this.projectState.getBaselineTree(tree);
+      tree = this.projectState.getBaselineTree(tree, this.selectedTree() === "full" ? "full" : "custom");
     } else if (this.selectedView() === "final") {
-      return this.projectState.getFinalTree(tree);
-    } else
-      return tree;
+      tree = this.projectState.getFinalTree(tree);
+    }
+    if (this.collapsedNodes().size > 0 || this.hiddenNodes().size > 0) {
+      tree = this.projectState.getDisplayTree(tree, this.collapsedNodes(), this.hiddenNodes());
+    }
+    return tree;
   });
   //View options
   selectedView = signal("changes");
@@ -66445,52 +65699,146 @@ var IaDiagramComponent = class _IaDiagramComponent {
     const applyStatusColors = this.selectedView() === "changes";
     this.treeNodeStyleService.updateNodeStyles(this.projectTree(), 0, applyStatusColors);
   }
+  //Tree options
+  selectedTree = signal("full");
+  //Menu options
+  menu;
+  items = [];
+  onMenuClick(event2, node) {
+    if (!node.data.url)
+      return;
+    console.log(node);
+    event2.preventDefault();
+    this.items = [];
+    if (this.projectTree()[0].data.url !== node.data.url) {
+      this.items.push({
+        label: this.translate.instant(`iaDiagram.menu.viewAsRoot`),
+        icon: "pi pi-window-minimize",
+        command: () => this.selectedTree.set(node.data.url)
+      });
+    }
+    if (this.selectedTree() !== "full") {
+      this.items.push({
+        label: this.translate.instant(`iaDiagram.menu.viewFullTree`),
+        icon: "pi pi-window-maximize",
+        command: () => this.selectedTree.set("full")
+      });
+    }
+    if (node.children?.length) {
+      this.items.push({
+        label: this.translate.instant(`iaDiagram.menu.hideChildren`),
+        icon: "pi pi-eye-slash",
+        command: () => this.collapsedNodes.update((set) => /* @__PURE__ */ new Set([...set, node.data.url]))
+      });
+    }
+    if (!node.children?.length && (node.data.collapsedChildren?.length || node.data.hiddenChildrenUrls?.length)) {
+      this.items.push({
+        label: this.translate.instant(`iaDiagram.menu.showChildren`),
+        icon: "pi pi-eye",
+        command: () => {
+          this.collapsedNodes.update((set) => {
+            const next = new Set(set);
+            next.delete(node.data.url);
+            return next;
+          });
+          this.hiddenNodes.update((set) => {
+            const next = new Set(set);
+            (node.data.hiddenChildrenUrls ?? []).forEach((url) => next.delete(url));
+            return next;
+          });
+        }
+      });
+    }
+    if (node.parent) {
+      this.items.push({
+        label: this.translate.instant(`iaDiagram.menu.hideNode`),
+        icon: "pi pi-eye-slash",
+        command: () => this.hiddenNodes.update((set) => /* @__PURE__ */ new Set([...set, node.data.url]))
+      });
+    }
+    if (node.children?.length && node.data.hiddenChildrenUrls?.length) {
+      this.items.push({
+        label: this.translate.instant(`iaDiagram.menu.showHiddenNodes`),
+        icon: "pi pi-eye",
+        command: () => this.hiddenNodes.update((set) => {
+          const next = new Set(set);
+          node.data.hiddenChildrenUrls.forEach((url) => next.delete(url));
+          return next;
+        })
+      });
+    }
+    if (this.items.length === 0) {
+      this.items.push({
+        label: this.translate.instant(`iaDiagram.menu.noActions`),
+        disabled: true
+      });
+    }
+    this.menu.toggle(event2);
+  }
+  // Show/hide pages or children
+  collapsedNodes = signal(/* @__PURE__ */ new Set());
+  hiddenNodes = signal(/* @__PURE__ */ new Set());
   static \u0275fac = function IaDiagramComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _IaDiagramComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _IaDiagramComponent, selectors: [["aida-ia-diagram"]], decls: 15, vars: 12, consts: [[1, "fullscreen-overlay", "surface-card"], [1, "flex", "flex-row", "justify-content-between", "align-items-center", "pl-2", "mx-3", "border-bottom-1", "border-200"], [1, "mb-2"], ["icon", "pi pi-times", "text", "", "rounded", "", 3, "onClick"], [1, "overflow-auto"], [1, "flex", "flex-column", "hover:text-primary", "absolute", "z-1", "ml-4"], ["for", "view", 1, "text-xs", "font-semibold", "xl:my-1"], ["id", "view", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "size", "small", "styleClass", "secondary-outline text-primary max-h-3rem", 3, "ngModelChange", "onChange", "options", "ngModel"], ["styleClass", "mt-2", 3, "value"], ["pTemplate", "default"], [1, "-mt-6", "mb-6"], ["target", "_blank", 3, "href", "innerHTML"], ["tooltipPosition", "top", "tooltipStyleClass", "z-200", 1, "pi", "pi-times", "text-red-500", 3, "pTooltip"]], template: function IaDiagramComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _IaDiagramComponent, selectors: [["aida-ia-diagram"]], viewQuery: function IaDiagramComponent_Query(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275elementStart(0, "div", 0)(1, "div", 1)(2, "h1", 2);
+      \u0275\u0275viewQuery(_c025, 5);
+    }
+    if (rf & 2) {
+      let _t;
+      \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.menu = _t.first);
+    }
+  }, decls: 17, vars: 14, consts: [["menu", ""], [1, "fullscreen-overlay", "surface-card"], [1, "flex", "flex-row", "justify-content-between", "align-items-center", "pl-2", "mx-3", "border-bottom-1", "border-200"], [1, "mb-2"], ["icon", "pi pi-times", "text", "", "rounded", "", 3, "onClick"], [1, "overflow-auto"], [1, "flex", "flex-column", "hover:text-primary", "absolute", "z-1", "ml-4"], ["for", "view", 1, "text-xs", "font-semibold", "xl:my-1"], ["id", "view", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "size", "small", "styleClass", "secondary-outline text-primary max-h-3rem", 3, "ngModelChange", "onChange", "options", "ngModel"], [3, "value"], ["pTemplate", "default"], [3, "model", "popup"], [1, "-mt-6", "mb-6"], ["icon", "pi pi-cog", "size", "small", "text", "", 1, "absolute", "top-0", "right-0", "-mt-1", "-mr-1", 3, "click"], ["target", "_blank", 3, "href", "innerHTML"], ["tooltipPosition", "top", "tooltipStyleClass", "z-200", 1, "pi", "pi-eye-slash", "text-sm", "text-color-secondary", "opacity-70", "absolute", "bottom-0", "right-0", "mb-1", "mr-2", 3, "pTooltip"], ["tooltipPosition", "top", "tooltipStyleClass", "z-200", 1, "pi", "pi-times", "text-red-500", 3, "pTooltip"]], template: function IaDiagramComponent_Template(rf, ctx) {
+    if (rf & 1) {
+      const _r1 = \u0275\u0275getCurrentView();
+      \u0275\u0275elementStart(0, "div", 1)(1, "div", 2)(2, "h1", 3);
       \u0275\u0275text(3);
       \u0275\u0275pipe(4, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(5, "p-button", 3);
+      \u0275\u0275elementStart(5, "p-button", 4);
       \u0275\u0275pipe(6, "translate");
       \u0275\u0275listener("onClick", function IaDiagramComponent_Template_p_button_onClick_5_listener() {
-        return ctx.iaDiagram.closeDiagram();
+        \u0275\u0275restoreView(_r1);
+        return \u0275\u0275resetView(ctx.iaDiagram.closeDiagram());
       });
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(7, "div", 4)(8, "div", 5)(9, "label", 6);
+      \u0275\u0275elementStart(7, "div", 5)(8, "div", 6)(9, "label", 7);
       \u0275\u0275text(10);
       \u0275\u0275pipe(11, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(12, "p-selectButton", 7);
+      \u0275\u0275elementStart(12, "p-selectButton", 8);
       \u0275\u0275twoWayListener("ngModelChange", function IaDiagramComponent_Template_p_selectButton_ngModelChange_12_listener($event) {
+        \u0275\u0275restoreView(_r1);
         \u0275\u0275twoWayBindingSet(ctx.selectedView, $event) || (ctx.selectedView = $event);
-        return $event;
+        return \u0275\u0275resetView($event);
       });
       \u0275\u0275listener("onChange", function IaDiagramComponent_Template_p_selectButton_onChange_12_listener() {
-        return ctx.changeView();
+        \u0275\u0275restoreView(_r1);
+        return \u0275\u0275resetView(ctx.changeView());
       });
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(13, "p-organization-chart", 8);
-      \u0275\u0275template(14, IaDiagramComponent_ng_template_14_Template, 3, 3, "ng-template", 9);
+      \u0275\u0275elementStart(13, "p-organization-chart", 9);
+      \u0275\u0275template(14, IaDiagramComponent_ng_template_14_Template, 5, 4, "ng-template", 10);
       \u0275\u0275elementEnd()()();
+      \u0275\u0275element(15, "p-menu", 11, 0);
     }
     if (rf & 2) {
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 6, "iaDiagram._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 8, "iaDiagram._title"));
       \u0275\u0275advance(2);
-      \u0275\u0275attribute("aria-label", \u0275\u0275pipeBind1(6, 8, "common.close"));
+      \u0275\u0275attribute("aria-label", \u0275\u0275pipeBind1(6, 10, "common.close"));
       \u0275\u0275advance(5);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(11, 10, "common.view"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(11, 12, "common.view"));
       \u0275\u0275advance(2);
       \u0275\u0275property("options", ctx.viewOptions);
       \u0275\u0275twoWayProperty("ngModel", ctx.selectedView);
       \u0275\u0275advance();
       \u0275\u0275property("value", ctx.projectTree());
+      \u0275\u0275advance(2);
+      \u0275\u0275property("model", ctx.items)("popup", true);
     }
-  }, dependencies: [TranslateModule, TranslatePipe, FormsModule, NgControlStatus, NgModel, OrganizationChartModule, OrganizationChart, PrimeTemplate, ButtonModule, Button, TooltipModule, Tooltip, SelectButtonModule, SelectButton], styles: ["\n\n.fullscreen-overlay[_ngcontent-%COMP%] {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 200;\n  display: flex;\n  flex-direction: column;\n}\n.z-200[_ngcontent-%COMP%] {\n  z-index: 200 !important;\n}\n/*# sourceMappingURL=ia-diagram.component.css.map */"] });
+  }, dependencies: [TranslateModule, TranslatePipe, FormsModule, NgControlStatus, NgModel, OrganizationChartModule, OrganizationChart, PrimeTemplate, ButtonModule, Button, TooltipModule, Tooltip, SelectButtonModule, SelectButton, MenuModule, Menu], styles: ["\n\n.fullscreen-overlay[_ngcontent-%COMP%] {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 200;\n  display: flex;\n  flex-direction: column;\n}\n.z-200[_ngcontent-%COMP%] {\n  z-index: 200 !important;\n}\n/*# sourceMappingURL=ia-diagram.component.css.map */"] });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(IaDiagramComponent, [{
@@ -66501,7 +65849,8 @@ var IaDiagramComponent = class _IaDiagramComponent {
       OrganizationChartModule,
       ButtonModule,
       TooltipModule,
-      SelectButtonModule
+      SelectButtonModule,
+      MenuModule
     ], template: `<div class="fullscreen-overlay surface-card">\r
     <div class="flex flex-row justify-content-between align-items-center pl-2 mx-3 border-bottom-1 border-200">\r
         <h1 class="mb-2">{{'iaDiagram._title' | translate}}</h1>\r
@@ -66516,7 +65865,7 @@ var IaDiagramComponent = class _IaDiagramComponent {
                             [options]="viewOptions" [(ngModel)]="selectedView" (onChange)="changeView()" />\r
         </div>\r
         <!--IA Diagram-->\r
-        <p-organization-chart [value]="projectTree()" styleClass="mt-2">\r
+        <p-organization-chart [value]="projectTree()">\r
             <ng-template let-node pTemplate="default">\r
                 <!--ORPHAN STATUS-->\r
                 @if(node.data.status.isOrphan){\r
@@ -66525,22 +65874,32 @@ var IaDiagramComponent = class _IaDiagramComponent {
                 </div>\r
                 }\r
                 <!--PAGE-->\r
+                <p-button (click)="onMenuClick($event, node)" icon="pi pi-cog" size="small" text class="absolute top-0 right-0 -mt-1 -mr-1" />\r
                 <p><a [href]="node.data.url" target="_blank" [innerHTML]="node.data.h1"></a></p>\r
+                @if(node.data.collapsedChildren?.length || node.data.hiddenChildrenUrls?.length){\r
+                <i class="pi pi-eye-slash text-sm text-color-secondary opacity-70 absolute bottom-0 right-0 mb-1 mr-2"\r
+                   [pTooltip]="'iaDiagram.tooltip.hiddenPages' | translate: {number: node.data.collapsedChildren?.length + node.data.hiddenChildrenUrls?.length}" tooltipPosition="top" tooltipStyleClass="z-200"></i>\r
+                }\r
             </ng-template>\r
         </p-organization-chart>\r
     </div>\r
-</div>`, styles: ["/* src/app/components/ia-diagram/ia-diagram.component.css */\n.fullscreen-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 200;\n  display: flex;\n  flex-direction: column;\n}\n.z-200 {\n  z-index: 200 !important;\n}\n/*# sourceMappingURL=ia-diagram.component.css.map */\n"] }]
-  }], null, null);
+</div>\r
+<!--Context Menu-->\r
+<p-menu #menu [model]="items" [popup]="true" />`, styles: ["/* src/app/components/ia-diagram/ia-diagram.component.css */\n.fullscreen-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 200;\n  display: flex;\n  flex-direction: column;\n}\n.z-200 {\n  z-index: 200 !important;\n}\n/*# sourceMappingURL=ia-diagram.component.css.map */\n"] }]
+  }], null, { menu: [{
+    type: ViewChild,
+    args: ["menu"]
+  }] });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(IaDiagramComponent, { className: "IaDiagramComponent", filePath: "src/app/components/ia-diagram/ia-diagram.component.ts", lineNumber: 25 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(IaDiagramComponent, { className: "IaDiagramComponent", filePath: "src/app/components/ia-diagram/ia-diagram.component.ts", lineNumber: 27 });
 })();
 
 // node_modules/primeng/fesm2022/primeng-toolbar.mjs
-var _c027 = ["start"];
-var _c138 = ["end"];
-var _c225 = ["center"];
-var _c317 = ["*"];
+var _c026 = ["start"];
+var _c137 = ["end"];
+var _c221 = ["center"];
+var _c316 = ["*"];
 function Toolbar_div_2_ng_container_1_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementContainer(0);
@@ -66595,7 +65954,7 @@ function Toolbar_div_4_Template(rf, ctx) {
     \u0275\u0275property("ngTemplateOutlet", ctx_r0.endTemplate || ctx_r0._endTemplate);
   }
 }
-var theme19 = ({
+var theme17 = ({
   dt
 }) => `
 .p-toolbar {
@@ -66618,7 +65977,7 @@ var theme19 = ({
     align-items: center;
 }
 `;
-var classes20 = {
+var classes18 = {
   root: "p-toolbar p-component",
   start: "p-toolbar-start",
   center: "p-toolbar-center",
@@ -66626,8 +65985,8 @@ var classes20 = {
 };
 var ToolbarStyle = class _ToolbarStyle extends BaseStyle {
   name = "toolbar";
-  theme = theme19;
-  classes = classes20;
+  theme = theme17;
+  classes = classes18;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275ToolbarStyle_BaseFactory;
     return function ToolbarStyle_Factory(__ngFactoryType__) {
@@ -66718,9 +66077,9 @@ var Toolbar = class _Toolbar extends BaseComponent {
     selectors: [["p-toolbar"]],
     contentQueries: function Toolbar_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c027, 4);
-        \u0275\u0275contentQuery(dirIndex, _c138, 4);
-        \u0275\u0275contentQuery(dirIndex, _c225, 4);
+        \u0275\u0275contentQuery(dirIndex, _c026, 4);
+        \u0275\u0275contentQuery(dirIndex, _c137, 4);
+        \u0275\u0275contentQuery(dirIndex, _c221, 4);
         \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
       }
       if (rf & 2) {
@@ -66737,7 +66096,7 @@ var Toolbar = class _Toolbar extends BaseComponent {
       ariaLabelledBy: "ariaLabelledBy"
     },
     features: [\u0275\u0275ProvidersFeature([ToolbarStyle]), \u0275\u0275InheritDefinitionFeature],
-    ngContentSelectors: _c317,
+    ngContentSelectors: _c316,
     decls: 5,
     vars: 9,
     consts: [["role", "toolbar", 3, "ngClass", "ngStyle"], ["class", "p-toolbar-start", 4, "ngIf"], ["class", "p-toolbar-center", 4, "ngIf"], ["class", "p-toolbar-end", 4, "ngIf"], [1, "p-toolbar-start"], [4, "ngTemplateOutlet"], [1, "p-toolbar-center"], [1, "p-toolbar-end"]],
@@ -66849,25 +66208,25 @@ var ToolbarModule = class _ToolbarModule {
 })();
 
 // node_modules/primeng/fesm2022/primeng-contextmenu.mjs
-var _c028 = ["sublist"];
-var _c139 = (a0, a1) => ({
+var _c027 = ["sublist"];
+var _c138 = (a0, a1) => ({
   "p-contextmenu-submenu": a0,
   "p-contextmenu-root-list": a1
 });
-var _c226 = () => ({
+var _c225 = () => ({
   "p-contextmenu-item-link": true
 });
-var _c318 = () => ({
+var _c317 = () => ({
   class: "p-contextmenu-submenu-icon"
 });
-var _c415 = () => ({
+var _c414 = () => ({
   exact: false
 });
 var _c513 = (a0) => ({
   "p-contextmenu-item-link": true,
   "p-disabled": a0
 });
-var _c612 = (a0) => ({
+var _c611 = (a0) => ({
   $implicit: a0
 });
 function ContextMenuSub_ul_0_ng_template_2_li_0_Template(rf, ctx) {
@@ -66958,7 +66317,7 @@ function ContextMenuSub_ul_0_ng_template_2_li_1_ng_container_3_a_1_ng_container_
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", !ctx_r2.contextMenu.submenuIconTemplate && !ctx_r2.contextMenu._submenuIconTemplate);
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r2.contextMenu.submenuIconTemplate || ctx_r2.contextMenu._submenuIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction0(3, _c318));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r2.contextMenu.submenuIconTemplate || ctx_r2.contextMenu._submenuIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction0(3, _c317));
   }
 }
 function ContextMenuSub_ul_0_ng_template_2_li_1_ng_container_3_a_1_Template(rf, ctx) {
@@ -66971,7 +66330,7 @@ function ContextMenuSub_ul_0_ng_template_2_li_1_ng_container_3_a_1_Template(rf, 
     const htmlLabel_r6 = \u0275\u0275reference(4);
     const processedItem_r4 = \u0275\u0275nextContext(3).$implicit;
     const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("target", ctx_r2.getItemProp(processedItem_r4, "target"))("ngClass", \u0275\u0275pureFunction0(12, _c226));
+    \u0275\u0275property("target", ctx_r2.getItemProp(processedItem_r4, "target"))("ngClass", \u0275\u0275pureFunction0(12, _c225));
     \u0275\u0275attribute("href", ctx_r2.getItemProp(processedItem_r4, "url"), \u0275\u0275sanitizeUrl)("aria-hidden", true)("data-automationid", ctx_r2.getItemProp(processedItem_r4, "automationId"))("data-pc-section", "action")("tabindex", -1);
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.getItemProp(processedItem_r4, "icon"));
@@ -67059,7 +66418,7 @@ function ContextMenuSub_ul_0_ng_template_2_li_1_ng_container_3_a_2_ng_container_
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", !ctx_r2.contextMenu.submenuIconTemplate && !ctx_r2.contextMenu._submenuIconTemplate);
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", !ctx_r2.contextMenu.submenuIconTemplate || !ctx_r2.contextMenu._submenuIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction0(3, _c318));
+    \u0275\u0275property("ngTemplateOutlet", !ctx_r2.contextMenu.submenuIconTemplate || !ctx_r2.contextMenu._submenuIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction0(3, _c317));
   }
 }
 function ContextMenuSub_ul_0_ng_template_2_li_1_ng_container_3_a_2_Template(rf, ctx) {
@@ -67072,7 +66431,7 @@ function ContextMenuSub_ul_0_ng_template_2_li_1_ng_container_3_a_2_Template(rf, 
     const htmlLabel_r7 = \u0275\u0275reference(4);
     const processedItem_r4 = \u0275\u0275nextContext(3).$implicit;
     const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("routerLink", ctx_r2.getItemProp(processedItem_r4, "routerLink"))("queryParams", ctx_r2.getItemProp(processedItem_r4, "queryParams"))("routerLinkActiveOptions", ctx_r2.getItemProp(processedItem_r4, "routerLinkActiveOptions") || \u0275\u0275pureFunction0(20, _c415))("target", ctx_r2.getItemProp(processedItem_r4, "target"))("ngClass", \u0275\u0275pureFunction1(21, _c513, ctx_r2.getItemProp(processedItem_r4, "disabled")))("fragment", ctx_r2.getItemProp(processedItem_r4, "fragment"))("queryParamsHandling", ctx_r2.getItemProp(processedItem_r4, "queryParamsHandling"))("preserveFragment", ctx_r2.getItemProp(processedItem_r4, "preserveFragment"))("skipLocationChange", ctx_r2.getItemProp(processedItem_r4, "skipLocationChange"))("replaceUrl", ctx_r2.getItemProp(processedItem_r4, "replaceUrl"))("state", ctx_r2.getItemProp(processedItem_r4, "state"));
+    \u0275\u0275property("routerLink", ctx_r2.getItemProp(processedItem_r4, "routerLink"))("queryParams", ctx_r2.getItemProp(processedItem_r4, "queryParams"))("routerLinkActiveOptions", ctx_r2.getItemProp(processedItem_r4, "routerLinkActiveOptions") || \u0275\u0275pureFunction0(20, _c414))("target", ctx_r2.getItemProp(processedItem_r4, "target"))("ngClass", \u0275\u0275pureFunction1(21, _c513, ctx_r2.getItemProp(processedItem_r4, "disabled")))("fragment", ctx_r2.getItemProp(processedItem_r4, "fragment"))("queryParamsHandling", ctx_r2.getItemProp(processedItem_r4, "queryParamsHandling"))("preserveFragment", ctx_r2.getItemProp(processedItem_r4, "preserveFragment"))("skipLocationChange", ctx_r2.getItemProp(processedItem_r4, "skipLocationChange"))("replaceUrl", ctx_r2.getItemProp(processedItem_r4, "replaceUrl"))("state", ctx_r2.getItemProp(processedItem_r4, "state"));
     \u0275\u0275attribute("data-automationid", ctx_r2.getItemProp(processedItem_r4, "automationId"))("tabindex", -1)("aria-hidden", true)("data-pc-section", "action");
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.getItemProp(processedItem_r4, "icon"));
@@ -67116,7 +66475,7 @@ function ContextMenuSub_ul_0_ng_template_2_li_1_ng_container_4_Template(rf, ctx)
     const processedItem_r4 = \u0275\u0275nextContext(2).$implicit;
     const ctx_r2 = \u0275\u0275nextContext(2);
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r2.itemTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c612, processedItem_r4.item));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r2.itemTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c611, processedItem_r4.item));
   }
 }
 function ContextMenuSub_ul_0_ng_template_2_li_1_p_contextmenu_sub_5_Template(rf, ctx) {
@@ -67220,7 +66579,7 @@ function ContextMenuSub_ul_0_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r2 = \u0275\u0275nextContext();
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction2(10, _c139, !ctx_r2.root, ctx_r2.root))("@overlayAnimation", ctx_r2.visible)("tabindex", ctx_r2.tabindex);
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction2(10, _c138, !ctx_r2.root, ctx_r2.root))("@overlayAnimation", ctx_r2.visible)("tabindex", ctx_r2.tabindex);
     \u0275\u0275attribute("id", ctx_r2.menuId + "_list")("aria-label", ctx_r2.ariaLabel)("aria-labelledBy", ctx_r2.ariaLabelledBy)("aria-activedescendant", ctx_r2.focusedItemId)("aria-orientation", "vertical")("data-pc-section", "menu");
     \u0275\u0275advance(2);
     \u0275\u0275property("ngForOf", ctx_r2.items);
@@ -67283,7 +66642,7 @@ function ContextMenu_div_0_Template(rf, ctx) {
     \u0275\u0275property("root", true)("items", ctx_r1.processedItems)("itemTemplate", ctx_r1.itemTemplate || ctx_r1._itemTemplate)("menuId", ctx_r1.id)("tabindex", !ctx_r1.disabled ? ctx_r1.tabindex : -1)("ariaLabel", ctx_r1.ariaLabel)("ariaLabelledBy", ctx_r1.ariaLabelledBy)("baseZIndex", ctx_r1.baseZIndex)("autoZIndex", ctx_r1.autoZIndex)("visible", ctx_r1.submenuVisible())("focusedItemId", ctx_r1.focused ? ctx_r1.focusedItemId : void 0)("activeItemPath", ctx_r1.activeItemPath());
   }
 }
-var theme20 = ({
+var theme18 = ({
   dt
 }) => `
 .p-contextmenu {
@@ -67443,7 +66802,7 @@ var theme20 = ({
     margin-right: auto;
 }
 `;
-var classes21 = {
+var classes19 = {
   root: "p-contextmenu p-component",
   rootList: "p-contextmenu-root-list",
   item: ({
@@ -67464,8 +66823,8 @@ var classes21 = {
 };
 var ContextMenuStyle = class _ContextMenuStyle extends BaseStyle {
   name = "contextmenu";
-  theme = theme20;
-  classes = classes21;
+  theme = theme18;
+  classes = classes19;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275ContextMenuStyle_BaseFactory;
     return function ContextMenuStyle_Factory(__ngFactoryType__) {
@@ -67617,7 +66976,7 @@ var ContextMenuSub = class _ContextMenuSub extends BaseComponent {
     selectors: [["p-contextMenuSub"], ["p-contextmenu-sub"]],
     viewQuery: function ContextMenuSub_Query(rf, ctx) {
       if (rf & 1) {
-        \u0275\u0275viewQuery(_c028, 5);
+        \u0275\u0275viewQuery(_c027, 5);
       }
       if (rf & 2) {
         let _t;
@@ -68934,22 +68293,22 @@ var ContextMenuModule = class _ContextMenuModule {
 })();
 
 // node_modules/primeng/fesm2022/primeng-tree.mjs
-var _c029 = (a0) => ({
+var _c028 = (a0) => ({
   height: a0
 });
-var _c140 = (a0) => ({
+var _c139 = (a0) => ({
   "p-tree-node-droppoint-active": a0
 });
-var _c227 = (a0, a1) => ({
+var _c226 = (a0, a1) => ({
   $implicit: a0,
   loading: a1
 });
-var _c319 = (a0, a1) => ({
+var _c318 = (a0, a1) => ({
   $implicit: a0,
   partialSelected: a1,
   class: "p-tree-node-checkbox"
 });
-var _c416 = (a0) => ({
+var _c415 = (a0) => ({
   $implicit: a0
 });
 function UITreeNode_Conditional_0_li_0_Template(rf, ctx) {
@@ -68977,7 +68336,7 @@ function UITreeNode_Conditional_0_li_0_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(2, _c140, ctx_r2.draghoverPrev));
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(2, _c139, ctx_r2.draghoverPrev));
     \u0275\u0275attribute("aria-hidden", true);
   }
 }
@@ -69052,7 +68411,7 @@ function UITreeNode_Conditional_0_span_5_Template(rf, ctx) {
   if (rf & 2) {
     const ctx_r2 = \u0275\u0275nextContext(2);
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r2.tree.togglerIconTemplate || ctx_r2.tree._togglerIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c227, ctx_r2.node.expanded, ctx_r2.node.loading));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r2.tree.togglerIconTemplate || ctx_r2.tree._togglerIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c226, ctx_r2.node.expanded, ctx_r2.node.loading));
   }
 }
 function UITreeNode_Conditional_0_p_checkbox_6_ng_container_1_ng_template_1_0_ng_template_0_Template(rf, ctx) {
@@ -69068,7 +68427,7 @@ function UITreeNode_Conditional_0_p_checkbox_6_ng_container_1_ng_template_1_Temp
   }
   if (rf & 2) {
     const ctx_r2 = \u0275\u0275nextContext(4);
-    \u0275\u0275property("ngTemplateOutlet", ctx_r2.tree.checkboxIconTemplate || ctx_r2.tree._checkboxIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c319, ctx_r2.isSelected(), ctx_r2.node.partialSelected));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r2.tree.checkboxIconTemplate || ctx_r2.tree._checkboxIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c318, ctx_r2.isSelected(), ctx_r2.node.partialSelected));
   }
 }
 function UITreeNode_Conditional_0_p_checkbox_6_ng_container_1_Template(rf, ctx) {
@@ -69132,7 +68491,7 @@ function UITreeNode_Conditional_0_span_10_Template(rf, ctx) {
   if (rf & 2) {
     const ctx_r2 = \u0275\u0275nextContext(2);
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r2.tree.getTemplateForNode(ctx_r2.node))("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c416, ctx_r2.node));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r2.tree.getTemplateForNode(ctx_r2.node))("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c415, ctx_r2.node));
   }
 }
 function UITreeNode_Conditional_0_ul_11_p_treeNode_1_Template(rf, ctx) {
@@ -69186,7 +68545,7 @@ function UITreeNode_Conditional_0_li_12_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(2, _c140, ctx_r2.draghoverNext));
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(2, _c139, ctx_r2.draghoverNext));
     \u0275\u0275attribute("aria-hidden", true);
   }
 }
@@ -69264,7 +68623,7 @@ function UITreeNode_Conditional_0_Template(rf, ctx) {
     \u0275\u0275advance();
     \u0275\u0275styleMap(ctx_r2.node.style);
     \u0275\u0275classMap(ctx_r2.node.styleClass);
-    \u0275\u0275property("ngClass", ctx_r2.nodeClass)("ngStyle", \u0275\u0275pureFunction1(29, _c029, ctx_r2.itemSize + "px"));
+    \u0275\u0275property("ngClass", ctx_r2.nodeClass)("ngStyle", \u0275\u0275pureFunction1(29, _c028, ctx_r2.itemSize + "px"));
     \u0275\u0275attribute("aria-label", ctx_r2.node.label)("aria-checked", ctx_r2.checked)("aria-setsize", ctx_r2.node.children ? ctx_r2.node.children.length : 0)("aria-selected", ctx_r2.selected)("aria-expanded", ctx_r2.node.expanded)("aria-posinset", ctx_r2.index + 1)("aria-level", ctx_r2.level + 1)("tabindex", ctx_r2.index === 0 ? 0 : -1)("data-id", ctx_r2.node.key);
     \u0275\u0275advance();
     \u0275\u0275styleProp("padding-left", ctx_r2.level * ctx_r2.indentation + "rem");
@@ -69290,7 +68649,7 @@ function UITreeNode_Conditional_0_Template(rf, ctx) {
   }
 }
 var _c514 = ["filter"];
-var _c613 = ["node"];
+var _c612 = ["node"];
 var _c711 = ["header"];
 var _c810 = ["footer"];
 var _c910 = ["loader"];
@@ -69384,7 +68743,7 @@ function Tree_Conditional_3_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r0.filterTemplate || ctx_r0._filterTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c416, ctx_r0.filterOptions));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r0.filterTemplate || ctx_r0._filterTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c415, ctx_r0.filterOptions));
   }
 }
 function Tree_Conditional_4_p_iconField_0_SearchIcon_4_Template(rf, ctx) {
@@ -69533,7 +68892,7 @@ function Tree_ng_container_5_p_scroller_1_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r0 = \u0275\u0275nextContext(2);
-    \u0275\u0275styleMap(\u0275\u0275pureFunction1(9, _c029, ctx_r0.scrollHeight !== "flex" ? ctx_r0.scrollHeight : void 0));
+    \u0275\u0275styleMap(\u0275\u0275pureFunction1(9, _c028, ctx_r0.scrollHeight !== "flex" ? ctx_r0.scrollHeight : void 0));
     \u0275\u0275property("items", ctx_r0.serializedValue)("tabindex", -1)("scrollHeight", ctx_r0.scrollHeight !== "flex" ? void 0 : "100%")("itemSize", ctx_r0.virtualScrollItemSize || ctx_r0._virtualNodeHeight)("lazy", ctx_r0.lazy)("options", ctx_r0.virtualScrollOptions);
     \u0275\u0275advance(4);
     \u0275\u0275property("ngIf", ctx_r0.loaderTemplate || ctx_r0._loaderTemplate);
@@ -69633,7 +68992,7 @@ function Tree_ng_container_7_Template(rf, ctx) {
     \u0275\u0275elementContainer(0);
   }
 }
-var theme21 = ({
+var theme19 = ({
   dt
 }) => `
 .p-tree {
@@ -69858,7 +69217,7 @@ var theme21 = ({
     height: 0;
 }
 `;
-var classes22 = {
+var classes20 = {
   root: ({
     instance
   }) => ({
@@ -69898,8 +69257,8 @@ var classes22 = {
 };
 var TreeStyle = class _TreeStyle extends BaseStyle {
   name = "tree";
-  theme = theme21;
-  classes = classes22;
+  theme = theme19;
+  classes = classes20;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275TreeStyle_BaseFactory;
     return function TreeStyle_Factory(__ngFactoryType__) {
@@ -71527,7 +70886,7 @@ var Tree = class _Tree extends BaseComponent {
     contentQueries: function Tree_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
         \u0275\u0275contentQuery(dirIndex, _c514, 4);
-        \u0275\u0275contentQuery(dirIndex, _c613, 4);
+        \u0275\u0275contentQuery(dirIndex, _c612, 4);
         \u0275\u0275contentQuery(dirIndex, _c711, 4);
         \u0275\u0275contentQuery(dirIndex, _c810, 4);
         \u0275\u0275contentQuery(dirIndex, _c910, 4);
@@ -72078,7 +71437,7 @@ var TreeModule = class _TreeModule {
 })();
 
 // src/app/components/ia-table/ia-table.component.ts
-var _c030 = ["cm"];
+var _c029 = ["cm"];
 function IaTableComponent_ng_template_3_Conditional_1_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
     const _r2 = \u0275\u0275getCurrentView();
@@ -72735,7 +72094,7 @@ var IaTableComponent = class _IaTableComponent {
   };
   static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _IaTableComponent, selectors: [["aida-ia-table"]], viewQuery: function IaTableComponent_Query(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275viewQuery(_c030, 5);
+      \u0275\u0275viewQuery(_c029, 5);
     }
     if (rf & 2) {
       let _t;
@@ -72856,11 +72215,11 @@ var IaTableComponent = class _IaTableComponent {
 })();
 
 // src/app/views/inventory-assistant/inventory.component.ts
-var _c031 = ["dt"];
-var _c141 = ["menuContext"];
-var _c228 = (a0) => [25, 50, 100, a0];
-var _c320 = (a0) => ({ column: a0 });
-var _c417 = (a0, a1, a2) => ({ "border-right-1": a0, "surface-border": a1, "hasMenu": a2 });
+var _c030 = ["dt"];
+var _c140 = ["menuContext"];
+var _c227 = (a0) => [25, 50, 100, a0];
+var _c319 = (a0) => ({ column: a0 });
+var _c416 = (a0, a1, a2) => ({ "border-right-1": a0, "surface-border": a1, "hasMenu": a2 });
 var _forTrack07 = ($index, $item) => $item.value;
 var _forTrack13 = ($index, $item) => $item.field;
 function InventoryComponent_div_27_Template(rf, ctx) {
@@ -73109,7 +72468,7 @@ function InventoryComponent_Conditional_30_ng_template_2_For_10_Conditional_1_Te
   if (rf & 2) {
     const col_r17 = \u0275\u0275nextContext().$implicit;
     const ctx_r2 = \u0275\u0275nextContext(3);
-    \u0275\u0275property("label", \u0275\u0275pipeBind1(1, 4, col_r17.translationKey))("icon", ctx_r2.isColumnFiltered(col_r17.field) ? "pi pi-filter" : "pi pi-filter-slash")("severity", ctx_r2.isColumnFiltered(col_r17.field) ? "primary" : "contrast")("pTooltip", ctx_r2.isColumnFiltered(col_r17.field) ? \u0275\u0275pipeBind1(2, 6, "inventory.filter.showAll") : \u0275\u0275pipeBind2(4, 10, "inventory.filter.showTrue", \u0275\u0275pureFunction1(13, _c320, \u0275\u0275pipeBind1(3, 8, col_r17.translationKey))));
+    \u0275\u0275property("label", \u0275\u0275pipeBind1(1, 4, col_r17.translationKey))("icon", ctx_r2.isColumnFiltered(col_r17.field) ? "pi pi-filter" : "pi pi-filter-slash")("severity", ctx_r2.isColumnFiltered(col_r17.field) ? "primary" : "contrast")("pTooltip", ctx_r2.isColumnFiltered(col_r17.field) ? \u0275\u0275pipeBind1(2, 6, "inventory.filter.showAll") : \u0275\u0275pipeBind2(4, 10, "inventory.filter.showTrue", \u0275\u0275pureFunction1(13, _c319, \u0275\u0275pipeBind1(3, 8, col_r17.translationKey))));
   }
 }
 function InventoryComponent_Conditional_30_ng_template_2_For_10_Conditional_2_Template(rf, ctx) {
@@ -73193,7 +72552,7 @@ function InventoryComponent_Conditional_30_ng_template_3_For_4_Template(rf, ctx)
 }
 function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_1_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275text(0, " TEST ");
+    \u0275\u0275text(0, " TODO: add dropdown with text option ");
   }
 }
 function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_1_Conditional_1_Template(rf, ctx) {
@@ -73238,7 +72597,7 @@ function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_2_Con
 function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_2_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
     const _r22 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-iftalabel", 71)(1, "p-select", 72);
+    \u0275\u0275elementStart(0, "p-iftalabel", 70)(1, "p-select", 71);
     \u0275\u0275twoWayListener("ngModelChange", function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_2_Conditional_0_Template_p_select_ngModelChange_1_listener($event) {
       \u0275\u0275restoreView(_r22);
       const col_r21 = \u0275\u0275nextContext(2).$implicit;
@@ -73255,7 +72614,7 @@ function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_2_Con
     });
     \u0275\u0275template(2, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_2_Conditional_0_ng_template_2_Template, 1, 1, "ng-template", null, 8, \u0275\u0275templateRefExtractor)(4, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_2_Conditional_0_ng_template_4_Template, 1, 1, "ng-template", null, 2, \u0275\u0275templateRefExtractor);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(6, "label", 73);
+    \u0275\u0275elementStart(6, "label", 72);
     \u0275\u0275text(7);
     \u0275\u0275pipe(8, "translate");
     \u0275\u0275elementEnd()();
@@ -73284,7 +72643,7 @@ function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_2_Con
 }
 function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_2_Conditional_0_Template, 9, 6, "p-iftalabel", 71)(1, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_2_Conditional_1_Template, 2, 3);
+    \u0275\u0275template(0, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_2_Conditional_0_Template, 9, 6, "p-iftalabel", 70)(1, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_2_Conditional_1_Template, 2, 3);
   }
   if (rf & 2) {
     const col_r21 = \u0275\u0275nextContext().$implicit;
@@ -73293,30 +72652,59 @@ function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_2_Tem
     \u0275\u0275conditional(ctx_r2.isEditingInline(node_r19, col_r21) ? 0 : 1);
   }
 }
+function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_3_Conditional_3_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r25 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p-button", 75);
+    \u0275\u0275pipe(1, "translate");
+    \u0275\u0275pipe(2, "translate");
+    \u0275\u0275listener("click", function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_3_Conditional_3_Template_p_button_click_0_listener() {
+      \u0275\u0275restoreView(_r25);
+      const col_r21 = \u0275\u0275nextContext(2).$implicit;
+      const rowIndex_r26 = \u0275\u0275nextContext().rowIndex;
+      const ctx_r2 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r2.toggleTaskCell(rowIndex_r26, col_r21.field));
+    });
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const col_r21 = \u0275\u0275nextContext(2).$implicit;
+    const rowIndex_r26 = \u0275\u0275nextContext().rowIndex;
+    const ctx_r2 = \u0275\u0275nextContext(2);
+    \u0275\u0275property("icon", ctx_r2.isTaskExpanded(rowIndex_r26, col_r21.field) ? "pi pi-chevron-up" : "pi pi-chevron-down")("pTooltip", ctx_r2.isTaskExpanded(rowIndex_r26, col_r21.field) ? \u0275\u0275pipeBind1(1, 2, "common.collapse") : \u0275\u0275pipeBind1(2, 4, "common.expand"));
+  }
+}
 function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_3_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 74);
-    \u0275\u0275text(1);
+    \u0275\u0275elementStart(0, "div", 66)(1, "span", 73);
+    \u0275\u0275text(2);
+    \u0275\u0275elementEnd();
+    \u0275\u0275template(3, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_3_Conditional_3_Template, 3, 6, "p-button", 74);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
     const col_r21 = \u0275\u0275nextContext().$implicit;
-    const node_r19 = \u0275\u0275nextContext().$implicit;
+    const ctx_r26 = \u0275\u0275nextContext();
+    const node_r19 = ctx_r26.$implicit;
+    const rowIndex_r26 = ctx_r26.rowIndex;
     const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275classProp("line-clamp-1", !ctx_r2.expandAllTasks);
+    \u0275\u0275advance();
+    \u0275\u0275classProp("line-clamp-1", !ctx_r2.isTaskExpanded(rowIndex_r26, col_r21.field));
     \u0275\u0275property("pTooltip", ctx_r2.expandAllTasks ? null : node_r19[col_r21.field]);
     \u0275\u0275advance();
     \u0275\u0275textInterpolate(node_r19[col_r21.field].join(", "));
+    \u0275\u0275advance();
+    \u0275\u0275conditional(!ctx_r2.expandAllTasks ? 3 : -1);
   }
 }
 function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_4_Conditional_5_Template(rf, ctx) {
   if (rf & 1) {
-    const _r25 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 77);
+    const _r28 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p-button", 75);
     \u0275\u0275pipe(1, "translate");
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275listener("click", function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_4_Conditional_5_Template_p_button_click_0_listener() {
-      \u0275\u0275restoreView(_r25);
+      \u0275\u0275restoreView(_r28);
       const col_r21 = \u0275\u0275nextContext(2).$implicit;
       const rowIndex_r26 = \u0275\u0275nextContext().rowIndex;
       const ctx_r2 = \u0275\u0275nextContext(2);
@@ -73333,12 +72721,12 @@ function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_4_Con
 }
 function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_4_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 67)(1, "div")(2, "p-tag", 75);
+    \u0275\u0275elementStart(0, "div", 66)(1, "div")(2, "p-tag", 76);
     \u0275\u0275text(3);
     \u0275\u0275elementEnd();
     \u0275\u0275text(4);
     \u0275\u0275elementEnd();
-    \u0275\u0275template(5, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_4_Conditional_5_Template, 3, 6, "p-button", 76);
+    \u0275\u0275template(5, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_4_Conditional_5_Template, 3, 6, "p-button", 74);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -73362,7 +72750,7 @@ function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_4_Tem
 function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_0_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 57);
-    \u0275\u0275element(1, "p-tag", 79);
+    \u0275\u0275element(1, "p-tag", 78);
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275elementEnd();
   }
@@ -73371,15 +72759,66 @@ function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Con
     \u0275\u0275property("value", \u0275\u0275pipeBind1(2, 1, "common.rejected"));
   }
 }
-function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_0_Conditional_1_Conditional_6_Template(rf, ctx) {
+function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_0_Conditional_1_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
-    const _r28 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 77);
+    const _r29 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 79)(1, "div", 80);
+    \u0275\u0275element(2, "p-tag", 81);
+    \u0275\u0275pipe(3, "translate");
+    \u0275\u0275element(4, "p-tag", 82);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(5, "p-iftalabel")(6, "textarea", 83);
+    \u0275\u0275twoWayListener("ngModelChange", function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_0_Conditional_1_Conditional_1_Template_textarea_ngModelChange_6_listener($event) {
+      \u0275\u0275restoreView(_r29);
+      const field_r30 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(field_r30.edited, $event) || (field_r30.edited = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("change", function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_0_Conditional_1_Conditional_1_Template_textarea_change_6_listener() {
+      \u0275\u0275restoreView(_r29);
+      const col_r21 = \u0275\u0275nextContext(4).$implicit;
+      const node_r19 = \u0275\u0275nextContext().$implicit;
+      const ctx_r2 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r2.updateMetadata(node_r19, col_r21));
+    })("paste", function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_0_Conditional_1_Conditional_1_Template_textarea_paste_6_listener() {
+      \u0275\u0275restoreView(_r29);
+      const col_r21 = \u0275\u0275nextContext(4).$implicit;
+      const node_r19 = \u0275\u0275nextContext().$implicit;
+      const ctx_r2 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r2.onPasteMetadata(node_r19, col_r21));
+    })("blur", function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_0_Conditional_1_Conditional_1_Template_textarea_blur_6_listener() {
+      \u0275\u0275restoreView(_r29);
+      const ctx_r2 = \u0275\u0275nextContext(7);
+      return \u0275\u0275resetView(ctx_r2.onBlurMetadata());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(7, "label", 84);
+    \u0275\u0275text(8);
+    \u0275\u0275pipe(9, "translate");
+    \u0275\u0275elementEnd()()();
+  }
+  if (rf & 2) {
+    const field_r30 = \u0275\u0275nextContext(2);
+    const col_r21 = \u0275\u0275nextContext(2).$implicit;
+    \u0275\u0275advance(2);
+    \u0275\u0275property("value", \u0275\u0275pipeBind1(3, 5, "common.editing"));
+    \u0275\u0275advance(2);
+    \u0275\u0275property("value", field_r30.edited.length)("severity", field_r30.edited.length >= 10 && field_r30.edited.length <= 160 ? "success" : "danger");
+    \u0275\u0275advance(2);
+    \u0275\u0275twoWayProperty("ngModel", field_r30.edited);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(9, 7, col_r21.translationKey));
+  }
+}
+function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_0_Conditional_1_Conditional_2_Conditional_9_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r31 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p-button", 88);
     \u0275\u0275pipe(1, "translate");
     \u0275\u0275pipe(2, "translate");
-    \u0275\u0275listener("click", function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_0_Conditional_1_Conditional_6_Template_p_button_click_0_listener() {
-      \u0275\u0275restoreView(_r28);
-      const col_r21 = \u0275\u0275nextContext(4).$implicit;
+    \u0275\u0275listener("click", function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_0_Conditional_1_Conditional_2_Conditional_9_Template_p_button_click_0_listener() {
+      \u0275\u0275restoreView(_r31);
+      const col_r21 = \u0275\u0275nextContext(5).$implicit;
       const rowIndex_r26 = \u0275\u0275nextContext().rowIndex;
       const ctx_r2 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r2.toggleMetadataCell(rowIndex_r26, col_r21.field));
@@ -73387,50 +72826,70 @@ function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Con
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const col_r21 = \u0275\u0275nextContext(4).$implicit;
+    const col_r21 = \u0275\u0275nextContext(5).$implicit;
     const rowIndex_r26 = \u0275\u0275nextContext().rowIndex;
     const ctx_r2 = \u0275\u0275nextContext(2);
     \u0275\u0275property("icon", ctx_r2.isMetadataExpanded(rowIndex_r26, col_r21.field) ? "pi pi-chevron-up" : "pi pi-chevron-down")("pTooltip", ctx_r2.isMetadataExpanded(rowIndex_r26, col_r21.field) ? \u0275\u0275pipeBind1(1, 2, "common.collapse") : \u0275\u0275pipeBind1(2, 4, "common.expand"));
   }
 }
-function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_0_Conditional_1_Template(rf, ctx) {
+function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_0_Conditional_1_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 67)(1, "div");
-    \u0275\u0275element(2, "p-tag", 80)(3, "p-tag", 81);
-    \u0275\u0275text(4);
+    \u0275\u0275elementStart(0, "div", 79)(1, "div", 80);
+    \u0275\u0275element(2, "p-tag", 85);
+    \u0275\u0275pipe(3, "translate");
+    \u0275\u0275pipe(4, "translate");
+    \u0275\u0275element(5, "p-tag", 82);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(5, "div", 82);
-    \u0275\u0275template(6, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_0_Conditional_1_Conditional_6_Template, 3, 6, "p-button", 76);
+    \u0275\u0275elementStart(6, "div");
+    \u0275\u0275text(7);
     \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(8, "div", 86);
+    \u0275\u0275template(9, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_0_Conditional_1_Conditional_2_Conditional_9_Template, 3, 6, "p-button", 87);
+    \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const field_r29 = \u0275\u0275nextContext();
+    const field_r30 = \u0275\u0275nextContext(2);
     const col_r21 = \u0275\u0275nextContext(2).$implicit;
     const rowIndex_r26 = \u0275\u0275nextContext().rowIndex;
     const ctx_r2 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance(2);
+    \u0275\u0275property("value", field_r30.status.slice(0, 8) === "approved" ? \u0275\u0275pipeBind1(3, 8, "common.approved") : \u0275\u0275pipeBind1(4, 10, "common." + field_r30.status))("severity", field_r30.status === "edited" ? "primary" : field_r30.status.slice(0, 8) === "approved" ? "success" : "secondary");
+    \u0275\u0275advance(3);
+    \u0275\u0275property("value", field_r30.status === "edited" ? field_r30.edited.length : field_r30.ai.length)("severity", field_r30.status === "edited" ? field_r30.edited.length >= 10 && field_r30.edited.length <= 160 ? "success" : "danger" : field_r30.ai.length >= 10 && field_r30.ai.length <= 160 ? "success" : "danger");
     \u0275\u0275advance();
     \u0275\u0275classProp("line-clamp-3", !ctx_r2.isMetadataExpanded(rowIndex_r26, col_r21.field));
     \u0275\u0275advance();
-    \u0275\u0275property("value", field_r29.status)("severity", field_r29.status === "edited" ? "warn" : field_r29.status === "approved" ? "success" : "secondary");
-    \u0275\u0275advance();
-    \u0275\u0275property("value", field_r29.status === "edited" ? field_r29.edited.length : field_r29.ai.length)("severity", field_r29.length >= 10 && field_r29.length <= 160 ? "success" : "danger");
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", field_r29.status === "edited" ? field_r29.edited : field_r29.ai, " ");
+    \u0275\u0275textInterpolate1(" ", field_r30.status === "edited" ? field_r30.edited : field_r30.status === "approvedEdits" ? field_r30.edited : field_r30.ai, " ");
     \u0275\u0275advance(2);
-    \u0275\u0275conditional(!ctx_r2.expandAllMetadata ? 6 : -1);
+    \u0275\u0275conditional(!ctx_r2.expandAllMetadata ? 9 : -1);
+  }
+}
+function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_0_Conditional_1_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 66);
+    \u0275\u0275template(1, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_0_Conditional_1_Conditional_1_Template, 10, 9, "div", 79)(2, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_0_Conditional_1_Conditional_2_Template, 10, 12);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const col_r21 = \u0275\u0275nextContext(3).$implicit;
+    const node_r19 = \u0275\u0275nextContext().$implicit;
+    const ctx_r2 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance();
+    \u0275\u0275conditional(ctx_r2.isEditingMetadata(node_r19, col_r21, ctx_r2.isEditing) ? 1 : 2);
   }
 }
 function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_0_Conditional_0_Template, 3, 3, "div", 57)(1, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_0_Conditional_1_Template, 7, 8, "div", 67);
+    \u0275\u0275template(0, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_0_Conditional_0_Template, 3, 3, "div", 57)(1, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_0_Conditional_1_Template, 3, 1, "div", 66);
   }
   if (rf & 2) {
-    \u0275\u0275conditional(ctx.status === "rejected" ? 0 : 1);
+    const field_r30 = ctx;
+    \u0275\u0275conditional(field_r30.status === "rejected" || field_r30.status === "noChange" ? 0 : 1);
   }
 }
 function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "i", 78);
+    \u0275\u0275element(0, "i", 77);
     \u0275\u0275pipe(1, "translate");
   }
   if (rf & 2) {
@@ -73439,7 +72898,7 @@ function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Con
 }
 function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_0_Template, 2, 1)(1, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_1_Template, 2, 3, "i", 78);
+    \u0275\u0275template(0, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_0_Template, 2, 1)(1, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Conditional_1_Template, 2, 3, "i", 77);
   }
   if (rf & 2) {
     let tmp_30_0;
@@ -73450,7 +72909,7 @@ function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Tem
 }
 function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_6_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 68);
+    \u0275\u0275elementStart(0, "span", 67);
     \u0275\u0275text(1);
     \u0275\u0275pipe(2, "date");
     \u0275\u0275elementEnd();
@@ -73464,7 +72923,7 @@ function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_6_Tem
 }
 function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_7_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 69)(1, "a", 83);
+    \u0275\u0275elementStart(0, "div", 68)(1, "a", 89);
     \u0275\u0275text(2);
     \u0275\u0275elementEnd()();
   }
@@ -73481,7 +72940,7 @@ function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_7_Tem
 }
 function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_8_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "i", 84);
+    \u0275\u0275element(0, "i", 90);
     \u0275\u0275pipe(1, "translate");
   }
   if (rf & 2) {
@@ -73494,7 +72953,7 @@ function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_8_Tem
 }
 function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_9_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "i", 85);
+    \u0275\u0275element(0, "i", 91);
   }
 }
 function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_9_Conditional_1_Template(rf, ctx) {
@@ -73511,7 +72970,7 @@ function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_9_Con
 }
 function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_9_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_9_Conditional_0_Template, 1, 0, "i", 85)(1, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_9_Conditional_1_Template, 2, 5);
+    \u0275\u0275template(0, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_9_Conditional_0_Template, 1, 0, "i", 91)(1, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_9_Conditional_1_Template, 2, 5);
   }
   if (rf & 2) {
     const col_r21 = \u0275\u0275nextContext().$implicit;
@@ -73521,7 +72980,7 @@ function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_9_Tem
 }
 function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_10_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "i", 84);
+    \u0275\u0275element(0, "i", 90);
     \u0275\u0275pipe(1, "translate");
   }
   if (rf & 2) {
@@ -73534,7 +72993,7 @@ function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_10_Te
 }
 function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_11_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "i", 84);
+    \u0275\u0275element(0, "i", 90);
     \u0275\u0275pipe(1, "translate");
   }
   if (rf & 2) {
@@ -73547,21 +73006,21 @@ function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_11_Te
 }
 function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_12_Conditional_0_ng_template_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "img", 89);
+    \u0275\u0275element(0, "img", 95);
   }
 }
 function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_12_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
-    const _r30 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 87);
+    const _r32 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p-button", 93);
     \u0275\u0275pipe(1, "translate");
     \u0275\u0275listener("onClick", function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_12_Conditional_0_Template_p_button_onClick_0_listener() {
-      \u0275\u0275restoreView(_r30);
+      \u0275\u0275restoreView(_r32);
       const node_r19 = \u0275\u0275nextContext(3).$implicit;
       const ctx_r2 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r2.openInUPD(node_r19));
     });
-    \u0275\u0275template(2, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_12_Conditional_0_ng_template_2_Template, 1, 0, "ng-template", 88);
+    \u0275\u0275template(2, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_12_Conditional_0_ng_template_2_Template, 1, 0, "ng-template", 94);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -73570,7 +73029,7 @@ function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_12_Co
 }
 function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_12_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "i", 78);
+    \u0275\u0275element(0, "i", 77);
     \u0275\u0275pipe(1, "translate");
   }
   if (rf & 2) {
@@ -73579,7 +73038,7 @@ function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_12_Co
 }
 function InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_12_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_12_Conditional_0_Template, 3, 3, "p-button", 86)(1, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_12_Conditional_1_Template, 2, 3, "i", 78);
+    \u0275\u0275template(0, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_12_Conditional_0_Template, 3, 3, "p-button", 92)(1, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_12_Conditional_1_Template, 2, 3, "i", 77);
   }
   if (rf & 2) {
     const node_r19 = \u0275\u0275nextContext(2).$implicit;
@@ -73606,14 +73065,14 @@ function InventoryComponent_Conditional_30_ng_template_3_For_6_Template(rf, ctx)
       const ctx_r2 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r2.onTouchEnd($event, node_r19, col_r21));
     });
-    \u0275\u0275template(1, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_1_Template, 2, 1)(2, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_2_Template, 2, 1)(3, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_3_Template, 2, 4, "span", 66)(4, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_4_Template, 6, 6, "div", 67)(5, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Template, 2, 1)(6, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_6_Template, 3, 4, "span", 68)(7, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_7_Template, 3, 5, "div", 69)(8, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_8_Template, 2, 5, "i", 70)(9, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_9_Template, 2, 1)(10, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_10_Template, 2, 5, "i", 70)(11, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_11_Template, 2, 5, "i", 70)(12, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_12_Template, 2, 1);
+    \u0275\u0275template(1, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_1_Template, 2, 1)(2, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_2_Template, 2, 1)(3, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_3_Template, 4, 5, "div", 66)(4, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_4_Template, 6, 6, "div", 66)(5, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_5_Template, 2, 1)(6, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_6_Template, 3, 4, "span", 67)(7, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_7_Template, 3, 5, "div", 68)(8, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_8_Template, 2, 5, "i", 69)(9, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_9_Template, 2, 1)(10, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_10_Template, 2, 5, "i", 69)(11, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_11_Template, 2, 5, "i", 69)(12, InventoryComponent_Conditional_30_ng_template_3_For_6_Conditional_12_Template, 2, 1);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
     const col_r21 = ctx.$implicit;
     const node_r19 = \u0275\u0275nextContext().$implicit;
     const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction3(14, _c417, ctx_r2.isLastInGroup(col_r21.field), ctx_r2.isLastInGroup(col_r21.field), ctx_r2.hasContextMenu(col_r21.type)))("pEditableColumn", node_r19.field);
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction3(14, _c416, ctx_r2.isLastInGroup(col_r21.field), ctx_r2.isLastInGroup(col_r21.field), ctx_r2.hasContextMenu(col_r21.type)))("pEditableColumn", node_r19.field);
     \u0275\u0275advance();
     \u0275\u0275conditional(col_r21.type === "text" ? 1 : -1);
     \u0275\u0275advance();
@@ -73664,7 +73123,7 @@ function InventoryComponent_Conditional_30_ng_template_3_Template(rf, ctx) {
 }
 function InventoryComponent_Conditional_30_ng_template_4_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "tr")(1, "td", 90);
+    \u0275\u0275elementStart(0, "tr")(1, "td", 96);
     \u0275\u0275text(2);
     \u0275\u0275pipe(3, "translate");
     \u0275\u0275elementEnd()();
@@ -73699,7 +73158,7 @@ function InventoryComponent_Conditional_30_Template(rf, ctx) {
     const ctx_r2 = \u0275\u0275nextContext();
     \u0275\u0275property("value", ctx_r2.tableData());
     \u0275\u0275twoWayProperty("selection", ctx_r2.selectedNodes);
-    \u0275\u0275property("scrollable", false)("customSort", true)("paginator", ctx_r2.projectState.getProject().baselinePages > 50)("rows", 50)("rowsPerPageOptions", \u0275\u0275pureFunction1(7, _c228, ctx_r2.projectState.getProject().baselinePages));
+    \u0275\u0275property("scrollable", false)("customSort", true)("paginator", ctx_r2.projectState.getProject().baselinePages > 50)("rows", 50)("rowsPerPageOptions", \u0275\u0275pureFunction1(7, _c227, ctx_r2.projectState.getProject().baselinePages));
   }
 }
 function InventoryComponent_Conditional_31_Template(rf, ctx) {
@@ -73709,37 +73168,7 @@ function InventoryComponent_Conditional_31_Template(rf, ctx) {
 }
 function InventoryComponent_ng_template_39_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 91);
-    \u0275\u0275text(1);
-    \u0275\u0275pipe(2, "translate");
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const item_r31 = ctx.$implicit;
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 1, item_r31.label));
-  }
-}
-function InventoryComponent_ng_template_41_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "a", 92);
-    \u0275\u0275element(1, "i");
-    \u0275\u0275elementStart(2, "span");
-    \u0275\u0275text(3);
-    \u0275\u0275pipe(4, "translate");
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    const item_r32 = ctx.$implicit;
-    \u0275\u0275advance();
-    \u0275\u0275classMap(item_r32.icon);
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 3, item_r32.label));
-  }
-}
-function InventoryComponent_ng_template_45_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 91);
+    \u0275\u0275elementStart(0, "span", 97);
     \u0275\u0275text(1);
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275elementEnd();
@@ -73750,9 +73179,9 @@ function InventoryComponent_ng_template_45_Template(rf, ctx) {
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 1, item_r33.label));
   }
 }
-function InventoryComponent_ng_template_47_Template(rf, ctx) {
+function InventoryComponent_ng_template_41_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "a", 92);
+    \u0275\u0275elementStart(0, "a", 98);
     \u0275\u0275element(1, "i");
     \u0275\u0275elementStart(2, "span");
     \u0275\u0275text(3);
@@ -73767,9 +73196,9 @@ function InventoryComponent_ng_template_47_Template(rf, ctx) {
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 3, item_r34.label));
   }
 }
-function InventoryComponent_ng_template_51_Template(rf, ctx) {
+function InventoryComponent_ng_template_45_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 91);
+    \u0275\u0275elementStart(0, "span", 97);
     \u0275\u0275text(1);
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275elementEnd();
@@ -73780,9 +73209,9 @@ function InventoryComponent_ng_template_51_Template(rf, ctx) {
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 1, item_r35.label));
   }
 }
-function InventoryComponent_ng_template_53_Template(rf, ctx) {
+function InventoryComponent_ng_template_47_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "a", 92);
+    \u0275\u0275elementStart(0, "a", 98);
     \u0275\u0275element(1, "i");
     \u0275\u0275elementStart(2, "span");
     \u0275\u0275text(3);
@@ -73797,9 +73226,9 @@ function InventoryComponent_ng_template_53_Template(rf, ctx) {
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 3, item_r36.label));
   }
 }
-function InventoryComponent_ng_template_57_Template(rf, ctx) {
+function InventoryComponent_ng_template_51_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 93);
+    \u0275\u0275elementStart(0, "span", 97);
     \u0275\u0275text(1);
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275elementEnd();
@@ -73810,10 +73239,10 @@ function InventoryComponent_ng_template_57_Template(rf, ctx) {
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 1, item_r37.label));
   }
 }
-function InventoryComponent_ng_template_59_Template(rf, ctx) {
+function InventoryComponent_ng_template_53_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "a", 92);
-    \u0275\u0275element(1, "i", 94);
+    \u0275\u0275elementStart(0, "a", 98);
+    \u0275\u0275element(1, "i");
     \u0275\u0275elementStart(2, "span");
     \u0275\u0275text(3);
     \u0275\u0275pipe(4, "translate");
@@ -73823,9 +73252,39 @@ function InventoryComponent_ng_template_59_Template(rf, ctx) {
     const item_r38 = ctx.$implicit;
     \u0275\u0275advance();
     \u0275\u0275classMap(item_r38.icon);
-    \u0275\u0275property("ngClass", item_r38.severity === "danger" ? "text-red-500" : "");
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 4, item_r38.label));
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 3, item_r38.label));
+  }
+}
+function InventoryComponent_ng_template_57_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "span", 99);
+    \u0275\u0275text(1);
+    \u0275\u0275pipe(2, "translate");
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const item_r39 = ctx.$implicit;
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 1, item_r39.label));
+  }
+}
+function InventoryComponent_ng_template_59_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "a", 98);
+    \u0275\u0275element(1, "i", 100);
+    \u0275\u0275elementStart(2, "span");
+    \u0275\u0275text(3);
+    \u0275\u0275pipe(4, "translate");
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    const item_r40 = ctx.$implicit;
+    \u0275\u0275advance();
+    \u0275\u0275classMap(item_r40.icon);
+    \u0275\u0275property("ngClass", item_r40.severity === "danger" ? "text-red-500" : "");
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 4, item_r40.label));
   }
 }
 var InventoryComponent = class _InventoryComponent {
@@ -73874,6 +73333,8 @@ var InventoryComponent = class _InventoryComponent {
   // Multiselect group data
   expandedMetadataCells = /* @__PURE__ */ new Set();
   // Tracks which individual metadata cells are expanded
+  expandedTaskCells = /* @__PURE__ */ new Set();
+  // Tracks which individual task cells are expanded
   // Booleans
   expandAllMetadata = false;
   expandAllUrls = false;
@@ -73924,6 +73385,8 @@ var InventoryComponent = class _InventoryComponent {
     marker("inventory.tooltip.noindex.en-only");
     marker("inventory.tooltip.noindex.fr-only");
     marker("inventory.tooltip.noindex.both");
+    marker("inventory.tooltip.noindex.to-reindex");
+    marker("inventory.tooltip.noindex.to-deindex");
   }
   // Multiselect - column groups
   get groupedColumns() {
@@ -74151,6 +73614,10 @@ var InventoryComponent = class _InventoryComponent {
         return "pi pi-exclamation-triangle text-red-500";
       case "both":
         return "pi pi-android text-orange-500";
+      case "to-reindex":
+        return "pi pi-minus text-orange-500";
+      case "to-deindex":
+        return "pi pi-android text-gray-500";
       default:
         return "pi pi-minus text-gray-400";
     }
@@ -74166,17 +73633,17 @@ var InventoryComponent = class _InventoryComponent {
     this.checkAutoExpandUrls();
     this.checkAutoExpandTasks();
   }
-  // Table - autoexpand metadata when it's the only visible group (NOT WORKING!)
+  // Table - autoexpand metadata when it's the only visible group (Works!)
   checkAutoExpandMetadata() {
     const selectedGroups = new Set(this.scrollableColumns.map((col) => col.group));
     this.expandAllMetadata = selectedGroups.size === 1 && selectedGroups.has("metadata");
   }
-  // Table - autoexpand urls when it's the only visible type (NOT WORKING!)
+  // Table - autoexpand urls when it's the only visible type (works!)
   checkAutoExpandUrls() {
     const selectedTypes = new Set(this.scrollableColumns.map((col) => col.type));
     this.expandAllUrls = selectedTypes.size === 1 && selectedTypes.has("url");
   }
-  // Table - autoexpand tasks when pageData is the only visible type (NOT WORKING!)
+  // Table - autoexpand tasks when pageData is the only visible type (works!)
   checkAutoExpandTasks() {
     const selectedGroups = new Set(this.scrollableColumns.map((col) => col.group));
     this.expandAllTasks = selectedGroups.size === 1 && selectedGroups.has("pageData");
@@ -74184,6 +73651,10 @@ var InventoryComponent = class _InventoryComponent {
   // Table - check if metadata cell is expanded
   isMetadataExpanded(rowIndex, field) {
     return this.expandAllMetadata || this.expandedMetadataCells.has(`${rowIndex}-${field}`);
+  }
+  // Table - check if task cell is expanded
+  isTaskExpanded(rowIndex, field) {
+    return this.expandAllTasks || this.expandedTaskCells.has(`${rowIndex}-${field}`);
   }
   // Table - toggle individual metadata cell expansion
   toggleMetadataCell(rowIndex, field) {
@@ -74194,6 +73665,15 @@ var InventoryComponent = class _InventoryComponent {
       this.expandedMetadataCells.add(key2);
     }
   }
+  // Table - toggle individual task cell expansion
+  toggleTaskCell(rowIndex, field) {
+    const key2 = `${rowIndex}-${field}`;
+    if (this.expandedTaskCells.has(key2)) {
+      this.expandedTaskCells.delete(key2);
+    } else {
+      this.expandedTaskCells.add(key2);
+    }
+  }
   // Button - toggle expand/collapse for all metadata
   toggleExpandAllMetadata() {
     this.expandAllMetadata = !this.expandAllMetadata;
@@ -74201,9 +73681,20 @@ var InventoryComponent = class _InventoryComponent {
       this.expandedMetadataCells.clear();
     }
   }
+  // Button - toggle expand/collapse for all metadata
+  toggleExpandAllTasks() {
+    this.expandAllTasks = !this.expandAllTasks;
+    if (this.expandAllTasks) {
+      this.expandedTaskCells.clear();
+    }
+  }
   // Table - check if any metadata columns are visible
   hasVisibleMetadata() {
     return this.scrollableColumns.some((col) => col.group === "metadata");
+  }
+  // Table - check if task column is visible
+  hasVisibleTasks() {
+    return this.scrollableColumns.some((col) => col.field === "task");
   }
   onDeleteSelected() {
     if (!this.selectedNodes.length)
@@ -74420,7 +73911,7 @@ var InventoryComponent = class _InventoryComponent {
               description: { ai: parsed.fr.description, status: "pending" },
               keywords: { ai: parsed.fr.keywords, status: "pending" }
             }
-          });
+          }, InventoryPrompts[InventoryPromptKey.Metadata]);
         } catch (error) {
           console.warn(`Skipping ${node.url} \u2014 could not parse AI response`, error);
           continue;
@@ -74542,6 +74033,19 @@ var InventoryComponent = class _InventoryComponent {
             disabled: !this.hasVisibleMetadata()
           }
         ]
+      },
+      {
+        label: this.translate.instant("inventory.menu.tasks"),
+        items: [
+          {
+            label: this.expandAllTasks ? this.translate.instant("inventory.menu.tasks.collapseAll") : this.translate.instant("inventory.menu.tasks.expandAll"),
+            icon: this.expandAllTasks ? "pi pi-minus" : "pi pi-plus",
+            command: () => {
+              this.toggleExpandAllTasks();
+            },
+            disabled: !this.hasVisibleTasks()
+          }
+        ]
       }
     ];
   }
@@ -74594,7 +74098,7 @@ var InventoryComponent = class _InventoryComponent {
   menuContext;
   itemsContext = [];
   hasContextMenu(type) {
-    return ["boolean", "archive", "noindex", "template"].includes(type);
+    return ["boolean", "archive", "noindex", "template", "aiText"].includes(type);
   }
   currentEditNode;
   currentEditCol;
@@ -74612,6 +74116,7 @@ var InventoryComponent = class _InventoryComponent {
   }
   onRightClick(event2, node, col) {
     event2.preventDefault();
+    this.isEditing = false;
     this.currentEditNode = node;
     this.currentEditCol = col;
     if (!this.currentEditNode || !this.currentEditCol)
@@ -74628,6 +74133,9 @@ var InventoryComponent = class _InventoryComponent {
         break;
       case "template":
         this.isEditingInline(node, col);
+        break;
+      case "aiText":
+        this.updateAItext(event2, node, col);
         break;
       default:
         return;
@@ -74652,6 +74160,11 @@ var InventoryComponent = class _InventoryComponent {
     marker("inventory.contextMenu.archiveStatus.unarchive");
     marker("inventory.contextMenu.noindex.none");
     marker("inventory.contextMenu.noindex.both");
+    marker("inventory.contextMenu.noindex.to-reindex");
+    marker("inventory.contextMenu.noindex.to-deindex");
+    marker("common.pending");
+    marker("common.edited");
+    marker("common.approved");
   }
   updateBoolean(event2, node, col) {
     const currentValue = this.getBooleanValue(node, col);
@@ -74707,15 +74220,27 @@ var InventoryComponent = class _InventoryComponent {
     this.itemsContext = [];
     if (currentValue === "both") {
       this.itemsContext.push({
-        label: this.translate.instant(`inventory.contextMenu.${col.field}.none`),
-        icon: this.getNoIndexIcon("none"),
-        command: () => this.saveValue(false)
+        label: this.translate.instant(`inventory.contextMenu.${col.field}.to-reindex`),
+        icon: this.getNoIndexIcon("to-reindex"),
+        command: () => this.saveValue("to-reindex")
       });
-    } else if (currentValue === "none") {
+    } else if (currentValue === "to-reindex") {
       this.itemsContext.push({
         label: this.translate.instant(`inventory.contextMenu.${col.field}.both`),
         icon: this.getNoIndexIcon("both"),
         command: () => this.saveValue(true)
+      });
+    } else if (currentValue === "none") {
+      this.itemsContext.push({
+        label: this.translate.instant(`inventory.contextMenu.${col.field}.to-deindex`),
+        icon: this.getNoIndexIcon("to-deindex"),
+        command: () => this.saveValue("to-deindex")
+      });
+    } else if (currentValue === "to-deindex") {
+      this.itemsContext.push({
+        label: this.translate.instant(`inventory.contextMenu.${col.field}.none`),
+        icon: this.getNoIndexIcon("none"),
+        command: () => this.saveValue(false)
       });
     }
     this.menuContext.show(event2);
@@ -74756,20 +74281,102 @@ var InventoryComponent = class _InventoryComponent {
       this.projectState.setModifiedDate();
     }
   }
+  //Metadata context menu
+  updateAItext(event2, node, col) {
+    const currentField = node[col.field];
+    if (!currentField)
+      return;
+    const status = currentField.status;
+    const ai = currentField.ai;
+    const edited = currentField.edited;
+    this.itemsContext = [
+      {
+        label: this.translate.instant(`common.edit`),
+        icon: "pi pi-pencil text-primary",
+        command: () => {
+          this.isEditing = true;
+          this.isEditingMetadata(node, col, this.isEditing);
+          if (!edited) {
+            node[col.field].edited = ai;
+          }
+        }
+      }
+    ];
+    if (status !== "noChange") {
+      this.itemsContext.push({
+        label: this.translate.instant(`common.accept`),
+        icon: "pi pi-check text-green-500",
+        command: () => status === "edited" ? this.setStatus(node, col, "approvedEdits") : this.setStatus(node, col, "approvedAI")
+      });
+      this.itemsContext.push({
+        label: this.translate.instant(`common.reject`),
+        icon: "pi pi-trash text-red-500",
+        command: () => this.setStatus(node, col, "rejected")
+      });
+    }
+    if (status !== "pending") {
+      this.itemsContext.push({
+        label: this.translate.instant(`common.undo`),
+        icon: "pi pi-undo",
+        command: () => this.setStatus(node, col, "pending")
+      });
+    }
+    this.menuContext.show(event2);
+  }
+  isEditing = false;
+  isEditingMetadata(node, col, editing = false) {
+    return this.currentEditNode === node && this.currentEditCol === col && editing === true;
+  }
+  setStatus(node, col, status) {
+    node[col.field].status = status;
+    if (!node["aiGeneratedAt"] || !node["aiModel"] || !node["aiDescriptionEN"] || !node["aiKeywordsEN"] || !node["aiDescriptionFR"] || !node["aiKeywordsFR"])
+      return;
+    const url = node["url"];
+    const review = {
+      generatedAt: node["aiGeneratedAt"],
+      model: node["aiModel"],
+      en: {
+        description: node["aiDescriptionEN"],
+        keywords: node["aiKeywordsEN"]
+      },
+      fr: {
+        description: node["aiDescriptionFR"],
+        keywords: node["aiKeywordsFR"]
+      }
+    };
+    this.projectState.setMetadataReview(url, review);
+  }
+  updateMetadata(node, col) {
+    const compareCol = col.field.slice(2).replace(/^./, (c) => c.toLowerCase());
+    const compareValue = node[compareCol];
+    if (node[col.field].edited === compareValue) {
+      this.setStatus(node, col, "noChange");
+    } else if (node[col.field].edited !== node[col.field].ai) {
+      this.setStatus(node, col, "edited");
+    } else if (node[col.field].edited === node[col.field].ai) {
+      this.setStatus(node, col, "pending");
+    }
+  }
+  onPasteMetadata(node, col) {
+    setTimeout(() => this.updateMetadata(node, col), 0);
+  }
+  onBlurMetadata() {
+    this.isEditing = false;
+  }
   static \u0275fac = function InventoryComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _InventoryComponent)();
   };
   static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _InventoryComponent, selectors: [["aida-inventory"]], viewQuery: function InventoryComponent_Query(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275viewQuery(_c031, 5);
-      \u0275\u0275viewQuery(_c141, 5);
+      \u0275\u0275viewQuery(_c030, 5);
+      \u0275\u0275viewQuery(_c140, 5);
     }
     if (rf & 2) {
       let _t;
       \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.dt = _t.first);
       \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.menuContext = _t.first);
     }
-  }, decls: 63, vars: 36, consts: [["menuRefresh", ""], ["submenuheader", ""], ["item", ""], ["menuStatus", ""], ["menuMetadata", ""], ["menuDelete", ""], ["menuContext", ""], ["dt", ""], ["selectedItem", ""], [1, "flex", "flex-row", "flex-wrap", "justify-content-between", "sticky-horizontal"], ["id", "wb-cont"], [1, "mt-0", "lg:mt-5", "mb-2", "flex", "flex-row", "lg:flex-column", "gap-2"], ["icon", "pi pi-sitemap", "outlined", "", "size", "small", "styleClass", "secondary-outline w-full min-w-max", 3, "click", "label"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "mb-3", "w-full"], [1, "flex", "flex-column", "lg:flex-row", "justify-content-between", "align-items-start", "sticky-horizontal"], [1, "flex", "flex-column"], [1, "text-2xl", "my-1"], [1, "sticky-toolbar"], [1, "flex", "flex-row", "justify-content-between", "gap-2", "h-6rem", "surface-card"], ["for", "views'", 1, "mb-1", "font-semibold", "block"], ["role", "radiogroup", "id", "views"], ["class", "field-radiobutton", 4, "ngFor", "ngForOf"], [1, "h-3rm", "mb-2"], ["dataKey", "url", "selectionMode", "multiple", "size", "small", "stripedRows", "", 3, "value", "selection", "scrollable", "customSort", "paginator", "rows", "rowsPerPageOptions"], [1, "flex", "md:flex-row", "flex-column", "gap-3", "sticky-horizontal"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "lg:mb-3", "lg:w-6", "w-full"], [3, "model", "popup"], [3, "model"], [1, "field-radiobutton"], [3, "ngModelChange", "inputId", "name", "value", "ngModel"], [3, "for"], [1, "hidden", "lg:flex", "flex-column", "text-color-secondary", "hover:text-primary", "max-w-max"], [1, "text-xs", "my-1"], [1, "flex", "flex-row", "align-content-center", "gap-2"], ["inputId", "groups", "optionLabel", "label", "optionValue", "value", "placeholder", "Show/hide groups", 1, "w-13rem", 3, "ngModelChange", "onChange", "options", "ngModel", "showHeader", "maxSelectedLabels"], ["pTemplate", "header"], ["for", "columns"], ["inputId", "columns", "optionLabel", "label", "optionValue", "value", "optionGroupLabel", "label", "optionGroupChildren", "items", "placeholder", "Show/hide columns", 1, "w-13rem", "capitalize", 3, "ngModelChange", "onChange", "options", "ngModel", "group", "showHeader", "maxSelectedLabels"], [1, "flex", "flex-column", "h-full", "gap-1"], ["severity", "primary", "outlined", "", "size", "small", "styleClass", "h-full w-full secondary-outline p-1", 1, "h-full", 3, "onClick", "label"], ["severity", "secondary", "icon", "pi pi-cog", "label", "Column settings", 1, "flex", "lg:hidden"], [1, "px-3", "pt-2"], [1, "font-semibold"], [1, "flex", "flex-row", "align-items-center", "gap-2", "surface-card"], ["label", "Refresh", "icon", "pi pi-chevron-down", "iconPos", "right", "severity", "primary", "outlined", "", "styleClass", "secondary-outline", 3, "onClick"], ["label", "Status", "icon", "pi pi-chevron-down", "iconPos", "right", "severity", "primary", "outlined", "", "styleClass", "secondary-outline", 3, "onClick"], ["label", "Metadata", "icon", "pi pi-chevron-down", "iconPos", "right", "severity", "primary", "outlined", "", "styleClass", "secondary-outline", 3, "onClick", "loading"], ["label", "Delete", "icon", "pi pi-chevron-down", "iconPos", "right", "severity", "danger", "outlined", "", "styleClass", "secondary-outline", 3, "onClick"], ["key", "inventory"], ["dataKey", "url", "selectionMode", "multiple", "size", "small", "stripedRows", "", 3, "selectionChange", "sortFunction", "value", "selection", "scrollable", "customSort", "paginator", "rows", "rowsPerPageOptions"], ["pTemplate", "body"], ["pTemplate", "emptymessage"], [3, "class"], [1, "sticky-rc", "surface-card"], [3, "pSortableColumn", "class"], [3, "class", "pSortableColumn"], [3, "pSortableColumn"], [1, "flex", "align-items-center", "gap-2"], [3, "field"], ["styleClass", "font-bold capitalize", "iconPos", "right", "text", "", "rounded", "", "tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "label", "icon", "severity", "pTooltip"], ["styleClass", "font-bold capitalize", "iconPos", "right", "text", "", "rounded", "", "tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "onClick", "label", "icon", "severity", "pTooltip"], [3, "pSelectableRow", "pSelectableRowIndex"], [1, "w-4rem", "surface-card", "sticky-c"], ["size", "large", 3, "value"], ["pEditableColumnField", "template", 3, "ngClass", "pEditableColumn"], ["pEditableColumnField", "template", 3, "contextmenu", "touchstart", "touchend", "ngClass", "pEditableColumn"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "line-clamp-1", "pTooltip"], [1, "flex", "align-items-start", "gap-2"], [1, "white-space-nowrap"], [1, "max-w-30rem"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 1, "flex", "justify-content-center", "p-2", 3, "class", "pTooltip"], [1, "w-10rem"], ["inputId", "template", "optionLabel", "label", "optionValue", "value", "filterBy", "label", "styleClass", "w-full", 3, "ngModelChange", "onChange", "ngModel", "options", "filter"], ["for", "template"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "pTooltip"], ["pTooltip", "character count", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "severity"], ["text", "", "rounded", "", "size", "small", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "icon", "pTooltip"], ["text", "", "rounded", "", "size", "small", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "click", "icon", "pTooltip"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 1, "pi", "pi-minus", "text-gray-400", "flex", "justify-content-center", "p-2", 3, "pTooltip"], ["severity", "danger", 3, "value"], [3, "value", "severity"], ["pTooltip", "character count", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 1, "mx-1", 3, "value", "severity"], [1, "flex", "flex-column", "gap-1"], ["target", "_blank", "rel", "noopener", "tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "href", "pTooltip"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 1, "flex", "justify-content-center", "p-2", 3, "pTooltip"], [1, "pi", "pi-minus", "text-gray-400"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", "rounded", "", "outlined", "", "severity", "info", "size", "small", "styleClass", "secondary-outline", "icon", "pi pi-external-link", "iconPos", "top", 1, "flex", "justify-content-center", 3, "pTooltip"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", "rounded", "", "outlined", "", "severity", "info", "size", "small", "styleClass", "secondary-outline", "icon", "pi pi-external-link", "iconPos", "top", 1, "flex", "justify-content-center", 3, "onClick", "pTooltip"], ["pTemplate", "icon"], ["src", "images/upd-icon.svg", "width", "24", "height", "24", "alt", ""], [1, "text-center", "p-4"], [1, "text-primary", "font-bold"], [1, "p-menu-item-link"], [1, "text-red-500", "font-bold"], [3, "ngClass"]], template: function InventoryComponent_Template(rf, ctx) {
+  }, decls: 63, vars: 36, consts: [["menuRefresh", ""], ["submenuheader", ""], ["item", ""], ["menuStatus", ""], ["menuMetadata", ""], ["menuDelete", ""], ["menuContext", ""], ["dt", ""], ["selectedItem", ""], [1, "flex", "flex-row", "flex-wrap", "justify-content-between", "sticky-horizontal"], ["id", "wb-cont"], [1, "mt-0", "lg:mt-5", "mb-2", "flex", "flex-row", "lg:flex-column", "gap-2"], ["icon", "pi pi-sitemap", "outlined", "", "size", "small", "styleClass", "secondary-outline w-full min-w-max", 3, "click", "label"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "mb-3", "w-full"], [1, "flex", "flex-column", "lg:flex-row", "justify-content-between", "align-items-start", "sticky-horizontal"], [1, "flex", "flex-column"], [1, "text-2xl", "my-1"], [1, "sticky-toolbar"], [1, "flex", "flex-row", "justify-content-between", "gap-2", "h-6rem", "surface-card"], ["for", "views'", 1, "mb-1", "font-semibold", "block"], ["role", "radiogroup", "id", "views"], ["class", "field-radiobutton", 4, "ngFor", "ngForOf"], [1, "h-3rm", "mb-2"], ["dataKey", "url", "selectionMode", "multiple", "size", "small", "stripedRows", "", 3, "value", "selection", "scrollable", "customSort", "paginator", "rows", "rowsPerPageOptions"], [1, "flex", "md:flex-row", "flex-column", "gap-3", "sticky-horizontal"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "lg:mb-3", "lg:w-6", "min-w-min"], [3, "model", "popup"], [3, "model"], [1, "field-radiobutton"], [3, "ngModelChange", "inputId", "name", "value", "ngModel"], [3, "for"], [1, "hidden", "lg:flex", "flex-column", "text-color-secondary", "hover:text-primary", "max-w-max"], [1, "text-xs", "my-1"], [1, "flex", "flex-row", "align-content-center", "gap-2"], ["inputId", "groups", "optionLabel", "label", "optionValue", "value", "placeholder", "Show/hide groups", 1, "w-13rem", 3, "ngModelChange", "onChange", "options", "ngModel", "showHeader", "maxSelectedLabels"], ["pTemplate", "header"], ["for", "columns"], ["inputId", "columns", "optionLabel", "label", "optionValue", "value", "optionGroupLabel", "label", "optionGroupChildren", "items", "placeholder", "Show/hide columns", 1, "w-13rem", "capitalize", 3, "ngModelChange", "onChange", "options", "ngModel", "group", "showHeader", "maxSelectedLabels"], [1, "flex", "flex-column", "h-full", "gap-1"], ["severity", "primary", "outlined", "", "size", "small", "styleClass", "h-full w-full secondary-outline p-1", 1, "h-full", 3, "onClick", "label"], ["severity", "secondary", "icon", "pi pi-cog", "label", "Column settings", 1, "flex", "lg:hidden"], [1, "px-3", "pt-2"], [1, "font-semibold"], [1, "flex", "flex-row", "align-items-center", "gap-2", "surface-card"], ["label", "Refresh", "icon", "pi pi-chevron-down", "iconPos", "right", "severity", "primary", "outlined", "", "styleClass", "secondary-outline", 3, "onClick"], ["label", "Status", "icon", "pi pi-chevron-down", "iconPos", "right", "severity", "primary", "outlined", "", "styleClass", "secondary-outline", 3, "onClick"], ["label", "Metadata", "icon", "pi pi-chevron-down", "iconPos", "right", "severity", "primary", "outlined", "", "styleClass", "secondary-outline", 3, "onClick", "loading"], ["label", "Delete", "icon", "pi pi-chevron-down", "iconPos", "right", "severity", "danger", "outlined", "", "styleClass", "secondary-outline", 3, "onClick"], ["key", "inventory"], ["dataKey", "url", "selectionMode", "multiple", "size", "small", "stripedRows", "", 3, "selectionChange", "sortFunction", "value", "selection", "scrollable", "customSort", "paginator", "rows", "rowsPerPageOptions"], ["pTemplate", "body"], ["pTemplate", "emptymessage"], [3, "class"], [1, "sticky-rc", "surface-card"], [3, "pSortableColumn", "class"], [3, "class", "pSortableColumn"], [3, "pSortableColumn"], [1, "flex", "align-items-center", "gap-2"], [3, "field"], ["styleClass", "font-bold capitalize", "iconPos", "right", "text", "", "rounded", "", "tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "label", "icon", "severity", "pTooltip"], ["styleClass", "font-bold capitalize", "iconPos", "right", "text", "", "rounded", "", "tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "onClick", "label", "icon", "severity", "pTooltip"], [3, "pSelectableRow", "pSelectableRowIndex"], [1, "w-4rem", "surface-card", "sticky-c"], ["size", "large", 3, "value"], ["pEditableColumnField", "template", 3, "ngClass", "pEditableColumn"], ["pEditableColumnField", "template", 3, "contextmenu", "touchstart", "touchend", "ngClass", "pEditableColumn"], [1, "flex", "align-items-start", "gap-2"], [1, "white-space-nowrap"], [1, "max-w-30rem"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 1, "flex", "justify-content-center", "p-2", 3, "class", "pTooltip"], [1, "w-10rem"], ["inputId", "template", "optionLabel", "label", "optionValue", "value", "filterBy", "label", "styleClass", "w-full", 3, "ngModelChange", "onChange", "ngModel", "options", "filter"], ["for", "template"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "pTooltip"], ["text", "", "rounded", "", "size", "small", "styleClass", "-mt-1", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "icon", "pTooltip"], ["text", "", "rounded", "", "size", "small", "styleClass", "-mt-1", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "click", "icon", "pTooltip"], ["pTooltip", "character count", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "severity"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 1, "pi", "pi-minus", "text-gray-400", "flex", "justify-content-center", "p-2", 3, "pTooltip"], ["severity", "danger", 3, "value"], [1, "flex", "flex-column", "gap-2"], [1, "flex", "flex-row", "gap-2"], ["severity", "primary", 1, "capitalize", 3, "value"], ["pTooltip", "character count", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 1, "mx-1", 3, "value", "severity"], ["id", "metadata", "autoResize", "true", "rows", "3", "pTextarea", "", "fluid", "", 1, "min-w-max", 3, "ngModelChange", "change", "paste", "blur", "ngModel"], ["for", "metadata"], [1, "capitalize", 3, "value", "severity"], [1, "flex", "flex-column", "gap-1", "-mt-1"], ["text", "", "rounded", "", "size", "small", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "icon", "pTooltip"], ["text", "", "rounded", "", "size", "small", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "click", "icon", "pTooltip"], ["target", "_blank", "rel", "noopener", "tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "href", "pTooltip"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 1, "flex", "justify-content-center", "p-2", 3, "pTooltip"], [1, "pi", "pi-minus", "text-gray-400"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", "rounded", "", "outlined", "", "severity", "info", "size", "small", "styleClass", "secondary-outline", "icon", "pi pi-external-link", "iconPos", "top", 1, "flex", "justify-content-center", 3, "pTooltip"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", "rounded", "", "outlined", "", "severity", "info", "size", "small", "styleClass", "secondary-outline", "icon", "pi pi-external-link", "iconPos", "top", 1, "flex", "justify-content-center", 3, "onClick", "pTooltip"], ["pTemplate", "icon"], ["src", "images/upd-icon.svg", "width", "24", "height", "24", "alt", ""], [1, "text-center", "p-4"], [1, "text-primary", "font-bold"], [1, "p-menu-item-link"], [1, "text-red-500", "font-bold"], [3, "ngClass"]], template: function InventoryComponent_Template(rf, ctx) {
     if (rf & 1) {
       const _r1 = \u0275\u0275getCurrentView();
       \u0275\u0275elementStart(0, "div")(1, "div", 9)(2, "div")(3, "h1", 10);
@@ -74862,7 +74469,7 @@ var InventoryComponent = class _InventoryComponent {
       \u0275\u0275advance(6);
       \u0275\u0275property("model", ctx.itemsContext);
     }
-  }, dependencies: [CommonModule, NgClass, NgForOf, DecimalPipe, DatePipe, FormsModule, NgControlStatus, NgModel, TranslateModule, TranslatePipe, TableModule, Table, PrimeTemplate, SortableColumn, SelectableRow, EditableColumn, SortIcon, TableCheckbox, TableHeaderCheckbox, ButtonModule, Button, PopoverModule, TooltipModule, Tooltip, ToolbarModule, IftaLabelModule, IftaLabel, MultiSelectModule, MultiSelect, SelectButtonModule, MenuModule, Menu, SelectModule, Select, TagModule, Tag, ToggleButtonModule, ConfirmDialogModule, ConfirmDialog, ContextMenuModule, ContextMenu, RadioButtonModule, RadioButton, ExportProjectComponent, AddPagesComponent, FindPagesComponent, IaTableComponent], styles: ["\n\n.sticky-toolbar[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  top: 0;\n  z-index: 20;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n  padding-right: 0rem;\n  box-sizing: border-box;\n}\n.sticky-toolbar-table[_ngcontent-%COMP%] {\n  width: calc(100vw - var(--nav-width) - 2rem);\n}\n@media screen and (min-width: 768px) {\n  .sticky-toolbar[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n    padding-right: 5rem;\n  }\n  .sticky-toolbar-table[_ngcontent-%COMP%] {\n    width: calc(100vw - var(--nav-width) - 7rem - 5rem);\n  }\n}\n  .p-datatable-table-container {\n  overflow: visible !important;\n}\n.sticky-h[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width) + 2rem);\n  z-index: 11;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-h[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 9rem);\n  }\n}\n.sticky-c[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  z-index: 11;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-c[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n  }\n}\n.sticky-r[_ngcontent-%COMP%] {\n  position: sticky;\n  top: 9rem;\n  z-index: 12;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n  .p-datatable .p-datatable-thead {\n  z-index: 13 !important;\n}\n.sticky-rh[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width) + 2rem);\n  top: 9rem;\n  z-index: 14;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-rh[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 9rem);\n  }\n}\n.sticky-rc[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  top: 9rem;\n  z-index: 14;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-rc[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n  }\n}\n.sticky-horizontal[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  z-index: 10;\n  width: calc(100vw - var(--nav-width) - 2rem);\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n  padding-right: 0rem;\n  box-sizing: border-box;\n}\n@media screen and (min-width: 768px) {\n  .sticky-horizontal[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n    width: calc(100vw - var(--nav-width) - 7rem - 3.5rem);\n    padding-right: 5rem;\n  }\n}\n.hasMenu[_ngcontent-%COMP%]:hover {\n  background-color: var(--p-primary-100) !important;\n}\nhtml.dark-mode[_ngcontent-%COMP%]   .hasMenu[_ngcontent-%COMP%]:hover {\n  background-color: var(--p-primary-500) !important;\n}\n/*# sourceMappingURL=inventory.component.css.map */"] });
+  }, dependencies: [CommonModule, NgClass, NgForOf, DecimalPipe, DatePipe, FormsModule, DefaultValueAccessor, NgControlStatus, NgModel, TranslateModule, TranslatePipe, TableModule, Table, PrimeTemplate, SortableColumn, SelectableRow, EditableColumn, SortIcon, TableCheckbox, TableHeaderCheckbox, ButtonModule, Button, PopoverModule, TooltipModule, Tooltip, ToolbarModule, IftaLabelModule, IftaLabel, MultiSelectModule, MultiSelect, SelectButtonModule, MenuModule, Menu, SelectModule, Select, TextareaModule, Textarea, TagModule, Tag, ToggleButtonModule, ConfirmDialogModule, ConfirmDialog, ContextMenuModule, ContextMenu, RadioButtonModule, RadioButton, ExportProjectComponent, AddPagesComponent, FindPagesComponent, IaTableComponent], styles: ["\n\n.sticky-toolbar[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  top: 0;\n  z-index: 20;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n  padding-right: 0rem;\n  box-sizing: border-box;\n}\n.sticky-toolbar-table[_ngcontent-%COMP%] {\n  width: calc(100vw - var(--nav-width) - 2rem);\n}\n@media screen and (min-width: 768px) {\n  .sticky-toolbar[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n    padding-right: 5rem;\n  }\n  .sticky-toolbar-table[_ngcontent-%COMP%] {\n    width: calc(100vw - var(--nav-width) - 7rem - 5rem);\n  }\n}\n  .p-datatable-table-container {\n  overflow: visible !important;\n}\n.sticky-h[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width) + 2rem);\n  z-index: 11;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-h[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 9rem);\n  }\n}\n.sticky-c[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  z-index: 11;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-c[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n  }\n}\n.sticky-r[_ngcontent-%COMP%] {\n  position: sticky;\n  top: 9rem;\n  z-index: 12;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n  .p-datatable .p-datatable-thead {\n  z-index: 13 !important;\n}\n.sticky-rh[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width) + 2rem);\n  top: 9rem;\n  z-index: 14;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-rh[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 9rem);\n  }\n}\n.sticky-rc[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  top: 9rem;\n  z-index: 14;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-rc[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n  }\n}\n.sticky-horizontal[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  z-index: 10;\n  width: calc(100vw - var(--nav-width) - 2rem);\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n  padding-right: 0rem;\n  box-sizing: border-box;\n}\n@media screen and (min-width: 768px) {\n  .sticky-horizontal[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n    width: calc(100vw - var(--nav-width) - 7rem - 3.5rem);\n    padding-right: 5rem;\n  }\n}\n.hasMenu[_ngcontent-%COMP%]:hover {\n  background-color: var(--p-primary-100) !important;\n}\nhtml.dark-mode[_ngcontent-%COMP%]   .hasMenu[_ngcontent-%COMP%]:hover {\n  background-color: var(--p-primary-500) !important;\n}\n/*# sourceMappingURL=inventory.component.css.map */"] });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(InventoryComponent, [{
@@ -74881,6 +74488,7 @@ var InventoryComponent = class _InventoryComponent {
       SelectButtonModule,
       MenuModule,
       SelectModule,
+      TextareaModule,
       TagModule,
       ToggleButtonModule,
       ConfirmDialogModule,
@@ -75096,7 +74704,7 @@ var InventoryComponent = class _InventoryComponent {
                         [pEditableColumn]="node.field" pEditableColumnField="template">\r
                         <!-- Text fields -->\r
                         @if(col.type === 'text'){\r
-                        @if(isEditingInline(node, col) && col.group === 'owner') { TEST }\r
+                        @if(isEditingInline(node, col) && col.group === 'owner') { TODO: add dropdown with text option }\r
                         @else { {{ node[col.field] }} }\r
                         }\r
                         <!-- Dropdown fields -->\r
@@ -75119,7 +74727,16 @@ var InventoryComponent = class _InventoryComponent {
                         }\r
                         <!-- Array fields -->\r
                         @if(col.type === 'array'){\r
-                        <span [class.line-clamp-1]="!expandAllTasks" [pTooltip]="expandAllTasks ? null : node[col.field]" tooltipPosition="top" appendTo="body" showDelay="300" hideDelay="0">{{ node[col.field].join(', ') }}</span>\r
+                        <div class="flex align-items-start gap-2">\r
+                            <span [class.line-clamp-1]="!isTaskExpanded(rowIndex, col.field)" [pTooltip]="expandAllTasks ? null : node[col.field]" tooltipPosition="top" appendTo="body" showDelay="300" hideDelay="0">{{ node[col.field].join(', ') }}</span>\r
+                            @if(!expandAllTasks){\r
+                            <p-button [icon]="isTaskExpanded(rowIndex, col.field) ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"\r
+                                      text rounded size="small" styleClass="-mt-1"\r
+                                      (click)="toggleTaskCell(rowIndex, col.field)"\r
+                                      [pTooltip]="isTaskExpanded(rowIndex, col.field) ? ('common.collapse' | translate) : ('common.expand' | translate)"\r
+                                      appendTo="body" showDelay="300" hideDelay="0" />\r
+                            }\r
+                        </div>\r
                         }\r
                         <!-- Long text fields (metadata, may need to refactor when we add the notes column) -->\r
                         @if(col.type === 'longText'){\r
@@ -75131,7 +74748,7 @@ var InventoryComponent = class _InventoryComponent {
                             </div>\r
                             @if(!expandAllMetadata){\r
                             <p-button [icon]="isMetadataExpanded(rowIndex, col.field) ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"\r
-                                      text rounded size="small"\r
+                                      text rounded size="small" styleClass="-mt-1"\r
                                       (click)="toggleMetadataCell(rowIndex, col.field)"\r
                                       [pTooltip]="isMetadataExpanded(rowIndex, col.field) ? ('common.collapse' | translate) : ('common.expand' | translate)"\r
                                       appendTo="body" showDelay="300" hideDelay="0" />\r
@@ -75141,20 +74758,38 @@ var InventoryComponent = class _InventoryComponent {
                         <!-- AI text fields (metadata) -->\r
                         @if(col.type === 'aiText'){\r
                         @if(node[col.field]; as field){\r
-                        @if(field.status === 'rejected'){\r
+                        @if(field.status === 'rejected' || field.status === 'noChange'){\r
                         <div class="flex align-items-center gap-2">\r
                             <p-tag severity="danger" [value]="'common.rejected' | translate" />\r
                         </div>\r
                         } @else {\r
                         <div class="flex align-items-start gap-2">\r
-                            <div [class.line-clamp-3]="!isMetadataExpanded(rowIndex, col.field)">\r
-                                <p-tag [value]="field.status"\r
-                                       [severity]="field.status === 'edited' ? 'warn' : field.status === 'approved' ? 'success' : 'secondary'" />\r
-                                <p-tag [value]="field.status === 'edited' ? field.edited.length : field.ai.length" pTooltip="character count" appendTo="body" showDelay="300" hideDelay="0"\r
-                                       [severity]="field.length >= 10 && field.length <= 160 ? 'success' : 'danger'" class="mx-1" />\r
-                                {{ field.status === 'edited' ? field.edited : field.ai }}\r
+                            @if(isEditingMetadata(node, col, isEditing)) {\r
+                            <div class="flex flex-column gap-2">\r
+                                <div class="flex flex-row gap-2">\r
+                                    <p-tag [value]="'common.editing' | translate" class="capitalize" severity="primary" />\r
+                                    <p-tag [value]="field.edited.length" pTooltip="character count" appendTo="body" showDelay="300" hideDelay="0"\r
+                                           [severity]="field.edited.length >= 10 && field.edited.length <= 160 ? 'success' : 'danger'" class="mx-1" />\r
+                                </div>\r
+                                <p-iftalabel>\r
+                                    <textarea id="metadata" autoResize="true" rows="3" pTextarea [(ngModel)]="field.edited" (change)="updateMetadata(node, col)" (paste)="onPasteMetadata(node, col)" (blur)="onBlurMetadata()" class="min-w-max" fluid></textarea>\r
+                                    <label for="metadata">{{col.translationKey| translate}}</label>\r
+                                </p-iftalabel>\r
                             </div>\r
-                            <div class="flex flex-column gap-1">\r
+                            }\r
+                            @else {\r
+                            <div class="flex flex-column gap-2">\r
+                                <div class="flex flex-row gap-2">\r
+                                    <p-tag [value]="field.status.slice(0,8) === 'approved' ? ('common.approved' | translate) : ('common.'+field.status | translate)" class="capitalize"\r
+                                           [severity]="field.status === 'edited' ? 'primary' : field.status.slice(0,8) === 'approved' ? 'success' : 'secondary'" />\r
+                                    <p-tag [value]="field.status === 'edited' ? field.edited.length : field.ai.length" pTooltip="character count" appendTo="body" showDelay="300" hideDelay="0"\r
+                                           [severity]="field.status === 'edited' ? field.edited.length >= 10 && field.edited.length <= 160 ? 'success' : 'danger' : field.ai.length >= 10 && field.ai.length <= 160 ? 'success' : 'danger'" class="mx-1" />\r
+                                </div>\r
+                                <div [class.line-clamp-3]="!isMetadataExpanded(rowIndex, col.field)">\r
+                                    {{ field.status === 'edited' ? field.edited : field.status === 'approvedEdits' ? field.edited : field.ai }}\r
+                                </div>\r
+                            </div>\r
+                            <div class="flex flex-column gap-1 -mt-1">\r
                                 @if(!expandAllMetadata){\r
                                 <p-button [icon]="isMetadataExpanded(rowIndex, col.field) ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"\r
                                           text rounded size="small"\r
@@ -75163,6 +74798,7 @@ var InventoryComponent = class _InventoryComponent {
                                           appendTo="body" showDelay="300" hideDelay="0" />\r
                                 }\r
                             </div>\r
+                            }\r
                         </div>\r
                         }\r
                         } @else {\r
@@ -75243,10 +74879,10 @@ var InventoryComponent = class _InventoryComponent {
 \r
     <!--Add & Find pages-->\r
     <div class="flex md:flex-row flex-column gap-3 sticky-horizontal">\r
-        <div class="surface-card border-round-lg shadow-2 p-4 lg:mb-3 lg:w-6 w-full">\r
+        <div class="surface-card border-round-lg shadow-2 p-4 w-full lg:mb-3 lg:w-6 min-w-min">\r
             <aida-add-pages />\r
         </div>\r
-        <div class="surface-card border-round-lg shadow-2 p-4 lg:mb-3 lg:w-6 w-full">\r
+        <div class="surface-card border-round-lg shadow-2 p-4 w-full lg:mb-3 lg:w-6 min-w-min">\r
             <aida-find-pages />\r
         </div>\r
     </div>\r
@@ -75309,7 +74945,7 @@ var InventoryComponent = class _InventoryComponent {
   }] });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(InventoryComponent, { className: "InventoryComponent", filePath: "src/app/views/inventory-assistant/inventory.component.ts", lineNumber: 59 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(InventoryComponent, { className: "InventoryComponent", filePath: "src/app/views/inventory-assistant/inventory.component.ts", lineNumber: 60 });
 })();
 
 // src/app/views/compare-assistant/compare.service.ts
@@ -76551,9 +76187,9 @@ var CompareRenderedService = class _CompareRenderedService {
 })();
 
 // src/app/components/compare-rendered/compare-rendered.component.ts
-var _c032 = ["liveContainer"];
-var _c147 = (a0) => ({ ariaLabel: a0 });
-var _c229 = (a0, a1) => ({ "background-color": a0, "border": a1 });
+var _c031 = ["liveContainer"];
+var _c141 = (a0) => ({ ariaLabel: a0 });
+var _c228 = (a0, a1) => ({ "background-color": a0, "border": a1 });
 var _forTrack08 = ($index, $item) => $item.value;
 var _forTrack14 = ($index, $item) => $item.text;
 function CompareRenderedComponent_For_6_Template(rf, ctx) {
@@ -76653,9 +76289,9 @@ function CompareRenderedComponent_Conditional_8_Template(rf, ctx) {
     \u0275\u0275advance();
     \u0275\u0275property("ariaLabel", \u0275\u0275pipeBind1(8, 18, "compare.rendered.next"))("pTooltip", \u0275\u0275pipeBind1(9, 20, "compare.rendered.next"));
     \u0275\u0275advance(3);
-    \u0275\u0275property("model", ctx_r1.acceptItems)("buttonProps", \u0275\u0275pureFunction1(34, _c147, \u0275\u0275pipeBind1(11, 22, "compare.rendered.accept")))("menuButtonProps", \u0275\u0275pureFunction1(36, _c147, \u0275\u0275pipeBind1(12, 24, "compare.rendered.acceptOptions")))("pTooltip", \u0275\u0275pipeBind1(13, 26, "compare.rendered.accept"));
+    \u0275\u0275property("model", ctx_r1.acceptItems)("buttonProps", \u0275\u0275pureFunction1(34, _c141, \u0275\u0275pipeBind1(11, 22, "compare.rendered.accept")))("menuButtonProps", \u0275\u0275pureFunction1(36, _c141, \u0275\u0275pipeBind1(12, 24, "compare.rendered.acceptOptions")))("pTooltip", \u0275\u0275pipeBind1(13, 26, "compare.rendered.accept"));
     \u0275\u0275advance(4);
-    \u0275\u0275property("model", ctx_r1.rejectItems)("buttonProps", \u0275\u0275pureFunction1(38, _c147, \u0275\u0275pipeBind1(15, 28, "compare.rendered.reject")))("menuButtonProps", \u0275\u0275pureFunction1(40, _c147, \u0275\u0275pipeBind1(16, 30, "compare.rendered.rejectOptions")))("pTooltip", \u0275\u0275pipeBind1(17, 32, "compare.rendered.reject"));
+    \u0275\u0275property("model", ctx_r1.rejectItems)("buttonProps", \u0275\u0275pureFunction1(38, _c141, \u0275\u0275pipeBind1(15, 28, "compare.rendered.reject")))("menuButtonProps", \u0275\u0275pureFunction1(40, _c141, \u0275\u0275pipeBind1(16, 30, "compare.rendered.rejectOptions")))("pTooltip", \u0275\u0275pipeBind1(17, 32, "compare.rendered.reject"));
     \u0275\u0275advance(4);
     \u0275\u0275conditional(ctx_r1.displayNumHighlighted ? 18 : -1);
   }
@@ -76734,7 +76370,7 @@ function CompareRenderedComponent_For_12_Template(rf, ctx) {
   if (rf & 2) {
     const item_r6 = ctx.$implicit;
     \u0275\u0275advance();
-    \u0275\u0275property("ngStyle", \u0275\u0275pureFunction2(4, _c229, item_r6.style === "highlight" ? item_r6.colour : "transparent", item_r6.style === "line" ? "2px " + (item_r6.lineStyle || "solid") + " " + item_r6.colour : "none"));
+    \u0275\u0275property("ngStyle", \u0275\u0275pureFunction2(4, _c228, item_r6.style === "highlight" ? item_r6.colour : "transparent", item_r6.style === "line" ? "2px " + (item_r6.lineStyle || "solid") + " " + item_r6.colour : "none"));
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 2, item_r6.text));
   }
@@ -77259,7 +76895,7 @@ var CompareRenderedComponent = class _CompareRenderedComponent {
   };
   static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CompareRenderedComponent, selectors: [["aida-compare-rendered"]], viewQuery: function CompareRenderedComponent_Query(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275viewQuery(_c032, 5);
+      \u0275\u0275viewQuery(_c031, 5);
     }
     if (rf & 2) {
       let _t;
@@ -77435,7 +77071,7 @@ var CompareRenderedComponent = class _CompareRenderedComponent {
   }] });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CompareRenderedComponent, { className: "CompareRenderedComponent", filePath: "src/app/components/compare-rendered/compare-rendered.component.ts", lineNumber: 43 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CompareRenderedComponent, { className: "CompareRenderedComponent", filePath: "src/app/components/compare-rendered/compare-rendered.component.ts", lineNumber: 47 });
 })();
 
 // src/app/components/compare-source/compare-source.service.ts
@@ -78661,13 +78297,13 @@ var CompareComponent = class _CompareComponent {
 })();
 
 // node_modules/primeng/fesm2022/primeng-panel.mjs
-var _c033 = ["header"];
-var _c148 = ["icons"];
-var _c230 = ["content"];
-var _c321 = ["footer"];
-var _c418 = ["headericons"];
+var _c032 = ["header"];
+var _c147 = ["icons"];
+var _c229 = ["content"];
+var _c320 = ["footer"];
+var _c417 = ["headericons"];
 var _c515 = ["contentWrapper"];
-var _c614 = ["*", [["p-header"]], [["p-footer"]]];
+var _c613 = ["*", [["p-header"]], [["p-footer"]]];
 var _c712 = ["*", "p-header", "p-footer"];
 var _c811 = (a0, a1) => ({
   "p-panel p-component": true,
@@ -78697,7 +78333,7 @@ var _c1311 = (a0, a1, a2) => ({
   "p-panel-icons-end": a1,
   "p-panel-icons-center": a2
 });
-var _c149 = (a0) => ({
+var _c148 = (a0) => ({
   $implicit: a0
 });
 function Panel_div_1_span_1_Template(rf, ctx) {
@@ -78810,7 +78446,7 @@ function Panel_div_1_p_button_6_ng_template_1_Template(rf, ctx) {
     const ctx_r2 = \u0275\u0275nextContext(3);
     \u0275\u0275property("ngIf", !ctx_r2.headerIconsTemplate && !ctx_r2._headerIconsTemplate && !(ctx_r2.toggleButtonProps == null ? null : ctx_r2.toggleButtonProps.icon));
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r2.headerIconsTemplate || ctx_r2._headerIconsTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(3, _c149, ctx_r2.collapsed));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r2.headerIconsTemplate || ctx_r2._headerIconsTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(3, _c148, ctx_r2.collapsed));
   }
 }
 function Panel_div_1_p_button_6_Template(rf, ctx) {
@@ -78889,7 +78525,7 @@ function Panel_div_7_Template(rf, ctx) {
     \u0275\u0275property("ngTemplateOutlet", ctx_r2.footerTemplate || ctx_r2._footerTemplate);
   }
 }
-var theme22 = ({
+var theme20 = ({
   dt
 }) => `
 .p-panel {
@@ -78938,7 +78574,7 @@ var theme22 = ({
     overflow: hidden;
 }
 `;
-var classes23 = {
+var classes21 = {
   root: ({
     props
   }) => ["p-panel p-component", {
@@ -78954,8 +78590,8 @@ var classes23 = {
 };
 var PanelStyle = class _PanelStyle extends BaseStyle {
   name = "panel";
-  theme = theme22;
-  classes = classes23;
+  theme = theme20;
+  classes = classes21;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275PanelStyle_BaseFactory;
     return function PanelStyle_Factory(__ngFactoryType__) {
@@ -79221,11 +78857,11 @@ var Panel = class _Panel extends BaseComponent {
     contentQueries: function Panel_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
         \u0275\u0275contentQuery(dirIndex, Footer, 5);
-        \u0275\u0275contentQuery(dirIndex, _c033, 4);
-        \u0275\u0275contentQuery(dirIndex, _c148, 4);
-        \u0275\u0275contentQuery(dirIndex, _c230, 4);
-        \u0275\u0275contentQuery(dirIndex, _c321, 4);
-        \u0275\u0275contentQuery(dirIndex, _c418, 4);
+        \u0275\u0275contentQuery(dirIndex, _c032, 4);
+        \u0275\u0275contentQuery(dirIndex, _c147, 4);
+        \u0275\u0275contentQuery(dirIndex, _c229, 4);
+        \u0275\u0275contentQuery(dirIndex, _c320, 4);
+        \u0275\u0275contentQuery(dirIndex, _c417, 4);
         \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
       }
       if (rf & 2) {
@@ -79275,7 +78911,7 @@ var Panel = class _Panel extends BaseComponent {
     template: function Panel_Template(rf, ctx) {
       if (rf & 1) {
         const _r1 = \u0275\u0275getCurrentView();
-        \u0275\u0275projectionDef(_c614);
+        \u0275\u0275projectionDef(_c613);
         \u0275\u0275elementStart(0, "div", 2);
         \u0275\u0275template(1, Panel_div_1_Template, 7, 10, "div", 3);
         \u0275\u0275elementStart(2, "div", 4);
@@ -79568,13 +79204,13 @@ var PanelModule = class _PanelModule {
 })();
 
 // node_modules/primeng/fesm2022/primeng-password.mjs
-var _c034 = ["content"];
-var _c150 = ["footer"];
-var _c231 = ["header"];
-var _c323 = ["clearicon"];
-var _c419 = ["hideicon"];
+var _c033 = ["content"];
+var _c149 = ["footer"];
+var _c230 = ["header"];
+var _c321 = ["clearicon"];
+var _c418 = ["hideicon"];
 var _c516 = ["showicon"];
-var _c615 = ["input"];
+var _c614 = ["input"];
 var _c713 = () => ({
   class: "p-password-toggle-mask-icon p-password-mask-icon"
 });
@@ -79841,7 +79477,7 @@ function Password_div_7_Template(rf, ctx) {
     \u0275\u0275property("ngTemplateOutlet", ctx_r3.footerTemplate || ctx_r3._footerTemplate);
   }
 }
-var theme23 = ({
+var theme21 = ({
   dt
 }) => `
 .p-password {
@@ -79955,7 +79591,7 @@ var inlineStyles6 = {
     position: instance.appendTo === "self" ? "relative" : void 0
   })
 };
-var classes24 = {
+var classes22 = {
   root: ({
     instance
   }) => ({
@@ -79978,8 +79614,8 @@ var classes24 = {
 };
 var PasswordStyle = class _PasswordStyle extends BaseStyle {
   name = "password";
-  theme = theme23;
-  classes = classes24;
+  theme = theme21;
+  classes = classes22;
   inlineStyles = inlineStyles6;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275PasswordStyle_BaseFactory;
@@ -80869,11 +80505,11 @@ var Password = class _Password extends BaseComponent {
     selectors: [["p-password"]],
     contentQueries: function Password_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c034, 4);
-        \u0275\u0275contentQuery(dirIndex, _c150, 4);
-        \u0275\u0275contentQuery(dirIndex, _c231, 4);
-        \u0275\u0275contentQuery(dirIndex, _c323, 4);
-        \u0275\u0275contentQuery(dirIndex, _c419, 4);
+        \u0275\u0275contentQuery(dirIndex, _c033, 4);
+        \u0275\u0275contentQuery(dirIndex, _c149, 4);
+        \u0275\u0275contentQuery(dirIndex, _c230, 4);
+        \u0275\u0275contentQuery(dirIndex, _c321, 4);
+        \u0275\u0275contentQuery(dirIndex, _c418, 4);
         \u0275\u0275contentQuery(dirIndex, _c516, 4);
         \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
       }
@@ -80890,7 +80526,7 @@ var Password = class _Password extends BaseComponent {
     },
     viewQuery: function Password_Query(rf, ctx) {
       if (rf & 1) {
-        \u0275\u0275viewQuery(_c615, 5);
+        \u0275\u0275viewQuery(_c614, 5);
       }
       if (rf & 2) {
         let _t;
@@ -81276,9 +80912,9 @@ var PasswordModule = class _PasswordModule {
 })();
 
 // src/app/components/sign-in/pat.component.ts
-var _c035 = () => ({ width: "50vw" });
-var _c151 = () => ({ "1199px": "75vw", "575": "90vw" });
-var _c235 = (a0) => ({ defaultOrg: a0 });
+var _c034 = () => ({ width: "50vw" });
+var _c150 = () => ({ "1199px": "75vw", "575": "90vw" });
+var _c231 = (a0) => ({ defaultOrg: a0 });
 var PatComponent = class _PatComponent {
   exportGitHubService = inject(ExportGitHubService);
   validateOnBlur = false;
@@ -81332,13 +80968,13 @@ var PatComponent = class _PatComponent {
       \u0275\u0275advance(2);
       \u0275\u0275property("pTooltip", \u0275\u0275pipeBind1(7, 13, "github.connect.pat.token.tooltip"));
       \u0275\u0275advance(2);
-      \u0275\u0275styleMap(\u0275\u0275pureFunction0(20, _c035));
+      \u0275\u0275styleMap(\u0275\u0275pureFunction0(20, _c034));
       \u0275\u0275propertyInterpolate("header", \u0275\u0275pipeBind1(9, 15, "github.connect.pat.token.helpHeader"));
       \u0275\u0275property("appendTo", "body");
       \u0275\u0275twoWayProperty("visible", ctx.showHelp);
-      \u0275\u0275property("modal", true)("breakpoints", \u0275\u0275pureFunction0(21, _c151));
+      \u0275\u0275property("modal", true)("breakpoints", \u0275\u0275pureFunction0(21, _c150));
       \u0275\u0275advance(2);
-      \u0275\u0275property("innerHTML", \u0275\u0275pipeBind2(11, 17, "github.connect.pat.token.help", \u0275\u0275pureFunction1(22, _c235, ctx.defaultOrg)), \u0275\u0275sanitizeHtml);
+      \u0275\u0275property("innerHTML", \u0275\u0275pipeBind2(11, 17, "github.connect.pat.token.help", \u0275\u0275pureFunction1(22, _c231, ctx.defaultOrg)), \u0275\u0275sanitizeHtml);
     }
   }, dependencies: [TranslateModule, TranslatePipe, FormsModule, NgControlStatus, NgModel, ButtonModule, Button, IftaLabelModule, IftaLabel, PasswordModule, Password, TooltipModule, Tooltip, DialogModule, Dialog], encapsulation: 2 });
 };
@@ -81379,7 +81015,7 @@ var PatComponent = class _PatComponent {
 })();
 
 // src/app/components/bookmarklet/bookmarklet.component.ts
-var _c036 = (a0) => ({ repo: a0 });
+var _c035 = (a0) => ({ repo: a0 });
 var BookmarkletComponent = class _BookmarkletComponent {
   projectState = inject(ProjectStateService);
   sanitizer = inject(DomSanitizer);
@@ -81426,7 +81062,7 @@ var BookmarkletComponent = class _BookmarkletComponent {
       \u0275\u0275advance(3);
       \u0275\u0275property("href", ctx.projectBookmarklet(), \u0275\u0275sanitizeUrl);
       \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(7, 7, "project.bookmarklet._title", \u0275\u0275pureFunction1(14, _c036, ctx.projectData().github.repo)));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(7, 7, "project.bookmarklet._title", \u0275\u0275pureFunction1(14, _c035, ctx.projectData().github.repo)));
       \u0275\u0275advance(3);
       \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(10, 10, "project.bookmarklet.description"));
       \u0275\u0275advance(4);
@@ -81455,9 +81091,9 @@ var BookmarkletComponent = class _BookmarkletComponent {
 })();
 
 // src/app/views/github-assistant/export-github.component.ts
-var _c037 = ["settingsOverlay"];
-var _c156 = (a0) => ({ count: a0 });
-var _c236 = (a0) => ({ User: a0 });
+var _c036 = ["settingsOverlay"];
+var _c151 = (a0) => ({ count: a0 });
+var _c235 = (a0) => ({ User: a0 });
 function ExportGithubComponent_Conditional_3_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "p-message", 4)(1, "div", 38);
@@ -81660,7 +81296,7 @@ function ExportGithubComponent_Conditional_51_Conditional_4_Conditional_5_Templa
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext(3);
     \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind2(2, 1, "github.connect.connected.oauth", \u0275\u0275pureFunction1(4, _c236, ctx_r1.username())), " ");
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind2(2, 1, "github.connect.connected.oauth", \u0275\u0275pureFunction1(4, _c235, ctx_r1.username())), " ");
   }
 }
 function ExportGithubComponent_Conditional_51_Conditional_4_Conditional_6_Template(rf, ctx) {
@@ -81673,7 +81309,7 @@ function ExportGithubComponent_Conditional_51_Conditional_4_Conditional_6_Templa
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext(3);
     \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind2(2, 1, "github.connect.connected.pat", \u0275\u0275pureFunction1(4, _c236, ctx_r1.username())), " ");
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind2(2, 1, "github.connect.connected.pat", \u0275\u0275pureFunction1(4, _c235, ctx_r1.username())), " ");
   }
 }
 function ExportGithubComponent_Conditional_51_Conditional_4_Conditional_7_Template(rf, ctx) {
@@ -81686,7 +81322,7 @@ function ExportGithubComponent_Conditional_51_Conditional_4_Conditional_7_Templa
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext(3);
     \u0275\u0275advance();
-    \u0275\u0275textInterpolate1("", \u0275\u0275pipeBind2(2, 1, "github.connect.unverified", \u0275\u0275pureFunction1(4, _c236, ctx_r1.username())), "a");
+    \u0275\u0275textInterpolate1("", \u0275\u0275pipeBind2(2, 1, "github.connect.unverified", \u0275\u0275pureFunction1(4, _c235, ctx_r1.username())), "a");
   }
 }
 function ExportGithubComponent_Conditional_51_Conditional_4_Conditional_8_Template(rf, ctx) {
@@ -82662,7 +82298,7 @@ var ExportGithubComponent = class _ExportGithubComponent {
   };
   static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _ExportGithubComponent, selectors: [["aida-export-github"]], viewQuery: function ExportGithubComponent_Query(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275viewQuery(_c037, 5);
+      \u0275\u0275viewQuery(_c036, 5);
     }
     if (rf & 2) {
       let _t;
@@ -82809,7 +82445,7 @@ var ExportGithubComponent = class _ExportGithubComponent {
       \u0275\u0275advance(2);
       \u0275\u0275property("value", ctx.projectTable());
       \u0275\u0275advance(3);
-      \u0275\u0275property("header", \u0275\u0275pipeBind2(65, 57, "github.export.templateFiles.header", \u0275\u0275pureFunction1(60, _c156, ctx.templateFileCount())))("toggleable", true)("collapsed", true);
+      \u0275\u0275property("header", \u0275\u0275pipeBind2(65, 57, "github.export.templateFiles.header", \u0275\u0275pureFunction1(60, _c151, ctx.templateFileCount())))("toggleable", true)("collapsed", true);
       \u0275\u0275advance(2);
       \u0275\u0275property("value", ctx.templateTable());
       \u0275\u0275advance(3);
@@ -83265,12 +82901,12 @@ var AboutComponent = class _AboutComponent {
 })();
 
 // src/app/views/help/help.component.ts
-var _c038 = () => [];
+var _c037 = () => [];
 var HelpComponent = class _HelpComponent {
   static \u0275fac = function HelpComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _HelpComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _HelpComponent, selectors: [["aida-help"]], decls: 571, vars: 37, consts: [["id", "wb-cont"], [1, "my-0"], [1, "mt-0", "mb-5"], ["fragment", "about", 3, "routerLink"], ["fragment", "start", 3, "routerLink"], ["fragment", "inventory", 3, "routerLink"], ["fragment", "add-existing", 3, "routerLink"], ["fragment", "add-new", 3, "routerLink"], ["fragment", "view-ia", 3, "routerLink"], ["fragment", "change-ia", 3, "routerLink"], ["fragment", "export-csv", 3, "routerLink"], ["fragment", "signin", 3, "routerLink"], ["fragment", "cloud", 3, "routerLink"], ["fragment", "collab", 3, "routerLink"], ["fragment", "github", 3, "routerLink"], ["fragment", "generate-metadata", 3, "routerLink"], ["fragment", "documentation", 3, "routerLink"], ["fragment", "data", 3, "routerLink"], ["fragment", "jekyll", 3, "routerLink"], ["fragment", "release", 3, "routerLink"], [1, "flex", "flex-column", "gap-3", "my-3"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min"], ["id", "about"], [1, "flex", "flex-row", "gap-8"], ["href", "mailto:AIPIA-PIAAI@cra-arc.gc.ca?subject=Interested%20in%20contributing%20to%20AIDA&body=Hi%2C%0A%0AI'd%20like%20to%20get%20involved%20with%20AIDA%20as%20a%20%5Bdeveloper%20%2F%20researcher%20%2F%20tester%5D.%20Here's%20a%20bit%20about%20my%20background%20and%20what%20I'd%20like%20to%20help%20with%3A%0A%0A%5BYour%20message%20here%5D%0A%0A%E2%80%94%20%5BYour%20name%5D"], ["id", "start"], ["id", "inventory"], ["id", "add-existing"], ["id", "add-new"], ["id", "view-ia"], ["id", "change-ia"], ["id", "export-csv"], ["id", "signin"], ["id", "cloud"], ["id", "collab"], ["id", "github"], ["id", "generate-metadata"], ["id", "documentation"], ["id", "data"], [1, "mb-1"], [1, "mt-1"], [1, "custom"], ["id", "jekyll"], ["id", "release"], ["id", "0-5-5"], ["id", "0-5-4"], ["id", "0-5-3"], ["id", "0-5-2"], ["id", "0-5-1"], ["id", "0-5-0"], ["id", "0-4-0"]], template: function HelpComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _HelpComponent, selectors: [["aida-help"]], decls: 592, vars: 37, consts: [["id", "wb-cont"], [1, "my-0"], [1, "mt-0", "mb-5"], ["fragment", "about", 3, "routerLink"], ["fragment", "start", 3, "routerLink"], ["fragment", "inventory", 3, "routerLink"], ["fragment", "add-existing", 3, "routerLink"], ["fragment", "add-new", 3, "routerLink"], ["fragment", "view-ia", 3, "routerLink"], ["fragment", "change-ia", 3, "routerLink"], ["fragment", "export-csv", 3, "routerLink"], ["fragment", "signin", 3, "routerLink"], ["fragment", "cloud", 3, "routerLink"], ["fragment", "collab", 3, "routerLink"], ["fragment", "github", 3, "routerLink"], ["fragment", "generate-metadata", 3, "routerLink"], ["fragment", "documentation", 3, "routerLink"], ["fragment", "data", 3, "routerLink"], ["fragment", "jekyll", 3, "routerLink"], ["fragment", "release", 3, "routerLink"], [1, "flex", "flex-column", "gap-3", "my-3"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min"], ["id", "about"], [1, "flex", "flex-row", "gap-8"], ["href", "mailto:AIPIA-PIAAI@cra-arc.gc.ca?subject=Interested%20in%20contributing%20to%20AIDA&body=Hi%2C%0A%0AI'd%20like%20to%20get%20involved%20with%20AIDA%20as%20a%20%5Bdeveloper%20%2F%20researcher%20%2F%20tester%5D.%20Here's%20a%20bit%20about%20my%20background%20and%20what%20I'd%20like%20to%20help%20with%3A%0A%0A%5BYour%20message%20here%5D%0A%0A%E2%80%94%20%5BYour%20name%5D"], ["id", "start"], ["id", "inventory"], ["id", "add-existing"], ["id", "add-new"], ["id", "view-ia"], ["id", "change-ia"], ["id", "export-csv"], ["id", "signin"], ["id", "cloud"], ["id", "collab"], ["id", "github"], ["id", "generate-metadata"], ["id", "documentation"], ["id", "data"], [1, "mb-1"], [1, "mt-1"], [1, "custom"], ["id", "jekyll"], ["id", "release"], ["id", "0-5-7"], ["id", "0-5-6"], ["id", "0-5-5"], ["id", "0-5-4"], ["id", "0-5-3"], ["id", "0-5-2"], ["id", "0-5-1"], ["id", "0-5-0"], ["id", "0-4-0"]], template: function HelpComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "h1", 0);
       \u0275\u0275text(1);
@@ -83769,247 +83405,274 @@ var HelpComponent = class _HelpComponent {
       \u0275\u0275text(417, "Release notes");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(418, "h3", 44);
-      \u0275\u0275text(419, "Release 0.5.5 (April 15, 2026)");
+      \u0275\u0275text(419, "Release 0.5.7 (June 9, 2026)");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(420, "h4");
-      \u0275\u0275text(421, "Feature improvements");
+      \u0275\u0275text(421, "New IA diagram features");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(422, "ul")(423, "li");
-      \u0275\u0275text(424, "Strip /content/canadasite from links so we don't mislabel pages as IA orphans");
+      \u0275\u0275text(424, "Add options to hide or unhide specific pages or all child pages");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(425, "li");
-      \u0275\u0275text(426, 'Update find child pages function to use checkboxes so user can select which to copy to the "Add pages" input');
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(427, "li");
-      \u0275\u0275text(428, "Prevent fetching cached json data (last modified dates and content owners will be more accurate now)");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(429, "li");
-      \u0275\u0275text(430, "Maintain cnt-wdth-lmtd when exporting pages to GitHub");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(431, "li");
-      \u0275\u0275text(432, `Fix bug on "Page move" view so navigating away while editing doesn't lock a page from future edits`);
+      \u0275\u0275text(426, "Add option to view any page as the root page so users can focus on specific sections of the IA");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(433, "h3", 45);
-      \u0275\u0275text(434, "Release 0.5.4 (April 10, 2026)");
+      \u0275\u0275elementStart(427, "h4");
+      \u0275\u0275text(428, "Other improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(435, "h4");
-      \u0275\u0275text(436, "New find child pages feature");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(437, "ul")(438, "li");
-      \u0275\u0275text(439, 'Add find child pages functionality to the "Find pages" component');
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(440, "li");
-      \u0275\u0275text(441, "This function crawls your in-scope pages for potential child pages. It can also find IA orphans if they are linked from other in-scope pages");
+      \u0275\u0275elementStart(429, "ul")(430, "li");
+      \u0275\u0275text(431, 'Separate "Find pages" options with tabs');
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(442, "h4");
-      \u0275\u0275text(443, "Content inventory improvement");
+      \u0275\u0275elementStart(432, "h3", 45);
+      \u0275\u0275text(433, "Release 0.5.6 (June 4, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(444, "ul")(445, "li");
-      \u0275\u0275text(446, "Add sort function to table");
+      \u0275\u0275elementStart(434, "h4");
+      \u0275\u0275text(435, "Content inventory improvement");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(447, "li");
-      \u0275\u0275text(448, "Add pagination for projects with more than 50 pages");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(449, "li");
-      \u0275\u0275text(450, "Improve status filters");
+      \u0275\u0275elementStart(436, "ul")(437, "li");
+      \u0275\u0275text(438, "Make more cells editable");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(451, "h4");
-      \u0275\u0275text(452, "IA diagram improvement");
+      \u0275\u0275elementStart(439, "h3", 46);
+      \u0275\u0275text(440, "Release 0.5.5 (April 15, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(453, "ul")(454, "li");
-      \u0275\u0275text(455, "Add toggle to view baseline or final version");
+      \u0275\u0275elementStart(441, "h4");
+      \u0275\u0275text(442, "Feature improvements");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(443, "ul")(444, "li");
+      \u0275\u0275text(445, "Strip /content/canadasite from links so we don't mislabel pages as IA orphans");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(446, "li");
+      \u0275\u0275text(447, 'Update find child pages function to use checkboxes so user can select which to copy to the "Add pages" input');
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(448, "li");
+      \u0275\u0275text(449, "Prevent fetching cached json data (last modified dates and content owners will be more accurate now)");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(450, "li");
+      \u0275\u0275text(451, "Maintain cnt-wdth-lmtd when exporting pages to GitHub");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(452, "li");
+      \u0275\u0275text(453, `Fix bug on "Page move" view so navigating away while editing doesn't lock a page from future edits`);
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(456, "h3", 46);
-      \u0275\u0275text(457, "Release 0.5.3 (March 31, 2026)");
+      \u0275\u0275elementStart(454, "h3", 47);
+      \u0275\u0275text(455, "Release 0.5.4 (April 10, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(458, "h4");
-      \u0275\u0275text(459, "GitHub export improvements");
+      \u0275\u0275elementStart(456, "h4");
+      \u0275\u0275text(457, "New find child pages feature");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(460, "ul")(461, "li");
-      \u0275\u0275text(462, "Add option to export English, French or both languages for prototyping");
+      \u0275\u0275elementStart(458, "ul")(459, "li");
+      \u0275\u0275text(460, 'Add find child pages functionality to the "Find pages" component');
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(463, "li");
-      \u0275\u0275text(464, 'All pages get robots: "noindex, nofollow" from _config.yml, individual pages may have it listed as well if the live page has it');
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(465, "li");
-      \u0275\u0275text(466, "Copy everything from core-prototype/_includes instead of specific files");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(467, "li");
-      \u0275\u0275text(468, "Add 2s delay before enabling GitHub Pages (preview)");
+      \u0275\u0275elementStart(461, "li");
+      \u0275\u0275text(462, "This function crawls your in-scope pages for potential child pages. It can also find IA orphans if they are linked from other in-scope pages");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(469, "h4");
-      \u0275\u0275text(470, "UPD integration");
+      \u0275\u0275elementStart(463, "h4");
+      \u0275\u0275text(464, "Content inventory improvement");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(471, "ul")(472, "li");
-      \u0275\u0275text(473, "Content inventory table now links directly to the UPD data for each page (opens UPD in new tab)");
-      \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(474, "h4");
-      \u0275\u0275text(475, "Update bookmarklets");
+      \u0275\u0275elementStart(465, "ul")(466, "li");
+      \u0275\u0275text(467, "Add sort function to table");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(476, "ul")(477, "li");
-      \u0275\u0275text(478, 'Update "Toggle [repo name] and "Toggle github" to work with new cra-test-arc.canada.ca subdomain');
+      \u0275\u0275elementStart(468, "li");
+      \u0275\u0275text(469, "Add pagination for projects with more than 50 pages");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(470, "li");
+      \u0275\u0275text(471, "Improve status filters");
       \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(472, "h4");
+      \u0275\u0275text(473, "IA diagram improvement");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(474, "ul")(475, "li");
+      \u0275\u0275text(476, "Add toggle to view baseline or final version");
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(477, "h3", 48);
+      \u0275\u0275text(478, "Release 0.5.3 (March 31, 2026)");
+      \u0275\u0275elementEnd();
       \u0275\u0275elementStart(479, "h4");
-      \u0275\u0275text(480, "Update template detection");
+      \u0275\u0275text(480, "GitHub export improvements");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(481, "ul")(482, "li");
-      \u0275\u0275text(483, 'Add "mwsdoormat-links-container" to topic page template detection logic');
+      \u0275\u0275text(483, "Add option to export English, French or both languages for prototyping");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(484, "li");
-      \u0275\u0275text(485, "Add additional double H1 detection for <p> elements");
+      \u0275\u0275text(485, 'All pages get robots: "noindex, nofollow" from _config.yml, individual pages may have it listed as well if the live page has it');
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(486, "li");
+      \u0275\u0275text(487, "Copy everything from core-prototype/_includes instead of specific files");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(488, "li");
+      \u0275\u0275text(489, "Add 2s delay before enabling GitHub Pages (preview)");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(486, "h3", 47);
-      \u0275\u0275text(487, "Release 0.5.2 (March 27, 2026)");
+      \u0275\u0275elementStart(490, "h4");
+      \u0275\u0275text(491, "UPD integration");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(488, "h4");
-      \u0275\u0275text(489, "Add pages improvements");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(490, "ul")(491, "li");
-      \u0275\u0275text(492, "Added input validation to enforce single-language page entry");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(493, "li");
-      \u0275\u0275text(494, "Automatic URL formatting and normalization");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(495, "li");
-      \u0275\u0275text(496, "Removed list of urls undergoing validation (we still show urls with problems and valid or skipped urls)");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(497, "li");
-      \u0275\u0275text(498, 'Added "View pages" section to the Edit/New project view');
+      \u0275\u0275elementStart(492, "ul")(493, "li");
+      \u0275\u0275text(494, "Content inventory table now links directly to the UPD data for each page (opens UPD in new tab)");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(499, "h4");
-      \u0275\u0275text(500, "Github export improvements");
+      \u0275\u0275elementStart(495, "h4");
+      \u0275\u0275text(496, "Update bookmarklets");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(501, "ul")(502, "li");
-      \u0275\u0275text(503, "Improved GitHub index.html to support bilingual sitemap generation with paired English/French URLs");
+      \u0275\u0275elementStart(497, "ul")(498, "li");
+      \u0275\u0275text(499, 'Update "Toggle [repo name] and "Toggle github" to work with new cra-test-arc.canada.ca subdomain');
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(504, "h3", 48);
-      \u0275\u0275text(505, "Release 0.5.1 (March 26, 2026)");
+      \u0275\u0275elementStart(500, "h4");
+      \u0275\u0275text(501, "Update template detection");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(506, "h4");
-      \u0275\u0275text(507, "New bookmarklet");
+      \u0275\u0275elementStart(502, "ul")(503, "li");
+      \u0275\u0275text(504, 'Add "mwsdoormat-links-container" to topic page template detection logic');
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(508, "ul")(509, "li");
-      \u0275\u0275text(510, 'Added project-specific "Toggle [repo name]" bookmarklet to toggle between GitHub preview, edit mode, and Canada.ca.');
+      \u0275\u0275elementStart(505, "li");
+      \u0275\u0275text(506, "Add additional double H1 detection for <p> elements");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(511, "h3", 49);
-      \u0275\u0275text(512, "Release 0.5.0 (March 25, 2026)");
+      \u0275\u0275elementStart(507, "h3", 49);
+      \u0275\u0275text(508, "Release 0.5.2 (March 27, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(513, "h4");
-      \u0275\u0275text(514, "AI-powered metadata generation");
+      \u0275\u0275elementStart(509, "h4");
+      \u0275\u0275text(510, "Add pages improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(515, "ul")(516, "li");
-      \u0275\u0275text(517, "Generate metadata automatically for selected pages using AI assistance");
+      \u0275\u0275elementStart(511, "ul")(512, "li");
+      \u0275\u0275text(513, "Added input validation to enforce single-language page entry");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(514, "li");
+      \u0275\u0275text(515, "Automatic URL formatting and normalization");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(516, "li");
+      \u0275\u0275text(517, "Removed list of urls undergoing validation (we still show urls with problems and valid or skipped urls)");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(518, "li");
+      \u0275\u0275text(519, 'Added "View pages" section to the Edit/New project view');
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(518, "h4");
-      \u0275\u0275text(519, "Content inventory improvements");
+      \u0275\u0275elementStart(520, "h4");
+      \u0275\u0275text(521, "Github export improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(520, "ul")(521, "li");
-      \u0275\u0275text(522, "Expanded data collection: word count, noindex status, last modified/published dates");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(523, "li");
-      \u0275\u0275text(524, "Expanded metadata collection to both languages");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(525, "li");
-      \u0275\u0275text(526, "Secondary toolbar for bulk actions on selected pages");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(527, "li");
-      \u0275\u0275text(528, "Improved page status filtering");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(529, "li");
-      \u0275\u0275text(530, "Added option to refresh the collected page data");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(531, "li");
-      \u0275\u0275text(532, "Reorganized IA orphan detection into dedicated problem category");
+      \u0275\u0275elementStart(522, "ul")(523, "li");
+      \u0275\u0275text(524, "Improved GitHub index.html to support bilingual sitemap generation with paired English/French URLs");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(533, "h4");
-      \u0275\u0275text(534, "Switch project improvements");
+      \u0275\u0275elementStart(525, "h3", 50);
+      \u0275\u0275text(526, "Release 0.5.1 (March 26, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(535, "ul")(536, "li");
-      \u0275\u0275text(537, "Fixed cloud project upload with GitHub Personal Access Tokens");
+      \u0275\u0275elementStart(527, "h4");
+      \u0275\u0275text(528, "New bookmarklet");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(538, "li");
-      \u0275\u0275text(539, "Filters on switch project view are now linked to the project files");
+      \u0275\u0275elementStart(529, "ul")(530, "li");
+      \u0275\u0275text(531, 'Added project-specific "Toggle [repo name]" bookmarklet to toggle between GitHub preview, edit mode, and Canada.ca.');
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(540, "h4");
-      \u0275\u0275text(541, "GitHub export improvements");
+      \u0275\u0275elementStart(532, "h3", 51);
+      \u0275\u0275text(533, "Release 0.5.0 (March 25, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(542, "ul")(543, "li");
-      \u0275\u0275text(544, "Added an index.html page to generate a list of files in your repo and robots.txt");
+      \u0275\u0275elementStart(534, "h4");
+      \u0275\u0275text(535, "AI-powered metadata generation");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(545, "li");
-      \u0275\u0275text(546, "Breadcrumbs now reflect any changes you've made in AIDA instead of the live page");
+      \u0275\u0275elementStart(536, "ul")(537, "li");
+      \u0275\u0275text(538, "Generate metadata automatically for selected pages using AI assistance");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(547, "h4");
-      \u0275\u0275text(548, "New toolbox view");
+      \u0275\u0275elementStart(539, "h4");
+      \u0275\u0275text(540, "Content inventory improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(549, "ul")(550, "li");
-      \u0275\u0275text(551, 'Added bookmarklets, "Open in AIDA", "Toggle GitHub", and "Check links"');
+      \u0275\u0275elementStart(541, "ul")(542, "li");
+      \u0275\u0275text(543, "Expanded data collection: word count, noindex status, last modified/published dates");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(544, "li");
+      \u0275\u0275text(545, "Expanded metadata collection to both languages");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(546, "li");
+      \u0275\u0275text(547, "Secondary toolbar for bulk actions on selected pages");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(548, "li");
+      \u0275\u0275text(549, "Improved page status filtering");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(550, "li");
+      \u0275\u0275text(551, "Added option to refresh the collected page data");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(552, "li");
-      \u0275\u0275text(553, "Note: this view will eventually have some standalone tools that aren't linked to project data");
+      \u0275\u0275text(553, "Reorganized IA orphan detection into dedicated problem category");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(554, "h3", 50);
-      \u0275\u0275text(555, "Release 0.4.0 (February 25, 2026)");
+      \u0275\u0275elementStart(554, "h4");
+      \u0275\u0275text(555, "Switch project improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(556, "h4");
-      \u0275\u0275text(557, "Initial release - core project management");
+      \u0275\u0275elementStart(556, "ul")(557, "li");
+      \u0275\u0275text(558, "Fixed cloud project upload with GitHub Personal Access Tokens");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(558, "ul")(559, "li");
-      \u0275\u0275text(560, "Project dashboard view with high level stats and design phase tracking (discover, assess, design, approve)");
+      \u0275\u0275elementStart(559, "li");
+      \u0275\u0275text(560, "Filters on switch project view are now linked to the project files");
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(561, "h4");
+      \u0275\u0275text(562, "GitHub export improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(561, "li");
-      \u0275\u0275text(562, "Edit/New project view where you can name your project, associate it with a GitHub repo, add collaborators, add pages, or find pages from the task inventory");
+      \u0275\u0275elementStart(563, "ul")(564, "li");
+      \u0275\u0275text(565, "Added an index.html page to generate a list of files in your repo and robots.txt");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(563, "li");
-      \u0275\u0275text(564, "Switch project view where you can switch between your projects, view any cloud project, or mark projects for deletion (they are stored for 30 days before final deletion)");
+      \u0275\u0275elementStart(566, "li");
+      \u0275\u0275text(567, "Breadcrumbs now reflect any changes you've made in AIDA instead of the live page");
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(568, "h4");
+      \u0275\u0275text(569, "New toolbox view");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(565, "li");
-      \u0275\u0275text(566, "Manage inventory view where you can see all the data collected for your pages, add brand new pages, or change the IA structure");
+      \u0275\u0275elementStart(570, "ul")(571, "li");
+      \u0275\u0275text(572, 'Added bookmarklets, "Open in AIDA", "Toggle GitHub", and "Check links"');
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(567, "li");
-      \u0275\u0275text(568, "IA diagram view where you can see the page hierarchy");
+      \u0275\u0275elementStart(573, "li");
+      \u0275\u0275text(574, "Note: this view will eventually have some standalone tools that aren't linked to project data");
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(575, "h3", 52);
+      \u0275\u0275text(576, "Release 0.4.0 (February 25, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(569, "li");
-      \u0275\u0275text(570, "Export to GitHub view where you can export your pages in Jekyll format. The file comparison table can detect if you've made changes in GitHub after the export and will automatically skip those files on future exports (can be overriden by the user).");
+      \u0275\u0275elementStart(577, "h4");
+      \u0275\u0275text(578, "Initial release - core project management");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(579, "ul")(580, "li");
+      \u0275\u0275text(581, "Project dashboard view with high level stats and design phase tracking (discover, assess, design, approve)");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(582, "li");
+      \u0275\u0275text(583, "Edit/New project view where you can name your project, associate it with a GitHub repo, add collaborators, add pages, or find pages from the task inventory");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(584, "li");
+      \u0275\u0275text(585, "Switch project view where you can switch between your projects, view any cloud project, or mark projects for deletion (they are stored for 30 days before final deletion)");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(586, "li");
+      \u0275\u0275text(587, "Manage inventory view where you can see all the data collected for your pages, add brand new pages, or change the IA structure");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(588, "li");
+      \u0275\u0275text(589, "IA diagram view where you can see the page hierarchy");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(590, "li");
+      \u0275\u0275text(591, "Export to GitHub view where you can export your pages in Jekyll format. The file comparison table can detect if you've made changes in GitHub after the export and will automatically skip those files on future exports (can be overriden by the user).");
       \u0275\u0275elementEnd()()()();
     }
     if (rf & 2) {
       \u0275\u0275advance();
       \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 18, "help._title"));
       \u0275\u0275advance(8);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(20, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(20, _c037));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(21, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(21, _c037));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(22, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(22, _c037));
       \u0275\u0275advance(4);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(23, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(23, _c037));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(24, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(24, _c037));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(25, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(25, _c037));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(26, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(26, _c037));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(27, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(27, _c037));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(28, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(28, _c037));
       \u0275\u0275advance(4);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(29, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(29, _c037));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(30, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(30, _c037));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(31, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(31, _c037));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(32, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(32, _c037));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(33, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(33, _c037));
       \u0275\u0275advance(4);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(34, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(34, _c037));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(35, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(35, _c037));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(36, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(36, _c037));
     }
   }, dependencies: [RouterLink, TranslateModule, TranslatePipe], encapsulation: 2 });
 };
@@ -84190,6 +83853,21 @@ var HelpComponent = class _HelpComponent {
 \r
     <section class="surface-card border-round-lg shadow-2 p-4 w-full min-w-min">\r
         <h2 id="release">Release notes</h2>\r
+        <h3 id="0-5-7">Release 0.5.7 (June 9, 2026)</h3>\r
+        <h4>New IA diagram features</h4>\r
+        <ul>\r
+            <li>Add options to hide or unhide specific pages or all child pages</li>\r
+            <li>Add option to view any page as the root page so users can focus on specific sections of the IA</li>\r
+        </ul>\r
+        <h4>Other improvements</h4>\r
+        <ul>\r
+            <li>Separate "Find pages" options with tabs</li>\r
+        </ul>\r
+        <h3 id="0-5-6">Release 0.5.6 (June 4, 2026)</h3>\r
+        <h4>Content inventory improvement</h4>\r
+        <ul>\r
+            <li>Make more cells editable</li>\r
+        </ul>\r
         <h3 id="0-5-5">Release 0.5.5 (April 15, 2026)</h3>\r
         <h4>Feature improvements</h4>\r
         <ul>\r
@@ -84306,8 +83984,8 @@ var HelpComponent = class _HelpComponent {
 })();
 
 // src/app/components/sign-in/github-connect.component.ts
-var _c039 = () => ({ width: "50vw" });
-var _c157 = () => ({ "1199px": "75vw", "575": "90vw" });
+var _c038 = () => ({ width: "50vw" });
+var _c156 = () => ({ "1199px": "75vw", "575": "90vw" });
 function GithubConnectComponent_ng_template_2_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "span", 15);
@@ -84540,10 +84218,10 @@ var GithubConnectComponent = class _GithubConnectComponent {
       \u0275\u0275advance(4);
       \u0275\u0275property("label", \u0275\u0275pipeBind1(19, 19, "common.signin"));
       \u0275\u0275advance(2);
-      \u0275\u0275styleMap(\u0275\u0275pureFunction0(25, _c039));
+      \u0275\u0275styleMap(\u0275\u0275pureFunction0(25, _c038));
       \u0275\u0275property("header", \u0275\u0275pipeBind1(21, 21, "settings._title"))("modal", true);
       \u0275\u0275twoWayProperty("visible", ctx.showSettings);
-      \u0275\u0275property("breakpoints", \u0275\u0275pureFunction0(26, _c157));
+      \u0275\u0275property("breakpoints", \u0275\u0275pureFunction0(26, _c156));
       \u0275\u0275advance(7);
       \u0275\u0275property("label", \u0275\u0275pipeBind1(28, 23, "common.close"));
     }
@@ -85094,22 +84772,27 @@ var routes = [
   },
   {
     path: "dev",
-    loadComponent: () => import("./chunk-6JZYQDZY.js").then((m) => m.DevToolsComponent),
+    loadComponent: () => import("./chunk-W23USOTO.js").then((m) => m.DevToolsComponent),
     title: "dev._title"
   },
   {
+    path: "dev/monitoring",
+    loadComponent: () => import("./chunk-CAWY5V5L.js").then((m) => m.UsageMonitoringComponent),
+    title: "dev.usage._title"
+  },
+  {
     path: "dev/color-generator",
-    loadComponent: () => import("./chunk-DDOZ4FQA.js").then((m) => m.ColorGeneratorComponent),
+    loadComponent: () => import("./chunk-2XNHXEMP.js").then((m) => m.ColorGeneratorComponent),
     title: "dev.colors._title"
   },
   {
     path: "dev/design-patterns",
-    loadComponent: () => import("./chunk-2WPZEYC6.js").then((m) => m.DesignPatternsComponent),
+    loadComponent: () => import("./chunk-74ZSVJYU.js").then((m) => m.DesignPatternsComponent),
     title: "dev.patterns._title"
   },
   {
     path: "dev/prompt-editor",
-    loadComponent: () => import("./chunk-DDEKEY4T.js").then((m) => m.PromptEditorComponent),
+    loadComponent: () => import("./chunk-RCOVP4MK.js").then((m) => m.PromptEditorComponent),
     title: "dev.prompts._title"
   },
   {
@@ -85158,22 +84841,22 @@ var appConfig = {
 };
 
 // node_modules/primeng/fesm2022/primeng-toast.mjs
-var _c040 = ["container"];
-var _c158 = (a0, a1, a2, a3) => ({
+var _c039 = ["container"];
+var _c157 = (a0, a1, a2, a3) => ({
   showTransformParams: a0,
   hideTransformParams: a1,
   showTransitionParams: a2,
   hideTransitionParams: a3
 });
-var _c237 = (a0) => ({
+var _c236 = (a0) => ({
   value: "visible",
   params: a0
 });
-var _c324 = (a0, a1) => ({
+var _c323 = (a0, a1) => ({
   $implicit: a0,
   closeFn: a1
 });
-var _c420 = (a0) => ({
+var _c419 = (a0) => ({
   $implicit: a0
 });
 function ToastItem_Conditional_2_ng_container_0_Template(rf, ctx) {
@@ -85187,7 +84870,7 @@ function ToastItem_Conditional_2_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r1.headlessTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c324, ctx_r1.message, ctx_r1.onCloseIconClick));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r1.headlessTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c323, ctx_r1.message, ctx_r1.onCloseIconClick));
   }
 }
 function ToastItem_Conditional_3_ng_container_1_span_1_Template(rf, ctx) {
@@ -85359,13 +85042,13 @@ function ToastItem_Conditional_3_Template(rf, ctx) {
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", !ctx_r1.template);
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r1.template)("ngTemplateOutletContext", \u0275\u0275pureFunction1(8, _c420, ctx_r1.message));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r1.template)("ngTemplateOutletContext", \u0275\u0275pureFunction1(8, _c419, ctx_r1.message));
     \u0275\u0275advance();
     \u0275\u0275conditional((ctx_r1.message == null ? null : ctx_r1.message.closable) !== false ? 3 : -1);
   }
 }
 var _c517 = ["message"];
-var _c616 = ["headless"];
+var _c615 = ["headless"];
 function Toast_p_toastItem_2_Template(rf, ctx) {
   if (rf & 1) {
     const _r1 = \u0275\u0275getCurrentView();
@@ -85392,7 +85075,7 @@ function Toast_p_toastItem_2_Template(rf, ctx) {
     \u0275\u0275property("message", msg_r3)("index", i_r4)("life", ctx_r1.life)("template", ctx_r1.template || ctx_r1._template)("headlessTemplate", ctx_r1.headlessTemplate || ctx_r1._headlessTemplate)("@toastAnimation", void 0)("showTransformOptions", ctx_r1.showTransformOptions)("hideTransformOptions", ctx_r1.hideTransformOptions)("showTransitionOptions", ctx_r1.showTransitionOptions)("hideTransitionOptions", ctx_r1.hideTransitionOptions);
   }
 }
-var theme24 = ({
+var theme22 = ({
   dt
 }) => `
 .p-toast {
@@ -85660,7 +85343,7 @@ var inlineStyles7 = {
     };
   }
 };
-var classes25 = {
+var classes23 = {
   root: ({
     instance
   }) => ({
@@ -85698,8 +85381,8 @@ var classes25 = {
 };
 var ToastStyle = class _ToastStyle extends BaseStyle {
   name = "toast";
-  theme = theme24;
-  classes = classes25;
+  theme = theme22;
+  classes = classes23;
   inlineStyles = inlineStyles7;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275ToastStyle_BaseFactory;
@@ -85799,7 +85482,7 @@ var ToastItem = class _ToastItem extends BaseComponent {
     selectors: [["p-toastItem"]],
     viewQuery: function ToastItem_Query(rf, ctx) {
       if (rf & 1) {
-        \u0275\u0275viewQuery(_c040, 5);
+        \u0275\u0275viewQuery(_c039, 5);
       }
       if (rf & 2) {
         let _t;
@@ -85840,7 +85523,7 @@ var ToastItem = class _ToastItem extends BaseComponent {
       }
       if (rf & 2) {
         \u0275\u0275classMap(ctx.message == null ? null : ctx.message.styleClass);
-        \u0275\u0275property("ngClass", ctx.cx("message"))("@messageState", \u0275\u0275pureFunction1(13, _c237, \u0275\u0275pureFunction4(8, _c158, ctx.showTransformOptions, ctx.hideTransformOptions, ctx.showTransitionOptions, ctx.hideTransitionOptions)));
+        \u0275\u0275property("ngClass", ctx.cx("message"))("@messageState", \u0275\u0275pureFunction1(13, _c236, \u0275\u0275pureFunction4(8, _c157, ctx.showTransformOptions, ctx.hideTransformOptions, ctx.showTransitionOptions, ctx.hideTransitionOptions)));
         \u0275\u0275attribute("id", ctx.message == null ? null : ctx.message.id)("data-pc-name", "toast")("data-pc-section", "root");
         \u0275\u0275advance(2);
         \u0275\u0275conditional(ctx.headlessTemplate ? 2 : 3);
@@ -86253,7 +85936,7 @@ var Toast = class _Toast extends BaseComponent {
     contentQueries: function Toast_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
         \u0275\u0275contentQuery(dirIndex, _c517, 5);
-        \u0275\u0275contentQuery(dirIndex, _c616, 5);
+        \u0275\u0275contentQuery(dirIndex, _c615, 5);
         \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
       }
       if (rf & 2) {
@@ -86265,7 +85948,7 @@ var Toast = class _Toast extends BaseComponent {
     },
     viewQuery: function Toast_Query(rf, ctx) {
       if (rf & 1) {
-        \u0275\u0275viewQuery(_c040, 5);
+        \u0275\u0275viewQuery(_c039, 5);
       }
       if (rf & 2) {
         let _t;
@@ -86742,17 +86425,17 @@ ${bodyFr}`;
 })();
 
 // src/app/template/sidebar.component.ts
-var _c041 = () => ["/"];
-var _c159 = () => ["/switch-project"];
-var _c238 = () => ["bg-primary-500", "text-primary-50"];
-var _c325 = () => ["/inventory"];
-var _c421 = () => ["/export-github"];
-var _c518 = () => ["/compare"];
-var _c617 = () => ["/standalone"];
-var _c714 = () => ["/about-us"];
-var _c813 = () => ["/dashboard"];
-var _c913 = () => ["/edit-project"];
-var _c1013 = () => ["/new-project"];
+var _c040 = () => ["/"];
+var _c158 = () => ["/switch-project"];
+var _c237 = () => ["bg-primary-500", "text-primary-50"];
+var _c324 = () => ["/inventory"];
+var _c420 = () => ["/export-github"];
+var _c518 = () => ["/standalone"];
+var _c616 = () => ["/about-us"];
+var _c714 = () => ["/dashboard"];
+var _c813 = () => ["/edit-project"];
+var _c913 = () => ["/new-project"];
+var _c1013 = () => ["/compare"];
 var _c1115 = () => ["/help"];
 function SidebarComponent_Conditional_18_Template(rf, ctx) {
   if (rf & 1) {
@@ -86772,11 +86455,11 @@ function SidebarComponent_Conditional_18_Template(rf, ctx) {
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
-    \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(10, _c813))("routerLinkActive", \u0275\u0275pureFunction0(11, _c238));
+    \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(10, _c714))("routerLinkActive", \u0275\u0275pureFunction0(11, _c237));
     \u0275\u0275advance(4);
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(5, 6, "dashboard._nav"));
     \u0275\u0275advance(2);
-    \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(12, _c913))("routerLinkActive", \u0275\u0275pureFunction0(13, _c238));
+    \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(12, _c813))("routerLinkActive", \u0275\u0275pureFunction0(13, _c237));
     \u0275\u0275advance(4);
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(11, 8, "project._nav.edit"));
   }
@@ -86792,12 +86475,28 @@ function SidebarComponent_Conditional_19_Template(rf, ctx) {
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
-    \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(5, _c1013))("routerLinkActive", \u0275\u0275pureFunction0(6, _c238));
+    \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(5, _c913))("routerLinkActive", \u0275\u0275pureFunction0(6, _c237));
     \u0275\u0275advance(4);
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(5, 3, "project._nav.new"));
   }
 }
-function SidebarComponent_Conditional_60_Template(rf, ctx) {
+function SidebarComponent_Conditional_47_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "a", 11)(1, "span", 18);
+    \u0275\u0275text(2, "library_books");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(3, "span", 13);
+    \u0275\u0275text(4);
+    \u0275\u0275pipe(5, "translate");
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(5, _c1013))("routerLinkActive", \u0275\u0275pureFunction0(6, _c237));
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(5, 3, "compare._nav"));
+  }
+}
+function SidebarComponent_Conditional_55_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "a", 11)(1, "span", 12);
     \u0275\u0275text(2, "help_outline");
@@ -86808,7 +86507,7 @@ function SidebarComponent_Conditional_60_Template(rf, ctx) {
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
-    \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(5, _c1115))("routerLinkActive", \u0275\u0275pureFunction0(6, _c238));
+    \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(5, _c1115))("routerLinkActive", \u0275\u0275pureFunction0(6, _c237));
     \u0275\u0275advance(4);
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(5, 3, "help._nav"));
   }
@@ -86838,7 +86537,7 @@ var SidebarComponent = class _SidebarComponent {
   static \u0275fac = function SidebarComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SidebarComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SidebarComponent, selectors: [["aida-sidebar"]], decls: 73, vars: 67, consts: [["id", "nav-bar", 1, "l-navbar", "p-3"], [1, "flex", "flex-column", "justify-content-between", "h-full"], [1, "mb-4"], [1, "flex", "align-items-center", "gap-2", "p-0", "no-underline", 3, "routerLink"], [1, "material-icons", "text-5xl", "text-primary-300"], [1, "hidden", "md:inline", "text-lg", "font-semibold", "px-0"], [1, "mb-0", "md:mb-4"], ["tabindex", "0", "role", "button", "aria-controls", "project", 1, "hidden", "md:flex", "justify-content-between", "align-items-center", "text-lg", "text-primary-200", "hover:text-primary-400", "hover:font-bold", "cursor-pointer", 3, "click", "keydown"], ["id", "menu-project"], [1, "material-icons"], ["id", "project", "role", "region", "aria-labelledby", "menu-project"], [1, "flex", "align-items-center", "gap-3", "py-1", "px-2", "m-1", "border-round", "no-underline", "hover:bg-primary-600", 3, "routerLink", "routerLinkActive"], [1, "material-icons", "text-2xl"], [1, "hidden", "md:inline", "text-md"], [1, "border-primary-300", "md:hidden"], ["tabindex", "0", "role", "button", "aria-controls", "tasks", 1, "hidden", "md:flex", "justify-content-between", "align-items-center", "text-lg", "text-primary-200", "hover:text-primary-400", "hover:font-bold", "cursor-pointer", 3, "click", "keydown"], ["id", "menu-tasks"], ["id", "tasks", "role", "region", "aria-labelledby", "menu-tasks"], [1, "material-icons-outlined", "text-2xl"], ["tabindex", "0", 1, "flex", "align-items-center", "gap-3", "py-1", "px-2", "m-1", "border-round", "no-underline", "hover:bg-primary-600", 3, "click", "keydown.enter"]], template: function SidebarComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SidebarComponent, selectors: [["aida-sidebar"]], decls: 68, vars: 61, consts: [["id", "nav-bar", 1, "l-navbar", "p-3"], [1, "flex", "flex-column", "justify-content-between", "h-full"], [1, "mb-4"], [1, "flex", "align-items-center", "gap-2", "p-0", "no-underline", 3, "routerLink"], [1, "material-icons", "text-5xl", "text-primary-300"], [1, "hidden", "md:inline", "text-lg", "font-semibold", "px-0"], [1, "mb-0", "md:mb-4"], ["tabindex", "0", "role", "button", "aria-controls", "project", 1, "hidden", "md:flex", "justify-content-between", "align-items-center", "text-lg", "text-primary-200", "hover:text-primary-400", "hover:font-bold", "cursor-pointer", 3, "click", "keydown"], ["id", "menu-project"], [1, "material-icons"], ["id", "project", "role", "region", "aria-labelledby", "menu-project"], [1, "flex", "align-items-center", "gap-3", "py-1", "px-2", "m-1", "border-round", "no-underline", "hover:bg-primary-600", 3, "routerLink", "routerLinkActive"], [1, "material-icons", "text-2xl"], [1, "hidden", "md:inline", "text-md"], [1, "border-primary-300", "md:hidden"], ["tabindex", "0", "role", "button", "aria-controls", "tasks", 1, "hidden", "md:flex", "justify-content-between", "align-items-center", "text-lg", "text-primary-200", "hover:text-primary-400", "hover:font-bold", "cursor-pointer", 3, "click", "keydown"], ["id", "menu-tasks"], ["id", "tasks", "role", "region", "aria-labelledby", "menu-tasks"], [1, "material-icons-outlined", "text-2xl"], ["tabindex", "0", 1, "flex", "align-items-center", "gap-3", "py-1", "px-2", "m-1", "border-round", "no-underline", "hover:bg-primary-600", 3, "click", "keydown.enter"]], template: function SidebarComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "div", 0)(1, "nav", 1)(2, "div")(3, "div", 2)(4, "a", 3)(5, "span", 4);
       \u0275\u0275text(6);
@@ -86897,53 +86596,48 @@ var SidebarComponent = class _SidebarComponent {
       \u0275\u0275text(45);
       \u0275\u0275pipe(46, "translate");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(47, "a", 11)(48, "span", 18);
-      \u0275\u0275text(49, "library_books");
+      \u0275\u0275template(47, SidebarComponent_Conditional_47_Template, 6, 7, "a", 11);
+      \u0275\u0275elementEnd()()();
+      \u0275\u0275elementStart(48, "div")(49, "a", 11)(50, "span", 12);
+      \u0275\u0275text(51, "home_repair_service");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(50, "span", 13);
-      \u0275\u0275text(51);
-      \u0275\u0275pipe(52, "translate");
-      \u0275\u0275elementEnd()()()()();
-      \u0275\u0275elementStart(53, "div")(54, "a", 11)(55, "span", 12);
-      \u0275\u0275text(56, "home_repair_service");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(57, "span", 13);
-      \u0275\u0275text(58);
-      \u0275\u0275pipe(59, "translate");
+      \u0275\u0275elementStart(52, "span", 13);
+      \u0275\u0275text(53);
+      \u0275\u0275pipe(54, "translate");
       \u0275\u0275elementEnd()();
-      \u0275\u0275template(60, SidebarComponent_Conditional_60_Template, 6, 7, "a", 11);
-      \u0275\u0275elementStart(61, "a", 11)(62, "span", 12);
-      \u0275\u0275text(63, "wysiwyg");
+      \u0275\u0275template(55, SidebarComponent_Conditional_55_Template, 6, 7, "a", 11);
+      \u0275\u0275elementStart(56, "a", 11)(57, "span", 12);
+      \u0275\u0275text(58, "wysiwyg");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(64, "span", 13);
-      \u0275\u0275text(65);
-      \u0275\u0275pipe(66, "translate");
+      \u0275\u0275elementStart(59, "span", 13);
+      \u0275\u0275text(60);
+      \u0275\u0275pipe(61, "translate");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(67, "a", 19);
-      \u0275\u0275listener("click", function SidebarComponent_Template_a_click_67_listener() {
+      \u0275\u0275elementStart(62, "a", 19);
+      \u0275\u0275listener("click", function SidebarComponent_Template_a_click_62_listener() {
         return ctx.mailtoService.openMailto(ctx.mailtoService.generateFeedbackMailto());
-      })("keydown.enter", function SidebarComponent_Template_a_keydown_enter_67_listener() {
+      })("keydown.enter", function SidebarComponent_Template_a_keydown_enter_62_listener() {
         return ctx.mailtoService.openMailto(ctx.mailtoService.generateFeedbackMailto());
       });
-      \u0275\u0275elementStart(68, "span", 12);
-      \u0275\u0275text(69, "feedback");
+      \u0275\u0275elementStart(63, "span", 12);
+      \u0275\u0275text(64, "feedback");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(70, "span", 13);
-      \u0275\u0275text(71);
-      \u0275\u0275pipe(72, "translate");
+      \u0275\u0275elementStart(65, "span", 13);
+      \u0275\u0275text(66);
+      \u0275\u0275pipe(67, "translate");
       \u0275\u0275elementEnd()()()()();
     }
     if (rf & 2) {
       \u0275\u0275advance(4);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(54, _c041));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(50, _c040));
       \u0275\u0275advance(2);
       \u0275\u0275textInterpolate(ctx.production ? "design_services" : ctx.sandbox ? "handyman" : "construction");
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(9, 34, ctx.production ? "_app._title" : ctx.sandbox ? "_app._title.sandbox" : "_app._title.dev"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(9, 32, ctx.production ? "_app._title" : ctx.sandbox ? "_app._title.sandbox" : "_app._title.dev"));
       \u0275\u0275advance(3);
       \u0275\u0275attribute("aria-expanded", ctx.isExpanded.project);
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(14, 36, "nav.project"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(14, 34, "nav.project"));
       \u0275\u0275advance(3);
       \u0275\u0275textInterpolate(ctx.isExpanded.project ? "expand_less" : "expand_more");
       \u0275\u0275advance();
@@ -86951,41 +86645,39 @@ var SidebarComponent = class _SidebarComponent {
       \u0275\u0275advance();
       \u0275\u0275conditional(ctx.projectLoaded ? 18 : 19);
       \u0275\u0275advance(2);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(55, _c159))("routerLinkActive", \u0275\u0275pureFunction0(56, _c238));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(51, _c158))("routerLinkActive", \u0275\u0275pureFunction0(52, _c237));
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(25, 38, "switch._nav"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(25, 36, "switch._nav"));
       \u0275\u0275advance(4);
       \u0275\u0275attribute("aria-expanded", ctx.isExpanded.tasks);
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(31, 40, "nav.tasks"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(31, 38, "nav.tasks"));
       \u0275\u0275advance(3);
       \u0275\u0275textInterpolate(ctx.isExpanded.tasks ? "expand_less" : "expand_more");
       \u0275\u0275advance();
       \u0275\u0275classProp("md:hidden", !ctx.isExpanded.tasks);
       \u0275\u0275advance();
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(57, _c325))("routerLinkActive", \u0275\u0275pureFunction0(58, _c238));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(53, _c324))("routerLinkActive", \u0275\u0275pureFunction0(54, _c237));
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(40, 42, "inventory._nav"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(40, 40, "inventory._nav"));
       \u0275\u0275advance(2);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(59, _c421))("routerLinkActive", \u0275\u0275pureFunction0(60, _c238));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(55, _c420))("routerLinkActive", \u0275\u0275pureFunction0(56, _c237));
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(46, 44, "github._nav"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(46, 42, "github._nav"));
       \u0275\u0275advance(2);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(61, _c518))("routerLinkActive", \u0275\u0275pureFunction0(62, _c238));
-      \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(52, 46, "compare._nav"));
-      \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(63, _c617))("routerLinkActive", \u0275\u0275pureFunction0(64, _c238));
-      \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(59, 48, "standalone._nav"));
+      \u0275\u0275conditional(ctx.sandbox ? 47 : -1);
       \u0275\u0275advance(2);
-      \u0275\u0275conditional(!ctx.production ? 60 : -1);
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(57, _c518))("routerLinkActive", \u0275\u0275pureFunction0(58, _c237));
+      \u0275\u0275advance(4);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(54, 44, "standalone._nav"));
+      \u0275\u0275advance(2);
+      \u0275\u0275conditional(!ctx.production ? 55 : -1);
       \u0275\u0275advance();
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(65, _c714))("routerLinkActive", \u0275\u0275pureFunction0(66, _c238));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(59, _c616))("routerLinkActive", \u0275\u0275pureFunction0(60, _c237));
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(66, 50, "about._nav"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(61, 46, "about._nav"));
       \u0275\u0275advance(6);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(72, 52, "feedback._nav"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(67, 48, "feedback._nav"));
     }
   }, dependencies: [RouterModule, RouterLink, RouterLinkActive, TranslateModule, TranslatePipe], encapsulation: 2 });
 };
@@ -87056,11 +86748,13 @@ var SidebarComponent = class _SidebarComponent {
             <span class="material-icons-outlined text-2xl">drive_folder_upload</span>\r
             <span class="hidden md:inline text-md">{{ 'github._nav' | translate }}</span>\r
           </a>\r
+          @if(sandbox){\r
           <a [routerLink]="['/compare']" [routerLinkActive]="['bg-primary-500', 'text-primary-50']"\r
              class="flex align-items-center gap-3 py-1 px-2 m-1 border-round no-underline hover:bg-primary-600">\r
             <span class="material-icons-outlined text-2xl">library_books</span>\r
             <span class="hidden md:inline text-md">{{ 'compare._nav' | translate }}</span>\r
           </a>\r
+          }\r
         </div>\r
         <!--Icons for upcoming task nav\r
         <span class="material-icons text-2xl">library_books</span>\r
@@ -87169,6 +86863,7 @@ var AppComponent = class _AppComponent {
     effect(() => {
       const user = this.exportGitHubService.user();
       if (user) {
+        localStorage.setItem("userId", user.login);
         this.collaboratorService.addCurrentUserToLocalProjects(user).then(() => {
           this.loadProject();
         });

@@ -1,7 +1,14 @@
 import {
   Checkbox,
   MinusIcon
-} from "./chunk-FDCWAJTY.js";
+} from "./chunk-ZPRXA4FQ.js";
+import {
+  environment
+} from "./chunk-MYYNWJMU.js";
+import {
+  Router,
+  marker
+} from "./chunk-WPUR2K7L.js";
 import {
   ChevronDownIcon,
   IconField,
@@ -13,7 +20,7 @@ import {
   SearchIcon,
   TimesIcon,
   Tooltip
-} from "./chunk-GXRH6D34.js";
+} from "./chunk-XAYNXU3L.js";
 import {
   AutoFocus,
   BaseComponent,
@@ -40,7 +47,6 @@ import {
   OverlayService,
   PrimeTemplate,
   Ripple,
-  Router,
   SharedModule,
   TranslationKeys,
   findSingle,
@@ -50,10 +56,9 @@ import {
   getLastFocusableElement,
   hasClass,
   isHidden,
-  marker,
   unblockBodyScroll,
   uuid
-} from "./chunk-PHIIS6EE.js";
+} from "./chunk-ZLW5LXTH.js";
 import {
   animate,
   state,
@@ -137,7 +142,7 @@ import {
   ɵɵtwoWayListener,
   ɵɵtwoWayProperty,
   ɵɵviewQuery
-} from "./chunk-WJ2KUPA4.js";
+} from "./chunk-4H6JJ3MH.js";
 import {
   deepEquals,
   equals,
@@ -152,19 +157,6 @@ import {
   __spreadProps,
   __spreadValues
 } from "./chunk-TXDUYLVM.js";
-
-// src/environments/environment.ts
-var environment = {
-  production: false,
-  sandbox: true,
-  apiGateway: "https://nappswkoie.execute-api.ca-central-1.amazonaws.com/dev",
-  dynamodbFunctionUrl: "https://chi2rsccsm5tsbq3dzqez735gu0pxnlj.lambda-url.ca-central-1.on.aws/",
-  airtableFunctionUrl: "https://i7vbe2ntgsh26rvibknsi4zuia0rmpyn.lambda-url.ca-central-1.on.aws/",
-  openrouterFunctionUrl: "https://lh3cjcmhvvekco7nkioztgxnxq0pcisv.lambda-url.ca-central-1.on.aws/",
-  defaultOrg: "cra-proto",
-  templateOrg: "cra-proto"
-  //for accessing core-prototype
-};
 
 // src/app/common/data.model.ts
 var ProjectPhase;
@@ -8481,7 +8473,6 @@ var OpenRouterService = class _OpenRouterService {
 })();
 
 export {
-  environment,
   PlusIcon,
   TimesCircleIcon,
   ProjectPhase,
@@ -8514,4 +8505,4 @@ export {
   AiPromptService,
   OpenRouterService
 };
-//# sourceMappingURL=chunk-R7LR7HX5.js.map
+//# sourceMappingURL=chunk-KIOKYOUE.js.map

@@ -1,6 +1,9 @@
 import {
   ChevronRightIcon
-} from "./chunk-GXRH6D34.js";
+} from "./chunk-2C4SANN4.js";
+import {
+  RouterModule
+} from "./chunk-WPUR2K7L.js";
 import {
   BaseComponent,
   BaseIcon,
@@ -11,7 +14,6 @@ import {
   PrimeTemplate,
   Ripple,
   RippleModule,
-  RouterModule,
   SharedModule,
   findSingle,
   focus,
@@ -22,7 +24,7 @@ import {
   isPlatformBrowser,
   isRTL,
   uuid
-} from "./chunk-PHIIS6EE.js";
+} from "./chunk-ZLW5LXTH.js";
 import {
   ChangeDetectionStrategy,
   Component,
@@ -76,7 +78,7 @@ import {
   ɵɵrestoreView,
   ɵɵtemplate,
   ɵɵviewQuery
-} from "./chunk-WJ2KUPA4.js";
+} from "./chunk-4H6JJ3MH.js";
 import {
   equals
 } from "./chunk-6EM4UOB6.js";
@@ -1367,4 +1369,4 @@ export {
   Tabs,
   TabsModule
 };
-//# sourceMappingURL=chunk-C7IJWWJT.js.map
+//# sourceMappingURL=chunk-G2XEEEKX.js.map

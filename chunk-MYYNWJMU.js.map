@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/environments/environment.sandbox.ts"],
+  "sourcesContent": ["export const environment = { // Same infrastructure as development, only difference is sandbox flag\r\n    production: false,\r\n    sandbox: true,\r\n    apiGateway: 'https://nappswkoie.execute-api.ca-central-1.amazonaws.com/dev',\r\n    dynamodbFunctionUrl: 'https://chi2rsccsm5tsbq3dzqez735gu0pxnlj.lambda-url.ca-central-1.on.aws/',\r\n    airtableFunctionUrl: 'https://i7vbe2ntgsh26rvibknsi4zuia0rmpyn.lambda-url.ca-central-1.on.aws/',\r\n    openrouterFunctionUrl: 'https://lh3cjcmhvvekco7nkioztgxnxq0pcisv.lambda-url.ca-central-1.on.aws/',\r\n    usageFunctionUrl: 'https://at4w23fcyv7ila65il3ov2auey0nycfx.lambda-url.ca-central-1.on.aws/',\r\n    defaultOrg: 'cra-proto',\r\n    templateOrg: 'cra-proto', //for accessing core-prototype\r\n};\r\n"],
+  "mappings": ";AAAO,IAAM,cAAc;EACvB,YAAY;EACZ,SAAS;EACT,YAAY;EACZ,qBAAqB;EACrB,qBAAqB;EACrB,uBAAuB;EACvB,kBAAkB;EAClB,YAAY;EACZ,aAAa;;;",
+  "names": []
+}

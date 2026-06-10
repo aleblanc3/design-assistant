@@ -1,7 +1,7 @@
 import {
   Breadcrumb,
   BreadcrumbModule
-} from "./chunk-AWV5PA24.js";
+} from "./chunk-H3JVCYZI.js";
 import {
   AiPromptService,
   ExportGitHubService,
@@ -23,11 +23,12 @@ import {
   RoleKey,
   RubricFragment,
   RubricKey
-} from "./chunk-R7LR7HX5.js";
+} from "./chunk-KIOKYOUE.js";
 import {
   Checkbox,
   CheckboxModule
-} from "./chunk-FDCWAJTY.js";
+} from "./chunk-ZPRXA4FQ.js";
+import "./chunk-MYYNWJMU.js";
 import {
   IftaLabel,
   IftaLabelModule,
@@ -37,17 +38,23 @@ import {
   TabPanels,
   Tabs,
   TabsModule
-} from "./chunk-C7IJWWJT.js";
+} from "./chunk-G2XEEEKX.js";
 import {
   Message,
   MessageModule,
-  Select,
-  SelectModule,
   Textarea,
   TextareaModule,
   UserSettingsService
-} from "./chunk-GXRH6D34.js";
+} from "./chunk-2C4SANN4.js";
 import "./chunk-FL5HWTGW.js";
+import {
+  RouterLink,
+  marker
+} from "./chunk-WPUR2K7L.js";
+import {
+  Select,
+  SelectModule
+} from "./chunk-XAYNXU3L.js";
 import {
   Button,
   ButtonModule,
@@ -58,11 +65,9 @@ import {
   NgControlStatus,
   NgModel,
   PrimeTemplate,
-  RouterLink,
   TranslateModule,
-  TranslatePipe,
-  marker
-} from "./chunk-PHIIS6EE.js";
+  TranslatePipe
+} from "./chunk-ZLW5LXTH.js";
 import "./chunk-JKR6TEEB.js";
 import {
   Component,
@@ -95,7 +100,7 @@ import {
   ɵɵtwoWayBindingSet,
   ɵɵtwoWayListener,
   ɵɵtwoWayProperty
-} from "./chunk-WJ2KUPA4.js";
+} from "./chunk-4H6JJ3MH.js";
 import "./chunk-XHF6QEKU.js";
 import "./chunk-RRA4XQT4.js";
 import "./chunk-CYNOUPYD.js";
@@ -1211,4 +1216,4 @@ var PromptEditorComponent = class _PromptEditorComponent {
 export {
   PromptEditorComponent
 };
-//# sourceMappingURL=chunk-DDEKEY4T.js.map
+//# sourceMappingURL=chunk-RCOVP4MK.js.map
