@@ -20713,6 +20713,12 @@ code.custom {
   padding: 0.22rem;
   border-radius: 4px;
 }
+.translate-x-50 {
+  transform: translateX(50%);
+}
+.-translate-x-50 {
+  transform: translateX(-50%);
+}
 
 /* node_modules/diff2html/bundles/css/diff2html.min.css */
 :host,
