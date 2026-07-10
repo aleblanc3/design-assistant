@@ -1,6 +1,6 @@
 import {
   ChevronRightIcon
-} from "./chunk-XLBGG5YP.js";
+} from "./chunk-FBUTZ4K6.js";
 import {
   BaseComponent,
   BaseIcon,
@@ -21,7 +21,7 @@ import {
   isPlatformBrowser,
   isRTL,
   uuid
-} from "./chunk-TK4DWPTH.js";
+} from "./chunk-WUTT2HFF.js";
 import {
   ChangeDetectionStrategy,
   Component,
@@ -75,7 +75,7 @@ import {
   ɵɵrestoreView,
   ɵɵtemplate,
   ɵɵviewQuery
-} from "./chunk-ZNSAYBRC.js";
+} from "./chunk-C6EWZDCK.js";
 import {
   equals
 } from "./chunk-6EM4UOB6.js";
@@ -1199,4 +1199,4 @@ export {
   Tabs,
   TabsModule
 };
-//# sourceMappingURL=chunk-J2X34EDJ.js.map
+//# sourceMappingURL=chunk-UXCO4D3Y.js.map

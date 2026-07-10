@@ -1,6 +1,6 @@
 import {
   CheckboxModule
-} from "./chunk-HLCZXW7A.js";
+} from "./chunk-MDDFLQAP.js";
 import {
   marker
 } from "./chunk-NHG2MSCL.js";
@@ -11,7 +11,7 @@ import {
   RouterLink,
   TranslateModule,
   TranslatePipe
-} from "./chunk-TK4DWPTH.js";
+} from "./chunk-WUTT2HFF.js";
 import {
   Component,
   setClassMetadata,
@@ -27,7 +27,7 @@ import {
   ɵɵsanitizeHtml,
   ɵɵtext,
   ɵɵtextInterpolate
-} from "./chunk-ZNSAYBRC.js";
+} from "./chunk-C6EWZDCK.js";
 
 // src/app/views/standalone/components/dev-tools/dev-tools.component.ts
 var DevToolsComponent = class _DevToolsComponent {
@@ -171,4 +171,4 @@ var DevToolsComponent = class _DevToolsComponent {
 export {
   DevToolsComponent
 };
-//# sourceMappingURL=chunk-72HGZAO2.js.map
+//# sourceMappingURL=chunk-JFEQXWKM.js.map

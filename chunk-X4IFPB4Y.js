@@ -4,7 +4,7 @@ import {
   CommonModule,
   RouterModule,
   SharedModule
-} from "./chunk-TK4DWPTH.js";
+} from "./chunk-WUTT2HFF.js";
 import {
   ChangeDetectionStrategy,
   Component,
@@ -22,7 +22,7 @@ import {
   ɵɵgetInheritedFactory,
   ɵɵprojection,
   ɵɵprojectionDef
-} from "./chunk-ZNSAYBRC.js";
+} from "./chunk-C6EWZDCK.js";
 
 // node_modules/primeng/fesm2022/primeng-iftalabel.mjs
 var _c0 = ["*"];
@@ -193,4 +193,4 @@ export {
   IftaLabel,
   IftaLabelModule
 };
-//# sourceMappingURL=chunk-5FX2UO7F.js.map
+//# sourceMappingURL=chunk-X4IFPB4Y.js.map

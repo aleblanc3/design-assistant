@@ -22,7 +22,7 @@ import {
   RadioButton,
   RadioButtonModule,
   TimesCircleIcon
-} from "./chunk-YNYOUEHY.js";
+} from "./chunk-N3NYJVWZ.js";
 import {
   ChevronLeftIcon,
   Tab,
@@ -31,22 +31,22 @@ import {
   TabPanels,
   Tabs,
   TabsModule
-} from "./chunk-J2X34EDJ.js";
+} from "./chunk-UXCO4D3Y.js";
 import {
   DevToolsComponent
-} from "./chunk-72HGZAO2.js";
+} from "./chunk-JFEQXWKM.js";
 import {
   Checkbox,
   CheckboxModule,
   MinusIcon
-} from "./chunk-HLCZXW7A.js";
+} from "./chunk-MDDFLQAP.js";
 import {
   environment
 } from "./chunk-MYYNWJMU.js";
 import {
   IftaLabel,
   IftaLabelModule
-} from "./chunk-5FX2UO7F.js";
+} from "./chunk-X4IFPB4Y.js";
 import {
   InputGroup,
   InputGroupAddon,
@@ -55,13 +55,13 @@ import {
   Tag,
   TagModule,
   UserSettingsComponent
-} from "./chunk-HATUI5F7.js";
+} from "./chunk-E6JHDGGB.js";
 import {
   Message,
   MessageModule,
   Textarea,
   TextareaModule
-} from "./chunk-RHYBJDSX.js";
+} from "./chunk-5R6FSZPH.js";
 import {
   marker
 } from "./chunk-NHG2MSCL.js";
@@ -72,7 +72,7 @@ import {
   SelectButtonModule,
   ToggleButton,
   ToggleButtonModule
-} from "./chunk-IXASFEHB.js";
+} from "./chunk-K5LXKZ2F.js";
 import {
   ChevronDownIcon,
   ChevronRightIcon,
@@ -95,7 +95,7 @@ import {
   UniqueComponentId,
   UserSettingsService,
   zindexutils
-} from "./chunk-XLBGG5YP.js";
+} from "./chunk-FBUTZ4K6.js";
 import "./chunk-G3ZWOXEO.js";
 import {
   ActivatedRoute,
@@ -205,7 +205,7 @@ import {
   unblockBodyScroll,
   uuid,
   withInMemoryScrolling
-} from "./chunk-TK4DWPTH.js";
+} from "./chunk-WUTT2HFF.js";
 import {
   animate,
   animateChild,
@@ -334,11 +334,12 @@ import {
   ɵɵtextInterpolate,
   ɵɵtextInterpolate1,
   ɵɵtextInterpolate2,
+  ɵɵtextInterpolate3,
   ɵɵtwoWayBindingSet,
   ɵɵtwoWayListener,
   ɵɵtwoWayProperty,
   ɵɵviewQuery
-} from "./chunk-ZNSAYBRC.js";
+} from "./chunk-C6EWZDCK.js";
 import {
   preset_default
 } from "./chunk-OMRWFPLA.js";
@@ -19078,7 +19079,7 @@ var AsyncAnimationRendererFactory = class _AsyncAnimationRendererFactory {
    * @internal
    */
   loadImpl() {
-    const loadFn = () => this.moduleImpl ?? import("./chunk-3FPTWU2T.js").then((m) => m);
+    const loadFn = () => this.moduleImpl ?? import("./chunk-VOBMJPBS.js").then((m) => m);
     let moduleImplPromise;
     if (this.loadingSchedulerFn) {
       moduleImplPromise = this.loadingSchedulerFn(loadFn);
@@ -22014,6 +22015,7 @@ var ProjectStorageService = class _ProjectStorageService {
       inScopePages: project.inScopePages,
       lastModified: project.lastModified,
       storageType: "local",
+      repoType: project.repoType ?? "github",
       collaborators: project.collaborators || [],
       github: project.github
     };
@@ -22925,7 +22927,9 @@ var ProjectStateService = class _ProjectStateService {
     lastModified: /* @__PURE__ */ new Date(),
     lastSaved: /* @__PURE__ */ new Date(),
     lastExported: null,
+    lastDownloaded: null,
     storageType: "local",
+    repoType: "github",
     collaborators: this.collaboratorService.getInitialCollaborators(),
     baselinePages: 0,
     inScopePages: 0,
@@ -23025,6 +23029,12 @@ var ProjectStateService = class _ProjectStateService {
       lastModified: /* @__PURE__ */ new Date()
     }));
   }
+  setRepoType(type) {
+    this.project.update((curr) => __spreadProps(__spreadValues({}, curr), {
+      repoType: type,
+      lastModified: /* @__PURE__ */ new Date()
+    }));
+  }
   setPageSha(path, sha, version2 = "prototype", lang = "en") {
     const tree = this.getProjectTree();
     const node = this.findNodeByPath(tree, path, lang);
@@ -23109,6 +23119,8 @@ var ProjectStateService = class _ProjectStateService {
   // Check if URL already exists in tree
   urlExists(url) {
     const urlLang = this.fetchService.getLang(url);
+    if (!urlLang)
+      return false;
     const urlPath = this.fetchService.generatePath(url);
     const search = (nodes) => {
       for (const node of nodes) {
@@ -23140,33 +23152,18 @@ var ProjectStateService = class _ProjectStateService {
     traverse(this.project().projectData);
     return urls;
   }
-  // Get all in-scope page titles and urls (for comparison dropdown)
-  getAllPages(lang = "en") {
-    const pages = [];
-    const traverse = (nodes) => {
-      for (const node of nodes) {
-        const url = lang === "fr" ? node.data?.path.fr : node.data?.path?.en;
-        const title = lang === "fr" ? node.data?.prototype?.fr.h1 : node.data?.prototype?.en.h1;
-        if (url && title && node.data?.status.inScope) {
-          pages.push({ title, url });
-        }
-        if (node.children?.length)
-          traverse(node.children);
-      }
-    };
-    traverse(this.project().projectData);
-    return pages;
-  }
   // TODO: refactor getAllUrls and getAllPages to use new data structure
-  getAllPagesByLang(lang, version2 = "prototype") {
+  getAllPages(lang, version2 = "prototype", scope = "all") {
     const pages = [];
     const traverse = (nodes) => {
       for (const node of nodes) {
         const path = node.data?.path?.[lang] ?? "";
         const h1 = node.data?.[version2]?.[lang]?.h1;
         const url = this.fetchService.generateUrl(path, version2, this.project().github.owner, this.project().github.repo);
-        if (path && h1 && url) {
-          pages.push({ label: h1, value: path, url });
+        if (scope === "inScope" && path && h1 && url && node.data?.status.inScope) {
+          pages.push({ label: h1, path, url });
+        } else if (scope === "all" && path && h1 && url) {
+          pages.push({ label: h1, path, url });
         }
         if (node.children?.length)
           traverse(node.children);
@@ -23341,7 +23338,9 @@ var ProjectStateService = class _ProjectStateService {
         lastModified: /* @__PURE__ */ new Date(),
         lastSaved: /* @__PURE__ */ new Date(),
         lastExported: null,
+        lastDownloaded: null,
         storageType: "local",
+        repoType: "github",
         collaborators: this.collaboratorService.getInitialCollaborators(),
         baselinePages: 0,
         inScopePages: 0,
@@ -25876,14 +25875,14 @@ var ExportProjectComponent = class _ExportProjectComponent {
         label: this.translate.instant("export.github"),
         icon: "pi pi-github",
         command: () => {
-          this.router.navigate(["/export-github"]);
+          this.projectState.getProject().repoType = "github", this.router.navigate(["/export-pages"]);
         }
       },
       {
         label: this.translate.instant("export.html"),
         icon: "pi pi-link",
         command: () => {
-          this.router.navigate(["/export-html"]);
+          this.projectState.getProject().repoType = "local", this.router.navigate(["/export-pages"]);
         }
       },
       {
@@ -33465,7 +33464,7 @@ ${bodyFr}`;
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AddCollaboratorsComponent, { className: "AddCollaboratorsComponent", filePath: "src/app/components/add-collaborators/add-collaborators.component.ts", lineNumber: 35 });
 })();
 
-// src/app/views/project-assistant/dashboard.component.ts
+// src/app/views/project/dashboard.component.ts
 var _c09 = (a0) => ({ "border-2 border-primary": a0 });
 var _c111 = (a0, a1) => ({ "text-green-500": a0, "text-red-500": a1 });
 var _c27 = (a0, a1, a2) => ({ "bg-primary text-0": a0, "bg-primary-50 text-primary-500 border-2 border-primary": a1, "surface-200 text-600": a2 });
@@ -34361,7 +34360,7 @@ var DashboardComponent = class _DashboardComponent {
   }], null, null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(DashboardComponent, { className: "DashboardComponent", filePath: "src/app/views/project-assistant/dashboard.component.ts", lineNumber: 32 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(DashboardComponent, { className: "DashboardComponent", filePath: "src/app/views/project/dashboard.component.ts", lineNumber: 32 });
 })();
 
 // node_modules/primeng/fesm2022/primeng-card.mjs
@@ -58395,7 +58394,7 @@ var SetupProjectComponent = class _SetupProjectComponent {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SetupProjectComponent, { className: "SetupProjectComponent", filePath: "src/app/components/setup-project/setup-project.component.ts", lineNumber: 30 });
 })();
 
-// src/app/views/project-assistant/switch-project.component.ts
+// src/app/views/project/switch-project.component.ts
 var _c018 = () => ({ "font-size": "0.75rem" });
 var _forTrack03 = ($index, $item) => $item.key + $item.storageType;
 function SwitchProjectComponent_Conditional_6_Template(rf, ctx) {
@@ -59365,7 +59364,7 @@ var SwitchProjectComponent = class _SwitchProjectComponent {
   }], () => [], null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SwitchProjectComponent, { className: "SwitchProjectComponent", filePath: "src/app/views/project-assistant/switch-project.component.ts", lineNumber: 61 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SwitchProjectComponent, { className: "SwitchProjectComponent", filePath: "src/app/views/project/switch-project.component.ts", lineNumber: 61 });
 })();
 
 // node_modules/primeng/fesm2022/primeng-drawer.mjs
@@ -60558,40 +60557,150 @@ var IaDiagramService = class _IaDiagramService {
 
 // src/app/components/setup-repo/setup-repo.component.ts
 var _c020 = (a0) => ({ "ng-invalid ng-dirty": a0 });
-function SetupRepoComponent_Conditional_10_Template(rf, ctx) {
+function SetupRepoComponent_ng_template_5_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p-message", 5);
+    \u0275\u0275element(0, "i");
+    \u0275\u0275elementStart(1, "span", 10);
+    \u0275\u0275text(2);
+    \u0275\u0275pipe(3, "translate");
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const item_r2 = ctx.$implicit;
+    \u0275\u0275classMap(item_r2.icon);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 3, item_r2.name));
+  }
+}
+function SetupRepoComponent_Conditional_8_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275text(0);
+    \u0275\u0275pipe(1, "translate");
+  }
+  if (rf & 2) {
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(1, 1, "project.github._title"));
+  }
+}
+function SetupRepoComponent_Conditional_9_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275text(0);
+    \u0275\u0275pipe(1, "translate");
+  }
+  if (rf & 2) {
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(1, 1, "project.repo.local"));
+  }
+}
+function SetupRepoComponent_Conditional_11_Conditional_6_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "p-message", 13);
     \u0275\u0275text(1);
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
+    const ctx_r3 = \u0275\u0275nextContext(2);
     \u0275\u0275advance();
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(2, 1, ctx_r0.ownerError.key, ctx_r0.ownerError.params));
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(2, 1, ctx_r3.ownerError.key, ctx_r3.ownerError.params));
   }
 }
-function SetupRepoComponent_Conditional_21_Template(rf, ctx) {
+function SetupRepoComponent_Conditional_11_Template(rf, ctx) {
   if (rf & 1) {
-    const _r2 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 10)(1, "p-checkbox", 11);
-    \u0275\u0275twoWayListener("ngModelChange", function SetupRepoComponent_Conditional_21_Template_p_checkbox_ngModelChange_1_listener($event) {
-      \u0275\u0275restoreView(_r2);
-      const ctx_r0 = \u0275\u0275nextContext();
-      \u0275\u0275twoWayBindingSet(ctx_r0.gitHubBaseline, $event) || (ctx_r0.gitHubBaseline = $event);
+    const _r3 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 5)(1, "p-iftalabel")(2, "input", 11);
+    \u0275\u0275twoWayListener("ngModelChange", function SetupRepoComponent_Conditional_11_Template_input_ngModelChange_2_listener($event) {
+      \u0275\u0275restoreView(_r3);
+      const ctx_r3 = \u0275\u0275nextContext();
+      \u0275\u0275twoWayBindingSet(ctx_r3.gitHubOwner, $event) || (ctx_r3.gitHubOwner = $event);
       return \u0275\u0275resetView($event);
     });
+    \u0275\u0275listener("blur", function SetupRepoComponent_Conditional_11_Template_input_blur_2_listener() {
+      \u0275\u0275restoreView(_r3);
+      const ctx_r3 = \u0275\u0275nextContext();
+      ctx_r3.updateOwner();
+      return \u0275\u0275resetView(ctx_r3.updateRepoList());
+    });
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(2, "label", 12);
+    \u0275\u0275elementStart(3, "label", 12);
+    \u0275\u0275text(4);
+    \u0275\u0275pipe(5, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275template(6, SetupRepoComponent_Conditional_11_Conditional_6_Template, 3, 4, "p-message", 13);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r3 = \u0275\u0275nextContext();
+    \u0275\u0275advance(2);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r3.gitHubOwner);
+    \u0275\u0275property("pKeyFilter", ctx_r3.ownerFilter)("ngClass", \u0275\u0275pureFunction1(7, _c020, ctx_r3.ownerError));
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(5, 5, "project.github.label.owner"));
+    \u0275\u0275advance(2);
+    \u0275\u0275conditional(ctx_r3.ownerError ? 6 : -1);
+  }
+}
+function SetupRepoComponent_Conditional_17_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r5 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p-iftalabel")(1, "input", 14);
+    \u0275\u0275twoWayListener("ngModelChange", function SetupRepoComponent_Conditional_17_Template_input_ngModelChange_1_listener($event) {
+      \u0275\u0275restoreView(_r5);
+      const ctx_r3 = \u0275\u0275nextContext();
+      \u0275\u0275twoWayBindingSet(ctx_r3.gitHubBranch, $event) || (ctx_r3.gitHubBranch = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("blur", function SetupRepoComponent_Conditional_17_Template_input_blur_1_listener() {
+      \u0275\u0275restoreView(_r5);
+      const ctx_r3 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r3.updateBranch());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(2, "label", 15);
     \u0275\u0275text(3);
     \u0275\u0275pipe(4, "translate");
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
+    const ctx_r3 = \u0275\u0275nextContext();
     \u0275\u0275advance();
-    \u0275\u0275twoWayProperty("ngModel", ctx_r0.gitHubBaseline);
-    \u0275\u0275property("binary", true)("disabled", !ctx_r0.gitHubRepo);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r3.gitHubBranch);
+    \u0275\u0275property("pKeyFilter", ctx_r3.branchFilter);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 3, "project.github.label.branch"));
+  }
+}
+function SetupRepoComponent_Conditional_18_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "p-message", 8);
+    \u0275\u0275text(1);
+    \u0275\u0275pipe(2, "translate");
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(2, 1, "project.repo.local.message"), " ");
+  }
+}
+function SetupRepoComponent_Conditional_19_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r6 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 9)(1, "p-checkbox", 16);
+    \u0275\u0275twoWayListener("ngModelChange", function SetupRepoComponent_Conditional_19_Template_p_checkbox_ngModelChange_1_listener($event) {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r3 = \u0275\u0275nextContext();
+      \u0275\u0275twoWayBindingSet(ctx_r3.gitHubBaseline, $event) || (ctx_r3.gitHubBaseline = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(2, "label", 17);
+    \u0275\u0275text(3);
+    \u0275\u0275pipe(4, "translate");
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    const ctx_r3 = \u0275\u0275nextContext();
+    \u0275\u0275advance();
+    \u0275\u0275twoWayProperty("ngModel", ctx_r3.gitHubBaseline);
+    \u0275\u0275property("binary", true)("disabled", !ctx_r3.gitHubRepo);
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 4, "project.github.label.baseline"));
   }
@@ -60599,8 +60708,20 @@ function SetupRepoComponent_Conditional_21_Template(rf, ctx) {
 var SetupRepoComponent = class _SetupRepoComponent {
   projectState = inject(ProjectStateService);
   exportGitHubService = inject(ExportGitHubService);
+  translate = inject(TranslateService);
   defaultOrg = environment.defaultOrg;
   mode = "default";
+  //Local or GitHub content repository
+  get projectRepo() {
+    return this.projectData.repoType;
+  }
+  set projectRepo(value) {
+    this.projectState.setRepoType(value);
+  }
+  repoOptions = [
+    { name: "project.repo.storage.github", value: "github", icon: "pi pi-github" },
+    { name: "project.repo.storage.local", value: "local", icon: "pi pi-folder" }
+  ];
   constructor() {
     effect(() => {
       const stateName = this.projectData.projectName;
@@ -60688,6 +60809,8 @@ var SetupRepoComponent = class _SetupRepoComponent {
   markForTranslation() {
     marker("project.github.error.ownerNotFound");
     marker("project.github.error.loadFailed");
+    marker("project.repo.storage.local");
+    marker("project.repo.storage.github");
   }
   //Filters repo list for autocomplete (starts with, then includes)
   filteredRepos = [];
@@ -60700,87 +60823,77 @@ var SetupRepoComponent = class _SetupRepoComponent {
   static \u0275fac = function SetupRepoComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SetupRepoComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SetupRepoComponent, selectors: [["aida-setup-repo"]], inputs: { mode: "mode" }, decls: 22, vars: 25, consts: [[1, "text-2xl", "my-1"], [1, "flex", "flex-column", "gap-2"], [1, "flex", "flex-column", "gap-1"], ["type", "text", "id", "owner", "pInputText", "", "pSize", "small", "fluid", "", "maxlength", "39", 3, "ngModelChange", "blur", "ngModel", "pKeyFilter", "ngClass"], ["for", "owner"], ["severity", "error", "variant", "simple", "size", "small"], ["id", "repo", "pSize", "small", "maxlength", "100", "fluid", "", 3, "ngModelChange", "input", "onBlur", "onSelect", "completeMethod", "ngModel", "suggestions", "dropdown", "pKeyFilter"], ["for", "repo"], ["type", "text", "id", "branch", "pInputText", "", "pSize", "small", "fluid", "", 3, "ngModelChange", "blur", "ngModel", "pKeyFilter"], ["for", "branch"], [1, "flex", "align-items-center", "gap-2", "mt-1"], ["inputId", "baseline", "size", "large", 3, "ngModelChange", "ngModel", "binary", "disabled"], ["for", "baseline", 1, "text-lg"]], template: function SetupRepoComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SetupRepoComponent, selectors: [["aida-setup-repo"]], inputs: { mode: "mode" }, decls: 20, vars: 18, consts: [["item", ""], [1, "text-2xl", "my-1"], [1, "flex", "flex-column", "gap-2"], ["optionValue", "value", "styleClass", "w-full", 3, "ngModelChange", "options", "ngModel", "unselectable"], [1, "text-xl", "my-1"], [1, "flex", "flex-column", "gap-1"], ["id", "repo", "pSize", "small", "maxlength", "100", "fluid", "", 3, "ngModelChange", "input", "onBlur", "onSelect", "completeMethod", "ngModel", "suggestions", "dropdown", "pKeyFilter"], ["for", "repo"], ["severity", "info", "variant", "simple", "size", "small", "icon", "pi pi-info-circle"], [1, "flex", "align-items-center", "gap-2", "mt-1"], [1, "ml-1"], ["type", "text", "id", "owner", "pInputText", "", "pSize", "small", "fluid", "", "maxlength", "39", 3, "ngModelChange", "blur", "ngModel", "pKeyFilter", "ngClass"], ["for", "owner"], ["severity", "error", "variant", "simple", "size", "small"], ["type", "text", "id", "branch", "pInputText", "", "pSize", "small", "fluid", "", 3, "ngModelChange", "blur", "ngModel", "pKeyFilter"], ["for", "branch"], ["inputId", "baseline", "size", "large", 3, "ngModelChange", "ngModel", "binary", "disabled"], ["for", "baseline", 1, "text-lg"]], template: function SetupRepoComponent_Template(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275elementStart(0, "h2", 0);
+      const _r1 = \u0275\u0275getCurrentView();
+      \u0275\u0275elementStart(0, "h2", 1);
       \u0275\u0275text(1);
       \u0275\u0275pipe(2, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(3, "div", 1)(4, "div", 2)(5, "p-iftalabel")(6, "input", 3);
-      \u0275\u0275twoWayListener("ngModelChange", function SetupRepoComponent_Template_input_ngModelChange_6_listener($event) {
-        \u0275\u0275twoWayBindingSet(ctx.gitHubOwner, $event) || (ctx.gitHubOwner = $event);
-        return $event;
+      \u0275\u0275elementStart(3, "div", 2)(4, "p-selectbutton", 3);
+      \u0275\u0275twoWayListener("ngModelChange", function SetupRepoComponent_Template_p_selectbutton_ngModelChange_4_listener($event) {
+        \u0275\u0275restoreView(_r1);
+        \u0275\u0275twoWayBindingSet(ctx.projectRepo, $event) || (ctx.projectRepo = $event);
+        return \u0275\u0275resetView($event);
       });
-      \u0275\u0275listener("blur", function SetupRepoComponent_Template_input_blur_6_listener() {
-        ctx.updateOwner();
-        return ctx.updateRepoList();
-      });
+      \u0275\u0275template(5, SetupRepoComponent_ng_template_5_Template, 4, 5, "ng-template", null, 0, \u0275\u0275templateRefExtractor);
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(7, "label", 4);
-      \u0275\u0275text(8);
-      \u0275\u0275pipe(9, "translate");
-      \u0275\u0275elementEnd()();
-      \u0275\u0275template(10, SetupRepoComponent_Conditional_10_Template, 3, 4, "p-message", 5);
+      \u0275\u0275elementStart(7, "h3", 4);
+      \u0275\u0275template(8, SetupRepoComponent_Conditional_8_Template, 2, 3)(9, SetupRepoComponent_Conditional_9_Template, 2, 3);
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(11, "p-iftalabel")(12, "p-autocomplete", 6);
-      \u0275\u0275twoWayListener("ngModelChange", function SetupRepoComponent_Template_p_autocomplete_ngModelChange_12_listener($event) {
+      \u0275\u0275elementStart(10, "div", 2);
+      \u0275\u0275template(11, SetupRepoComponent_Conditional_11_Template, 7, 9, "div", 5);
+      \u0275\u0275elementStart(12, "p-iftalabel")(13, "p-autocomplete", 6);
+      \u0275\u0275twoWayListener("ngModelChange", function SetupRepoComponent_Template_p_autocomplete_ngModelChange_13_listener($event) {
+        \u0275\u0275restoreView(_r1);
         \u0275\u0275twoWayBindingSet(ctx.gitHubRepo, $event) || (ctx.gitHubRepo = $event);
-        return $event;
+        return \u0275\u0275resetView($event);
       });
-      \u0275\u0275listener("input", function SetupRepoComponent_Template_p_autocomplete_input_12_listener() {
-        return ctx.onRepoInput();
-      })("onBlur", function SetupRepoComponent_Template_p_autocomplete_onBlur_12_listener() {
-        return ctx.onRepoBlur();
-      })("onSelect", function SetupRepoComponent_Template_p_autocomplete_onSelect_12_listener($event) {
-        return ctx.onRepoSelect($event);
-      })("completeMethod", function SetupRepoComponent_Template_p_autocomplete_completeMethod_12_listener($event) {
-        return ctx.filterRepos($event);
+      \u0275\u0275listener("input", function SetupRepoComponent_Template_p_autocomplete_input_13_listener() {
+        \u0275\u0275restoreView(_r1);
+        return \u0275\u0275resetView(ctx.onRepoInput());
+      })("onBlur", function SetupRepoComponent_Template_p_autocomplete_onBlur_13_listener() {
+        \u0275\u0275restoreView(_r1);
+        return \u0275\u0275resetView(ctx.onRepoBlur());
+      })("onSelect", function SetupRepoComponent_Template_p_autocomplete_onSelect_13_listener($event) {
+        \u0275\u0275restoreView(_r1);
+        return \u0275\u0275resetView(ctx.onRepoSelect($event));
+      })("completeMethod", function SetupRepoComponent_Template_p_autocomplete_completeMethod_13_listener($event) {
+        \u0275\u0275restoreView(_r1);
+        return \u0275\u0275resetView(ctx.filterRepos($event));
       });
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(13, "label", 7);
-      \u0275\u0275text(14);
-      \u0275\u0275pipe(15, "translate");
+      \u0275\u0275elementStart(14, "label", 7);
+      \u0275\u0275text(15);
+      \u0275\u0275pipe(16, "translate");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(16, "p-iftalabel")(17, "input", 8);
-      \u0275\u0275twoWayListener("ngModelChange", function SetupRepoComponent_Template_input_ngModelChange_17_listener($event) {
-        \u0275\u0275twoWayBindingSet(ctx.gitHubBranch, $event) || (ctx.gitHubBranch = $event);
-        return $event;
-      });
-      \u0275\u0275listener("blur", function SetupRepoComponent_Template_input_blur_17_listener() {
-        return ctx.updateBranch();
-      });
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(18, "label", 9);
-      \u0275\u0275text(19);
-      \u0275\u0275pipe(20, "translate");
+      \u0275\u0275template(17, SetupRepoComponent_Conditional_17_Template, 5, 5, "p-iftalabel")(18, SetupRepoComponent_Conditional_18_Template, 3, 3, "p-message", 8)(19, SetupRepoComponent_Conditional_19_Template, 5, 6, "div", 9);
       \u0275\u0275elementEnd()();
-      \u0275\u0275template(21, SetupRepoComponent_Conditional_21_Template, 5, 6, "div", 10);
-      \u0275\u0275elementEnd();
     }
     if (rf & 2) {
       \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 15, "project.github._title"));
-      \u0275\u0275advance(5);
-      \u0275\u0275twoWayProperty("ngModel", ctx.gitHubOwner);
-      \u0275\u0275property("pKeyFilter", ctx.ownerFilter)("ngClass", \u0275\u0275pureFunction1(23, _c020, ctx.ownerError));
-      \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(9, 17, "project.github.label.owner"));
-      \u0275\u0275advance(2);
-      \u0275\u0275conditional(ctx.ownerError ? 10 : -1);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 14, "project.repo._title"));
+      \u0275\u0275advance(3);
+      \u0275\u0275property("options", ctx.repoOptions);
+      \u0275\u0275twoWayProperty("ngModel", ctx.projectRepo);
+      \u0275\u0275property("unselectable", true);
+      \u0275\u0275advance(4);
+      \u0275\u0275conditional(ctx.projectRepo === "github" ? 8 : 9);
+      \u0275\u0275advance(3);
+      \u0275\u0275conditional(ctx.projectRepo === "github" ? 11 : -1);
       \u0275\u0275advance(2);
       \u0275\u0275twoWayProperty("ngModel", ctx.gitHubRepo);
       \u0275\u0275property("suggestions", ctx.filteredRepos)("dropdown", true)("pKeyFilter", ctx.repoFilter);
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(15, 19, "project.github.label.repo"));
-      \u0275\u0275advance(3);
-      \u0275\u0275twoWayProperty("ngModel", ctx.gitHubBranch);
-      \u0275\u0275property("pKeyFilter", ctx.branchFilter);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(16, 16, "project.github.label.repo"));
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(20, 21, "project.github.label.branch"));
-      \u0275\u0275advance(2);
-      \u0275\u0275conditional(ctx.mode === "baseline" ? 21 : -1);
+      \u0275\u0275conditional(ctx.projectRepo === "github" ? 17 : -1);
+      \u0275\u0275advance();
+      \u0275\u0275conditional(ctx.projectRepo === "local" ? 18 : -1);
+      \u0275\u0275advance();
+      \u0275\u0275conditional(ctx.mode === "baseline" ? 19 : -1);
     }
-  }, dependencies: [CommonModule, NgClass, FormsModule, DefaultValueAccessor, NgControlStatus, MaxLengthValidator, NgModel, TranslateModule, TranslatePipe, InputTextModule, InputText, IftaLabelModule, IftaLabel, CheckboxModule, Checkbox, AutoCompleteModule, AutoComplete, KeyFilterModule, KeyFilter, MessageModule, Message], encapsulation: 2 });
+  }, dependencies: [CommonModule, NgClass, FormsModule, DefaultValueAccessor, NgControlStatus, MaxLengthValidator, NgModel, TranslateModule, TranslatePipe, InputTextModule, InputText, IftaLabelModule, IftaLabel, CheckboxModule, Checkbox, AutoCompleteModule, AutoComplete, KeyFilterModule, KeyFilter, MessageModule, Message, SelectButtonModule, SelectButton], encapsulation: 2 });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(SetupRepoComponent, [{
@@ -60794,42 +60907,67 @@ var SetupRepoComponent = class _SetupRepoComponent {
       CheckboxModule,
       AutoCompleteModule,
       KeyFilterModule,
-      MessageModule
-    ], template: `<h2 class="text-2xl my-1">{{'project.github._title' | translate}}</h2>\r
+      MessageModule,
+      SelectButtonModule
+    ], template: `<h2 class="text-2xl my-1">{{'project.repo._title' | translate}}</h2>\r
 <div class="flex flex-column gap-2">\r
-    <div class="flex flex-column gap-1">\r
+    <!--Repo Storage-->\r
+    <p-selectbutton [options]="repoOptions" optionValue="value" [(ngModel)]="projectRepo" [unselectable]="true" styleClass="w-full">\r
+        <ng-template #item let-item>\r
+            <i [class]="item.icon"></i>\r
+            <span class="ml-1">{{ item.name | translate }}</span>\r
+        </ng-template>\r
+    </p-selectbutton>\r
+\r
+    <h3 class="text-xl my-1">\r
+        @if(projectRepo === 'github'){{{'project.github._title' | translate}}}\r
+        @else{{{'project.repo.local' | translate}}}\r
+    </h3>\r
+\r
+    <div class="flex flex-column gap-2">\r
+        @if(projectRepo === 'github'){\r
+        <div class="flex flex-column gap-1">\r
+            <p-iftalabel>\r
+                <input type="text" id="owner" pInputText [(ngModel)]="gitHubOwner" pSize="small" fluid (blur)="updateOwner();updateRepoList()" maxlength="39" [pKeyFilter]="ownerFilter" [ngClass]="{ 'ng-invalid ng-dirty': ownerError }" />\r
+                <label for="owner">{{'project.github.label.owner' | translate}}</label>\r
+            </p-iftalabel>\r
+            @if(ownerError){\r
+            <p-message severity="error" variant="simple" size="small">{{ownerError.key | translate:ownerError.params}}</p-message>\r
+            }\r
+        </div>\r
+        }\r
         <p-iftalabel>\r
-            <input type="text" id="owner" pInputText [(ngModel)]="gitHubOwner" pSize="small" fluid (blur)="updateOwner();updateRepoList()" maxlength="39" [pKeyFilter]="ownerFilter" [ngClass]="{ 'ng-invalid ng-dirty': ownerError }" />\r
-            <label for="owner">{{'project.github.label.owner' | translate}}</label>\r
+            <p-autocomplete [(ngModel)]="gitHubRepo"\r
+                            (input)="onRepoInput()" (onBlur)="onRepoBlur()" (onSelect)="onRepoSelect($event)"\r
+                            [suggestions]="filteredRepos" (completeMethod)="filterRepos($event);"\r
+                            id="repo" [dropdown]=true pSize="small" maxlength="100" [pKeyFilter]="repoFilter" fluid />\r
+            <label for="repo">{{'project.github.label.repo' | translate}}</label>\r
         </p-iftalabel>\r
-        @if(ownerError){\r
-        <p-message severity="error" variant="simple" size="small">{{ownerError.key | translate:ownerError.params}}</p-message>\r
+        @if(projectRepo === 'github'){\r
+        <p-iftalabel>\r
+            <input type="text" id="branch" pInputText [(ngModel)]="gitHubBranch" pSize="small" fluid (blur)="updateBranch()" [pKeyFilter]="branchFilter" />\r
+            <label for="branch">{{'project.github.label.branch' | translate}}</label>\r
+        </p-iftalabel>\r
+        }\r
+        @if(projectRepo === 'local'){\r
+        <p-message severity="info" variant="simple" size="small" icon="pi pi-info-circle">\r
+            {{'project.repo.local.message' | translate}}\r
+        </p-message>\r
+        }\r
+        @if(mode === "baseline"){\r
+        <div class="flex align-items-center gap-2 mt-1">\r
+            <p-checkbox [(ngModel)]="gitHubBaseline" inputId="baseline" [binary]="true" size="large" [disabled]="!gitHubRepo" />\r
+            <label for="baseline" class="text-lg">{{'project.github.label.baseline' | translate}}</label>\r
+        </div>\r
         }\r
     </div>\r
-    <p-iftalabel>\r
-        <p-autocomplete [(ngModel)]="gitHubRepo"\r
-                        (input)="onRepoInput()" (onBlur)="onRepoBlur()" (onSelect)="onRepoSelect($event)"\r
-                        [suggestions]="filteredRepos" (completeMethod)="filterRepos($event);"\r
-                        id="repo" [dropdown]=true pSize="small" maxlength="100" [pKeyFilter]="repoFilter" fluid />\r
-        <label for="repo">{{'project.github.label.repo' | translate}}</label>\r
-    </p-iftalabel>\r
-    <p-iftalabel>\r
-        <input type="text" id="branch" pInputText [(ngModel)]="gitHubBranch" pSize="small" fluid (blur)="updateBranch()" [pKeyFilter]="branchFilter" />\r
-        <label for="branch">{{'project.github.label.branch' | translate}}</label>\r
-    </p-iftalabel>\r
-    @if(mode === "baseline"){\r
-    <div class="flex align-items-center gap-2 mt-1">\r
-        <p-checkbox [(ngModel)]="gitHubBaseline" inputId="baseline" [binary]="true" size="large" [disabled]="!gitHubRepo" />\r
-        <label for="baseline" class="text-lg">{{'project.github.label.baseline' | translate}}</label>\r
-    </div>\r
-    }\r
 </div>` }]
   }], () => [], { mode: [{
     type: Input
   }] });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SetupRepoComponent, { className: "SetupRepoComponent", filePath: "src/app/components/setup-repo/setup-repo.component.ts", lineNumber: 31 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SetupRepoComponent, { className: "SetupRepoComponent", filePath: "src/app/components/setup-repo/setup-repo.component.ts", lineNumber: 32 });
 })();
 
 // src/app/services/treenode-style.service.ts
@@ -60944,6 +61082,7 @@ var AddUrlsService = class _AddUrlsService {
   setUrlState(partial) {
     this.urlState.update((curr) => __spreadValues(__spreadValues({}, curr), partial));
   }
+  projectLang = this.projectState.detectPrimaryLanguage();
   /**** STEP 0 ********************************************************************************************************/
   // Step 0: Parse raw URL input into UrlItem array
   parseUrls(rawUrls, existingUrls, currentLang) {
@@ -60956,13 +61095,13 @@ var AddUrlsService = class _AddUrlsService {
       normalized: this.normalizeUrl(line),
       lang: this.detectUrlLanguage(this.normalizeUrl(line))
     }));
-    const projectLang = this.detectProjectLanguage(existingUrls, normalizedUrls, currentLang);
+    this.projectLang = this.detectProjectLanguage(existingUrls, normalizedUrls, currentLang);
     const parsedUrls = normalizedUrls.filter(({ normalized, lang, original }) => {
       if (!lang || !normalized.includes("canada.ca")) {
         invalidUrls.push(original);
         return false;
       }
-      if (lang !== projectLang) {
+      if (lang !== this.projectLang) {
         oppositeLangUrls.push(normalized);
         return false;
       }
@@ -61041,7 +61180,7 @@ var AddUrlsService = class _AddUrlsService {
         yield this.validateUrl(url);
       }
       const validated = this.urlState().urlsToValidate;
-      const existingUrls = new Set(this.projectState.getAllUrls());
+      const existingUrls = new Set(this.projectState.getAllPages(this.projectLang, "live", "all").map((u3) => u3.url));
       const seen = /* @__PURE__ */ new Set();
       const urlsToAdd = validated.filter((url) => url.status === "ok" || url.status === "redirect").filter((url) => {
         if (existingUrls.has(url.href) || seen.has(url.href))
@@ -61143,6 +61282,8 @@ var AddUrlsService = class _AddUrlsService {
       const oppDoc = pageData.oppUrl ? yield this.fetchService.fetchContent(pageData.oppUrl, "prod", 3, "none") : void 0;
       const oppPageData = oppDoc ? yield this.fetchService.extractPageMetadata(oppDoc, pageData.oppUrl) : void 0;
       const urlLang = this.fetchService.getLang(url);
+      if (!urlLang)
+        return;
       const pageDataEN = urlLang === "en" ? pageData : oppPageData;
       const pageDataFR = urlLang === "fr" ? pageData : oppPageData;
       const enUrl = urlLang === "en" ? url : pageData.oppUrl;
@@ -61338,7 +61479,7 @@ var AddUrlsService = class _AddUrlsService {
       } catch (error) {
         console.warn(`Failed to fetch page ${parentLink}: ${error}`);
       }
-      const projectPaths = new Set(this.projectState.getAllPagesByLang(lang, "live").map((p) => p.value));
+      const projectPaths = new Set(this.projectState.getAllPages(lang, "live", "all").map((p) => p.path));
       const linksToAdd = [...allLinks].filter((link) => {
         const normalized = this.projectState.getPath(link);
         return !projectPaths.has(normalized);
@@ -61590,7 +61731,7 @@ var GetTaskUrlsComponent = class _GetTaskUrlsComponent {
     const updatedRawUrls = currentRawUrls ? `${currentRawUrls}
 ${selectedUrls}` : selectedUrls;
     const lang = this.projectState.detectPrimaryLanguage();
-    const { parsedUrls } = this.addUrlsService.parseUrls(updatedRawUrls, this.projectState.getAllUrls("inScope", lang), lang);
+    const { parsedUrls } = this.addUrlsService.parseUrls(updatedRawUrls, new Set(this.projectState.getAllPages(lang, "live", "inScope").map((u3) => u3.url)), lang);
     this.addUrlsService.setUrlState({
       rawUrls: updatedRawUrls,
       urlsToValidate: parsedUrls
@@ -62017,7 +62158,7 @@ var GetChildPagesComponent = class _GetChildPagesComponent {
       if (depth < 1)
         return;
       const lang = this.projectState.detectPrimaryLanguage();
-      const inScopeUrls = this.projectState.getAllUrls("inScope", lang);
+      const inScopeUrls = new Set(this.projectState.getAllPages(lang, "live", "inScope").map((u3) => u3.url));
       const childPages = yield this.getChildPagesService.findChildren(inScopeUrls, depth);
       this.childUrls.set(childPages.map((url) => ({ url, selected: true })));
     });
@@ -62027,7 +62168,7 @@ var GetChildPagesComponent = class _GetChildPagesComponent {
     const selectedUrls = this.childUrls().filter((item) => item.selected).map((item) => item.url);
     const lang = this.projectState.detectPrimaryLanguage();
     const rawUrls = selectedUrls.join("\n");
-    const { parsedUrls } = this.addUrlsService.parseUrls(rawUrls, this.projectState.getAllUrls("inScope", lang), lang);
+    const { parsedUrls } = this.addUrlsService.parseUrls(rawUrls, new Set(this.projectState.getAllPages(lang, "live", "inScope").map((u3) => u3.url)), lang);
     this.addUrlsService.setUrlState({
       rawUrls,
       urlsToValidate: parsedUrls
@@ -62340,8 +62481,8 @@ var AddUrlsComponent = class _AddUrlsComponent {
   // Parse URLs from textarea
   parseUrls() {
     const rawUrls = this.addUrlsService.urlState().rawUrls;
-    const existingUrls = this.projectState.getAllUrls();
     const currentLang = this.translate.currentLang?.startsWith("fr") ? "fr" : "en";
+    const existingUrls = new Set(this.projectState.getAllPages(currentLang, "live", "all").map((u3) => u3.url));
     const { parsedUrls, duplicates, invalidUrls, oppositeLangUrls } = this.addUrlsService.parseUrls(rawUrls, existingUrls, currentLang);
     console.log(parsedUrls);
     this.addUrlsService.urlState().rawUrls = [
@@ -62552,7 +62693,7 @@ var AddUrlsComponent = class _AddUrlsComponent {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AddUrlsComponent, { className: "AddUrlsComponent", filePath: "src/app/components/add-urls/add-urls.component.ts", lineNumber: 27 });
 })();
 
-// src/app/views/project-assistant/edit-project.component.ts
+// src/app/views/project/edit-project.component.ts
 function EditProjectComponent_Conditional_3_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275element(0, "p-message", 1);
@@ -62580,7 +62721,7 @@ function EditProjectComponent_For_31_Template(rf, ctx) {
   if (rf & 2) {
     const url_r1 = ctx.$implicit;
     \u0275\u0275advance();
-    \u0275\u0275textInterpolate(url_r1);
+    \u0275\u0275textInterpolate(url_r1.url);
   }
 }
 var EditProjectComponent = class _EditProjectComponent {
@@ -62595,6 +62736,7 @@ var EditProjectComponent = class _EditProjectComponent {
     const repo = this.projectState.getProject().github.repo;
     return !!repo;
   }
+  lang = this.projectState.detectPrimaryLanguage();
   //Todo: Collaborators management
   collaborators = this.projectState.getProject().collaborators;
   //UI elements
@@ -62681,7 +62823,7 @@ var EditProjectComponent = class _EditProjectComponent {
       \u0275\u0275advance(3);
       \u0275\u0275twoWayProperty("visible", ctx.showUrls);
       \u0275\u0275advance(2);
-      \u0275\u0275repeater(ctx.projectState.getAllUrls("inScope"));
+      \u0275\u0275repeater(ctx.projectState.getAllPages(ctx.lang, "live", "inScope"));
       \u0275\u0275advance(2);
       \u0275\u0275property("label", \u0275\u0275pipeBind1(33, 21, "common.view") + " " + \u0275\u0275pipeBind1(34, 23, "iaDiagram._title"));
       \u0275\u0275advance(3);
@@ -62783,8 +62925,8 @@ var EditProjectComponent = class _EditProjectComponent {
                           (click)="showUrls = true" />\r
                 <p-drawer header="URLs" [(visible)]="showUrls" position="right" styleClass="w-6">\r
                     <ul>\r
-                        @for(url of projectState.getAllUrls('inScope'); track url){\r
-                        <li>{{url}}</li>\r
+                        @for(url of projectState.getAllPages(lang,'live','inScope'); track url){\r
+                        <li>{{url.url}}</li>\r
                         }\r
                     </ul>\r
                 </p-drawer>\r
@@ -62818,10 +62960,10 @@ var EditProjectComponent = class _EditProjectComponent {
   }], null, null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(EditProjectComponent, { className: "EditProjectComponent", filePath: "src/app/views/project-assistant/edit-project.component.ts", lineNumber: 31 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(EditProjectComponent, { className: "EditProjectComponent", filePath: "src/app/views/project/edit-project.component.ts", lineNumber: 31 });
 })();
 
-// src/app/views/project-assistant/import-page.component.ts
+// src/app/views/project/import-page.component.ts
 var ImportPageComponent = class _ImportPageComponent {
   router = inject(Router);
   route = inject(ActivatedRoute);
@@ -62911,3566 +63053,21 @@ var ImportPageComponent = class _ImportPageComponent {
   }], null, null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(ImportPageComponent, { className: "ImportPageComponent", filePath: "src/app/views/project-assistant/import-page.component.ts", lineNumber: 18 });
-})();
-
-// node_modules/primeng/fesm2022/primeng-organizationchart.mjs
-var _c023 = ["pOrganizationChartNode", ""];
-var _c131 = (a0, a1) => ({
-  "p-organizationchart-node": true,
-  "p-organizationchart-node-selectable": a0,
-  "p-organizationchart-node-selected": a1
-});
-var _c219 = (a0) => ({
-  $implicit: a0
-});
-var _c314 = (a0) => ({
-  "p-organizationchart-connector-top": a0
-});
-function OrganizationChartNode_tbody_0_div_4_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div");
-    \u0275\u0275text(1);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(ctx_r1.node.label);
-  }
-}
-function OrganizationChartNode_tbody_0_div_5_ng_container_1_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function OrganizationChartNode_tbody_0_div_5_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div");
-    \u0275\u0275template(1, OrganizationChartNode_tbody_0_div_5_ng_container_1_Template, 1, 0, "ng-container", 6);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r1.chart.getTemplateForNode(ctx_r1.node))("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c219, ctx_r1.node));
-  }
-}
-function OrganizationChartNode_tbody_0_ng_container_6_a_1_ng_container_1_ChevronDownIcon_1_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275element(0, "ChevronDownIcon", 11);
-  }
-  if (rf & 2) {
-    \u0275\u0275property("styleClass", "p-organizationchart-node-toggle-button-icon");
-    \u0275\u0275attribute("data-pc-section", "nodeTogglerIcon");
-  }
-}
-function OrganizationChartNode_tbody_0_ng_container_6_a_1_ng_container_1_ChevronUpIcon_2_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275element(0, "ChevronUpIcon", 11);
-  }
-  if (rf & 2) {
-    \u0275\u0275property("styleClass", "p-organizationchart-node-toggle-button-icon");
-    \u0275\u0275attribute("data-pc-section", "nodeTogglerIcon");
-  }
-}
-function OrganizationChartNode_tbody_0_ng_container_6_a_1_ng_container_1_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainerStart(0);
-    \u0275\u0275template(1, OrganizationChartNode_tbody_0_ng_container_6_a_1_ng_container_1_ChevronDownIcon_1_Template, 1, 2, "ChevronDownIcon", 10)(2, OrganizationChartNode_tbody_0_ng_container_6_a_1_ng_container_1_ChevronUpIcon_2_Template, 1, 2, "ChevronUpIcon", 10);
-    \u0275\u0275elementContainerEnd();
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext(4);
-    \u0275\u0275advance();
-    \u0275\u0275property("ngIf", ctx_r1.node.expanded);
-    \u0275\u0275advance();
-    \u0275\u0275property("ngIf", !ctx_r1.node.expanded);
-  }
-}
-function OrganizationChartNode_tbody_0_ng_container_6_a_1_span_2_1_ng_template_0_Template(rf, ctx) {
-}
-function OrganizationChartNode_tbody_0_ng_container_6_a_1_span_2_1_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275template(0, OrganizationChartNode_tbody_0_ng_container_6_a_1_span_2_1_ng_template_0_Template, 0, 0, "ng-template");
-  }
-}
-function OrganizationChartNode_tbody_0_ng_container_6_a_1_span_2_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 12);
-    \u0275\u0275template(1, OrganizationChartNode_tbody_0_ng_container_6_a_1_span_2_1_Template, 1, 0, null, 6);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext(4);
-    \u0275\u0275attribute("data-pc-section", "nodeTogglerIcon");
-    \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r1.chart.togglerIconTemplate || ctx_r1.chart._togglerIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(3, _c219, ctx_r1.node.expanded));
-  }
-}
-function OrganizationChartNode_tbody_0_ng_container_6_a_1_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r3 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "a", 8);
-    \u0275\u0275listener("click", function OrganizationChartNode_tbody_0_ng_container_6_a_1_Template_a_click_0_listener($event) {
-      \u0275\u0275restoreView(_r3);
-      const ctx_r1 = \u0275\u0275nextContext(3);
-      return \u0275\u0275resetView(ctx_r1.toggleNode($event, ctx_r1.node));
-    })("keydown.enter", function OrganizationChartNode_tbody_0_ng_container_6_a_1_Template_a_keydown_enter_0_listener($event) {
-      \u0275\u0275restoreView(_r3);
-      const ctx_r1 = \u0275\u0275nextContext(3);
-      return \u0275\u0275resetView(ctx_r1.toggleNode($event, ctx_r1.node));
-    })("keydown.space", function OrganizationChartNode_tbody_0_ng_container_6_a_1_Template_a_keydown_space_0_listener($event) {
-      \u0275\u0275restoreView(_r3);
-      const ctx_r1 = \u0275\u0275nextContext(3);
-      return \u0275\u0275resetView(ctx_r1.toggleNode($event, ctx_r1.node));
-    });
-    \u0275\u0275template(1, OrganizationChartNode_tbody_0_ng_container_6_a_1_ng_container_1_Template, 3, 2, "ng-container", 0)(2, OrganizationChartNode_tbody_0_ng_container_6_a_1_span_2_Template, 2, 5, "span", 9);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext(3);
-    \u0275\u0275attribute("data-pc-section", "nodeToggler");
-    \u0275\u0275advance();
-    \u0275\u0275property("ngIf", !ctx_r1.chart.togglerIconTemplate && !ctx_r1.chart._togglerIconTemplate);
-    \u0275\u0275advance();
-    \u0275\u0275property("ngIf", ctx_r1.chart.togglerIconTemplate || ctx_r1.chart._togglerIconTemplate);
-  }
-}
-function OrganizationChartNode_tbody_0_ng_container_6_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainerStart(0);
-    \u0275\u0275template(1, OrganizationChartNode_tbody_0_ng_container_6_a_1_Template, 3, 3, "a", 7);
-    \u0275\u0275elementContainerEnd();
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance();
-    \u0275\u0275property("ngIf", !ctx_r1.leaf);
-  }
-}
-function OrganizationChartNode_tbody_0_ng_container_11_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainerStart(0);
-    \u0275\u0275elementStart(1, "td");
-    \u0275\u0275element(2, "div", 3);
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementContainerEnd();
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance();
-    \u0275\u0275attribute("data-pc-section", "lineCell")("colspan", ctx_r1.colspan);
-    \u0275\u0275advance();
-    \u0275\u0275attribute("data-pc-section", "lineDown");
-  }
-}
-function OrganizationChartNode_tbody_0_ng_container_12_ng_template_1_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "td", 14);
-    \u0275\u0275text(1, "\xA0");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(2, "td", 15);
-    \u0275\u0275text(3, "\xA0");
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const first_r4 = ctx.first;
-    const last_r5 = ctx.last;
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(4, _c314, !first_r4));
-    \u0275\u0275attribute("data-pc-section", "lineLeft");
-    \u0275\u0275advance(2);
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(6, _c314, !last_r5));
-    \u0275\u0275attribute("data-pc-section", "lineRight");
-  }
-}
-function OrganizationChartNode_tbody_0_ng_container_12_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainerStart(0);
-    \u0275\u0275template(1, OrganizationChartNode_tbody_0_ng_container_12_ng_template_1_Template, 4, 8, "ng-template", 13);
-    \u0275\u0275elementContainerEnd();
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance();
-    \u0275\u0275property("ngForOf", ctx_r1.node.children);
-  }
-}
-function OrganizationChartNode_tbody_0_td_14_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "td", 16);
-    \u0275\u0275element(1, "table", 17);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const child_r6 = ctx.$implicit;
-    const ctx_r1 = \u0275\u0275nextContext(2);
-    \u0275\u0275attribute("data-pc-section", "nodeCell");
-    \u0275\u0275advance();
-    \u0275\u0275property("node", child_r6)("collapsible", ctx_r1.node.children && ctx_r1.node.children.length > 0 && ctx_r1.collapsible);
-  }
-}
-function OrganizationChartNode_tbody_0_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r1 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "tbody")(1, "tr")(2, "td")(3, "div", 1);
-    \u0275\u0275listener("click", function OrganizationChartNode_tbody_0_Template_div_click_3_listener($event) {
-      \u0275\u0275restoreView(_r1);
-      const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.onNodeClick($event, ctx_r1.node));
-    });
-    \u0275\u0275template(4, OrganizationChartNode_tbody_0_div_4_Template, 2, 1, "div", 0)(5, OrganizationChartNode_tbody_0_div_5_Template, 2, 4, "div", 0)(6, OrganizationChartNode_tbody_0_ng_container_6_Template, 2, 1, "ng-container", 0);
-    \u0275\u0275elementEnd()()();
-    \u0275\u0275elementStart(7, "tr", 2)(8, "td");
-    \u0275\u0275element(9, "div", 3);
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(10, "tr", 2);
-    \u0275\u0275template(11, OrganizationChartNode_tbody_0_ng_container_11_Template, 3, 3, "ng-container", 0)(12, OrganizationChartNode_tbody_0_ng_container_12_Template, 2, 1, "ng-container", 0);
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(13, "tr", 4);
-    \u0275\u0275template(14, OrganizationChartNode_tbody_0_td_14_Template, 2, 3, "td", 5);
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext();
-    \u0275\u0275attribute("data-pc-section", "body");
-    \u0275\u0275advance();
-    \u0275\u0275attribute("data-pc-section", "row");
-    \u0275\u0275advance();
-    \u0275\u0275attribute("colspan", ctx_r1.colspan)("data-pc-section", "cell");
-    \u0275\u0275advance();
-    \u0275\u0275classMap(ctx_r1.node.styleClass);
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction2(26, _c131, ctx_r1.chart.selectionMode && ctx_r1.node.selectable !== false, ctx_r1.isSelected()));
-    \u0275\u0275attribute("data-pc-section", "node");
-    \u0275\u0275advance();
-    \u0275\u0275property("ngIf", !ctx_r1.chart.getTemplateForNode(ctx_r1.node));
-    \u0275\u0275advance();
-    \u0275\u0275property("ngIf", ctx_r1.chart.getTemplateForNode(ctx_r1.node));
-    \u0275\u0275advance();
-    \u0275\u0275property("ngIf", ctx_r1.collapsible);
-    \u0275\u0275advance();
-    \u0275\u0275property("ngStyle", ctx_r1.getChildStyle(ctx_r1.node))("@childState", "in");
-    \u0275\u0275attribute("data-pc-section", "lines");
-    \u0275\u0275advance();
-    \u0275\u0275attribute("data-pc-section", "lineCell")("colspan", ctx_r1.colspan);
-    \u0275\u0275advance();
-    \u0275\u0275attribute("data-pc-section", "lineDown");
-    \u0275\u0275advance();
-    \u0275\u0275property("ngStyle", ctx_r1.getChildStyle(ctx_r1.node))("@childState", "in");
-    \u0275\u0275attribute("data-pc-section", "lines");
-    \u0275\u0275advance();
-    \u0275\u0275property("ngIf", ctx_r1.node.children && ctx_r1.node.children.length === 1);
-    \u0275\u0275advance();
-    \u0275\u0275property("ngIf", ctx_r1.node.children && ctx_r1.node.children.length > 1);
-    \u0275\u0275advance();
-    \u0275\u0275property("ngStyle", ctx_r1.getChildStyle(ctx_r1.node))("@childState", "in");
-    \u0275\u0275attribute("data-pc-section", "nodes");
-    \u0275\u0275advance();
-    \u0275\u0275property("ngForOf", ctx_r1.node.children);
-  }
-}
-var _c412 = ["togglericon"];
-var _c511 = (a0) => ({
-  "p-organizationchart p-component": true,
-  "p-organizationchart-preservespace": a0
-});
-function OrganizationChart_table_1_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275element(0, "table", 2);
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275property("collapsible", ctx_r0.collapsible)("node", ctx_r0.root);
-  }
-}
-var theme16 = ({
-  dt
-}) => `
-.p-organizationchart-table {
-    border-spacing: 0;
-    border-collapse: separate;
-    margin: 0 auto;
-}
-
-.p-organizationchart-table > tbody > tr > td {
-    text-align: center;
-    vertical-align: top;
-    padding: 0 ${dt("organizationchart.gutter")};
-}
-
-.p-organizationchart-node {
-    display: inline-block;
-    position: relative;
-    border: 1px solid ${dt("organizationchart.node.border.color")};
-    background: ${dt("organizationchart.node.background")};
-    color: ${dt("organizationchart.node.color")};
-    padding: ${dt("organizationchart.node.padding")};
-    border-radius: ${dt("organizationchart.node.border.radius")};
-    transition: background ${dt("organizationchart.transition.duration")}, border-color ${dt("organizationchart.transition.duration")}, color ${dt("organizationchart.transition.duration")}, box-shadow ${dt("organizationchart.transition.duration")};
-}
-
-.p-organizationchart-node:has(.p-organizationchart-node-toggle-button) {
-    padding: ${dt("organizationchart.node.toggleable.padding")};
-}
-
-.p-organizationchart-node.p-organizationchart-node-selectable:not(.p-organizationchart-node-selected):hover {
-    background: ${dt("organizationchart.node.hover.background")};
-    color: ${dt("organizationchart.node.hover.color")};
-}
-
-.p-organizationchart-node-selected {
-    background: ${dt("organizationchart.node.selected.background")};
-    color: ${dt("organizationchart.node.selected.color")};
-}
-
-.p-organizationchart-node-toggle-button {
-    position: absolute;
-    inset-block-end: calc(-1 * calc(${dt("organizationchart.node.toggle.button.size")} / 2));
-    margin-inline-start: calc(-1 * calc(${dt("organizationchart.node.toggle.button.size")} / 2));
-    z-index: 2;
-    inset-inline-start: 50%;
-    user-select: none;
-    cursor: pointer;
-    width: ${dt("organizationchart.node.toggle.button.size")};
-    height: ${dt("organizationchart.node.toggle.button.size")};
-    text-decoration: none;
-    background: ${dt("organizationchart.node.toggle.button.background")};
-    color: ${dt("organizationchart.node.toggle.button.color")};
-    border-radius: ${dt("organizationchart.node.toggle.button.border.radius")};
-    border: 1px solid ${dt("organizationchart.node.toggle.button.border.color")};
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    outline-color: transparent;
-    transition: background ${dt("organizationchart.transition.duration")}, color ${dt("organizationchart.transition.duration")}, border-color ${dt("organizationchart.transition.duration")}, outline-color ${dt("organizationchart.transition.duration")}, box-shadow ${dt("organizationchart.transition.duration")};
-}
-
-.p-organizationchart-node-toggle-button:hover {
-    background: ${dt("organizationchart.node.toggle.button.hover.background")};
-    color: ${dt("organizationchart.node.toggle.button.hover.color")};
-}
-
-.p-organizationchart-node-toggle-button:focus-visible {
-    box-shadow: ${dt("breadcrumb.item.focus.ring.shadow")};
-    outline: ${dt("breadcrumb.item.focus.ring.width")} ${dt("breadcrumb.item.focus.ring.style")} ${dt("breadcrumb.item.focus.ring.color")};
-    outline-offset: ${dt("breadcrumb.item.focus.ring.offset")};
-}
-
-.p-organizationchart-node-toggle-button-icon {
-    position: relative;
-    inset-block-start: 1px;
-}
-
-.p-organizationchart-connector-down {
-    margin: 0 auto;
-    height: ${dt("organizationchart.connector.height")};
-    width: 1px;
-    background: ${dt("organizationchart.connector.color")};
-}
-
-.p-organizationchart-connector-right {
-    border-radius: 0;
-}
-
-.p-organizationchart-connector-left {
-    border-radius: 0;
-    border-inline-end: 1px solid ${dt("organizationchart.connector.color")};
-}
-
-.p-organizationchart-connector-top {
-    border-block-start: 1px solid ${dt("organizationchart.connector.color")};
-}
-
-.p-organizationchart-node-selectable {
-    cursor: pointer;
-}
-
-.p-organizationchart-connectors :nth-child(1 of .p-organizationchart-connector-left) {
-    border-inline-end: 0 none;
-}
-
-.p-organizationchart-connectors :nth-last-child(1 of .p-organizationchart-connector-left) {
-    border-start-end-radius: ${dt("organizationchart.connector.border.radius")};
-}
-
-.p-organizationchart-connectors :nth-child(1 of .p-organizationchart-connector-right) {
-    border-inline-start: 1px solid ${dt("organizationchart.connector.color")};
-    border-start-start-radius: ${dt("organizationchart.connector.border.radius")};
-}
-`;
-var classes17 = {
-  root: "p-organizationchart p-component",
-  table: "p-organizationchart-table",
-  node: ({
-    instance
-  }) => ["p-organizationchart-node", {
-    "p-organizationchart-node-selectable": instance.selectable,
-    "p-organizationchart-node-selected": instance.selected
-  }],
-  nodeToggleButton: "p-organizationchart-node-toggle-button",
-  nodeToggleButtonIcon: "p-organizationchart-node-toggle-button-icon",
-  connectors: "p-organizationchart-connectors",
-  connectorDown: "p-organizationchart-connector-down",
-  connectorLeft: ({
-    index
-  }) => ["p-organizationchart-connector-left", {
-    "p-organizationchart-connector-top": !(index === 0)
-  }],
-  connectorRight: ({
-    props,
-    index
-  }) => ["p-organizationchart-connector-right", {
-    "p-organizationchart-connector-top": !(index === props.node.children.length - 1)
-  }],
-  nodeChildren: "p-organizationchart-node-children"
-};
-var OrganizationChartStyle = class _OrganizationChartStyle extends BaseStyle {
-  name = "organizationchart";
-  theme = theme16;
-  classes = classes17;
-  static \u0275fac = /* @__PURE__ */ (() => {
-    let \u0275OrganizationChartStyle_BaseFactory;
-    return function OrganizationChartStyle_Factory(__ngFactoryType__) {
-      return (\u0275OrganizationChartStyle_BaseFactory || (\u0275OrganizationChartStyle_BaseFactory = \u0275\u0275getInheritedFactory(_OrganizationChartStyle)))(__ngFactoryType__ || _OrganizationChartStyle);
-    };
-  })();
-  static \u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({
-    token: _OrganizationChartStyle,
-    factory: _OrganizationChartStyle.\u0275fac
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(OrganizationChartStyle, [{
-    type: Injectable
-  }], null, null);
-})();
-var OrganizationChartClasses;
-(function(OrganizationChartClasses2) {
-  OrganizationChartClasses2["root"] = "p-organizationchart";
-  OrganizationChartClasses2["table"] = "p-organizationchart-table";
-  OrganizationChartClasses2["node"] = "p-organizationchart-node";
-  OrganizationChartClasses2["nodeToggleButton"] = "p-organizationchart-node-toggle-button";
-  OrganizationChartClasses2["nodeToggleButtonIcon"] = "p-organizationchart-node-toggle-button-icon";
-  OrganizationChartClasses2["connectors"] = "p-organizationchart-connectors";
-  OrganizationChartClasses2["connectorDown"] = "p-organizationchart-connector-down";
-  OrganizationChartClasses2["connectorLeft"] = "p-organizationchart-connector-left";
-  OrganizationChartClasses2["connectorRight"] = "p-organizationchart-connector-right";
-  OrganizationChartClasses2["nodeChildren"] = "p-organizationchart-node-children";
-})(OrganizationChartClasses || (OrganizationChartClasses = {}));
-var OrganizationChartNode = class _OrganizationChartNode {
-  cd;
-  node;
-  root;
-  first;
-  last;
-  collapsible;
-  chart;
-  subscription;
-  constructor(chart, cd) {
-    this.cd = cd;
-    this.chart = chart;
-    this.subscription = this.chart.selectionSource$.subscribe(() => {
-      this.cd.markForCheck();
-    });
-  }
-  get leaf() {
-    if (this.node) {
-      return this.node.leaf == false ? false : !(this.node.children && this.node.children.length);
-    }
-  }
-  get colspan() {
-    if (this.node) {
-      return this.node.children && this.node.children.length ? this.node.children.length * 2 : null;
-    }
-  }
-  getChildStyle(node) {
-    return {
-      visibility: !this.leaf && node.expanded ? "inherit" : "hidden"
-    };
-  }
-  onNodeClick(event2, node) {
-    this.chart.onNodeClick(event2, node);
-  }
-  toggleNode(event2, node) {
-    node.expanded = !node.expanded;
-    if (node.expanded) this.chart.onNodeExpand.emit({
-      originalEvent: event2,
-      node: this.node
-    });
-    else this.chart.onNodeCollapse.emit({
-      originalEvent: event2,
-      node: this.node
-    });
-    event2.preventDefault();
-  }
-  isSelected() {
-    return this.chart.isSelected(this.node);
-  }
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
-  static \u0275fac = function OrganizationChartNode_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _OrganizationChartNode)(\u0275\u0275directiveInject(forwardRef(() => OrganizationChart)), \u0275\u0275directiveInject(ChangeDetectorRef));
-  };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({
-    type: _OrganizationChartNode,
-    selectors: [["", "pOrganizationChartNode", ""]],
-    inputs: {
-      node: "node",
-      root: [2, "root", "root", booleanAttribute],
-      first: [2, "first", "first", booleanAttribute],
-      last: [2, "last", "last", booleanAttribute],
-      collapsible: [2, "collapsible", "collapsible", booleanAttribute]
-    },
-    attrs: _c023,
-    decls: 1,
-    vars: 1,
-    consts: [[4, "ngIf"], [3, "click", "ngClass"], [1, "p-organizationchart-connectors", 3, "ngStyle"], [1, "p-organizationchart-connector-down"], [1, "p-organizationchart-node-children", 3, "ngStyle"], ["colspan", "2", 4, "ngFor", "ngForOf"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], ["tabindex", "0", "class", "p-organizationchart-node-toggle-button", 3, "click", "keydown.enter", "keydown.space", 4, "ngIf"], ["tabindex", "0", 1, "p-organizationchart-node-toggle-button", 3, "click", "keydown.enter", "keydown.space"], ["class", "p-organizationchart-node-toggle-button-icon", 4, "ngIf"], [3, "styleClass", 4, "ngIf"], [3, "styleClass"], [1, "p-organizationchart-node-toggle-button-icon"], ["ngFor", "", 3, "ngForOf"], [1, "p-organizationchart-connector-left", 3, "ngClass"], [1, "p-organizationchart-connector-right", 3, "ngClass"], ["colspan", "2"], ["pOrganizationChartNode", "", 1, "p-organizationchart-table", 3, "node", "collapsible"]],
-    template: function OrganizationChartNode_Template(rf, ctx) {
-      if (rf & 1) {
-        \u0275\u0275template(0, OrganizationChartNode_tbody_0_Template, 15, 29, "tbody", 0);
-      }
-      if (rf & 2) {
-        \u0275\u0275property("ngIf", ctx.node);
-      }
-    },
-    dependencies: [_OrganizationChartNode, CommonModule, NgClass, NgForOf, NgIf, NgTemplateOutlet, NgStyle, ChevronDownIcon, ChevronUpIcon, SharedModule],
-    encapsulation: 2,
-    data: {
-      animation: [trigger("childState", [state("in", style({
-        opacity: 1
-      })), transition("void => *", [style({
-        opacity: 0
-      }), animate(150)]), transition("* => void", [animate(150, style({
-        opacity: 0
-      }))])])]
-    }
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(OrganizationChartNode, [{
-    type: Component,
-    args: [{
-      selector: "[pOrganizationChartNode]",
-      standalone: true,
-      imports: [CommonModule, ChevronDownIcon, ChevronUpIcon, SharedModule],
-      template: `
-        <tbody *ngIf="node" [attr.data-pc-section]="'body'">
-            <tr [attr.data-pc-section]="'row'">
-                <td [attr.colspan]="colspan" [attr.data-pc-section]="'cell'">
-                    <div
-                        [class]="node.styleClass"
-                        [ngClass]="{
-                            'p-organizationchart-node': true,
-                            'p-organizationchart-node-selectable': chart.selectionMode && node.selectable !== false,
-                            'p-organizationchart-node-selected': isSelected()
-                        }"
-                        (click)="onNodeClick($event, node)"
-                        [attr.data-pc-section]="'node'"
-                    >
-                        <div *ngIf="!chart.getTemplateForNode(node)">{{ node.label }}</div>
-                        <div *ngIf="chart.getTemplateForNode(node)">
-                            <ng-container *ngTemplateOutlet="chart.getTemplateForNode(node); context: { $implicit: node }"></ng-container>
-                        </div>
-                        <ng-container *ngIf="collapsible">
-                            <a
-                                *ngIf="!leaf"
-                                tabindex="0"
-                                class="p-organizationchart-node-toggle-button"
-                                (click)="toggleNode($event, node)"
-                                (keydown.enter)="toggleNode($event, node)"
-                                (keydown.space)="toggleNode($event, node)"
-                                [attr.data-pc-section]="'nodeToggler'"
-                            >
-                                <ng-container *ngIf="!chart.togglerIconTemplate && !chart._togglerIconTemplate">
-                                    <ChevronDownIcon *ngIf="node.expanded" [styleClass]="'p-organizationchart-node-toggle-button-icon'" [attr.data-pc-section]="'nodeTogglerIcon'" />
-                                    <ChevronUpIcon *ngIf="!node.expanded" [styleClass]="'p-organizationchart-node-toggle-button-icon'" [attr.data-pc-section]="'nodeTogglerIcon'" />
-                                </ng-container>
-                                <span class="p-organizationchart-node-toggle-button-icon" *ngIf="chart.togglerIconTemplate || chart._togglerIconTemplate" [attr.data-pc-section]="'nodeTogglerIcon'">
-                                    <ng-template *ngTemplateOutlet="chart.togglerIconTemplate || chart._togglerIconTemplate; context: { $implicit: node.expanded }"></ng-template>
-                                </span>
-                            </a>
-                        </ng-container>
-                    </div>
-                </td>
-            </tr>
-            <tr [ngStyle]="getChildStyle(node)" class="p-organizationchart-connectors" [@childState]="'in'" [attr.data-pc-section]="'lines'">
-                <td [attr.data-pc-section]="'lineCell'" [attr.colspan]="colspan">
-                    <div [attr.data-pc-section]="'lineDown'" class="p-organizationchart-connector-down"></div>
-                </td>
-            </tr>
-            <tr [ngStyle]="getChildStyle(node)" class="p-organizationchart-connectors" [@childState]="'in'" [attr.data-pc-section]="'lines'">
-                <ng-container *ngIf="node.children && node.children.length === 1">
-                    <td [attr.data-pc-section]="'lineCell'" [attr.colspan]="colspan">
-                        <div [attr.data-pc-section]="'lineDown'" class="p-organizationchart-connector-down"></div>
-                    </td>
-                </ng-container>
-                <ng-container *ngIf="node.children && node.children.length > 1">
-                    <ng-template ngFor let-child [ngForOf]="node.children" let-first="first" let-last="last">
-                        <td [attr.data-pc-section]="'lineLeft'" class="p-organizationchart-connector-left" [ngClass]="{ 'p-organizationchart-connector-top': !first }">&nbsp;</td>
-                        <td [attr.data-pc-section]="'lineRight'" class="p-organizationchart-connector-right" [ngClass]="{ 'p-organizationchart-connector-top': !last }">&nbsp;</td>
-                    </ng-template>
-                </ng-container>
-            </tr>
-            <tr [ngStyle]="getChildStyle(node)" class="p-organizationchart-node-children" [@childState]="'in'" [attr.data-pc-section]="'nodes'">
-                <td *ngFor="let child of node.children" colspan="2" [attr.data-pc-section]="'nodeCell'">
-                    <table class="p-organizationchart-table" pOrganizationChartNode [node]="child" [collapsible]="node.children && node.children.length > 0 && collapsible"></table>
-                </td>
-            </tr>
-        </tbody>
-    `,
-      animations: [trigger("childState", [state("in", style({
-        opacity: 1
-      })), transition("void => *", [style({
-        opacity: 0
-      }), animate(150)]), transition("* => void", [animate(150, style({
-        opacity: 0
-      }))])])],
-      encapsulation: ViewEncapsulation.None,
-      changeDetection: ChangeDetectionStrategy.Default
-    }]
-  }], () => [{
-    type: OrganizationChart,
-    decorators: [{
-      type: Inject,
-      args: [forwardRef(() => OrganizationChart)]
-    }]
-  }, {
-    type: ChangeDetectorRef
-  }], {
-    node: [{
-      type: Input
-    }],
-    root: [{
-      type: Input,
-      args: [{
-        transform: booleanAttribute
-      }]
-    }],
-    first: [{
-      type: Input,
-      args: [{
-        transform: booleanAttribute
-      }]
-    }],
-    last: [{
-      type: Input,
-      args: [{
-        transform: booleanAttribute
-      }]
-    }],
-    collapsible: [{
-      type: Input,
-      args: [{
-        transform: booleanAttribute
-      }]
-    }]
-  });
-})();
-var OrganizationChart = class _OrganizationChart extends BaseComponent {
-  el;
-  cd;
-  /**
-   * An array of nested TreeNodes.
-   * @group Props
-   */
-  value;
-  /**
-   * Inline style of the component.
-   * @group Props
-   */
-  style;
-  /**
-   * Style class of the component.
-   * @group Props
-   */
-  styleClass;
-  /**
-   * Defines the selection mode.
-   * @group Props
-   */
-  selectionMode;
-  /**
-   * Whether the nodes can be expanded or toggled.
-   * @group Props
-   */
-  collapsible;
-  /**
-   * Whether the space allocated by a node is preserved when hidden.
-   * @group Props
-   */
-  preserveSpace = true;
-  /**
-   * A single treenode instance or an array to refer to the selections.
-   * @group Props
-   */
-  get selection() {
-    return this._selection;
-  }
-  set selection(val) {
-    this._selection = val;
-    if (this.initialized) this.selectionSource.next(null);
-  }
-  /**
-   * Callback to invoke on selection change.
-   * @param {*} any - selected value.
-   * @group Emits
-   */
-  selectionChange = new EventEmitter();
-  /**
-   * Callback to invoke when a node is selected.
-   * @param {OrganizationChartNodeSelectEvent} event - custom node select event.
-   * @group Emits
-   */
-  onNodeSelect = new EventEmitter();
-  /**
-   * Callback to invoke when a node is unselected.
-   * @param {OrganizationChartNodeUnSelectEvent} event - custom node unselect event.
-   * @group Emits
-   */
-  onNodeUnselect = new EventEmitter();
-  /**
-   * Callback to invoke when a node is expanded.
-   * @param {OrganizationChartNodeExpandEvent} event - custom node expand event.
-   * @group Emits
-   */
-  onNodeExpand = new EventEmitter();
-  /**
-   * Callback to invoke when a node is collapsed.
-   * @param {OrganizationChartNodeCollapseEvent} event - custom node collapse event.
-   * @group Emits
-   */
-  onNodeCollapse = new EventEmitter();
-  templates;
-  togglerIconTemplate;
-  templateMap;
-  _togglerIconTemplate;
-  selectionSource = new Subject();
-  _selection;
-  initialized;
-  selectionSource$ = this.selectionSource.asObservable();
-  _componentStyle = inject(OrganizationChartStyle);
-  constructor(el, cd) {
-    super();
-    this.el = el;
-    this.cd = cd;
-  }
-  get root() {
-    return this.value && this.value.length ? this.value[0] : null;
-  }
-  ngAfterContentInit() {
-    if (this.templates.length) {
-      this.templateMap = {};
-    }
-    this.templates.forEach((item) => {
-      if (item.getType() === "togglericon") {
-        this._togglerIconTemplate = item.template;
-      } else {
-        this.templateMap[item.getType()] = item.template;
-      }
-    });
-    this.initialized = true;
-  }
-  getTemplateForNode(node) {
-    if (this.templateMap) return node.type ? this.templateMap[node.type] : this.templateMap["default"];
-    else return null;
-  }
-  onNodeClick(event2, node) {
-    let eventTarget = event2.target;
-    if (eventTarget.className && (hasClass(eventTarget, "p-organizationchart-node-toggle-button") || hasClass(eventTarget, "p-organizationchart-node-toggle-button-icon"))) {
-      return;
-    } else if (this.selectionMode) {
-      if (node.selectable === false) {
-        return;
-      }
-      let index = this.findIndexInSelection(node);
-      let selected = index >= 0;
-      if (this.selectionMode === "single") {
-        if (selected) {
-          this.selection = null;
-          this.onNodeUnselect.emit({
-            originalEvent: event2,
-            node
-          });
-        } else {
-          this.selection = node;
-          this.onNodeSelect.emit({
-            originalEvent: event2,
-            node
-          });
-        }
-      } else if (this.selectionMode === "multiple") {
-        if (selected) {
-          this.selection = this.selection.filter((val, i) => i != index);
-          this.onNodeUnselect.emit({
-            originalEvent: event2,
-            node
-          });
-        } else {
-          this.selection = [...this.selection || [], node];
-          this.onNodeSelect.emit({
-            originalEvent: event2,
-            node
-          });
-        }
-      }
-      this.selectionChange.emit(this.selection);
-      this.selectionSource.next(null);
-    }
-  }
-  findIndexInSelection(node) {
-    let index = -1;
-    if (this.selectionMode && this.selection) {
-      if (this.selectionMode === "single") {
-        index = this.selection == node ? 0 : -1;
-      } else if (this.selectionMode === "multiple") {
-        for (let i = 0; i < this.selection.length; i++) {
-          if (this.selection[i] == node) {
-            index = i;
-            break;
-          }
-        }
-      }
-    }
-    return index;
-  }
-  isSelected(node) {
-    return this.findIndexInSelection(node) != -1;
-  }
-  static \u0275fac = function OrganizationChart_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _OrganizationChart)(\u0275\u0275directiveInject(ElementRef), \u0275\u0275directiveInject(ChangeDetectorRef));
-  };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({
-    type: _OrganizationChart,
-    selectors: [["p-organizationChart"], ["p-organization-chart"], ["p-organizationchart"]],
-    contentQueries: function OrganizationChart_ContentQueries(rf, ctx, dirIndex) {
-      if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c412, 4);
-        \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
-      }
-      if (rf & 2) {
-        let _t;
-        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.togglerIconTemplate = _t.first);
-        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.templates = _t);
-      }
-    },
-    inputs: {
-      value: "value",
-      style: "style",
-      styleClass: "styleClass",
-      selectionMode: "selectionMode",
-      collapsible: [2, "collapsible", "collapsible", booleanAttribute],
-      preserveSpace: [2, "preserveSpace", "preserveSpace", booleanAttribute],
-      selection: "selection"
-    },
-    outputs: {
-      selectionChange: "selectionChange",
-      onNodeSelect: "onNodeSelect",
-      onNodeUnselect: "onNodeUnselect",
-      onNodeExpand: "onNodeExpand",
-      onNodeCollapse: "onNodeCollapse"
-    },
-    features: [\u0275\u0275ProvidersFeature([OrganizationChartStyle]), \u0275\u0275InheritDefinitionFeature],
-    decls: 2,
-    vars: 8,
-    consts: [[3, "ngStyle", "ngClass"], ["class", "p-organizationchart-table", "pOrganizationChartNode", "", 3, "collapsible", "node", 4, "ngIf"], ["pOrganizationChartNode", "", 1, "p-organizationchart-table", 3, "collapsible", "node"]],
-    template: function OrganizationChart_Template(rf, ctx) {
-      if (rf & 1) {
-        \u0275\u0275elementStart(0, "div", 0);
-        \u0275\u0275template(1, OrganizationChart_table_1_Template, 1, 2, "table", 1);
-        \u0275\u0275elementEnd();
-      }
-      if (rf & 2) {
-        \u0275\u0275classMap(ctx.styleClass);
-        \u0275\u0275property("ngStyle", ctx.style)("ngClass", \u0275\u0275pureFunction1(6, _c511, ctx.preserveSpace));
-        \u0275\u0275attribute("data-pc-section", "root");
-        \u0275\u0275advance();
-        \u0275\u0275property("ngIf", ctx.root);
-      }
-    },
-    dependencies: [CommonModule, NgClass, NgIf, NgStyle, OrganizationChartNode, SharedModule],
-    encapsulation: 2
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(OrganizationChart, [{
-    type: Component,
-    args: [{
-      selector: "p-organizationChart, p-organization-chart, p-organizationchart",
-      standalone: true,
-      imports: [CommonModule, OrganizationChartNode, SharedModule],
-      template: `
-        <div [ngStyle]="style" [class]="styleClass" [ngClass]="{ 'p-organizationchart p-component': true, 'p-organizationchart-preservespace': preserveSpace }" [attr.data-pc-section]="'root'">
-            <table class="p-organizationchart-table" [collapsible]="collapsible" pOrganizationChartNode [node]="root" *ngIf="root"></table>
-        </div>
-    `,
-      changeDetection: ChangeDetectionStrategy.Default,
-      providers: [OrganizationChartStyle]
-    }]
-  }], () => [{
-    type: ElementRef
-  }, {
-    type: ChangeDetectorRef
-  }], {
-    value: [{
-      type: Input
-    }],
-    style: [{
-      type: Input
-    }],
-    styleClass: [{
-      type: Input
-    }],
-    selectionMode: [{
-      type: Input
-    }],
-    collapsible: [{
-      type: Input,
-      args: [{
-        transform: booleanAttribute
-      }]
-    }],
-    preserveSpace: [{
-      type: Input,
-      args: [{
-        transform: booleanAttribute
-      }]
-    }],
-    selection: [{
-      type: Input
-    }],
-    selectionChange: [{
-      type: Output
-    }],
-    onNodeSelect: [{
-      type: Output
-    }],
-    onNodeUnselect: [{
-      type: Output
-    }],
-    onNodeExpand: [{
-      type: Output
-    }],
-    onNodeCollapse: [{
-      type: Output
-    }],
-    templates: [{
-      type: ContentChildren,
-      args: [PrimeTemplate]
-    }],
-    togglerIconTemplate: [{
-      type: ContentChild,
-      args: ["togglericon", {
-        descendants: false
-      }]
-    }]
-  });
-})();
-var OrganizationChartModule = class _OrganizationChartModule {
-  static \u0275fac = function OrganizationChartModule_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _OrganizationChartModule)();
-  };
-  static \u0275mod = /* @__PURE__ */ \u0275\u0275defineNgModule({
-    type: _OrganizationChartModule,
-    imports: [OrganizationChart, OrganizationChartNode, SharedModule],
-    exports: [OrganizationChart, OrganizationChartNode, SharedModule]
-  });
-  static \u0275inj = /* @__PURE__ */ \u0275\u0275defineInjector({
-    imports: [OrganizationChart, OrganizationChartNode, SharedModule, SharedModule]
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(OrganizationChartModule, [{
-    type: NgModule,
-    args: [{
-      imports: [OrganizationChart, OrganizationChartNode, SharedModule],
-      exports: [OrganizationChart, OrganizationChartNode, SharedModule]
-    }]
-  }], null, null);
-})();
-
-// src/app/components/edit-node/edit-node.component.ts
-var _c024 = (a0) => ({ days: a0 });
-function EditNodeComponent_Conditional_23_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r1 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 3)(1, "label", 13);
-    \u0275\u0275text(2);
-    \u0275\u0275pipe(3, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(4, "div", 14)(5, "div", 15)(6, "p-checkbox", 16);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_23_Template_p_checkbox_ngModelChange_6_listener($event) {
-      \u0275\u0275restoreView(_r1);
-      const ctx_r1 = \u0275\u0275nextContext();
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data.status.inScope, $event) || (ctx_r1.node().data.status.inScope = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_23_Template_p_checkbox_ngModelChange_6_listener() {
-      \u0275\u0275restoreView(_r1);
-      const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.markChanges());
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(7, "label", 17);
-    \u0275\u0275text(8);
-    \u0275\u0275pipe(9, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(10, "div", 15)(11, "p-checkbox", 18);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_23_Template_p_checkbox_ngModelChange_11_listener($event) {
-      \u0275\u0275restoreView(_r1);
-      const ctx_r1 = \u0275\u0275nextContext();
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data.status.isNew, $event) || (ctx_r1.node().data.status.isNew = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_23_Template_p_checkbox_ngModelChange_11_listener() {
-      \u0275\u0275restoreView(_r1);
-      const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.markChanges());
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(12, "label", 19);
-    \u0275\u0275text(13);
-    \u0275\u0275pipe(14, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(15, "div", 15)(16, "p-checkbox", 20);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_23_Template_p_checkbox_ngModelChange_16_listener($event) {
-      \u0275\u0275restoreView(_r1);
-      const ctx_r1 = \u0275\u0275nextContext();
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data.status.isROT, $event) || (ctx_r1.node().data.status.isROT = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_23_Template_p_checkbox_ngModelChange_16_listener() {
-      \u0275\u0275restoreView(_r1);
-      const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.markChanges());
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(17, "label", 21);
-    \u0275\u0275text(18);
-    \u0275\u0275pipe(19, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(20, "div", 15)(21, "p-checkbox", 22);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_23_Template_p_checkbox_ngModelChange_21_listener($event) {
-      \u0275\u0275restoreView(_r1);
-      const ctx_r1 = \u0275\u0275nextContext();
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data.status.isMoved, $event) || (ctx_r1.node().data.status.isMoved = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_23_Template_p_checkbox_ngModelChange_21_listener() {
-      \u0275\u0275restoreView(_r1);
-      const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.markChanges());
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(22, "label", 23);
-    \u0275\u0275text(23);
-    \u0275\u0275pipe(24, "translate");
-    \u0275\u0275elementEnd()()()();
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext();
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 13, "common.status"));
-    \u0275\u0275advance(4);
-    \u0275\u0275property("binary", true);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data.status.inScope);
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(9, 15, "editNode.inScope"));
-    \u0275\u0275advance(3);
-    \u0275\u0275property("binary", true);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data.status.isNew);
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(14, 17, "editNode.isNew"));
-    \u0275\u0275advance(3);
-    \u0275\u0275property("binary", true);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data.status.isROT);
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(19, 19, "editNode.isROT"));
-    \u0275\u0275advance(3);
-    \u0275\u0275property("binary", true);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data.status.isMoved);
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(24, 21, "editNode.isMoved"));
-  }
-}
-function EditNodeComponent_Conditional_24_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r3 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-message", 12)(1, "span");
-    \u0275\u0275text(2);
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "p-button", 24);
-    \u0275\u0275pipe(4, "translate");
-    \u0275\u0275listener("onClick", function EditNodeComponent_Conditional_24_Template_p_button_onClick_3_listener() {
-      \u0275\u0275restoreView(_r3);
-      const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.enableEdits());
-    });
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    const config_r4 = ctx;
-    const ctx_r1 = \u0275\u0275nextContext();
-    \u0275\u0275property("severity", config_r4.severity)("icon", config_r4.icon);
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(config_r4.text);
-    \u0275\u0275advance();
-    \u0275\u0275property("label", \u0275\u0275pipeBind1(4, 5, "editNode.enableEdits"))("disabled", ctx_r1.editsEnabled());
-  }
-}
-function EditNodeComponent_Conditional_25_Conditional_2_Conditional_11_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r7 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-iftalabel")(1, "input", 71);
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Conditional_11_Template_input_ngModelChange_1_listener($event) {
-      \u0275\u0275restoreView(_r7);
-      const ctx_r1 = \u0275\u0275nextContext(3);
-      ctx_r1.pathEN.set($event);
-      return \u0275\u0275resetView(ctx_r1.updatePath("en"));
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(2, "label", 72);
-    \u0275\u0275text(3);
-    \u0275\u0275pipe(4, "translate");
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext(3);
-    \u0275\u0275advance();
-    \u0275\u0275classProp("text-red-500", ctx_r1.pathEN().startsWith("new-page"));
-    \u0275\u0275property("ngModel", ctx_r1.pathEN())("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 5, "editNode.pageUrl"));
-  }
-}
-function EditNodeComponent_Conditional_25_Conditional_2_ng_template_29_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 73)(1, "span", 74);
-    \u0275\u0275text(2);
-    \u0275\u0275elementEnd();
-    \u0275\u0275text(3);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const page_r8 = ctx.$implicit;
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(page_r8.label);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", page_r8.value, " ");
-  }
-}
-function EditNodeComponent_Conditional_25_Conditional_2_Conditional_34_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "p-message", 44)(1, "span");
-    \u0275\u0275text(2);
-    \u0275\u0275pipe(3, "translate");
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 1, "editNode.moveError"));
-  }
-}
-function EditNodeComponent_Conditional_25_Conditional_2_Conditional_152_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275element(0, "p-tag", 70);
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext(3);
-    \u0275\u0275property("severity", ctx_r1.node().data[ctx_r1.selectedVersion()].en.is404 === ctx_r1.node().data[ctx_r1.selectedVersion()].fr.is404 ? "primary" : "danger");
-  }
-}
-function EditNodeComponent_Conditional_25_Conditional_2_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r6 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-fieldset", 27);
-    \u0275\u0275pipe(1, "translate");
-    \u0275\u0275elementStart(2, "div", 31)(3, "p-inputgroup")(4, "p-iftalabel")(5, "input", 32);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_ngModelChange_5_listener($event) {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data.path.en, $event) || (ctx_r1.node().data.path.en = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_ngModelChange_5_listener() {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.markChanges());
-    })("blur", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_blur_5_listener() {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.updateSegment("en"));
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(6, "label", 33);
-    \u0275\u0275text(7);
-    \u0275\u0275pipe(8, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(9, "p-inputgroup-addon", 34)(10, "p-button", 35);
-    \u0275\u0275listener("onClick", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_button_onClick_10_listener() {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.enableUrlEdits());
-    });
-    \u0275\u0275elementEnd()()();
-    \u0275\u0275template(11, EditNodeComponent_Conditional_25_Conditional_2_Conditional_11_Template, 5, 7, "p-iftalabel");
-    \u0275\u0275elementStart(12, "p-iftalabel")(13, "input", 36);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_ngModelChange_13_listener($event) {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.doubleH1, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.doubleH1 = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_ngModelChange_13_listener() {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.markChanges());
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(14, "label", 37);
-    \u0275\u0275text(15);
-    \u0275\u0275pipe(16, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(17, "p-iftalabel")(18, "input", 38);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_ngModelChange_18_listener($event) {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.h1, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.h1 = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_ngModelChange_18_listener() {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.markChanges());
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(19, "label", 39);
-    \u0275\u0275text(20);
-    \u0275\u0275pipe(21, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(22, "p-iftalabel")(23, "p-select", 40);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_select_ngModelChange_23_listener($event) {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.template, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.template = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_select_ngModelChange_23_listener() {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      ctx_r1.markChanges();
-      return \u0275\u0275resetView(ctx_r1.syncData(ctx_r1.node(), "template", "ENtoFR"));
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(24, "label", 41);
-    \u0275\u0275text(25);
-    \u0275\u0275pipe(26, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(27, "p-iftalabel")(28, "p-select", 42);
-    \u0275\u0275listener("onChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_select_onChange_28_listener($event) {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.moveNode(ctx_r1.node(), $event.value, "en"));
-    });
-    \u0275\u0275template(29, EditNodeComponent_Conditional_25_Conditional_2_ng_template_29_Template, 4, 2, "ng-template", null, 0, \u0275\u0275templateRefExtractor);
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(31, "label", 43);
-    \u0275\u0275text(32);
-    \u0275\u0275pipe(33, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275template(34, EditNodeComponent_Conditional_25_Conditional_2_Conditional_34_Template, 4, 3, "p-message", 44);
-    \u0275\u0275elementStart(35, "h3", 45);
-    \u0275\u0275text(36);
-    \u0275\u0275pipe(37, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(38, "p-iftalabel")(39, "input", 46);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_ngModelChange_39_listener($event) {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.title, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.title = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_ngModelChange_39_listener() {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.markChanges());
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(40, "label", 47);
-    \u0275\u0275text(41);
-    \u0275\u0275pipe(42, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(43, "p-iftalabel")(44, "textarea", 48);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_textarea_ngModelChange_44_listener($event) {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.description, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.description = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_textarea_ngModelChange_44_listener() {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.markChanges());
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(45, "label", 49);
-    \u0275\u0275text(46);
-    \u0275\u0275pipe(47, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(48, "p-iftalabel")(49, "textarea", 50);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_textarea_ngModelChange_49_listener($event) {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.keywords, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.keywords = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_textarea_ngModelChange_49_listener() {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.markChanges());
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(50, "label", 51);
-    \u0275\u0275text(51);
-    \u0275\u0275pipe(52, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(53, "h3", 45);
-    \u0275\u0275text(54);
-    \u0275\u0275pipe(55, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(56, "p-iftalabel")(57, "input", 52);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_ngModelChange_57_listener($event) {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.owner, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.owner = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_ngModelChange_57_listener() {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      ctx_r1.markChanges();
-      return \u0275\u0275resetView(ctx_r1.syncData(ctx_r1.node(), "owner", "ENtoFR"));
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(58, "label", 53);
-    \u0275\u0275text(59);
-    \u0275\u0275pipe(60, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(61, "p-iftalabel")(62, "input", 54);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_ngModelChange_62_listener($event) {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.email, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.email = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_ngModelChange_62_listener() {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      ctx_r1.markChanges();
-      return \u0275\u0275resetView(ctx_r1.syncData(ctx_r1.node(), "email", "ENtoFR"));
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(63, "label", 55);
-    \u0275\u0275text(64);
-    \u0275\u0275pipe(65, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(66, "h3", 45);
-    \u0275\u0275text(67);
-    \u0275\u0275pipe(68, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(69, "div", 56)(70, "div", 57)(71, "p-checkbox", 58);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_checkbox_ngModelChange_71_listener($event) {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.isArchived, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.isArchived = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_checkbox_ngModelChange_71_listener() {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      ctx_r1.markChanges();
-      return \u0275\u0275resetView(ctx_r1.syncData(ctx_r1.node(), "isArchived", "ENtoFR"));
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(72, "label", 59);
-    \u0275\u0275text(73);
-    \u0275\u0275pipe(74, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(75, "div", 57)(76, "p-checkbox", 60);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_checkbox_ngModelChange_76_listener($event) {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.noindex, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.noindex = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_checkbox_ngModelChange_76_listener() {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      ctx_r1.markChanges();
-      return \u0275\u0275resetView(ctx_r1.syncData(ctx_r1.node(), "noindex", "ENtoFR"));
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(77, "label", 61);
-    \u0275\u0275text(78);
-    \u0275\u0275pipe(79, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(80, "div", 57)(81, "p-checkbox", 62);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_checkbox_ngModelChange_81_listener($event) {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.isOrphan, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.isOrphan = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_checkbox_ngModelChange_81_listener() {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.markChanges());
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(82, "label", 63);
-    \u0275\u0275text(83);
-    \u0275\u0275pipe(84, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(85, "div", 57)(86, "p-checkbox", 64);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_checkbox_ngModelChange_86_listener($event) {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.linksToPortal, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.linksToPortal = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_checkbox_ngModelChange_86_listener() {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.markChanges());
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(87, "label", 65);
-    \u0275\u0275text(88);
-    \u0275\u0275pipe(89, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(90, "div", 57)(91, "p-checkbox", 66);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_checkbox_ngModelChange_91_listener($event) {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.hasChatbot, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.hasChatbot = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_checkbox_ngModelChange_91_listener() {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.markChanges());
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(92, "label", 67);
-    \u0275\u0275text(93);
-    \u0275\u0275pipe(94, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(95, "div", 68)(96, "span", 69);
-    \u0275\u0275text(97);
-    \u0275\u0275pipe(98, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(99, "span");
-    \u0275\u0275pipe(100, "date");
-    \u0275\u0275pipe(101, "date");
-    \u0275\u0275text(102);
-    \u0275\u0275pipe(103, "date");
-    \u0275\u0275pipe(104, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(105, "div", 68)(106, "span", 69);
-    \u0275\u0275text(107);
-    \u0275\u0275pipe(108, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275text(109);
-    \u0275\u0275pipe(110, "number");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(111, "div", 68)(112, "span", 69);
-    \u0275\u0275text(113);
-    \u0275\u0275pipe(114, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(115, "span");
-    \u0275\u0275text(116);
-    \u0275\u0275pipe(117, "number");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(118, "div", 68)(119, "span", 69);
-    \u0275\u0275text(120);
-    \u0275\u0275pipe(121, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(122, "span");
-    \u0275\u0275text(123);
-    \u0275\u0275pipe(124, "number");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(125, "div", 68)(126, "span", 69);
-    \u0275\u0275text(127);
-    \u0275\u0275pipe(128, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(129, "span");
-    \u0275\u0275text(130);
-    \u0275\u0275pipe(131, "number");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(132, "div", 68)(133, "span", 69);
-    \u0275\u0275text(134);
-    \u0275\u0275pipe(135, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275text(136);
-    \u0275\u0275pipe(137, "number");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(138, "div", 68)(139, "span", 69);
-    \u0275\u0275text(140);
-    \u0275\u0275pipe(141, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(142, "span");
-    \u0275\u0275text(143);
-    \u0275\u0275pipe(144, "number");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(145, "div", 68)(146, "span", 69);
-    \u0275\u0275text(147);
-    \u0275\u0275pipe(148, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(149, "span");
-    \u0275\u0275text(150);
-    \u0275\u0275pipe(151, "number");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275template(152, EditNodeComponent_Conditional_25_Conditional_2_Conditional_152_Template, 1, 1, "p-tag", 70);
-    \u0275\u0275elementEnd()()();
-  }
-  if (rf & 2) {
-    let tmp_75_0;
-    let tmp_77_0;
-    let tmp_80_0;
-    let tmp_83_0;
-    let tmp_86_0;
-    let tmp_88_0;
-    let tmp_92_0;
-    let tmp_96_0;
-    const ctx_r1 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("legend", \u0275\u0275pipeBind1(1, 112, "common.language.english"));
-    \u0275\u0275advance(5);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data.path.en);
-    \u0275\u0275property("disabled", !ctx_r1.urlEditsEnabled() || !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(8, 114, "editNode.path"));
-    \u0275\u0275advance(3);
-    \u0275\u0275property("disabled", ctx_r1.urlEditsEnabled());
-    \u0275\u0275advance();
-    \u0275\u0275conditional(ctx_r1.node().data.status.isNew && ctx_r1.selectedVersion() === "prototype" ? 11 : -1);
-    \u0275\u0275advance(2);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.doubleH1);
-    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(16, 116, "editNode.doubleh1"));
-    \u0275\u0275advance(3);
-    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.h1 === "New page");
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.h1);
-    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(21, 118, "editNode.h1"));
-    \u0275\u0275advance(3);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.template);
-    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled())("options", ctx_r1.projectState.templateOptions())("filter", true);
-    \u0275\u0275advance();
-    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.template !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.template);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(26, 120, "editNode.template"), " ");
-    \u0275\u0275advance(3);
-    \u0275\u0275property("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.parentPath)("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled())("options", ctx_r1.enPages())("filter", true);
-    \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(33, 122, "editNode.parent"));
-    \u0275\u0275advance(2);
-    \u0275\u0275conditional(ctx_r1.moveError() ? 34 : -1);
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(37, 124, "editNode.metadata"));
-    \u0275\u0275advance(3);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.title);
-    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(42, 126, "editNode.title"));
-    \u0275\u0275advance(3);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.description);
-    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(47, 128, "editNode.description"));
-    \u0275\u0275advance(3);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.keywords);
-    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(52, 130, "editNode.keywords"));
-    \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(55, 132, "editNode.pageOwner"));
-    \u0275\u0275advance(3);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.owner);
-    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
-    \u0275\u0275advance();
-    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.owner !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.owner);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(60, 134, "editNode.owner"), " ");
-    \u0275\u0275advance(3);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.email);
-    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
-    \u0275\u0275advance();
-    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.email !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.email);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(65, 136, "editNode.email"), " ");
-    \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(68, 138, "editNode.info"));
-    \u0275\u0275advance(4);
-    \u0275\u0275property("binary", true)("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.isArchived);
-    \u0275\u0275advance();
-    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.isArchived !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.isArchived);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(74, 140, "editNode.isArchived"), " ");
-    \u0275\u0275advance(3);
-    \u0275\u0275property("binary", true)("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.noindex);
-    \u0275\u0275advance();
-    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.noindex !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.noindex);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(79, 142, "editNode.noindex"), " ");
-    \u0275\u0275advance(3);
-    \u0275\u0275property("binary", true)("disabled", ctx_r1.selectedVersion() === "prototype" ? !ctx_r1.urlEditsEnabled() : !ctx_r1.editsEnabled());
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.isOrphan);
-    \u0275\u0275advance();
-    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.isOrphan !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.isOrphan);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(84, 144, "editNode.isOrphan"), " ");
-    \u0275\u0275advance(3);
-    \u0275\u0275property("binary", true)("disabled", ctx_r1.selectedVersion() === "prototype" ? !ctx_r1.urlEditsEnabled() : !ctx_r1.editsEnabled());
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.linksToPortal);
-    \u0275\u0275advance();
-    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.linksToPortal !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.linksToPortal);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(89, 146, "editNode.linksToPortal"), " ");
-    \u0275\u0275advance(3);
-    \u0275\u0275property("binary", true)("disabled", ctx_r1.selectedVersion() === "prototype" ? !ctx_r1.urlEditsEnabled() : !ctx_r1.editsEnabled());
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.hasChatbot);
-    \u0275\u0275advance();
-    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.hasChatbot !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.hasChatbot);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(94, 148, "editNode.hasChatbot"), " ");
-    \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(98, 150, "editNode.lastPublished"), " ");
-    \u0275\u0275advance(2);
-    \u0275\u0275classProp("text-red-500", \u0275\u0275pipeBind1(100, 152, ctx_r1.node().data[ctx_r1.selectedVersion()].en.lastPublished) !== \u0275\u0275pipeBind1(101, 154, ctx_r1.node().data[ctx_r1.selectedVersion()].fr.lastPublished));
-    \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate1(" ", (tmp_75_0 = \u0275\u0275pipeBind1(103, 156, ctx_r1.node().data[ctx_r1.selectedVersion()].en.lastPublished)) !== null && tmp_75_0 !== void 0 ? tmp_75_0 : \u0275\u0275pipeBind1(104, 158, "common.never"), " ");
-    \u0275\u0275advance(5);
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(108, 160, "editNode.wordCount"), " ");
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate1(" ", (tmp_77_0 = \u0275\u0275pipeBind1(110, 162, ctx_r1.node().data[ctx_r1.selectedVersion()].en.wordCount)) !== null && tmp_77_0 !== void 0 ? tmp_77_0 : "\u2014", " ");
-    \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(114, 164, "editNode.linkCount"), " ");
-    \u0275\u0275advance(2);
-    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.linkCount !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.linkCount);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", (tmp_80_0 = \u0275\u0275pipeBind1(117, 166, ctx_r1.node().data[ctx_r1.selectedVersion()].en.linkCount)) !== null && tmp_80_0 !== void 0 ? tmp_80_0 : "\u2014", " ");
-    \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(121, 168, "editNode.vanityCount"), " ");
-    \u0275\u0275advance(2);
-    \u0275\u0275classProp("text-red-500", ctx_r1.node().data.vanity.en.length !== ctx_r1.node().data.vanity.fr.length);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", (tmp_83_0 = \u0275\u0275pipeBind1(124, 170, ctx_r1.node().data.vanity.en.length)) !== null && tmp_83_0 !== void 0 ? tmp_83_0 : "\u2014", " ");
-    \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(128, 172, "editNode.phoneCount"), " ");
-    \u0275\u0275advance(2);
-    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.phoneNumbers.length !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.phoneNumbers.length);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", (tmp_86_0 = \u0275\u0275pipeBind1(131, 174, ctx_r1.node().data[ctx_r1.selectedVersion()].en.phoneNumbers.length)) !== null && tmp_86_0 !== void 0 ? tmp_86_0 : "\u2014", " ");
-    \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(135, 176, "editNode.visits"), " ");
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate1(" ", (tmp_88_0 = \u0275\u0275pipeBind1(137, 178, ctx_r1.node().data[ctx_r1.selectedVersion()].en.visits)) !== null && tmp_88_0 !== void 0 ? tmp_88_0 : "\u2014", " ");
-    \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(141, 180, "common.readability.fleschKincaid"), " ");
-    \u0275\u0275advance(2);
-    \u0275\u0275classProp("text-orange-400", ctx_r1.node().data[ctx_r1.selectedVersion()].en.fleschKincaid < 12 && ctx_r1.node().data[ctx_r1.selectedVersion()].en.fleschKincaid > 8)("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.fleschKincaid >= 12);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", (tmp_92_0 = \u0275\u0275pipeBind1(144, 182, ctx_r1.node().data[ctx_r1.selectedVersion()].en.fleschKincaid)) !== null && tmp_92_0 !== void 0 ? tmp_92_0 : "\u2014", " ");
-    \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(148, 184, "common.readability.gunningFog"), " ");
-    \u0275\u0275advance(2);
-    \u0275\u0275classProp("text-orange-400", ctx_r1.node().data[ctx_r1.selectedVersion()].en.gunningFog < 12 && ctx_r1.node().data[ctx_r1.selectedVersion()].en.gunningFog > 8)("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.gunningFog >= 12);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", (tmp_96_0 = \u0275\u0275pipeBind1(151, 186, ctx_r1.node().data[ctx_r1.selectedVersion()].en.gunningFog)) !== null && tmp_96_0 !== void 0 ? tmp_96_0 : "\u2014", " ");
-    \u0275\u0275advance(2);
-    \u0275\u0275conditional(ctx_r1.node().data[ctx_r1.selectedVersion()].en.is404 ? 152 : -1);
-  }
-}
-function EditNodeComponent_Conditional_25_Conditional_3_Conditional_11_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r10 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-iftalabel")(1, "input", 105);
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Conditional_11_Template_input_ngModelChange_1_listener($event) {
-      \u0275\u0275restoreView(_r10);
-      const ctx_r1 = \u0275\u0275nextContext(3);
-      ctx_r1.pathFR.set($event);
-      return \u0275\u0275resetView(ctx_r1.updatePath("fr"));
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(2, "label", 106);
-    \u0275\u0275text(3);
-    \u0275\u0275pipe(4, "translate");
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext(3);
-    \u0275\u0275advance();
-    \u0275\u0275classProp("text-red-500", ctx_r1.pathFR().startsWith("nouvelle-page"));
-    \u0275\u0275property("ngModel", ctx_r1.pathFR())("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 5, "editNode.pageUrl"));
-  }
-}
-function EditNodeComponent_Conditional_25_Conditional_3_ng_template_29_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 73)(1, "span", 74);
-    \u0275\u0275text(2);
-    \u0275\u0275elementEnd();
-    \u0275\u0275text(3);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const page_r11 = ctx.$implicit;
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(page_r11.label);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", page_r11.value, " ");
-  }
-}
-function EditNodeComponent_Conditional_25_Conditional_3_Conditional_34_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "p-message", 44)(1, "span");
-    \u0275\u0275text(2);
-    \u0275\u0275pipe(3, "translate");
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 1, "editNode.moveError"));
-  }
-}
-function EditNodeComponent_Conditional_25_Conditional_3_Conditional_152_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275element(0, "p-tag", 70);
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext(3);
-    \u0275\u0275property("severity", ctx_r1.node().data[ctx_r1.selectedVersion()].en.is404 === ctx_r1.node().data[ctx_r1.selectedVersion()].fr.is404 ? "primary" : "danger");
-  }
-}
-function EditNodeComponent_Conditional_25_Conditional_3_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r9 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-fieldset", 27);
-    \u0275\u0275pipe(1, "translate");
-    \u0275\u0275elementStart(2, "div", 31)(3, "p-inputgroup")(4, "p-iftalabel")(5, "input", 75);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_ngModelChange_5_listener($event) {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data.path.fr, $event) || (ctx_r1.node().data.path.fr = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_ngModelChange_5_listener() {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.markChanges());
-    })("blur", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_blur_5_listener() {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.updateSegment("fr"));
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(6, "label", 76);
-    \u0275\u0275text(7);
-    \u0275\u0275pipe(8, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(9, "p-inputgroup-addon", 34)(10, "p-button", 35);
-    \u0275\u0275listener("onClick", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_button_onClick_10_listener() {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.enableUrlEdits());
-    });
-    \u0275\u0275elementEnd()()();
-    \u0275\u0275template(11, EditNodeComponent_Conditional_25_Conditional_3_Conditional_11_Template, 5, 7, "p-iftalabel");
-    \u0275\u0275elementStart(12, "p-iftalabel")(13, "input", 77);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_ngModelChange_13_listener($event) {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.doubleH1, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.doubleH1 = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_ngModelChange_13_listener() {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.markChanges());
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(14, "label", 78);
-    \u0275\u0275text(15);
-    \u0275\u0275pipe(16, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(17, "p-iftalabel")(18, "input", 79);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_ngModelChange_18_listener($event) {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.h1, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.h1 = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_ngModelChange_18_listener() {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.markChanges());
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(19, "label", 80);
-    \u0275\u0275text(20);
-    \u0275\u0275pipe(21, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(22, "p-iftalabel")(23, "p-select", 81);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_select_ngModelChange_23_listener($event) {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.template, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.template = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_select_ngModelChange_23_listener() {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      ctx_r1.markChanges();
-      return \u0275\u0275resetView(ctx_r1.syncData(ctx_r1.node(), "template", "FRtoEN"));
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(24, "label", 82);
-    \u0275\u0275text(25);
-    \u0275\u0275pipe(26, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(27, "p-iftalabel")(28, "p-select", 83);
-    \u0275\u0275listener("onChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_select_onChange_28_listener($event) {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.moveNode(ctx_r1.node(), $event.value, "fr"));
-    });
-    \u0275\u0275template(29, EditNodeComponent_Conditional_25_Conditional_3_ng_template_29_Template, 4, 2, "ng-template", null, 0, \u0275\u0275templateRefExtractor);
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(31, "label", 84);
-    \u0275\u0275text(32);
-    \u0275\u0275pipe(33, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275template(34, EditNodeComponent_Conditional_25_Conditional_3_Conditional_34_Template, 4, 3, "p-message", 44);
-    \u0275\u0275elementStart(35, "h3", 45);
-    \u0275\u0275text(36);
-    \u0275\u0275pipe(37, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(38, "p-iftalabel")(39, "input", 85);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_ngModelChange_39_listener($event) {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.title, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.title = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_ngModelChange_39_listener() {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.markChanges());
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(40, "label", 86);
-    \u0275\u0275text(41);
-    \u0275\u0275pipe(42, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(43, "p-iftalabel")(44, "textarea", 87);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_textarea_ngModelChange_44_listener($event) {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.description, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.description = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_textarea_ngModelChange_44_listener() {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.markChanges());
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(45, "label", 88);
-    \u0275\u0275text(46);
-    \u0275\u0275pipe(47, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(48, "p-iftalabel")(49, "textarea", 89);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_textarea_ngModelChange_49_listener($event) {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.keywords, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.keywords = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_textarea_ngModelChange_49_listener() {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.markChanges());
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(50, "label", 90);
-    \u0275\u0275text(51);
-    \u0275\u0275pipe(52, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(53, "h3", 45);
-    \u0275\u0275text(54);
-    \u0275\u0275pipe(55, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(56, "p-iftalabel")(57, "input", 91);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_ngModelChange_57_listener($event) {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.owner, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.owner = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_ngModelChange_57_listener() {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      ctx_r1.markChanges();
-      return \u0275\u0275resetView(ctx_r1.syncData(ctx_r1.node(), "owner", "FRtoEN"));
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(58, "label", 92);
-    \u0275\u0275text(59);
-    \u0275\u0275pipe(60, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(61, "p-iftalabel")(62, "input", 93);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_ngModelChange_62_listener($event) {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.email, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.email = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_ngModelChange_62_listener() {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      ctx_r1.markChanges();
-      return \u0275\u0275resetView(ctx_r1.syncData(ctx_r1.node(), "email", "FRtoEN"));
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(63, "label", 94);
-    \u0275\u0275text(64);
-    \u0275\u0275pipe(65, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(66, "h3", 45);
-    \u0275\u0275text(67);
-    \u0275\u0275pipe(68, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(69, "div", 56)(70, "div", 57)(71, "p-checkbox", 95);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_checkbox_ngModelChange_71_listener($event) {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.isArchived, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.isArchived = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_checkbox_ngModelChange_71_listener() {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      ctx_r1.markChanges();
-      return \u0275\u0275resetView(ctx_r1.syncData(ctx_r1.node(), "isArchived", "FRtoEN"));
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(72, "label", 96);
-    \u0275\u0275text(73);
-    \u0275\u0275pipe(74, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(75, "div", 57)(76, "p-checkbox", 97);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_checkbox_ngModelChange_76_listener($event) {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.noindex, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.noindex = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_checkbox_ngModelChange_76_listener() {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      ctx_r1.markChanges();
-      return \u0275\u0275resetView(ctx_r1.syncData(ctx_r1.node(), "noindex", "FRtoEN"));
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(77, "label", 98);
-    \u0275\u0275text(78);
-    \u0275\u0275pipe(79, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(80, "div", 57)(81, "p-checkbox", 99);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_checkbox_ngModelChange_81_listener($event) {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.isOrphan, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.isOrphan = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_checkbox_ngModelChange_81_listener() {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.markChanges());
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(82, "label", 100);
-    \u0275\u0275text(83);
-    \u0275\u0275pipe(84, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(85, "div", 57)(86, "p-checkbox", 101);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_checkbox_ngModelChange_86_listener($event) {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.linksToPortal, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.linksToPortal = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_checkbox_ngModelChange_86_listener() {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.markChanges());
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(87, "label", 102);
-    \u0275\u0275text(88);
-    \u0275\u0275pipe(89, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(90, "div", 57)(91, "p-checkbox", 103);
-    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_checkbox_ngModelChange_91_listener($event) {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.hasChatbot, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.hasChatbot = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_checkbox_ngModelChange_91_listener() {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.markChanges());
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(92, "label", 104);
-    \u0275\u0275text(93);
-    \u0275\u0275pipe(94, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(95, "div", 68)(96, "span", 69);
-    \u0275\u0275text(97);
-    \u0275\u0275pipe(98, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(99, "span");
-    \u0275\u0275pipe(100, "date");
-    \u0275\u0275pipe(101, "date");
-    \u0275\u0275text(102);
-    \u0275\u0275pipe(103, "date");
-    \u0275\u0275pipe(104, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(105, "div", 68)(106, "span", 69);
-    \u0275\u0275text(107);
-    \u0275\u0275pipe(108, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275text(109);
-    \u0275\u0275pipe(110, "number");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(111, "div", 68)(112, "span", 69);
-    \u0275\u0275text(113);
-    \u0275\u0275pipe(114, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(115, "span");
-    \u0275\u0275text(116);
-    \u0275\u0275pipe(117, "number");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(118, "div", 68)(119, "span", 69);
-    \u0275\u0275text(120);
-    \u0275\u0275pipe(121, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(122, "span");
-    \u0275\u0275text(123);
-    \u0275\u0275pipe(124, "number");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(125, "div", 68)(126, "span", 69);
-    \u0275\u0275text(127);
-    \u0275\u0275pipe(128, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(129, "span");
-    \u0275\u0275text(130);
-    \u0275\u0275pipe(131, "number");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(132, "div", 68)(133, "span", 69);
-    \u0275\u0275text(134);
-    \u0275\u0275pipe(135, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275text(136);
-    \u0275\u0275pipe(137, "number");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(138, "div", 68)(139, "span", 69);
-    \u0275\u0275text(140);
-    \u0275\u0275pipe(141, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(142, "span");
-    \u0275\u0275text(143);
-    \u0275\u0275pipe(144, "number");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(145, "div", 68)(146, "span", 69);
-    \u0275\u0275text(147);
-    \u0275\u0275pipe(148, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(149, "span");
-    \u0275\u0275text(150);
-    \u0275\u0275pipe(151, "number");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275template(152, EditNodeComponent_Conditional_25_Conditional_3_Conditional_152_Template, 1, 1, "p-tag", 70);
-    \u0275\u0275elementEnd()()();
-  }
-  if (rf & 2) {
-    let tmp_75_0;
-    let tmp_77_0;
-    let tmp_80_0;
-    let tmp_83_0;
-    let tmp_86_0;
-    let tmp_88_0;
-    let tmp_92_0;
-    let tmp_96_0;
-    const ctx_r1 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("legend", \u0275\u0275pipeBind1(1, 112, "common.language.french"));
-    \u0275\u0275advance(5);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data.path.fr);
-    \u0275\u0275property("disabled", !ctx_r1.urlEditsEnabled() || !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(8, 114, "editNode.path"));
-    \u0275\u0275advance(3);
-    \u0275\u0275property("disabled", ctx_r1.urlEditsEnabled());
-    \u0275\u0275advance();
-    \u0275\u0275conditional(ctx_r1.node().data.status.isNew && ctx_r1.selectedVersion() === "prototype" ? 11 : -1);
-    \u0275\u0275advance(2);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.doubleH1);
-    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(16, 116, "editNode.doubleh1"));
-    \u0275\u0275advance(3);
-    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.h1 === "Nouvelle page");
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.h1);
-    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(21, 118, "editNode.h1"));
-    \u0275\u0275advance(3);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.template);
-    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled())("options", ctx_r1.projectState.templateOptions())("filter", true);
-    \u0275\u0275advance();
-    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.template !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.template);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(26, 120, "editNode.template"), " ");
-    \u0275\u0275advance(3);
-    \u0275\u0275property("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.parentPath)("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled())("options", ctx_r1.frPages())("filter", true);
-    \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(33, 122, "editNode.parent"));
-    \u0275\u0275advance(2);
-    \u0275\u0275conditional(ctx_r1.moveError() ? 34 : -1);
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(37, 124, "editNode.metadata"));
-    \u0275\u0275advance(3);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.title);
-    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(42, 126, "editNode.title"));
-    \u0275\u0275advance(3);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.description);
-    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(47, 128, "editNode.description"));
-    \u0275\u0275advance(3);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.keywords);
-    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(52, 130, "editNode.keywords"));
-    \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(55, 132, "editNode.pageOwner"));
-    \u0275\u0275advance(3);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.owner);
-    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
-    \u0275\u0275advance();
-    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.owner !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.owner);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(60, 134, "editNode.owner"), " ");
-    \u0275\u0275advance(3);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.email);
-    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
-    \u0275\u0275advance();
-    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.email !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.email);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(65, 136, "editNode.email"), " ");
-    \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(68, 138, "editNode.info"));
-    \u0275\u0275advance(4);
-    \u0275\u0275property("binary", true)("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.isArchived);
-    \u0275\u0275advance();
-    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.isArchived !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.isArchived);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(74, 140, "editNode.isArchived"), " ");
-    \u0275\u0275advance(3);
-    \u0275\u0275property("binary", true)("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.noindex);
-    \u0275\u0275advance();
-    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.noindex !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.noindex);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(79, 142, "editNode.noindex"), " ");
-    \u0275\u0275advance(3);
-    \u0275\u0275property("binary", true)("disabled", ctx_r1.selectedVersion() === "prototype" ? !ctx_r1.urlEditsEnabled() : !ctx_r1.editsEnabled());
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.isOrphan);
-    \u0275\u0275advance();
-    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.isOrphan !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.isOrphan);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(84, 144, "editNode.isOrphan"), " ");
-    \u0275\u0275advance(3);
-    \u0275\u0275property("binary", true)("disabled", ctx_r1.selectedVersion() === "prototype" ? !ctx_r1.urlEditsEnabled() : !ctx_r1.editsEnabled());
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.linksToPortal);
-    \u0275\u0275advance();
-    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.linksToPortal !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.linksToPortal);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(89, 146, "editNode.linksToPortal"), " ");
-    \u0275\u0275advance(3);
-    \u0275\u0275property("binary", true)("disabled", ctx_r1.selectedVersion() === "prototype" ? !ctx_r1.urlEditsEnabled() : !ctx_r1.editsEnabled());
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.hasChatbot);
-    \u0275\u0275advance();
-    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.hasChatbot !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.hasChatbot);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(94, 148, "editNode.hasChatbot"), " ");
-    \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(98, 150, "editNode.lastPublished"), " ");
-    \u0275\u0275advance(2);
-    \u0275\u0275classProp("text-red-500", \u0275\u0275pipeBind1(100, 152, ctx_r1.node().data[ctx_r1.selectedVersion()].en.lastPublished) !== \u0275\u0275pipeBind1(101, 154, ctx_r1.node().data[ctx_r1.selectedVersion()].fr.lastPublished));
-    \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate1(" ", (tmp_75_0 = \u0275\u0275pipeBind1(103, 156, ctx_r1.node().data[ctx_r1.selectedVersion()].fr.lastPublished)) !== null && tmp_75_0 !== void 0 ? tmp_75_0 : \u0275\u0275pipeBind1(104, 158, "common.never"), " ");
-    \u0275\u0275advance(5);
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(108, 160, "editNode.wordCount"), " ");
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate1(" ", (tmp_77_0 = \u0275\u0275pipeBind1(110, 162, ctx_r1.node().data[ctx_r1.selectedVersion()].fr.wordCount)) !== null && tmp_77_0 !== void 0 ? tmp_77_0 : "\u2014", " ");
-    \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(114, 164, "editNode.linkCount"), " ");
-    \u0275\u0275advance(2);
-    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.linkCount !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.linkCount);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", (tmp_80_0 = \u0275\u0275pipeBind1(117, 166, ctx_r1.node().data[ctx_r1.selectedVersion()].fr.linkCount)) !== null && tmp_80_0 !== void 0 ? tmp_80_0 : "\u2014", " ");
-    \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(121, 168, "editNode.vanityCount"), " ");
-    \u0275\u0275advance(2);
-    \u0275\u0275classProp("text-red-500", ctx_r1.node().data.vanity.en.length !== ctx_r1.node().data.vanity.fr.length);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", (tmp_83_0 = \u0275\u0275pipeBind1(124, 170, ctx_r1.node().data.vanity.fr.length)) !== null && tmp_83_0 !== void 0 ? tmp_83_0 : "\u2014", " ");
-    \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(128, 172, "editNode.phoneCount"), " ");
-    \u0275\u0275advance(2);
-    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.phoneNumbers.length !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.phoneNumbers.length);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", (tmp_86_0 = \u0275\u0275pipeBind1(131, 174, ctx_r1.node().data[ctx_r1.selectedVersion()].fr.phoneNumbers.length)) !== null && tmp_86_0 !== void 0 ? tmp_86_0 : "\u2014", " ");
-    \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(135, 176, "editNode.visits"), " ");
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate1(" ", (tmp_88_0 = \u0275\u0275pipeBind1(137, 178, ctx_r1.node().data[ctx_r1.selectedVersion()].fr.visits)) !== null && tmp_88_0 !== void 0 ? tmp_88_0 : "\u2014", " ");
-    \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(141, 180, "common.readability.fleschKincaid"), " ");
-    \u0275\u0275advance(2);
-    \u0275\u0275classProp("text-orange-400", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.fleschKincaid < 12 && ctx_r1.node().data[ctx_r1.selectedVersion()].fr.fleschKincaid > 8)("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.fleschKincaid >= 12);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", (tmp_92_0 = \u0275\u0275pipeBind1(144, 182, ctx_r1.node().data[ctx_r1.selectedVersion()].fr.fleschKincaid)) !== null && tmp_92_0 !== void 0 ? tmp_92_0 : "\u2014", " ");
-    \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(148, 184, "common.readability.gunningFog"), " ");
-    \u0275\u0275advance(2);
-    \u0275\u0275classProp("text-orange-400", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.gunningFog < 12 && ctx_r1.node().data[ctx_r1.selectedVersion()].fr.gunningFog > 8)("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.gunningFog >= 12);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", (tmp_96_0 = \u0275\u0275pipeBind1(151, 186, ctx_r1.node().data[ctx_r1.selectedVersion()].fr.gunningFog)) !== null && tmp_96_0 !== void 0 ? tmp_96_0 : "\u2014", " ");
-    \u0275\u0275advance(2);
-    \u0275\u0275conditional(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.is404 ? 152 : -1);
-  }
-}
-function EditNodeComponent_Conditional_25_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r5 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 25)(1, "div", 26);
-    \u0275\u0275template(2, EditNodeComponent_Conditional_25_Conditional_2_Template, 153, 188, "p-fieldset", 27)(3, EditNodeComponent_Conditional_25_Conditional_3_Template, 153, 188, "p-fieldset", 27);
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(4, "div", 28)(5, "p-button", 29);
-    \u0275\u0275pipe(6, "translate");
-    \u0275\u0275listener("onClick", function EditNodeComponent_Conditional_25_Template_p_button_onClick_5_listener() {
-      \u0275\u0275restoreView(_r5);
-      const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.cancel());
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(7, "p-button", 30);
-    \u0275\u0275pipe(8, "translate");
-    \u0275\u0275listener("onClick", function EditNodeComponent_Conditional_25_Template_p_button_onClick_7_listener() {
-      \u0275\u0275restoreView(_r5);
-      const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.save());
-    });
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext();
-    \u0275\u0275advance(2);
-    \u0275\u0275conditional(ctx_r1.selectedLanguage() !== "fr" ? 2 : -1);
-    \u0275\u0275advance();
-    \u0275\u0275conditional(ctx_r1.selectedLanguage() !== "en" ? 3 : -1);
-    \u0275\u0275advance(2);
-    \u0275\u0275property("label", \u0275\u0275pipeBind1(6, 5, "common.cancel"));
-    \u0275\u0275advance(2);
-    \u0275\u0275property("label", \u0275\u0275pipeBind1(8, 7, "common.save"))("disabled", !ctx_r1.hasChanges());
-  }
-}
-var EditNodeComponent = class _EditNodeComponent {
-  projectState = inject(ProjectStateService);
-  translate = inject(TranslateService);
-  fetchService = inject(FetchService);
-  node = input.required();
-  isOpen = input(false);
-  close = output();
-  originalData = signal(null);
-  hasChanges = signal(false);
-  refreshing = signal(false);
-  moveError = signal(false);
-  pathEN = signal("");
-  pathFR = signal("");
-  markChanges() {
-    this.hasChanges.set(true);
-  }
-  constructor() {
-    effect(() => {
-      const node = this.node();
-      const open = this.isOpen();
-      if (open && node?.data) {
-        this.selectedVersion.set("prototype");
-        this.originalData.set(structuredClone(node.data));
-        this.editsEnabled.set(false);
-        this.urlEditsEnabled.set(false);
-        this.moveError.set(false);
-        this.pathEN.set(node.data.path.en.split("/").pop());
-        this.pathFR.set(node.data.path.fr.split("/").pop());
-      }
-    });
-  }
-  save() {
-    this.projectState.setModifiedDate();
-    this.hasChanges.set(false);
-    this.originalData.set(structuredClone(this.node().data));
-    this.close.emit();
-  }
-  cancel() {
-    Object.assign(this.node().data, structuredClone(this.originalData()));
-    this.hasChanges.set(false);
-    this.close.emit();
-  }
-  enableEdits() {
-    this.editsEnabled.set(true);
-  }
-  enableUrlEdits() {
-    this.urlEditsEnabled.set(true);
-  }
-  refresh() {
-    return __async(this, null, function* () {
-      this.refreshing.set(true);
-      const version2 = this.selectedVersion();
-      yield this.projectState.refreshNode(this.node(), version2);
-      this.refreshing.set(false);
-      this.hasChanges.set(true);
-    });
-  }
-  syncData(node, field, direction) {
-    if (direction === "ENtoFR") {
-      node.data[this.selectedVersion()].fr[field] = node.data[this.selectedVersion()].en[field];
-    }
-    if (direction === "FRtoEN") {
-      node.data[this.selectedVersion()].en[field] = node.data[this.selectedVersion()].fr[field];
-    }
-  }
-  updatePath(lang) {
-    const path = lang === "fr" ? this.pathFR() : this.pathEN();
-    const suffix = path.replace(".html", "");
-    const prefix = this.node().data.path[lang].split("/").slice(0, -1).join("/");
-    const newPath = `${prefix}/${suffix}.html`;
-    this.node().data.path[lang] = newPath;
-    this.markChanges();
-  }
-  updateSegment(lang) {
-    if (!this.node().data.status.isNew) {
-      return;
-    }
-    this.pathEN.set(this.node().data.path.en.split("/").pop());
-    this.pathFR.set(this.node().data.path.fr.split("/").pop());
-    this.updatePath(lang);
-  }
-  moveNode(node, newParentUrl, lang) {
-    this.moveError.set(false);
-    const tree = this.projectState.getProjectTree();
-    const newParent = this.projectState.findNodeByPath(tree, newParentUrl, lang);
-    if (!newParent)
-      return;
-    const result = this.projectState.moveNode(node, newParent);
-    if (result === "circular") {
-      this.moveError.set(true);
-      return;
-    }
-    this.markChanges();
-  }
-  //Language options
-  selectedLanguage = signal(this.projectState.detectPrimaryLanguage());
-  get languageOptions() {
-    return [
-      { label: this.translate.instant("common.language.english"), value: "en" },
-      { label: this.translate.instant("common.language.french"), value: "fr" },
-      { label: this.translate.instant("common.both"), value: "both" }
-    ];
-  }
-  //Version options
-  selectedVersion = signal("prototype");
-  get versionOptions() {
-    return [
-      { label: this.translate.instant("common.version.prototype"), value: "prototype" },
-      { label: this.translate.instant("common.version.live"), value: "live" },
-      { label: this.translate.instant("common.version.baseline"), value: "baseline" }
-    ];
-  }
-  //Version-specific warning messages
-  versionConfig = computed(() => {
-    switch (this.selectedVersion()) {
-      case "baseline":
-        return { severity: "error", icon: "pi pi-times-circle font-bold", text: this.translate.instant("editNode.baselineWarning") };
-      case "live":
-        return { severity: "warn", icon: "pi pi-exclamation-triangle font-bold", text: this.translate.instant("editNode.liveWarning") };
-      default:
-        return null;
-    }
-  });
-  //Reset editsEnabled whenever selectedVersion changes
-  editsEnabled = signal(false);
-  urlEditsEnabled = signal(false);
-  versionWatcher = effect(() => {
-    this.selectedVersion();
-    this.editsEnabled.set(false);
-    this.urlEditsEnabled.set(false);
-  });
-  //Days since refresh
-  daysSinceRefresh = computed(() => {
-    const data = this.node().data?.[this.selectedVersion()];
-    if (!data)
-      return null;
-    const getDays = (lastChecked) => {
-      if (!lastChecked)
-        return null;
-      const diff = Date.now() - new Date(lastChecked).getTime();
-      return Math.floor(diff / (1e3 * 60 * 60 * 24));
-    };
-    const lang = this.selectedLanguage();
-    if (lang === "en")
-      return getDays(data.en.lastChecked);
-    if (lang === "fr")
-      return getDays(data.fr.lastChecked);
-    const enDays = getDays(data.en.lastChecked);
-    const frDays = getDays(data.fr.lastChecked);
-    if (enDays === null && frDays === null)
-      return null;
-    return Math.max(enDays ?? 0, frDays ?? 0);
-  });
-  //Parent page dropdown
-  enPages = computed(() => this.projectState.getAllPagesByLang("en", "live"));
-  frPages = computed(() => this.projectState.getAllPagesByLang("fr", "live"));
-  static \u0275fac = function EditNodeComponent_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _EditNodeComponent)();
-  };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _EditNodeComponent, selectors: [["aida-edit-node"]], inputs: { node: [1, "node"], isOpen: [1, "isOpen"] }, outputs: { close: "close" }, decls: 26, vars: 29, consts: [["item", ""], [1, "flex", "flex-column", "h-full"], [1, "flex", "flex-row", "flex-wrap", "gap-3"], [1, "flex", "flex-column", "hover:text-primary"], ["for", "lang", 1, "text-xs", "font-semibold"], ["id", "lang", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "size", "small", "styleClass", "secondary-outline text-primary max-h-3rem", 3, "ngModelChange", "options", "ngModel"], ["for", "version", 1, "text-xs", "font-semibold"], ["id", "version", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "size", "small", "styleClass", "secondary-outline text-primary max-h-3rem", 3, "ngModelChange", "options", "ngModel"], ["for", "refresh", 1, "text-xs", "font-semibold"], ["id", "refresh", 1, "flex", "gap-2", "align-items-center"], ["icon", "pi pi-refresh", "severity", "primary", "outlined", "", "size", "small", "styleClass", "secondary-outline", 3, "onClick", "label", "disabled", "loading"], [1, "text-sm", "text-color-secondary", "white-space-nowrap"], ["styleClass", "mt-2", 3, "severity", "icon"], ["for", "status", 1, "text-xs", "font-semibold"], ["id", "status", 1, "flex", "flex-row", "gap-2", "align-items-center", "h-full"], [1, "flex", "gap-1", "align-items-center"], ["inputId", "inScope", "size", "large", 3, "ngModelChange", "binary", "ngModel"], ["for", "inScope"], ["inputId", "isNew", "size", "large", 3, "ngModelChange", "binary", "ngModel"], ["for", "isNew"], ["inputId", "isROT", "size", "large", 3, "ngModelChange", "binary", "ngModel"], ["for", "isROT"], ["inputId", "isMoved", "size", "large", 3, "ngModelChange", "binary", "ngModel"], ["for", "isMoved"], ["icon", "pi pi-file-edit", "severity", "danger", "outlined", "", "size", "small", "styleClass", "secondary-outline white-space-nowrap", 3, "onClick", "label", "disabled"], [1, "flex-1", "overflow-y-auto"], [1, "flex", "flex-row", "gap-2", "min-w-min"], [1, "flex-1", 3, "legend"], [1, "flex", "flex-row", "justify-content-end", "gap-2", "mt-2"], ["icon", "pi pi-times", "severity", "secondary", 3, "onClick", "label"], ["icon", "pi pi-save", "severity", "success", 3, "onClick", "label", "disabled"], [1, "flex", "flex-column", "gap-1"], ["type", "text", "id", "path", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "blur", "ngModel", "disabled"], ["for", "path"], [1, "secondary-outline"], ["icon", "pi pi-pen-to-square", "text", "", 1, "w-full", "h-full", 3, "onClick", "disabled"], ["type", "text", "id", "doubleh1", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "doubleh1"], ["type", "text", "id", "h1", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "h1"], ["id", "template", "styleClass", "secondary-outline", "fluid", "", "appendTo", "body", "optionLabel", "label", "optionValue", "value", "filterBy", "label", 3, "ngModelChange", "ngModel", "disabled", "options", "filter"], ["for", "template"], ["id", "parentPath", "styleClass", "secondary-outline", "fluid", "", "appendTo", "body", "optionLabel", "label", "optionValue", "value", "filterBy", "label", 3, "onChange", "ngModel", "disabled", "options", "filter"], ["for", "parentPath"], ["severity", "error", "icon", "pi pi-times-circle font-bold", "styleClass", "mb-2"], [1, "my-0"], ["type", "text", "id", "title", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "title"], ["id", "description", "pTextarea", "", "variant", "outlined", "pSize", "small", "fluid", "", "autoResize", "true", "rows", "1", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "description"], ["id", "keywords", "pTextarea", "", "variant", "outlined", "pSize", "small", "fluid", "", "autoResize", "true", "rows", "1", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "keywords"], ["type", "text", "id", "owner", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "owner"], ["type", "text", "id", "email", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "email"], [1, "flex", "flex-row", "gap-3", "flex-wrap"], [1, "flex", "align-items-center"], ["inputId", "isArchived", 3, "ngModelChange", "binary", "disabled", "ngModel"], ["for", "isArchived", 1, "ml-2"], ["inputId", "noindex", 3, "ngModelChange", "binary", "disabled", "ngModel"], ["for", "noindex", 1, "ml-2"], ["inputId", "isOrphan", 3, "ngModelChange", "binary", "disabled", "ngModel"], ["for", "isOrphan", 1, "ml-2"], ["inputId", "linksToPortal", 3, "ngModelChange", "binary", "disabled", "ngModel"], ["for", "linksToPortal", 1, "ml-2"], ["inputId", "hasChatbot", 3, "ngModelChange", "binary", "disabled", "ngModel"], ["for", "hasChatbot", 1, "ml-2"], [1, "flex", "flex-column", "text-sm", "text-color-secondary"], [1, "font-bold"], ["value", "404", 3, "severity"], ["type", "text", "id", "pathSegment", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "pathSegment"], [1, "flex", "flex-column"], [1, "font-bold", "-mb-1"], ["type", "text", "id", "path-fr", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "blur", "ngModel", "disabled"], ["for", "path-fr"], ["type", "text", "id", "doubleh1-fr", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "doubleh1-fr"], ["type", "text", "id", "h1-fr", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "h1-fr"], ["id", "template-fr", "styleClass", "secondary-outline", "fluid", "", "appendTo", "body", "optionLabel", "label", "optionValue", "value", "filterBy", "label", 3, "ngModelChange", "ngModel", "disabled", "options", "filter"], ["for", "template-fr"], ["id", "parentPath-fr", "styleClass", "secondary-outline", "fluid", "", "appendTo", "body", "optionLabel", "label", "optionValue", "value", "filterBy", "label", 3, "onChange", "ngModel", "disabled", "options", "filter"], ["for", "parentPath-fr"], ["type", "text", "id", "title-fr", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "title-fr"], ["id", "description-fr", "pTextarea", "", "variant", "outlined", "pSize", "small", "fluid", "", "autoResize", "true", "rows", "1", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "description-fr"], ["id", "keywords-fr", "pTextarea", "", "variant", "outlined", "pSize", "small", "fluid", "", "autoResize", "true", "rows", "1", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "keywords-fr"], ["type", "text", "id", "owner-fr", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "owner-fr"], ["type", "text", "id", "email-fr", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "email-fr"], ["inputId", "isArchived-fr", 3, "ngModelChange", "binary", "disabled", "ngModel"], ["for", "isArchived-fr", 1, "ml-2"], ["inputId", "noindex-fr", 3, "ngModelChange", "binary", "disabled", "ngModel"], ["for", "noindex-fr", 1, "ml-2"], ["inputId", "isOrphan-fr", 3, "ngModelChange", "binary", "disabled", "ngModel"], ["for", "isOrphan-fr", 1, "ml-2"], ["inputId", "linksToPortal-fr", 3, "ngModelChange", "binary", "disabled", "ngModel"], ["for", "linksToPortal-fr", 1, "ml-2"], ["inputId", "hasChatbot-fr", 3, "ngModelChange", "binary", "disabled", "ngModel"], ["for", "hasChatbot-fr", 1, "ml-2"], ["type", "text", "id", "pathSegment-fr", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "pathSegment-fr"]], template: function EditNodeComponent_Template(rf, ctx) {
-    if (rf & 1) {
-      \u0275\u0275elementStart(0, "div", 1)(1, "div", 2)(2, "div", 3)(3, "label", 4);
-      \u0275\u0275text(4);
-      \u0275\u0275pipe(5, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(6, "p-selectButton", 5);
-      \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Template_p_selectButton_ngModelChange_6_listener($event) {
-        \u0275\u0275twoWayBindingSet(ctx.selectedLanguage, $event) || (ctx.selectedLanguage = $event);
-        return $event;
-      });
-      \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(7, "div", 3)(8, "label", 6);
-      \u0275\u0275text(9);
-      \u0275\u0275pipe(10, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(11, "p-selectButton", 7);
-      \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Template_p_selectButton_ngModelChange_11_listener($event) {
-        \u0275\u0275twoWayBindingSet(ctx.selectedVersion, $event) || (ctx.selectedVersion = $event);
-        return $event;
-      });
-      \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(12, "div", 3)(13, "label", 8);
-      \u0275\u0275text(14);
-      \u0275\u0275pipe(15, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(16, "div", 9)(17, "p-button", 10);
-      \u0275\u0275pipe(18, "translate");
-      \u0275\u0275listener("onClick", function EditNodeComponent_Template_p_button_onClick_17_listener() {
-        return ctx.refresh();
-      });
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(19, "span", 11);
-      \u0275\u0275text(20);
-      \u0275\u0275pipe(21, "translate");
-      \u0275\u0275pipe(22, "translate");
-      \u0275\u0275elementEnd()()();
-      \u0275\u0275template(23, EditNodeComponent_Conditional_23_Template, 25, 23, "div", 3);
-      \u0275\u0275elementEnd();
-      \u0275\u0275template(24, EditNodeComponent_Conditional_24_Template, 5, 7, "p-message", 12)(25, EditNodeComponent_Conditional_25_Template, 9, 9);
-      \u0275\u0275elementEnd();
-    }
-    if (rf & 2) {
-      let tmp_11_0;
-      let tmp_12_0;
-      \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(5, 14, "common.language"));
-      \u0275\u0275advance(2);
-      \u0275\u0275property("options", ctx.languageOptions);
-      \u0275\u0275twoWayProperty("ngModel", ctx.selectedLanguage);
-      \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(10, 16, "common.version"));
-      \u0275\u0275advance(2);
-      \u0275\u0275property("options", ctx.versionOptions);
-      \u0275\u0275twoWayProperty("ngModel", ctx.selectedVersion);
-      \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(15, 18, "common.data"));
-      \u0275\u0275advance(3);
-      \u0275\u0275property("label", \u0275\u0275pipeBind1(18, 20, "common.refresh"))("disabled", ctx.selectedVersion() === "baseline" && !ctx.editsEnabled())("loading", ctx.refreshing());
-      \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate1(" ", ctx.daysSinceRefresh() !== null ? \u0275\u0275pipeBind2(21, 22, "editNode.lastRefreshed", \u0275\u0275pureFunction1(27, _c024, ctx.daysSinceRefresh())) : \u0275\u0275pipeBind1(22, 25, "editNode.neverRefreshed"), " ");
-      \u0275\u0275advance(3);
-      \u0275\u0275conditional(((tmp_11_0 = ctx.node().data) == null ? null : tmp_11_0.status) ? 23 : -1);
-      \u0275\u0275advance();
-      \u0275\u0275conditional((tmp_12_0 = ctx.versionConfig()) ? 24 : -1, tmp_12_0);
-      \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.node().data ? 25 : -1);
-    }
-  }, dependencies: [CommonModule, DecimalPipe, DatePipe, FormsModule, DefaultValueAccessor, NgControlStatus, NgModel, TranslateModule, TranslatePipe, FieldsetModule, Fieldset, IftaLabelModule, IftaLabel, InputTextModule, InputText, TextareaModule, Textarea, CheckboxModule, Checkbox, SelectModule, Select, InputGroupModule, InputGroup, InputGroupAddonModule, InputGroupAddon, ButtonModule, Button, SelectButtonModule, SelectButton, MessageModule, Message, TagModule, Tag], styles: ["\n\n[_nghost-%COMP%]     .p-message-content {\n  width: 100%;\n  justify-content: space-between;\n}\n[_nghost-%COMP%]     .p-message-text {\n  flex: 1;\n  justify-content: space-between;\n}\n[_nghost-%COMP%]     .p-textarea {\n  color: var(--p-inputtext-color) !important;\n  background: var(--p-inputtext-background) !important;\n}\n[_nghost-%COMP%]     .p-textarea:disabled {\n  opacity: 1 !important;\n  background: var(--p-inputtext-disabled-background) !important;\n  color: var(--p-inputtext-disabled-color) !important;\n}\n[_nghost-%COMP%]     .p-select {\n  color: var(--p-inputtext-color) !important;\n  background: var(--p-inputtext-background) !important;\n}\n[_nghost-%COMP%]     .p-select.p-disabled {\n  opacity: 1 !important;\n  background: var(--p-inputtext-disabled-background) !important;\n  color: var(--p-inputtext-disabled-color) !important;\n}\n/*# sourceMappingURL=edit-node.component.css.map */"] });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(EditNodeComponent, [{
-    type: Component,
-    args: [{ selector: "aida-edit-node", imports: [
-      CommonModule,
-      FormsModule,
-      TranslateModule,
-      FieldsetModule,
-      IftaLabelModule,
-      InputTextModule,
-      TextareaModule,
-      CheckboxModule,
-      SelectModule,
-      InputGroupModule,
-      InputGroupAddonModule,
-      ButtonModule,
-      SelectButtonModule,
-      MessageModule,
-      TagModule
-    ], template: `<div class="flex flex-column h-full">\r
-    <div class="flex flex-row flex-wrap gap-3">\r
-        <div class="flex flex-column hover:text-primary">\r
-            <label for="lang" class="text-xs font-semibold">{{ 'common.language' | translate }}</label>\r
-            <p-selectButton id="lang" allowEmpty="false" optionLabel="label" optionValue="value" size="small" styleClass="secondary-outline text-primary max-h-3rem"\r
-                            [options]="languageOptions" [(ngModel)]="selectedLanguage" />\r
-        </div>\r
-        <div class="flex flex-column hover:text-primary">\r
-            <label for="version" class="text-xs font-semibold">{{ 'common.version' | translate }}</label>\r
-            <p-selectButton id="version" allowEmpty="false" optionLabel="label" optionValue="value" size="small" styleClass="secondary-outline text-primary max-h-3rem"\r
-                            [options]="versionOptions" [(ngModel)]="selectedVersion" />\r
-        </div>\r
-        <div class="flex flex-column hover:text-primary">\r
-            <label for="refresh" class="text-xs font-semibold">{{ 'common.data' | translate }}</label>\r
-            <div id="refresh" class="flex gap-2 align-items-center">\r
-                <p-button [label]="'common.refresh' | translate" icon="pi pi-refresh" severity="primary" outlined size="small" styleClass="secondary-outline"\r
-                          (onClick)=" refresh()" [disabled]="selectedVersion() === 'baseline' && !editsEnabled()" [loading]="refreshing()" />\r
-                <span class="text-sm text-color-secondary white-space-nowrap">\r
-                    {{ daysSinceRefresh() !== null\r
-                    ? ('editNode.lastRefreshed' | translate: { days: daysSinceRefresh() })\r
-                    : ('editNode.neverRefreshed' | translate) }}\r
-                </span>\r
-            </div>\r
-        </div>\r
-        @if(node().data?.status){\r
-        <div class="flex flex-column hover:text-primary">\r
-            <label for="status" class="text-xs font-semibold">{{ 'common.status' | translate }}</label>\r
-            <div id="status" class="flex flex-row gap-2 align-items-center h-full">\r
-                <div class="flex gap-1 align-items-center">\r
-                    <p-checkbox inputId="inScope" [binary]="true" size="large"\r
-                                [(ngModel)]="node().data.status.inScope" (ngModelChange)="markChanges()" />\r
-                    <label for="inScope">{{'editNode.inScope' | translate}}</label>\r
-                </div>\r
-                <div class="flex gap-1 align-items-center">\r
-                    <p-checkbox inputId="isNew" [binary]="true" size="large"\r
-                                [(ngModel)]="node().data.status.isNew" (ngModelChange)="markChanges()" />\r
-                    <label for="isNew">{{'editNode.isNew' | translate}}</label>\r
-                </div>\r
-                <div class="flex gap-1 align-items-center">\r
-                    <p-checkbox inputId="isROT" [binary]="true" size="large"\r
-                                [(ngModel)]="node().data.status.isROT" (ngModelChange)="markChanges()" />\r
-                    <label for="isROT">{{'editNode.isROT' | translate}}</label>\r
-                </div>\r
-                <div class="flex gap-1 align-items-center">\r
-                    <p-checkbox inputId="isMoved" [binary]="true" size="large"\r
-                                [(ngModel)]="node().data.status.isMoved" (ngModelChange)="markChanges()" />\r
-                    <label for="isMoved">{{'editNode.isMoved' | translate}}</label>\r
-                </div>\r
-            </div>\r
-        </div>\r
-        }\r
-    </div>\r
-    @if(versionConfig(); as config){\r
-    <p-message [severity]="config.severity" [icon]="config.icon" styleClass="mt-2">\r
-        <span>{{ config.text }}</span>\r
-        <p-button [label]="'editNode.enableEdits' | translate" icon="pi pi-file-edit" severity="danger" outlined size="small" styleClass="secondary-outline white-space-nowrap"\r
-                  (onClick)="enableEdits()" [disabled]="editsEnabled()" />\r
-    </p-message>\r
-    }\r
-    @if(node().data) {\r
-    <div class="flex-1 overflow-y-auto">\r
-        <div class="flex flex-row gap-2 min-w-min">\r
-            @if(selectedLanguage() !== 'fr'){\r
-            <p-fieldset [legend]="'common.language.english' | translate" class="flex-1">\r
-                <div class="flex flex-column gap-1">\r
-                    <p-inputgroup>\r
-                        <p-iftalabel>\r
-                            <input type="text" id="path" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid\r
-                                   [(ngModel)]="node().data.path.en" (ngModelChange)="markChanges()" (blur)="updateSegment('en')" [disabled]="!urlEditsEnabled() || (!!versionConfig() && !editsEnabled())" />\r
-                            <label for="path">{{'editNode.path' | translate}}</label>\r
-                        </p-iftalabel>\r
-                        <p-inputgroup-addon class="secondary-outline">\r
-                            <p-button icon="pi pi-pen-to-square" text class="w-full h-full"\r
-                                      (onClick)="enableUrlEdits()" [disabled]="urlEditsEnabled()" />\r
-                        </p-inputgroup-addon>\r
-                    </p-inputgroup>\r
-                    @if(node().data.status.isNew && selectedVersion() === 'prototype'){\r
-                    <p-iftalabel>\r
-                        <input type="text" id="pathSegment" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid [class.text-red-500]="pathEN().startsWith('new-page')"\r
-                               [ngModel]="pathEN()" (ngModelChange)="pathEN.set($event);updatePath('en');" [disabled]="!!versionConfig() && !editsEnabled()" />\r
-                        <label for="pathSegment">{{'editNode.pageUrl' | translate}}</label>\r
-                    </p-iftalabel>\r
-                    }\r
-                    <p-iftalabel>\r
-                        <input type="text" id="doubleh1" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid\r
-                               [(ngModel)]="node().data[selectedVersion()].en.doubleH1" (ngModelChange)="markChanges()" [disabled]="!!versionConfig() && !editsEnabled()" />\r
-                        <label for="doubleh1">{{'editNode.doubleh1' | translate}}</label>\r
-                    </p-iftalabel>\r
-                    <p-iftalabel>\r
-                        <input type="text" id="h1" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid [class.text-red-500]="node().data[selectedVersion()].en.h1==='New page'"\r
-                               [(ngModel)]="node().data[selectedVersion()].en.h1" (ngModelChange)="markChanges()" [disabled]="!!versionConfig() && !editsEnabled()" />\r
-                        <label for="h1">{{'editNode.h1' | translate}}</label>\r
-                    </p-iftalabel>\r
-\r
-                    <!-- Template -->\r
-                    <p-iftalabel>\r
-                        <p-select id="template" styleClass="secondary-outline" fluid appendTo="body"\r
-                                  [(ngModel)]="node().data[selectedVersion()].en.template" (ngModelChange)="markChanges(); syncData(node(),'template','ENtoFR')" [disabled]="!!versionConfig() && !editsEnabled()"\r
-                                  [options]="projectState.templateOptions()" optionLabel="label" optionValue="value"\r
-                                  [filter]="true" filterBy="label" />\r
-                        <label for="template" [class.text-red-500]="node().data[selectedVersion()].en.template !== node().data[selectedVersion()].fr.template">\r
-                            {{'editNode.template' | translate}}\r
-                        </label>\r
-                    </p-iftalabel>\r
-\r
-                    <!-- Parent page -->\r
-                    <p-iftalabel>\r
-                        <p-select id="parentPath" styleClass="secondary-outline" fluid appendTo="body"\r
-                                  [ngModel]="node().data[selectedVersion()].en.parentPath" (onChange)="moveNode(node(), $event.value, 'en')" [disabled]="!!versionConfig() && !editsEnabled()"\r
-                                  [options]="enPages()" optionLabel="label" optionValue="value"\r
-                                  [filter]="true" filterBy="label">\r
-                            <ng-template let-page #item>\r
-                                <div class="flex flex-column">\r
-                                    <span class="font-bold -mb-1">{{ page.label }}</span>\r
-                                    {{ page.value }}\r
-                                </div>\r
-                            </ng-template></p-select>\r
-                        <label for="parentPath">{{'editNode.parent' | translate}}</label>\r
-                    </p-iftalabel>\r
-                    @if(moveError()){\r
-                    <p-message severity="error" icon="pi pi-times-circle font-bold" styleClass="mb-2">\r
-                        <span>{{ 'editNode.moveError' | translate }}</span>\r
-                    </p-message>\r
-                    }\r
-\r
-                    <h3 class="my-0">{{'editNode.metadata' | translate}}</h3>\r
-                    <p-iftalabel>\r
-                        <input type="text" id="title" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid\r
-                               [(ngModel)]="node().data[selectedVersion()].en.title" (ngModelChange)="markChanges()" [disabled]="!!versionConfig() && !editsEnabled()" />\r
-                        <label for="title">{{'editNode.title' | translate}}</label>\r
-                    </p-iftalabel>\r
-                    <p-iftalabel>\r
-                        <textarea id="description" pTextarea variant="outlined" pSize="small" class="secondary-outline" fluid autoResize="true" rows="1"\r
-                                  [(ngModel)]="node().data[selectedVersion()].en.description" (ngModelChange)="markChanges()" [disabled]="!!versionConfig() && !editsEnabled()"></textarea>\r
-                        <label for="description">{{'editNode.description' | translate}}</label>\r
-                    </p-iftalabel>\r
-                    <p-iftalabel>\r
-                        <textarea id="keywords" pTextarea variant="outlined" pSize="small" class="secondary-outline" fluid autoResize="true" rows="1"\r
-                                  [(ngModel)]="node().data[selectedVersion()].en.keywords" (ngModelChange)="markChanges()" [disabled]="!!versionConfig() && !editsEnabled()"></textarea>\r
-                        <label for="keywords">{{'editNode.keywords' | translate}}</label>\r
-                    </p-iftalabel>\r
-\r
-                    <h3 class="my-0">{{'editNode.pageOwner' | translate}}</h3>\r
-                    <p-iftalabel>\r
-                        <input type="text" id="owner" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid\r
-                               [(ngModel)]="node().data[selectedVersion()].en.owner" (ngModelChange)="markChanges(); syncData(node(),'owner','ENtoFR')" [disabled]="!!versionConfig() && !editsEnabled()" />\r
-                        <label for="owner" [class.text-red-500]="node().data[selectedVersion()].en.owner !== node().data[selectedVersion()].fr.owner">\r
-                            {{'editNode.owner' | translate}}\r
-                        </label>\r
-                    </p-iftalabel>\r
-                    <p-iftalabel>\r
-                        <input type="text" id="email" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid\r
-                               [(ngModel)]="node().data[selectedVersion()].en.email" (ngModelChange)="markChanges(); syncData(node(),'email','ENtoFR')" [disabled]="!!versionConfig() && !editsEnabled()" />\r
-                        <label for="email" [class.text-red-500]="node().data[selectedVersion()].en.email !== node().data[selectedVersion()].fr.email">\r
-                            {{'editNode.email' | translate}}\r
-                        </label>\r
-                    </p-iftalabel>\r
-\r
-                    <h3 class="my-0">{{'editNode.info' | translate}}</h3>\r
-                    <div class="flex flex-row gap-3 flex-wrap">\r
-                        <div class="flex align-items-center">\r
-                            <p-checkbox inputId="isArchived" [binary]="true" [disabled]="!!versionConfig() && !editsEnabled()"\r
-                                        [(ngModel)]="node().data[selectedVersion()].en.isArchived" (ngModelChange)="markChanges(); syncData(node(),'isArchived','ENtoFR')" />\r
-                            <label for="isArchived" class="ml-2" [class.text-red-500]="node().data[selectedVersion()].en.isArchived !== node().data[selectedVersion()].fr.isArchived">\r
-                                {{'editNode.isArchived' | translate}}\r
-                            </label>\r
-                        </div>\r
-                        <div class="flex align-items-center">\r
-                            <p-checkbox inputId="noindex" [binary]="true" [disabled]="!!versionConfig() && !editsEnabled()"\r
-                                        [(ngModel)]="node().data[selectedVersion()].en.noindex" (ngModelChange)="markChanges(); syncData(node(),'noindex','ENtoFR')" />\r
-                            <label for="noindex" class="ml-2" [class.text-red-500]="node().data[selectedVersion()].en.noindex !== node().data[selectedVersion()].fr.noindex">\r
-                                {{'editNode.noindex' | translate}}\r
-                            </label>\r
-                        </div>\r
-                        <div class="flex align-items-center">\r
-                            <p-checkbox inputId="isOrphan" [binary]="true" [disabled]="selectedVersion() === 'prototype' ? !urlEditsEnabled() : !editsEnabled()"\r
-                                        [(ngModel)]="node().data[selectedVersion()].en.isOrphan" (ngModelChange)="markChanges()" />\r
-                            <label for="isOrphan" class="ml-2" [class.text-red-500]="node().data[selectedVersion()].en.isOrphan !== node().data[selectedVersion()].fr.isOrphan">\r
-                                {{'editNode.isOrphan' | translate}}\r
-                            </label>\r
-                        </div>\r
-                        <div class="flex align-items-center">\r
-                            <p-checkbox inputId="linksToPortal" [binary]="true" [disabled]="selectedVersion() === 'prototype' ? !urlEditsEnabled() : !editsEnabled()"\r
-                                        [(ngModel)]="node().data[selectedVersion()].en.linksToPortal" (ngModelChange)="markChanges()" />\r
-                            <label for="linksToPortal" class="ml-2" [class.text-red-500]="node().data[selectedVersion()].en.linksToPortal !== node().data[selectedVersion()].fr.linksToPortal">\r
-                                {{'editNode.linksToPortal' | translate}}\r
-                            </label>\r
-                        </div>\r
-                        <div class="flex align-items-center">\r
-                            <p-checkbox inputId="hasChatbot" [binary]="true" [disabled]="selectedVersion() === 'prototype' ? !urlEditsEnabled() : !editsEnabled()"\r
-                                        [(ngModel)]="node().data[selectedVersion()].en.hasChatbot" (ngModelChange)="markChanges()" />\r
-                            <label for="hasChatbot" class="ml-2" [class.text-red-500]="node().data[selectedVersion()].en.hasChatbot !== node().data[selectedVersion()].fr.hasChatbot">\r
-                                {{'editNode.hasChatbot' | translate}}\r
-                            </label>\r
-                        </div>\r
-                        <div class="flex flex-column text-sm text-color-secondary">\r
-                            <span class="font-bold">\r
-                                {{ 'editNode.lastPublished' | translate }}\r
-                            </span>\r
-                            <span [class.text-red-500]="(node().data[selectedVersion()].en.lastPublished | date) !== (node().data[selectedVersion()].fr.lastPublished | date)">\r
-                                {{ (node().data[selectedVersion()].en.lastPublished | date) ?? ('common.never' | translate) }}\r
-                            </span>\r
-                        </div>\r
-                        <div class="flex flex-column text-sm text-color-secondary">\r
-                            <span class="font-bold">\r
-                                {{ 'editNode.wordCount' | translate }}\r
-                            </span>\r
-                            {{ (node().data[selectedVersion()].en.wordCount | number) ?? '\u2014' }}\r
-                        </div>\r
-                        <div class="flex flex-column text-sm text-color-secondary">\r
-                            <span class="font-bold">\r
-                                {{ 'editNode.linkCount' | translate }}\r
-                            </span>\r
-                            <span [class.text-red-500]="node().data[selectedVersion()].en.linkCount !== node().data[selectedVersion()].fr.linkCount">\r
-                                {{ (node().data[selectedVersion()].en.linkCount | number) ?? '\u2014' }}\r
-                            </span>\r
-                        </div>\r
-                        <div class="flex flex-column text-sm text-color-secondary">\r
-                            <span class="font-bold">\r
-                                {{ 'editNode.vanityCount' | translate }}\r
-                            </span>\r
-                            <span [class.text-red-500]="node().data.vanity.en.length !== node().data.vanity.fr.length">\r
-                                {{ (node().data.vanity.en.length | number) ?? '\u2014' }}\r
-                            </span>\r
-                        </div>\r
-                        <div class="flex flex-column text-sm text-color-secondary">\r
-                            <span class="font-bold">\r
-                                {{ 'editNode.phoneCount' | translate }}\r
-                            </span>\r
-                            <span [class.text-red-500]="node().data[selectedVersion()].en.phoneNumbers.length !== node().data[selectedVersion()].fr.phoneNumbers.length">\r
-                                {{ (node().data[selectedVersion()].en.phoneNumbers.length | number) ?? '\u2014' }}\r
-                            </span>\r
-                        </div>\r
-                        <div class="flex flex-column text-sm text-color-secondary">\r
-                            <span class="font-bold">\r
-                                {{ 'editNode.visits' | translate }}\r
-                            </span>\r
-                            {{ (node().data[selectedVersion()].en.visits | number) ?? '\u2014' }}\r
-                        </div>\r
-                        <div class="flex flex-column text-sm text-color-secondary">\r
-                            <span class="font-bold">\r
-                                {{ 'common.readability.fleschKincaid' | translate }}\r
-                            </span>\r
-                            <span [class.text-orange-400]="node().data[selectedVersion()].en.fleschKincaid < 12 && node().data[selectedVersion()].en.fleschKincaid > 8" [class.text-red-500]="node().data[selectedVersion()].en.fleschKincaid >= 12">\r
-                                {{ (node().data[selectedVersion()].en.fleschKincaid | number) ?? '\u2014' }}\r
-                            </span>\r
-                        </div>\r
-                        <div class="flex flex-column text-sm text-color-secondary">\r
-                            <span class="font-bold">\r
-                                {{ 'common.readability.gunningFog' | translate }}\r
-                            </span>\r
-                            <span [class.text-orange-400]="node().data[selectedVersion()].en.gunningFog < 12 && node().data[selectedVersion()].en.gunningFog > 8" [class.text-red-500]="node().data[selectedVersion()].en.gunningFog >= 12">\r
-                                {{ (node().data[selectedVersion()].en.gunningFog | number) ?? '\u2014' }}\r
-                            </span>\r
-                        </div>\r
-                        @if(node().data[selectedVersion()].en.is404){\r
-                        <p-tag [severity]="node().data[selectedVersion()].en.is404 === node().data[selectedVersion()].fr.is404 ? 'primary' : 'danger'" value="404" />\r
-                        }\r
-                    </div>\r
-\r
-                </div>\r
-            </p-fieldset>\r
-            }\r
-            @if(selectedLanguage() !== 'en'){\r
-            <p-fieldset [legend]="'common.language.french' | translate" class="flex-1">\r
-                <div class="flex flex-column gap-1">\r
-                    <p-inputgroup>\r
-                        <p-iftalabel>\r
-                            <input type="text" id="path-fr" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid\r
-                                   [(ngModel)]="node().data.path.fr" (ngModelChange)="markChanges()" (blur)="updateSegment('fr')" [disabled]="!urlEditsEnabled() || (!!versionConfig() && !editsEnabled())" />\r
-                            <label for="path-fr">{{'editNode.path' | translate}}</label>\r
-                        </p-iftalabel>\r
-                        <p-inputgroup-addon class="secondary-outline">\r
-                            <p-button icon="pi pi-pen-to-square" text class="w-full h-full"\r
-                                      (onClick)="enableUrlEdits()" [disabled]="urlEditsEnabled()" />\r
-                        </p-inputgroup-addon>\r
-                    </p-inputgroup>\r
-                    @if(node().data.status.isNew && selectedVersion() === 'prototype'){\r
-                    <p-iftalabel>\r
-                        <input type="text" id="pathSegment-fr" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid [class.text-red-500]="pathFR().startsWith('nouvelle-page')"\r
-                               [ngModel]="pathFR()" (ngModelChange)="pathFR.set($event);updatePath('fr');" [disabled]="!!versionConfig() && !editsEnabled()" />\r
-                        <label for="pathSegment-fr">{{'editNode.pageUrl' | translate}}</label>\r
-                    </p-iftalabel>\r
-                    }\r
-                    <p-iftalabel>\r
-                        <input type="text" id="doubleh1-fr" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid\r
-                               [(ngModel)]="node().data[selectedVersion()].fr.doubleH1" (ngModelChange)="markChanges()" [disabled]="!!versionConfig() && !editsEnabled()" />\r
-                        <label for="doubleh1-fr">{{'editNode.doubleh1' | translate}}</label>\r
-                    </p-iftalabel>\r
-                    <p-iftalabel>\r
-                        <input type="text" id="h1-fr" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid [class.text-red-500]="node().data[selectedVersion()].fr.h1==='Nouvelle page'"\r
-                               [(ngModel)]="node().data[selectedVersion()].fr.h1" (ngModelChange)="markChanges()" [disabled]="!!versionConfig() && !editsEnabled()" />\r
-                        <label for="h1-fr">{{'editNode.h1' | translate}}</label>\r
-                    </p-iftalabel>\r
-\r
-                    <!-- Template -->\r
-                    <p-iftalabel>\r
-                        <p-select id="template-fr" styleClass="secondary-outline" fluid appendTo="body"\r
-                                  [(ngModel)]="node().data[selectedVersion()].fr.template" (ngModelChange)="markChanges(); syncData(node(),'template','FRtoEN')" [disabled]="!!versionConfig() && !editsEnabled()"\r
-                                  [options]="projectState.templateOptions()" optionLabel="label" optionValue="value"\r
-                                  [filter]="true" filterBy="label" />\r
-                        <label for="template-fr" [class.text-red-500]="node().data[selectedVersion()].en.template !== node().data[selectedVersion()].fr.template">\r
-                            {{'editNode.template' | translate}}\r
-                        </label>\r
-                    </p-iftalabel>\r
-\r
-                    <!-- Parent page -->\r
-                    <p-iftalabel>\r
-                        <p-select id="parentPath-fr" styleClass="secondary-outline" fluid appendTo="body"\r
-                                  [ngModel]="node().data[selectedVersion()].fr.parentPath" (onChange)="moveNode(node(), $event.value, 'fr')" [disabled]="!!versionConfig() && !editsEnabled()"\r
-                                  [options]="frPages()" optionLabel="label" optionValue="value"\r
-                                  [filter]="true" filterBy="label">\r
-                            <ng-template let-page #item>\r
-                                <div class="flex flex-column">\r
-                                    <span class="font-bold -mb-1">{{ page.label }}</span>\r
-                                    {{ page.value }}\r
-                                </div>\r
-                            </ng-template></p-select>\r
-                        <label for="parentPath-fr">{{'editNode.parent' | translate}}</label>\r
-                    </p-iftalabel>\r
-                    @if(moveError()){\r
-                    <p-message severity="error" icon="pi pi-times-circle font-bold" styleClass="mb-2">\r
-                        <span>{{ 'editNode.moveError' | translate }}</span>\r
-                    </p-message>\r
-                    }\r
-\r
-                    <h3 class="my-0">{{'editNode.metadata' | translate}}</h3>\r
-                    <p-iftalabel>\r
-                        <input type="text" id="title-fr" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid\r
-                               [(ngModel)]="node().data[selectedVersion()].fr.title" (ngModelChange)="markChanges()" [disabled]="!!versionConfig() && !editsEnabled()" />\r
-                        <label for="title-fr">{{'editNode.title' | translate}}</label>\r
-                    </p-iftalabel>\r
-                    <p-iftalabel>\r
-                        <textarea id="description-fr" pTextarea variant="outlined" pSize="small" class="secondary-outline" fluid autoResize="true" rows="1"\r
-                                  [(ngModel)]="node().data[selectedVersion()].fr.description" (ngModelChange)="markChanges()" [disabled]="!!versionConfig() && !editsEnabled()"></textarea>\r
-                        <label for="description-fr">{{'editNode.description' | translate}}</label>\r
-                    </p-iftalabel>\r
-                    <p-iftalabel>\r
-                        <textarea id="keywords-fr" pTextarea variant="outlined" pSize="small" class="secondary-outline" fluid autoResize="true" rows="1"\r
-                                  [(ngModel)]="node().data[selectedVersion()].fr.keywords" (ngModelChange)="markChanges()" [disabled]="!!versionConfig() && !editsEnabled()"></textarea>\r
-                        <label for="keywords-fr">{{'editNode.keywords' | translate}}</label>\r
-                    </p-iftalabel>\r
-\r
-                    <h3 class="my-0">{{'editNode.pageOwner' | translate}}</h3>\r
-                    <p-iftalabel>\r
-                        <input type="text" id="owner-fr" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid\r
-                               [(ngModel)]="node().data[selectedVersion()].fr.owner" (ngModelChange)="markChanges(); syncData(node(),'owner','FRtoEN')" [disabled]="!!versionConfig() && !editsEnabled()" />\r
-                        <label for="owner-fr" [class.text-red-500]="node().data[selectedVersion()].en.owner !== node().data[selectedVersion()].fr.owner">\r
-                            {{'editNode.owner' | translate}}\r
-                        </label>\r
-                    </p-iftalabel>\r
-                    <p-iftalabel>\r
-                        <input type="text" id="email-fr" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid\r
-                               [(ngModel)]="node().data[selectedVersion()].fr.email" (ngModelChange)="markChanges(); syncData(node(),'email','FRtoEN')" [disabled]="!!versionConfig() && !editsEnabled()" />\r
-                        <label for="email-fr" [class.text-red-500]="node().data[selectedVersion()].en.email !== node().data[selectedVersion()].fr.email">\r
-                            {{'editNode.email' | translate}}\r
-                        </label>\r
-                    </p-iftalabel>\r
-\r
-                    <h3 class="my-0">{{'editNode.info' | translate}}</h3>\r
-                    <div class="flex flex-row gap-3 flex-wrap">\r
-                        <div class="flex align-items-center">\r
-                            <p-checkbox inputId="isArchived-fr" [binary]="true" [disabled]="!!versionConfig() && !editsEnabled()"\r
-                                        [(ngModel)]="node().data[selectedVersion()].fr.isArchived" (ngModelChange)="markChanges(); syncData(node(),'isArchived','FRtoEN')" />\r
-                            <label for="isArchived-fr" class="ml-2" [class.text-red-500]="node().data[selectedVersion()].en.isArchived !== node().data[selectedVersion()].fr.isArchived">\r
-                                {{'editNode.isArchived' | translate}}\r
-                            </label>\r
-                        </div>\r
-                        <div class="flex align-items-center">\r
-                            <p-checkbox inputId="noindex-fr" [binary]="true" [disabled]="!!versionConfig() && !editsEnabled()"\r
-                                        [(ngModel)]="node().data[selectedVersion()].fr.noindex" (ngModelChange)="markChanges(); syncData(node(),'noindex','FRtoEN')" />\r
-                            <label for="noindex-fr" class="ml-2" [class.text-red-500]="node().data[selectedVersion()].en.noindex !== node().data[selectedVersion()].fr.noindex">\r
-                                {{'editNode.noindex' | translate}}\r
-                            </label>\r
-                        </div>\r
-                        <div class="flex align-items-center">\r
-                            <p-checkbox inputId="isOrphan-fr" [binary]="true" [disabled]="selectedVersion() === 'prototype' ? !urlEditsEnabled() : !editsEnabled()"\r
-                                        [(ngModel)]="node().data[selectedVersion()].fr.isOrphan" (ngModelChange)="markChanges()" />\r
-                            <label for="isOrphan-fr" class="ml-2" [class.text-red-500]="node().data[selectedVersion()].en.isOrphan !== node().data[selectedVersion()].fr.isOrphan">\r
-                                {{'editNode.isOrphan' | translate}}\r
-                            </label>\r
-                        </div>\r
-                        <div class="flex align-items-center">\r
-                            <p-checkbox inputId="linksToPortal-fr" [binary]="true" [disabled]="selectedVersion() === 'prototype' ? !urlEditsEnabled() : !editsEnabled()"\r
-                                        [(ngModel)]="node().data[selectedVersion()].fr.linksToPortal" (ngModelChange)="markChanges()" />\r
-                            <label for="linksToPortal-fr" class="ml-2" [class.text-red-500]="node().data[selectedVersion()].en.linksToPortal !== node().data[selectedVersion()].fr.linksToPortal">\r
-                                {{'editNode.linksToPortal' | translate}}\r
-                            </label>\r
-                        </div>\r
-                        <div class="flex align-items-center">\r
-                            <p-checkbox inputId="hasChatbot-fr" [binary]="true" [disabled]="selectedVersion() === 'prototype' ? !urlEditsEnabled() : !editsEnabled()"\r
-                                        [(ngModel)]="node().data[selectedVersion()].fr.hasChatbot" (ngModelChange)="markChanges()" />\r
-                            <label for="hasChatbot-fr" class="ml-2" [class.text-red-500]="node().data[selectedVersion()].en.hasChatbot !== node().data[selectedVersion()].fr.hasChatbot">\r
-                                {{'editNode.hasChatbot' | translate}}\r
-                            </label>\r
-                        </div>\r
-                        <div class="flex flex-column text-sm text-color-secondary">\r
-                            <span class="font-bold">\r
-                                {{ 'editNode.lastPublished' | translate }}\r
-                            </span>\r
-                            <span [class.text-red-500]="(node().data[selectedVersion()].en.lastPublished | date) !== (node().data[selectedVersion()].fr.lastPublished | date)">\r
-                                {{ (node().data[selectedVersion()].fr.lastPublished | date) ?? ('common.never' | translate) }}\r
-                            </span>\r
-                        </div>\r
-                        <div class="flex flex-column text-sm text-color-secondary">\r
-                            <span class="font-bold">\r
-                                {{ 'editNode.wordCount' | translate }}\r
-                            </span>\r
-                            {{ (node().data[selectedVersion()].fr.wordCount | number) ?? '\u2014' }}\r
-                        </div>\r
-                        <div class="flex flex-column text-sm text-color-secondary">\r
-                            <span class="font-bold">\r
-                                {{ 'editNode.linkCount' | translate }}\r
-                            </span>\r
-                            <span [class.text-red-500]="node().data[selectedVersion()].en.linkCount !== node().data[selectedVersion()].fr.linkCount">\r
-                                {{ (node().data[selectedVersion()].fr.linkCount | number) ?? '\u2014' }}\r
-                            </span>\r
-                        </div>\r
-                        <div class="flex flex-column text-sm text-color-secondary">\r
-                            <span class="font-bold">\r
-                                {{ 'editNode.vanityCount' | translate }}\r
-                            </span>\r
-                            <span [class.text-red-500]="node().data.vanity.en.length !== node().data.vanity.fr.length">\r
-                                {{ (node().data.vanity.fr.length | number) ?? '\u2014' }}\r
-                            </span>\r
-                        </div>\r
-                        <div class="flex flex-column text-sm text-color-secondary">\r
-                            <span class="font-bold">\r
-                                {{ 'editNode.phoneCount' | translate }}\r
-                            </span>\r
-                            <span [class.text-red-500]="node().data[selectedVersion()].en.phoneNumbers.length !== node().data[selectedVersion()].fr.phoneNumbers.length">\r
-                                {{ (node().data[selectedVersion()].fr.phoneNumbers.length | number) ?? '\u2014' }}\r
-                            </span>\r
-                        </div>\r
-                        <div class="flex flex-column text-sm text-color-secondary">\r
-                            <span class="font-bold">\r
-                                {{ 'editNode.visits' | translate }}\r
-                            </span>\r
-                            {{ (node().data[selectedVersion()].fr.visits | number) ?? '\u2014' }}\r
-                        </div>\r
-                        <div class="flex flex-column text-sm text-color-secondary">\r
-                            <span class="font-bold">\r
-                                {{ 'common.readability.fleschKincaid' | translate }}\r
-                            </span>\r
-                            <span [class.text-orange-400]="node().data[selectedVersion()].fr.fleschKincaid < 12 && node().data[selectedVersion()].fr.fleschKincaid > 8" [class.text-red-500]="node().data[selectedVersion()].fr.fleschKincaid >= 12">\r
-                                {{ (node().data[selectedVersion()].fr.fleschKincaid | number) ?? '\u2014' }}\r
-                            </span>\r
-                        </div>\r
-                        <div class="flex flex-column text-sm text-color-secondary">\r
-                            <span class="font-bold">\r
-                                {{ 'common.readability.gunningFog' | translate }}\r
-                            </span>\r
-                            <span [class.text-orange-400]="node().data[selectedVersion()].fr.gunningFog < 12 && node().data[selectedVersion()].fr.gunningFog > 8" [class.text-red-500]="node().data[selectedVersion()].fr.gunningFog >= 12">\r
-                                {{ (node().data[selectedVersion()].fr.gunningFog | number) ?? '\u2014' }}\r
-                            </span>\r
-                        </div>\r
-                        @if(node().data[selectedVersion()].fr.is404){\r
-                        <p-tag [severity]="node().data[selectedVersion()].en.is404 === node().data[selectedVersion()].fr.is404 ? 'primary' : 'danger'" value="404" />\r
-                        }\r
-                    </div>\r
-                </div>\r
-            </p-fieldset>\r
-            }\r
-        </div>\r
-    </div>\r
-\r
-    <div class="flex flex-row justify-content-end gap-2 mt-2">\r
-        <p-button [label]="'common.cancel' | translate" icon="pi pi-times" severity="secondary"\r
-                  (onClick)="cancel()" />\r
-        <p-button [label]="'common.save' | translate" icon="pi pi-save" severity="success"\r
-                  (onClick)="save()" [disabled]="!hasChanges()" />\r
-    </div>\r
-\r
-    }\r
-</div>`, styles: ["/* src/app/components/edit-node/edit-node.component.css */\n:host ::ng-deep .p-message-content {\n  width: 100%;\n  justify-content: space-between;\n}\n:host ::ng-deep .p-message-text {\n  flex: 1;\n  justify-content: space-between;\n}\n:host ::ng-deep .p-textarea {\n  color: var(--p-inputtext-color) !important;\n  background: var(--p-inputtext-background) !important;\n}\n:host ::ng-deep .p-textarea:disabled {\n  opacity: 1 !important;\n  background: var(--p-inputtext-disabled-background) !important;\n  color: var(--p-inputtext-disabled-color) !important;\n}\n:host ::ng-deep .p-select {\n  color: var(--p-inputtext-color) !important;\n  background: var(--p-inputtext-background) !important;\n}\n:host ::ng-deep .p-select.p-disabled {\n  opacity: 1 !important;\n  background: var(--p-inputtext-disabled-background) !important;\n  color: var(--p-inputtext-disabled-color) !important;\n}\n/*# sourceMappingURL=edit-node.component.css.map */\n"] }]
-  }], () => [], null);
-})();
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(EditNodeComponent, { className: "EditNodeComponent", filePath: "src/app/components/edit-node/edit-node.component.ts", lineNumber: 36 });
-})();
-
-// src/app/components/ia-diagram/ia-diagram.component.ts
-var _c025 = ["menu"];
-var _c136 = () => ({ height: "90vh" });
-var _c220 = (a0) => ({ number: a0 });
-function IaDiagramComponent_ng_template_20_Conditional_0_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 16);
-    \u0275\u0275element(1, "i", 23);
-    \u0275\u0275pipe(2, "translate");
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    \u0275\u0275advance();
-    \u0275\u0275property("pTooltip", \u0275\u0275pipeBind1(2, 1, "iaDiagram.tooltip.orphan"));
-  }
-}
-function IaDiagramComponent_ng_template_20_Conditional_5_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275element(0, "i", 21);
-    \u0275\u0275pipe(1, "translate");
-  }
-  if (rf & 2) {
-    const node_r3 = \u0275\u0275nextContext().$implicit;
-    \u0275\u0275property("pTooltip", \u0275\u0275pipeBind2(1, 1, "iaDiagram.tooltip.hiddenPages", \u0275\u0275pureFunction1(4, _c220, (node_r3.data.collapsedChildren == null ? null : node_r3.data.collapsedChildren.length) + (node_r3.data.hiddenChildrenUrls == null ? null : node_r3.data.hiddenChildrenUrls.length))));
-  }
-}
-function IaDiagramComponent_ng_template_20_Conditional_6_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r5 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 24);
-    \u0275\u0275listener("click", function IaDiagramComponent_ng_template_20_Conditional_6_Template_p_button_click_0_listener() {
-      \u0275\u0275restoreView(_r5);
-      const node_r3 = \u0275\u0275nextContext().$implicit;
-      const ctx_r3 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r3.addUrlsService.addChildren(node_r3, ctx_r3.primaryLang));
-    });
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r3 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("loading", ctx_r3.addUrlsService.urlState().isAdding);
-  }
-}
-function IaDiagramComponent_ng_template_20_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r2 = \u0275\u0275getCurrentView();
-    \u0275\u0275template(0, IaDiagramComponent_ng_template_20_Conditional_0_Template, 3, 3, "div", 16);
-    \u0275\u0275elementStart(1, "p-button", 17);
-    \u0275\u0275listener("click", function IaDiagramComponent_ng_template_20_Template_p_button_click_1_listener($event) {
-      const node_r3 = \u0275\u0275restoreView(_r2).$implicit;
-      const ctx_r3 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r3.onMenuClick($event, node_r3));
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(2, "div", 18);
-    \u0275\u0275listener("dragstart", function IaDiagramComponent_ng_template_20_Template_div_dragstart_2_listener() {
-      const node_r3 = \u0275\u0275restoreView(_r2).$implicit;
-      const ctx_r3 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r3.onDragStart(node_r3));
-    })("dragover", function IaDiagramComponent_ng_template_20_Template_div_dragover_2_listener($event) {
-      const node_r3 = \u0275\u0275restoreView(_r2).$implicit;
-      const ctx_r3 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r3.onDragOver($event, node_r3));
-    })("dragleave", function IaDiagramComponent_ng_template_20_Template_div_dragleave_2_listener() {
-      const node_r3 = \u0275\u0275restoreView(_r2).$implicit;
-      const ctx_r3 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r3.onDragLeave(node_r3));
-    })("drop", function IaDiagramComponent_ng_template_20_Template_div_drop_2_listener() {
-      const node_r3 = \u0275\u0275restoreView(_r2).$implicit;
-      const ctx_r3 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r3.onDrop(node_r3));
-    });
-    \u0275\u0275elementStart(3, "p", 19);
-    \u0275\u0275element(4, "a", 20);
-    \u0275\u0275elementEnd();
-    \u0275\u0275template(5, IaDiagramComponent_ng_template_20_Conditional_5_Template, 2, 6, "i", 21)(6, IaDiagramComponent_ng_template_20_Conditional_6_Template, 1, 1, "p-button", 22);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const node_r3 = ctx.$implicit;
-    const ctx_r3 = \u0275\u0275nextContext();
-    \u0275\u0275conditional((ctx_r3.selectedLanguage() === "en" ? node_r3.data.live.en.isOrphan : node_r3.data.live.fr.isOrphan) ? 0 : -1);
-    \u0275\u0275advance(4);
-    \u0275\u0275classProp("cursor-move", ctx_r3.selectedView() === "changes");
-    \u0275\u0275property("href", ctx_r3.selectedLanguage() === "en" ? node_r3.data.live.en.url : node_r3.data.live.fr.url, \u0275\u0275sanitizeUrl)("innerHTML", ctx_r3.getH1Display(node_r3), \u0275\u0275sanitizeHtml);
-    \u0275\u0275advance();
-    \u0275\u0275conditional((node_r3.data.collapsedChildren == null ? null : node_r3.data.collapsedChildren.length) || (node_r3.data.hiddenChildrenUrls == null ? null : node_r3.data.hiddenChildrenUrls.length) ? 5 : -1);
-    \u0275\u0275advance();
-    \u0275\u0275conditional(!node_r3.data.isCrawled && !node_r3.data.status.isNew && ctx_r3.selectedView() === "changes" ? 6 : -1);
-  }
-}
-function IaDiagramComponent_Conditional_24_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r6 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "aida-edit-node", 25);
-    \u0275\u0275listener("close", function IaDiagramComponent_Conditional_24_Template_aida_edit_node_close_0_listener() {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r3 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r3.editNode = false);
-    });
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r3 = \u0275\u0275nextContext();
-    \u0275\u0275property("node", ctx_r3.selectedNode)("isOpen", ctx_r3.editNode);
-  }
-}
-var IaDiagramComponent = class _IaDiagramComponent {
-  projectState = inject(ProjectStateService);
-  translate = inject(TranslateService);
-  iaDiagram = inject(IaDiagramService);
-  treeNodeStyleService = inject(TreeNodeStyleService);
-  addUrlsService = inject(AddUrlsService);
-  primaryLang = this.projectState.detectPrimaryLanguage();
-  projectTree = computed(() => {
-    let tree = this.projectState.getProject().projectData;
-    if (this.selectedTree() !== "full") {
-      const custom = this.projectState.findNodeByPath(tree, this.selectedTree(), this.primaryLang);
-      if (custom) {
-        tree = [custom];
-      }
-      ;
-    }
-    if (this.selectedView() === "baseline") {
-      tree = this.projectState.getBaselineTree(tree, this.selectedTree() === "full" ? "full" : "custom");
-    } else if (this.selectedView() === "final") {
-      tree = this.projectState.getFinalTree(tree);
-    }
-    if (this.collapsedNodes().size > 0 || this.hiddenNodes().size > 0) {
-      tree = this.projectState.getDisplayTree(tree, this.collapsedNodes(), this.hiddenNodes());
-    }
-    this.treeNodeStyleService.updateNodeStyles(tree);
-    return tree;
-  });
-  //View options
-  selectedView = signal("changes");
-  get viewOptions() {
-    return [
-      { label: this.translate.instant("iaDiagram.view.baseline"), value: "baseline" },
-      { label: this.translate.instant("iaDiagram.view.changes"), value: "changes" },
-      { label: this.translate.instant("iaDiagram.view.final"), value: "final" }
-    ];
-  }
-  changeView() {
-    const applyStatusColors = this.selectedView() === "changes";
-    this.treeNodeStyleService.updateNodeStyles(this.projectTree(), 0, applyStatusColors);
-  }
-  //Language options
-  selectedLanguage = signal(this.primaryLang);
-  get languageOptions() {
-    return [
-      { label: this.translate.instant("common.language.english"), value: "en" },
-      { label: this.translate.instant("common.language.french"), value: "fr" }
-    ];
-  }
-  // Display H1
-  getH1Display(node) {
-    const lang = this.selectedLanguage();
-    const liveH1 = node.data?.live?.[lang]?.h1 ?? "";
-    const protoH1 = node.data?.prototype?.[lang]?.h1 ?? "";
-    const changed = liveH1 !== protoH1;
-    if (this.selectedView() === "baseline")
-      return liveH1;
-    else if (this.selectedView() === "final")
-      return protoH1;
-    else if (changed)
-      return `<s class="text-color-secondary text-sm">${liveH1}</s><br>${protoH1}`;
-    else
-      return protoH1;
-  }
-  //Tree options
-  selectedTree = signal("full");
-  //Menu options
-  menu;
-  items = [];
-  editNode = false;
-  selectedNode = {};
-  onMenuClick(event2, node) {
-    if (!node.data.path[this.primaryLang])
-      return;
-    event2.preventDefault();
-    this.items = [
-      {
-        label: this.translate.instant(`common.actions`),
-        items: [
-          {
-            label: this.translate.instant(`common.editNode`),
-            icon: "pi pi-pen-to-square",
-            command: () => {
-              this.selectedNode = node;
-              this.editNode = true;
-            }
-          }
-        ]
-      },
-      {
-        label: this.translate.instant(`common.viewOptions`),
-        items: []
-      }
-    ];
-    const siblings = this.projectState.getSiblings(node);
-    const index = siblings.indexOf(node);
-    const canMoveLeft = index > 0;
-    const canMoveRight = index < siblings.length - 1;
-    if (this.selectedView() === "changes" && (canMoveRight || canMoveLeft)) {
-      this.items[0].items.push({ separator: true });
-    }
-    if (this.selectedView() === "changes" && canMoveLeft) {
-      this.items[0].items.push({
-        label: this.translate.instant(`common.moveLeft`),
-        icon: "pi pi-arrow-left",
-        command: () => this.projectState.reorderNode(node, "left")
-      });
-    }
-    if (this.selectedView() === "changes" && canMoveRight) {
-      this.items[0].items.push({
-        label: this.translate.instant(`common.moveRight`),
-        icon: "pi pi-arrow-right",
-        command: () => this.projectState.reorderNode(node, "right")
-      });
-    }
-    if (this.selectedView() === "changes" && (canMoveRight || canMoveLeft)) {
-      this.items[0].items.push({ separator: true });
-    }
-    if (this.selectedView() === "changes" && !node.data.isCrawled) {
-      this.items[0].items.push({
-        label: this.translate.instant(`iaDiagram.menu.findChildren`),
-        icon: "pi pi-search",
-        disabled: node.data.isCrawled,
-        command: () => {
-          this.addUrlsService.addChildren(node, this.primaryLang);
-          console.log("test");
-        }
-      });
-    }
-    if (this.selectedView() === "changes") {
-      this.items[0].items.push({
-        label: this.translate.instant(`iaDiagram.menu.createChild`),
-        icon: "pi pi-file-plus text-green-500",
-        command: () => {
-          this.projectState.createNode(node);
-        }
-      }, {
-        label: this.translate.instant(`iaDiagram.menu.deleteNode`),
-        icon: "pi pi-trash text-red-500",
-        command: () => {
-          this.projectState.deleteNode(node);
-        }
-      });
-    }
-    if (this.projectTree()[0].data.url !== node.data.url) {
-      this.items[1].items.push({
-        label: this.translate.instant(`iaDiagram.menu.viewAsRoot`),
-        icon: "pi pi-window-minimize",
-        command: () => this.selectedTree.set(node.data.url)
-      });
-    }
-    if (this.selectedTree() !== "full") {
-      this.items[1].items.push({
-        label: this.translate.instant(`iaDiagram.menu.viewFullTree`),
-        icon: "pi pi-window-maximize",
-        command: () => this.selectedTree.set("full")
-      });
-    }
-    if (node.children?.length) {
-      this.items[1].items.push({
-        label: this.translate.instant(`iaDiagram.menu.hideChildren`),
-        icon: "pi pi-eye-slash",
-        command: () => this.collapsedNodes.update((set) => /* @__PURE__ */ new Set([...set, node.data.url]))
-      });
-    }
-    if (!node.children?.length && (node.data.collapsedChildren?.length || node.data.hiddenChildrenUrls?.length)) {
-      this.items[1].items.push({
-        label: this.translate.instant(`iaDiagram.menu.showChildren`),
-        icon: "pi pi-eye",
-        command: () => {
-          this.collapsedNodes.update((set) => {
-            const next = new Set(set);
-            next.delete(node.data.url);
-            return next;
-          });
-          this.hiddenNodes.update((set) => {
-            const next = new Set(set);
-            (node.data.hiddenChildrenUrls ?? []).forEach((url) => next.delete(url));
-            return next;
-          });
-        }
-      });
-    }
-    if (node.parent) {
-      this.items[1].items.push({
-        label: this.translate.instant(`iaDiagram.menu.hideNode`),
-        icon: "pi pi-eye-slash",
-        command: () => this.hiddenNodes.update((set) => /* @__PURE__ */ new Set([...set, node.data.url]))
-      });
-    }
-    if (node.children?.length && node.data.hiddenChildrenUrls?.length) {
-      this.items[1].items.push({
-        label: this.translate.instant(`iaDiagram.menu.showHiddenNodes`),
-        icon: "pi pi-eye",
-        command: () => this.hiddenNodes.update((set) => {
-          const next = new Set(set);
-          node.data.hiddenChildrenUrls.forEach((url) => next.delete(url));
-          return next;
-        })
-      });
-    }
-    if (this.items[1].items.length === 0) {
-      this.items[1].items.push({
-        label: this.translate.instant(`iaDiagram.menu.noActions`),
-        disabled: true
-      });
-    }
-    this.menu.toggle(event2);
-  }
-  // Show/hide pages or children
-  collapsedNodes = signal(/* @__PURE__ */ new Set());
-  hiddenNodes = signal(/* @__PURE__ */ new Set());
-  // Drag & drop
-  dragNode = signal(null);
-  dropTarget = signal(null);
-  onDragStart(node) {
-    if (this.selectedView() !== "changes")
-      return;
-    this.dragNode.set(node);
-  }
-  onDragOver(event2, node) {
-    event2.preventDefault();
-    if (this.selectedView() !== "changes")
-      return;
-    if (node.data.path[this.primaryLang] !== this.dragNode()?.data?.path[this.primaryLang]) {
-      this.dropTarget.set(node);
-    }
-  }
-  onDragLeave(node) {
-    if (this.selectedView() !== "changes")
-      return;
-    if (this.dropTarget()?.data?.path[this.primaryLang] === node.data.path[this.primaryLang]) {
-      this.dropTarget.set(null);
-    }
-  }
-  onDrop(node) {
-    if (this.selectedView() !== "changes")
-      return;
-    const drag = this.dragNode();
-    const drop = this.dropTarget();
-    if (!drag || !drop || drag.data.path[this.primaryLang] === drop.data.path[this.primaryLang] || drag.parent?.data?.path[this.primaryLang] === drop.data.path[this.primaryLang]) {
-      this.dragNode.set(null);
-      this.dropTarget.set(null);
-      return;
-    }
-    this.projectState.moveNode(drag, drop);
-    this.dragNode.set(null);
-    this.dropTarget.set(null);
-  }
-  static \u0275fac = function IaDiagramComponent_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _IaDiagramComponent)();
-  };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _IaDiagramComponent, selectors: [["aida-ia-diagram"]], viewQuery: function IaDiagramComponent_Query(rf, ctx) {
-    if (rf & 1) {
-      \u0275\u0275viewQuery(_c025, 5);
-    }
-    if (rf & 2) {
-      let _t;
-      \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.menu = _t.first);
-    }
-  }, decls: 25, vars: 27, consts: [["menu", ""], [1, "fullscreen-overlay", "surface-card"], [1, "flex", "flex-row", "justify-content-between", "align-items-center", "pl-2", "mx-3", "border-bottom-1", "border-200"], [1, "mb-2"], ["icon", "pi pi-times", "text", "", "rounded", "", 3, "onClick"], [1, "overflow-auto"], [1, "flex", "flex-row", "absolute"], [1, "flex", "flex-column", "hover:text-primary", "z-1", "ml-4"], ["for", "view", 1, "text-xs", "font-semibold", "xl:my-1"], ["id", "view", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "size", "small", "styleClass", "secondary-outline text-primary max-h-3rem", 3, "ngModelChange", "onChange", "options", "ngModel"], ["id", "view", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "size", "small", "styleClass", "secondary-outline text-primary max-h-3rem", 3, "ngModelChange", "options", "ngModel"], [3, "value"], ["pTemplate", "default"], [3, "model", "popup"], ["styleClass", "w-10", 3, "visibleChange", "header", "modal", "maximizable", "visible"], [3, "node", "isOpen"], [1, "-mt-6", "mb-6"], ["icon", "pi pi-ellipsis-h", "size", "small", "text", "", 1, "absolute", "top-0", "right-0", "-mt-1", "-mr-1", 3, "click"], [1, "h-full", 3, "dragstart", "dragover", "dragleave", "drop"], [1, "pb-2"], ["target", "_blank", 3, "href", "innerHTML"], ["tooltipPosition", "top", "tooltipStyleClass", "z-200", 1, "pi", "pi-eye-slash", "text-sm", "text-color-secondary", "opacity-70", "absolute", "bottom-0", "right-0", "mb-1", "mr-2", 3, "pTooltip"], ["icon", "pi pi-plus-circle", "rounded", "", "size", "small", "text", "", 1, "absolute", "left-50", "-translate-x-50", "bottom-0", "-mb-1", 3, "loading"], ["tooltipPosition", "top", "tooltipStyleClass", "z-200", 1, "pi", "pi-times", "text-red-500", 3, "pTooltip"], ["icon", "pi pi-plus-circle", "rounded", "", "size", "small", "text", "", 1, "absolute", "left-50", "-translate-x-50", "bottom-0", "-mb-1", 3, "click", "loading"], [3, "close", "node", "isOpen"]], template: function IaDiagramComponent_Template(rf, ctx) {
-    if (rf & 1) {
-      const _r1 = \u0275\u0275getCurrentView();
-      \u0275\u0275elementStart(0, "div", 1)(1, "div", 2)(2, "h1", 3);
-      \u0275\u0275text(3);
-      \u0275\u0275pipe(4, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(5, "p-button", 4);
-      \u0275\u0275pipe(6, "translate");
-      \u0275\u0275listener("onClick", function IaDiagramComponent_Template_p_button_onClick_5_listener() {
-        \u0275\u0275restoreView(_r1);
-        return \u0275\u0275resetView(ctx.iaDiagram.closeDiagram());
-      });
-      \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(7, "div", 5)(8, "div", 6)(9, "div", 7)(10, "label", 8);
-      \u0275\u0275text(11);
-      \u0275\u0275pipe(12, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(13, "p-selectButton", 9);
-      \u0275\u0275twoWayListener("ngModelChange", function IaDiagramComponent_Template_p_selectButton_ngModelChange_13_listener($event) {
-        \u0275\u0275restoreView(_r1);
-        \u0275\u0275twoWayBindingSet(ctx.selectedView, $event) || (ctx.selectedView = $event);
-        return \u0275\u0275resetView($event);
-      });
-      \u0275\u0275listener("onChange", function IaDiagramComponent_Template_p_selectButton_onChange_13_listener() {
-        \u0275\u0275restoreView(_r1);
-        return \u0275\u0275resetView(ctx.changeView());
-      });
-      \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(14, "div", 7)(15, "label", 8);
-      \u0275\u0275text(16);
-      \u0275\u0275pipe(17, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(18, "p-selectButton", 10);
-      \u0275\u0275twoWayListener("ngModelChange", function IaDiagramComponent_Template_p_selectButton_ngModelChange_18_listener($event) {
-        \u0275\u0275restoreView(_r1);
-        \u0275\u0275twoWayBindingSet(ctx.selectedLanguage, $event) || (ctx.selectedLanguage = $event);
-        return \u0275\u0275resetView($event);
-      });
-      \u0275\u0275elementEnd()()();
-      \u0275\u0275elementStart(19, "p-organization-chart", 11);
-      \u0275\u0275template(20, IaDiagramComponent_ng_template_20_Template, 7, 7, "ng-template", 12);
-      \u0275\u0275elementEnd()()();
-      \u0275\u0275element(21, "p-menu", 13, 0);
-      \u0275\u0275elementStart(23, "p-dialog", 14);
-      \u0275\u0275twoWayListener("visibleChange", function IaDiagramComponent_Template_p_dialog_visibleChange_23_listener($event) {
-        \u0275\u0275restoreView(_r1);
-        \u0275\u0275twoWayBindingSet(ctx.editNode, $event) || (ctx.editNode = $event);
-        return \u0275\u0275resetView($event);
-      });
-      \u0275\u0275template(24, IaDiagramComponent_Conditional_24_Template, 1, 2, "aida-edit-node", 15);
-      \u0275\u0275elementEnd();
-    }
-    if (rf & 2) {
-      \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 18, "iaDiagram._title"));
-      \u0275\u0275advance(2);
-      \u0275\u0275attribute("aria-label", \u0275\u0275pipeBind1(6, 20, "common.close"));
-      \u0275\u0275advance(6);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(12, 22, "common.view"));
-      \u0275\u0275advance(2);
-      \u0275\u0275property("options", ctx.viewOptions);
-      \u0275\u0275twoWayProperty("ngModel", ctx.selectedView);
-      \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(17, 24, "common.language"));
-      \u0275\u0275advance(2);
-      \u0275\u0275property("options", ctx.languageOptions);
-      \u0275\u0275twoWayProperty("ngModel", ctx.selectedLanguage);
-      \u0275\u0275advance();
-      \u0275\u0275property("value", ctx.projectTree());
-      \u0275\u0275advance(2);
-      \u0275\u0275property("model", ctx.items)("popup", true);
-      \u0275\u0275advance(2);
-      \u0275\u0275styleMap(\u0275\u0275pureFunction0(26, _c136));
-      \u0275\u0275property("header", ctx.selectedNode == null ? null : ctx.selectedNode.data == null ? null : ctx.selectedNode.data.prototype == null ? null : ctx.selectedNode.data.prototype[ctx.selectedLanguage()].h1)("modal", true)("maximizable", true);
-      \u0275\u0275twoWayProperty("visible", ctx.editNode);
-      \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.selectedNode ? 24 : -1);
-    }
-  }, dependencies: [TranslateModule, TranslatePipe, FormsModule, NgControlStatus, NgModel, OrganizationChartModule, OrganizationChart, PrimeTemplate, ButtonModule, Button, TooltipModule, Tooltip, SelectButtonModule, SelectButton, MenuModule, Menu, DialogModule, Dialog, EditNodeComponent], styles: ["\n\n.fullscreen-overlay[_ngcontent-%COMP%] {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 200;\n  display: flex;\n  flex-direction: column;\n}\n.z-200[_ngcontent-%COMP%] {\n  z-index: 200 !important;\n}\n/*# sourceMappingURL=ia-diagram.component.css.map */"] });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(IaDiagramComponent, [{
-    type: Component,
-    args: [{ selector: "aida-ia-diagram", imports: [
-      TranslateModule,
-      FormsModule,
-      OrganizationChartModule,
-      ButtonModule,
-      TooltipModule,
-      SelectButtonModule,
-      MenuModule,
-      DialogModule,
-      EditNodeComponent
-    ], template: `<div class="fullscreen-overlay surface-card">\r
-    <div class="flex flex-row justify-content-between align-items-center pl-2 mx-3 border-bottom-1 border-200">\r
-        <h1 class="mb-2">{{'iaDiagram._title' | translate}}</h1>\r
-        <p-button icon="pi pi-times" text rounded (onClick)="iaDiagram.closeDiagram()" [attr.aria-label]="'common.close' | translate" />\r
-    </div>\r
-\r
-    <div class="overflow-auto">\r
-        <!--Toggle View-->\r
-        <div class="flex flex-row absolute">\r
-            <div class="flex flex-column hover:text-primary z-1 ml-4">\r
-                <label for="view" class="text-xs font-semibold xl:my-1">{{ 'common.view' | translate }}</label>\r
-                <p-selectButton id="view" allowEmpty="false" optionLabel="label" optionValue="value" size="small" styleClass="secondary-outline text-primary max-h-3rem"\r
-                                [options]="viewOptions" [(ngModel)]="selectedView" (onChange)="changeView()" />\r
-            </div>\r
-            <div class="flex flex-column hover:text-primary z-1 ml-4">\r
-                <label for="view" class="text-xs font-semibold xl:my-1">{{ 'common.language' | translate }}</label>\r
-                <p-selectButton id="view" allowEmpty="false" optionLabel="label" optionValue="value" size="small" styleClass="secondary-outline text-primary max-h-3rem"\r
-                                [options]="languageOptions" [(ngModel)]="selectedLanguage" />\r
-            </div>\r
-        </div>\r
-        <!--IA Diagram-->\r
-        <p-organization-chart [value]="projectTree()">\r
-            <ng-template let-node pTemplate="default">\r
-                <!--ORPHAN STATUS-->\r
-                @if(selectedLanguage() === 'en' ? node.data.live.en.isOrphan : node.data.live.fr.isOrphan){\r
-                <div class="-mt-6 mb-6">\r
-                    <i class="pi pi-times text-red-500" [pTooltip]="'iaDiagram.tooltip.orphan' | translate" tooltipPosition="top" tooltipStyleClass="z-200"></i>\r
-                </div>\r
-                }\r
-                <!--PAGE-->\r
-                <p-button (click)="onMenuClick($event, node)" icon="pi pi-ellipsis-h" size="small" text class="absolute top-0 right-0 -mt-1 -mr-1" />\r
-                <div class="h-full" (dragstart)="onDragStart(node)" (dragover)="onDragOver($event, node)" (dragleave)="onDragLeave(node)" (drop)="onDrop(node)">\r
-                    <p class="pb-2"><a [class.cursor-move]="selectedView()==='changes'" [href]="selectedLanguage() === 'en' ? node.data.live.en.url : node.data.live.fr.url" target="_blank" [innerHTML]="getH1Display(node)"></a></p>\r
-                    @if(node.data.collapsedChildren?.length || node.data.hiddenChildrenUrls?.length){\r
-                    <i class="pi pi-eye-slash text-sm text-color-secondary opacity-70 absolute bottom-0 right-0 mb-1 mr-2"\r
-                       [pTooltip]="'iaDiagram.tooltip.hiddenPages' | translate: {number: node.data.collapsedChildren?.length + node.data.hiddenChildrenUrls?.length}" tooltipPosition="top" tooltipStyleClass="z-200"></i>\r
-                    }\r
-                    @if(!node.data.isCrawled && !node.data.status.isNew && selectedView() === 'changes'){\r
-                    <p-button icon="pi pi-plus-circle" rounded size="small" text class="absolute left-50 -translate-x-50 bottom-0 -mb-1"\r
-                              (click)="addUrlsService.addChildren(node,primaryLang)" [loading]="addUrlsService.urlState().isAdding" />\r
-                    }\r
-                </div>\r
-            </ng-template>\r
-        </p-organization-chart>\r
-    </div>\r
-</div>\r
-<!--Context Menu-->\r
-<p-menu #menu [model]="items" [popup]="true" />\r
-\r
-<p-dialog [header]="selectedNode?.data?.prototype?.[selectedLanguage()].h1" [modal]="true" [maximizable]="true" [(visible)]="editNode" styleClass="w-10" [style]="{ height: '90vh' }">\r
-    @if(selectedNode) {\r
-    <aida-edit-node [node]="selectedNode" [isOpen]="editNode" (close)="editNode = false" />\r
-    }\r
-</p-dialog>`, styles: ["/* src/app/components/ia-diagram/ia-diagram.component.css */\n.fullscreen-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 200;\n  display: flex;\n  flex-direction: column;\n}\n.z-200 {\n  z-index: 200 !important;\n}\n/*# sourceMappingURL=ia-diagram.component.css.map */\n"] }]
-  }], null, { menu: [{
-    type: ViewChild,
-    args: ["menu"]
-  }] });
-})();
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(IaDiagramComponent, { className: "IaDiagramComponent", filePath: "src/app/components/ia-diagram/ia-diagram.component.ts", lineNumber: 29 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(ImportPageComponent, { className: "ImportPageComponent", filePath: "src/app/views/project/import-page.component.ts", lineNumber: 18 });
 })();
 
 // node_modules/primeng/fesm2022/primeng-popover.mjs
-var _c026 = ["content"];
-var _c137 = ["*"];
-var _c221 = (a0, a1) => ({
+var _c023 = ["content"];
+var _c131 = ["*"];
+var _c219 = (a0, a1) => ({
   showTransitionParams: a0,
   hideTransitionParams: a1
 });
-var _c315 = (a0, a1) => ({
+var _c314 = (a0, a1) => ({
   value: a0,
   params: a1
 });
-var _c413 = (a0) => ({
+var _c412 = (a0) => ({
   closeCallback: a0
 });
 function Popover_div_0_3_ng_template_0_Template(rf, ctx) {
@@ -66514,13 +63111,13 @@ function Popover_div_0_Template(rf, ctx) {
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext();
     \u0275\u0275classMap(ctx_r1.styleClass);
-    \u0275\u0275property("ngClass", "p-popover p-component")("ngStyle", ctx_r1.style)("@animation", \u0275\u0275pureFunction2(13, _c315, ctx_r1.overlayVisible ? "open" : "close", \u0275\u0275pureFunction2(10, _c221, ctx_r1.showTransitionOptions, ctx_r1.hideTransitionOptions)));
+    \u0275\u0275property("ngClass", "p-popover p-component")("ngStyle", ctx_r1.style)("@animation", \u0275\u0275pureFunction2(13, _c314, ctx_r1.overlayVisible ? "open" : "close", \u0275\u0275pureFunction2(10, _c219, ctx_r1.showTransitionOptions, ctx_r1.hideTransitionOptions)));
     \u0275\u0275attribute("aria-modal", ctx_r1.overlayVisible)("aria-label", ctx_r1.ariaLabel)("aria-labelledBy", ctx_r1.ariaLabelledBy);
     \u0275\u0275advance(3);
-    \u0275\u0275property("ngTemplateOutlet", ctx_r1.contentTemplate || ctx_r1._contentTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(16, _c413, ctx_r1.onCloseClick.bind(ctx_r1)));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r1.contentTemplate || ctx_r1._contentTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(16, _c412, ctx_r1.onCloseClick.bind(ctx_r1)));
   }
 }
-var theme17 = ({
+var theme16 = ({
   dt
 }) => `
 .p-popover {
@@ -66603,14 +63200,14 @@ var theme17 = ({
 }
 
 `;
-var classes18 = {
+var classes17 = {
   root: "p-popover p-component",
   content: "p-popover-content"
 };
 var PopoverStyle = class _PopoverStyle extends BaseStyle {
   name = "popover";
-  theme = theme17;
-  classes = classes18;
+  theme = theme16;
+  classes = classes17;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275PopoverStyle_BaseFactory;
     return function PopoverStyle_Factory(__ngFactoryType__) {
@@ -66981,7 +63578,7 @@ var Popover = class _Popover extends BaseComponent {
     selectors: [["p-popover"]],
     contentQueries: function Popover_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c026, 4);
+        \u0275\u0275contentQuery(dirIndex, _c023, 4);
         \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
       }
       if (rf & 2) {
@@ -67016,7 +63613,7 @@ var Popover = class _Popover extends BaseComponent {
       onHide: "onHide"
     },
     features: [\u0275\u0275ProvidersFeature([PopoverStyle]), \u0275\u0275InheritDefinitionFeature],
-    ngContentSelectors: _c137,
+    ngContentSelectors: _c131,
     decls: 1,
     vars: 1,
     consts: [["role", "dialog", 3, "ngClass", "ngStyle", "class", "click", 4, "ngIf"], ["role", "dialog", 3, "click", "ngClass", "ngStyle"], [1, "p-popover-content", 3, "click", "mousedown"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"]],
@@ -67184,10 +63781,10 @@ var PopoverModule = class _PopoverModule {
 })();
 
 // node_modules/primeng/fesm2022/primeng-toolbar.mjs
-var _c027 = ["start"];
-var _c138 = ["end"];
-var _c225 = ["center"];
-var _c316 = ["*"];
+var _c024 = ["start"];
+var _c136 = ["end"];
+var _c220 = ["center"];
+var _c315 = ["*"];
 function Toolbar_div_2_ng_container_1_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementContainer(0);
@@ -67242,7 +63839,7 @@ function Toolbar_div_4_Template(rf, ctx) {
     \u0275\u0275property("ngTemplateOutlet", ctx_r0.endTemplate || ctx_r0._endTemplate);
   }
 }
-var theme18 = ({
+var theme17 = ({
   dt
 }) => `
 .p-toolbar {
@@ -67265,7 +63862,7 @@ var theme18 = ({
     align-items: center;
 }
 `;
-var classes19 = {
+var classes18 = {
   root: "p-toolbar p-component",
   start: "p-toolbar-start",
   center: "p-toolbar-center",
@@ -67273,8 +63870,8 @@ var classes19 = {
 };
 var ToolbarStyle = class _ToolbarStyle extends BaseStyle {
   name = "toolbar";
-  theme = theme18;
-  classes = classes19;
+  theme = theme17;
+  classes = classes18;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275ToolbarStyle_BaseFactory;
     return function ToolbarStyle_Factory(__ngFactoryType__) {
@@ -67365,9 +63962,9 @@ var Toolbar = class _Toolbar extends BaseComponent {
     selectors: [["p-toolbar"]],
     contentQueries: function Toolbar_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c027, 4);
-        \u0275\u0275contentQuery(dirIndex, _c138, 4);
-        \u0275\u0275contentQuery(dirIndex, _c225, 4);
+        \u0275\u0275contentQuery(dirIndex, _c024, 4);
+        \u0275\u0275contentQuery(dirIndex, _c136, 4);
+        \u0275\u0275contentQuery(dirIndex, _c220, 4);
         \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
       }
       if (rf & 2) {
@@ -67384,7 +63981,7 @@ var Toolbar = class _Toolbar extends BaseComponent {
       ariaLabelledBy: "ariaLabelledBy"
     },
     features: [\u0275\u0275ProvidersFeature([ToolbarStyle]), \u0275\u0275InheritDefinitionFeature],
-    ngContentSelectors: _c316,
+    ngContentSelectors: _c315,
     decls: 5,
     vars: 9,
     consts: [["role", "toolbar", 3, "ngClass", "ngStyle"], ["class", "p-toolbar-start", 4, "ngIf"], ["class", "p-toolbar-center", 4, "ngIf"], ["class", "p-toolbar-end", 4, "ngIf"], [1, "p-toolbar-start"], [4, "ngTemplateOutlet"], [1, "p-toolbar-center"], [1, "p-toolbar-end"]],
@@ -67496,21 +64093,21 @@ var ToolbarModule = class _ToolbarModule {
 })();
 
 // node_modules/primeng/fesm2022/primeng-contextmenu.mjs
-var _c028 = ["sublist"];
-var _c139 = (a0, a1) => ({
+var _c025 = ["sublist"];
+var _c137 = (a0, a1) => ({
   "p-contextmenu-submenu": a0,
   "p-contextmenu-root-list": a1
 });
-var _c226 = () => ({
+var _c221 = () => ({
   "p-contextmenu-item-link": true
 });
-var _c317 = () => ({
+var _c316 = () => ({
   class: "p-contextmenu-submenu-icon"
 });
-var _c414 = () => ({
+var _c413 = () => ({
   exact: false
 });
-var _c512 = (a0) => ({
+var _c511 = (a0) => ({
   "p-contextmenu-item-link": true,
   "p-disabled": a0
 });
@@ -67605,7 +64202,7 @@ function ContextMenuSub_ul_0_ng_template_2_li_1_ng_container_3_a_1_ng_container_
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", !ctx_r2.contextMenu.submenuIconTemplate && !ctx_r2.contextMenu._submenuIconTemplate);
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r2.contextMenu.submenuIconTemplate || ctx_r2.contextMenu._submenuIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction0(3, _c317));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r2.contextMenu.submenuIconTemplate || ctx_r2.contextMenu._submenuIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction0(3, _c316));
   }
 }
 function ContextMenuSub_ul_0_ng_template_2_li_1_ng_container_3_a_1_Template(rf, ctx) {
@@ -67618,7 +64215,7 @@ function ContextMenuSub_ul_0_ng_template_2_li_1_ng_container_3_a_1_Template(rf, 
     const htmlLabel_r6 = \u0275\u0275reference(4);
     const processedItem_r4 = \u0275\u0275nextContext(3).$implicit;
     const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("target", ctx_r2.getItemProp(processedItem_r4, "target"))("ngClass", \u0275\u0275pureFunction0(12, _c226));
+    \u0275\u0275property("target", ctx_r2.getItemProp(processedItem_r4, "target"))("ngClass", \u0275\u0275pureFunction0(12, _c221));
     \u0275\u0275attribute("href", ctx_r2.getItemProp(processedItem_r4, "url"), \u0275\u0275sanitizeUrl)("aria-hidden", true)("data-automationid", ctx_r2.getItemProp(processedItem_r4, "automationId"))("data-pc-section", "action")("tabindex", -1);
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.getItemProp(processedItem_r4, "icon"));
@@ -67706,7 +64303,7 @@ function ContextMenuSub_ul_0_ng_template_2_li_1_ng_container_3_a_2_ng_container_
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", !ctx_r2.contextMenu.submenuIconTemplate && !ctx_r2.contextMenu._submenuIconTemplate);
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", !ctx_r2.contextMenu.submenuIconTemplate || !ctx_r2.contextMenu._submenuIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction0(3, _c317));
+    \u0275\u0275property("ngTemplateOutlet", !ctx_r2.contextMenu.submenuIconTemplate || !ctx_r2.contextMenu._submenuIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction0(3, _c316));
   }
 }
 function ContextMenuSub_ul_0_ng_template_2_li_1_ng_container_3_a_2_Template(rf, ctx) {
@@ -67719,7 +64316,7 @@ function ContextMenuSub_ul_0_ng_template_2_li_1_ng_container_3_a_2_Template(rf, 
     const htmlLabel_r7 = \u0275\u0275reference(4);
     const processedItem_r4 = \u0275\u0275nextContext(3).$implicit;
     const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("routerLink", ctx_r2.getItemProp(processedItem_r4, "routerLink"))("queryParams", ctx_r2.getItemProp(processedItem_r4, "queryParams"))("routerLinkActiveOptions", ctx_r2.getItemProp(processedItem_r4, "routerLinkActiveOptions") || \u0275\u0275pureFunction0(20, _c414))("target", ctx_r2.getItemProp(processedItem_r4, "target"))("ngClass", \u0275\u0275pureFunction1(21, _c512, ctx_r2.getItemProp(processedItem_r4, "disabled")))("fragment", ctx_r2.getItemProp(processedItem_r4, "fragment"))("queryParamsHandling", ctx_r2.getItemProp(processedItem_r4, "queryParamsHandling"))("preserveFragment", ctx_r2.getItemProp(processedItem_r4, "preserveFragment"))("skipLocationChange", ctx_r2.getItemProp(processedItem_r4, "skipLocationChange"))("replaceUrl", ctx_r2.getItemProp(processedItem_r4, "replaceUrl"))("state", ctx_r2.getItemProp(processedItem_r4, "state"));
+    \u0275\u0275property("routerLink", ctx_r2.getItemProp(processedItem_r4, "routerLink"))("queryParams", ctx_r2.getItemProp(processedItem_r4, "queryParams"))("routerLinkActiveOptions", ctx_r2.getItemProp(processedItem_r4, "routerLinkActiveOptions") || \u0275\u0275pureFunction0(20, _c413))("target", ctx_r2.getItemProp(processedItem_r4, "target"))("ngClass", \u0275\u0275pureFunction1(21, _c511, ctx_r2.getItemProp(processedItem_r4, "disabled")))("fragment", ctx_r2.getItemProp(processedItem_r4, "fragment"))("queryParamsHandling", ctx_r2.getItemProp(processedItem_r4, "queryParamsHandling"))("preserveFragment", ctx_r2.getItemProp(processedItem_r4, "preserveFragment"))("skipLocationChange", ctx_r2.getItemProp(processedItem_r4, "skipLocationChange"))("replaceUrl", ctx_r2.getItemProp(processedItem_r4, "replaceUrl"))("state", ctx_r2.getItemProp(processedItem_r4, "state"));
     \u0275\u0275attribute("data-automationid", ctx_r2.getItemProp(processedItem_r4, "automationId"))("tabindex", -1)("aria-hidden", true)("data-pc-section", "action");
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.getItemProp(processedItem_r4, "icon"));
@@ -67867,7 +64464,7 @@ function ContextMenuSub_ul_0_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r2 = \u0275\u0275nextContext();
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction2(10, _c139, !ctx_r2.root, ctx_r2.root))("@overlayAnimation", ctx_r2.visible)("tabindex", ctx_r2.tabindex);
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction2(10, _c137, !ctx_r2.root, ctx_r2.root))("@overlayAnimation", ctx_r2.visible)("tabindex", ctx_r2.tabindex);
     \u0275\u0275attribute("id", ctx_r2.menuId + "_list")("aria-label", ctx_r2.ariaLabel)("aria-labelledBy", ctx_r2.ariaLabelledBy)("aria-activedescendant", ctx_r2.focusedItemId)("aria-orientation", "vertical")("data-pc-section", "menu");
     \u0275\u0275advance(2);
     \u0275\u0275property("ngForOf", ctx_r2.items);
@@ -67930,7 +64527,7 @@ function ContextMenu_div_0_Template(rf, ctx) {
     \u0275\u0275property("root", true)("items", ctx_r1.processedItems)("itemTemplate", ctx_r1.itemTemplate || ctx_r1._itemTemplate)("menuId", ctx_r1.id)("tabindex", !ctx_r1.disabled ? ctx_r1.tabindex : -1)("ariaLabel", ctx_r1.ariaLabel)("ariaLabelledBy", ctx_r1.ariaLabelledBy)("baseZIndex", ctx_r1.baseZIndex)("autoZIndex", ctx_r1.autoZIndex)("visible", ctx_r1.submenuVisible())("focusedItemId", ctx_r1.focused ? ctx_r1.focusedItemId : void 0)("activeItemPath", ctx_r1.activeItemPath());
   }
 }
-var theme19 = ({
+var theme18 = ({
   dt
 }) => `
 .p-contextmenu {
@@ -68090,7 +64687,7 @@ var theme19 = ({
     margin-right: auto;
 }
 `;
-var classes20 = {
+var classes19 = {
   root: "p-contextmenu p-component",
   rootList: "p-contextmenu-root-list",
   item: ({
@@ -68111,8 +64708,8 @@ var classes20 = {
 };
 var ContextMenuStyle = class _ContextMenuStyle extends BaseStyle {
   name = "contextmenu";
-  theme = theme19;
-  classes = classes20;
+  theme = theme18;
+  classes = classes19;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275ContextMenuStyle_BaseFactory;
     return function ContextMenuStyle_Factory(__ngFactoryType__) {
@@ -68264,7 +64861,7 @@ var ContextMenuSub = class _ContextMenuSub extends BaseComponent {
     selectors: [["p-contextMenuSub"], ["p-contextmenu-sub"]],
     viewQuery: function ContextMenuSub_Query(rf, ctx) {
       if (rf & 1) {
-        \u0275\u0275viewQuery(_c028, 5);
+        \u0275\u0275viewQuery(_c025, 5);
       }
       if (rf & 2) {
         let _t;
@@ -69581,22 +66178,22 @@ var ContextMenuModule = class _ContextMenuModule {
 })();
 
 // node_modules/primeng/fesm2022/primeng-tree.mjs
-var _c029 = (a0) => ({
+var _c026 = (a0) => ({
   height: a0
 });
-var _c140 = (a0) => ({
+var _c138 = (a0) => ({
   "p-tree-node-droppoint-active": a0
 });
-var _c227 = (a0, a1) => ({
+var _c225 = (a0, a1) => ({
   $implicit: a0,
   loading: a1
 });
-var _c318 = (a0, a1) => ({
+var _c317 = (a0, a1) => ({
   $implicit: a0,
   partialSelected: a1,
   class: "p-tree-node-checkbox"
 });
-var _c415 = (a0) => ({
+var _c414 = (a0) => ({
   $implicit: a0
 });
 function UITreeNode_Conditional_0_li_0_Template(rf, ctx) {
@@ -69624,7 +66221,7 @@ function UITreeNode_Conditional_0_li_0_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(2, _c140, ctx_r2.draghoverPrev));
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(2, _c138, ctx_r2.draghoverPrev));
     \u0275\u0275attribute("aria-hidden", true);
   }
 }
@@ -69699,7 +66296,7 @@ function UITreeNode_Conditional_0_span_5_Template(rf, ctx) {
   if (rf & 2) {
     const ctx_r2 = \u0275\u0275nextContext(2);
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r2.tree.togglerIconTemplate || ctx_r2.tree._togglerIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c227, ctx_r2.node.expanded, ctx_r2.node.loading));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r2.tree.togglerIconTemplate || ctx_r2.tree._togglerIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c225, ctx_r2.node.expanded, ctx_r2.node.loading));
   }
 }
 function UITreeNode_Conditional_0_p_checkbox_6_ng_container_1_ng_template_1_0_ng_template_0_Template(rf, ctx) {
@@ -69715,7 +66312,7 @@ function UITreeNode_Conditional_0_p_checkbox_6_ng_container_1_ng_template_1_Temp
   }
   if (rf & 2) {
     const ctx_r2 = \u0275\u0275nextContext(4);
-    \u0275\u0275property("ngTemplateOutlet", ctx_r2.tree.checkboxIconTemplate || ctx_r2.tree._checkboxIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c318, ctx_r2.isSelected(), ctx_r2.node.partialSelected));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r2.tree.checkboxIconTemplate || ctx_r2.tree._checkboxIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c317, ctx_r2.isSelected(), ctx_r2.node.partialSelected));
   }
 }
 function UITreeNode_Conditional_0_p_checkbox_6_ng_container_1_Template(rf, ctx) {
@@ -69779,7 +66376,7 @@ function UITreeNode_Conditional_0_span_10_Template(rf, ctx) {
   if (rf & 2) {
     const ctx_r2 = \u0275\u0275nextContext(2);
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r2.tree.getTemplateForNode(ctx_r2.node))("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c415, ctx_r2.node));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r2.tree.getTemplateForNode(ctx_r2.node))("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c414, ctx_r2.node));
   }
 }
 function UITreeNode_Conditional_0_ul_11_p_treeNode_1_Template(rf, ctx) {
@@ -69833,7 +66430,7 @@ function UITreeNode_Conditional_0_li_12_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(2, _c140, ctx_r2.draghoverNext));
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(2, _c138, ctx_r2.draghoverNext));
     \u0275\u0275attribute("aria-hidden", true);
   }
 }
@@ -69911,7 +66508,7 @@ function UITreeNode_Conditional_0_Template(rf, ctx) {
     \u0275\u0275advance();
     \u0275\u0275styleMap(ctx_r2.node.style);
     \u0275\u0275classMap(ctx_r2.node.styleClass);
-    \u0275\u0275property("ngClass", ctx_r2.nodeClass)("ngStyle", \u0275\u0275pureFunction1(29, _c029, ctx_r2.itemSize + "px"));
+    \u0275\u0275property("ngClass", ctx_r2.nodeClass)("ngStyle", \u0275\u0275pureFunction1(29, _c026, ctx_r2.itemSize + "px"));
     \u0275\u0275attribute("aria-label", ctx_r2.node.label)("aria-checked", ctx_r2.checked)("aria-setsize", ctx_r2.node.children ? ctx_r2.node.children.length : 0)("aria-selected", ctx_r2.selected)("aria-expanded", ctx_r2.node.expanded)("aria-posinset", ctx_r2.index + 1)("aria-level", ctx_r2.level + 1)("tabindex", ctx_r2.index === 0 ? 0 : -1)("data-id", ctx_r2.node.key);
     \u0275\u0275advance();
     \u0275\u0275styleProp("padding-left", ctx_r2.level * ctx_r2.indentation + "rem");
@@ -69936,7 +66533,7 @@ function UITreeNode_Conditional_0_Template(rf, ctx) {
     \u0275\u0275property("ngIf", ctx_r2.tree.droppableNodes && ctx_r2.lastChild);
   }
 }
-var _c513 = ["filter"];
+var _c512 = ["filter"];
 var _c612 = ["node"];
 var _c711 = ["header"];
 var _c810 = ["footer"];
@@ -69944,7 +66541,7 @@ var _c910 = ["loader"];
 var _c1010 = ["empty"];
 var _c1113 = ["togglericon"];
 var _c1211 = ["checkboxicon"];
-var _c1310 = ["loadingicon"];
+var _c139 = ["loadingicon"];
 var _c146 = ["filtericon"];
 var _c155 = ["scroller"];
 var _c165 = ["wrapper"];
@@ -70031,7 +66628,7 @@ function Tree_Conditional_3_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r0.filterTemplate || ctx_r0._filterTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c415, ctx_r0.filterOptions));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r0.filterTemplate || ctx_r0._filterTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c414, ctx_r0.filterOptions));
   }
 }
 function Tree_Conditional_4_p_iconField_0_SearchIcon_4_Template(rf, ctx) {
@@ -70180,7 +66777,7 @@ function Tree_ng_container_5_p_scroller_1_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r0 = \u0275\u0275nextContext(2);
-    \u0275\u0275styleMap(\u0275\u0275pureFunction1(9, _c029, ctx_r0.scrollHeight !== "flex" ? ctx_r0.scrollHeight : void 0));
+    \u0275\u0275styleMap(\u0275\u0275pureFunction1(9, _c026, ctx_r0.scrollHeight !== "flex" ? ctx_r0.scrollHeight : void 0));
     \u0275\u0275property("items", ctx_r0.serializedValue)("tabindex", -1)("scrollHeight", ctx_r0.scrollHeight !== "flex" ? void 0 : "100%")("itemSize", ctx_r0.virtualScrollItemSize || ctx_r0._virtualNodeHeight)("lazy", ctx_r0.lazy)("options", ctx_r0.virtualScrollOptions);
     \u0275\u0275advance(4);
     \u0275\u0275property("ngIf", ctx_r0.loaderTemplate || ctx_r0._loaderTemplate);
@@ -70280,7 +66877,7 @@ function Tree_ng_container_7_Template(rf, ctx) {
     \u0275\u0275elementContainer(0);
   }
 }
-var theme20 = ({
+var theme19 = ({
   dt
 }) => `
 .p-tree {
@@ -70505,7 +67102,7 @@ var theme20 = ({
     height: 0;
 }
 `;
-var classes21 = {
+var classes20 = {
   root: ({
     instance
   }) => ({
@@ -70545,8 +67142,8 @@ var classes21 = {
 };
 var TreeStyle = class _TreeStyle extends BaseStyle {
   name = "tree";
-  theme = theme20;
-  classes = classes21;
+  theme = theme19;
+  classes = classes20;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275TreeStyle_BaseFactory;
     return function TreeStyle_Factory(__ngFactoryType__) {
@@ -72173,7 +68770,7 @@ var Tree = class _Tree extends BaseComponent {
     selectors: [["p-tree"]],
     contentQueries: function Tree_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c513, 4);
+        \u0275\u0275contentQuery(dirIndex, _c512, 4);
         \u0275\u0275contentQuery(dirIndex, _c612, 4);
         \u0275\u0275contentQuery(dirIndex, _c711, 4);
         \u0275\u0275contentQuery(dirIndex, _c810, 4);
@@ -72181,7 +68778,7 @@ var Tree = class _Tree extends BaseComponent {
         \u0275\u0275contentQuery(dirIndex, _c1010, 4);
         \u0275\u0275contentQuery(dirIndex, _c1113, 4);
         \u0275\u0275contentQuery(dirIndex, _c1211, 4);
-        \u0275\u0275contentQuery(dirIndex, _c1310, 4);
+        \u0275\u0275contentQuery(dirIndex, _c139, 4);
         \u0275\u0275contentQuery(dirIndex, _c146, 4);
         \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
       }
@@ -72202,7 +68799,7 @@ var Tree = class _Tree extends BaseComponent {
     },
     viewQuery: function Tree_Query(rf, ctx) {
       if (rf & 1) {
-        \u0275\u0275viewQuery(_c513, 5);
+        \u0275\u0275viewQuery(_c512, 5);
         \u0275\u0275viewQuery(_c155, 5);
         \u0275\u0275viewQuery(_c165, 5);
       }
@@ -72724,9 +69321,2058 @@ var TreeModule = class _TreeModule {
   }], null, null);
 })();
 
+// src/app/components/edit-node/edit-node.component.ts
+var _c027 = (a0) => ({ days: a0 });
+function EditNodeComponent_Conditional_23_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r1 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 3)(1, "label", 13);
+    \u0275\u0275text(2);
+    \u0275\u0275pipe(3, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(4, "div", 14)(5, "div", 15)(6, "p-checkbox", 16);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_23_Template_p_checkbox_ngModelChange_6_listener($event) {
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext();
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data.status.inScope, $event) || (ctx_r1.node().data.status.inScope = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_23_Template_p_checkbox_ngModelChange_6_listener() {
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.markChanges());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(7, "label", 17);
+    \u0275\u0275text(8);
+    \u0275\u0275pipe(9, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(10, "div", 15)(11, "p-checkbox", 18);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_23_Template_p_checkbox_ngModelChange_11_listener($event) {
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext();
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data.status.isNew, $event) || (ctx_r1.node().data.status.isNew = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_23_Template_p_checkbox_ngModelChange_11_listener() {
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.markChanges());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(12, "label", 19);
+    \u0275\u0275text(13);
+    \u0275\u0275pipe(14, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(15, "div", 15)(16, "p-checkbox", 20);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_23_Template_p_checkbox_ngModelChange_16_listener($event) {
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext();
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data.status.isROT, $event) || (ctx_r1.node().data.status.isROT = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_23_Template_p_checkbox_ngModelChange_16_listener() {
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.markChanges());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(17, "label", 21);
+    \u0275\u0275text(18);
+    \u0275\u0275pipe(19, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(20, "div", 15)(21, "p-checkbox", 22);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_23_Template_p_checkbox_ngModelChange_21_listener($event) {
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext();
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data.status.isMoved, $event) || (ctx_r1.node().data.status.isMoved = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_23_Template_p_checkbox_ngModelChange_21_listener() {
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.markChanges());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(22, "label", 23);
+    \u0275\u0275text(23);
+    \u0275\u0275pipe(24, "translate");
+    \u0275\u0275elementEnd()()()();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext();
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 13, "common.status"));
+    \u0275\u0275advance(4);
+    \u0275\u0275property("binary", true);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data.status.inScope);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(9, 15, "editNode.inScope"));
+    \u0275\u0275advance(3);
+    \u0275\u0275property("binary", true);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data.status.isNew);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(14, 17, "editNode.isNew"));
+    \u0275\u0275advance(3);
+    \u0275\u0275property("binary", true);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data.status.isROT);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(19, 19, "editNode.isROT"));
+    \u0275\u0275advance(3);
+    \u0275\u0275property("binary", true);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data.status.isMoved);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(24, 21, "editNode.isMoved"));
+  }
+}
+function EditNodeComponent_Conditional_24_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r3 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p-message", 12)(1, "span");
+    \u0275\u0275text(2);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(3, "p-button", 24);
+    \u0275\u0275pipe(4, "translate");
+    \u0275\u0275listener("onClick", function EditNodeComponent_Conditional_24_Template_p_button_onClick_3_listener() {
+      \u0275\u0275restoreView(_r3);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.enableEdits());
+    });
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    const config_r4 = ctx;
+    const ctx_r1 = \u0275\u0275nextContext();
+    \u0275\u0275property("severity", config_r4.severity)("icon", config_r4.icon);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(config_r4.text);
+    \u0275\u0275advance();
+    \u0275\u0275property("label", \u0275\u0275pipeBind1(4, 5, "editNode.enableEdits"))("disabled", ctx_r1.editsEnabled());
+  }
+}
+function EditNodeComponent_Conditional_25_Conditional_2_Conditional_11_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r7 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p-iftalabel")(1, "input", 71);
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Conditional_11_Template_input_ngModelChange_1_listener($event) {
+      \u0275\u0275restoreView(_r7);
+      const ctx_r1 = \u0275\u0275nextContext(3);
+      ctx_r1.pathEN.set($event);
+      return \u0275\u0275resetView(ctx_r1.updatePath("en"));
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(2, "label", 72);
+    \u0275\u0275text(3);
+    \u0275\u0275pipe(4, "translate");
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(3);
+    \u0275\u0275advance();
+    \u0275\u0275classProp("text-red-500", ctx_r1.pathEN().startsWith("new-page"));
+    \u0275\u0275property("ngModel", ctx_r1.pathEN())("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 5, "editNode.pageUrl"));
+  }
+}
+function EditNodeComponent_Conditional_25_Conditional_2_ng_template_29_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 73)(1, "span", 74);
+    \u0275\u0275text(2);
+    \u0275\u0275elementEnd();
+    \u0275\u0275text(3);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const page_r8 = ctx.$implicit;
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(page_r8.label);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", page_r8.path, " ");
+  }
+}
+function EditNodeComponent_Conditional_25_Conditional_2_Conditional_34_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "p-message", 44)(1, "span");
+    \u0275\u0275text(2);
+    \u0275\u0275pipe(3, "translate");
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 1, "editNode.moveError"));
+  }
+}
+function EditNodeComponent_Conditional_25_Conditional_2_Conditional_152_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275element(0, "p-tag", 70);
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(3);
+    \u0275\u0275property("severity", ctx_r1.node().data[ctx_r1.selectedVersion()].en.is404 === ctx_r1.node().data[ctx_r1.selectedVersion()].fr.is404 ? "primary" : "danger");
+  }
+}
+function EditNodeComponent_Conditional_25_Conditional_2_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r6 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p-fieldset", 27);
+    \u0275\u0275pipe(1, "translate");
+    \u0275\u0275elementStart(2, "div", 31)(3, "p-inputgroup")(4, "p-iftalabel")(5, "input", 32);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_ngModelChange_5_listener($event) {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data.path.en, $event) || (ctx_r1.node().data.path.en = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_ngModelChange_5_listener() {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.markChanges());
+    })("blur", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_blur_5_listener() {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.updateSegment("en"));
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(6, "label", 33);
+    \u0275\u0275text(7);
+    \u0275\u0275pipe(8, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(9, "p-inputgroup-addon", 34)(10, "p-button", 35);
+    \u0275\u0275listener("onClick", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_button_onClick_10_listener() {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.enableUrlEdits());
+    });
+    \u0275\u0275elementEnd()()();
+    \u0275\u0275template(11, EditNodeComponent_Conditional_25_Conditional_2_Conditional_11_Template, 5, 7, "p-iftalabel");
+    \u0275\u0275elementStart(12, "p-iftalabel")(13, "input", 36);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_ngModelChange_13_listener($event) {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.doubleH1, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.doubleH1 = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_ngModelChange_13_listener() {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.markChanges());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(14, "label", 37);
+    \u0275\u0275text(15);
+    \u0275\u0275pipe(16, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(17, "p-iftalabel")(18, "input", 38);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_ngModelChange_18_listener($event) {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.h1, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.h1 = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_ngModelChange_18_listener() {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.markChanges());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(19, "label", 39);
+    \u0275\u0275text(20);
+    \u0275\u0275pipe(21, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(22, "p-iftalabel")(23, "p-select", 40);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_select_ngModelChange_23_listener($event) {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.template, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.template = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_select_ngModelChange_23_listener() {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      ctx_r1.markChanges();
+      return \u0275\u0275resetView(ctx_r1.syncData(ctx_r1.node(), "template", "ENtoFR"));
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(24, "label", 41);
+    \u0275\u0275text(25);
+    \u0275\u0275pipe(26, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(27, "p-iftalabel")(28, "p-select", 42);
+    \u0275\u0275listener("onChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_select_onChange_28_listener($event) {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.moveNode(ctx_r1.node(), $event.value, "en"));
+    });
+    \u0275\u0275template(29, EditNodeComponent_Conditional_25_Conditional_2_ng_template_29_Template, 4, 2, "ng-template", null, 0, \u0275\u0275templateRefExtractor);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(31, "label", 43);
+    \u0275\u0275text(32);
+    \u0275\u0275pipe(33, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275template(34, EditNodeComponent_Conditional_25_Conditional_2_Conditional_34_Template, 4, 3, "p-message", 44);
+    \u0275\u0275elementStart(35, "h3", 45);
+    \u0275\u0275text(36);
+    \u0275\u0275pipe(37, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(38, "p-iftalabel")(39, "input", 46);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_ngModelChange_39_listener($event) {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.title, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.title = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_ngModelChange_39_listener() {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.markChanges());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(40, "label", 47);
+    \u0275\u0275text(41);
+    \u0275\u0275pipe(42, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(43, "p-iftalabel")(44, "textarea", 48);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_textarea_ngModelChange_44_listener($event) {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.description, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.description = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_textarea_ngModelChange_44_listener() {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.markChanges());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(45, "label", 49);
+    \u0275\u0275text(46);
+    \u0275\u0275pipe(47, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(48, "p-iftalabel")(49, "textarea", 50);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_textarea_ngModelChange_49_listener($event) {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.keywords, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.keywords = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_textarea_ngModelChange_49_listener() {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.markChanges());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(50, "label", 51);
+    \u0275\u0275text(51);
+    \u0275\u0275pipe(52, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(53, "h3", 45);
+    \u0275\u0275text(54);
+    \u0275\u0275pipe(55, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(56, "p-iftalabel")(57, "input", 52);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_ngModelChange_57_listener($event) {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.owner, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.owner = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_ngModelChange_57_listener() {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      ctx_r1.markChanges();
+      return \u0275\u0275resetView(ctx_r1.syncData(ctx_r1.node(), "owner", "ENtoFR"));
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(58, "label", 53);
+    \u0275\u0275text(59);
+    \u0275\u0275pipe(60, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(61, "p-iftalabel")(62, "input", 54);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_ngModelChange_62_listener($event) {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.email, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.email = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_input_ngModelChange_62_listener() {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      ctx_r1.markChanges();
+      return \u0275\u0275resetView(ctx_r1.syncData(ctx_r1.node(), "email", "ENtoFR"));
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(63, "label", 55);
+    \u0275\u0275text(64);
+    \u0275\u0275pipe(65, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(66, "h3", 45);
+    \u0275\u0275text(67);
+    \u0275\u0275pipe(68, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(69, "div", 56)(70, "div", 57)(71, "p-checkbox", 58);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_checkbox_ngModelChange_71_listener($event) {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.isArchived, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.isArchived = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_checkbox_ngModelChange_71_listener() {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      ctx_r1.markChanges();
+      return \u0275\u0275resetView(ctx_r1.syncData(ctx_r1.node(), "isArchived", "ENtoFR"));
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(72, "label", 59);
+    \u0275\u0275text(73);
+    \u0275\u0275pipe(74, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(75, "div", 57)(76, "p-checkbox", 60);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_checkbox_ngModelChange_76_listener($event) {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.noindex, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.noindex = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_checkbox_ngModelChange_76_listener() {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      ctx_r1.markChanges();
+      return \u0275\u0275resetView(ctx_r1.syncData(ctx_r1.node(), "noindex", "ENtoFR"));
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(77, "label", 61);
+    \u0275\u0275text(78);
+    \u0275\u0275pipe(79, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(80, "div", 57)(81, "p-checkbox", 62);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_checkbox_ngModelChange_81_listener($event) {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.isOrphan, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.isOrphan = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_checkbox_ngModelChange_81_listener() {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.markChanges());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(82, "label", 63);
+    \u0275\u0275text(83);
+    \u0275\u0275pipe(84, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(85, "div", 57)(86, "p-checkbox", 64);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_checkbox_ngModelChange_86_listener($event) {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.linksToPortal, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.linksToPortal = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_checkbox_ngModelChange_86_listener() {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.markChanges());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(87, "label", 65);
+    \u0275\u0275text(88);
+    \u0275\u0275pipe(89, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(90, "div", 57)(91, "p-checkbox", 66);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_checkbox_ngModelChange_91_listener($event) {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].en.hasChatbot, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].en.hasChatbot = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_2_Template_p_checkbox_ngModelChange_91_listener() {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.markChanges());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(92, "label", 67);
+    \u0275\u0275text(93);
+    \u0275\u0275pipe(94, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(95, "div", 68)(96, "span", 69);
+    \u0275\u0275text(97);
+    \u0275\u0275pipe(98, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(99, "span");
+    \u0275\u0275pipe(100, "date");
+    \u0275\u0275pipe(101, "date");
+    \u0275\u0275text(102);
+    \u0275\u0275pipe(103, "date");
+    \u0275\u0275pipe(104, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(105, "div", 68)(106, "span", 69);
+    \u0275\u0275text(107);
+    \u0275\u0275pipe(108, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275text(109);
+    \u0275\u0275pipe(110, "number");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(111, "div", 68)(112, "span", 69);
+    \u0275\u0275text(113);
+    \u0275\u0275pipe(114, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(115, "span");
+    \u0275\u0275text(116);
+    \u0275\u0275pipe(117, "number");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(118, "div", 68)(119, "span", 69);
+    \u0275\u0275text(120);
+    \u0275\u0275pipe(121, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(122, "span");
+    \u0275\u0275text(123);
+    \u0275\u0275pipe(124, "number");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(125, "div", 68)(126, "span", 69);
+    \u0275\u0275text(127);
+    \u0275\u0275pipe(128, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(129, "span");
+    \u0275\u0275text(130);
+    \u0275\u0275pipe(131, "number");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(132, "div", 68)(133, "span", 69);
+    \u0275\u0275text(134);
+    \u0275\u0275pipe(135, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275text(136);
+    \u0275\u0275pipe(137, "number");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(138, "div", 68)(139, "span", 69);
+    \u0275\u0275text(140);
+    \u0275\u0275pipe(141, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(142, "span");
+    \u0275\u0275text(143);
+    \u0275\u0275pipe(144, "number");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(145, "div", 68)(146, "span", 69);
+    \u0275\u0275text(147);
+    \u0275\u0275pipe(148, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(149, "span");
+    \u0275\u0275text(150);
+    \u0275\u0275pipe(151, "number");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275template(152, EditNodeComponent_Conditional_25_Conditional_2_Conditional_152_Template, 1, 1, "p-tag", 70);
+    \u0275\u0275elementEnd()()();
+  }
+  if (rf & 2) {
+    let tmp_75_0;
+    let tmp_77_0;
+    let tmp_80_0;
+    let tmp_83_0;
+    let tmp_85_0;
+    let tmp_86_0;
+    let tmp_88_0;
+    let tmp_92_0;
+    let tmp_96_0;
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    \u0275\u0275property("legend", \u0275\u0275pipeBind1(1, 112, "common.language.english"));
+    \u0275\u0275advance(5);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data.path.en);
+    \u0275\u0275property("disabled", !ctx_r1.urlEditsEnabled() || !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(8, 114, "editNode.path"));
+    \u0275\u0275advance(3);
+    \u0275\u0275property("disabled", ctx_r1.urlEditsEnabled());
+    \u0275\u0275advance();
+    \u0275\u0275conditional(ctx_r1.node().data.status.isNew && ctx_r1.selectedVersion() === "prototype" ? 11 : -1);
+    \u0275\u0275advance(2);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.doubleH1);
+    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(16, 116, "editNode.doubleh1"));
+    \u0275\u0275advance(3);
+    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.h1 === "New page");
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.h1);
+    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(21, 118, "editNode.h1"));
+    \u0275\u0275advance(3);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.template);
+    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled())("options", ctx_r1.projectState.templateOptions())("filter", true);
+    \u0275\u0275advance();
+    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.template !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.template);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(26, 120, "editNode.template"), " ");
+    \u0275\u0275advance(3);
+    \u0275\u0275property("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.parentPath)("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled())("options", ctx_r1.enPages())("filter", true);
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(33, 122, "editNode.parent"));
+    \u0275\u0275advance(2);
+    \u0275\u0275conditional(ctx_r1.moveError() ? 34 : -1);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(37, 124, "editNode.metadata"));
+    \u0275\u0275advance(3);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.title);
+    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(42, 126, "editNode.title"));
+    \u0275\u0275advance(3);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.description);
+    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(47, 128, "editNode.description"));
+    \u0275\u0275advance(3);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.keywords);
+    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(52, 130, "editNode.keywords"));
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(55, 132, "editNode.pageOwner"));
+    \u0275\u0275advance(3);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.owner);
+    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
+    \u0275\u0275advance();
+    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.owner !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.owner);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(60, 134, "editNode.owner"), " ");
+    \u0275\u0275advance(3);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.email);
+    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
+    \u0275\u0275advance();
+    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.email !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.email);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(65, 136, "editNode.email"), " ");
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(68, 138, "editNode.info"));
+    \u0275\u0275advance(4);
+    \u0275\u0275property("binary", true)("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.isArchived);
+    \u0275\u0275advance();
+    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.isArchived !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.isArchived);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(74, 140, "editNode.isArchived"), " ");
+    \u0275\u0275advance(3);
+    \u0275\u0275property("binary", true)("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.noindex);
+    \u0275\u0275advance();
+    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.noindex !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.noindex);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(79, 142, "editNode.noindex"), " ");
+    \u0275\u0275advance(3);
+    \u0275\u0275property("binary", true)("disabled", ctx_r1.selectedVersion() === "prototype" ? !ctx_r1.urlEditsEnabled() : !ctx_r1.editsEnabled());
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.isOrphan);
+    \u0275\u0275advance();
+    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.isOrphan !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.isOrphan);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(84, 144, "editNode.isOrphan"), " ");
+    \u0275\u0275advance(3);
+    \u0275\u0275property("binary", true)("disabled", ctx_r1.selectedVersion() === "prototype" ? !ctx_r1.urlEditsEnabled() : !ctx_r1.editsEnabled());
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.linksToPortal);
+    \u0275\u0275advance();
+    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.linksToPortal !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.linksToPortal);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(89, 146, "editNode.linksToPortal"), " ");
+    \u0275\u0275advance(3);
+    \u0275\u0275property("binary", true)("disabled", ctx_r1.selectedVersion() === "prototype" ? !ctx_r1.urlEditsEnabled() : !ctx_r1.editsEnabled());
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].en.hasChatbot);
+    \u0275\u0275advance();
+    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.hasChatbot !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.hasChatbot);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(94, 148, "editNode.hasChatbot"), " ");
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(98, 150, "editNode.lastPublished"), " ");
+    \u0275\u0275advance(2);
+    \u0275\u0275classProp("text-red-500", \u0275\u0275pipeBind1(100, 152, ctx_r1.node().data[ctx_r1.selectedVersion()].en.lastPublished) !== \u0275\u0275pipeBind1(101, 154, ctx_r1.node().data[ctx_r1.selectedVersion()].fr.lastPublished));
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate1(" ", (tmp_75_0 = \u0275\u0275pipeBind1(103, 156, ctx_r1.node().data[ctx_r1.selectedVersion()].en.lastPublished)) !== null && tmp_75_0 !== void 0 ? tmp_75_0 : \u0275\u0275pipeBind1(104, 158, "common.never"), " ");
+    \u0275\u0275advance(5);
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(108, 160, "editNode.wordCount"), " ");
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate1(" ", (tmp_77_0 = \u0275\u0275pipeBind1(110, 162, ctx_r1.node().data[ctx_r1.selectedVersion()].en.wordCount)) !== null && tmp_77_0 !== void 0 ? tmp_77_0 : "\u2014", " ");
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(114, 164, "editNode.linkCount"), " ");
+    \u0275\u0275advance(2);
+    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.linkCount !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.linkCount);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", (tmp_80_0 = \u0275\u0275pipeBind1(117, 166, ctx_r1.node().data[ctx_r1.selectedVersion()].en.linkCount)) !== null && tmp_80_0 !== void 0 ? tmp_80_0 : "\u2014", " ");
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(121, 168, "editNode.vanityCount"), " ");
+    \u0275\u0275advance(2);
+    \u0275\u0275classProp("text-red-500", ctx_r1.node().data.vanity.en.length !== ctx_r1.node().data.vanity.fr.length);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", (tmp_83_0 = \u0275\u0275pipeBind1(124, 170, ctx_r1.node().data.vanity.en.length)) !== null && tmp_83_0 !== void 0 ? tmp_83_0 : "\u2014", " ");
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(128, 172, "editNode.phoneCount"), " ");
+    \u0275\u0275advance(2);
+    \u0275\u0275classProp("text-red-500", ((tmp_85_0 = ctx_r1.node().data[ctx_r1.selectedVersion()].en.phoneNumbers) == null ? null : tmp_85_0.length) !== ((tmp_85_0 = ctx_r1.node().data[ctx_r1.selectedVersion()].fr.phoneNumbers) == null ? null : tmp_85_0.length));
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", (tmp_86_0 = \u0275\u0275pipeBind1(131, 174, (tmp_86_0 = ctx_r1.node().data[ctx_r1.selectedVersion()].en.phoneNumbers) == null ? null : tmp_86_0.length)) !== null && tmp_86_0 !== void 0 ? tmp_86_0 : "\u2014", " ");
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(135, 176, "editNode.visits"), " ");
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate1(" ", (tmp_88_0 = \u0275\u0275pipeBind1(137, 178, ctx_r1.node().data[ctx_r1.selectedVersion()].en.visits)) !== null && tmp_88_0 !== void 0 ? tmp_88_0 : "\u2014", " ");
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(141, 180, "common.readability.fleschKincaid"), " ");
+    \u0275\u0275advance(2);
+    \u0275\u0275classProp("text-orange-400", ctx_r1.node().data[ctx_r1.selectedVersion()].en.fleschKincaid < 12 && ctx_r1.node().data[ctx_r1.selectedVersion()].en.fleschKincaid > 8)("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.fleschKincaid >= 12);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", (tmp_92_0 = \u0275\u0275pipeBind1(144, 182, ctx_r1.node().data[ctx_r1.selectedVersion()].en.fleschKincaid)) !== null && tmp_92_0 !== void 0 ? tmp_92_0 : "\u2014", " ");
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(148, 184, "common.readability.gunningFog"), " ");
+    \u0275\u0275advance(2);
+    \u0275\u0275classProp("text-orange-400", ctx_r1.node().data[ctx_r1.selectedVersion()].en.gunningFog < 12 && ctx_r1.node().data[ctx_r1.selectedVersion()].en.gunningFog > 8)("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.gunningFog >= 12);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", (tmp_96_0 = \u0275\u0275pipeBind1(151, 186, ctx_r1.node().data[ctx_r1.selectedVersion()].en.gunningFog)) !== null && tmp_96_0 !== void 0 ? tmp_96_0 : "\u2014", " ");
+    \u0275\u0275advance(2);
+    \u0275\u0275conditional(ctx_r1.node().data[ctx_r1.selectedVersion()].en.is404 ? 152 : -1);
+  }
+}
+function EditNodeComponent_Conditional_25_Conditional_3_Conditional_11_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r10 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p-iftalabel")(1, "input", 105);
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Conditional_11_Template_input_ngModelChange_1_listener($event) {
+      \u0275\u0275restoreView(_r10);
+      const ctx_r1 = \u0275\u0275nextContext(3);
+      ctx_r1.pathFR.set($event);
+      return \u0275\u0275resetView(ctx_r1.updatePath("fr"));
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(2, "label", 106);
+    \u0275\u0275text(3);
+    \u0275\u0275pipe(4, "translate");
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(3);
+    \u0275\u0275advance();
+    \u0275\u0275classProp("text-red-500", ctx_r1.pathFR().startsWith("nouvelle-page"));
+    \u0275\u0275property("ngModel", ctx_r1.pathFR())("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 5, "editNode.pageUrl"));
+  }
+}
+function EditNodeComponent_Conditional_25_Conditional_3_ng_template_29_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 73)(1, "span", 74);
+    \u0275\u0275text(2);
+    \u0275\u0275elementEnd();
+    \u0275\u0275text(3);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const page_r11 = ctx.$implicit;
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(page_r11.label);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", page_r11.path, " ");
+  }
+}
+function EditNodeComponent_Conditional_25_Conditional_3_Conditional_34_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "p-message", 44)(1, "span");
+    \u0275\u0275text(2);
+    \u0275\u0275pipe(3, "translate");
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 1, "editNode.moveError"));
+  }
+}
+function EditNodeComponent_Conditional_25_Conditional_3_Conditional_152_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275element(0, "p-tag", 70);
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(3);
+    \u0275\u0275property("severity", ctx_r1.node().data[ctx_r1.selectedVersion()].en.is404 === ctx_r1.node().data[ctx_r1.selectedVersion()].fr.is404 ? "primary" : "danger");
+  }
+}
+function EditNodeComponent_Conditional_25_Conditional_3_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r9 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p-fieldset", 27);
+    \u0275\u0275pipe(1, "translate");
+    \u0275\u0275elementStart(2, "div", 31)(3, "p-inputgroup")(4, "p-iftalabel")(5, "input", 75);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_ngModelChange_5_listener($event) {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data.path.fr, $event) || (ctx_r1.node().data.path.fr = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_ngModelChange_5_listener() {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.markChanges());
+    })("blur", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_blur_5_listener() {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.updateSegment("fr"));
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(6, "label", 76);
+    \u0275\u0275text(7);
+    \u0275\u0275pipe(8, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(9, "p-inputgroup-addon", 34)(10, "p-button", 35);
+    \u0275\u0275listener("onClick", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_button_onClick_10_listener() {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.enableUrlEdits());
+    });
+    \u0275\u0275elementEnd()()();
+    \u0275\u0275template(11, EditNodeComponent_Conditional_25_Conditional_3_Conditional_11_Template, 5, 7, "p-iftalabel");
+    \u0275\u0275elementStart(12, "p-iftalabel")(13, "input", 77);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_ngModelChange_13_listener($event) {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.doubleH1, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.doubleH1 = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_ngModelChange_13_listener() {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.markChanges());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(14, "label", 78);
+    \u0275\u0275text(15);
+    \u0275\u0275pipe(16, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(17, "p-iftalabel")(18, "input", 79);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_ngModelChange_18_listener($event) {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.h1, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.h1 = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_ngModelChange_18_listener() {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.markChanges());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(19, "label", 80);
+    \u0275\u0275text(20);
+    \u0275\u0275pipe(21, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(22, "p-iftalabel")(23, "p-select", 81);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_select_ngModelChange_23_listener($event) {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.template, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.template = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_select_ngModelChange_23_listener() {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      ctx_r1.markChanges();
+      return \u0275\u0275resetView(ctx_r1.syncData(ctx_r1.node(), "template", "FRtoEN"));
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(24, "label", 82);
+    \u0275\u0275text(25);
+    \u0275\u0275pipe(26, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(27, "p-iftalabel")(28, "p-select", 83);
+    \u0275\u0275listener("onChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_select_onChange_28_listener($event) {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.moveNode(ctx_r1.node(), $event.value, "fr"));
+    });
+    \u0275\u0275template(29, EditNodeComponent_Conditional_25_Conditional_3_ng_template_29_Template, 4, 2, "ng-template", null, 0, \u0275\u0275templateRefExtractor);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(31, "label", 84);
+    \u0275\u0275text(32);
+    \u0275\u0275pipe(33, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275template(34, EditNodeComponent_Conditional_25_Conditional_3_Conditional_34_Template, 4, 3, "p-message", 44);
+    \u0275\u0275elementStart(35, "h3", 45);
+    \u0275\u0275text(36);
+    \u0275\u0275pipe(37, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(38, "p-iftalabel")(39, "input", 85);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_ngModelChange_39_listener($event) {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.title, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.title = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_ngModelChange_39_listener() {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.markChanges());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(40, "label", 86);
+    \u0275\u0275text(41);
+    \u0275\u0275pipe(42, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(43, "p-iftalabel")(44, "textarea", 87);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_textarea_ngModelChange_44_listener($event) {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.description, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.description = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_textarea_ngModelChange_44_listener() {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.markChanges());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(45, "label", 88);
+    \u0275\u0275text(46);
+    \u0275\u0275pipe(47, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(48, "p-iftalabel")(49, "textarea", 89);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_textarea_ngModelChange_49_listener($event) {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.keywords, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.keywords = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_textarea_ngModelChange_49_listener() {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.markChanges());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(50, "label", 90);
+    \u0275\u0275text(51);
+    \u0275\u0275pipe(52, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(53, "h3", 45);
+    \u0275\u0275text(54);
+    \u0275\u0275pipe(55, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(56, "p-iftalabel")(57, "input", 91);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_ngModelChange_57_listener($event) {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.owner, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.owner = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_ngModelChange_57_listener() {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      ctx_r1.markChanges();
+      return \u0275\u0275resetView(ctx_r1.syncData(ctx_r1.node(), "owner", "FRtoEN"));
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(58, "label", 92);
+    \u0275\u0275text(59);
+    \u0275\u0275pipe(60, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(61, "p-iftalabel")(62, "input", 93);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_ngModelChange_62_listener($event) {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.email, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.email = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_input_ngModelChange_62_listener() {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      ctx_r1.markChanges();
+      return \u0275\u0275resetView(ctx_r1.syncData(ctx_r1.node(), "email", "FRtoEN"));
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(63, "label", 94);
+    \u0275\u0275text(64);
+    \u0275\u0275pipe(65, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(66, "h3", 45);
+    \u0275\u0275text(67);
+    \u0275\u0275pipe(68, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(69, "div", 56)(70, "div", 57)(71, "p-checkbox", 95);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_checkbox_ngModelChange_71_listener($event) {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.isArchived, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.isArchived = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_checkbox_ngModelChange_71_listener() {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      ctx_r1.markChanges();
+      return \u0275\u0275resetView(ctx_r1.syncData(ctx_r1.node(), "isArchived", "FRtoEN"));
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(72, "label", 96);
+    \u0275\u0275text(73);
+    \u0275\u0275pipe(74, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(75, "div", 57)(76, "p-checkbox", 97);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_checkbox_ngModelChange_76_listener($event) {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.noindex, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.noindex = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_checkbox_ngModelChange_76_listener() {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      ctx_r1.markChanges();
+      return \u0275\u0275resetView(ctx_r1.syncData(ctx_r1.node(), "noindex", "FRtoEN"));
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(77, "label", 98);
+    \u0275\u0275text(78);
+    \u0275\u0275pipe(79, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(80, "div", 57)(81, "p-checkbox", 99);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_checkbox_ngModelChange_81_listener($event) {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.isOrphan, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.isOrphan = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_checkbox_ngModelChange_81_listener() {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.markChanges());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(82, "label", 100);
+    \u0275\u0275text(83);
+    \u0275\u0275pipe(84, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(85, "div", 57)(86, "p-checkbox", 101);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_checkbox_ngModelChange_86_listener($event) {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.linksToPortal, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.linksToPortal = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_checkbox_ngModelChange_86_listener() {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.markChanges());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(87, "label", 102);
+    \u0275\u0275text(88);
+    \u0275\u0275pipe(89, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(90, "div", 57)(91, "p-checkbox", 103);
+    \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_checkbox_ngModelChange_91_listener($event) {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.hasChatbot, $event) || (ctx_r1.node().data[ctx_r1.selectedVersion()].fr.hasChatbot = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("ngModelChange", function EditNodeComponent_Conditional_25_Conditional_3_Template_p_checkbox_ngModelChange_91_listener() {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.markChanges());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(92, "label", 104);
+    \u0275\u0275text(93);
+    \u0275\u0275pipe(94, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(95, "div", 68)(96, "span", 69);
+    \u0275\u0275text(97);
+    \u0275\u0275pipe(98, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(99, "span");
+    \u0275\u0275pipe(100, "date");
+    \u0275\u0275pipe(101, "date");
+    \u0275\u0275text(102);
+    \u0275\u0275pipe(103, "date");
+    \u0275\u0275pipe(104, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(105, "div", 68)(106, "span", 69);
+    \u0275\u0275text(107);
+    \u0275\u0275pipe(108, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275text(109);
+    \u0275\u0275pipe(110, "number");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(111, "div", 68)(112, "span", 69);
+    \u0275\u0275text(113);
+    \u0275\u0275pipe(114, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(115, "span");
+    \u0275\u0275text(116);
+    \u0275\u0275pipe(117, "number");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(118, "div", 68)(119, "span", 69);
+    \u0275\u0275text(120);
+    \u0275\u0275pipe(121, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(122, "span");
+    \u0275\u0275text(123);
+    \u0275\u0275pipe(124, "number");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(125, "div", 68)(126, "span", 69);
+    \u0275\u0275text(127);
+    \u0275\u0275pipe(128, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(129, "span");
+    \u0275\u0275text(130);
+    \u0275\u0275pipe(131, "number");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(132, "div", 68)(133, "span", 69);
+    \u0275\u0275text(134);
+    \u0275\u0275pipe(135, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275text(136);
+    \u0275\u0275pipe(137, "number");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(138, "div", 68)(139, "span", 69);
+    \u0275\u0275text(140);
+    \u0275\u0275pipe(141, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(142, "span");
+    \u0275\u0275text(143);
+    \u0275\u0275pipe(144, "number");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(145, "div", 68)(146, "span", 69);
+    \u0275\u0275text(147);
+    \u0275\u0275pipe(148, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(149, "span");
+    \u0275\u0275text(150);
+    \u0275\u0275pipe(151, "number");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275template(152, EditNodeComponent_Conditional_25_Conditional_3_Conditional_152_Template, 1, 1, "p-tag", 70);
+    \u0275\u0275elementEnd()()();
+  }
+  if (rf & 2) {
+    let tmp_75_0;
+    let tmp_77_0;
+    let tmp_80_0;
+    let tmp_83_0;
+    let tmp_85_0;
+    let tmp_86_0;
+    let tmp_88_0;
+    let tmp_92_0;
+    let tmp_96_0;
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    \u0275\u0275property("legend", \u0275\u0275pipeBind1(1, 112, "common.language.french"));
+    \u0275\u0275advance(5);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data.path.fr);
+    \u0275\u0275property("disabled", !ctx_r1.urlEditsEnabled() || !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(8, 114, "editNode.path"));
+    \u0275\u0275advance(3);
+    \u0275\u0275property("disabled", ctx_r1.urlEditsEnabled());
+    \u0275\u0275advance();
+    \u0275\u0275conditional(ctx_r1.node().data.status.isNew && ctx_r1.selectedVersion() === "prototype" ? 11 : -1);
+    \u0275\u0275advance(2);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.doubleH1);
+    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(16, 116, "editNode.doubleh1"));
+    \u0275\u0275advance(3);
+    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.h1 === "Nouvelle page");
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.h1);
+    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(21, 118, "editNode.h1"));
+    \u0275\u0275advance(3);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.template);
+    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled())("options", ctx_r1.projectState.templateOptions())("filter", true);
+    \u0275\u0275advance();
+    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.template !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.template);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(26, 120, "editNode.template"), " ");
+    \u0275\u0275advance(3);
+    \u0275\u0275property("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.parentPath)("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled())("options", ctx_r1.frPages())("filter", true);
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(33, 122, "editNode.parent"));
+    \u0275\u0275advance(2);
+    \u0275\u0275conditional(ctx_r1.moveError() ? 34 : -1);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(37, 124, "editNode.metadata"));
+    \u0275\u0275advance(3);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.title);
+    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(42, 126, "editNode.title"));
+    \u0275\u0275advance(3);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.description);
+    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(47, 128, "editNode.description"));
+    \u0275\u0275advance(3);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.keywords);
+    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(52, 130, "editNode.keywords"));
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(55, 132, "editNode.pageOwner"));
+    \u0275\u0275advance(3);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.owner);
+    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
+    \u0275\u0275advance();
+    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.owner !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.owner);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(60, 134, "editNode.owner"), " ");
+    \u0275\u0275advance(3);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.email);
+    \u0275\u0275property("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
+    \u0275\u0275advance();
+    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.email !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.email);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(65, 136, "editNode.email"), " ");
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(68, 138, "editNode.info"));
+    \u0275\u0275advance(4);
+    \u0275\u0275property("binary", true)("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.isArchived);
+    \u0275\u0275advance();
+    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.isArchived !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.isArchived);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(74, 140, "editNode.isArchived"), " ");
+    \u0275\u0275advance(3);
+    \u0275\u0275property("binary", true)("disabled", !!ctx_r1.versionConfig() && !ctx_r1.editsEnabled());
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.noindex);
+    \u0275\u0275advance();
+    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.noindex !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.noindex);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(79, 142, "editNode.noindex"), " ");
+    \u0275\u0275advance(3);
+    \u0275\u0275property("binary", true)("disabled", ctx_r1.selectedVersion() === "prototype" ? !ctx_r1.urlEditsEnabled() : !ctx_r1.editsEnabled());
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.isOrphan);
+    \u0275\u0275advance();
+    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.isOrphan !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.isOrphan);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(84, 144, "editNode.isOrphan"), " ");
+    \u0275\u0275advance(3);
+    \u0275\u0275property("binary", true)("disabled", ctx_r1.selectedVersion() === "prototype" ? !ctx_r1.urlEditsEnabled() : !ctx_r1.editsEnabled());
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.linksToPortal);
+    \u0275\u0275advance();
+    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.linksToPortal !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.linksToPortal);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(89, 146, "editNode.linksToPortal"), " ");
+    \u0275\u0275advance(3);
+    \u0275\u0275property("binary", true)("disabled", ctx_r1.selectedVersion() === "prototype" ? !ctx_r1.urlEditsEnabled() : !ctx_r1.editsEnabled());
+    \u0275\u0275twoWayProperty("ngModel", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.hasChatbot);
+    \u0275\u0275advance();
+    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.hasChatbot !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.hasChatbot);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(94, 148, "editNode.hasChatbot"), " ");
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(98, 150, "editNode.lastPublished"), " ");
+    \u0275\u0275advance(2);
+    \u0275\u0275classProp("text-red-500", \u0275\u0275pipeBind1(100, 152, ctx_r1.node().data[ctx_r1.selectedVersion()].en.lastPublished) !== \u0275\u0275pipeBind1(101, 154, ctx_r1.node().data[ctx_r1.selectedVersion()].fr.lastPublished));
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate1(" ", (tmp_75_0 = \u0275\u0275pipeBind1(103, 156, ctx_r1.node().data[ctx_r1.selectedVersion()].fr.lastPublished)) !== null && tmp_75_0 !== void 0 ? tmp_75_0 : \u0275\u0275pipeBind1(104, 158, "common.never"), " ");
+    \u0275\u0275advance(5);
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(108, 160, "editNode.wordCount"), " ");
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate1(" ", (tmp_77_0 = \u0275\u0275pipeBind1(110, 162, ctx_r1.node().data[ctx_r1.selectedVersion()].fr.wordCount)) !== null && tmp_77_0 !== void 0 ? tmp_77_0 : "\u2014", " ");
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(114, 164, "editNode.linkCount"), " ");
+    \u0275\u0275advance(2);
+    \u0275\u0275classProp("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].en.linkCount !== ctx_r1.node().data[ctx_r1.selectedVersion()].fr.linkCount);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", (tmp_80_0 = \u0275\u0275pipeBind1(117, 166, ctx_r1.node().data[ctx_r1.selectedVersion()].fr.linkCount)) !== null && tmp_80_0 !== void 0 ? tmp_80_0 : "\u2014", " ");
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(121, 168, "editNode.vanityCount"), " ");
+    \u0275\u0275advance(2);
+    \u0275\u0275classProp("text-red-500", ctx_r1.node().data.vanity.en.length !== ctx_r1.node().data.vanity.fr.length);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", (tmp_83_0 = \u0275\u0275pipeBind1(124, 170, ctx_r1.node().data.vanity.fr.length)) !== null && tmp_83_0 !== void 0 ? tmp_83_0 : "\u2014", " ");
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(128, 172, "editNode.phoneCount"), " ");
+    \u0275\u0275advance(2);
+    \u0275\u0275classProp("text-red-500", ((tmp_85_0 = ctx_r1.node().data[ctx_r1.selectedVersion()].en.phoneNumbers) == null ? null : tmp_85_0.length) !== ((tmp_85_0 = ctx_r1.node().data[ctx_r1.selectedVersion()].fr.phoneNumbers) == null ? null : tmp_85_0.length));
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", (tmp_86_0 = \u0275\u0275pipeBind1(131, 174, (tmp_86_0 = ctx_r1.node().data[ctx_r1.selectedVersion()].fr.phoneNumbers) == null ? null : tmp_86_0.length)) !== null && tmp_86_0 !== void 0 ? tmp_86_0 : "\u2014", " ");
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(135, 176, "editNode.visits"), " ");
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate1(" ", (tmp_88_0 = \u0275\u0275pipeBind1(137, 178, ctx_r1.node().data[ctx_r1.selectedVersion()].fr.visits)) !== null && tmp_88_0 !== void 0 ? tmp_88_0 : "\u2014", " ");
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(141, 180, "common.readability.fleschKincaid"), " ");
+    \u0275\u0275advance(2);
+    \u0275\u0275classProp("text-orange-400", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.fleschKincaid < 12 && ctx_r1.node().data[ctx_r1.selectedVersion()].fr.fleschKincaid > 8)("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.fleschKincaid >= 12);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", (tmp_92_0 = \u0275\u0275pipeBind1(144, 182, ctx_r1.node().data[ctx_r1.selectedVersion()].fr.fleschKincaid)) !== null && tmp_92_0 !== void 0 ? tmp_92_0 : "\u2014", " ");
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(148, 184, "common.readability.gunningFog"), " ");
+    \u0275\u0275advance(2);
+    \u0275\u0275classProp("text-orange-400", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.gunningFog < 12 && ctx_r1.node().data[ctx_r1.selectedVersion()].fr.gunningFog > 8)("text-red-500", ctx_r1.node().data[ctx_r1.selectedVersion()].fr.gunningFog >= 12);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", (tmp_96_0 = \u0275\u0275pipeBind1(151, 186, ctx_r1.node().data[ctx_r1.selectedVersion()].fr.gunningFog)) !== null && tmp_96_0 !== void 0 ? tmp_96_0 : "\u2014", " ");
+    \u0275\u0275advance(2);
+    \u0275\u0275conditional(ctx_r1.node().data[ctx_r1.selectedVersion()].fr.is404 ? 152 : -1);
+  }
+}
+function EditNodeComponent_Conditional_25_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r5 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 25)(1, "div", 26);
+    \u0275\u0275template(2, EditNodeComponent_Conditional_25_Conditional_2_Template, 153, 188, "p-fieldset", 27)(3, EditNodeComponent_Conditional_25_Conditional_3_Template, 153, 188, "p-fieldset", 27);
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(4, "div", 28)(5, "p-button", 29);
+    \u0275\u0275pipe(6, "translate");
+    \u0275\u0275listener("onClick", function EditNodeComponent_Conditional_25_Template_p_button_onClick_5_listener() {
+      \u0275\u0275restoreView(_r5);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.cancel());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(7, "p-button", 30);
+    \u0275\u0275pipe(8, "translate");
+    \u0275\u0275listener("onClick", function EditNodeComponent_Conditional_25_Template_p_button_onClick_7_listener() {
+      \u0275\u0275restoreView(_r5);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.save());
+    });
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext();
+    \u0275\u0275advance(2);
+    \u0275\u0275conditional(ctx_r1.selectedLanguage() !== "fr" ? 2 : -1);
+    \u0275\u0275advance();
+    \u0275\u0275conditional(ctx_r1.selectedLanguage() !== "en" ? 3 : -1);
+    \u0275\u0275advance(2);
+    \u0275\u0275property("label", \u0275\u0275pipeBind1(6, 5, "common.cancel"));
+    \u0275\u0275advance(2);
+    \u0275\u0275property("label", \u0275\u0275pipeBind1(8, 7, "common.save"))("disabled", !ctx_r1.hasChanges());
+  }
+}
+var EditNodeComponent = class _EditNodeComponent {
+  projectState = inject(ProjectStateService);
+  translate = inject(TranslateService);
+  fetchService = inject(FetchService);
+  node = input.required();
+  isOpen = input(false);
+  close = output();
+  originalData = signal(null);
+  hasChanges = signal(false);
+  refreshing = signal(false);
+  moveError = signal(false);
+  pathEN = signal("");
+  pathFR = signal("");
+  markChanges() {
+    this.hasChanges.set(true);
+  }
+  constructor() {
+    effect(() => {
+      const node = this.node();
+      const open = this.isOpen();
+      if (open && node?.data) {
+        this.selectedVersion.set("prototype");
+        this.originalData.set(structuredClone(node.data));
+        this.editsEnabled.set(false);
+        this.urlEditsEnabled.set(false);
+        this.moveError.set(false);
+        this.pathEN.set(node.data.path.en.split("/").pop());
+        this.pathFR.set(node.data.path.fr.split("/").pop());
+      }
+    });
+  }
+  save() {
+    this.projectState.setModifiedDate();
+    this.hasChanges.set(false);
+    this.originalData.set(structuredClone(this.node().data));
+    this.close.emit();
+  }
+  cancel() {
+    Object.assign(this.node().data, structuredClone(this.originalData()));
+    this.hasChanges.set(false);
+    this.close.emit();
+  }
+  enableEdits() {
+    this.editsEnabled.set(true);
+  }
+  enableUrlEdits() {
+    this.urlEditsEnabled.set(true);
+  }
+  refresh() {
+    return __async(this, null, function* () {
+      this.refreshing.set(true);
+      const version2 = this.selectedVersion();
+      yield this.projectState.refreshNode(this.node(), version2);
+      this.refreshing.set(false);
+      this.hasChanges.set(true);
+    });
+  }
+  syncData(node, field, direction) {
+    if (direction === "ENtoFR") {
+      node.data[this.selectedVersion()].fr[field] = node.data[this.selectedVersion()].en[field];
+    }
+    if (direction === "FRtoEN") {
+      node.data[this.selectedVersion()].en[field] = node.data[this.selectedVersion()].fr[field];
+    }
+  }
+  updatePath(lang) {
+    const path = lang === "fr" ? this.pathFR() : this.pathEN();
+    const suffix = path.replace(".html", "");
+    const prefix = this.node().data.path[lang].split("/").slice(0, -1).join("/");
+    const newPath = `${prefix}/${suffix}.html`;
+    this.node().data.path[lang] = newPath;
+    this.markChanges();
+  }
+  updateSegment(lang) {
+    if (!this.node().data.status.isNew) {
+      return;
+    }
+    this.pathEN.set(this.node().data.path.en.split("/").pop());
+    this.pathFR.set(this.node().data.path.fr.split("/").pop());
+    this.updatePath(lang);
+  }
+  moveNode(node, newParentUrl, lang) {
+    this.moveError.set(false);
+    const tree = this.projectState.getProjectTree();
+    const newParent = this.projectState.findNodeByPath(tree, newParentUrl, lang);
+    if (!newParent)
+      return;
+    const result = this.projectState.moveNode(node, newParent);
+    if (result === "circular") {
+      this.moveError.set(true);
+      return;
+    }
+    this.markChanges();
+  }
+  //Language options
+  selectedLanguage = signal(this.projectState.detectPrimaryLanguage());
+  get languageOptions() {
+    return [
+      { label: this.translate.instant("common.language.english"), value: "en" },
+      { label: this.translate.instant("common.language.french"), value: "fr" },
+      { label: this.translate.instant("common.both"), value: "both" }
+    ];
+  }
+  //Version options
+  selectedVersion = signal("prototype");
+  get versionOptions() {
+    return [
+      { label: this.translate.instant("common.version.prototype"), value: "prototype" },
+      { label: this.translate.instant("common.version.live"), value: "live" },
+      { label: this.translate.instant("common.version.baseline"), value: "baseline" }
+    ];
+  }
+  //Version-specific warning messages
+  versionConfig = computed(() => {
+    switch (this.selectedVersion()) {
+      case "baseline":
+        return { severity: "error", icon: "pi pi-times-circle font-bold", text: this.translate.instant("editNode.baselineWarning") };
+      case "live":
+        return { severity: "warn", icon: "pi pi-exclamation-triangle font-bold", text: this.translate.instant("editNode.liveWarning") };
+      default:
+        return null;
+    }
+  });
+  //Reset editsEnabled whenever selectedVersion changes
+  editsEnabled = signal(false);
+  urlEditsEnabled = signal(false);
+  versionWatcher = effect(() => {
+    this.selectedVersion();
+    this.editsEnabled.set(false);
+    this.urlEditsEnabled.set(false);
+  });
+  //Days since refresh
+  daysSinceRefresh = computed(() => {
+    const data = this.node().data?.[this.selectedVersion()];
+    if (!data)
+      return null;
+    const getDays = (lastChecked) => {
+      if (!lastChecked)
+        return null;
+      const diff = Date.now() - new Date(lastChecked).getTime();
+      return Math.floor(diff / (1e3 * 60 * 60 * 24));
+    };
+    const lang = this.selectedLanguage();
+    if (lang === "en")
+      return getDays(data.en.lastChecked);
+    if (lang === "fr")
+      return getDays(data.fr.lastChecked);
+    const enDays = getDays(data.en.lastChecked);
+    const frDays = getDays(data.fr.lastChecked);
+    if (enDays === null && frDays === null)
+      return null;
+    return Math.max(enDays ?? 0, frDays ?? 0);
+  });
+  //Parent page dropdown
+  enPages = computed(() => this.projectState.getAllPages("en", "live", "all"));
+  frPages = computed(() => this.projectState.getAllPages("fr", "live", "all"));
+  static \u0275fac = function EditNodeComponent_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _EditNodeComponent)();
+  };
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _EditNodeComponent, selectors: [["aida-edit-node"]], inputs: { node: [1, "node"], isOpen: [1, "isOpen"] }, outputs: { close: "close" }, decls: 26, vars: 29, consts: [["item", ""], [1, "flex", "flex-column", "h-full"], [1, "flex", "flex-row", "flex-wrap", "gap-3"], [1, "flex", "flex-column", "hover:text-primary"], ["for", "lang", 1, "text-xs", "font-semibold"], ["id", "lang", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "size", "small", "styleClass", "secondary-outline text-primary max-h-3rem", 3, "ngModelChange", "options", "ngModel"], ["for", "version", 1, "text-xs", "font-semibold"], ["id", "version", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "size", "small", "styleClass", "secondary-outline text-primary max-h-3rem", 3, "ngModelChange", "options", "ngModel"], ["for", "refresh", 1, "text-xs", "font-semibold"], ["id", "refresh", 1, "flex", "gap-2", "align-items-center"], ["icon", "pi pi-refresh", "severity", "primary", "outlined", "", "size", "small", "styleClass", "secondary-outline", 3, "onClick", "label", "disabled", "loading"], [1, "text-sm", "text-color-secondary", "white-space-nowrap"], ["styleClass", "mt-2", 3, "severity", "icon"], ["for", "status", 1, "text-xs", "font-semibold"], ["id", "status", 1, "flex", "flex-row", "gap-2", "align-items-center", "h-full"], [1, "flex", "gap-1", "align-items-center"], ["inputId", "inScope", "size", "large", 3, "ngModelChange", "binary", "ngModel"], ["for", "inScope"], ["inputId", "isNew", "size", "large", 3, "ngModelChange", "binary", "ngModel"], ["for", "isNew"], ["inputId", "isROT", "size", "large", 3, "ngModelChange", "binary", "ngModel"], ["for", "isROT"], ["inputId", "isMoved", "size", "large", 3, "ngModelChange", "binary", "ngModel"], ["for", "isMoved"], ["icon", "pi pi-file-edit", "severity", "danger", "outlined", "", "size", "small", "styleClass", "secondary-outline white-space-nowrap", 3, "onClick", "label", "disabled"], [1, "flex-1", "overflow-y-auto"], [1, "flex", "flex-row", "gap-2", "min-w-min"], [1, "flex-1", 3, "legend"], [1, "flex", "flex-row", "justify-content-end", "gap-2", "mt-2"], ["icon", "pi pi-times", "severity", "secondary", 3, "onClick", "label"], ["icon", "pi pi-save", "severity", "success", 3, "onClick", "label", "disabled"], [1, "flex", "flex-column", "gap-1"], ["type", "text", "id", "path", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "blur", "ngModel", "disabled"], ["for", "path"], [1, "secondary-outline"], ["icon", "pi pi-pen-to-square", "text", "", 1, "w-full", "h-full", 3, "onClick", "disabled"], ["type", "text", "id", "doubleh1", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "doubleh1"], ["type", "text", "id", "h1", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "h1"], ["id", "template", "styleClass", "secondary-outline", "fluid", "", "appendTo", "body", "optionLabel", "label", "optionValue", "value", "filterBy", "label", 3, "ngModelChange", "ngModel", "disabled", "options", "filter"], ["for", "template"], ["id", "parentPath", "styleClass", "secondary-outline", "fluid", "", "appendTo", "body", "optionLabel", "label", "optionValue", "path", "filterBy", "label", 3, "onChange", "ngModel", "disabled", "options", "filter"], ["for", "parentPath"], ["severity", "error", "icon", "pi pi-times-circle font-bold", "styleClass", "mb-2"], [1, "my-0"], ["type", "text", "id", "title", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "title"], ["id", "description", "pTextarea", "", "variant", "outlined", "pSize", "small", "fluid", "", "autoResize", "true", "rows", "1", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "description"], ["id", "keywords", "pTextarea", "", "variant", "outlined", "pSize", "small", "fluid", "", "autoResize", "true", "rows", "1", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "keywords"], ["type", "text", "id", "owner", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "owner"], ["type", "text", "id", "email", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "email"], [1, "flex", "flex-row", "gap-3", "flex-wrap"], [1, "flex", "align-items-center"], ["inputId", "isArchived", 3, "ngModelChange", "binary", "disabled", "ngModel"], ["for", "isArchived", 1, "ml-2"], ["inputId", "noindex", 3, "ngModelChange", "binary", "disabled", "ngModel"], ["for", "noindex", 1, "ml-2"], ["inputId", "isOrphan", 3, "ngModelChange", "binary", "disabled", "ngModel"], ["for", "isOrphan", 1, "ml-2"], ["inputId", "linksToPortal", 3, "ngModelChange", "binary", "disabled", "ngModel"], ["for", "linksToPortal", 1, "ml-2"], ["inputId", "hasChatbot", 3, "ngModelChange", "binary", "disabled", "ngModel"], ["for", "hasChatbot", 1, "ml-2"], [1, "flex", "flex-column", "text-sm", "text-color-secondary"], [1, "font-bold"], ["value", "404", 3, "severity"], ["type", "text", "id", "pathSegment", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "pathSegment"], [1, "flex", "flex-column"], [1, "font-bold", "-mb-1"], ["type", "text", "id", "path-fr", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "blur", "ngModel", "disabled"], ["for", "path-fr"], ["type", "text", "id", "doubleh1-fr", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "doubleh1-fr"], ["type", "text", "id", "h1-fr", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "h1-fr"], ["id", "template-fr", "styleClass", "secondary-outline", "fluid", "", "appendTo", "body", "optionLabel", "label", "optionValue", "value", "filterBy", "label", 3, "ngModelChange", "ngModel", "disabled", "options", "filter"], ["for", "template-fr"], ["id", "parentPath-fr", "styleClass", "secondary-outline", "fluid", "", "appendTo", "body", "optionLabel", "label", "optionValue", "path", "filterBy", "label", 3, "onChange", "ngModel", "disabled", "options", "filter"], ["for", "parentPath-fr"], ["type", "text", "id", "title-fr", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "title-fr"], ["id", "description-fr", "pTextarea", "", "variant", "outlined", "pSize", "small", "fluid", "", "autoResize", "true", "rows", "1", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "description-fr"], ["id", "keywords-fr", "pTextarea", "", "variant", "outlined", "pSize", "small", "fluid", "", "autoResize", "true", "rows", "1", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "keywords-fr"], ["type", "text", "id", "owner-fr", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "owner-fr"], ["type", "text", "id", "email-fr", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "email-fr"], ["inputId", "isArchived-fr", 3, "ngModelChange", "binary", "disabled", "ngModel"], ["for", "isArchived-fr", 1, "ml-2"], ["inputId", "noindex-fr", 3, "ngModelChange", "binary", "disabled", "ngModel"], ["for", "noindex-fr", 1, "ml-2"], ["inputId", "isOrphan-fr", 3, "ngModelChange", "binary", "disabled", "ngModel"], ["for", "isOrphan-fr", 1, "ml-2"], ["inputId", "linksToPortal-fr", 3, "ngModelChange", "binary", "disabled", "ngModel"], ["for", "linksToPortal-fr", 1, "ml-2"], ["inputId", "hasChatbot-fr", 3, "ngModelChange", "binary", "disabled", "ngModel"], ["for", "hasChatbot-fr", 1, "ml-2"], ["type", "text", "id", "pathSegment-fr", "pInputText", "", "variant", "outlined", "pSize", "small", "fluid", "", 1, "secondary-outline", 3, "ngModelChange", "ngModel", "disabled"], ["for", "pathSegment-fr"]], template: function EditNodeComponent_Template(rf, ctx) {
+    if (rf & 1) {
+      \u0275\u0275elementStart(0, "div", 1)(1, "div", 2)(2, "div", 3)(3, "label", 4);
+      \u0275\u0275text(4);
+      \u0275\u0275pipe(5, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(6, "p-selectButton", 5);
+      \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Template_p_selectButton_ngModelChange_6_listener($event) {
+        \u0275\u0275twoWayBindingSet(ctx.selectedLanguage, $event) || (ctx.selectedLanguage = $event);
+        return $event;
+      });
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(7, "div", 3)(8, "label", 6);
+      \u0275\u0275text(9);
+      \u0275\u0275pipe(10, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(11, "p-selectButton", 7);
+      \u0275\u0275twoWayListener("ngModelChange", function EditNodeComponent_Template_p_selectButton_ngModelChange_11_listener($event) {
+        \u0275\u0275twoWayBindingSet(ctx.selectedVersion, $event) || (ctx.selectedVersion = $event);
+        return $event;
+      });
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(12, "div", 3)(13, "label", 8);
+      \u0275\u0275text(14);
+      \u0275\u0275pipe(15, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(16, "div", 9)(17, "p-button", 10);
+      \u0275\u0275pipe(18, "translate");
+      \u0275\u0275listener("onClick", function EditNodeComponent_Template_p_button_onClick_17_listener() {
+        return ctx.refresh();
+      });
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(19, "span", 11);
+      \u0275\u0275text(20);
+      \u0275\u0275pipe(21, "translate");
+      \u0275\u0275pipe(22, "translate");
+      \u0275\u0275elementEnd()()();
+      \u0275\u0275template(23, EditNodeComponent_Conditional_23_Template, 25, 23, "div", 3);
+      \u0275\u0275elementEnd();
+      \u0275\u0275template(24, EditNodeComponent_Conditional_24_Template, 5, 7, "p-message", 12)(25, EditNodeComponent_Conditional_25_Template, 9, 9);
+      \u0275\u0275elementEnd();
+    }
+    if (rf & 2) {
+      let tmp_11_0;
+      let tmp_12_0;
+      \u0275\u0275advance(4);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(5, 14, "common.language"));
+      \u0275\u0275advance(2);
+      \u0275\u0275property("options", ctx.languageOptions);
+      \u0275\u0275twoWayProperty("ngModel", ctx.selectedLanguage);
+      \u0275\u0275advance(3);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(10, 16, "common.version"));
+      \u0275\u0275advance(2);
+      \u0275\u0275property("options", ctx.versionOptions);
+      \u0275\u0275twoWayProperty("ngModel", ctx.selectedVersion);
+      \u0275\u0275advance(3);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(15, 18, "common.data"));
+      \u0275\u0275advance(3);
+      \u0275\u0275property("label", \u0275\u0275pipeBind1(18, 20, "common.refresh"))("disabled", ctx.selectedVersion() === "baseline" && !ctx.editsEnabled())("loading", ctx.refreshing());
+      \u0275\u0275advance(3);
+      \u0275\u0275textInterpolate1(" ", ctx.daysSinceRefresh() !== null ? \u0275\u0275pipeBind2(21, 22, "editNode.lastRefreshed", \u0275\u0275pureFunction1(27, _c027, ctx.daysSinceRefresh())) : \u0275\u0275pipeBind1(22, 25, "editNode.neverRefreshed"), " ");
+      \u0275\u0275advance(3);
+      \u0275\u0275conditional(((tmp_11_0 = ctx.node().data) == null ? null : tmp_11_0.status) ? 23 : -1);
+      \u0275\u0275advance();
+      \u0275\u0275conditional((tmp_12_0 = ctx.versionConfig()) ? 24 : -1, tmp_12_0);
+      \u0275\u0275advance();
+      \u0275\u0275conditional(ctx.node().data ? 25 : -1);
+    }
+  }, dependencies: [CommonModule, DecimalPipe, DatePipe, FormsModule, DefaultValueAccessor, NgControlStatus, NgModel, TranslateModule, TranslatePipe, FieldsetModule, Fieldset, IftaLabelModule, IftaLabel, InputTextModule, InputText, TextareaModule, Textarea, CheckboxModule, Checkbox, SelectModule, Select, InputGroupModule, InputGroup, InputGroupAddonModule, InputGroupAddon, ButtonModule, Button, SelectButtonModule, SelectButton, MessageModule, Message, TagModule, Tag], styles: ["\n\n[_nghost-%COMP%]     .p-message-content {\n  width: 100%;\n  justify-content: space-between;\n}\n[_nghost-%COMP%]     .p-message-text {\n  flex: 1;\n  justify-content: space-between;\n}\n[_nghost-%COMP%]     .p-textarea {\n  color: var(--p-inputtext-color) !important;\n  background: var(--p-inputtext-background) !important;\n}\n[_nghost-%COMP%]     .p-textarea:disabled {\n  opacity: 1 !important;\n  background: var(--p-inputtext-disabled-background) !important;\n  color: var(--p-inputtext-disabled-color) !important;\n}\n[_nghost-%COMP%]     .p-select {\n  color: var(--p-inputtext-color) !important;\n  background: var(--p-inputtext-background) !important;\n}\n[_nghost-%COMP%]     .p-select.p-disabled {\n  opacity: 1 !important;\n  background: var(--p-inputtext-disabled-background) !important;\n  color: var(--p-inputtext-disabled-color) !important;\n}\n/*# sourceMappingURL=edit-node.component.css.map */"] });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(EditNodeComponent, [{
+    type: Component,
+    args: [{ selector: "aida-edit-node", imports: [
+      CommonModule,
+      FormsModule,
+      TranslateModule,
+      FieldsetModule,
+      IftaLabelModule,
+      InputTextModule,
+      TextareaModule,
+      CheckboxModule,
+      SelectModule,
+      InputGroupModule,
+      InputGroupAddonModule,
+      ButtonModule,
+      SelectButtonModule,
+      MessageModule,
+      TagModule
+    ], template: `<div class="flex flex-column h-full">\r
+    <div class="flex flex-row flex-wrap gap-3">\r
+        <div class="flex flex-column hover:text-primary">\r
+            <label for="lang" class="text-xs font-semibold">{{ 'common.language' | translate }}</label>\r
+            <p-selectButton id="lang" allowEmpty="false" optionLabel="label" optionValue="value" size="small" styleClass="secondary-outline text-primary max-h-3rem"\r
+                            [options]="languageOptions" [(ngModel)]="selectedLanguage" />\r
+        </div>\r
+        <div class="flex flex-column hover:text-primary">\r
+            <label for="version" class="text-xs font-semibold">{{ 'common.version' | translate }}</label>\r
+            <p-selectButton id="version" allowEmpty="false" optionLabel="label" optionValue="value" size="small" styleClass="secondary-outline text-primary max-h-3rem"\r
+                            [options]="versionOptions" [(ngModel)]="selectedVersion" />\r
+        </div>\r
+        <div class="flex flex-column hover:text-primary">\r
+            <label for="refresh" class="text-xs font-semibold">{{ 'common.data' | translate }}</label>\r
+            <div id="refresh" class="flex gap-2 align-items-center">\r
+                <p-button [label]="'common.refresh' | translate" icon="pi pi-refresh" severity="primary" outlined size="small" styleClass="secondary-outline"\r
+                          (onClick)=" refresh()" [disabled]="selectedVersion() === 'baseline' && !editsEnabled()" [loading]="refreshing()" />\r
+                <span class="text-sm text-color-secondary white-space-nowrap">\r
+                    {{ daysSinceRefresh() !== null\r
+                    ? ('editNode.lastRefreshed' | translate: { days: daysSinceRefresh() })\r
+                    : ('editNode.neverRefreshed' | translate) }}\r
+                </span>\r
+            </div>\r
+        </div>\r
+        @if(node().data?.status){\r
+        <div class="flex flex-column hover:text-primary">\r
+            <label for="status" class="text-xs font-semibold">{{ 'common.status' | translate }}</label>\r
+            <div id="status" class="flex flex-row gap-2 align-items-center h-full">\r
+                <div class="flex gap-1 align-items-center">\r
+                    <p-checkbox inputId="inScope" [binary]="true" size="large"\r
+                                [(ngModel)]="node().data.status.inScope" (ngModelChange)="markChanges()" />\r
+                    <label for="inScope">{{'editNode.inScope' | translate}}</label>\r
+                </div>\r
+                <div class="flex gap-1 align-items-center">\r
+                    <p-checkbox inputId="isNew" [binary]="true" size="large"\r
+                                [(ngModel)]="node().data.status.isNew" (ngModelChange)="markChanges()" />\r
+                    <label for="isNew">{{'editNode.isNew' | translate}}</label>\r
+                </div>\r
+                <div class="flex gap-1 align-items-center">\r
+                    <p-checkbox inputId="isROT" [binary]="true" size="large"\r
+                                [(ngModel)]="node().data.status.isROT" (ngModelChange)="markChanges()" />\r
+                    <label for="isROT">{{'editNode.isROT' | translate}}</label>\r
+                </div>\r
+                <div class="flex gap-1 align-items-center">\r
+                    <p-checkbox inputId="isMoved" [binary]="true" size="large"\r
+                                [(ngModel)]="node().data.status.isMoved" (ngModelChange)="markChanges()" />\r
+                    <label for="isMoved">{{'editNode.isMoved' | translate}}</label>\r
+                </div>\r
+            </div>\r
+        </div>\r
+        }\r
+    </div>\r
+    @if(versionConfig(); as config){\r
+    <p-message [severity]="config.severity" [icon]="config.icon" styleClass="mt-2">\r
+        <span>{{ config.text }}</span>\r
+        <p-button [label]="'editNode.enableEdits' | translate" icon="pi pi-file-edit" severity="danger" outlined size="small" styleClass="secondary-outline white-space-nowrap"\r
+                  (onClick)="enableEdits()" [disabled]="editsEnabled()" />\r
+    </p-message>\r
+    }\r
+    @if(node().data) {\r
+    <div class="flex-1 overflow-y-auto">\r
+        <div class="flex flex-row gap-2 min-w-min">\r
+            @if(selectedLanguage() !== 'fr'){\r
+            <p-fieldset [legend]="'common.language.english' | translate" class="flex-1">\r
+                <div class="flex flex-column gap-1">\r
+                    <p-inputgroup>\r
+                        <p-iftalabel>\r
+                            <input type="text" id="path" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid\r
+                                   [(ngModel)]="node().data.path.en" (ngModelChange)="markChanges()" (blur)="updateSegment('en')" [disabled]="!urlEditsEnabled() || (!!versionConfig() && !editsEnabled())" />\r
+                            <label for="path">{{'editNode.path' | translate}}</label>\r
+                        </p-iftalabel>\r
+                        <p-inputgroup-addon class="secondary-outline">\r
+                            <p-button icon="pi pi-pen-to-square" text class="w-full h-full"\r
+                                      (onClick)="enableUrlEdits()" [disabled]="urlEditsEnabled()" />\r
+                        </p-inputgroup-addon>\r
+                    </p-inputgroup>\r
+                    @if(node().data.status.isNew && selectedVersion() === 'prototype'){\r
+                    <p-iftalabel>\r
+                        <input type="text" id="pathSegment" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid [class.text-red-500]="pathEN().startsWith('new-page')"\r
+                               [ngModel]="pathEN()" (ngModelChange)="pathEN.set($event);updatePath('en');" [disabled]="!!versionConfig() && !editsEnabled()" />\r
+                        <label for="pathSegment">{{'editNode.pageUrl' | translate}}</label>\r
+                    </p-iftalabel>\r
+                    }\r
+                    <p-iftalabel>\r
+                        <input type="text" id="doubleh1" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid\r
+                               [(ngModel)]="node().data[selectedVersion()].en.doubleH1" (ngModelChange)="markChanges()" [disabled]="!!versionConfig() && !editsEnabled()" />\r
+                        <label for="doubleh1">{{'editNode.doubleh1' | translate}}</label>\r
+                    </p-iftalabel>\r
+                    <p-iftalabel>\r
+                        <input type="text" id="h1" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid [class.text-red-500]="node().data[selectedVersion()].en.h1==='New page'"\r
+                               [(ngModel)]="node().data[selectedVersion()].en.h1" (ngModelChange)="markChanges()" [disabled]="!!versionConfig() && !editsEnabled()" />\r
+                        <label for="h1">{{'editNode.h1' | translate}}</label>\r
+                    </p-iftalabel>\r
+\r
+                    <!-- Template -->\r
+                    <p-iftalabel>\r
+                        <p-select id="template" styleClass="secondary-outline" fluid appendTo="body"\r
+                                  [(ngModel)]="node().data[selectedVersion()].en.template" (ngModelChange)="markChanges(); syncData(node(),'template','ENtoFR')" [disabled]="!!versionConfig() && !editsEnabled()"\r
+                                  [options]="projectState.templateOptions()" optionLabel="label" optionValue="value"\r
+                                  [filter]="true" filterBy="label" />\r
+                        <label for="template" [class.text-red-500]="node().data[selectedVersion()].en.template !== node().data[selectedVersion()].fr.template">\r
+                            {{'editNode.template' | translate}}\r
+                        </label>\r
+                    </p-iftalabel>\r
+\r
+                    <!-- Parent page -->\r
+                    <p-iftalabel>\r
+                        <p-select id="parentPath" styleClass="secondary-outline" fluid appendTo="body"\r
+                                  [ngModel]="node().data[selectedVersion()].en.parentPath" (onChange)="moveNode(node(), $event.value, 'en')" [disabled]="!!versionConfig() && !editsEnabled()"\r
+                                  [options]="enPages()" optionLabel="label" optionValue="path"\r
+                                  [filter]="true" filterBy="label">\r
+                            <ng-template let-page #item>\r
+                                <div class="flex flex-column">\r
+                                    <span class="font-bold -mb-1">{{ page.label }}</span>\r
+                                    {{ page.path }}\r
+                                </div>\r
+                            </ng-template></p-select>\r
+                        <label for="parentPath">{{'editNode.parent' | translate}}</label>\r
+                    </p-iftalabel>\r
+                    @if(moveError()){\r
+                    <p-message severity="error" icon="pi pi-times-circle font-bold" styleClass="mb-2">\r
+                        <span>{{ 'editNode.moveError' | translate }}</span>\r
+                    </p-message>\r
+                    }\r
+\r
+                    <h3 class="my-0">{{'editNode.metadata' | translate}}</h3>\r
+                    <p-iftalabel>\r
+                        <input type="text" id="title" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid\r
+                               [(ngModel)]="node().data[selectedVersion()].en.title" (ngModelChange)="markChanges()" [disabled]="!!versionConfig() && !editsEnabled()" />\r
+                        <label for="title">{{'editNode.title' | translate}}</label>\r
+                    </p-iftalabel>\r
+                    <p-iftalabel>\r
+                        <textarea id="description" pTextarea variant="outlined" pSize="small" class="secondary-outline" fluid autoResize="true" rows="1"\r
+                                  [(ngModel)]="node().data[selectedVersion()].en.description" (ngModelChange)="markChanges()" [disabled]="!!versionConfig() && !editsEnabled()"></textarea>\r
+                        <label for="description">{{'editNode.description' | translate}}</label>\r
+                    </p-iftalabel>\r
+                    <p-iftalabel>\r
+                        <textarea id="keywords" pTextarea variant="outlined" pSize="small" class="secondary-outline" fluid autoResize="true" rows="1"\r
+                                  [(ngModel)]="node().data[selectedVersion()].en.keywords" (ngModelChange)="markChanges()" [disabled]="!!versionConfig() && !editsEnabled()"></textarea>\r
+                        <label for="keywords">{{'editNode.keywords' | translate}}</label>\r
+                    </p-iftalabel>\r
+\r
+                    <h3 class="my-0">{{'editNode.pageOwner' | translate}}</h3>\r
+                    <p-iftalabel>\r
+                        <input type="text" id="owner" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid\r
+                               [(ngModel)]="node().data[selectedVersion()].en.owner" (ngModelChange)="markChanges(); syncData(node(),'owner','ENtoFR')" [disabled]="!!versionConfig() && !editsEnabled()" />\r
+                        <label for="owner" [class.text-red-500]="node().data[selectedVersion()].en.owner !== node().data[selectedVersion()].fr.owner">\r
+                            {{'editNode.owner' | translate}}\r
+                        </label>\r
+                    </p-iftalabel>\r
+                    <p-iftalabel>\r
+                        <input type="text" id="email" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid\r
+                               [(ngModel)]="node().data[selectedVersion()].en.email" (ngModelChange)="markChanges(); syncData(node(),'email','ENtoFR')" [disabled]="!!versionConfig() && !editsEnabled()" />\r
+                        <label for="email" [class.text-red-500]="node().data[selectedVersion()].en.email !== node().data[selectedVersion()].fr.email">\r
+                            {{'editNode.email' | translate}}\r
+                        </label>\r
+                    </p-iftalabel>\r
+\r
+                    <h3 class="my-0">{{'editNode.info' | translate}}</h3>\r
+                    <div class="flex flex-row gap-3 flex-wrap">\r
+                        <div class="flex align-items-center">\r
+                            <p-checkbox inputId="isArchived" [binary]="true" [disabled]="!!versionConfig() && !editsEnabled()"\r
+                                        [(ngModel)]="node().data[selectedVersion()].en.isArchived" (ngModelChange)="markChanges(); syncData(node(),'isArchived','ENtoFR')" />\r
+                            <label for="isArchived" class="ml-2" [class.text-red-500]="node().data[selectedVersion()].en.isArchived !== node().data[selectedVersion()].fr.isArchived">\r
+                                {{'editNode.isArchived' | translate}}\r
+                            </label>\r
+                        </div>\r
+                        <div class="flex align-items-center">\r
+                            <p-checkbox inputId="noindex" [binary]="true" [disabled]="!!versionConfig() && !editsEnabled()"\r
+                                        [(ngModel)]="node().data[selectedVersion()].en.noindex" (ngModelChange)="markChanges(); syncData(node(),'noindex','ENtoFR')" />\r
+                            <label for="noindex" class="ml-2" [class.text-red-500]="node().data[selectedVersion()].en.noindex !== node().data[selectedVersion()].fr.noindex">\r
+                                {{'editNode.noindex' | translate}}\r
+                            </label>\r
+                        </div>\r
+                        <div class="flex align-items-center">\r
+                            <p-checkbox inputId="isOrphan" [binary]="true" [disabled]="selectedVersion() === 'prototype' ? !urlEditsEnabled() : !editsEnabled()"\r
+                                        [(ngModel)]="node().data[selectedVersion()].en.isOrphan" (ngModelChange)="markChanges()" />\r
+                            <label for="isOrphan" class="ml-2" [class.text-red-500]="node().data[selectedVersion()].en.isOrphan !== node().data[selectedVersion()].fr.isOrphan">\r
+                                {{'editNode.isOrphan' | translate}}\r
+                            </label>\r
+                        </div>\r
+                        <div class="flex align-items-center">\r
+                            <p-checkbox inputId="linksToPortal" [binary]="true" [disabled]="selectedVersion() === 'prototype' ? !urlEditsEnabled() : !editsEnabled()"\r
+                                        [(ngModel)]="node().data[selectedVersion()].en.linksToPortal" (ngModelChange)="markChanges()" />\r
+                            <label for="linksToPortal" class="ml-2" [class.text-red-500]="node().data[selectedVersion()].en.linksToPortal !== node().data[selectedVersion()].fr.linksToPortal">\r
+                                {{'editNode.linksToPortal' | translate}}\r
+                            </label>\r
+                        </div>\r
+                        <div class="flex align-items-center">\r
+                            <p-checkbox inputId="hasChatbot" [binary]="true" [disabled]="selectedVersion() === 'prototype' ? !urlEditsEnabled() : !editsEnabled()"\r
+                                        [(ngModel)]="node().data[selectedVersion()].en.hasChatbot" (ngModelChange)="markChanges()" />\r
+                            <label for="hasChatbot" class="ml-2" [class.text-red-500]="node().data[selectedVersion()].en.hasChatbot !== node().data[selectedVersion()].fr.hasChatbot">\r
+                                {{'editNode.hasChatbot' | translate}}\r
+                            </label>\r
+                        </div>\r
+                        <div class="flex flex-column text-sm text-color-secondary">\r
+                            <span class="font-bold">\r
+                                {{ 'editNode.lastPublished' | translate }}\r
+                            </span>\r
+                            <span [class.text-red-500]="(node().data[selectedVersion()].en.lastPublished | date) !== (node().data[selectedVersion()].fr.lastPublished | date)">\r
+                                {{ (node().data[selectedVersion()].en.lastPublished | date) ?? ('common.never' | translate) }}\r
+                            </span>\r
+                        </div>\r
+                        <div class="flex flex-column text-sm text-color-secondary">\r
+                            <span class="font-bold">\r
+                                {{ 'editNode.wordCount' | translate }}\r
+                            </span>\r
+                            {{ (node().data[selectedVersion()].en.wordCount | number) ?? '\u2014' }}\r
+                        </div>\r
+                        <div class="flex flex-column text-sm text-color-secondary">\r
+                            <span class="font-bold">\r
+                                {{ 'editNode.linkCount' | translate }}\r
+                            </span>\r
+                            <span [class.text-red-500]="node().data[selectedVersion()].en.linkCount !== node().data[selectedVersion()].fr.linkCount">\r
+                                {{ (node().data[selectedVersion()].en.linkCount | number) ?? '\u2014' }}\r
+                            </span>\r
+                        </div>\r
+                        <div class="flex flex-column text-sm text-color-secondary">\r
+                            <span class="font-bold">\r
+                                {{ 'editNode.vanityCount' | translate }}\r
+                            </span>\r
+                            <span [class.text-red-500]="node().data.vanity.en.length !== node().data.vanity.fr.length">\r
+                                {{ (node().data.vanity.en.length | number) ?? '\u2014' }}\r
+                            </span>\r
+                        </div>\r
+                        <div class="flex flex-column text-sm text-color-secondary">\r
+                            <span class="font-bold">\r
+                                {{ 'editNode.phoneCount' | translate }}\r
+                            </span>\r
+                            <span [class.text-red-500]="node().data[selectedVersion()].en.phoneNumbers?.length !== node().data[selectedVersion()].fr.phoneNumbers?.length">\r
+                                {{ (node().data[selectedVersion()].en.phoneNumbers?.length | number) ?? '\u2014' }}\r
+                            </span>\r
+                        </div>\r
+                        <div class="flex flex-column text-sm text-color-secondary">\r
+                            <span class="font-bold">\r
+                                {{ 'editNode.visits' | translate }}\r
+                            </span>\r
+                            {{ (node().data[selectedVersion()].en.visits | number) ?? '\u2014' }}\r
+                        </div>\r
+                        <div class="flex flex-column text-sm text-color-secondary">\r
+                            <span class="font-bold">\r
+                                {{ 'common.readability.fleschKincaid' | translate }}\r
+                            </span>\r
+                            <span [class.text-orange-400]="node().data[selectedVersion()].en.fleschKincaid < 12 && node().data[selectedVersion()].en.fleschKincaid > 8" [class.text-red-500]="node().data[selectedVersion()].en.fleschKincaid >= 12">\r
+                                {{ (node().data[selectedVersion()].en.fleschKincaid | number) ?? '\u2014' }}\r
+                            </span>\r
+                        </div>\r
+                        <div class="flex flex-column text-sm text-color-secondary">\r
+                            <span class="font-bold">\r
+                                {{ 'common.readability.gunningFog' | translate }}\r
+                            </span>\r
+                            <span [class.text-orange-400]="node().data[selectedVersion()].en.gunningFog < 12 && node().data[selectedVersion()].en.gunningFog > 8" [class.text-red-500]="node().data[selectedVersion()].en.gunningFog >= 12">\r
+                                {{ (node().data[selectedVersion()].en.gunningFog | number) ?? '\u2014' }}\r
+                            </span>\r
+                        </div>\r
+                        @if(node().data[selectedVersion()].en.is404){\r
+                        <p-tag [severity]="node().data[selectedVersion()].en.is404 === node().data[selectedVersion()].fr.is404 ? 'primary' : 'danger'" value="404" />\r
+                        }\r
+                    </div>\r
+\r
+                </div>\r
+            </p-fieldset>\r
+            }\r
+            @if(selectedLanguage() !== 'en'){\r
+            <p-fieldset [legend]="'common.language.french' | translate" class="flex-1">\r
+                <div class="flex flex-column gap-1">\r
+                    <p-inputgroup>\r
+                        <p-iftalabel>\r
+                            <input type="text" id="path-fr" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid\r
+                                   [(ngModel)]="node().data.path.fr" (ngModelChange)="markChanges()" (blur)="updateSegment('fr')" [disabled]="!urlEditsEnabled() || (!!versionConfig() && !editsEnabled())" />\r
+                            <label for="path-fr">{{'editNode.path' | translate}}</label>\r
+                        </p-iftalabel>\r
+                        <p-inputgroup-addon class="secondary-outline">\r
+                            <p-button icon="pi pi-pen-to-square" text class="w-full h-full"\r
+                                      (onClick)="enableUrlEdits()" [disabled]="urlEditsEnabled()" />\r
+                        </p-inputgroup-addon>\r
+                    </p-inputgroup>\r
+                    @if(node().data.status.isNew && selectedVersion() === 'prototype'){\r
+                    <p-iftalabel>\r
+                        <input type="text" id="pathSegment-fr" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid [class.text-red-500]="pathFR().startsWith('nouvelle-page')"\r
+                               [ngModel]="pathFR()" (ngModelChange)="pathFR.set($event);updatePath('fr');" [disabled]="!!versionConfig() && !editsEnabled()" />\r
+                        <label for="pathSegment-fr">{{'editNode.pageUrl' | translate}}</label>\r
+                    </p-iftalabel>\r
+                    }\r
+                    <p-iftalabel>\r
+                        <input type="text" id="doubleh1-fr" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid\r
+                               [(ngModel)]="node().data[selectedVersion()].fr.doubleH1" (ngModelChange)="markChanges()" [disabled]="!!versionConfig() && !editsEnabled()" />\r
+                        <label for="doubleh1-fr">{{'editNode.doubleh1' | translate}}</label>\r
+                    </p-iftalabel>\r
+                    <p-iftalabel>\r
+                        <input type="text" id="h1-fr" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid [class.text-red-500]="node().data[selectedVersion()].fr.h1==='Nouvelle page'"\r
+                               [(ngModel)]="node().data[selectedVersion()].fr.h1" (ngModelChange)="markChanges()" [disabled]="!!versionConfig() && !editsEnabled()" />\r
+                        <label for="h1-fr">{{'editNode.h1' | translate}}</label>\r
+                    </p-iftalabel>\r
+\r
+                    <!-- Template -->\r
+                    <p-iftalabel>\r
+                        <p-select id="template-fr" styleClass="secondary-outline" fluid appendTo="body"\r
+                                  [(ngModel)]="node().data[selectedVersion()].fr.template" (ngModelChange)="markChanges(); syncData(node(),'template','FRtoEN')" [disabled]="!!versionConfig() && !editsEnabled()"\r
+                                  [options]="projectState.templateOptions()" optionLabel="label" optionValue="value"\r
+                                  [filter]="true" filterBy="label" />\r
+                        <label for="template-fr" [class.text-red-500]="node().data[selectedVersion()].en.template !== node().data[selectedVersion()].fr.template">\r
+                            {{'editNode.template' | translate}}\r
+                        </label>\r
+                    </p-iftalabel>\r
+\r
+                    <!-- Parent page -->\r
+                    <p-iftalabel>\r
+                        <p-select id="parentPath-fr" styleClass="secondary-outline" fluid appendTo="body"\r
+                                  [ngModel]="node().data[selectedVersion()].fr.parentPath" (onChange)="moveNode(node(), $event.value, 'fr')" [disabled]="!!versionConfig() && !editsEnabled()"\r
+                                  [options]="frPages()" optionLabel="label" optionValue="path"\r
+                                  [filter]="true" filterBy="label">\r
+                            <ng-template let-page #item>\r
+                                <div class="flex flex-column">\r
+                                    <span class="font-bold -mb-1">{{ page.label }}</span>\r
+                                    {{ page.path }}\r
+                                </div>\r
+                            </ng-template></p-select>\r
+                        <label for="parentPath-fr">{{'editNode.parent' | translate}}</label>\r
+                    </p-iftalabel>\r
+                    @if(moveError()){\r
+                    <p-message severity="error" icon="pi pi-times-circle font-bold" styleClass="mb-2">\r
+                        <span>{{ 'editNode.moveError' | translate }}</span>\r
+                    </p-message>\r
+                    }\r
+\r
+                    <h3 class="my-0">{{'editNode.metadata' | translate}}</h3>\r
+                    <p-iftalabel>\r
+                        <input type="text" id="title-fr" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid\r
+                               [(ngModel)]="node().data[selectedVersion()].fr.title" (ngModelChange)="markChanges()" [disabled]="!!versionConfig() && !editsEnabled()" />\r
+                        <label for="title-fr">{{'editNode.title' | translate}}</label>\r
+                    </p-iftalabel>\r
+                    <p-iftalabel>\r
+                        <textarea id="description-fr" pTextarea variant="outlined" pSize="small" class="secondary-outline" fluid autoResize="true" rows="1"\r
+                                  [(ngModel)]="node().data[selectedVersion()].fr.description" (ngModelChange)="markChanges()" [disabled]="!!versionConfig() && !editsEnabled()"></textarea>\r
+                        <label for="description-fr">{{'editNode.description' | translate}}</label>\r
+                    </p-iftalabel>\r
+                    <p-iftalabel>\r
+                        <textarea id="keywords-fr" pTextarea variant="outlined" pSize="small" class="secondary-outline" fluid autoResize="true" rows="1"\r
+                                  [(ngModel)]="node().data[selectedVersion()].fr.keywords" (ngModelChange)="markChanges()" [disabled]="!!versionConfig() && !editsEnabled()"></textarea>\r
+                        <label for="keywords-fr">{{'editNode.keywords' | translate}}</label>\r
+                    </p-iftalabel>\r
+\r
+                    <h3 class="my-0">{{'editNode.pageOwner' | translate}}</h3>\r
+                    <p-iftalabel>\r
+                        <input type="text" id="owner-fr" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid\r
+                               [(ngModel)]="node().data[selectedVersion()].fr.owner" (ngModelChange)="markChanges(); syncData(node(),'owner','FRtoEN')" [disabled]="!!versionConfig() && !editsEnabled()" />\r
+                        <label for="owner-fr" [class.text-red-500]="node().data[selectedVersion()].en.owner !== node().data[selectedVersion()].fr.owner">\r
+                            {{'editNode.owner' | translate}}\r
+                        </label>\r
+                    </p-iftalabel>\r
+                    <p-iftalabel>\r
+                        <input type="text" id="email-fr" pInputText variant="outlined" pSize="small" class="secondary-outline" fluid\r
+                               [(ngModel)]="node().data[selectedVersion()].fr.email" (ngModelChange)="markChanges(); syncData(node(),'email','FRtoEN')" [disabled]="!!versionConfig() && !editsEnabled()" />\r
+                        <label for="email-fr" [class.text-red-500]="node().data[selectedVersion()].en.email !== node().data[selectedVersion()].fr.email">\r
+                            {{'editNode.email' | translate}}\r
+                        </label>\r
+                    </p-iftalabel>\r
+\r
+                    <h3 class="my-0">{{'editNode.info' | translate}}</h3>\r
+                    <div class="flex flex-row gap-3 flex-wrap">\r
+                        <div class="flex align-items-center">\r
+                            <p-checkbox inputId="isArchived-fr" [binary]="true" [disabled]="!!versionConfig() && !editsEnabled()"\r
+                                        [(ngModel)]="node().data[selectedVersion()].fr.isArchived" (ngModelChange)="markChanges(); syncData(node(),'isArchived','FRtoEN')" />\r
+                            <label for="isArchived-fr" class="ml-2" [class.text-red-500]="node().data[selectedVersion()].en.isArchived !== node().data[selectedVersion()].fr.isArchived">\r
+                                {{'editNode.isArchived' | translate}}\r
+                            </label>\r
+                        </div>\r
+                        <div class="flex align-items-center">\r
+                            <p-checkbox inputId="noindex-fr" [binary]="true" [disabled]="!!versionConfig() && !editsEnabled()"\r
+                                        [(ngModel)]="node().data[selectedVersion()].fr.noindex" (ngModelChange)="markChanges(); syncData(node(),'noindex','FRtoEN')" />\r
+                            <label for="noindex-fr" class="ml-2" [class.text-red-500]="node().data[selectedVersion()].en.noindex !== node().data[selectedVersion()].fr.noindex">\r
+                                {{'editNode.noindex' | translate}}\r
+                            </label>\r
+                        </div>\r
+                        <div class="flex align-items-center">\r
+                            <p-checkbox inputId="isOrphan-fr" [binary]="true" [disabled]="selectedVersion() === 'prototype' ? !urlEditsEnabled() : !editsEnabled()"\r
+                                        [(ngModel)]="node().data[selectedVersion()].fr.isOrphan" (ngModelChange)="markChanges()" />\r
+                            <label for="isOrphan-fr" class="ml-2" [class.text-red-500]="node().data[selectedVersion()].en.isOrphan !== node().data[selectedVersion()].fr.isOrphan">\r
+                                {{'editNode.isOrphan' | translate}}\r
+                            </label>\r
+                        </div>\r
+                        <div class="flex align-items-center">\r
+                            <p-checkbox inputId="linksToPortal-fr" [binary]="true" [disabled]="selectedVersion() === 'prototype' ? !urlEditsEnabled() : !editsEnabled()"\r
+                                        [(ngModel)]="node().data[selectedVersion()].fr.linksToPortal" (ngModelChange)="markChanges()" />\r
+                            <label for="linksToPortal-fr" class="ml-2" [class.text-red-500]="node().data[selectedVersion()].en.linksToPortal !== node().data[selectedVersion()].fr.linksToPortal">\r
+                                {{'editNode.linksToPortal' | translate}}\r
+                            </label>\r
+                        </div>\r
+                        <div class="flex align-items-center">\r
+                            <p-checkbox inputId="hasChatbot-fr" [binary]="true" [disabled]="selectedVersion() === 'prototype' ? !urlEditsEnabled() : !editsEnabled()"\r
+                                        [(ngModel)]="node().data[selectedVersion()].fr.hasChatbot" (ngModelChange)="markChanges()" />\r
+                            <label for="hasChatbot-fr" class="ml-2" [class.text-red-500]="node().data[selectedVersion()].en.hasChatbot !== node().data[selectedVersion()].fr.hasChatbot">\r
+                                {{'editNode.hasChatbot' | translate}}\r
+                            </label>\r
+                        </div>\r
+                        <div class="flex flex-column text-sm text-color-secondary">\r
+                            <span class="font-bold">\r
+                                {{ 'editNode.lastPublished' | translate }}\r
+                            </span>\r
+                            <span [class.text-red-500]="(node().data[selectedVersion()].en.lastPublished | date) !== (node().data[selectedVersion()].fr.lastPublished | date)">\r
+                                {{ (node().data[selectedVersion()].fr.lastPublished | date) ?? ('common.never' | translate) }}\r
+                            </span>\r
+                        </div>\r
+                        <div class="flex flex-column text-sm text-color-secondary">\r
+                            <span class="font-bold">\r
+                                {{ 'editNode.wordCount' | translate }}\r
+                            </span>\r
+                            {{ (node().data[selectedVersion()].fr.wordCount | number) ?? '\u2014' }}\r
+                        </div>\r
+                        <div class="flex flex-column text-sm text-color-secondary">\r
+                            <span class="font-bold">\r
+                                {{ 'editNode.linkCount' | translate }}\r
+                            </span>\r
+                            <span [class.text-red-500]="node().data[selectedVersion()].en.linkCount !== node().data[selectedVersion()].fr.linkCount">\r
+                                {{ (node().data[selectedVersion()].fr.linkCount | number) ?? '\u2014' }}\r
+                            </span>\r
+                        </div>\r
+                        <div class="flex flex-column text-sm text-color-secondary">\r
+                            <span class="font-bold">\r
+                                {{ 'editNode.vanityCount' | translate }}\r
+                            </span>\r
+                            <span [class.text-red-500]="node().data.vanity.en.length !== node().data.vanity.fr.length">\r
+                                {{ (node().data.vanity.fr.length | number) ?? '\u2014' }}\r
+                            </span>\r
+                        </div>\r
+                        <div class="flex flex-column text-sm text-color-secondary">\r
+                            <span class="font-bold">\r
+                                {{ 'editNode.phoneCount' | translate }}\r
+                            </span>\r
+                            <span [class.text-red-500]="node().data[selectedVersion()].en.phoneNumbers?.length !== node().data[selectedVersion()].fr.phoneNumbers?.length">\r
+                                {{ (node().data[selectedVersion()].fr.phoneNumbers?.length | number) ?? '\u2014' }}\r
+                            </span>\r
+                        </div>\r
+                        <div class="flex flex-column text-sm text-color-secondary">\r
+                            <span class="font-bold">\r
+                                {{ 'editNode.visits' | translate }}\r
+                            </span>\r
+                            {{ (node().data[selectedVersion()].fr.visits | number) ?? '\u2014' }}\r
+                        </div>\r
+                        <div class="flex flex-column text-sm text-color-secondary">\r
+                            <span class="font-bold">\r
+                                {{ 'common.readability.fleschKincaid' | translate }}\r
+                            </span>\r
+                            <span [class.text-orange-400]="node().data[selectedVersion()].fr.fleschKincaid < 12 && node().data[selectedVersion()].fr.fleschKincaid > 8" [class.text-red-500]="node().data[selectedVersion()].fr.fleschKincaid >= 12">\r
+                                {{ (node().data[selectedVersion()].fr.fleschKincaid | number) ?? '\u2014' }}\r
+                            </span>\r
+                        </div>\r
+                        <div class="flex flex-column text-sm text-color-secondary">\r
+                            <span class="font-bold">\r
+                                {{ 'common.readability.gunningFog' | translate }}\r
+                            </span>\r
+                            <span [class.text-orange-400]="node().data[selectedVersion()].fr.gunningFog < 12 && node().data[selectedVersion()].fr.gunningFog > 8" [class.text-red-500]="node().data[selectedVersion()].fr.gunningFog >= 12">\r
+                                {{ (node().data[selectedVersion()].fr.gunningFog | number) ?? '\u2014' }}\r
+                            </span>\r
+                        </div>\r
+                        @if(node().data[selectedVersion()].fr.is404){\r
+                        <p-tag [severity]="node().data[selectedVersion()].en.is404 === node().data[selectedVersion()].fr.is404 ? 'primary' : 'danger'" value="404" />\r
+                        }\r
+                    </div>\r
+                </div>\r
+            </p-fieldset>\r
+            }\r
+        </div>\r
+    </div>\r
+\r
+    <div class="flex flex-row justify-content-end gap-2 mt-2">\r
+        <p-button [label]="'common.cancel' | translate" icon="pi pi-times" severity="secondary"\r
+                  (onClick)="cancel()" />\r
+        <p-button [label]="'common.save' | translate" icon="pi pi-save" severity="success"\r
+                  (onClick)="save()" [disabled]="!hasChanges()" />\r
+    </div>\r
+\r
+    }\r
+</div>`, styles: ["/* src/app/components/edit-node/edit-node.component.css */\n:host ::ng-deep .p-message-content {\n  width: 100%;\n  justify-content: space-between;\n}\n:host ::ng-deep .p-message-text {\n  flex: 1;\n  justify-content: space-between;\n}\n:host ::ng-deep .p-textarea {\n  color: var(--p-inputtext-color) !important;\n  background: var(--p-inputtext-background) !important;\n}\n:host ::ng-deep .p-textarea:disabled {\n  opacity: 1 !important;\n  background: var(--p-inputtext-disabled-background) !important;\n  color: var(--p-inputtext-disabled-color) !important;\n}\n:host ::ng-deep .p-select {\n  color: var(--p-inputtext-color) !important;\n  background: var(--p-inputtext-background) !important;\n}\n:host ::ng-deep .p-select.p-disabled {\n  opacity: 1 !important;\n  background: var(--p-inputtext-disabled-background) !important;\n  color: var(--p-inputtext-disabled-color) !important;\n}\n/*# sourceMappingURL=edit-node.component.css.map */\n"] }]
+  }], () => [], null);
+})();
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(EditNodeComponent, { className: "EditNodeComponent", filePath: "src/app/components/edit-node/edit-node.component.ts", lineNumber: 36 });
+})();
+
 // src/app/components/ia-table/ia-table.component.ts
-var _c030 = ["cm"];
-var _c141 = () => ({ height: "90vh" });
+var _c028 = ["cm"];
+var _c140 = () => ({ height: "90vh" });
 function IaTableComponent_ng_template_3_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275element(0, "i", 7);
@@ -72970,7 +71616,7 @@ var IaTableComponent = class _IaTableComponent {
   };
   static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _IaTableComponent, selectors: [["aida-ia-table"]], viewQuery: function IaTableComponent_Query(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275viewQuery(_c030, 5);
+      \u0275\u0275viewQuery(_c028, 5);
     }
     if (rf & 2) {
       let _t;
@@ -73012,7 +71658,7 @@ var IaTableComponent = class _IaTableComponent {
       \u0275\u0275twoWayProperty("selection", ctx.selectedNode);
       \u0275\u0275property("draggableNodes", ctx.draggable)("droppableNodes", true)("validateDrop", true)("contextMenu", cm_r6);
       \u0275\u0275advance(2);
-      \u0275\u0275styleMap(\u0275\u0275pureFunction0(15, _c141));
+      \u0275\u0275styleMap(\u0275\u0275pureFunction0(15, _c140));
       \u0275\u0275property("header", ctx.selectedNode == null ? null : ctx.selectedNode.data == null ? null : ctx.selectedNode.data.prototype == null ? null : ctx.selectedNode.data.prototype[ctx.currentLang].h1)("modal", true)("maximizable", true);
       \u0275\u0275twoWayProperty("visible", ctx.editNode);
       \u0275\u0275advance();
@@ -73167,13 +71813,13 @@ function isKnownNumber(number) {
   return KNOWN_PHONE_NUMBERS.has(number);
 }
 
-// src/app/views/inventory-assistant/inventory.component.ts
-var _c031 = ["dt"];
-var _c147 = ["menuContext"];
-var _c228 = () => ({ height: "90vh" });
-var _c319 = (a0) => [25, 50, 100, a0];
-var _c416 = (a0) => ({ column: a0 });
-var _c514 = (a0, a1, a2) => ({ "border-right-1": a0, "surface-border": a1, "hasMenu": a2 });
+// src/app/views/task/manage-inventory/inventory.component.ts
+var _c029 = ["dt"];
+var _c141 = ["menuContext"];
+var _c226 = () => ({ height: "90vh" });
+var _c318 = (a0) => [25, 50, 100, a0];
+var _c415 = (a0) => ({ column: a0 });
+var _c513 = (a0, a1, a2) => ({ "border-right-1": a0, "surface-border": a1, "hasMenu": a2 });
 var _forTrack06 = ($index, $item) => $item.value;
 var _forTrack12 = ($index, $item) => $item.field;
 function InventoryComponent_Conditional_37_ng_template_7_Template(rf, ctx) {
@@ -73372,7 +72018,7 @@ function InventoryComponent_Conditional_39_ng_template_2_For_10_Conditional_1_Te
   if (rf & 2) {
     const col_r12 = \u0275\u0275nextContext().$implicit;
     const ctx_r2 = \u0275\u0275nextContext(3);
-    \u0275\u0275property("label", col_r12.label)("icon", ctx_r2.isColumnFiltered(col_r12.field) ? "pi pi-filter" : "pi pi-filter-slash")("severity", ctx_r2.isColumnFiltered(col_r12.field) ? "primary" : "contrast")("pTooltip", ctx_r2.isColumnFiltered(col_r12.field) ? \u0275\u0275pipeBind1(1, 4, "inventory.filter.showAll") : \u0275\u0275pipeBind2(2, 6, "inventory.filter.showTrue", \u0275\u0275pureFunction1(9, _c416, col_r12.label)));
+    \u0275\u0275property("label", col_r12.label)("icon", ctx_r2.isColumnFiltered(col_r12.field) ? "pi pi-filter" : "pi pi-filter-slash")("severity", ctx_r2.isColumnFiltered(col_r12.field) ? "primary" : "contrast")("pTooltip", ctx_r2.isColumnFiltered(col_r12.field) ? \u0275\u0275pipeBind1(1, 4, "inventory.filter.showAll") : \u0275\u0275pipeBind2(2, 6, "inventory.filter.showTrue", \u0275\u0275pureFunction1(9, _c415, col_r12.label)));
   }
 }
 function InventoryComponent_Conditional_39_ng_template_2_For_10_Conditional_2_Template(rf, ctx) {
@@ -74067,7 +72713,7 @@ function InventoryComponent_Conditional_39_ng_template_3_For_9_Template(rf, ctx)
     const col_r17 = ctx.$implicit;
     const node_r14 = \u0275\u0275nextContext().$implicit;
     const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction3(13, _c514, ctx_r2.isLastInGroup(col_r17.field), ctx_r2.isLastInGroup(col_r17.field), ctx_r2.hasContextMenu(col_r17.group, col_r17.type)))("pEditableColumn", node_r14.field);
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction3(13, _c513, ctx_r2.isLastInGroup(col_r17.field), ctx_r2.isLastInGroup(col_r17.field), ctx_r2.hasContextMenu(col_r17.group, col_r17.type)))("pEditableColumn", node_r14.field);
     \u0275\u0275advance();
     \u0275\u0275conditional(col_r17.type === "text" ? 1 : -1);
     \u0275\u0275advance();
@@ -74161,7 +72807,7 @@ function InventoryComponent_Conditional_39_Template(rf, ctx) {
     const ctx_r2 = \u0275\u0275nextContext();
     \u0275\u0275property("value", ctx_r2.tableData());
     \u0275\u0275twoWayProperty("selection", ctx_r2.selectedNodes);
-    \u0275\u0275property("scrollable", false)("customSort", true)("paginator", ctx_r2.projectState.getProject().baselinePages > 50)("rows", 50)("rowsPerPageOptions", \u0275\u0275pureFunction1(7, _c319, ctx_r2.projectState.getProject().baselinePages));
+    \u0275\u0275property("scrollable", false)("customSort", true)("paginator", ctx_r2.projectState.getProject().baselinePages > 50)("rows", 50)("rowsPerPageOptions", \u0275\u0275pureFunction1(7, _c318, ctx_r2.projectState.getProject().baselinePages));
   }
 }
 function InventoryComponent_Conditional_40_Template(rf, ctx) {
@@ -74678,17 +73324,16 @@ var InventoryComponent = class _InventoryComponent {
     marker("inventory.contextMenu.linksToPortal.false");
     marker("inventory.contextMenu.isOrphan.true");
     marker("inventory.contextMenu.isOrphan.false");
-    marker("inventory.contextMenu.archiveStatus.current");
-    marker("inventory.contextMenu.archiveStatus.to-archive");
-    marker("inventory.contextMenu.archiveStatus.archived");
-    marker("inventory.contextMenu.archiveStatus.unarchive");
-    marker("inventory.contextMenu.noindex.none");
-    marker("inventory.contextMenu.noindex.both");
-    marker("inventory.contextMenu.noindex.to-reindex");
-    marker("inventory.contextMenu.noindex.to-deindex");
+    marker("inventory.contextMenu.isArchived.true");
+    marker("inventory.contextMenu.isArchived.false");
+    marker("inventory.contextMenu.noindex.true");
+    marker("inventory.contextMenu.noindex.false");
     marker("common.pending");
     marker("common.edited");
     marker("common.approved");
+    marker("common.complete");
+    marker("common.error");
+    marker("common.yes");
   }
   /**********************************************************
   *                                                         *
@@ -75270,8 +73915,8 @@ var InventoryComponent = class _InventoryComponent {
   };
   static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _InventoryComponent, selectors: [["aida-inventory"]], viewQuery: function InventoryComponent_Query(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275viewQuery(_c031, 5);
-      \u0275\u0275viewQuery(_c147, 5);
+      \u0275\u0275viewQuery(_c029, 5);
+      \u0275\u0275viewQuery(_c141, 5);
     }
     if (rf & 2) {
       let _t;
@@ -75390,7 +74035,7 @@ var InventoryComponent = class _InventoryComponent {
       \u0275\u0275advance(6);
       \u0275\u0275property("model", ctx.itemsContext);
       \u0275\u0275advance(2);
-      \u0275\u0275styleMap(\u0275\u0275pureFunction0(44, _c228));
+      \u0275\u0275styleMap(\u0275\u0275pureFunction0(44, _c226));
       \u0275\u0275property("header", ctx.selectedNode.data == null ? null : ctx.selectedNode.data.prototype == null ? null : ctx.selectedNode.data.prototype[ctx.currentLang].h1)("modal", true)("maximizable", true);
       \u0275\u0275twoWayProperty("visible", ctx.editNode);
       \u0275\u0275advance();
@@ -75857,7 +74502,7 @@ var InventoryComponent = class _InventoryComponent {
     }\r
 </p-dialog>\r
 <!--Confirm deletion-->\r
-<p-confirmDialog key="inventory" />`, styles: ["/* src/app/views/inventory-assistant/inventory.component.css */\n.sticky-toolbar {\n  position: sticky;\n  left: calc(var(--nav-width));\n  top: 0;\n  z-index: 20;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n  padding-right: 0rem;\n  box-sizing: border-box;\n}\n.sticky-toolbar-table {\n  width: calc(100vw - var(--nav-width) - 2rem);\n}\n@media screen and (min-width: 768px) {\n  .sticky-toolbar {\n    left: calc(var(--nav-width) + 7rem);\n    padding-right: 5rem;\n  }\n  .sticky-toolbar-table {\n    width: calc(100vw - var(--nav-width) - 7rem - 5rem);\n  }\n}\n::ng-deep .p-datatable-table-container {\n  overflow: visible !important;\n}\n.sticky-h {\n  position: sticky;\n  left: calc(var(--nav-width) + 2rem);\n  z-index: 11;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-h {\n    left: calc(var(--nav-width) + 9rem);\n  }\n}\n.sticky-c {\n  position: sticky;\n  left: calc(var(--nav-width));\n  z-index: 11;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-c {\n    left: calc(var(--nav-width) + 7rem);\n  }\n}\n.sticky-r {\n  position: sticky;\n  top: 9rem;\n  z-index: 12;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n::ng-deep .p-datatable .p-datatable-thead {\n  z-index: 13 !important;\n}\n.sticky-rh {\n  position: sticky;\n  left: calc(var(--nav-width) + 2rem);\n  top: 9rem;\n  z-index: 14;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-rh {\n    left: calc(var(--nav-width) + 9rem);\n  }\n}\n.sticky-rc {\n  position: sticky;\n  left: calc(var(--nav-width));\n  top: 9rem;\n  z-index: 14;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-rc {\n    left: calc(var(--nav-width) + 7rem);\n  }\n}\n.sticky-horizontal {\n  position: sticky;\n  left: calc(var(--nav-width));\n  z-index: 10;\n  width: calc(100vw - var(--nav-width) - 2rem);\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n  padding-right: 0rem;\n  box-sizing: border-box;\n}\n@media screen and (min-width: 768px) {\n  .sticky-horizontal {\n    left: calc(var(--nav-width) + 7rem);\n    width: calc(100vw - var(--nav-width) - 7rem - 3.5rem);\n    padding-right: 5rem;\n  }\n}\n.hasMenu:hover {\n  background-color: var(--p-primary-100) !important;\n}\nhtml.dark-mode .hasMenu:hover {\n  background-color: var(--p-primary-500) !important;\n}\n/*# sourceMappingURL=inventory.component.css.map */\n"] }]
+<p-confirmDialog key="inventory" />`, styles: ["/* src/app/views/task/manage-inventory/inventory.component.css */\n.sticky-toolbar {\n  position: sticky;\n  left: calc(var(--nav-width));\n  top: 0;\n  z-index: 20;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n  padding-right: 0rem;\n  box-sizing: border-box;\n}\n.sticky-toolbar-table {\n  width: calc(100vw - var(--nav-width) - 2rem);\n}\n@media screen and (min-width: 768px) {\n  .sticky-toolbar {\n    left: calc(var(--nav-width) + 7rem);\n    padding-right: 5rem;\n  }\n  .sticky-toolbar-table {\n    width: calc(100vw - var(--nav-width) - 7rem - 5rem);\n  }\n}\n::ng-deep .p-datatable-table-container {\n  overflow: visible !important;\n}\n.sticky-h {\n  position: sticky;\n  left: calc(var(--nav-width) + 2rem);\n  z-index: 11;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-h {\n    left: calc(var(--nav-width) + 9rem);\n  }\n}\n.sticky-c {\n  position: sticky;\n  left: calc(var(--nav-width));\n  z-index: 11;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-c {\n    left: calc(var(--nav-width) + 7rem);\n  }\n}\n.sticky-r {\n  position: sticky;\n  top: 9rem;\n  z-index: 12;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n::ng-deep .p-datatable .p-datatable-thead {\n  z-index: 13 !important;\n}\n.sticky-rh {\n  position: sticky;\n  left: calc(var(--nav-width) + 2rem);\n  top: 9rem;\n  z-index: 14;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-rh {\n    left: calc(var(--nav-width) + 9rem);\n  }\n}\n.sticky-rc {\n  position: sticky;\n  left: calc(var(--nav-width));\n  top: 9rem;\n  z-index: 14;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-rc {\n    left: calc(var(--nav-width) + 7rem);\n  }\n}\n.sticky-horizontal {\n  position: sticky;\n  left: calc(var(--nav-width));\n  z-index: 10;\n  width: calc(100vw - var(--nav-width) - 2rem);\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n  padding-right: 0rem;\n  box-sizing: border-box;\n}\n@media screen and (min-width: 768px) {\n  .sticky-horizontal {\n    left: calc(var(--nav-width) + 7rem);\n    width: calc(100vw - var(--nav-width) - 7rem - 3.5rem);\n    padding-right: 5rem;\n  }\n}\n.hasMenu:hover {\n  background-color: var(--p-primary-100) !important;\n}\nhtml.dark-mode .hasMenu:hover {\n  background-color: var(--p-primary-500) !important;\n}\n/*# sourceMappingURL=inventory.component.css.map */\n"] }]
   }], () => [], { dt: [{
     type: ViewChild,
     args: ["dt"]
@@ -75867,10 +74512,10 @@ var InventoryComponent = class _InventoryComponent {
   }] });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(InventoryComponent, { className: "InventoryComponent", filePath: "src/app/views/inventory-assistant/inventory.component.ts", lineNumber: 61 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(InventoryComponent, { className: "InventoryComponent", filePath: "src/app/views/task/manage-inventory/inventory.component.ts", lineNumber: 61 });
 })();
 
-// src/app/views/compare-assistant/compare.service.ts
+// src/app/views/task/compare-versions/compare.service.ts
 var CompareService = class _CompareService {
   // HTML content cache
   htmlCache = signal(/* @__PURE__ */ new Map());
@@ -77147,9 +75792,9 @@ var CompareRenderedService = class _CompareRenderedService {
 })();
 
 // src/app/components/compare-rendered/compare-rendered.component.ts
-var _c032 = ["liveContainer"];
-var _c148 = (a0) => ({ ariaLabel: a0 });
-var _c229 = (a0, a1) => ({ "background-color": a0, "border": a1 });
+var _c030 = ["liveContainer"];
+var _c147 = (a0) => ({ ariaLabel: a0 });
+var _c227 = (a0, a1) => ({ "background-color": a0, "border": a1 });
 var _forTrack07 = ($index, $item) => $item.value;
 var _forTrack13 = ($index, $item) => $item.text;
 function CompareRenderedComponent_For_6_Template(rf, ctx) {
@@ -77249,9 +75894,9 @@ function CompareRenderedComponent_Conditional_8_Template(rf, ctx) {
     \u0275\u0275advance();
     \u0275\u0275property("ariaLabel", \u0275\u0275pipeBind1(8, 18, "compare.rendered.next"))("pTooltip", \u0275\u0275pipeBind1(9, 20, "compare.rendered.next"));
     \u0275\u0275advance(3);
-    \u0275\u0275property("model", ctx_r1.acceptItems)("buttonProps", \u0275\u0275pureFunction1(34, _c148, \u0275\u0275pipeBind1(11, 22, "compare.rendered.accept")))("menuButtonProps", \u0275\u0275pureFunction1(36, _c148, \u0275\u0275pipeBind1(12, 24, "compare.rendered.acceptOptions")))("pTooltip", \u0275\u0275pipeBind1(13, 26, "compare.rendered.accept"));
+    \u0275\u0275property("model", ctx_r1.acceptItems)("buttonProps", \u0275\u0275pureFunction1(34, _c147, \u0275\u0275pipeBind1(11, 22, "compare.rendered.accept")))("menuButtonProps", \u0275\u0275pureFunction1(36, _c147, \u0275\u0275pipeBind1(12, 24, "compare.rendered.acceptOptions")))("pTooltip", \u0275\u0275pipeBind1(13, 26, "compare.rendered.accept"));
     \u0275\u0275advance(4);
-    \u0275\u0275property("model", ctx_r1.rejectItems)("buttonProps", \u0275\u0275pureFunction1(38, _c148, \u0275\u0275pipeBind1(15, 28, "compare.rendered.reject")))("menuButtonProps", \u0275\u0275pureFunction1(40, _c148, \u0275\u0275pipeBind1(16, 30, "compare.rendered.rejectOptions")))("pTooltip", \u0275\u0275pipeBind1(17, 32, "compare.rendered.reject"));
+    \u0275\u0275property("model", ctx_r1.rejectItems)("buttonProps", \u0275\u0275pureFunction1(38, _c147, \u0275\u0275pipeBind1(15, 28, "compare.rendered.reject")))("menuButtonProps", \u0275\u0275pureFunction1(40, _c147, \u0275\u0275pipeBind1(16, 30, "compare.rendered.rejectOptions")))("pTooltip", \u0275\u0275pipeBind1(17, 32, "compare.rendered.reject"));
     \u0275\u0275advance(4);
     \u0275\u0275conditional(ctx_r1.displayNumHighlighted ? 18 : -1);
   }
@@ -77330,7 +75975,7 @@ function CompareRenderedComponent_For_12_Template(rf, ctx) {
   if (rf & 2) {
     const item_r6 = ctx.$implicit;
     \u0275\u0275advance();
-    \u0275\u0275property("ngStyle", \u0275\u0275pureFunction2(4, _c229, item_r6.style === "highlight" ? item_r6.colour : "transparent", item_r6.style === "line" ? "2px " + (item_r6.lineStyle || "solid") + " " + item_r6.colour : "none"));
+    \u0275\u0275property("ngStyle", \u0275\u0275pureFunction2(4, _c227, item_r6.style === "highlight" ? item_r6.colour : "transparent", item_r6.style === "line" ? "2px " + (item_r6.lineStyle || "solid") + " " + item_r6.colour : "none"));
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 2, item_r6.text));
   }
@@ -77855,7 +76500,7 @@ var CompareRenderedComponent = class _CompareRenderedComponent {
   };
   static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CompareRenderedComponent, selectors: [["aida-compare-rendered"]], viewQuery: function CompareRenderedComponent_Query(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275viewQuery(_c032, 5);
+      \u0275\u0275viewQuery(_c030, 5);
     }
     if (rf & 2) {
       let _t;
@@ -78731,7 +77376,23 @@ var CompareSourceComponent = class _CompareSourceComponent {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CompareSourceComponent, { className: "CompareSourceComponent", filePath: "src/app/components/compare-source/compare-source.component.ts", lineNumber: 42 });
 })();
 
-// src/app/views/compare-assistant/compare.component.ts
+// src/app/views/task/compare-versions/compare.component.ts
+function CompareComponent_ng_template_19_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 27)(1, "span", 28);
+    \u0275\u0275text(2);
+    \u0275\u0275elementEnd();
+    \u0275\u0275text(3);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const page_r2 = ctx.$implicit;
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(page_r2.label);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", page_r2.path, " ");
+  }
+}
 var CompareComponent = class _CompareComponent {
   translate = inject(TranslateService);
   projectState = inject(ProjectStateService);
@@ -78744,8 +77405,8 @@ var CompareComponent = class _CompareComponent {
     effect(() => {
       const options = this.pageOptions;
       if (!this.compareService.selectedPage() && options.length > 0) {
-        this.compareService.selectedPage.set(options[0].value);
-        this.onPageSelectionChange(options[0].value);
+        this.compareService.selectedPage.set(options[0].path);
+        this.onPageSelectionChange(options[0].path);
       }
     });
   }
@@ -78761,16 +77422,44 @@ var CompareComponent = class _CompareComponent {
   }
   // Page dropdown options & on change
   get pageOptions() {
-    return this.projectState.getAllPages().map((page) => ({
-      label: page.title,
-      value: page.url
-    }));
+    return this.projectState.getAllPages("en", "live", "inScope");
   }
-  onPageSelectionChange(page) {
+  checkVersion(url, version2, validVersions) {
+    return __async(this, null, function* () {
+      if (!url)
+        return;
+      const cached = this.compareService.getCachedStatus(url);
+      if (cached !== void 0) {
+        validVersions.push(version2);
+        return;
+      }
+      try {
+        let result;
+        if (version2 === "preview") {
+          result = yield this.fetchService.fetchPreviewStatus(url);
+        } else {
+          result = yield this.fetchService.fetchStatus(url, "both");
+        }
+        const ok = typeof result === "boolean" ? result : result.ok;
+        this.compareService.setCachedStatus(url, ok);
+        if (ok)
+          validVersions.push(version2);
+      } catch {
+        this.compareService.setCachedStatus(url, false);
+      }
+    });
+  }
+  onPageSelectionChange(path) {
     return __async(this, null, function* () {
       this.compareService.loading.set(true);
+      const liveURL = this.fetchService.generateUrl(path, "live");
+      const previewURL = this.fetchService.generateUrl(path, "preview");
+      const utProtoURL = this.fetchService.generateUrl(path, "ut");
+      const utBaseURL = this.fetchService.generateUrl(path, "ut-base");
+      const gitProtoURL = this.fetchService.generateUrl(path, "prototype", this.owner, this.repo);
+      const gitBaseURL = this.fetchService.generateUrl(path, "baseline", this.owner, this.repo);
       try {
-        this.compareService.selectedPage.set(page);
+        this.compareService.selectedPage.set(path);
         if (!this.compareService.selectedPage)
           return;
         this.compareService.originalHtml.set(void 0);
@@ -78854,7 +77543,7 @@ var CompareComponent = class _CompareComponent {
       this.compareService.loadingAll.set(true);
       try {
         const lang = this.projectState.detectPrimaryLanguage();
-        const allUrls = this.projectState.getAllUrls("inScope", lang);
+        const allUrls = new Set(this.projectState.getAllPages(lang, "live", "inScope").map((u3) => u3.url));
         for (const url of allUrls) {
           if (!this.compareService.getCachedStatus(url)) {
             try {
@@ -79015,117 +77704,125 @@ var CompareComponent = class _CompareComponent {
   static \u0275fac = function CompareComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _CompareComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CompareComponent, selectors: [["aida-page-assistant-compare"]], decls: 59, vars: 45, consts: [["id", "wb-cont"], [1, "flex", "flex-column", "gap-3"], [1, "flex", "flex-column", "xl:flex-row", "gap-3", "min-w-min"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "xl:w-6", "min-w-min"], [1, "text-2xl", "my-1"], [1, "my-1"], [1, "flex", "flex-column", "lg:flex-row", "lg:align-items-center", "gap-2"], [1, "flex", "flex-column", "text-color-secondary", "hover:text-primary", "max-w-max"], [1, "text-xs", "my-1"], ["inputId", "page", "optionLabel", "label", "optionValue", "value", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-27rem", 3, "ngModelChange", "options", "ngModel", "loading"], ["for", "page"], [1, "flex", "flex-column", "sm:flex-row", "sm:align-content-center", "gap-1", "sm:gap-3", "lg:gap-2"], ["inputId", "before", "optionLabel", "label", "optionValue", "value", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-13rem", 3, "ngModelChange", "options", "ngModel", "loading"], ["for", "before"], ["inputId", "after", "optionLabel", "label", "optionValue", "value", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-13rem", 3, "ngModelChange", "options", "ngModel", "loading"], ["for", "after"], [1, "flex", "justify-content-between", "w-full", "gap-2", "mt-4"], [1, "flex", "gap-2"], ["label", "Load all pages into cache", "icon", "pi pi-download", "severity", "success", 3, "onClick", "loading"], ["label", "Reset cache", "icon", "pi pi-trash", "severity", "danger", 3, "onClick"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min"], ["value", "0", 1, "mt-3"], ["value", "0"], [1, "pi", "pi-eye", "mr-1"], [1, "shadow-1"], [3, "contentChanged", "beforeContent", "afterContent"]], template: function CompareComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CompareComponent, selectors: [["aida-compare-versions"]], decls: 61, vars: 46, consts: [["item", ""], ["id", "wb-cont"], [1, "flex", "flex-column", "gap-3"], [1, "flex", "flex-column", "xl:flex-row", "gap-3", "min-w-min"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "xl:w-6", "min-w-min"], [1, "text-2xl", "my-1"], [1, "my-1"], [1, "flex", "flex-column", "lg:flex-row", "lg:align-items-center", "gap-2"], [1, "flex", "flex-column", "text-color-secondary", "hover:text-primary", "max-w-max"], [1, "text-xs", "my-1"], ["inputId", "page", "optionLabel", "label", "optionValue", "path", "filterBy", "label", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-27rem", 3, "ngModelChange", "options", "ngModel", "filter", "loading"], ["for", "page"], [1, "flex", "flex-column", "sm:flex-row", "sm:align-content-center", "gap-1", "sm:gap-3", "lg:gap-2"], ["inputId", "before", "optionLabel", "label", "optionValue", "value", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-13rem", 3, "ngModelChange", "options", "ngModel", "loading"], ["for", "before"], ["inputId", "after", "optionLabel", "label", "optionValue", "value", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-13rem", 3, "ngModelChange", "options", "ngModel", "loading"], ["for", "after"], [1, "flex", "justify-content-between", "w-full", "gap-2", "mt-4"], [1, "flex", "gap-2"], ["label", "Load all pages into cache", "icon", "pi pi-download", "severity", "success", 3, "onClick", "loading"], ["label", "Reset cache", "icon", "pi pi-trash", "severity", "danger", 3, "onClick"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min"], ["value", "0", 1, "mt-3"], ["value", "0"], [1, "pi", "pi-eye", "mr-1"], [1, "shadow-1"], [3, "contentChanged", "beforeContent", "afterContent"], [1, "flex", "flex-column"], [1, "font-bold", "-mb-1"]], template: function CompareComponent_Template(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275elementStart(0, "h1", 0);
+      const _r1 = \u0275\u0275getCurrentView();
+      \u0275\u0275elementStart(0, "h1", 1);
       \u0275\u0275text(1);
       \u0275\u0275pipe(2, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(3, "div", 1)(4, "div", 2)(5, "div", 3)(6, "h2", 4);
+      \u0275\u0275elementStart(3, "div", 2)(4, "div", 3)(5, "div", 4)(6, "h2", 5);
       \u0275\u0275text(7);
       \u0275\u0275pipe(8, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(9, "p", 5);
+      \u0275\u0275elementStart(9, "p", 6);
       \u0275\u0275text(10);
       \u0275\u0275pipe(11, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(12, "div", 6)(13, "div", 7)(14, "span", 8);
+      \u0275\u0275elementStart(12, "div", 7)(13, "div", 8)(14, "span", 9);
       \u0275\u0275text(15);
       \u0275\u0275pipe(16, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(17, "p-iftalabel")(18, "p-select", 9);
+      \u0275\u0275elementStart(17, "p-iftalabel")(18, "p-select", 10);
       \u0275\u0275listener("ngModelChange", function CompareComponent_Template_p_select_ngModelChange_18_listener($event) {
-        return ctx.onPageSelectionChange($event);
+        \u0275\u0275restoreView(_r1);
+        return \u0275\u0275resetView(ctx.onPageSelectionChange($event));
       });
+      \u0275\u0275template(19, CompareComponent_ng_template_19_Template, 4, 2, "ng-template", null, 0, \u0275\u0275templateRefExtractor);
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(19, "label", 10);
-      \u0275\u0275text(20);
-      \u0275\u0275pipe(21, "translate");
+      \u0275\u0275elementStart(21, "label", 11);
+      \u0275\u0275text(22);
+      \u0275\u0275pipe(23, "translate");
       \u0275\u0275elementEnd()()();
-      \u0275\u0275elementStart(22, "div", 7)(23, "span", 8);
-      \u0275\u0275text(24);
-      \u0275\u0275pipe(25, "translate");
+      \u0275\u0275elementStart(24, "div", 8)(25, "span", 9);
+      \u0275\u0275text(26);
+      \u0275\u0275pipe(27, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(26, "div", 11)(27, "p-iftalabel")(28, "p-select", 12);
-      \u0275\u0275listener("ngModelChange", function CompareComponent_Template_p_select_ngModelChange_28_listener($event) {
-        return ctx.onBeforeSelectionChange($event);
+      \u0275\u0275elementStart(28, "div", 12)(29, "p-iftalabel")(30, "p-select", 13);
+      \u0275\u0275listener("ngModelChange", function CompareComponent_Template_p_select_ngModelChange_30_listener($event) {
+        \u0275\u0275restoreView(_r1);
+        return \u0275\u0275resetView(ctx.onBeforeSelectionChange($event));
       });
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(29, "label", 13);
-      \u0275\u0275text(30);
-      \u0275\u0275pipe(31, "translate");
+      \u0275\u0275elementStart(31, "label", 14);
+      \u0275\u0275text(32);
+      \u0275\u0275pipe(33, "translate");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(32, "p-iftalabel")(33, "p-select", 14);
-      \u0275\u0275listener("ngModelChange", function CompareComponent_Template_p_select_ngModelChange_33_listener($event) {
-        return ctx.onAfterSelectionChange($event);
+      \u0275\u0275elementStart(34, "p-iftalabel")(35, "p-select", 15);
+      \u0275\u0275listener("ngModelChange", function CompareComponent_Template_p_select_ngModelChange_35_listener($event) {
+        \u0275\u0275restoreView(_r1);
+        return \u0275\u0275resetView(ctx.onAfterSelectionChange($event));
       });
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(34, "label", 15);
-      \u0275\u0275text(35);
-      \u0275\u0275pipe(36, "translate");
+      \u0275\u0275elementStart(36, "label", 16);
+      \u0275\u0275text(37);
+      \u0275\u0275pipe(38, "translate");
       \u0275\u0275elementEnd()()()()()();
-      \u0275\u0275elementStart(37, "div", 3)(38, "h2", 4);
-      \u0275\u0275text(39);
-      \u0275\u0275pipe(40, "translate");
+      \u0275\u0275elementStart(39, "div", 4)(40, "h2", 5);
+      \u0275\u0275text(41);
+      \u0275\u0275pipe(42, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(41, "p", 5);
-      \u0275\u0275text(42);
-      \u0275\u0275pipe(43, "translate");
+      \u0275\u0275elementStart(43, "p", 6);
+      \u0275\u0275text(44);
+      \u0275\u0275pipe(45, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(44, "div", 16);
-      \u0275\u0275element(45, "div", 17);
-      \u0275\u0275elementStart(46, "div", 17)(47, "p-button", 18);
-      \u0275\u0275listener("onClick", function CompareComponent_Template_p_button_onClick_47_listener() {
-        return ctx.setCacheForAll();
+      \u0275\u0275elementStart(46, "div", 17);
+      \u0275\u0275element(47, "div", 18);
+      \u0275\u0275elementStart(48, "div", 18)(49, "p-button", 19);
+      \u0275\u0275listener("onClick", function CompareComponent_Template_p_button_onClick_49_listener() {
+        \u0275\u0275restoreView(_r1);
+        return \u0275\u0275resetView(ctx.setCacheForAll());
       });
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(48, "p-button", 19);
-      \u0275\u0275listener("onClick", function CompareComponent_Template_p_button_onClick_48_listener() {
-        return ctx.compareService.clearCache();
+      \u0275\u0275elementStart(50, "p-button", 20);
+      \u0275\u0275listener("onClick", function CompareComponent_Template_p_button_onClick_50_listener() {
+        \u0275\u0275restoreView(_r1);
+        return \u0275\u0275resetView(ctx.compareService.clearCache());
       });
       \u0275\u0275elementEnd()()()()();
-      \u0275\u0275elementStart(49, "div", 20)(50, "p-tabs", 21)(51, "p-tablist")(52, "p-tab", 22);
-      \u0275\u0275element(53, "i", 23);
-      \u0275\u0275text(54);
-      \u0275\u0275pipe(55, "translate");
+      \u0275\u0275elementStart(51, "div", 21)(52, "p-tabs", 22)(53, "p-tablist")(54, "p-tab", 23);
+      \u0275\u0275element(55, "i", 24);
+      \u0275\u0275text(56);
+      \u0275\u0275pipe(57, "translate");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(56, "p-tabpanels", 24)(57, "p-tabpanel", 22)(58, "aida-compare-rendered", 25);
-      \u0275\u0275listener("contentChanged", function CompareComponent_Template_aida_compare_rendered_contentChanged_58_listener($event) {
-        return ctx.onContentChanged($event);
+      \u0275\u0275elementStart(58, "p-tabpanels", 25)(59, "p-tabpanel", 23)(60, "aida-compare-rendered", 26);
+      \u0275\u0275listener("contentChanged", function CompareComponent_Template_aida_compare_rendered_contentChanged_60_listener($event) {
+        \u0275\u0275restoreView(_r1);
+        return \u0275\u0275resetView(ctx.onContentChanged($event));
       });
       \u0275\u0275elementEnd()()()()()();
     }
     if (rf & 2) {
       \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 23, "compare._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 24, "compare._title"));
       \u0275\u0275advance(6);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(8, 25, "compare.pageOptions._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(8, 26, "compare.pageOptions._title"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(11, 27, "compare.pageOptions.description"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(11, 28, "compare.pageOptions.description"));
       \u0275\u0275advance(5);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(16, 29, "compare.pageOptions.selection"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(16, 30, "compare.pageOptions.selection"));
       \u0275\u0275advance(3);
-      \u0275\u0275property("options", ctx.pageOptions)("ngModel", ctx.compareService.selectedPage())("loading", ctx.compareService.loading() || ctx.compareService.loadingAll());
-      \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(21, 31, "compare.pageOptions.page"));
+      \u0275\u0275property("options", ctx.pageOptions)("ngModel", ctx.compareService.selectedPage())("filter", true)("loading", ctx.compareService.loading() || ctx.compareService.loadingAll());
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(25, 33, "compare.pageOptions.versions"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(23, 32, "compare.pageOptions.page"));
+      \u0275\u0275advance(4);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(27, 34, "compare.pageOptions.versions"));
       \u0275\u0275advance(4);
       \u0275\u0275property("options", ctx.beforeOptions)("ngModel", ctx.compareService.selectedBefore())("loading", ctx.compareService.loading() || ctx.compareService.loadingAll() || ctx.compareService.loadingBefore());
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(31, 35, "compare.pageOptions.before"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(33, 36, "compare.pageOptions.before"));
       \u0275\u0275advance(3);
       \u0275\u0275property("options", ctx.afterOptions)("ngModel", ctx.compareService.selectedAfter())("loading", ctx.compareService.loading() || ctx.compareService.loadingAll() || ctx.compareService.loadingAfter());
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(36, 37, "compare.pageOptions.after"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(38, 38, "compare.pageOptions.after"));
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(40, 39, "compare.tools._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(42, 40, "compare.tools._title"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(43, 41, "compare.tools.description"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(45, 42, "compare.tools.description"));
       \u0275\u0275advance(5);
       \u0275\u0275property("loading", ctx.compareService.loadingAll());
       \u0275\u0275advance(7);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(55, 43, "compare.tab.rendered"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(57, 44, "compare.tab.rendered"));
       \u0275\u0275advance(4);
       \u0275\u0275property("beforeContent", ctx.compareService.originalHtml())("afterContent", ctx.compareService.modifiedHtml());
     }
@@ -79134,7 +77831,7 @@ var CompareComponent = class _CompareComponent {
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(CompareComponent, [{
     type: Component,
-    args: [{ selector: "aida-page-assistant-compare", imports: [
+    args: [{ selector: "aida-compare-versions", imports: [
       CommonModule,
       FormsModule,
       TranslateModule,
@@ -79158,8 +77855,14 @@ var CompareComponent = class _CompareComponent {
           <span class="text-xs my-1">{{ 'compare.pageOptions.selection' | translate }}</span>\r
           <p-iftalabel>\r
             <p-select inputId="page" [options]="pageOptions" [ngModel]="compareService.selectedPage()" (ngModelChange)="onPageSelectionChange($event)"\r
-                      optionLabel="label" optionValue="value" class="w-20rem sm:w-27rem"\r
-                      [loading]="compareService.loading() || compareService.loadingAll()" loadingIcon="pi pi-spin pi-spinner" />\r
+                      optionLabel="label" optionValue="path" [filter]="true" filterBy="label" class="w-20rem sm:w-27rem"\r
+                      [loading]="compareService.loading() || compareService.loadingAll()" loadingIcon="pi pi-spin pi-spinner">\r
+              <ng-template let-page #item>\r
+                <div class="flex flex-column">\r
+                  <span class="font-bold -mb-1">{{ page.label }}</span>\r
+                  {{ page.path }}\r
+                </div>\r
+              </ng-template></p-select>\r
             <label for="page">{{'compare.pageOptions.page' | translate}}</label>\r
           </p-iftalabel>\r
         </div>\r
@@ -79256,16 +77959,16 @@ var CompareComponent = class _CompareComponent {
   }], () => [], null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CompareComponent, { className: "CompareComponent", filePath: "src/app/views/compare-assistant/compare.component.ts", lineNumber: 35 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CompareComponent, { className: "CompareComponent", filePath: "src/app/views/task/compare-versions/compare.component.ts", lineNumber: 35 });
 })();
 
 // node_modules/primeng/fesm2022/primeng-panel.mjs
-var _c033 = ["header"];
-var _c149 = ["icons"];
-var _c230 = ["content"];
-var _c320 = ["footer"];
-var _c417 = ["headericons"];
-var _c515 = ["contentWrapper"];
+var _c031 = ["header"];
+var _c148 = ["icons"];
+var _c228 = ["content"];
+var _c319 = ["footer"];
+var _c416 = ["headericons"];
+var _c514 = ["contentWrapper"];
 var _c613 = ["*", [["p-header"]], [["p-footer"]]];
 var _c712 = ["*", "p-header", "p-footer"];
 var _c811 = (a0, a1) => ({
@@ -79291,12 +77994,12 @@ var _c1212 = (a0) => ({
   value: "visible",
   params: a0
 });
-var _c1311 = (a0, a1, a2) => ({
+var _c1310 = (a0, a1, a2) => ({
   "p-panel-icons-start": a0,
   "p-panel-icons-end": a1,
   "p-panel-icons-center": a2
 });
-var _c1410 = (a0) => ({
+var _c149 = (a0) => ({
   $implicit: a0
 });
 function Panel_div_1_span_1_Template(rf, ctx) {
@@ -79409,7 +78112,7 @@ function Panel_div_1_p_button_6_ng_template_1_Template(rf, ctx) {
     const ctx_r2 = \u0275\u0275nextContext(3);
     \u0275\u0275property("ngIf", !ctx_r2.headerIconsTemplate && !ctx_r2._headerIconsTemplate && !(ctx_r2.toggleButtonProps == null ? null : ctx_r2.toggleButtonProps.icon));
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r2.headerIconsTemplate || ctx_r2._headerIconsTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(3, _c1410, ctx_r2.collapsed));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r2.headerIconsTemplate || ctx_r2._headerIconsTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(3, _c149, ctx_r2.collapsed));
   }
 }
 function Panel_div_1_p_button_6_Template(rf, ctx) {
@@ -79458,7 +78161,7 @@ function Panel_div_1_Template(rf, ctx) {
     \u0275\u0275advance(2);
     \u0275\u0275property("ngTemplateOutlet", ctx_r2.headerTemplate || ctx_r2._headerTemplate);
     \u0275\u0275advance();
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction3(6, _c1311, ctx_r2.iconPos === "start", ctx_r2.iconPos === "end", ctx_r2.iconPos === "center"));
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction3(6, _c1310, ctx_r2.iconPos === "start", ctx_r2.iconPos === "end", ctx_r2.iconPos === "center"));
     \u0275\u0275advance();
     \u0275\u0275property("ngTemplateOutlet", ctx_r2.iconTemplate || ctx_r2._iconTemplate);
     \u0275\u0275advance();
@@ -79488,7 +78191,7 @@ function Panel_div_7_Template(rf, ctx) {
     \u0275\u0275property("ngTemplateOutlet", ctx_r2.footerTemplate || ctx_r2._footerTemplate);
   }
 }
-var theme21 = ({
+var theme20 = ({
   dt
 }) => `
 .p-panel {
@@ -79537,7 +78240,7 @@ var theme21 = ({
     overflow: hidden;
 }
 `;
-var classes22 = {
+var classes21 = {
   root: ({
     props
   }) => ["p-panel p-component", {
@@ -79553,8 +78256,8 @@ var classes22 = {
 };
 var PanelStyle = class _PanelStyle extends BaseStyle {
   name = "panel";
-  theme = theme21;
-  classes = classes22;
+  theme = theme20;
+  classes = classes21;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275PanelStyle_BaseFactory;
     return function PanelStyle_Factory(__ngFactoryType__) {
@@ -79820,11 +78523,11 @@ var Panel = class _Panel extends BaseComponent {
     contentQueries: function Panel_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
         \u0275\u0275contentQuery(dirIndex, Footer, 5);
-        \u0275\u0275contentQuery(dirIndex, _c033, 4);
-        \u0275\u0275contentQuery(dirIndex, _c149, 4);
-        \u0275\u0275contentQuery(dirIndex, _c230, 4);
-        \u0275\u0275contentQuery(dirIndex, _c320, 4);
-        \u0275\u0275contentQuery(dirIndex, _c417, 4);
+        \u0275\u0275contentQuery(dirIndex, _c031, 4);
+        \u0275\u0275contentQuery(dirIndex, _c148, 4);
+        \u0275\u0275contentQuery(dirIndex, _c228, 4);
+        \u0275\u0275contentQuery(dirIndex, _c319, 4);
+        \u0275\u0275contentQuery(dirIndex, _c416, 4);
         \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
       }
       if (rf & 2) {
@@ -79840,7 +78543,7 @@ var Panel = class _Panel extends BaseComponent {
     },
     viewQuery: function Panel_Query(rf, ctx) {
       if (rf & 1) {
-        \u0275\u0275viewQuery(_c515, 5);
+        \u0275\u0275viewQuery(_c514, 5);
       }
       if (rf & 2) {
         let _t;
@@ -80167,12 +78870,12 @@ var PanelModule = class _PanelModule {
 })();
 
 // node_modules/primeng/fesm2022/primeng-password.mjs
-var _c034 = ["content"];
+var _c032 = ["content"];
 var _c150 = ["footer"];
-var _c231 = ["header"];
-var _c321 = ["clearicon"];
-var _c418 = ["hideicon"];
-var _c516 = ["showicon"];
+var _c229 = ["header"];
+var _c320 = ["clearicon"];
+var _c417 = ["hideicon"];
+var _c515 = ["showicon"];
 var _c614 = ["input"];
 var _c713 = () => ({
   class: "p-password-toggle-mask-icon p-password-mask-icon"
@@ -80440,7 +79143,7 @@ function Password_div_7_Template(rf, ctx) {
     \u0275\u0275property("ngTemplateOutlet", ctx_r3.footerTemplate || ctx_r3._footerTemplate);
   }
 }
-var theme22 = ({
+var theme21 = ({
   dt
 }) => `
 .p-password {
@@ -80554,7 +79257,7 @@ var inlineStyles6 = {
     position: instance.appendTo === "self" ? "relative" : void 0
   })
 };
-var classes23 = {
+var classes22 = {
   root: ({
     instance
   }) => ({
@@ -80577,8 +79280,8 @@ var classes23 = {
 };
 var PasswordStyle = class _PasswordStyle extends BaseStyle {
   name = "password";
-  theme = theme22;
-  classes = classes23;
+  theme = theme21;
+  classes = classes22;
   inlineStyles = inlineStyles6;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275PasswordStyle_BaseFactory;
@@ -81468,12 +80171,12 @@ var Password = class _Password extends BaseComponent {
     selectors: [["p-password"]],
     contentQueries: function Password_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c034, 4);
+        \u0275\u0275contentQuery(dirIndex, _c032, 4);
         \u0275\u0275contentQuery(dirIndex, _c150, 4);
-        \u0275\u0275contentQuery(dirIndex, _c231, 4);
-        \u0275\u0275contentQuery(dirIndex, _c321, 4);
-        \u0275\u0275contentQuery(dirIndex, _c418, 4);
-        \u0275\u0275contentQuery(dirIndex, _c516, 4);
+        \u0275\u0275contentQuery(dirIndex, _c229, 4);
+        \u0275\u0275contentQuery(dirIndex, _c320, 4);
+        \u0275\u0275contentQuery(dirIndex, _c417, 4);
+        \u0275\u0275contentQuery(dirIndex, _c515, 4);
         \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
       }
       if (rf & 2) {
@@ -81875,9 +80578,9 @@ var PasswordModule = class _PasswordModule {
 })();
 
 // src/app/components/sign-in/pat.component.ts
-var _c035 = () => ({ width: "50vw" });
+var _c033 = () => ({ width: "50vw" });
 var _c151 = () => ({ "1199px": "75vw", "575": "90vw" });
-var _c235 = (a0) => ({ defaultOrg: a0 });
+var _c230 = (a0) => ({ defaultOrg: a0 });
 var PatComponent = class _PatComponent {
   exportGitHubService = inject(ExportGitHubService);
   validateOnBlur = false;
@@ -81931,13 +80634,13 @@ var PatComponent = class _PatComponent {
       \u0275\u0275advance(2);
       \u0275\u0275property("pTooltip", \u0275\u0275pipeBind1(7, 13, "github.connect.pat.token.tooltip"));
       \u0275\u0275advance(2);
-      \u0275\u0275styleMap(\u0275\u0275pureFunction0(20, _c035));
+      \u0275\u0275styleMap(\u0275\u0275pureFunction0(20, _c033));
       \u0275\u0275propertyInterpolate("header", \u0275\u0275pipeBind1(9, 15, "github.connect.pat.token.helpHeader"));
       \u0275\u0275property("appendTo", "body");
       \u0275\u0275twoWayProperty("visible", ctx.showHelp);
       \u0275\u0275property("modal", true)("breakpoints", \u0275\u0275pureFunction0(21, _c151));
       \u0275\u0275advance(2);
-      \u0275\u0275property("innerHTML", \u0275\u0275pipeBind2(11, 17, "github.connect.pat.token.help", \u0275\u0275pureFunction1(22, _c235, ctx.defaultOrg)), \u0275\u0275sanitizeHtml);
+      \u0275\u0275property("innerHTML", \u0275\u0275pipeBind2(11, 17, "github.connect.pat.token.help", \u0275\u0275pureFunction1(22, _c230, ctx.defaultOrg)), \u0275\u0275sanitizeHtml);
     }
   }, dependencies: [TranslateModule, TranslatePipe, FormsModule, NgControlStatus, NgModel, ButtonModule, Button, IftaLabelModule, IftaLabel, PasswordModule, Password, TooltipModule, Tooltip, DialogModule, Dialog], encapsulation: 2 });
 };
@@ -81977,8 +80680,495 @@ var PatComponent = class _PatComponent {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(PatComponent, { className: "PatComponent", filePath: "src/app/components/sign-in/pat.component.ts", lineNumber: 21 });
 })();
 
+// src/app/components/sign-in/sign-in-banner.component.ts
+var _c034 = (a0) => ({ User: a0 });
+function SignInBannerComponent_Conditional_5_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r1 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p", 3);
+    \u0275\u0275text(1);
+    \u0275\u0275pipe(2, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(3, "div", 4)(4, "div", 5);
+    \u0275\u0275element(5, "i", 6);
+    \u0275\u0275elementStart(6, "p", 7);
+    \u0275\u0275text(7);
+    \u0275\u0275pipe(8, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(9, "p", 8);
+    \u0275\u0275text(10);
+    \u0275\u0275pipe(11, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(12, "p-button", 9);
+    \u0275\u0275pipe(13, "translate");
+    \u0275\u0275listener("onClick", function SignInBannerComponent_Conditional_5_Template_p_button_onClick_12_listener() {
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.authService.login());
+    });
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(14, "p-divider", 10);
+    \u0275\u0275text(15);
+    \u0275\u0275pipe(16, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(17, "p-divider", 11);
+    \u0275\u0275text(18);
+    \u0275\u0275pipe(19, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(20, "div", 12);
+    \u0275\u0275element(21, "i", 13);
+    \u0275\u0275elementStart(22, "p", 7);
+    \u0275\u0275text(23);
+    \u0275\u0275pipe(24, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(25, "p", 8);
+    \u0275\u0275text(26);
+    \u0275\u0275pipe(27, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(28, "aida-pat", 14);
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 9, "github.connect.description"));
+    \u0275\u0275advance(6);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(8, 11, "github.connect.option1.title"));
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(11, 13, "github.connect.option1.description"));
+    \u0275\u0275advance(2);
+    \u0275\u0275propertyInterpolate("label", \u0275\u0275pipeBind1(13, 15, "github.connect.option1.button"));
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(16, 17, "common.or"));
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(19, 19, "common.or"));
+    \u0275\u0275advance(5);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(24, 21, "github.connect.option2.title"));
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(27, 23, "github.connect.option2.description"));
+    \u0275\u0275advance(2);
+    \u0275\u0275property("validateOnBlur", true);
+  }
+}
+function SignInBannerComponent_Conditional_6_Conditional_3_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275element(0, "p", 17);
+    \u0275\u0275pipe(1, "translate");
+    \u0275\u0275elementStart(2, "p", 18);
+    \u0275\u0275text(3);
+    \u0275\u0275pipe(4, "translate");
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    \u0275\u0275classMap(ctx_r1.getTitleClasses());
+    \u0275\u0275property("innerHtml", \u0275\u0275pipeBind1(1, 4, "github.connect.checking"), \u0275\u0275sanitizeHtml);
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 6, "github.connect.checking.details"));
+  }
+}
+function SignInBannerComponent_Conditional_6_Conditional_4_Conditional_5_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "p", 18);
+    \u0275\u0275text(1);
+    \u0275\u0275pipe(2, "translate");
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(3);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind2(2, 1, "github.connect.connected.oauth", \u0275\u0275pureFunction1(4, _c034, ctx_r1.username())), " ");
+  }
+}
+function SignInBannerComponent_Conditional_6_Conditional_4_Conditional_6_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "p", 18);
+    \u0275\u0275text(1);
+    \u0275\u0275pipe(2, "translate");
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(3);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind2(2, 1, "github.connect.connected.pat", \u0275\u0275pureFunction1(4, _c034, ctx_r1.username())), " ");
+  }
+}
+function SignInBannerComponent_Conditional_6_Conditional_4_Conditional_7_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "p", 19);
+    \u0275\u0275text(1);
+    \u0275\u0275pipe(2, "translate");
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(3);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1("", \u0275\u0275pipeBind2(2, 1, "github.connect.unverified", \u0275\u0275pureFunction1(4, _c034, ctx_r1.username())), "a");
+  }
+}
+function SignInBannerComponent_Conditional_6_Conditional_4_Conditional_8_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r3 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p-button", 21);
+    \u0275\u0275pipe(1, "translate");
+    \u0275\u0275listener("onClick", function SignInBannerComponent_Conditional_6_Conditional_4_Conditional_8_Template_p_button_onClick_0_listener() {
+      \u0275\u0275restoreView(_r3);
+      const ctx_r1 = \u0275\u0275nextContext(3);
+      return \u0275\u0275resetView(ctx_r1.exportGitHubService.clearPAT());
+    });
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    \u0275\u0275property("label", \u0275\u0275pipeBind1(1, 1, "github.connect.clearToken"));
+  }
+}
+function SignInBannerComponent_Conditional_6_Conditional_4_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 16)(1, "div")(2, "p");
+    \u0275\u0275text(3);
+    \u0275\u0275pipe(4, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275template(5, SignInBannerComponent_Conditional_6_Conditional_4_Conditional_5_Template, 3, 6, "p", 18)(6, SignInBannerComponent_Conditional_6_Conditional_4_Conditional_6_Template, 3, 6, "p", 18)(7, SignInBannerComponent_Conditional_6_Conditional_4_Conditional_7_Template, 3, 6, "p", 19);
+    \u0275\u0275elementEnd();
+    \u0275\u0275template(8, SignInBannerComponent_Conditional_6_Conditional_4_Conditional_8_Template, 2, 3, "p-button", 20);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance(2);
+    \u0275\u0275classMap(ctx_r1.getTitleClasses());
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 6, "github.connect.connected"));
+    \u0275\u0275advance(2);
+    \u0275\u0275conditional(ctx_r1.authService.isAuthenticated() ? 5 : 6);
+    \u0275\u0275advance(2);
+    \u0275\u0275conditional(ctx_r1.showDisclaimer() ? 7 : -1);
+    \u0275\u0275advance();
+    \u0275\u0275conditional(ctx_r1.showDisclaimer() ? 8 : -1);
+  }
+}
+function SignInBannerComponent_Conditional_6_Conditional_5_Conditional_8_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r4 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p-button", 21);
+    \u0275\u0275pipe(1, "translate");
+    \u0275\u0275listener("onClick", function SignInBannerComponent_Conditional_6_Conditional_5_Conditional_8_Template_p_button_onClick_0_listener() {
+      \u0275\u0275restoreView(_r4);
+      const ctx_r1 = \u0275\u0275nextContext(3);
+      return \u0275\u0275resetView(ctx_r1.exportGitHubService.clearPAT());
+    });
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    \u0275\u0275property("label", \u0275\u0275pipeBind1(1, 1, "github.connect.clearToken"));
+  }
+}
+function SignInBannerComponent_Conditional_6_Conditional_5_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 16)(1, "div")(2, "p");
+    \u0275\u0275text(3);
+    \u0275\u0275pipe(4, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(5, "p", 18);
+    \u0275\u0275text(6);
+    \u0275\u0275pipe(7, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275template(8, SignInBannerComponent_Conditional_6_Conditional_5_Conditional_8_Template, 2, 3, "p-button", 20);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance(2);
+    \u0275\u0275classMap(ctx_r1.getTitleClasses());
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 5, "github.connect.warning"));
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(7, 7, "github.connect.warning.details"));
+    \u0275\u0275advance(2);
+    \u0275\u0275conditional(!ctx_r1.authService.isAuthenticated() ? 8 : -1);
+  }
+}
+function SignInBannerComponent_Conditional_6_Conditional_6_Conditional_8_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r5 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p-button", 21);
+    \u0275\u0275pipe(1, "translate");
+    \u0275\u0275listener("onClick", function SignInBannerComponent_Conditional_6_Conditional_6_Conditional_8_Template_p_button_onClick_0_listener() {
+      \u0275\u0275restoreView(_r5);
+      const ctx_r1 = \u0275\u0275nextContext(3);
+      return \u0275\u0275resetView(ctx_r1.exportGitHubService.clearPAT());
+    });
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    \u0275\u0275property("label", \u0275\u0275pipeBind1(1, 1, "github.connect.clearToken"));
+  }
+}
+function SignInBannerComponent_Conditional_6_Conditional_6_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 16)(1, "div")(2, "p");
+    \u0275\u0275text(3);
+    \u0275\u0275pipe(4, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(5, "p", 18);
+    \u0275\u0275text(6);
+    \u0275\u0275pipe(7, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275template(8, SignInBannerComponent_Conditional_6_Conditional_6_Conditional_8_Template, 2, 3, "p-button", 20);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance(2);
+    \u0275\u0275classMap(ctx_r1.getTitleClasses());
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 5, "github.connect.error"));
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(7, 7, "github.connect.error.details"));
+    \u0275\u0275advance(2);
+    \u0275\u0275conditional(!ctx_r1.authService.isAuthenticated() ? 8 : -1);
+  }
+}
+function SignInBannerComponent_Conditional_6_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div");
+    \u0275\u0275element(1, "i");
+    \u0275\u0275elementStart(2, "div", 15);
+    \u0275\u0275template(3, SignInBannerComponent_Conditional_6_Conditional_3_Template, 5, 8)(4, SignInBannerComponent_Conditional_6_Conditional_4_Template, 9, 8, "div", 16)(5, SignInBannerComponent_Conditional_6_Conditional_5_Template, 9, 9, "div", 16)(6, SignInBannerComponent_Conditional_6_Conditional_6_Template, 9, 9, "div", 16);
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext();
+    \u0275\u0275classMap(ctx_r1.getBgClasses());
+    \u0275\u0275advance();
+    \u0275\u0275classMap(ctx_r1.getStatusIcons());
+    \u0275\u0275advance(2);
+    \u0275\u0275conditional(ctx_r1.connectionStatus() === "checking" ? 3 : -1);
+    \u0275\u0275advance();
+    \u0275\u0275conditional(ctx_r1.connectionStatus() === "connected" ? 4 : -1);
+    \u0275\u0275advance();
+    \u0275\u0275conditional(ctx_r1.connectionStatus() === "warning" ? 5 : -1);
+    \u0275\u0275advance();
+    \u0275\u0275conditional(ctx_r1.connectionStatus() === "error" || ctx_r1.connectionStatus() === "missing" ? 6 : -1);
+  }
+}
+var SignInBannerComponent = class _SignInBannerComponent {
+  projectState = inject(ProjectStateService);
+  settingsService = inject(UserSettingsService);
+  exportGitHubService = inject(ExportGitHubService);
+  authService = inject(GitHubAuthService);
+  username = computed(() => this.exportGitHubService.user()?.name || this.exportGitHubService.user()?.login || "User");
+  //Signals
+  projectData = this.projectState.getProject;
+  connectionStatus = signal("checking");
+  showDisclaimer = signal(false);
+  pat = signal(this.exportGitHubService.pat);
+  precheckInProgress = signal(false);
+  constructor() {
+    effect(() => __async(this, null, function* () {
+      const token = this.exportGitHubService.token();
+      const owner = this.projectData().github.owner;
+      const repo = this.projectData().github.repo;
+      if (token && owner && repo) {
+        untracked(() => this.validateConnection());
+      } else if (!token) {
+        this.connectionStatus.set("missing");
+      }
+    }));
+  }
+  // Initialize table and connection status
+  ngOnInit() {
+    return __async(this, null, function* () {
+      yield this.validateConnection();
+    });
+  }
+  //Validate token and repo access
+  validateConnection() {
+    return __async(this, null, function* () {
+      this.precheckInProgress.set(true);
+      this.connectionStatus.set("checking");
+      this.showDisclaimer.set(false);
+      const token = this.exportGitHubService.token();
+      const owner = this.projectData().github.owner;
+      const repo = this.projectData().github.repo;
+      const result = yield this.exportGitHubService.validateToken(token, owner, repo);
+      if (!result.valid) {
+        this.connectionStatus.set("error");
+      } else if (result.repoExists && !result.hasRepoAccess) {
+        this.connectionStatus.set("warning");
+      } else if (!result.repoExists && !result.canCreateRepo) {
+        this.connectionStatus.set("warning");
+      } else {
+        this.connectionStatus.set("connected");
+        this.showDisclaimer.set(result.showDisclaimer ?? false);
+      }
+      this.precheckInProgress.set(false);
+    });
+  }
+  // Status message colors & icons
+  getStatusTextColor(status) {
+    const isDark = this.settingsService.darkMode();
+    const colorMap = {
+      "connected": isDark ? "text-green-400" : "text-green-500",
+      "warning": isDark ? "text-yellow-400" : "text-yellow-500",
+      "error": isDark ? "text-red-400" : "text-red-500",
+      "missing": isDark ? "text-red-400" : "text-red-500",
+      "checking": isDark ? "text-blue-400" : "text-blue-500"
+    };
+    return colorMap[status] || "";
+  }
+  getStatusIcons = computed(() => {
+    const status = this.connectionStatus();
+    const iconMap = {
+      "connected": "pi-check-circle",
+      "warning": "pi-exclamation-triangle",
+      "error": "pi-times-circle",
+      "missing": "pi-times-circle",
+      "checking": "pi-spin pi-spinner"
+    };
+    return `pi ${iconMap[status]} ${this.getStatusTextColor(status)} text-2xl`;
+  });
+  getTitleClasses = computed(() => {
+    const status = this.connectionStatus();
+    return `font-semibold my-0 ${this.getStatusTextColor(status)}`;
+  });
+  getBgClasses = computed(() => {
+    const status = this.connectionStatus();
+    const isDark = this.settingsService.darkMode();
+    const baseClasses = "flex align-items-center gap-2 p-3 border-round-md mb-3";
+    const bgMap = {
+      "connected": isDark ? "bg-green-950" : "bg-green-50",
+      "warning": isDark ? "bg-yellow-950" : "bg-yellow-50",
+      "error": isDark ? "bg-red-950" : "bg-red-50",
+      "missing": isDark ? "bg-red-950" : "bg-red-50",
+      "checking": isDark ? "bg-blue-950" : "bg-blue-50"
+    };
+    return `${baseClasses} ${bgMap[status]}`;
+  });
+  static \u0275fac = function SignInBannerComponent_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _SignInBannerComponent)();
+  };
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SignInBannerComponent, selectors: [["aida-sign-in-banner"]], decls: 7, vars: 6, consts: [[1, "text-2xl", "mt-3", "mb-1"], [1, "flex", "flex-column", "gap-3"], [3, "class"], [1, "my-0"], [1, "flex", "flex-column", "lg:flex-row", "gap-2"], [1, "flex-1", "border-left-3", "surface-border", "p-3", "text-center"], [1, "pi", "pi-github", "text-6xl", "text-900", "mb-3"], [1, "font-semibold", "my-0"], [1, "text-sm", "text-color-secondary", "my-2"], ["icon", "pi pi-github", "styleClass", "w-full", 3, "onClick", "label"], ["layout", "horizontal", 1, "lg:hidden", "uppercase"], ["layout", "vertical", 1, "hidden", "lg:flex", "uppercase"], [1, "flex-1", "border-left-3", "surface-border", "lg:border-none", "p-3", "text-center"], [1, "pi", "pi-key", "text-6xl", "text-900", "mb-3"], [3, "validateOnBlur"], [1, "flex-1"], [1, "flex", "flex-row", "gap-2", "justify-content-between"], [3, "innerHtml"], [1, "text-sm", "text-color-secondary", "my-0"], [1, "text-xs", "text-color-secondary", "my-0"], ["icon", "pi pi-times", "outlined", "", "severity", "secondary", "size", "small", "styleClass", "secondary-outline white-space-nowrap", 3, "label"], ["icon", "pi pi-times", "outlined", "", "severity", "secondary", "size", "small", "styleClass", "secondary-outline white-space-nowrap", 3, "onClick", "label"]], template: function SignInBannerComponent_Template(rf, ctx) {
+    if (rf & 1) {
+      \u0275\u0275elementStart(0, "h2", 0);
+      \u0275\u0275text(1);
+      \u0275\u0275pipe(2, "translate");
+      \u0275\u0275pipe(3, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(4, "div", 1);
+      \u0275\u0275template(5, SignInBannerComponent_Conditional_5_Template, 29, 25)(6, SignInBannerComponent_Conditional_6_Template, 7, 8, "div", 2);
+      \u0275\u0275elementEnd();
+    }
+    if (rf & 2) {
+      let tmp_1_0;
+      \u0275\u0275advance();
+      \u0275\u0275textInterpolate(ctx.connectionStatus() === "connected" ? \u0275\u0275pipeBind1(2, 2, "github.connected") : \u0275\u0275pipeBind1(3, 4, "github.connect"));
+      \u0275\u0275advance(4);
+      \u0275\u0275conditional((tmp_1_0 = !ctx.exportGitHubService.user()) ? 5 : 6, tmp_1_0);
+    }
+  }, dependencies: [TranslateModule, TranslatePipe, ButtonModule, Button, DividerModule, Divider, PatComponent], encapsulation: 2 });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(SignInBannerComponent, [{
+    type: Component,
+    args: [{ selector: "aida-sign-in-banner", imports: [
+      TranslateModule,
+      ButtonModule,
+      DividerModule,
+      PatComponent
+    ], template: `<h2 class="text-2xl mt-3 mb-1">{{connectionStatus() === 'connected' ? ('github.connected' | translate) : ('github.connect' | translate) }}</h2>\r
+<div class="flex flex-column gap-3">\r
+    <!--Sign in options -->\r
+    @if (!exportGitHubService.user(); as user) {\r
+    <p class="my-0">{{ 'github.connect.description' | translate }}</p>\r
+    <!-- Option 1: OAuth Sign In -->\r
+    <div class="flex flex-column lg:flex-row gap-2">\r
+        <div class="flex-1 border-left-3 surface-border p-3 text-center">\r
+\r
+            <i class="pi pi-github text-6xl text-900 mb-3"></i>\r
+            <p class="font-semibold my-0">{{ 'github.connect.option1.title' | translate }}</p>\r
+            <p class="text-sm text-color-secondary my-2">{{ 'github.connect.option1.description' | translate }}</p>\r
+            <p-button\r
+                      icon="pi pi-github"\r
+                      label="{{ 'github.connect.option1.button' | translate }}"\r
+                      (onClick)="authService.login()"\r
+                      styleClass="w-full" />\r
+\r
+        </div>\r
+        <p-divider layout="horizontal" class="lg:hidden uppercase">{{ 'common.or' | translate }}</p-divider>\r
+        <p-divider layout="vertical" class="hidden lg:flex uppercase">{{ 'common.or' | translate }}</p-divider>\r
+        <!-- Option 2: Personal Access Token -->\r
+        <div class="flex-1 border-left-3 surface-border lg:border-none p-3 text-center">\r
+            <i class="pi pi-key text-6xl text-900 mb-3"></i>\r
+            <p class="font-semibold my-0">{{ 'github.connect.option2.title' | translate }}</p>\r
+            <p class="text-sm text-color-secondary my-2">{{ 'github.connect.option2.description' | translate }}</p>\r
+            <aida-pat [validateOnBlur]="true" />\r
+        </div>\r
+    </div>\r
+    } @else {\r
+    <!--Connection Status-->\r
+    <div [class]="getBgClasses()">\r
+        <i [class]="getStatusIcons()"></i>\r
+        <div class="flex-1">\r
+            @if (connectionStatus() === 'checking') {\r
+            <p [class]="getTitleClasses()" [innerHtml]="'github.connect.checking' | translate"></p>\r
+            <p class="text-sm text-color-secondary my-0">{{ 'github.connect.checking.details' | translate }}</p>\r
+            }\r
+            @if (connectionStatus() === 'connected') {\r
+            <div class="flex flex-row gap-2 justify-content-between">\r
+                <div>\r
+                    <p [class]="getTitleClasses()">{{ 'github.connect.connected' | translate }}</p>\r
+                    @if (authService.isAuthenticated()) {\r
+                    <p class="text-sm text-color-secondary my-0">\r
+                        {{ 'github.connect.connected.oauth' | translate:{ User: username()} }}\r
+                    </p>\r
+                    } @else {\r
+                    <p class="text-sm text-color-secondary my-0">\r
+                        {{ 'github.connect.connected.pat' | translate:{ User: username()} }}\r
+                    </p>\r
+                    }\r
+                    @if(showDisclaimer()) {\r
+                    <p class="text-xs text-color-secondary my-0">{{ 'github.connect.unverified' | translate:{ User: username()} }}a</p>\r
+                    }\r
+                </div>\r
+                @if(showDisclaimer()) {\r
+                <p-button [label]="'github.connect.clearToken' | translate" icon="pi pi-times" outlined severity="secondary" size="small" (onClick)="exportGitHubService.clearPAT()" styleClass="secondary-outline white-space-nowrap" />\r
+                }\r
+            </div>\r
+            }\r
+            @if (connectionStatus() === 'warning') {\r
+            <div class="flex flex-row gap-2 justify-content-between">\r
+                <div>\r
+                    <p [class]="getTitleClasses()">{{ 'github.connect.warning' | translate }}</p>\r
+                    <p class="text-sm text-color-secondary my-0">{{ 'github.connect.warning.details' | translate }}</p>\r
+                </div>\r
+                @if (!authService.isAuthenticated()) {\r
+                <p-button [label]="'github.connect.clearToken' | translate" icon="pi pi-times" outlined severity="secondary" size="small" (onClick)="exportGitHubService.clearPAT()" styleClass="secondary-outline white-space-nowrap" />\r
+                }\r
+            </div>\r
+            }\r
+            @if (connectionStatus() === 'error' || connectionStatus() === 'missing') {\r
+            <div class="flex flex-row gap-2 justify-content-between">\r
+                <div>\r
+                    <p [class]="getTitleClasses()">{{ 'github.connect.error' | translate }}</p>\r
+                    <p class="text-sm text-color-secondary my-0">{{ 'github.connect.error.details' | translate }}</p>\r
+                </div>\r
+                @if (!authService.isAuthenticated()) {\r
+                <p-button [label]="'github.connect.clearToken' | translate" icon="pi pi-times" outlined severity="secondary" size="small" (onClick)="exportGitHubService.clearPAT()" styleClass="secondary-outline white-space-nowrap" />\r
+                }\r
+            </div>\r
+            }\r
+        </div>\r
+    </div>\r
+    }\r
+</div>` }]
+  }], () => [], null);
+})();
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SignInBannerComponent, { className: "SignInBannerComponent", filePath: "src/app/components/sign-in/sign-in-banner.component.ts", lineNumber: 27 });
+})();
+
 // src/app/components/bookmarklet/bookmarklet.component.ts
-var _c036 = (a0) => ({ repo: a0 });
+var _c035 = (a0) => ({ repo: a0 });
 var BookmarkletComponent = class _BookmarkletComponent {
   projectState = inject(ProjectStateService);
   sanitizer = inject(DomSanitizer);
@@ -82025,7 +81215,7 @@ var BookmarkletComponent = class _BookmarkletComponent {
       \u0275\u0275advance(3);
       \u0275\u0275property("href", ctx.projectBookmarklet(), \u0275\u0275sanitizeUrl);
       \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(7, 7, "project.bookmarklet._title", \u0275\u0275pureFunction1(14, _c036, ctx.projectData().github.repo)));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(7, 7, "project.bookmarklet._title", \u0275\u0275pureFunction1(14, _c035, ctx.projectData().github.repo)));
       \u0275\u0275advance(3);
       \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(10, 10, "project.bookmarklet.description"));
       \u0275\u0275advance(4);
@@ -82053,14 +81243,661 @@ var BookmarkletComponent = class _BookmarkletComponent {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(BookmarkletComponent, { className: "BookmarkletComponent", filePath: "src/app/components/bookmarklet/bookmarklet.component.ts", lineNumber: 17 });
 })();
 
-// src/app/views/github-assistant/export-github.component.ts
-var _c037 = ["settingsOverlay"];
+// src/app/common/cdts.template.ts
+var CDTS_TEMPLATE_ENG = `<!DOCTYPE html>
+<html class="no-js" dir="ltr" lang="en" xmlns="https://www.w3.org/1999/xhtml">
+    <head prefix="og: https://ogp.me/ns#">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta charset="utf-8">
+        <!-- Web Experience Toolkit (WET) / Bo\xEEte \xE0 outils de l'exp\xE9rience Web (BOEW) wet-boew.github.io/wet-boew/License-en.html / wet-boew.github.io/wet-boew/Licence-fr.html -->
+        <title>{{TITLE}}</title>
+        <meta content="width=device-width, initial-scale=1" name="viewport">
+        <link rel="schema.dcterms" href="https://purl.org/dc/terms/">
+        <!-- Meta data -->
+        <meta name="description" content="{{DESCRIPTION}}">
+        <meta name="keywords" content="{{KEYWORDS}}">
+        <meta name="author" content="Canada Revenue Agency">
+        <meta name="dcterms.creator" content="Canada Revenue Agency">
+        <meta name="robots" content="{{ROBOTS}}">
+        <meta name="dcterms.language" title="ISO639-2/T" content="eng">
+        <meta name="dcterms.audience" content="general public">
+        <meta name="dcterms.spatial" content="Canada">
+        <meta name="dcterms.type" content="service description">
+        <meta name="dcterms.identifier" content="Canada_Revenue_Agency">
+        <!-- Meta data -->
+        <link rel="stylesheet" href="https://www.canada.ca/etc/designs/canada/wet-boew/css/theme.min.css">
+        <link rel="stylesheet" href="https://www.canada.ca/etc/designs/canada/wet-boew/m\xE9li-m\xE9lo/2025-12-mille-iles.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+        <!-- START of GitHub only testing banner CSS -->
+        <link rel="stylesheet" href="https://cra-test-arc.canada.ca/core-prototype/source/css/testing-banner.css">
+        <!-- END of GitHub only testing banner CSS -->
+        {{STYLES}}
+        <link href="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v5_0_4/wet-boew/assets/favicon.ico" rel="shortcut icon">
+    </head>
+    <body vocab="https://schema.org/" typeof="WebPage" resource="#wb-webpage">
+        <noscript>
+            <!-- Write closure fall-back static file -->
+            <!-- /ROOT/etc/designs/canada/cdts/gcweb/v4_0_43/cdts/static/refTop.html -->
+            <!--#include virtual="/app/cls/WET/gcweb/v4_0_43/cdts/static/refTop.html" -->
+        </noscript>
+        <!-- Load closure template scripts -->
+        <!--<script src="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v4_0_43/cdts/compiled/soyutils.js"><\/script>-->
+        <script src="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v5_0_4/cdts/compiled/wet-en.js"><\/script>
+        <!-- START of GitHub only template section -->
+        <data id="devoptions" data-loc-storage="gitCRATemplateDevOptions" value="true"></data>
+        <data id="exitpage" data-exit-by-url="false" data-mod-link-file="{{DEPTH}}source/data/exclude-redirect-links.json" value="{{DEPTH}}source/exit-intent-e.html"></data>
+        <data id="relextlnk" data-origin="https://www.canada.ca" value="false"></data>
+        <div id="site-banner-inc" class="wb-disable-allow" data-ajax-replace="https://cra-test-arc.canada.ca/core-prototype/source/includes/site-banner-e.inc"></div>
+        <!-- END of GitHub only template section -->
+        <div id="def-top">
+            <!-- Write closure fall-back static file -->
+            <!-- /ROOT/etc/designs/canada/cdts/gcweb/v4_0_43/cdts/static/top-en.html -->
+            <!--#include virtual="/app/cls/WET/gcweb/v4_0_43/cdts/static/top-en.html" -->
+        </div>
+        <!-- Write closure template -->
+        <script>
+            var defTop = document.getElementById("def-top");
+            defTop.outerHTML = wet.builder.top({
+                lngLinks: [{
+                    lang: "fr", 
+                    href: "{{FRENCH}}", 
+                    text: "Fran\xE7ais"
+                }], 
+                customSearch: [{
+                    action: "https://www.canada.ca/en/revenue-agency/search.html", 
+                    placeholder: "CRA", 
+                    method: "get", 
+                }], 
+                auth: [{
+                    type: "contextual", 
+                    label: "sign in", 
+                    labelExtended: "CRA sign in", 
+                    link: "https://www.canada.ca/en/revenue-agency/services/e-services/cra-login-services.html"
+                }], 
+                breadcrumbs: [{{BREADCRUMBS}}]
+            });
+        <\/script>
+        <!-- Write closure template -->
+        <div class="container">
+            <div class="row">
+                <main property="mainContentOfPage" resource="#wb-main" typeof="WebPageElement" class="container">
+                    {{HEADER}}
+
+                    {{CONTENT}}
+
+                    <section class="pagedetails">
+                        <h2 class="wb-inv">Page details</h2>
+                        <div class="row">
+                            <div class="col-sm-8 col-md-9 col-lg-9">
+                                <div data-ajax-replace="https://www.canada.ca/etc/designs/canada/wet-boew/assets/feedback/page-feedback-en.html" class="wb-disable-allow" data-feedback-section="{{TITLE}}" data-feedback-theme="Taxes" data-feedback-institution="."></div>
+                            </div>
+                        </div>
+                        <dl id="wb-dtmd">
+                            <dt>Date modified:</dt>
+                            <dd><time property="dateModified">{{MODIFIED}}</time></dd>
+                        </dl>
+                    </section>
+                    <div id="def-preFooter">
+                        <!-- Write closure fall-back static file -->
+                        <!-- /ROOT/etc/designs/canada/cdts/gcweb/v4_0_43/cdts/static/preFooter-en.html -->
+                        <!--#include virtual="/app/cls/WET/gcweb/v4_0_43/cdts/static/preFooter-en.html" -->
+                    </div>
+                </main>
+            </div>
+        </div>
+        <!-- Write closure template -->
+        <script>
+            var defPreFooter = document.getElementById("def-preFooter");
+            defPreFooter.outerHTML = wet.builder.preFooter({
+                showShare: false, 
+                pagedetails: false
+            });
+        <\/script>
+        <div id="def-footer">
+            <!-- Write closure fall-back static file -->
+            <!-- /ROOT/app/cls/WET/gcweb/v4_0_43/cdts/static/footer-en.html -->
+            <!--#include virtual="/app/cls/WET/gcweb/v4_0_43/cdts/static/footer-en.html" -->
+        </div>
+        <!-- Write closure template -->
+        <script>
+            var defFooter = document.getElementById("def-footer");
+            defFooter.outerHTML = wet.builder.footer({
+                privacyLink: {
+                    href: "https://www.canada.ca/en/revenue-agency/corporate/privacy-notice.html"
+                }, 
+                contextualFooter: {
+                    title: "Canada Revenue Agency (CRA)", 
+                    links: [{
+                        text: "Contact the CRA", 
+                        href: "https://www.canada.ca/en/revenue-agency/corporate/contact-information.html"
+                    }, {
+                        text: "Update your information", 
+                        href: "https://www.canada.ca/en/revenue-agency/services/update-information-cra.html"
+                    }, {
+                        text: "About the CRA", 
+                        href: "https://www.canada.ca/en/revenue-agency/corporate/about-canada-revenue-agency-cra.html"
+                    }]
+                }
+            });
+        <\/script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"><\/script>
+        <script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/wet-boew.min.js"><\/script>
+        <span id="wb-rsz" class="wb-init">&nbsp;</span>
+        <script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/theme.min.js"><\/script>
+        <script src="https://www.canada.ca/etc/designs/canada/wet-boew/m\xE9li-m\xE9lo/2025-12-mille-iles.min.js"><\/script>
+        <script src="{DEPTH}}source/scripts/external-link-detour.js"><\/script>
+        {{SCRIPTS}}
+    </body>
+</html>`;
+var CDTS_TEMPLATE_FRA = `<!DOCTYPE html>
+<html class="no-js" dir="ltr" lang="fr" xmlns="https://www.w3.org/1999/xhtml">
+    <head prefix="og: https://ogp.me/ns#">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta charset="utf-8">
+        <!-- Web Experience Toolkit (WET) / Bo\xEEte \xE0 outils de l'exp\xE9rience Web (BOEW) wet-boew.github.io/wet-boew/License-en.html / wet-boew.github.io/wet-boew/Licence-fr.html -->
+        <title>{{TITLE}}</title>
+        <meta content="width=device-width, initial-scale=1" name="viewport">
+        <link rel="schema.dcterms" href="https://purl.org/dc/terms/">
+        <!-- Meta data -->
+        <meta name="description" content="{{DESCRIPTION}}">
+        <meta name="keywords" content="{{KEYWORDS}}">
+        <meta name="author" content="Agence du revenu du Canada">
+        <meta name="dcterms.creator" content="Agence du revenu du Canada">
+        <meta name="robots" content="{{ROBOTS}}">
+        <meta name="dcterms.language" title="ISO639-2/T" content="fra">
+        <meta name="dcterms.audience" content="general public">
+        <meta name="dcterms.spatial" content="Canada">
+        <meta name="dcterms.type" content="service description">
+        <meta name="dcterms.identifier" content="Agence_du_revenu_du_Canada">
+        <!-- Meta data -->
+        <link rel="stylesheet" href="https://www.canada.ca/etc/designs/canada/wet-boew/css/theme.min.css">
+        <link rel="stylesheet" href="https://www.canada.ca/etc/designs/canada/wet-boew/m\xE9li-m\xE9lo/2025-12-mille-iles.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+        <!-- START of GitHub only testing banner CSS -->
+        <link rel="stylesheet" href="https://cra-test-arc.canada.ca/core-prototype/source/css/testing-banner.css">
+        <!-- END of GitHub only testing banner CSS -->
+        {{STYLES}}
+        <link href="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v5_0_4/wet-boew/assets/favicon.ico" rel="shortcut icon">
+    </head>
+    <body vocab="https://schema.org/" typeof="WebPage" resource="#wb-webpage">
+        <noscript>
+            <!-- Write closure fall-back static file -->
+            <!-- /ROOT/etc/designs/canada/cdts/gcweb/v4_0_43/cdts/static/refTop.html -->
+            <!--#include virtual="/app/cls/WET/gcweb/v4_0_43/cdts/static/refTop.html" -->
+        </noscript>
+        <!-- Load closure template scripts -->
+        <!--<script src="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v4_0_43/cdts/compiled/soyutils.js"><\/script>-->
+        <script src="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v5_0_4/cdts/compiled/wet-fr.js"><\/script>
+        <!-- START of GitHub only template section -->
+        <data id="devoptions" data-loc-storage="gitCRATemplateDevOptions" value="true"></data>
+        <data id="exitpage" data-exit-by-url="false" data-mod-link-file="{{DEPTH}}source/data/exclude-redirect-links.json" value="{{DEPTH}}source/exit-intent-f.html"></data>
+        <data id="relextlnk" data-origin="https://www.canada.ca" value="false"></data>
+        <div id="site-banner-inc" class="wb-disable-allow" data-ajax-replace="https://cra-test-arc.canada.ca/core-prototype/source/includes/site-banner-f.inc"></div>
+        <!-- END of GitHub only template section -->
+        <div id="def-top">
+            <!-- Write closure fall-back static file -->
+            <!-- /ROOT/etc/designs/canada/cdts/gcweb/v4_0_43/cdts/static/top-fr.html -->
+            <!--#include virtual="/app/cls/WET/gcweb/v4_0_43/cdts/static/top-fr.html" -->
+        </div>
+        <!-- Write closure template -->
+        <script>
+            var defTop = document.getElementById("def-top");
+            defTop.outerHTML = wet.builder.top({
+                lngLinks: [{
+                    lang: "en", 
+                    href: "{{ENGLISH}}", 
+                    text: "English"
+                }], 
+                customSearch: [{
+                    action: "https://www.canada.ca/fr/agence-revenu/recherche.html", 
+                    placeholder: "ARC", 
+                    method: "get", 
+                }], 
+                auth: [{
+                    type: "contextual", 
+                    label: "Se connecter", 
+                    labelExtended: "Se connecter \xE0 l'ARC", 
+                    link: "https://www.canada.ca/fr/agence-revenu/services/services-electroniques/services-ouverture-session-arc.html"
+                }], 
+                breadcrumbs: [{{BREADCRUMBS}}]
+            });
+        <\/script>
+        <!-- Write closure template -->
+        <div class="container">
+            <div class="row">
+                <main property="mainContentOfPage" resource="#wb-main" typeof="WebPageElement" class="container">
+                    {{HEADER}}
+
+                    {{CONTENT}}
+
+                    <section class="pagedetails">
+                        <h2 class="wb-inv">D\xE9tails de la page</h2>
+                        <div class="row">
+                            <div class="col-sm-8 col-md-9 col-lg-9">
+                                <div data-ajax-replace="https://www.canada.ca/etc/designs/canada/wet-boew/assets/feedback/page-feedback-fr.html" class="wb-disable-allow" data-feedback-section="{{TITLE}}" data-feedback-theme="Taxes" data-feedback-institution="."></div>
+                            </div>
+                        </div>
+                        <dl id="wb-dtmd">
+                            <dt>Date de modification :</dt>
+                            <dd><time property="dateModified">{{MODIFIED}}</time></dd>
+                        </dl>
+                    </section>
+                    <div id="def-preFooter">
+                        <!-- Write closure fall-back static file -->
+                        <!-- /ROOT/etc/designs/canada/cdts/gcweb/v4_0_43/cdts/static/preFooter-fr.html -->
+                        <!--#include virtual="/app/cls/WET/gcweb/v4_0_43/cdts/static/preFooter-fr.html" -->
+                    </div>
+                </main>
+            </div>
+        </div>
+        <!-- Write closure template -->
+        <script>
+            var defPreFooter = document.getElementById("def-preFooter");
+            defPreFooter.outerHTML = wet.builder.preFooter({
+                showShare: false, 
+                pagedetails: false
+            });
+        <\/script>
+        <div id="def-footer">
+            <!-- Write closure fall-back static file -->
+            <!-- /ROOT/app/cls/WET/gcweb/v4_0_43/cdts/static/footer-fr.html -->
+            <!--#include virtual="/app/cls/WET/gcweb/v4_0_43/cdts/static/footer-fr.html" -->
+        </div>
+        <!-- Write closure template -->
+        <script>
+            var defFooter = document.getElementById("def-footer");
+            defFooter.outerHTML = wet.builder.footer({
+                privacyLink: {
+                    href: "https://www.canada.ca/fr/agence-revenu/organisation/avis-confidentialite.html"
+                }, 
+                contextualFooter: {
+                    title: "Agence du revenu du Canada (ARC)", 
+                    links: [{
+                        text: "Contacter l'ARC", 
+                        href: "https://www.canada.ca/fr/agence-revenu/organisation/coordonnees.html"
+                    }, {
+                        text: "Mettre \xE0 jour vos renseignements", 
+                        href: "https://www.canada.ca/fr/agence-revenu/services/mettre-a-jour-renseignements-arc.html"
+                    }, {
+                        text: "\xC0 propos de l'ARC", 
+                        href: "https://www.canada.ca/fr/agence-revenu/organisation/a-propos-agence-revenu-canada-arc.html"
+                    }]
+                }
+            });
+        <\/script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"><\/script>
+        <script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/wet-boew.min.js"><\/script>
+        <span id="wb-rsz" class="wb-init">&nbsp;</span>
+        <script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/theme.min.js"><\/script>
+        <script src="https://www.canada.ca/etc/designs/canada/wet-boew/m\xE9li-m\xE9lo/2025-12-mille-iles.min.js"><\/script>
+        <script src="{DEPTH}}source/scripts/external-link-detour.js"><\/script>
+        {{SCRIPTS}}
+    </body>
+</html>`;
+var EXIT_PAGE_TEMPLATE_ENG = `<!DOCTYPE html>
+<html class="no-js" lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<title>The page you have requested is outside this CRA testing environment - Canada.ca</title>
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<meta name="dcterms.language" content="eng">
+<meta name="robots" content="noindex, nofollow">
+<link rel="shortcut icon" href="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v5_0_4/wet-boew/assets/favicon.ico" >
+<link rel="stylesheet" href="https://www.canada.ca/etc/designs/canada/wet-boew/css/theme.min.css">
+<link rel="stylesheet" href="https://cra-test-arc.canada.ca/core-prototype/source/css/testing-banner.css">
+</head>
+<body vocab="http://schema.org/" typeof="WebPage">
+<nav><ul id="wb-tphp">
+    <li class="wb-slc"><a class="wb-sl" href="#wb-cont">Skip to main content</a></li>
+</ul></nav>
+<data id="devoptions" data-loc-storage="gitCRATemplateDevOptions" value="false"></data>
+<data id="exitpage" data-exit-by-url="false" data-mod-link-file="{{DEPTH}}source/data/exclude-redirect-links.json" value="{{DEPTH}}source/exit-intent-e.html"></data>
+<data id="relextlnk" data-origin="https://www.canada.ca" value="false"></data>
+<header>
+    <div id="wb-bnr" class="container"><div class="row">
+        <div class="brand col-xs-9 col-sm-5 col-md-4" property="publisher" typeof="GovernmentOrganization">
+            <a href="https://www.canada.ca/en.html" property="url">
+                <img src="https://www.canada.ca/etc/designs/canada/wet-boew/assets/sig-blk-en.svg" alt="Government of Canada" property="logo">
+            </a>
+        </div>
+    </div></div>
+</header>
+<main class="container" property="mainContentOfPage" resource="#wb-main" typeof="WebPageElement">
+    <h1 property="name" id="wb-cont">The page you have requested is outside this CRA testing environment</h1>
+    <p>Please press the back button to return to the previous page.</p>
+    <ul class="list-inline">
+        <li><button id="back" class="btn btn-call-to-action btn-lg" type="button">Go Back!</button></li>
+        <li id="exitLink" class="hidden"><button id="leavesitelnk" class="btn btn-link btn-lg" type="button">Leave the test site</button></li>
+        <li id="exitWETLink" class="hidden"><span class="wb-exitscript wb-exitscript-urlparam"></span></li>
+    </ul>
+    <section class="pagedetails">
+        <h2 class="wb-inv">Page details</h2>
+        <dl id="wb-dtmd"><dt>Date modified:&#160;</dt><dd><time property="dateModified">{{MODIFIED}}</time></dd></dl>
+    </section>
+</main>
+<footer id="wb-info">
+    <div class="gc-sub-footer"><div class="container d-flex align-items-center">
+        <nav><ul>
+            <li><a href="https://www.canada.ca/en/transparency/terms.html">Terms and conditions</a></li>
+            <li><a href="https://www.canada.ca/en/revenue-agency/corporate/privacy-notice.html">Privacy</a></li>
+        </ul></nav>
+        <div class="wtrmrk align-self-end">
+            <img src="https://www.canada.ca/etc/designs/canada/wet-boew/assets/wmms-blk.svg" alt="Symbol of the Government of Canada">
+        </div>
+    </div></div>
+</footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha384-rY/jv8mMhqDabXSo+UCggqKtdmBfd3qC2/KvyTDNQ6PcUJXaxK1tMepoQda4g5vB" crossorigin="anonymous"><\/script>
+<script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/wet-boew.min.js"><\/script>
+<script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/theme.min.js"><\/script>
+<script src="{DEPTH}}source/scripts/external-link-detour.js"><\/script>
+<script src="https://cra-test-arc.canada.ca/core-prototype/source/scripts/exit-page.js"><\/script>
+</body>
+</html>`;
+var EXIT_PAGE_TEMPLATE_FRA = `<!DOCTYPE html>
+<html class="no-js" lang="fr" dir="ltr">
+<head>
+<meta charset="utf-8">
+<title>La page que vous avez demand\xE9e est \xE0 l'ext\xE9rieur de cet environnement de test de l'ARC - Canada.ca</title>
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<meta name="dcterms.language" content="fra">
+<meta name="robots" content="noindex, nofollow">
+<link rel="shortcut icon" href="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v5_0_4/wet-boew/assets/favicon.ico">
+<link rel="stylesheet" href="https://www.canada.ca/etc/designs/canada/wet-boew/css/theme.min.css">
+<link rel="stylesheet" href="https://cra-test-arc.canada.ca/core-prototype/source/css/testing-banner.css">
+</head>
+<body vocab="http://schema.org/" typeof="WebPage">
+<nav><ul id="wb-tphp">
+    <li class="wb-slc"><a class="wb-sl" href="#wb-cont">Passer au contenu principal</a></li>
+</ul></nav>
+<data id="devoptions" data-loc-storage="gitCRATemplateDevOptions" value="false"></data>
+<data id="exitpage" data-exit-by-url="false" data-mod-link-file="{{DEPTH}}source/data/exclude-redirect-links.json" value="{{DEPTH}}source/exit-intent-f.html"></data>
+<data id="relextlnk" data-origin="https://www.canada.ca" value="false"></data>
+<header>
+    <div id="wb-bnr" class="container"><div class="row">
+        <div class="brand col-xs-9 col-sm-5 col-md-4" property="publisher" typeof="GovernmentOrganization">
+            <a href="https://www.canada.ca/fr.html" property="url">
+                <img src="https://www.canada.ca/etc/designs/canada/wet-boew/assets/sig-blk-fr.svg" alt="Gouvernement du Canada" property="logo">
+            </a>
+        </div>
+    </div></div>
+</header>
+<main class="container" property="mainContentOfPage" resource="#wb-main" typeof="WebPageElement">
+    <h1 property="name" id="wb-cont">La page que vous avez demand\xE9e est \xE0 l'ext\xE9rieur de cet environnement de test de l'ARC</h1>
+    <p>Veuillez appuyer sur le bouton de retour pour revenir \xE0 la page pr\xE9c\xE9dente.</p>
+    <ul class="list-inline">
+        <li><button id="back" class="btn btn-call-to-action btn-lg" type="button">Retour!</button></li>
+        <li id="exitLink" class="hidden"><button id="leavesitelnk" class="btn btn-link btn-lg" type="button">Quitter le site de test</button></li>
+        <li id="exitWETLink" class="hidden"><span class="wb-exitscript wb-exitscript-urlparam"></span></li>
+    </ul>
+    <section class="pagedetails">
+        <h2 class="wb-inv">D\xE9tails de la page</h2>
+        <dl id="wb-dtmd"><dt>Date de modification&#160;:&#160;</dt><dd><time property="dateModified">{{MODIFIED}}</time></dd></dl>
+    </section>
+</main>
+<footer id="wb-info">
+    <div class="gc-sub-footer"><div class="container d-flex align-items-center">
+        <nav><ul>
+            <li><a href="https://www.canada.ca/fr/transparence/avis.html">Avis</a></li>
+            <li><a href="https://www.canada.ca/fr/agence-revenu/organisation/avis-confidentialite.html">Confidentialit\xE9</a></li>
+        </ul></nav>
+        <div class="wtrmrk align-self-end">
+            <img src="https://www.canada.ca/etc/designs/canada/wet-boew/assets/wmms-blk.svg" alt="Symbole du gouvernement du Canada">
+        </div>
+    </div></div>
+</footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha384-rY/jv8mMhqDabXSo+UCggqKtdmBfd3qC2/KvyTDNQ6PcUJXaxK1tMepoQda4g5vB" crossorigin="anonymous"><\/script>
+<script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/wet-boew.min.js"><\/script>
+<script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/theme.min.js"><\/script>
+<script src="{DEPTH}}source/scripts/external-link-detour.js"><\/script>
+<script src="https://cra-test-arc.canada.ca/core-prototype/source/scripts/exit-page.js"><\/script>
+</body>
+</html>`;
+var LINK_DETOUR_JS = `/*
+* GitHub only script
+*
+* Replaces all external links with a link to exit intent page or replaces links with designated replace link found in JSON file
+*
+*/
+
+"use strict";
+
+//  exitPage.value = "exit-intent-e.html", 
+//  exitPage.dataset.exitByUrl = "false", 
+//  exitPage.dataset.modLinkFile = "data/exclude-redircet-links.json", 
+//  relExternalLnk.value = "false", 
+//  relExternalLnk.dataset.origin = "https://www.canada.ca", 
+
+let exitPage = document.getElementById("exitpage");
+let relExternalLnk = document.getElementById("relextlnk");
+let inlineStyleText1, inlineStyleText2, 
+    visitedLinkStyle = document.createElement("style"), 
+    linkExcludes = [], 
+    adjustLinks = function adjustLinks(elm, hrefSelector, actionSelector, formActionSelector, destStartPath) {
+        let linkExcludeIndex = function linkExcludeIndex(testURI) {
+                return linkExcludes.findIndex(function findlink(linkArr) {
+                    if ("origin" in linkArr) {
+                        return linkArr.origin.toLowerCase() === testURI.toLowerCase();
+                    }
+                }, testURI);
+            }, 
+            adjustHref = function adjustHref(el, destStartPath) {
+                let adjustedURI = el, 
+                    replaceChar = ["?", "#", "&"];
+
+                if (destStartPath !== "") {
+                    adjustedURI = new URL(adjustedURI, destStartPath).href;
+                }
+                replaceChar.forEach(function entityReplace(arrEl) {
+                    adjustedURI = adjustedURI.replace(arrEl, encodeURIComponent(arrEl));
+                }, adjustedURI);
+                return adjustedURI;
+            }, 
+            updateFormSubmit = function updateFormSubmit(formEl, formAttr, exitPageURI) {
+                let hiddenInEl;
+
+                hiddenInEl = document.createElement("input");
+                hiddenInEl.value = adjustHref(formEl[formAttr], destStartPath);
+                hiddenInEl.name = "uri";
+                hiddenInEl.type = "hidden";
+                formEl.append(hiddenInEl);
+                formEl[formAttr] = exitPageURI;
+            };
+
+        if (exitPage !== null) {
+            if (hrefSelector !== "") {
+                elm.querySelectorAll(hrefSelector).forEach(function updateExitHref(hrefElm) {
+                    const maxURILength = 2048;
+                    let urlObj, queryHash, 
+                        pagetitle = encodeURIComponent(hrefElm.innerText), 
+                        exitPageURI = exitPage.value, 
+                        destURI = adjustHref(hrefElm.href, destStartPath), 
+                        currentURI = hrefElm.protocol + "//" + hrefElm.hostname + hrefElm.pathname, 
+                        lnkExclIdx = linkExcludeIndex(currentURI);
+
+                    if (lnkExclIdx === -1) {
+                        if ("exitByUrl" in exitPage.dataset && exitPage.dataset.exitByUrl.toLowerCase() === "true") {
+                            urlObj = { "url": exitPageURI };
+                            hrefElm.dataset.wbExitscript = JSON.stringify(urlObj);
+                            hrefElm.classList.add("wb-exitscript");
+                        } else {
+                            if (pagetitle === "") {
+                                pagetitle = encodeURIComponent(hrefElm.textContent);
+                            }
+                            switch (true) {
+                                case (destURI.length > 0 && exitPageURI.length + destURI.length + 5 <= maxURILength):
+                                    if (destURI.length > 0) {
+                                        exitPageURI = exitPageURI + "?uri=" + destURI;
+                                    }
+                                // falls through
+                                case (pagetitle.length > 0 && exitPageURI + pagetitle.length + 11 <= maxURILength):
+                                    if (pagetitle.length > 0) {
+                                        exitPageURI = exitPageURI + "&pagetitle=" + pagetitle;
+                                    }
+                            }
+                            hrefElm.href = exitPageURI;
+                        }
+                    } else if ("destination" in linkExcludes[lnkExclIdx] === true) {
+                        queryHash = hrefElm.href.substring(linkExcludes[lnkExclIdx].origin.length);
+                        if ("exitByUrl" in exitPage.dataset && exitPage.dataset.exitByUrl.toLowerCase() === "true") {
+                            urlObj = { "url": linkExcludes[lnkExclIdx].destination + queryHash };
+                            hrefElm.dataset.wbExitscript = JSON.stringify(urlObj);
+                            hrefElm.classList.add("wb-exitscript");
+                        } else {
+                            hrefElm.href = linkExcludes[lnkExclIdx].destination + queryHash;
+                        }
+                    }
+                });
+                if ("exitByUrl" in exitPage.dataset && exitPage.dataset.exitByUrl.toLowerCase() === "true") {
+                    $(".wb-exitscript").trigger("wb-init.wb-exitscript");
+                }
+            }
+
+            if (actionSelector !== "") {
+                elm.querySelectorAll(actionSelector).forEach(function updateExitAction(actionElm) {
+                    let queryHash, 
+                        exitPageURI = exitPage.value, 
+                        currentURI = actionElm.protocol + "//" + actionElm.hostname + actionElm.pathname, 
+                        lnkExclIdx = linkExcludeIndex(currentURI);
+
+                    actionElm.method = "GET";
+                    if (lnkExclIdx === -1) {
+                        updateFormSubmit(actionElm, "action", exitPageURI);
+                    } else if ("destination" in linkExcludes[lnkExclIdx] === true) {
+                        queryHash = actionElm.href.substring(linkExcludes[lnkExclIdx].origin.length);
+                        updateFormSubmit(actionElm, "action", linkExcludes[lnkExclIdx].destination + queryHash);
+                    }
+                });
+            }
+
+            if (formActionSelector !== "") {
+                elm.querySelectorAll(formActionSelector).forEach(function updateExitForm(formActionElm) {
+                    let queryHash, 
+                        exitPageURI = exitPage.value, 
+                        currentURI = formActionElm.protocol + "//" + formActionElm.hostname + formActionElm.pathname, 
+                        lnkExclIdx = linkExcludeIndex(currentURI);
+
+                    if (lnkExclIdx === -1) {
+                        updateFormSubmit(formActionElm, "formaction", exitPageURI);
+                    } else if ("destination" in linkExcludes[lnkExclIdx] === true) {
+                        queryHash = formActionElm.href.substring(linkExcludes[lnkExclIdx].origin.length);
+                        updateFormSubmit(formActionElm, "formaction", linkExcludes[lnkExclIdx].destination + queryHash);
+                    }
+                });
+            }
+        }
+    }, 
+    getDomain = function (url) {
+        let pattern = new RegExp("^(https?://[^/]+/[^/]*/?)"), 
+            domains = pattern.exec(url);
+
+        if (domains !== null) {
+            return domains[0];
+        }
+        return "";
+    }, 
+    rootDomain = getDomain(window.location.origin + window.location.pathname), 
+    defaultadjustLinks = function defaultadjustLinks(elm, isAjaxed, relExternalLnk) {
+        adjustLinks(elm, "a[href^='http']:not([href^='" + rootDomain + "'], [data-exit='false'], .wb-exitscript), area[href^='http']:not([href^='" + rootDomain + "'], [data-exit='false'], .wb-exitscript)", "form[action^='http']:not([action^='" + rootDomain + "'], [data-exit='false'], .wb-exitscript)", "input[formaction^='http']:not([formaction^='" + rootDomain + "'], [data-exit='false'], .wb-exitscript), button[formaction^='http']:not([formaction^='" + rootDomain + "'], [formaction^='/'], [data-exit='false'], .wb-exitscript)", "");
+        if ((relExternalLnk && relExternalLnk.dataset.origin !== "") && (relExternalLnk.value.toLowerCase() === "true" || isAjaxed === true)) {
+            adjustLinks(elm, "a[href^='/']:not([data-exit='false'], .wb-exitscript), area[href^='/']:not([data-exit='false'], .wb-exitscript)", "form[action^='/']:not([data-exit='false'], .wb-exitscript)", "input[formaction^='/']:not([data-exit='false'], .wb-exitscript), button[formaction^='/']:not([data-exit='false'], .wb-exitscript)", relExternalLnk.dataset.origin);
+        }
+    };
+
+//document.addEventListener("readystatechange", function(event) {
+//    if (event.target.readyState === "complete") {
+
+        //load link exclude JSON file
+        if ("modLinkFile" in exitPage.dataset && exitPage.dataset.modLinkFile !== "") {
+            $.getJSON(exitPage.dataset.modLinkFile, function (data) {
+                linkExcludes = data;
+            }).always(function() {
+                document.addEventListener("wet-boew-ready", function() {
+                    defaultadjustLinks(this, false, relExternalLnk);
+                });
+            });
+        } else {
+            document.addEventListener("wet-boew-ready", function() {
+                defaultadjustLinks(this, false, relExternalLnk);
+        });
+    }
+
+        //Remove visited link highlighting from links to exit page
+        if (exitPage !== null) {
+            inlineStyleText1 = "Not to be copied to Canada.ca";
+            inlineStyleText2 = "CSS for GitHub specific elements";
+            if (document.documentElement.lang === "fr") {
+                inlineStyleText1 = "Ne pas copier sur Canada.ca";
+                inlineStyleText2 = "CSS pour les \xE9l\xE9ments sp\xE9cifiques \xE0 GitHub";
+            }
+            visitedLinkStyle.innerHTML = "/*
+*** " + inlineStyleText1 + " ***
+
+" + inlineStyleText2 + "
+*//
+
+ a[href*='" + exitPage.value + "']:visited { color:inherit; }
+.btn-primary[href*='" + exitPage.value + "']:visited, .btn-success[href*='" + exitPage.value + "']:visited, .btn-info[href*='" + exitPage.value + "']:visited, .btn-danger[href*='" + exitPage.value + "']:visited { color: #ffffff; }
+.btn-default[href*='" + exitPage.value + "']:visited { color: #335075; }
+.btn-warning[href*='" + exitPage.value + "']:visited { color: #000000; }
+";
+            document.head.insertAdjacentHTML("beforeend", visitedLinkStyle);
+        }
+
+//    }
+//});
+
+// changes all external site links and forms to go to destination link
+document.addEventListener("wet-boew-ready", function() {
+    defaultadjustLinks(this, false, relExternalLnk);
+});
+
+// changes all GCM Menu external site links and forms to go to destination link
+//document.addEventListener("readystatechange", function(event) {
+//    if (event.target.readyState === "complete") {
+        $(".gcweb-menu").on("wb-ready.gcweb-menu", function () {
+            adjustLinks(this, ".gcweb-menu a[href^='http']:not([href^='" + rootDomain + "'], [data-exit='false'], .wb-exitscript), .gcweb-menu area[href^='http']:not([href^='" + rootDomain + "'], [data-exit='false'], .wb-exitscript)", ".gcweb-menu form[action^='http']:not([action^='" + rootDomain + "'], [data-exit='false'], .wb-exitscript)", ".gcweb-menu input[formaction^='http']:not([formaction^='" + rootDomain + "'], [data-exit='false'], .wb-exitscript), .gcweb-menu button[formaction^='http']:not([formaction^='" + rootDomain + "'], [data-exit='false'], .wb-exitscript)", "");
+            if (relExternalLnk && relExternalLnk.value.toLowerCase() === "true" && relExternalLnk.dataset.origin !== "") {
+                adjustLinks(this, ".gcweb-menu a[href^='/']:not([data-exit='false'], .wb-exitscript), .gcweb-menu area[href^='/']:not([data-exit='false'], .wb-exitscript)", ".gcweb-menu form[action^='/']:not([data-exit='false'], .wb-exitscript)", ".gcweb-menu input[formaction^='/']:not([data-exit='false'], .wb-exitscript), .gcweb-menu button[formaction^='/']:not([data-exit='false'], .wb-exitscript)", relExternalLnk.dataset.origin);
+            }
+        });
+//    }
+//});
+
+// changes all AJAXed external site links and forms to go to destination link
+//document.addEventListener("readystatechange", function(event) {
+//    if (event.target.readyState === "complete") {
+        $("[data-ajax-after], [data-ajax-append], [data-ajax-before], [data-ajax-prepend], [data-ajax-replace]").on("wb-contentupdated", function () {
+            if (relExternalLnk && relExternalLnk.dataset.origin !== "") {
+                this.querySelectorAll("[icon^='/'], [poster^='/'], [src^='/'], [srcset^='/'], [data^='/']").forEach(function updateAjaxLinks(ajaxElm) {
+                    let elm = ajaxElm, 
+                        attrType = ["data", "icon", "poster", "src", "srcset"];
+
+                    attrType.forEach(function checkAttr(attrItem) {
+                        let attrValue;
+
+                        if (elm.hasAttribute(attrItem) === true) {
+                            attrValue = elm.getAttribute(attrItem);
+                            if (attrValue.startsWith("/") === true) {
+                                elm.setAttribute(attrItem, relExternalLnk.dataset.origin + attrValue);
+                                return;
+                            }
+                        }
+                    }, elm)
+                });
+            }
+            defaultadjustLinks(this, true, relExternalLnk);
+        });
+//    }
+//});`;
+
+// src/app/views/task/export-pages/export.component.ts
+var _c036 = ["settingsOverlay"];
 var _c156 = (a0) => ({ count: a0 });
-var _c236 = (a0) => ({ User: a0 });
-function ExportGithubComponent_Conditional_3_Template(rf, ctx) {
+var _c231 = (a0, a1) => ({ New: a0, Updated: a1 });
+function ExportComponent_Conditional_4_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p-message", 4)(1, "div", 38);
-    \u0275\u0275element(2, "i", 39);
+    \u0275\u0275elementStart(0, "p-message", 4)(1, "div", 32);
+    \u0275\u0275element(2, "i", 33);
     \u0275\u0275elementStart(3, "span");
     \u0275\u0275text(4);
     \u0275\u0275pipe(5, "translate");
@@ -82068,40 +81905,76 @@ function ExportGithubComponent_Conditional_3_Template(rf, ctx) {
   }
   if (rf & 2) {
     \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(5, 1, "github.warning"));
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(5, 1, "exportPages.github.warningMessage"));
   }
 }
-function ExportGithubComponent_Conditional_40_Template(rf, ctx) {
+function ExportComponent_Conditional_17_Template(rf, ctx) {
   if (rf & 1) {
-    const _r1 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 20)(1, "label", 40);
+    \u0275\u0275elementStart(0, "div")(1, "label", 34);
     \u0275\u0275text(2);
     \u0275\u0275pipe(3, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(4, "p-selectButton", 41);
-    \u0275\u0275twoWayListener("ngModelChange", function ExportGithubComponent_Conditional_40_Template_p_selectButton_ngModelChange_4_listener($event) {
-      \u0275\u0275restoreView(_r1);
-      const ctx_r1 = \u0275\u0275nextContext();
-      \u0275\u0275twoWayBindingSet(ctx_r1.selectedExportTarget, $event) || (ctx_r1.selectedExportTarget = $event);
+    \u0275\u0275elementStart(4, "p", 35);
+    \u0275\u0275text(5);
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 2, "project.github.label.owner"));
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate(ctx_r0.projectData().github.owner);
+  }
+}
+function ExportComponent_Conditional_24_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div")(1, "label", 36);
+    \u0275\u0275text(2);
+    \u0275\u0275pipe(3, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(4, "p", 37);
+    \u0275\u0275text(5);
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 2, "project.github.label.branch"));
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate(ctx_r0.projectData().github.branch);
+  }
+}
+function ExportComponent_Conditional_31_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r2 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 16)(1, "label", 38);
+    \u0275\u0275text(2);
+    \u0275\u0275pipe(3, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(4, "p-selectButton", 39);
+    \u0275\u0275twoWayListener("ngModelChange", function ExportComponent_Conditional_31_Template_p_selectButton_ngModelChange_4_listener($event) {
+      \u0275\u0275restoreView(_r2);
+      const ctx_r0 = \u0275\u0275nextContext();
+      \u0275\u0275twoWayBindingSet(ctx_r0.selectedExportTarget, $event) || (ctx_r0.selectedExportTarget = $event);
       return \u0275\u0275resetView($event);
     });
-    \u0275\u0275listener("onChange", function ExportGithubComponent_Conditional_40_Template_p_selectButton_onChange_4_listener() {
-      \u0275\u0275restoreView(_r1);
-      const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.compareFiles());
+    \u0275\u0275listener("onChange", function ExportComponent_Conditional_31_Template_p_selectButton_onChange_4_listener() {
+      \u0275\u0275restoreView(_r2);
+      const ctx_r0 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r0.compareFiles());
     });
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext();
+    const ctx_r0 = \u0275\u0275nextContext();
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 3, "github.connect.export.label"));
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 3, "exportPages.settings.exportVersion"));
     \u0275\u0275advance(2);
-    \u0275\u0275property("options", ctx_r1.exportTargetOptions);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.selectedExportTarget);
+    \u0275\u0275property("options", ctx_r0.exportTargetOptions);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r0.selectedExportTarget);
   }
 }
-function ExportGithubComponent_Conditional_42_Conditional_5_ng_template_5_Template(rf, ctx) {
+function ExportComponent_Conditional_33_Conditional_5_ng_template_5_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275text(0);
     \u0275\u0275pipe(1, "translate");
@@ -82111,698 +81984,498 @@ function ExportGithubComponent_Conditional_42_Conditional_5_ng_template_5_Templa
     \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(1, 1, item_r6.label), " ");
   }
 }
-function ExportGithubComponent_Conditional_42_Conditional_5_Template(rf, ctx) {
+function ExportComponent_Conditional_33_Conditional_5_Template(rf, ctx) {
   if (rf & 1) {
     const _r5 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 45)(1, "label", 46);
+    \u0275\u0275elementStart(0, "div", 43)(1, "label", 44);
     \u0275\u0275text(2);
     \u0275\u0275pipe(3, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(4, "p-selectButton", 47);
-    \u0275\u0275twoWayListener("ngModelChange", function ExportGithubComponent_Conditional_42_Conditional_5_Template_p_selectButton_ngModelChange_4_listener($event) {
+    \u0275\u0275elementStart(4, "p-selectButton", 45);
+    \u0275\u0275twoWayListener("ngModelChange", function ExportComponent_Conditional_33_Conditional_5_Template_p_selectButton_ngModelChange_4_listener($event) {
       \u0275\u0275restoreView(_r5);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.selectedExportTarget, $event) || (ctx_r1.selectedExportTarget = $event);
+      const ctx_r0 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r0.selectedExportTarget, $event) || (ctx_r0.selectedExportTarget = $event);
       return \u0275\u0275resetView($event);
     });
-    \u0275\u0275listener("onChange", function ExportGithubComponent_Conditional_42_Conditional_5_Template_p_selectButton_onChange_4_listener() {
+    \u0275\u0275listener("onChange", function ExportComponent_Conditional_33_Conditional_5_Template_p_selectButton_onChange_4_listener() {
       \u0275\u0275restoreView(_r5);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.compareFiles());
+      const ctx_r0 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r0.compareFiles());
     });
-    \u0275\u0275template(5, ExportGithubComponent_Conditional_42_Conditional_5_ng_template_5_Template, 2, 3, "ng-template", null, 1, \u0275\u0275templateRefExtractor);
+    \u0275\u0275template(5, ExportComponent_Conditional_33_Conditional_5_ng_template_5_Template, 2, 3, "ng-template", null, 1, \u0275\u0275templateRefExtractor);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext(2);
+    const ctx_r0 = \u0275\u0275nextContext(2);
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 3, "github.connect.export.label"));
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 3, "exportPages.settings.exportVersion"));
     \u0275\u0275advance(2);
-    \u0275\u0275property("options", ctx_r1.exportTargetOptions);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.selectedExportTarget);
+    \u0275\u0275property("options", ctx_r0.exportTargetOptions);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r0.selectedExportTarget);
   }
 }
-function ExportGithubComponent_Conditional_42_Template(rf, ctx) {
+function ExportComponent_Conditional_33_Template(rf, ctx) {
   if (rf & 1) {
     const _r3 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 42);
+    \u0275\u0275elementStart(0, "p-button", 40);
     \u0275\u0275pipe(1, "translate");
-    \u0275\u0275listener("click", function ExportGithubComponent_Conditional_42_Template_p_button_click_0_listener($event) {
+    \u0275\u0275listener("click", function ExportComponent_Conditional_33_Template_p_button_click_0_listener($event) {
       \u0275\u0275restoreView(_r3);
       const settingsOverlay_r4 = \u0275\u0275reference(3);
       return \u0275\u0275resetView(settingsOverlay_r4.toggle($event));
     });
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(2, "p-popover", 43, 0);
-    \u0275\u0275element(4, "aida-setup-repo", 44);
-    \u0275\u0275template(5, ExportGithubComponent_Conditional_42_Conditional_5_Template, 7, 5, "div", 45);
+    \u0275\u0275elementStart(2, "p-popover", 41, 0);
+    \u0275\u0275element(4, "aida-setup-repo", 42);
+    \u0275\u0275template(5, ExportComponent_Conditional_33_Conditional_5_Template, 7, 5, "div", 43);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext();
-    \u0275\u0275property("label", \u0275\u0275pipeBind1(1, 2, "github.connect.settings"));
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275property("label", \u0275\u0275pipeBind1(1, 2, "exportPages.settings.changeButton"));
     \u0275\u0275advance(5);
-    \u0275\u0275conditional(ctx_r1.projectData().github.hasBaselineRepo ? 5 : -1);
+    \u0275\u0275conditional(ctx_r0.projectData().github.hasBaselineRepo ? 5 : -1);
   }
 }
-function ExportGithubComponent_Conditional_50_Template(rf, ctx) {
+function ExportComponent_Conditional_34_Template(rf, ctx) {
   if (rf & 1) {
     const _r7 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p", 48);
-    \u0275\u0275text(1);
-    \u0275\u0275pipe(2, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "div", 49)(4, "div", 50);
-    \u0275\u0275element(5, "i", 51);
-    \u0275\u0275elementStart(6, "p", 52);
-    \u0275\u0275text(7);
-    \u0275\u0275pipe(8, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(9, "p", 53);
-    \u0275\u0275text(10);
-    \u0275\u0275pipe(11, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(12, "p-button", 54);
-    \u0275\u0275pipe(13, "translate");
-    \u0275\u0275listener("onClick", function ExportGithubComponent_Conditional_50_Template_p_button_onClick_12_listener() {
-      \u0275\u0275restoreView(_r7);
-      const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.authService.login());
-    });
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(14, "p-divider", 55);
-    \u0275\u0275text(15);
-    \u0275\u0275pipe(16, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(17, "p-divider", 56);
-    \u0275\u0275text(18);
-    \u0275\u0275pipe(19, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(20, "div", 57);
-    \u0275\u0275element(21, "i", 58);
-    \u0275\u0275elementStart(22, "p", 52);
-    \u0275\u0275text(23);
-    \u0275\u0275pipe(24, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(25, "p", 53);
-    \u0275\u0275text(26);
-    \u0275\u0275pipe(27, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275element(28, "aida-pat", 59);
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 9, "github.connect.description"));
-    \u0275\u0275advance(6);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(8, 11, "github.connect.option1.title"));
-    \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(11, 13, "github.connect.option1.description"));
-    \u0275\u0275advance(2);
-    \u0275\u0275propertyInterpolate("label", \u0275\u0275pipeBind1(13, 15, "github.connect.option1.button"));
-    \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(16, 17, "common.or"));
-    \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(19, 19, "common.or"));
-    \u0275\u0275advance(5);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(24, 21, "github.connect.option2.title"));
-    \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(27, 23, "github.connect.option2.description"));
-    \u0275\u0275advance(2);
-    \u0275\u0275property("validateOnBlur", true);
-  }
-}
-function ExportGithubComponent_Conditional_51_Conditional_3_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275element(0, "p", 62);
+    \u0275\u0275elementStart(0, "p-button", 46);
     \u0275\u0275pipe(1, "translate");
-    \u0275\u0275elementStart(2, "p", 63);
-    \u0275\u0275text(3);
-    \u0275\u0275pipe(4, "translate");
+    \u0275\u0275listener("onClick", function ExportComponent_Conditional_34_Template_p_button_onClick_0_listener() {
+      \u0275\u0275restoreView(_r7);
+      const ctx_r0 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r0.openRepo());
+    });
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext(2);
-    \u0275\u0275classMap(ctx_r1.getTitleClasses());
-    \u0275\u0275property("innerHtml", \u0275\u0275pipeBind1(1, 4, "github.connect.checking"), \u0275\u0275sanitizeHtml);
-    \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 6, "github.connect.checking.details"));
+    \u0275\u0275property("label", \u0275\u0275pipeBind1(1, 1, "exportPages.github.openRepo"));
   }
 }
-function ExportGithubComponent_Conditional_51_Conditional_4_Conditional_5_Template(rf, ctx) {
+function ExportComponent_Conditional_35_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p", 63);
-    \u0275\u0275text(1);
-    \u0275\u0275pipe(2, "translate");
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext(3);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind2(2, 1, "github.connect.connected.oauth", \u0275\u0275pureFunction1(4, _c236, ctx_r1.username())), " ");
+    \u0275\u0275element(0, "aida-sign-in-banner");
   }
 }
-function ExportGithubComponent_Conditional_51_Conditional_4_Conditional_6_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "p", 63);
-    \u0275\u0275text(1);
-    \u0275\u0275pipe(2, "translate");
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext(3);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind2(2, 1, "github.connect.connected.pat", \u0275\u0275pureFunction1(4, _c236, ctx_r1.username())), " ");
-  }
-}
-function ExportGithubComponent_Conditional_51_Conditional_4_Conditional_7_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "p", 64);
-    \u0275\u0275text(1);
-    \u0275\u0275pipe(2, "translate");
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext(3);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1("", \u0275\u0275pipeBind2(2, 1, "github.connect.unverified", \u0275\u0275pureFunction1(4, _c236, ctx_r1.username())), "a");
-  }
-}
-function ExportGithubComponent_Conditional_51_Conditional_4_Conditional_8_Template(rf, ctx) {
+function ExportComponent_Conditional_36_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
     const _r8 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 66);
-    \u0275\u0275pipe(1, "translate");
-    \u0275\u0275listener("onClick", function ExportGithubComponent_Conditional_51_Conditional_4_Conditional_8_Template_p_button_onClick_0_listener() {
-      \u0275\u0275restoreView(_r8);
-      const ctx_r1 = \u0275\u0275nextContext(3);
-      return \u0275\u0275resetView(ctx_r1.exportGitHubService.clearPAT());
-    });
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    \u0275\u0275property("label", \u0275\u0275pipeBind1(1, 1, "github.connect.clearToken"));
-  }
-}
-function ExportGithubComponent_Conditional_51_Conditional_4_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 61)(1, "div")(2, "p");
-    \u0275\u0275text(3);
-    \u0275\u0275pipe(4, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275template(5, ExportGithubComponent_Conditional_51_Conditional_4_Conditional_5_Template, 3, 6, "p", 63)(6, ExportGithubComponent_Conditional_51_Conditional_4_Conditional_6_Template, 3, 6, "p", 63)(7, ExportGithubComponent_Conditional_51_Conditional_4_Conditional_7_Template, 3, 6, "p", 64);
-    \u0275\u0275elementEnd();
-    \u0275\u0275template(8, ExportGithubComponent_Conditional_51_Conditional_4_Conditional_8_Template, 2, 3, "p-button", 65);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance(2);
-    \u0275\u0275classMap(ctx_r1.getTitleClasses());
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 6, "github.connect.connected"));
-    \u0275\u0275advance(2);
-    \u0275\u0275conditional(ctx_r1.authService.isAuthenticated() ? 5 : 6);
-    \u0275\u0275advance(2);
-    \u0275\u0275conditional(ctx_r1.showDisclaimer() ? 7 : -1);
-    \u0275\u0275advance();
-    \u0275\u0275conditional(ctx_r1.showDisclaimer() ? 8 : -1);
-  }
-}
-function ExportGithubComponent_Conditional_51_Conditional_5_Conditional_8_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r9 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 66);
-    \u0275\u0275pipe(1, "translate");
-    \u0275\u0275listener("onClick", function ExportGithubComponent_Conditional_51_Conditional_5_Conditional_8_Template_p_button_onClick_0_listener() {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(3);
-      return \u0275\u0275resetView(ctx_r1.exportGitHubService.clearPAT());
-    });
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    \u0275\u0275property("label", \u0275\u0275pipeBind1(1, 1, "github.connect.clearToken"));
-  }
-}
-function ExportGithubComponent_Conditional_51_Conditional_5_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 61)(1, "div")(2, "p");
-    \u0275\u0275text(3);
-    \u0275\u0275pipe(4, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(5, "p", 63);
-    \u0275\u0275text(6);
-    \u0275\u0275pipe(7, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275template(8, ExportGithubComponent_Conditional_51_Conditional_5_Conditional_8_Template, 2, 3, "p-button", 65);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance(2);
-    \u0275\u0275classMap(ctx_r1.getTitleClasses());
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 5, "github.connect.warning"));
-    \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(7, 7, "github.connect.warning.details"));
-    \u0275\u0275advance(2);
-    \u0275\u0275conditional(!ctx_r1.authService.isAuthenticated() ? 8 : -1);
-  }
-}
-function ExportGithubComponent_Conditional_51_Conditional_6_Conditional_8_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r10 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 66);
-    \u0275\u0275pipe(1, "translate");
-    \u0275\u0275listener("onClick", function ExportGithubComponent_Conditional_51_Conditional_6_Conditional_8_Template_p_button_onClick_0_listener() {
-      \u0275\u0275restoreView(_r10);
-      const ctx_r1 = \u0275\u0275nextContext(3);
-      return \u0275\u0275resetView(ctx_r1.exportGitHubService.clearPAT());
-    });
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    \u0275\u0275property("label", \u0275\u0275pipeBind1(1, 1, "github.connect.clearToken"));
-  }
-}
-function ExportGithubComponent_Conditional_51_Conditional_6_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 61)(1, "div")(2, "p");
-    \u0275\u0275text(3);
-    \u0275\u0275pipe(4, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(5, "p", 63);
-    \u0275\u0275text(6);
-    \u0275\u0275pipe(7, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275template(8, ExportGithubComponent_Conditional_51_Conditional_6_Conditional_8_Template, 2, 3, "p-button", 65);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance(2);
-    \u0275\u0275classMap(ctx_r1.getTitleClasses());
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 5, "github.connect.error"));
-    \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(7, 7, "github.connect.error.details"));
-    \u0275\u0275advance(2);
-    \u0275\u0275conditional(!ctx_r1.authService.isAuthenticated() ? 8 : -1);
-  }
-}
-function ExportGithubComponent_Conditional_51_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div");
-    \u0275\u0275element(1, "i");
-    \u0275\u0275elementStart(2, "div", 60);
-    \u0275\u0275template(3, ExportGithubComponent_Conditional_51_Conditional_3_Template, 5, 8)(4, ExportGithubComponent_Conditional_51_Conditional_4_Template, 9, 8, "div", 61)(5, ExportGithubComponent_Conditional_51_Conditional_5_Template, 9, 9, "div", 61)(6, ExportGithubComponent_Conditional_51_Conditional_6_Template, 9, 9, "div", 61);
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext();
-    \u0275\u0275classMap(ctx_r1.getBgClasses());
-    \u0275\u0275advance();
-    \u0275\u0275classMap(ctx_r1.getStatusIcons());
-    \u0275\u0275advance(2);
-    \u0275\u0275conditional(ctx_r1.connectionStatus() === "checking" ? 3 : -1);
-    \u0275\u0275advance();
-    \u0275\u0275conditional(ctx_r1.connectionStatus() === "connected" ? 4 : -1);
-    \u0275\u0275advance();
-    \u0275\u0275conditional(ctx_r1.connectionStatus() === "warning" ? 5 : -1);
-    \u0275\u0275advance();
-    \u0275\u0275conditional(ctx_r1.connectionStatus() === "error" || ctx_r1.connectionStatus() === "missing" ? 6 : -1);
-  }
-}
-function ExportGithubComponent_Conditional_52_Conditional_2_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r11 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 45)(1, "label", 46);
+    \u0275\u0275elementStart(0, "div", 43)(1, "label", 44);
     \u0275\u0275text(2);
     \u0275\u0275pipe(3, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(4, "p-selectButton", 47);
-    \u0275\u0275twoWayListener("ngModelChange", function ExportGithubComponent_Conditional_52_Conditional_2_Template_p_selectButton_ngModelChange_4_listener($event) {
-      \u0275\u0275restoreView(_r11);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r1.selectedExportTarget, $event) || (ctx_r1.selectedExportTarget = $event);
+    \u0275\u0275elementStart(4, "p-selectButton", 45);
+    \u0275\u0275twoWayListener("ngModelChange", function ExportComponent_Conditional_36_Conditional_2_Template_p_selectButton_ngModelChange_4_listener($event) {
+      \u0275\u0275restoreView(_r8);
+      const ctx_r0 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(ctx_r0.selectedExportTarget, $event) || (ctx_r0.selectedExportTarget = $event);
       return \u0275\u0275resetView($event);
     });
-    \u0275\u0275listener("onChange", function ExportGithubComponent_Conditional_52_Conditional_2_Template_p_selectButton_onChange_4_listener() {
-      \u0275\u0275restoreView(_r11);
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r1.compareFiles());
+    \u0275\u0275listener("onChange", function ExportComponent_Conditional_36_Conditional_2_Template_p_selectButton_onChange_4_listener() {
+      \u0275\u0275restoreView(_r8);
+      const ctx_r0 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r0.compareFiles());
     });
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext(2);
+    const ctx_r0 = \u0275\u0275nextContext(2);
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 3, "github.connect.export.label"));
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 3, "exportPages.settings.exportVersion"));
     \u0275\u0275advance(2);
-    \u0275\u0275property("options", ctx_r1.exportTargetOptions);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.selectedExportTarget);
+    \u0275\u0275property("options", ctx_r0.exportTargetOptions);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r0.selectedExportTarget);
   }
 }
-function ExportGithubComponent_Conditional_52_Template(rf, ctx) {
+function ExportComponent_Conditional_36_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 28);
+    \u0275\u0275elementStart(0, "div", 21);
     \u0275\u0275element(1, "aida-setup-repo");
-    \u0275\u0275template(2, ExportGithubComponent_Conditional_52_Conditional_2_Template, 5, 5, "div", 45);
+    \u0275\u0275template(2, ExportComponent_Conditional_36_Conditional_2_Template, 5, 5, "div", 43);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext();
+    const ctx_r0 = \u0275\u0275nextContext();
     \u0275\u0275advance(2);
-    \u0275\u0275conditional(ctx_r1.projectData().github.hasBaselineRepo ? 2 : -1);
+    \u0275\u0275conditional(ctx_r0.projectData().github.hasBaselineRepo ? 2 : -1);
   }
 }
-function ExportGithubComponent_Conditional_53_Conditional_9_Template(rf, ctx) {
+function ExportComponent_Conditional_37_Conditional_10_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275text(0);
     \u0275\u0275pipe(1, "date");
     \u0275\u0275pipe(2, "date");
   }
   if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext(2);
-    \u0275\u0275textInterpolate2(" ", \u0275\u0275pipeBind2(1, 2, ctx_r1.projectData().lastExported, "mediumDate"), ", ", \u0275\u0275pipeBind2(2, 5, ctx_r1.projectData().lastExported, "shortTime"), " ");
+    const ctx_r0 = \u0275\u0275nextContext(2);
+    \u0275\u0275textInterpolate2(" ", \u0275\u0275pipeBind2(1, 2, ctx_r0.projectData().lastExported, "mediumDate"), ", ", \u0275\u0275pipeBind2(2, 5, ctx_r0.projectData().lastExported, "shortTime"), " ");
   }
 }
-function ExportGithubComponent_Conditional_53_Conditional_10_Template(rf, ctx) {
+function ExportComponent_Conditional_37_Conditional_11_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275text(0);
+    \u0275\u0275pipe(1, "date");
+    \u0275\u0275pipe(2, "date");
+  }
+  if (rf & 2) {
+    const ctx_r0 = \u0275\u0275nextContext(2);
+    \u0275\u0275textInterpolate2(" ", \u0275\u0275pipeBind2(1, 2, ctx_r0.projectData().lastDownloaded, "mediumDate"), ", ", \u0275\u0275pipeBind2(2, 5, ctx_r0.projectData().lastDownloaded, "shortTime"), " ");
+  }
+}
+function ExportComponent_Conditional_37_Conditional_12_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275text(0);
     \u0275\u0275pipe(1, "translate");
   }
   if (rf & 2) {
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(1, 1, "github.data.neverExported"), " ");
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(1, 1, "common.never"), " ");
   }
 }
-function ExportGithubComponent_Conditional_53_Template(rf, ctx) {
+function ExportComponent_Conditional_37_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 28)(1, "h2", 9);
+    \u0275\u0275elementStart(0, "div", 21)(1, "h2", 9);
     \u0275\u0275text(2);
     \u0275\u0275pipe(3, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(4, "div", 67)(5, "div", 68);
+    \u0275\u0275elementStart(4, "div", 47)(5, "div", 48);
     \u0275\u0275text(6);
     \u0275\u0275pipe(7, "translate");
+    \u0275\u0275pipe(8, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(8, "div", 69);
-    \u0275\u0275template(9, ExportGithubComponent_Conditional_53_Conditional_9_Template, 3, 8)(10, ExportGithubComponent_Conditional_53_Conditional_10_Template, 2, 3);
+    \u0275\u0275elementStart(9, "div", 49);
+    \u0275\u0275template(10, ExportComponent_Conditional_37_Conditional_10_Template, 3, 8)(11, ExportComponent_Conditional_37_Conditional_11_Template, 3, 8)(12, ExportComponent_Conditional_37_Conditional_12_Template, 2, 3);
     \u0275\u0275elementEnd()();
-    \u0275\u0275element(11, "p-divider");
-    \u0275\u0275elementStart(12, "div", 70)(13, "div", 71)(14, "div")(15, "div", 72);
-    \u0275\u0275text(16);
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(17, "div", 73);
+    \u0275\u0275element(13, "p-divider");
+    \u0275\u0275elementStart(14, "div", 50)(15, "div", 51)(16, "div")(17, "div", 52);
     \u0275\u0275text(18);
-    \u0275\u0275pipe(19, "translate");
-    \u0275\u0275pipe(20, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(21, "div")(22, "div", 72);
-    \u0275\u0275text(23);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(24, "div", 73);
+    \u0275\u0275elementStart(19, "div", 53);
+    \u0275\u0275text(20);
+    \u0275\u0275pipe(21, "translate");
+    \u0275\u0275pipe(22, "translate");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(23, "div")(24, "div", 52);
     \u0275\u0275text(25);
-    \u0275\u0275pipe(26, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(26, "div", 53);
+    \u0275\u0275text(27);
+    \u0275\u0275pipe(28, "translate");
     \u0275\u0275elementEnd()()()()();
   }
   if (rf & 2) {
     let tmp_3_0;
-    const ctx_r1 = \u0275\u0275nextContext();
+    const ctx_r0 = \u0275\u0275nextContext();
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 7, "github.data"));
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 7, "exportPages.data"));
     \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(7, 9, "github.data.lastExported"));
-    \u0275\u0275advance(3);
-    \u0275\u0275conditional(ctx_r1.projectData().lastExported && ((tmp_3_0 = (tmp_3_0 = ctx_r1.projectData().lastExported) == null ? null : tmp_3_0.getTime()) !== null && tmp_3_0 !== void 0 ? tmp_3_0 : 0) > 0 ? 9 : 10);
-    \u0275\u0275advance(7);
-    \u0275\u0275textInterpolate1(" ", ctx_r1.selectedExportTarget === "prototype" ? ctx_r1.inScopePageCount() : ctx_r1.baselinePageCount(), " ");
+    \u0275\u0275textInterpolate(ctx_r0.repoType() === "github" ? \u0275\u0275pipeBind1(7, 9, "exportPages.data.lastExported") : \u0275\u0275pipeBind1(8, 11, "exportPages.data.lastDownloaded"));
+    \u0275\u0275advance(4);
+    \u0275\u0275conditional(ctx_r0.repoType() === "github" && ctx_r0.projectData().lastExported && ((tmp_3_0 = (tmp_3_0 = ctx_r0.projectData().lastExported) == null ? null : tmp_3_0.getTime()) !== null && tmp_3_0 !== void 0 ? tmp_3_0 : 0) > 0 ? 10 : ctx_r0.repoType() === "local" && ctx_r0.projectData().lastDownloaded && ((tmp_3_0 = (tmp_3_0 = ctx_r0.projectData().lastDownloaded) == null ? null : tmp_3_0.getTime()) !== null && tmp_3_0 !== void 0 ? tmp_3_0 : 0) > 0 ? 11 : 12);
+    \u0275\u0275advance(8);
+    \u0275\u0275textInterpolate1(" ", ctx_r0.projectFileCount(), " ");
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate1(" ", ctx_r1.selectedExportTarget === "prototype" ? \u0275\u0275pipeBind1(19, 11, "github.data.inScope") : \u0275\u0275pipeBind1(20, 13, "github.data.baseline"), " ");
+    \u0275\u0275textInterpolate1(" ", ctx_r0.selectedExportTarget === "prototype" ? \u0275\u0275pipeBind1(21, 13, "exportPages.data.inScope") : \u0275\u0275pipeBind1(22, 15, "exportPages.data.baseline"), " ");
     \u0275\u0275advance(5);
-    \u0275\u0275textInterpolate1(" ", ctx_r1.templateFileCount(), " ");
+    \u0275\u0275textInterpolate1(" ", ctx_r0.templateFileCount(), " ");
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(26, 15, "github.data.jekyll"), " ");
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(28, 17, "exportPages.data.jekyll"), " ");
   }
 }
-function ExportGithubComponent_ng_template_62_Template(rf, ctx) {
+function ExportComponent_ng_template_47_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r9 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "tr")(1, "th");
+    \u0275\u0275text(2);
+    \u0275\u0275pipe(3, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(4, "th")(5, "span", 54);
+    \u0275\u0275text(6);
+    \u0275\u0275pipe(7, "translate");
+    \u0275\u0275elementStart(8, "p-button", 55);
+    \u0275\u0275listener("onClick", function ExportComponent_ng_template_47_Template_p_button_onClick_8_listener() {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r0 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r0.setAll("skip", "project"));
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(9, "p-button", 56);
+    \u0275\u0275listener("onClick", function ExportComponent_ng_template_47_Template_p_button_onClick_9_listener() {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r0 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r0.setAll("export", "project"));
+    });
+    \u0275\u0275elementEnd()()()();
+  }
+  if (rf & 2) {
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 2, "common.path"));
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(7, 4, "common.status"), " ");
+  }
+}
+function ExportComponent_ng_template_48_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r10 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "tr")(1, "td");
+    \u0275\u0275text(2);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(3, "td")(4, "p-chip", 57);
+    \u0275\u0275pipe(5, "translate");
+    \u0275\u0275listener("click", function ExportComponent_ng_template_48_Template_p_chip_click_4_listener() {
+      const file_r11 = \u0275\u0275restoreView(_r10).$implicit;
+      const ctx_r0 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(file_r11.status === ctx_r0.ExportStatus.AddToProject || file_r11.status === ctx_r0.ExportStatus.OppLanguage ? ctx_r0.addToProject(file_r11) : ctx_r0.toggleUpdate(file_r11));
+    });
+    \u0275\u0275elementEnd()()();
+  }
+  if (rf & 2) {
+    const file_r11 = ctx.$implicit;
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(file_r11.path);
+    \u0275\u0275advance(2);
+    \u0275\u0275classMap("cursor-pointer font-bold center-chip w-10rem p-1 " + ctx_r0.getBgAndText(file_r11.status));
+    \u0275\u0275property("label", \u0275\u0275pipeBind1(5, 5, file_r11.status))("icon", ctx_r0.getIcon(file_r11.status));
+  }
+}
+function ExportComponent_ng_template_52_Template(rf, ctx) {
   if (rf & 1) {
     const _r12 = \u0275\u0275getCurrentView();
     \u0275\u0275elementStart(0, "tr")(1, "th");
     \u0275\u0275text(2);
     \u0275\u0275pipe(3, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(4, "th")(5, "span", 74);
+    \u0275\u0275elementStart(4, "th")(5, "span", 54);
     \u0275\u0275text(6);
     \u0275\u0275pipe(7, "translate");
-    \u0275\u0275elementStart(8, "p-button", 75);
-    \u0275\u0275listener("onClick", function ExportGithubComponent_ng_template_62_Template_p_button_onClick_8_listener() {
+    \u0275\u0275elementStart(8, "p-button", 55);
+    \u0275\u0275listener("onClick", function ExportComponent_ng_template_52_Template_p_button_onClick_8_listener() {
       \u0275\u0275restoreView(_r12);
-      const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.setAll("skip", "project"));
+      const ctx_r0 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r0.setAll("skip", "template"));
     });
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(9, "p-button", 76);
-    \u0275\u0275listener("onClick", function ExportGithubComponent_ng_template_62_Template_p_button_onClick_9_listener() {
+    \u0275\u0275elementStart(9, "p-button", 56);
+    \u0275\u0275listener("onClick", function ExportComponent_ng_template_52_Template_p_button_onClick_9_listener() {
       \u0275\u0275restoreView(_r12);
-      const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.setAll("export", "project"));
+      const ctx_r0 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r0.setAll("export", "template"));
     });
     \u0275\u0275elementEnd()()()();
   }
   if (rf & 2) {
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 2, "github.export.table.header.url"));
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 2, "common.path"));
     \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(7, 4, "github.export.table.header.status"), " ");
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(7, 4, "common.status"), " ");
   }
 }
-function ExportGithubComponent_ng_template_63_Template(rf, ctx) {
+function ExportComponent_ng_template_53_Template(rf, ctx) {
   if (rf & 1) {
     const _r13 = \u0275\u0275getCurrentView();
     \u0275\u0275elementStart(0, "tr")(1, "td");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "td")(4, "p-chip", 77);
+    \u0275\u0275elementStart(3, "td")(4, "p-chip", 57);
     \u0275\u0275pipe(5, "translate");
-    \u0275\u0275listener("click", function ExportGithubComponent_ng_template_63_Template_p_chip_click_4_listener() {
+    \u0275\u0275listener("click", function ExportComponent_ng_template_53_Template_p_chip_click_4_listener() {
       const file_r14 = \u0275\u0275restoreView(_r13).$implicit;
-      const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(file_r14.status === ctx_r1.ExportStatus.AddToProject || file_r14.status === ctx_r1.ExportStatus.OppLanguage ? ctx_r1.addToProject(file_r14) : ctx_r1.toggleUpdate(file_r14));
+      const ctx_r0 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(file_r14.status !== ctx_r0.ExportStatus.AddToProject && ctx_r0.toggleUpdate(file_r14));
     });
     \u0275\u0275elementEnd()()();
   }
   if (rf & 2) {
     const file_r14 = ctx.$implicit;
-    const ctx_r1 = \u0275\u0275nextContext();
+    const ctx_r0 = \u0275\u0275nextContext();
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate(file_r14.path);
     \u0275\u0275advance(2);
-    \u0275\u0275classMap("cursor-pointer font-bold center-chip w-10rem p-1 " + ctx_r1.getBgAndText(file_r14.status));
-    \u0275\u0275property("label", \u0275\u0275pipeBind1(5, 5, file_r14.status))("icon", ctx_r1.getIcon(file_r14.status));
+    \u0275\u0275classMap("cursor-pointer font-bold center-chip w-9rem p-1 " + ctx_r0.getBgAndText(file_r14.status));
+    \u0275\u0275property("label", \u0275\u0275pipeBind1(5, 5, file_r14.status))("icon", ctx_r0.getIcon(file_r14.status));
   }
 }
-function ExportGithubComponent_ng_template_67_Template(rf, ctx) {
+function ExportComponent_Conditional_54_Template(rf, ctx) {
   if (rf & 1) {
     const _r15 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "tr")(1, "th");
-    \u0275\u0275text(2);
-    \u0275\u0275pipe(3, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(4, "th")(5, "span", 74);
-    \u0275\u0275text(6);
-    \u0275\u0275pipe(7, "translate");
-    \u0275\u0275elementStart(8, "p-button", 75);
-    \u0275\u0275listener("onClick", function ExportGithubComponent_ng_template_67_Template_p_button_onClick_8_listener() {
+    \u0275\u0275elementStart(0, "p-button", 58);
+    \u0275\u0275pipe(1, "translate");
+    \u0275\u0275listener("onClick", function ExportComponent_Conditional_54_Template_p_button_onClick_0_listener() {
       \u0275\u0275restoreView(_r15);
-      const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.setAll("skip", "template"));
+      const ctx_r0 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r0.exportProjectToGitHub());
     });
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(9, "p-button", 76);
-    \u0275\u0275listener("onClick", function ExportGithubComponent_ng_template_67_Template_p_button_onClick_9_listener() {
-      \u0275\u0275restoreView(_r15);
-      const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.setAll("export", "template"));
-    });
-    \u0275\u0275elementEnd()()()();
   }
   if (rf & 2) {
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 2, "github.export.table.header.url"));
-    \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(7, 4, "github.export.table.header.status"), " ");
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275property("label", \u0275\u0275pipeBind1(1, 3, "exportPages.export.button.github"))("disabled", ctx_r0.projectFileCount() === 0 || !ctx_r0.exportGitHubService.token() || !ctx_r0.gitHubData().repo)("loading", ctx_r0.exportProgress());
   }
 }
-function ExportGithubComponent_ng_template_68_Template(rf, ctx) {
+function ExportComponent_Conditional_55_Template(rf, ctx) {
   if (rf & 1) {
     const _r16 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "tr")(1, "td");
-    \u0275\u0275text(2);
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "td")(4, "p-chip", 77);
-    \u0275\u0275pipe(5, "translate");
-    \u0275\u0275listener("click", function ExportGithubComponent_ng_template_68_Template_p_chip_click_4_listener() {
-      const file_r17 = \u0275\u0275restoreView(_r16).$implicit;
-      const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(file_r17.status !== ctx_r1.ExportStatus.AddToProject && ctx_r1.toggleUpdate(file_r17));
+    \u0275\u0275elementStart(0, "p-button", 59);
+    \u0275\u0275pipe(1, "translate");
+    \u0275\u0275listener("onClick", function ExportComponent_Conditional_55_Template_p_button_onClick_0_listener() {
+      \u0275\u0275restoreView(_r16);
+      const ctx_r0 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r0.exportToFile());
     });
-    \u0275\u0275elementEnd()()();
-  }
-  if (rf & 2) {
-    const file_r17 = ctx.$implicit;
-    const ctx_r1 = \u0275\u0275nextContext();
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(file_r17.path);
-    \u0275\u0275advance(2);
-    \u0275\u0275classMap("cursor-pointer font-bold center-chip w-9rem p-1 " + ctx_r1.getBgAndText(file_r17.status));
-    \u0275\u0275property("label", \u0275\u0275pipeBind1(5, 5, file_r17.status))("icon", ctx_r1.getIcon(file_r17.status));
-  }
-}
-function ExportGithubComponent_Conditional_70_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 35);
-    \u0275\u0275text(1);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext();
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate2(" ", ctx_r1.newCount(), " new and ", ctx_r1.updatedCount(), " updated pages ");
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275property("label", \u0275\u0275pipeBind1(1, 3, "exportPages.export.button.zip"))("disabled", ctx_r0.projectFileCount() === 0 || !ctx_r0.gitHubData().repo)("loading", ctx_r0.exportProgress());
   }
 }
-function ExportGithubComponent_Conditional_71_ng_template_1_Template(rf, ctx) {
+function ExportComponent_Conditional_56_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "span", 78);
+    \u0275\u0275elementStart(0, "span", 29);
+    \u0275\u0275text(1);
+    \u0275\u0275pipe(2, "translate");
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate3(" ", \u0275\u0275pipeBind2(2, 3, "exportPages.export.count", \u0275\u0275pureFunction2(6, _c231, ctx_r0.newCount(), ctx_r0.updatedCount())), " ", ctx_r0.newCount(), " new and ", ctx_r0.updatedCount(), " updated pages ");
+  }
+}
+function ExportComponent_Conditional_57_ng_template_1_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275element(0, "span", 60);
     \u0275\u0275pipe(1, "translate");
   }
   if (rf & 2) {
-    const progress_r18 = \u0275\u0275nextContext();
-    \u0275\u0275property("innerHTML", \u0275\u0275pipeBind1(1, 1, progress_r18.step), \u0275\u0275sanitizeHtml);
+    const progress_r17 = \u0275\u0275nextContext();
+    \u0275\u0275property("innerHTML", \u0275\u0275pipeBind1(1, 1, progress_r17.step), \u0275\u0275sanitizeHtml);
   }
 }
-function ExportGithubComponent_Conditional_71_Template(rf, ctx) {
+function ExportComponent_Conditional_57_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p-progressbar", 36);
-    \u0275\u0275template(1, ExportGithubComponent_Conditional_71_ng_template_1_Template, 2, 3, "ng-template", null, 2, \u0275\u0275templateRefExtractor);
+    \u0275\u0275elementStart(0, "p-progressbar", 30);
+    \u0275\u0275template(1, ExportComponent_Conditional_57_ng_template_1_Template, 2, 3, "ng-template", null, 2, \u0275\u0275templateRefExtractor);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
     \u0275\u0275property("value", ctx.progress);
   }
 }
-function ExportGithubComponent_Conditional_72_Template(rf, ctx) {
+function ExportComponent_Conditional_58_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "p-message", 37);
+    \u0275\u0275element(0, "p-message", 31);
   }
   if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext();
-    \u0275\u0275property("severity", ctx_r1.exportMessage().severity)("text", ctx_r1.exportMessage().text);
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275property("severity", ctx_r0.exportMessage().severity)("text", ctx_r0.exportMessage().text);
   }
 }
-function ExportGithubComponent_Conditional_73_Template(rf, ctx) {
+function ExportComponent_Conditional_59_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 29);
+    \u0275\u0275elementStart(0, "div", 22);
     \u0275\u0275element(1, "aida-bookmarklet");
     \u0275\u0275elementEnd();
   }
 }
 var ExportStatus;
 (function(ExportStatus2) {
-  ExportStatus2["ExportNew"] = "github.export.status.addToGitHub";
-  ExportStatus2["ExportOverwrite"] = "github.export.status.overwrite";
-  ExportStatus2["SkipNew"] = "github.export.status.skipNew";
-  ExportStatus2["SkipOverwrite"] = "github.export.status.skipOverwrite";
-  ExportStatus2["AddToProject"] = "github.export.status.addToProject";
-  ExportStatus2["OppLanguage"] = "github.export.status.addOppLangToProject";
+  ExportStatus2["ExportNew"] = "exportPages.export.status.addToGitHub";
+  ExportStatus2["ExportOverwrite"] = "exportPages.export.status.overwrite";
+  ExportStatus2["SkipNew"] = "exportPages.export.status.skipNew";
+  ExportStatus2["SkipOverwrite"] = "exportPages.export.status.skipOverwrite";
+  ExportStatus2["AddToProject"] = "exportPages.export.status.addToProject";
+  ExportStatus2["OppLanguage"] = "exportPages.export.status.addOppLangToProject";
 })(ExportStatus || (ExportStatus = {}));
-var ExportGithubComponent = class _ExportGithubComponent {
+var ExportComponent = class _ExportComponent {
   projectState = inject(ProjectStateService);
   authService = inject(GitHubAuthService);
   exportGitHubService = inject(ExportGitHubService);
   fetchService = inject(FetchService);
   translate = inject(TranslateService);
-  settingsService = inject(UserSettingsService);
   router = inject(Router);
   usageService = inject(UsageService);
+  htmlNormalizationService = inject(HtmlNormalizationService);
   defaultOrg = environment.defaultOrg;
   ExportStatus = ExportStatus;
-  username = computed(() => this.exportGitHubService.user()?.name || this.exportGitHubService.user()?.login || "User");
   //Signals
   projectData = this.projectState.getProject;
-  connectionStatus = signal("checking");
-  showDisclaimer = signal(false);
   filesTable = signal([]);
   exportMessage = signal(null);
-  pat = signal(this.exportGitHubService.pat);
-  precheckInProgress = signal(false);
+  repoType = signal(null);
   markForTranslation() {
-    marker("github.connect.export.description.prototype");
-    marker("github.connect.export.description.baseline");
-    marker("github.export.status.addOppLangToProject");
-    marker("github.export.status.addToGitHub");
-    marker("github.export.status.addToProject");
-    marker("github.export.status.skipNew");
-    marker("github.export.status.skipOverwrite");
-    marker("github.export.status.overwrite");
-    marker("github.connect.export.toggle.prototype");
-    marker("github.connect.export.toggle.baseline");
-    marker("github.export.progress.step1");
-    marker("github.export.progress.step2");
-    marker("github.export.progress.step3");
-    marker("github.export.progress.step4");
-    marker("github.export.progress.step5");
-    marker("github.export.progress.step6");
+    marker("exportPages.settings.description.prototype");
+    marker("exportPages.settings.description.baseline");
+    marker("exportPages.export.status.addOppLangToProject");
+    marker("exportPages.export.status.addToGitHub");
+    marker("exportPages.export.status.addToProject");
+    marker("exportPages.export.status.skipNew");
+    marker("exportPages.export.status.skipOverwrite");
+    marker("exportPages.export.status.overwrite");
+    marker("exportPages.export.progress.gatherPages");
+    marker("exportPages.export.progress.checkGitHub");
+    marker("exportPages.export.progress.setupRepo");
+    marker("exportPages.export.progress.exportPages");
+    marker("exportPages.export.progress.setupRedirects");
   }
   constructor() {
     effect(() => __async(this, null, function* () {
       const token = this.exportGitHubService.token();
       const owner = this.projectData().github.owner;
       const repo = this.projectData().github.repo;
-      if (owner && repo) {
+      const repoType = this.projectData().repoType;
+      if (repoType) {
+        this.repoType.set(repoType);
+      }
+      if (owner && repo || repoType === "local") {
         untracked(() => this.compareFiles());
       }
-      if (token && owner && repo) {
-        untracked(() => this.validateConnection());
-      } else if (!token) {
-        this.connectionStatus.set("missing");
-      }
     }));
-  }
-  //Validate token and repo access
-  validateConnection() {
-    return __async(this, null, function* () {
-      this.precheckInProgress.set(true);
-      this.connectionStatus.set("checking");
-      this.showDisclaimer.set(false);
-      const token = this.exportGitHubService.token();
-      const owner = this.projectData().github.owner;
-      const repo = this.projectData().github.repo;
-      const result = yield this.exportGitHubService.validateToken(token, owner, repo);
-      if (!result.valid) {
-        this.connectionStatus.set("error");
-      } else if (result.repoExists && !result.hasRepoAccess) {
-        this.connectionStatus.set("warning");
-      } else if (!result.repoExists && !result.canCreateRepo) {
-        this.connectionStatus.set("warning");
-      } else {
-        this.connectionStatus.set("connected");
-        this.showDisclaimer.set(result.showDisclaimer ?? false);
-      }
-      this.precheckInProgress.set(false);
-    });
   }
   // Computed signals
   gitHubData = computed(() => this.projectData().github);
   projectTable = computed(() => this.filesTable().filter((f) => f.path.startsWith("en") || f.path.startsWith("fr")));
   templateTable = computed(() => this.filesTable().filter((f) => !f.path.startsWith("en") && !f.path.startsWith("fr")));
-  inScopePageCount = computed(() => this.projectData().inScopePages);
-  baselinePageCount = computed(() => this.projectData().baselinePages);
-  projectFileCount = computed(() => this.projectTable().length);
+  projectFileCount = computed(() => this.projectTable().filter((f) => f.status !== ExportStatus.AddToProject && f.status !== ExportStatus.OppLanguage).length);
   templateFileCount = computed(() => this.templateTable().length);
   newCount = computed(() => this.filesTable().filter((f) => f.status === ExportStatus.ExportNew).length);
   updatedCount = computed(() => this.filesTable().filter((f) => f.status === ExportStatus.ExportOverwrite).length);
+  // Initialize table and connection status
+  ngOnInit() {
+    return __async(this, null, function* () {
+      yield this.compareFiles();
+    });
+  }
+  // Template visiblity controls
+  // If a repo is configured (and overlay is closed), show the repo settings as a secondary task instead of a card
+  settingsOverlay;
+  hasRepoConfig() {
+    const hasGithubData = !!(this.projectData().github.owner && this.projectData().github.repo && this.projectData().github.branch);
+    return hasGithubData || this.settingsOverlay?.overlayVisible;
+  }
+  //Export language options
+  selectedExportLanguage = "en";
+  get exportLanguageOptions() {
+    const primaryLang = this.projectState.detectPrimaryLanguage();
+    const enLabel = { label: this.translate.instant("common.language.english"), value: "en" };
+    const frLabel = { label: this.translate.instant("common.language.french"), value: "fr" };
+    const bothLabel = { label: this.translate.instant("common.both"), value: "both" };
+    if (primaryLang === "en") {
+      return [enLabel, frLabel, bothLabel];
+    } else {
+      return [frLabel, enLabel, bothLabel];
+    }
+  }
+  // Export target options
+  selectedExportTarget = "prototype";
+  get exportTargetOptions() {
+    return [
+      { label: this.translate.instant("common.version.prototype"), value: "prototype" },
+      { label: this.translate.instant("common.version.baseline"), value: "baseline" }
+    ];
+  }
   // Open targeted GitHub repo
   openRepo() {
     let modifier = "";
@@ -82813,273 +82486,53 @@ var ExportGithubComponent = class _ExportGithubComponent {
     const url = `https://github.com/${this.projectData().github.owner}/${this.projectData().github.repo}${modifier}`;
     window.open(url, "_blank");
   }
-  // Status message colors & icons
-  getStatusTextColor(status) {
-    const isDark = this.settingsService.darkMode();
-    const colorMap = {
-      "connected": isDark ? "text-green-400" : "text-green-500",
-      "warning": isDark ? "text-yellow-400" : "text-yellow-500",
-      "error": isDark ? "text-red-400" : "text-red-500",
-      "missing": isDark ? "text-red-400" : "text-red-500",
-      "checking": isDark ? "text-blue-400" : "text-blue-500"
-    };
-    return colorMap[status] || "";
-  }
-  getStatusIcons = computed(() => {
-    const status = this.connectionStatus();
-    const iconMap = {
-      "connected": "pi-check-circle",
-      "warning": "pi-exclamation-triangle",
-      "error": "pi-times-circle",
-      "missing": "pi-times-circle",
-      "checking": "pi-spin pi-spinner"
-    };
-    return `pi ${iconMap[status]} ${this.getStatusTextColor(status)} text-2xl`;
-  });
-  getTitleClasses = computed(() => {
-    const status = this.connectionStatus();
-    return `font-semibold my-0 ${this.getStatusTextColor(status)}`;
-  });
-  getBgClasses = computed(() => {
-    const status = this.connectionStatus();
-    const isDark = this.settingsService.darkMode();
-    const baseClasses = "flex align-items-center gap-2 p-3 border-round-md mb-3";
-    const bgMap = {
-      "connected": isDark ? "bg-green-950" : "bg-green-50",
-      "warning": isDark ? "bg-yellow-950" : "bg-yellow-50",
-      "error": isDark ? "bg-red-950" : "bg-red-50",
-      "missing": isDark ? "bg-red-950" : "bg-red-50",
-      "checking": isDark ? "bg-blue-950" : "bg-blue-50"
-    };
-    return `${baseClasses} ${bgMap[status]}`;
-  });
-  // End of status message colors & icons
-  // Initialize table and connection status
-  ngOnInit() {
-    return __async(this, null, function* () {
-      yield this.compareFiles();
-      yield this.validateConnection();
-    });
-  }
-  // Show repo settings as secondary task button & overlay (if data exists or overlay is open)
-  // Otherwise, show as primary task card in place of data card
-  settingsOverlay;
-  showSettingsButton() {
-    const hasGithubData = !!(this.projectData().github.owner && this.projectData().github.repo && this.projectData().github.branch);
-    return hasGithubData || this.settingsOverlay?.overlayVisible;
-  }
-  //Get in-scope URLs and page content (used by export fxn)
-  getUrlandContent(node, lang = "en") {
-    return __async(this, null, function* () {
-      const pages = [];
-      const url = node.data?.live[lang]?.url;
-      const path = this.projectState.getPath(url);
-      const repo = this.selectedExportTarget === "prototype" ? this.gitHubData().repo : `${this.gitHubData().repo}-baseline`;
-      if (path && repo) {
-        try {
-          const filename = path.split("/").pop() || "index.html";
-          const fileRow = this.filesTable().find((f) => f.path === path);
-          const isSkipped = fileRow?.status === ExportStatus.SkipNew || fileRow?.status === ExportStatus.SkipOverwrite;
-          const isNew = node?.data?.status?.isNew === true;
-          let content;
-          if (isSkipped) {
-            content = "<!-- Skipped file -->";
-          } else if (isNew) {
-            const breadcrumbs = this.projectState.getBreadcrumbChain(node.data.url, lang).slice(1);
-            content = this.exportGitHubService.formatNewPageAsJekyll(node, breadcrumbs, this.gitHubData().owner, repo, lang);
-          } else {
-            const doc = yield this.fetchService.fetchContent(url, "prod");
-            const breadcrumbs = this.selectedExportTarget === "prototype" ? this.projectState.getBreadcrumbChain(node.data.url, lang).slice(1) : void 0;
-            content = yield this.exportGitHubService.formatDocumentAsJekyll(doc, url, this.gitHubData().owner, repo, breadcrumbs);
-          }
-          pages.push({ url, path, filename, content });
-        } catch (error) {
-          console.error(`Error fetching content for ${url}:`, error);
-        }
-      }
-      if (node?.children) {
-        for (const child of node.children) {
-          const childPages = yield this.getUrlandContent(child, lang);
-          pages.push(...childPages);
-        }
-      }
-      return pages;
-    });
-  }
-  // Main export function (DO NOT REMOVE TIMEOUTS, THEY GIVE ENOUGH TIME FOR SHA TO UPDATE BETWEEN EXPORTS)
-  exportProjectToGitHub() {
-    return __async(this, null, function* () {
-      const owner = this.gitHubData().owner;
-      const repo = this.selectedExportTarget === "prototype" ? this.gitHubData().repo : `${this.gitHubData().repo}-baseline`;
-      const branch = this.gitHubData().branch;
-      const token = this.exportGitHubService.token();
-      const projectName = this.projectData().projectName;
-      this.exportProgress.set({ step: "github.export.progress.step1", progress: 5 });
-      let nodes = this.projectState.getProjectTree();
-      if (this.selectedExportTarget === "baseline") {
-        nodes = this.projectState.getBaselineTree(nodes, "full");
-      }
-      let pages = [];
-      if (this.selectedExportLanguage === "en") {
-        pages = yield this.getUrlandContent(nodes[0], "en");
-      } else if (this.selectedExportLanguage === "fr") {
-        pages = yield this.getUrlandContent(nodes[0], "fr");
-      } else {
-        const primaryPages = yield this.getUrlandContent(nodes[0], "en");
-        const oppositePages = yield this.getUrlandContent(nodes[0], "fr");
-        pages = [...primaryPages, ...oppositePages];
-      }
-      setTimeout(() => {
-        this.exportProgress.set({ step: "github.export.progress.step2", progress: 10 });
-      }, 1e3);
-      const allPages = pages.map((p) => {
-        let path = new URL(p.url).pathname;
-        path = path.replace(/^\/+/, "");
-        const lastSegment = path.split("/").pop() || "index.html";
-        return { url: p.url, path, content: p.content, filename: lastSegment };
-      });
-      const exportPages = allPages.filter((page) => {
-        const fileRow = this.filesTable().find((f) => f.path === page.path);
-        return fileRow?.status !== ExportStatus.SkipNew && fileRow?.status !== ExportStatus.SkipOverwrite;
-      });
-      setTimeout(() => {
-        this.exportProgress.set({ step: "github.export.progress.step3", progress: 15 });
-      }, 1e3);
-      const templateFilesToExport = this.templateTable().filter((f) => f.status === ExportStatus.ExportNew || f.status === ExportStatus.ExportOverwrite).map((f) => f.path);
-      setTimeout(() => {
-        this.exportProgress.set({ step: "github.export.progress.step4", progress: 20 });
-      }, 1e3);
-      const setupResult = yield this.exportGitHubService.setupRepo(owner, repo, branch, token, projectName, templateFilesToExport, nodes);
-      if (!setupResult.success && setupResult.error?.status === 403) {
-        this.exportMessage.set({
-          severity: "error",
-          text: this.translate.instant("github.export.error.readOnlyToken")
-        });
-        return;
-      } else if (!setupResult.success) {
-        this.exportMessage.set({
-          severity: "error",
-          text: setupResult.error?.message || this.translate.instant("github.export.error.other")
-        });
-        return;
-      }
-      const existingFiles = yield this.exportGitHubService.getRepoTree(owner, repo, branch, token);
-      const progressPerFile = 60 / exportPages.length;
-      const primaryLang = this.projectState.detectPrimaryLanguage();
-      for (const [index, page] of exportPages.entries()) {
-        try {
-          this.exportProgress.set({ step: "github.export.progress.step5", progress: 30 + index * progressPerFile });
-          const result = yield this.exportGitHubService.exportToGitHub(owner, repo, branch, page.path, page.filename, page.content, token, existingFiles, true);
-          if (result?.content?.sha) {
-            const pathLang = page.path.startsWith("en/") || page.path.endsWith("en.html") ? "en" : "fr";
-            this.projectState.setPageSha(page.url, result.content.sha, this.selectedExportTarget, pathLang);
-          }
-        } catch (error) {
-          console.error(`Error exporting ${page.path}:`, error);
-        }
-      }
-      setTimeout(() => {
-        this.exportProgress.set({ step: "github.export.progress.step6", progress: 90 });
-      }, 1e3);
-      const githubPages = yield this.exportGitHubService.getRepoTree(owner, repo, branch, token);
-      const githubContentPages = [...githubPages.keys()].filter((path) => path.startsWith("en/") || path.startsWith("fr/"));
-      const allPagePaths = /* @__PURE__ */ new Set([
-        ...allPages.map((page) => page.path),
-        ...githubContentPages
-      ]);
-      const redirects = [...allPagePaths].map((path) => ({
-        origin: `https://www.canada.ca/${path}`,
-        destination: `/${repo}/${path}`
-      }));
-      const redirectsJson = JSON.stringify(redirects, null, 2);
-      yield this.exportGitHubService.exportToGitHub(owner, repo, branch, "source/data/exclude-redirect-links.json", "exclude-redirect-links.json", redirectsJson, token, existingFiles, true);
-      setTimeout(() => {
-        this.exportProgress.set({ step: "common.complete", progress: 100 });
-      }, 1e3);
-      console.log("Page export complete.");
-      this.projectState.setExportDate();
-      const pageCountEN = exportPages.filter((p) => p.path.startsWith("en/") || p.path === "en.html").length;
-      const pageCountFR = exportPages.filter((p) => p.path.startsWith("fr/") || p.path === "fr.html").length;
-      this.usageService.trackExport(this.projectData().id, this.projectData().org ?? "DEFAULT", this.projectData().storageType, `${owner}/${repo}`, this.selectedExportTarget, pageCountEN, pageCountFR);
-      setTimeout(() => this.exportProgress.set(null), 5e3);
-      this.compareFiles();
-    });
-  }
-  //Create file list
+  //CDTS template files
+  cdtsFiles = ["source/data/exclude-redirect-links.json", "source/exit-intent-e.html", "source/exit-intent-f.html"];
+  //Jekyll template files
+  jekyllUpdateFiles = ["404.html", "_includes/*", "index.html", "source/data/exclude-redirect-links.json", "source/exit-intent-e.html", "source/exit-intent-f.html"];
+  jekyllSkipFiles = ["_config.yml", "README.md", "robots.txt"];
+  // Populate files table (and compare project files with GitHub or UT)
   compareFiles() {
     return __async(this, null, function* () {
+      if (!this.repoType())
+        return;
+      const lang = this.selectedExportLanguage;
+      const scope = this.selectedExportTarget === "prototype" ? "inScope" : "all";
+      const enPages = this.projectState.getAllPages("en", this.selectedExportTarget, scope).map((p) => p.path);
+      const frPages = this.projectState.getAllPages("fr", this.selectedExportTarget, scope).map((p) => p.path);
+      const projectPaths = [
+        ...lang === "en" ? enPages : lang === "fr" ? frPages : [...enPages, ...frPages],
+        ...this.cdtsFiles
+      ];
+      if (this.repoType() === "local") {
+        this.filesTable.set(projectPaths.map((path) => ({
+          path,
+          status: ExportStatus.ExportNew
+        })));
+        return;
+      }
       const owner = this.gitHubData().owner;
       const repo = this.selectedExportTarget === "prototype" ? this.gitHubData().repo : `${this.gitHubData().repo}-baseline`;
       const branch = this.gitHubData().branch;
       const token = this.exportGitHubService.token();
-      const scope = this.selectedExportTarget === "prototype" ? "inScope" : "all";
-      const enPages = this.projectState.getAllPagesByLang("en", this.selectedExportTarget).map((p) => p.value);
-      const frPages = this.projectState.getAllPagesByLang("fr", this.selectedExportTarget).map((p) => p.value);
-      let projectPaths = [];
-      if (this.selectedExportLanguage === "en") {
-        projectPaths = enPages;
-      } else if (this.selectedExportLanguage === "fr") {
-        projectPaths = frPages;
-      } else {
-        projectPaths = [...enPages, ...frPages];
-      }
       const githubPages = yield this.exportGitHubService.getRepoTree(owner, repo, branch, token);
+      const langs = lang === "both" ? ["en", "fr"] : [lang];
+      const langPatterns = langs.flatMap((lang2) => [new RegExp(`^${lang2}\\/.*`), new RegExp(`^${lang2}\\.html`)]);
       const githubFilePatterns = [
         /^_config\.yml$/,
         /^index\.html$/,
         /^README\.md$/,
         /^robots\.txt$/,
-        /^_includes\/.*$/,
         /^source\/data\/exclude-redirect-links\.json$/,
         /^source\/exit-intent-e\.html$/,
         /^source\/exit-intent-f\.html$/,
-        /^404\.html$/
+        /^404\.html$/,
+        ...langPatterns
       ];
-      if (this.selectedExportLanguage === "en") {
-        githubFilePatterns.push(new RegExp(`^en/.*`));
-        githubFilePatterns.push(new RegExp(`^en.html`));
-      } else if (this.selectedExportLanguage === "fr") {
-        githubFilePatterns.push(new RegExp(`^fr/.*`));
-        githubFilePatterns.push(new RegExp(`^fr.html`));
-      } else {
-        githubFilePatterns.push(new RegExp(`^en/.*`));
-        githubFilePatterns.push(new RegExp(`^en.html`));
-        githubFilePatterns.push(new RegExp(`^fr/.*`));
-        githubFilePatterns.push(new RegExp(`^fr.html`));
-      }
       const filteredGithubPages = new Map([...githubPages].filter(([path]) => githubFilePatterns.some((pattern) => pattern.test(path))));
-      const jekyllUpdateFiles = [
-        { path: "404.html", content: "<!-- 404 page -->" },
-        //copied from core-prototype
-        { path: "_includes/header/header.html", content: "<!-- header -->" },
-        //copied from core-prototype
-        { path: "_includes/headers-includes/sitesearch.html", content: "<!-- sitesearch -->" },
-        //copied from core-prototype
-        { path: "_includes/resources-inc/footer.html", content: "<!-- footer -->" },
-        //copied from core-prototype
-        { path: "_includes/i18n.liquid", content: "<!-- i18n -->" },
-        //copied from core-prototype
-        { path: "_includes/metadata.html", content: "<!-- metadata -->" },
-        //copied from core-prototype
-        { path: "source/exit-intent-e.html", content: "<!-- exit intent - english -->" },
-        //copied from core-prototype
-        { path: "source/exit-intent-f.html", content: "<!-- exit intent - french -->" },
-        //copied from core-prototype
-        { path: "source/data/exclude-redirect-links.json", content: "<!-- redirects -->" },
-        //generated for all pages in repo
-        { path: "index.html", content: "<!-- sitemap -->" }
-        //generated for all pages in repo
-      ];
-      const jekyllSkipFiles = [
-        { path: "_config.yml", content: "<!-- config -->" },
-        //genertated
-        { path: "README.md", content: "<!-- readme -->" },
-        //generated
-        { path: "robots.txt", content: "<!-- robots -->" }
-        //generated
-      ];
-      [...jekyllUpdateFiles, ...jekyllSkipFiles].forEach((file) => {
-        projectPaths.push(file.path);
+      const hasIncludes = [...githubPages.keys()].some((p) => p.startsWith("_includes/"));
+      [...this.jekyllUpdateFiles, ...this.jekyllSkipFiles].forEach((file) => {
+        projectPaths.push(file);
       });
       const allPaths = /* @__PURE__ */ new Set([
         ...projectPaths,
@@ -83087,21 +82540,21 @@ var ExportGithubComponent = class _ExportGithubComponent {
       ]);
       const table = [];
       for (const path of allPaths) {
+        const pathLang = this.fetchService.getLang(path);
+        const node = pathLang ? this.projectState.findNodeByPath(this.projectState.getProjectTree(), path, pathLang) : null;
         const inExport = projectPaths.some((url) => url === path);
         const inGitHub = filteredGithubPages.has(path);
-        const isAutoUpdateFile = jekyllUpdateFiles.some((f) => f.path === path);
-        const isAlwaysSkipFile = jekyllSkipFiles.some((f) => f.path === path);
-        const pathLang = path.startsWith("en/") || path.endsWith("en.html") ? "en" : path.startsWith("fr/") || path.endsWith("fr.html") ? "fr" : null;
-        let node = null;
-        if (pathLang === "en") {
-          node = this.projectState.findNodeByPath(this.projectState.getProjectTree(), path, "en");
-        } else if (pathLang === "fr") {
-          node = this.projectState.findNodeByPath(this.projectState.getProjectTree(), path, "fr");
-        }
+        const isAutoUpdateFile = this.jekyllUpdateFiles.some((url) => url === path);
+        const isAlwaysSkipFile = this.jekyllSkipFiles.some((url) => url === path);
         const isRot = node?.data?.status?.isROT === true;
-        const shouldIgnorePage = inGitHub && !inExport && pathLang !== null && pathLang !== this.projectState.detectPrimaryLanguage();
+        const githubOnlyOppLang = inGitHub && !inExport && pathLang !== null && pathLang !== this.projectState.detectPrimaryLanguage();
         let status;
-        if (shouldIgnorePage) {
+        if (path === "_includes/*") {
+          if (hasIncludes)
+            status = ExportStatus.ExportOverwrite;
+          else
+            status = ExportStatus.ExportNew;
+        } else if (githubOnlyOppLang) {
           status = ExportStatus.OppLanguage;
         } else if (isRot) {
           status = inGitHub ? ExportStatus.SkipOverwrite : ExportStatus.SkipNew;
@@ -83111,12 +82564,7 @@ var ExportGithubComponent = class _ExportGithubComponent {
           else if (isAlwaysSkipFile)
             status = ExportStatus.SkipOverwrite;
           else {
-            let storedSha;
-            if (pathLang === "en") {
-              storedSha = node?.data?.[this.selectedExportTarget].en.githubSha;
-            } else if (pathLang === "fr") {
-              storedSha = node?.data?.[this.selectedExportTarget].fr.githubSha;
-            }
+            const storedSha = pathLang ? node?.data?.[this.selectedExportTarget][pathLang].githubSha : null;
             const githubSha = filteredGithubPages.get(path);
             status = storedSha && storedSha === githubSha ? ExportStatus.ExportOverwrite : ExportStatus.SkipOverwrite;
           }
@@ -83129,6 +82577,7 @@ var ExportGithubComponent = class _ExportGithubComponent {
       this.filesTable.set(table);
     });
   }
+  // File table button configuration & getters
   colorConfig = {
     [ExportStatus.SkipNew]: {
       icon: "pi pi-angle-double-right",
@@ -83203,8 +82652,6 @@ var ExportGithubComponent = class _ExportGithubComponent {
     });
     this.filesTable.set(updated);
   }
-  //Progress
-  exportProgress = signal(null);
   //Add to project
   addToProject(file) {
     return __async(this, null, function* () {
@@ -83234,197 +82681,363 @@ var ExportGithubComponent = class _ExportGithubComponent {
       });
     });
   }
-  // Export target options
-  selectedExportTarget = "prototype";
-  get exportTargetOptions() {
-    return [
-      { label: this.translate.instant("github.connect.export.toggle.prototype"), value: "prototype" },
-      { label: this.translate.instant("github.connect.export.toggle.baseline"), value: "baseline" }
-    ];
+  // Export progress
+  exportProgress = signal(null);
+  /*_________________________________________*/
+  /****** HTML ZIP SPECIFIC FUNCTIONS *******/
+  exportToFile() {
+    return __async(this, null, function* () {
+      const JSZip = (yield import("./chunk-SOT2YPTI.js")).default;
+      const zip = new JSZip();
+      const repo = this.selectedExportTarget === "prototype" ? this.gitHubData().repo : `${this.gitHubData().repo}-baseline`;
+      const scope = this.selectedExportTarget === "prototype" ? "inScope" : "all";
+      const date = (/* @__PURE__ */ new Date()).toISOString().split("T")[0];
+      const projectPaths = this.projectTable().filter((item) => item.status === ExportStatus.ExportNew || item.status === ExportStatus.ExportOverwrite).map((item) => item.path);
+      const templatePaths = this.templateTable().filter((item) => item.status === ExportStatus.ExportNew || item.status === ExportStatus.ExportOverwrite).map((item) => item.path);
+      for (const path of projectPaths) {
+        const url = this.fetchService.generateUrl(path, "live");
+        const lang = this.fetchService.getLang(url);
+        if (!lang)
+          continue;
+        const node = this.projectState.findNodeByPath(this.projectState.getProjectTree(), path, lang);
+        const h1 = node?.data.prototype[lang].h1;
+        const doubleH1 = node?.data.prototype[lang].doubleH1;
+        const title = doubleH1 ? `${h1}: ${doubleH1}` : h1;
+        const description = node?.data.prototype[lang].description;
+        const keywords = node?.data.prototype[lang].keywords;
+        const robots = node?.data.prototype[lang].noindex ? "noindex, nofollow" : "index, follow";
+        const enUrl = this.fetchService.generateUrl(node?.data.path.en, "live");
+        const frUrl = this.fetchService.generateUrl(node?.data.path.fr, "live");
+        const breadcrumbs = this.projectState.getBreadcrumbChain(path, lang).map((b) => `{ title: "${b.title}", href: "${b.link}" }`).join(", ");
+        ;
+        const header = doubleH1 ? `<p class="lead mrgn-tp-md mrgn-bttm-0 text-muted">${doubleH1}</p>
+<h1 property="name" id="wb-cont" dir="ltr" class="mrgn-tp-0">${h1}</h1>` : `<h1 property="name" id="wb-cont" dir="ltr">${h1}</h1>`;
+        const depth = "../".repeat(path.split("/").length - 1);
+        const template = node?.data.prototype[lang].template;
+        const doc = yield this.fetchService.fetchContent(url, "both");
+        const { content, styles, scripts } = yield this.htmlNormalizationService.cleanContentForCdts(doc);
+        const html = this.buildCdtsPage(lang === "fr" ? CDTS_TEMPLATE_FRA : CDTS_TEMPLATE_ENG, {
+          TITLE: title ?? "",
+          DESCRIPTION: description ?? "",
+          KEYWORDS: keywords ?? "",
+          ROBOTS: robots,
+          ENGLISH: enUrl ?? "",
+          FRENCH: frUrl ?? "",
+          BREADCRUMBS: breadcrumbs,
+          HEADER: header ?? "",
+          CONTENT: content,
+          MODIFIED: date,
+          STYLES: styles,
+          SCRIPTS: scripts,
+          REPO: repo,
+          DEPTH: depth
+        });
+        zip.file(`${repo}/${path}`, html);
+      }
+      for (const path of templatePaths) {
+        if (path === this.cdtsFiles[0]) {
+          let allPagePaths;
+          if (this.selectedExportLanguage === "both") {
+            const enPages = this.projectState.getAllPages("en", "live", scope).map((page) => page.path);
+            const frPages = this.projectState.getAllPages("fr", "live", scope).map((page) => page.path);
+            allPagePaths = /* @__PURE__ */ new Set([...enPages, ...frPages]);
+          } else {
+            allPagePaths = new Set(this.projectState.getAllPages(this.selectedExportLanguage, "live", scope).map((page) => page.path));
+          }
+          const redirects = [...allPagePaths].map((path2) => ({
+            origin: `https://www.canada.ca/${path2}`,
+            destination: `/test/AIDA/${repo}/${path2}`
+          }));
+          const redirectsJson = JSON.stringify(redirects, null, 2);
+          zip.file(`${repo}/${path}`, redirectsJson);
+        } else {
+          const html2 = this.buildCdtsPage(path === this.cdtsFiles[1] ? EXIT_PAGE_TEMPLATE_ENG : EXIT_PAGE_TEMPLATE_FRA, {
+            MODIFIED: date,
+            REPO: repo
+          });
+          zip.file(`${repo}/${path}`, html2);
+        }
+        const html = this.buildCdtsPage(LINK_DETOUR_JS, {});
+        zip.file(`${repo}/source/scripts/external-link-detour.js`, html);
+      }
+      const blob = yield zip.generateAsync({ type: "blob" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `aida-html-export-${(/* @__PURE__ */ new Date()).toISOString().split("T")[0]}.zip`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
   }
-  //Export language options
-  selectedExportLanguage = "en";
-  get exportLanguageOptions() {
-    const primaryLang = this.projectState.detectPrimaryLanguage();
-    const enLabel = { label: this.translate.instant("common.language.english"), value: "en" };
-    const frLabel = { label: this.translate.instant("common.language.french"), value: "fr" };
-    const bothLabel = { label: this.translate.instant("common.both"), value: "both" };
-    if (primaryLang === "en") {
-      return [enLabel, frLabel, bothLabel];
-    } else {
-      return [frLabel, enLabel, bothLabel];
-    }
+  buildCdtsPage(template, vars) {
+    return Object.entries(vars).reduce((html, [key2, value]) => html.replaceAll(`{{${key2}}}`, value), template);
   }
-  static \u0275fac = function ExportGithubComponent_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _ExportGithubComponent)();
+  /*_________________________________________*/
+  /****** GITHUB SPECIFIC FUNCTIONS *********/
+  //Get in-scope URLs and page content (used by export fxn)
+  getUrlandContent(node, lang = "en") {
+    return __async(this, null, function* () {
+      const pages = [];
+      const path = node.data?.path[lang];
+      const url = this.fetchService.generateUrl(path, "live");
+      const repo = this.selectedExportTarget === "prototype" ? this.gitHubData().repo : `${this.gitHubData().repo}-baseline`;
+      if (path && repo) {
+        try {
+          const filename = path.split("/").pop() || "index.html";
+          const fileRow = this.filesTable().find((f) => f.path === path);
+          const isSkipped = fileRow?.status === ExportStatus.SkipNew || fileRow?.status === ExportStatus.SkipOverwrite;
+          const isNew = node?.data?.status?.isNew === true;
+          if (!isSkipped) {
+            if (isNew) {
+              const breadcrumbs = this.projectState.getBreadcrumbChain(node.data.path[lang], lang).slice(1);
+              const content = this.exportGitHubService.formatNewPageAsJekyll(node, breadcrumbs, this.gitHubData().owner, repo, lang);
+              pages.push({ url, path, filename, content });
+            } else {
+              const doc = yield this.fetchService.fetchContent(url, "prod");
+              const breadcrumbs = this.selectedExportTarget === "prototype" ? this.projectState.getBreadcrumbChain(node.data.path[lang], lang).slice(1) : void 0;
+              const content = yield this.exportGitHubService.formatDocumentAsJekyll(doc, url, this.gitHubData().owner, repo, breadcrumbs);
+              pages.push({ url, path, filename, content });
+            }
+          }
+        } catch (error) {
+          console.error(`Error fetching content for ${url}:`, error);
+        }
+      }
+      if (node?.children) {
+        for (const child of node.children) {
+          const childPages = yield this.getUrlandContent(child, lang);
+          pages.push(...childPages);
+        }
+      }
+      return pages;
+    });
+  }
+  // Main export function (DO NOT REMOVE TIMEOUTS, THEY GIVE ENOUGH TIME FOR SHA TO UPDATE BETWEEN EXPORTS)
+  exportProjectToGitHub() {
+    return __async(this, null, function* () {
+      const owner = this.gitHubData().owner;
+      const repo = this.selectedExportTarget === "prototype" ? this.gitHubData().repo : `${this.gitHubData().repo}-baseline`;
+      const branch = this.gitHubData().branch;
+      const token = this.exportGitHubService.token();
+      const projectName = this.projectData().projectName;
+      const scope = this.selectedExportTarget === "prototype" ? "inScope" : "all";
+      this.exportProgress.set({ step: "exportPages.export.progress.gatherPages", progress: 5 });
+      let nodes = this.projectState.getProjectTree();
+      if (this.selectedExportTarget === "baseline") {
+        nodes = this.projectState.getBaselineTree(nodes, "full");
+      }
+      let exportPages = [];
+      if (this.selectedExportLanguage === "both") {
+        const enPages2 = yield this.getUrlandContent(nodes[0], "en");
+        const frPages2 = yield this.getUrlandContent(nodes[0], "fr");
+        exportPages = [...enPages2, ...frPages2];
+      } else {
+        exportPages = yield this.getUrlandContent(nodes[0], this.selectedExportLanguage);
+      }
+      setTimeout(() => {
+        this.exportProgress.set({ step: "exportPages.export.progress.checkGitHub", progress: 10 });
+      }, 1e3);
+      const templateFilesToExport = this.templateTable().filter((f) => f.status === ExportStatus.ExportNew || f.status === ExportStatus.ExportOverwrite).map((f) => f.path);
+      setTimeout(() => {
+        this.exportProgress.set({ step: "exportPages.export.progress.setupRepo", progress: 20 });
+      }, 1e3);
+      const setupResult = yield this.exportGitHubService.setupRepo(owner, repo, branch, token, projectName, templateFilesToExport, nodes);
+      if (!setupResult.success && setupResult.error?.status === 403) {
+        this.exportMessage.set({
+          severity: "error",
+          text: this.translate.instant("github.export.error.readOnlyToken")
+        });
+        return;
+      } else if (!setupResult.success) {
+        this.exportMessage.set({
+          severity: "error",
+          text: setupResult.error?.message || this.translate.instant("github.export.error.other")
+        });
+        return;
+      }
+      const existingFiles = yield this.exportGitHubService.getRepoTree(owner, repo, branch, token);
+      const progressPerFile = 60 / exportPages.length;
+      const primaryLang = this.projectState.detectPrimaryLanguage();
+      for (const [index, page] of exportPages.entries()) {
+        try {
+          this.exportProgress.set({ step: "exportPages.export.progress.exportPages", progress: 30 + index * progressPerFile });
+          const result = yield this.exportGitHubService.exportToGitHub(owner, repo, branch, page.path, page.filename, page.content, token, existingFiles, true);
+          if (result?.content?.sha) {
+            const pathLang = page.path.startsWith("en/") || page.path.endsWith("en.html") ? "en" : "fr";
+            this.projectState.setPageSha(page.path, result.content.sha, this.selectedExportTarget, pathLang);
+          }
+        } catch (error) {
+          console.error(`Error exporting ${page.path}:`, error);
+        }
+      }
+      setTimeout(() => {
+        this.exportProgress.set({ step: "exportPages.export.progress.setupRedirects", progress: 90 });
+      }, 1e3);
+      const githubPages = yield this.exportGitHubService.getRepoTree(owner, repo, branch, token);
+      const githubContentPages = [...githubPages.keys()].filter((path) => path.startsWith("en/") || path.startsWith("fr/"));
+      const enPages = this.projectState.getAllPages("en", "live", scope);
+      const frPages = this.projectState.getAllPages("fr", "live", scope);
+      const allPagePaths = /* @__PURE__ */ new Set([
+        ...enPages.map((page) => page.path),
+        ...frPages.map((page) => page.path),
+        ...githubContentPages
+      ]);
+      const redirects = [...allPagePaths].map((path) => ({
+        origin: `https://www.canada.ca/${path}`,
+        destination: `/${repo}/${path}`
+      }));
+      const redirectsJson = JSON.stringify(redirects, null, 2);
+      yield this.exportGitHubService.exportToGitHub(owner, repo, branch, "source/data/exclude-redirect-links.json", "exclude-redirect-links.json", redirectsJson, token, githubPages, true);
+      setTimeout(() => {
+        this.exportProgress.set({ step: "common.complete", progress: 100 });
+      }, 1e3);
+      console.log("Page export complete.");
+      this.projectState.setExportDate();
+      const pageCountEN = exportPages.filter((p) => p.path.startsWith("en/") || p.path === "en.html").length;
+      const pageCountFR = exportPages.filter((p) => p.path.startsWith("fr/") || p.path === "fr.html").length;
+      this.usageService.trackExport(this.projectData().id, this.projectData().org ?? "DEFAULT", this.projectData().storageType, `${owner}/${repo}`, this.selectedExportTarget, pageCountEN, pageCountFR);
+      setTimeout(() => this.exportProgress.set(null), 5e3);
+      this.compareFiles();
+    });
+  }
+  static \u0275fac = function ExportComponent_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _ExportComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _ExportGithubComponent, selectors: [["aida-export-github"]], viewQuery: function ExportGithubComponent_Query(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _ExportComponent, selectors: [["aida-export-github"]], viewQuery: function ExportComponent_Query(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275viewQuery(_c037, 5);
+      \u0275\u0275viewQuery(_c036, 5);
     }
     if (rf & 2) {
       let _t;
       \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.settingsOverlay = _t.first);
     }
-  }, decls: 74, vars: 62, consts: [["settingsOverlay", ""], ["item", ""], ["content", ""], ["id", "wb-cont"], ["severity", "info", "styleClass", "mb-2 sticky top-0 z-2"], [1, "flex", "lg:flex-row", "flex-column", "gap-3", "min-w-min"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "lg:mb-3", "lg:w-8", "w-full", "min-w-min"], [1, "flex", "flex-column", "lg:flex-row", "justify-content-between", "align-items-start"], [1, "flex", "flex-column"], [1, "text-2xl", "my-1"], [1, "my-1"], [1, "flex", "flex-column", "xl:flex-row", "gap-2", "xl:gap-5"], [1, "flex", "flex-row", "gap-5"], ["for", "owner", 1, "text-xs", "font-semibold"], ["id", "owner", 1, "text-color-secondary", "text-sm", "my-0"], ["for", "repo", 1, "text-xs", "font-semibold"], ["id", "repo", 1, "text-color-secondary", "text-sm", "my-0"], ["for", "branch", 1, "text-xs", "font-semibold"], ["id", "branch", 1, "text-color-secondary", "text-sm", "my-0"], [1, "flex", "flex-row", "flex-wrap", "row-gap-2", "column-gap-5"], [1, "flex", "flex-column", "hover:text-primary"], ["for", "export-language", 1, "text-xs", "font-semibold", "xl:my-1"], ["id", "export-language", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "size", "small", "styleClass", "secondary-outline text-primary max-h-3rem", 3, "ngModelChange", "onChange", "options", "ngModel"], [1, "mt-3", "lg:mt-0", "flex", "flex-row", "lg:flex-column", "gap-2"], ["icon", "pi pi-external-link", "outlined", "", "size", "small", "styleClass", "secondary-outline w-full", 3, "onClick", "label"], [1, "text-2xl", "mt-3", "mb-1"], [1, "flex", "flex-column", "gap-3"], [3, "class"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "lg:mb-3", "lg:w-4", "w-full", "min-w-min"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "my-3", "lg:mt-0", "min-w-min"], ["size", "small", 3, "value"], ["pTemplate", "header", "stripedRows", ""], ["pTemplate", "body"], ["styleClass", "mt-4", 3, "header", "toggleable", "collapsed"], ["styleClass", "my-3", "icon", "pi pi-github", "label", "Export to GitHub", "severity", "primary", 3, "onClick", "disabled", "loading"], [1, "text-color-secondary"], ["styleClass", "h-2rem centered-label", 3, "value"], ["styleClass", "mt-2", 3, "severity", "text"], [1, "flex", "align-items-center", "gap-2"], [1, "pi", "pi-info-circle", "font-bold"], ["for", "export-type", 1, "text-xs", "font-semibold", "xl:my-1"], ["id", "export-type", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "size", "small", "styleClass", "secondary-outline text-primary max-h-3rem", 3, "ngModelChange", "onChange", "options", "ngModel"], ["icon", "pi pi-cog", "outlined", "", "size", "small", "styleClass", "secondary-outline w-full", 3, "click", "label"], ["styleClass", "w-full lg:w-30rem"], ["mode", "baseline"], [1, "flex", "flex-column", "align-items-stretch", "mt-3"], ["for", "export-type", 1, "text-sm", "font-semibold"], ["id", "export-type", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "styleClass", "secondary-outline max-h-3rem", 3, "ngModelChange", "onChange", "options", "ngModel"], [1, "my-0"], [1, "flex", "flex-column", "lg:flex-row", "gap-2"], [1, "flex-1", "border-left-3", "surface-border", "p-3", "text-center"], [1, "pi", "pi-github", "text-6xl", "text-900", "mb-3"], [1, "font-semibold", "my-0"], [1, "text-sm", "text-color-secondary", "my-2"], ["icon", "pi pi-github", "styleClass", "w-full", 3, "onClick", "label"], ["layout", "horizontal", 1, "lg:hidden", "uppercase"], ["layout", "vertical", 1, "hidden", "lg:flex", "uppercase"], [1, "flex-1", "border-left-3", "surface-border", "lg:border-none", "p-3", "text-center"], [1, "pi", "pi-key", "text-6xl", "text-900", "mb-3"], [3, "validateOnBlur"], [1, "flex-1"], [1, "flex", "flex-row", "gap-2", "justify-content-between"], [3, "innerHtml"], [1, "text-sm", "text-color-secondary", "my-0"], [1, "text-xs", "text-color-secondary", "my-0"], ["icon", "pi pi-times", "outlined", "", "severity", "secondary", "size", "small", "styleClass", "secondary-outline white-space-nowrap", 3, "label"], ["icon", "pi pi-times", "outlined", "", "severity", "secondary", "size", "small", "styleClass", "secondary-outline white-space-nowrap", 3, "onClick", "label"], [1, "p-3", "mb-3", "text-center"], [1, "text-600", "text-sm", "opacity-90"], [1, "text-primary", "text-xl", "font-semibold"], [1, "text-center"], [1, "flex", "flex-row", "justify-content-around"], [1, "text-5xl", "font-bold", "text-primary", "mb-1"], [1, "text-600", "text-sm"], [1, "flex", "flex-row", "align-items-center", "gap-2"], ["icon", "pi pi-angle-double-right", "pTooltip", "Skip all", "tooltipPosition", "top", "size", "small", "severity", "secondary", 3, "onClick"], ["icon", "pi pi-sync", "pTooltip", "Update all", "tooltipPosition", "top", "size", "small", "severity", "primary", 3, "onClick"], [3, "click", "label", "icon"], [1, "text-white", 3, "innerHTML"]], template: function ExportGithubComponent_Template(rf, ctx) {
+  }, decls: 60, vars: 52, consts: [["settingsOverlay", ""], ["item", ""], ["content", ""], ["id", "wb-cont"], ["severity", "info", "styleClass", "mb-2 sticky top-0 z-2"], [1, "flex", "lg:flex-row", "flex-column", "gap-3", "min-w-min"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "lg:mb-3", "lg:w-8", "w-full", "min-w-min"], [1, "flex", "flex-column", "lg:flex-row", "justify-content-between", "align-items-start"], [1, "flex", "flex-column"], [1, "text-2xl", "my-1"], [1, "my-1"], [1, "flex", "flex-column", "xl:flex-row", "gap-2", "xl:gap-5"], [1, "flex", "flex-row", "gap-5"], ["for", "repo", 1, "text-xs", "font-semibold"], ["id", "repo", 1, "text-color-secondary", "text-sm", "my-0"], [1, "flex", "flex-row", "flex-wrap", "row-gap-2", "column-gap-5"], [1, "flex", "flex-column", "hover:text-primary"], ["for", "export-language", 1, "text-xs", "font-semibold", "xl:my-1"], ["id", "export-language", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "size", "small", "styleClass", "secondary-outline text-primary max-h-3rem", 3, "ngModelChange", "onChange", "options", "ngModel"], [1, "mt-3", "lg:mt-0", "flex", "flex-row", "lg:flex-column", "gap-2"], ["icon", "pi pi-external-link", "outlined", "", "size", "small", "styleClass", "secondary-outline w-full", 3, "label"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "lg:mb-3", "lg:w-4", "w-full", "min-w-min"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "my-3", "lg:mt-0", "min-w-min"], ["size", "small", 3, "value"], ["pTemplate", "header", "stripedRows", ""], ["pTemplate", "body"], ["styleClass", "mt-4", 3, "header", "toggleable", "collapsed"], ["styleClass", "my-3", "icon", "pi pi-github", "severity", "primary", 3, "label", "disabled", "loading"], ["styleClass", "my-3", "icon", "pi pi-file-export", "severity", "primary", 3, "label", "disabled", "loading"], [1, "text-color-secondary"], ["styleClass", "h-2rem centered-label", 3, "value"], ["styleClass", "mt-2", 3, "severity", "text"], [1, "flex", "align-items-center", "gap-2"], [1, "pi", "pi-info-circle", "font-bold"], ["for", "owner", 1, "text-xs", "font-semibold"], ["id", "owner", 1, "text-color-secondary", "text-sm", "my-0"], ["for", "branch", 1, "text-xs", "font-semibold"], ["id", "branch", 1, "text-color-secondary", "text-sm", "my-0"], ["for", "export-type", 1, "text-xs", "font-semibold", "xl:my-1"], ["id", "export-type", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "size", "small", "styleClass", "secondary-outline text-primary max-h-3rem", 3, "ngModelChange", "onChange", "options", "ngModel"], ["icon", "pi pi-cog", "outlined", "", "size", "small", "styleClass", "secondary-outline w-full", 3, "click", "label"], ["styleClass", "w-full lg:w-30rem"], ["mode", "baseline"], [1, "flex", "flex-column", "align-items-stretch", "mt-3"], ["for", "export-type", 1, "text-sm", "font-semibold"], ["id", "export-type", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "styleClass", "secondary-outline max-h-3rem", 3, "ngModelChange", "onChange", "options", "ngModel"], ["icon", "pi pi-external-link", "outlined", "", "size", "small", "styleClass", "secondary-outline w-full", 3, "onClick", "label"], [1, "p-3", "mb-3", "text-center"], [1, "text-600", "text-sm", "opacity-90"], [1, "text-primary", "text-xl", "font-semibold"], [1, "text-center"], [1, "flex", "flex-row", "justify-content-around"], [1, "text-5xl", "font-bold", "text-primary", "mb-1"], [1, "text-600", "text-sm"], [1, "flex", "flex-row", "align-items-center", "gap-2"], ["icon", "pi pi-angle-double-right", "pTooltip", "Skip all", "tooltipPosition", "top", "size", "small", "severity", "secondary", 3, "onClick"], ["icon", "pi pi-sync", "pTooltip", "Update all", "tooltipPosition", "top", "size", "small", "severity", "primary", 3, "onClick"], [3, "click", "label", "icon"], ["styleClass", "my-3", "icon", "pi pi-github", "severity", "primary", 3, "onClick", "label", "disabled", "loading"], ["styleClass", "my-3", "icon", "pi pi-file-export", "severity", "primary", 3, "onClick", "label", "disabled", "loading"], [1, "text-white", 3, "innerHTML"]], template: function ExportComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "h1", 3);
       \u0275\u0275text(1);
       \u0275\u0275pipe(2, "translate");
+      \u0275\u0275pipe(3, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275template(3, ExportGithubComponent_Conditional_3_Template, 6, 3, "p-message", 4);
-      \u0275\u0275elementStart(4, "div", 5)(5, "div", 6)(6, "div", 7)(7, "div", 8)(8, "h2", 9);
-      \u0275\u0275text(9);
-      \u0275\u0275pipe(10, "translate");
+      \u0275\u0275template(4, ExportComponent_Conditional_4_Template, 6, 3, "p-message", 4);
+      \u0275\u0275elementStart(5, "div", 5)(6, "div", 6)(7, "div", 7)(8, "div", 8)(9, "h2", 9);
+      \u0275\u0275text(10);
+      \u0275\u0275pipe(11, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(11, "p", 10);
-      \u0275\u0275text(12);
-      \u0275\u0275pipe(13, "translate");
+      \u0275\u0275elementStart(12, "p", 10);
+      \u0275\u0275text(13);
+      \u0275\u0275pipe(14, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(14, "div", 11)(15, "div", 12)(16, "div")(17, "label", 13);
-      \u0275\u0275text(18);
-      \u0275\u0275pipe(19, "translate");
+      \u0275\u0275elementStart(15, "div", 11)(16, "div", 12);
+      \u0275\u0275template(17, ExportComponent_Conditional_17_Template, 6, 4, "div");
+      \u0275\u0275elementStart(18, "div")(19, "label", 13);
+      \u0275\u0275text(20);
+      \u0275\u0275pipe(21, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(20, "p", 14);
-      \u0275\u0275text(21);
+      \u0275\u0275elementStart(22, "p", 14);
+      \u0275\u0275text(23);
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(22, "div")(23, "label", 15);
-      \u0275\u0275text(24);
-      \u0275\u0275pipe(25, "translate");
+      \u0275\u0275template(24, ExportComponent_Conditional_24_Template, 6, 4, "div");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(26, "p", 16);
-      \u0275\u0275text(27);
-      \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(28, "div")(29, "label", 17);
-      \u0275\u0275text(30);
-      \u0275\u0275pipe(31, "translate");
+      \u0275\u0275elementStart(25, "div", 15)(26, "div", 16)(27, "label", 17);
+      \u0275\u0275text(28);
+      \u0275\u0275pipe(29, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(32, "p", 18);
-      \u0275\u0275text(33);
-      \u0275\u0275elementEnd()()();
-      \u0275\u0275elementStart(34, "div", 19)(35, "div", 20)(36, "label", 21);
-      \u0275\u0275text(37);
-      \u0275\u0275pipe(38, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(39, "p-selectButton", 22);
-      \u0275\u0275twoWayListener("ngModelChange", function ExportGithubComponent_Template_p_selectButton_ngModelChange_39_listener($event) {
+      \u0275\u0275elementStart(30, "p-selectButton", 18);
+      \u0275\u0275twoWayListener("ngModelChange", function ExportComponent_Template_p_selectButton_ngModelChange_30_listener($event) {
         \u0275\u0275twoWayBindingSet(ctx.selectedExportLanguage, $event) || (ctx.selectedExportLanguage = $event);
         return $event;
       });
-      \u0275\u0275listener("onChange", function ExportGithubComponent_Template_p_selectButton_onChange_39_listener() {
+      \u0275\u0275listener("onChange", function ExportComponent_Template_p_selectButton_onChange_30_listener() {
         return ctx.compareFiles();
       });
       \u0275\u0275elementEnd()();
-      \u0275\u0275template(40, ExportGithubComponent_Conditional_40_Template, 5, 5, "div", 20);
+      \u0275\u0275template(31, ExportComponent_Conditional_31_Template, 5, 5, "div", 16);
       \u0275\u0275elementEnd()()();
-      \u0275\u0275elementStart(41, "div", 23);
-      \u0275\u0275template(42, ExportGithubComponent_Conditional_42_Template, 6, 4);
-      \u0275\u0275elementStart(43, "p-button", 24);
+      \u0275\u0275elementStart(32, "div", 19);
+      \u0275\u0275template(33, ExportComponent_Conditional_33_Template, 6, 4)(34, ExportComponent_Conditional_34_Template, 2, 3, "p-button", 20);
+      \u0275\u0275elementEnd()();
+      \u0275\u0275template(35, ExportComponent_Conditional_35_Template, 1, 0, "aida-sign-in-banner");
+      \u0275\u0275elementEnd();
+      \u0275\u0275template(36, ExportComponent_Conditional_36_Template, 3, 1, "div", 21)(37, ExportComponent_Conditional_37_Template, 29, 19, "div", 21);
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(38, "div", 22)(39, "h2", 9);
+      \u0275\u0275text(40);
+      \u0275\u0275pipe(41, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(42, "p", 10);
+      \u0275\u0275text(43);
       \u0275\u0275pipe(44, "translate");
-      \u0275\u0275listener("onClick", function ExportGithubComponent_Template_p_button_onClick_43_listener() {
-        return ctx.openRepo();
-      });
-      \u0275\u0275elementEnd()()();
-      \u0275\u0275elementStart(45, "h2", 25);
-      \u0275\u0275text(46);
-      \u0275\u0275pipe(47, "translate");
-      \u0275\u0275pipe(48, "translate");
+      \u0275\u0275pipe(45, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(49, "div", 26);
-      \u0275\u0275template(50, ExportGithubComponent_Conditional_50_Template, 29, 25)(51, ExportGithubComponent_Conditional_51_Template, 7, 8, "div", 27);
+      \u0275\u0275elementStart(46, "p-table", 23);
+      \u0275\u0275template(47, ExportComponent_ng_template_47_Template, 10, 6, "ng-template", 24)(48, ExportComponent_ng_template_48_Template, 6, 7, "ng-template", 25);
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(49, "p-panel", 26);
+      \u0275\u0275pipe(50, "translate");
+      \u0275\u0275elementStart(51, "p-table", 23);
+      \u0275\u0275template(52, ExportComponent_ng_template_52_Template, 10, 6, "ng-template", 24)(53, ExportComponent_ng_template_53_Template, 6, 7, "ng-template", 25);
       \u0275\u0275elementEnd()();
-      \u0275\u0275template(52, ExportGithubComponent_Conditional_52_Template, 3, 1, "div", 28)(53, ExportGithubComponent_Conditional_53_Template, 27, 17, "div", 28);
+      \u0275\u0275template(54, ExportComponent_Conditional_54_Template, 2, 5, "p-button", 27)(55, ExportComponent_Conditional_55_Template, 2, 5, "p-button", 28)(56, ExportComponent_Conditional_56_Template, 3, 9, "span", 29)(57, ExportComponent_Conditional_57_Template, 3, 1, "p-progressbar", 30)(58, ExportComponent_Conditional_58_Template, 1, 2, "p-message", 31);
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(54, "div", 29)(55, "h2", 9);
-      \u0275\u0275text(56);
-      \u0275\u0275pipe(57, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(58, "p", 10);
-      \u0275\u0275text(59);
-      \u0275\u0275pipe(60, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(61, "p-table", 30);
-      \u0275\u0275template(62, ExportGithubComponent_ng_template_62_Template, 10, 6, "ng-template", 31)(63, ExportGithubComponent_ng_template_63_Template, 6, 7, "ng-template", 32);
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(64, "p-panel", 33);
-      \u0275\u0275pipe(65, "translate");
-      \u0275\u0275elementStart(66, "p-table", 30);
-      \u0275\u0275template(67, ExportGithubComponent_ng_template_67_Template, 10, 6, "ng-template", 31)(68, ExportGithubComponent_ng_template_68_Template, 6, 7, "ng-template", 32);
-      \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(69, "p-button", 34);
-      \u0275\u0275listener("onClick", function ExportGithubComponent_Template_p_button_onClick_69_listener() {
-        return ctx.exportProjectToGitHub();
-      });
-      \u0275\u0275elementEnd();
-      \u0275\u0275template(70, ExportGithubComponent_Conditional_70_Template, 2, 2, "span", 35)(71, ExportGithubComponent_Conditional_71_Template, 3, 1, "p-progressbar", 36)(72, ExportGithubComponent_Conditional_72_Template, 1, 2, "p-message", 37);
-      \u0275\u0275elementEnd();
-      \u0275\u0275template(73, ExportGithubComponent_Conditional_73_Template, 2, 0, "div", 29);
+      \u0275\u0275template(59, ExportComponent_Conditional_59_Template, 2, 0, "div", 22);
     }
     if (rf & 2) {
-      let tmp_17_0;
-      let tmp_29_0;
+      let tmp_25_0;
       \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 33, "github._title"));
-      \u0275\u0275advance(2);
-      \u0275\u0275conditional(!ctx.exportGitHubService.token() && !ctx.authService.isAuthenticated() ? 3 : -1);
+      \u0275\u0275textInterpolate(ctx.repoType() === "github" ? \u0275\u0275pipeBind1(2, 29, "exportPages.github._title") : \u0275\u0275pipeBind1(3, 31, "exportPages.zip._title"));
+      \u0275\u0275advance(3);
+      \u0275\u0275conditional(!ctx.exportGitHubService.token() && !ctx.authService.isAuthenticated() && ctx.repoType() === "github" ? 4 : -1);
       \u0275\u0275advance(6);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(10, 35, "github.connect.export._title."));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(11, 33, "exportPages.settings._title"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(13, 37, "github.connect.export.description." + ctx.selectedExportTarget));
-      \u0275\u0275advance(6);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(19, 39, "project.github.label.owner"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(14, 35, "exportPages.settings.description." + ctx.selectedExportTarget));
+      \u0275\u0275advance(4);
+      \u0275\u0275conditional(ctx.repoType() === "github" ? 17 : -1);
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(ctx.projectData().github.owner);
-      \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(25, 41, "project.github.label.repo"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(21, 37, "project.github.label.repo"));
       \u0275\u0275advance(3);
       \u0275\u0275textInterpolate2("", ctx.projectData().github.repo, "", ctx.selectedExportTarget === "baseline" ? "-baseline" : "", "");
-      \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(31, 43, "project.github.label.branch"));
-      \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(ctx.projectData().github.branch);
+      \u0275\u0275advance();
+      \u0275\u0275conditional(ctx.repoType() === "github" ? 24 : -1);
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(38, 45, "github.export.language.label"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(29, 39, "exportPages.settings.exportLanguage"));
       \u0275\u0275advance(2);
       \u0275\u0275property("options", ctx.exportLanguageOptions);
       \u0275\u0275twoWayProperty("ngModel", ctx.selectedExportLanguage);
       \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.projectData().github.hasBaselineRepo ? 40 : -1);
+      \u0275\u0275conditional(ctx.projectData().github.hasBaselineRepo ? 31 : -1);
       \u0275\u0275advance(2);
-      \u0275\u0275conditional(ctx.showSettingsButton() ? 42 : -1);
+      \u0275\u0275conditional(ctx.hasRepoConfig() ? 33 : -1);
       \u0275\u0275advance();
-      \u0275\u0275property("label", \u0275\u0275pipeBind1(44, 47, "github.connect.openRepo"));
-      \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(ctx.connectionStatus() === "connected" ? \u0275\u0275pipeBind1(47, 49, "github.connected") : \u0275\u0275pipeBind1(48, 51, "github.connect"));
+      \u0275\u0275conditional(ctx.repoType() === "github" ? 34 : -1);
+      \u0275\u0275advance();
+      \u0275\u0275conditional(ctx.repoType() === "github" ? 35 : -1);
+      \u0275\u0275advance();
+      \u0275\u0275conditional(!ctx.hasRepoConfig() ? 36 : 37);
       \u0275\u0275advance(4);
-      \u0275\u0275conditional((tmp_17_0 = !ctx.exportGitHubService.user()) ? 50 : 51, tmp_17_0);
-      \u0275\u0275advance(2);
-      \u0275\u0275conditional(!ctx.showSettingsButton() ? 52 : 53);
-      \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(57, 53, "github.export._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(41, 41, "exportPages.export._title"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(60, 55, "github.export.description"));
-      \u0275\u0275advance(2);
+      \u0275\u0275textInterpolate(ctx.repoType() === "github" ? \u0275\u0275pipeBind1(44, 43, "exportPages.export.github.description") : \u0275\u0275pipeBind1(45, 45, "exportPages.export.zip.description"));
+      \u0275\u0275advance(3);
       \u0275\u0275property("value", ctx.projectTable());
       \u0275\u0275advance(3);
-      \u0275\u0275property("header", \u0275\u0275pipeBind2(65, 57, "github.export.templateFiles.header", \u0275\u0275pureFunction1(60, _c156, ctx.templateFileCount())))("toggleable", true)("collapsed", true);
+      \u0275\u0275property("header", \u0275\u0275pipeBind2(50, 47, "exportPages.export.templateFiles", \u0275\u0275pureFunction1(50, _c156, ctx.templateFileCount())))("toggleable", true)("collapsed", true);
       \u0275\u0275advance(2);
       \u0275\u0275property("value", ctx.templateTable());
       \u0275\u0275advance(3);
-      \u0275\u0275property("disabled", ctx.projectFileCount() === 0 || !ctx.exportGitHubService.token() || !ctx.gitHubData().repo)("loading", ctx.exportProgress());
+      \u0275\u0275conditional(ctx.repoType() === "github" ? 54 : 55);
+      \u0275\u0275advance(2);
+      \u0275\u0275conditional(ctx.filesTable().length ? 56 : -1);
       \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.filesTable().length ? 70 : -1);
+      \u0275\u0275conditional((tmp_25_0 = ctx.exportProgress()) ? 57 : -1, tmp_25_0);
       \u0275\u0275advance();
-      \u0275\u0275conditional((tmp_29_0 = ctx.exportProgress()) ? 71 : -1, tmp_29_0);
+      \u0275\u0275conditional(ctx.exportMessage() ? 58 : -1);
       \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.exportMessage() ? 72 : -1);
-      \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.showSettingsButton() ? 73 : -1);
+      \u0275\u0275conditional(ctx.hasRepoConfig() && ctx.repoType() === "github" ? 59 : -1);
     }
-  }, dependencies: [CommonModule, DatePipe, FormsModule, NgControlStatus, NgModel, TranslateModule, TranslatePipe, MessageModule, Message, PrimeTemplate, ButtonModule, Button, TooltipModule, Tooltip, PopoverModule, Popover, SelectButtonModule, SelectButton, DividerModule, Divider, TableModule, Table, ChipModule, Chip, PanelModule, Panel, ProgressBarModule, ProgressBar, SetupRepoComponent, PatComponent, BookmarkletComponent], encapsulation: 2 });
+  }, dependencies: [CommonModule, DatePipe, FormsModule, NgControlStatus, NgModel, TranslateModule, TranslatePipe, MessageModule, Message, PrimeTemplate, ButtonModule, Button, TooltipModule, Tooltip, PopoverModule, Popover, SelectButtonModule, SelectButton, DividerModule, Divider, TableModule, Table, ChipModule, Chip, PanelModule, Panel, ProgressBarModule, ProgressBar, SetupRepoComponent, SignInBannerComponent, BookmarkletComponent], encapsulation: 2 });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(ExportGithubComponent, [{
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(ExportComponent, [{
     type: Component,
     args: [{ selector: "aida-export-github", imports: [
       CommonModule,
@@ -83441,16 +83054,16 @@ var ExportGithubComponent = class _ExportGithubComponent {
       PanelModule,
       ProgressBarModule,
       SetupRepoComponent,
-      PatComponent,
+      SignInBannerComponent,
       BookmarkletComponent
-    ], template: `<h1 id="wb-cont">{{ 'github._title' | translate }}</h1>\r
+    ], template: `<h1 id="wb-cont">{{ repoType() === 'github' ? ('exportPages.github._title' | translate) : ('exportPages.zip._title' | translate) }}</h1>\r
 \r
 <!-- Authentication Banner -->\r
-@if (!exportGitHubService.token() && !authService.isAuthenticated()){\r
+@if (!exportGitHubService.token() && !authService.isAuthenticated() && repoType() === 'github'){\r
 <p-message severity="info" styleClass="mb-2 sticky top-0 z-2">\r
     <div class="flex align-items-center gap-2">\r
         <i class="pi pi-info-circle font-bold"></i>\r
-        <span>{{'github.warning' | translate}}</span>\r
+        <span>{{'exportPages.github.warningMessage' | translate}}</span>\r
     </div>\r
 </p-message>\r
 }\r
@@ -83460,35 +83073,39 @@ var ExportGithubComponent = class _ExportGithubComponent {
         <!--Header & Settings-->\r
         <div class="flex flex-column lg:flex-row justify-content-between align-items-start">\r
             <div class="flex flex-column">\r
-                <h2 class="text-2xl my-1">{{ 'github.connect.export._title.' | translate }}</h2>\r
-                <p class="my-1">{{ 'github.connect.export.description.' + selectedExportTarget | translate }}</p>\r
+                <h2 class="text-2xl my-1">{{ 'exportPages.settings._title' | translate }}</h2>\r
+                <p class="my-1">{{ 'exportPages.settings.description.' + selectedExportTarget | translate }}</p>\r
                 <div class="flex flex-column xl:flex-row gap-2 xl:gap-5">\r
                     <!-- Repository Info Row -->\r
                     <div class="flex flex-row gap-5">\r
+                        @if(repoType() === 'github'){\r
                         <div>\r
                             <label for="owner" class="text-xs font-semibold">{{ 'project.github.label.owner' | translate }}</label>\r
                             <p id="owner" class="text-color-secondary text-sm my-0">{{ projectData().github.owner }}</p>\r
                         </div>\r
+                        }\r
                         <div>\r
                             <label for="repo" class="text-xs font-semibold">{{ 'project.github.label.repo' | translate }}</label>\r
                             <p id="repo" class="text-color-secondary text-sm my-0">{{ projectData().github.repo }}{{(selectedExportTarget === 'baseline')?'-baseline':''}}</p>\r
                         </div>\r
+                        @if(repoType() === 'github'){\r
                         <div>\r
                             <label for="branch" class="text-xs font-semibold">{{ 'project.github.label.branch' | translate }}</label>\r
                             <p id="branch" class="text-color-secondary text-sm my-0">{{ projectData().github.branch }}</p>\r
                         </div>\r
+                        }\r
                     </div>\r
                     <div class="flex flex-row flex-wrap row-gap-2 column-gap-5">\r
                         <!--Choose export language-->\r
                         <div class="flex flex-column hover:text-primary">\r
-                            <label for="export-language" class="text-xs font-semibold xl:my-1">{{ 'github.export.language.label' | translate }}</label>\r
+                            <label for="export-language" class="text-xs font-semibold xl:my-1">{{ 'exportPages.settings.exportLanguage' | translate }}</label>\r
                             <p-selectButton id="export-language" allowEmpty="false" optionLabel="label" optionValue="value" size="small" styleClass="secondary-outline text-primary max-h-3rem"\r
                                             [options]="exportLanguageOptions" [(ngModel)]="selectedExportLanguage" (onChange)="compareFiles()" />\r
                         </div>\r
                         <!--Choose export type-->\r
                         @if (projectData().github.hasBaselineRepo) {\r
                         <div class="flex flex-column hover:text-primary">\r
-                            <label for="export-type" class="text-xs font-semibold xl:my-1">{{ 'github.connect.export.label' | translate }}</label>\r
+                            <label for="export-type" class="text-xs font-semibold xl:my-1">{{ 'exportPages.settings.exportVersion' | translate }}</label>\r
                             <p-selectButton id="export-type" allowEmpty="false" optionLabel="label" optionValue="value" size="small" styleClass="secondary-outline text-primary max-h-3rem"\r
                                             [options]="exportTargetOptions" [(ngModel)]="selectedExportTarget" (onChange)="compareFiles()" />\r
                         </div>\r
@@ -83497,9 +83114,9 @@ var ExportGithubComponent = class _ExportGithubComponent {
                 </div>\r
             </div>\r
             <div class="mt-3 lg:mt-0 flex flex-row lg:flex-column gap-2">\r
-                @if(showSettingsButton()){\r
+                @if(hasRepoConfig()){\r
                 <p-button\r
-                          [label]="'github.connect.settings' | translate"\r
+                          [label]="'exportPages.settings.changeButton' | translate"\r
                           icon="pi pi-cog"\r
                           outlined\r
                           size="small"\r
@@ -83509,7 +83126,7 @@ var ExportGithubComponent = class _ExportGithubComponent {
                     <aida-setup-repo mode="baseline" />\r
                     @if (projectData().github.hasBaselineRepo) {\r
                     <div class="flex flex-column align-items-stretch mt-3">\r
-                        <label for="export-type" class="text-sm font-semibold">{{ 'github.connect.export.label' | translate }}</label>\r
+                        <label for="export-type" class="text-sm font-semibold">{{ 'exportPages.settings.exportVersion' | translate }}</label>\r
                         <p-selectButton id="export-type"\r
                                         [options]="exportTargetOptions"\r
                                         [(ngModel)]="selectedExportTarget"\r
@@ -83526,111 +83143,29 @@ var ExportGithubComponent = class _ExportGithubComponent {
                     }\r
                 </p-popover>\r
                 }\r
+                @if(repoType() === 'github'){\r
                 <p-button\r
-                          [label]="'github.connect.openRepo' | translate"\r
+                          [label]="'exportPages.github.openRepo' | translate"\r
                           icon="pi pi-external-link"\r
                           outlined\r
                           size="small"\r
                           styleClass="secondary-outline w-full"\r
                           (onClick)="openRepo()" />\r
+                }\r
             </div>\r
         </div>\r
-\r
-        <h2 class="text-2xl mt-3 mb-1">{{connectionStatus() === 'connected' ? ('github.connected' | translate) : ('github.connect' | translate) }}</h2>\r
-        <div class="flex flex-column gap-3">\r
-            <!--Sign in options -->\r
-            @if (!exportGitHubService.user(); as user) {\r
-            <p class="my-0">{{ 'github.connect.description' | translate }}</p>\r
-            <!-- Option 1: OAuth Sign In -->\r
-            <div class="flex flex-column lg:flex-row gap-2">\r
-                <div class="flex-1 border-left-3 surface-border p-3 text-center">\r
-\r
-                    <i class="pi pi-github text-6xl text-900 mb-3"></i>\r
-                    <p class="font-semibold my-0">{{ 'github.connect.option1.title' | translate }}</p>\r
-                    <p class="text-sm text-color-secondary my-2">{{ 'github.connect.option1.description' | translate }}</p>\r
-                    <p-button\r
-                              icon="pi pi-github"\r
-                              label="{{ 'github.connect.option1.button' | translate }}"\r
-                              (onClick)="authService.login()"\r
-                              styleClass="w-full" />\r
-\r
-                </div>\r
-                <p-divider layout="horizontal" class="lg:hidden uppercase">{{ 'common.or' | translate }}</p-divider>\r
-                <p-divider layout="vertical" class="hidden lg:flex uppercase">{{ 'common.or' | translate }}</p-divider>\r
-                <!-- Option 2: Personal Access Token -->\r
-                <div class="flex-1 border-left-3 surface-border lg:border-none p-3 text-center">\r
-                    <i class="pi pi-key text-6xl text-900 mb-3"></i>\r
-                    <p class="font-semibold my-0">{{ 'github.connect.option2.title' | translate }}</p>\r
-                    <p class="text-sm text-color-secondary my-2">{{ 'github.connect.option2.description' | translate }}</p>\r
-                    <aida-pat [validateOnBlur]="true" />\r
-                </div>\r
-            </div>\r
-            } @else {\r
-            <!--Connection Status-->\r
-            <div [class]="getBgClasses()">\r
-                <i [class]="getStatusIcons()"></i>\r
-                <div class="flex-1">\r
-                    @if (connectionStatus() === 'checking') {\r
-                    <p [class]="getTitleClasses()" [innerHtml]="'github.connect.checking' | translate"></p>\r
-                    <p class="text-sm text-color-secondary my-0">{{ 'github.connect.checking.details' | translate }}</p>\r
-                    }\r
-                    @if (connectionStatus() === 'connected') {\r
-                    <div class="flex flex-row gap-2 justify-content-between">\r
-                        <div>\r
-                            <p [class]="getTitleClasses()">{{ 'github.connect.connected' | translate }}</p>\r
-                            @if (authService.isAuthenticated()) {\r
-                            <p class="text-sm text-color-secondary my-0">\r
-                                {{ 'github.connect.connected.oauth' | translate:{ User: username()} }}\r
-                            </p>\r
-                            } @else {\r
-                            <p class="text-sm text-color-secondary my-0">\r
-                                {{ 'github.connect.connected.pat' | translate:{ User: username()} }}\r
-                            </p>\r
-                            }\r
-                            @if(showDisclaimer()) {\r
-                            <p class="text-xs text-color-secondary my-0">{{ 'github.connect.unverified' | translate:{ User: username()} }}a</p>\r
-                            }\r
-                        </div>\r
-                        @if(showDisclaimer()) {\r
-                        <p-button [label]="'github.connect.clearToken' | translate" icon="pi pi-times" outlined severity="secondary" size="small" (onClick)="exportGitHubService.clearPAT()" styleClass="secondary-outline white-space-nowrap" />\r
-                        }\r
-                    </div>\r
-                    }\r
-                    @if (connectionStatus() === 'warning') {\r
-                    <div class="flex flex-row gap-2 justify-content-between">\r
-                        <div>\r
-                            <p [class]="getTitleClasses()">{{ 'github.connect.warning' | translate }}</p>\r
-                            <p class="text-sm text-color-secondary my-0">{{ 'github.connect.warning.details' | translate }}</p>\r
-                        </div>\r
-                        @if (!authService.isAuthenticated()) {\r
-                        <p-button [label]="'github.connect.clearToken' | translate" icon="pi pi-times" outlined severity="secondary" size="small" (onClick)="exportGitHubService.clearPAT()" styleClass="secondary-outline white-space-nowrap" />\r
-                        }\r
-                    </div>\r
-                    }\r
-                    @if (connectionStatus() === 'error' || connectionStatus() === 'missing') {\r
-                    <div class="flex flex-row gap-2 justify-content-between">\r
-                        <div>\r
-                            <p [class]="getTitleClasses()">{{ 'github.connect.error' | translate }}</p>\r
-                            <p class="text-sm text-color-secondary my-0">{{ 'github.connect.error.details' | translate }}</p>\r
-                        </div>\r
-                        @if (!authService.isAuthenticated()) {\r
-                        <p-button [label]="'github.connect.clearToken' | translate" icon="pi pi-times" outlined severity="secondary" size="small" (onClick)="exportGitHubService.clearPAT()" styleClass="secondary-outline white-space-nowrap" />\r
-                        }\r
-                    </div>\r
-                    }\r
-                </div>\r
-            </div>\r
-            }\r
-        </div>\r
+        @if(repoType() === 'github'){\r
+        <aida-sign-in-banner></aida-sign-in-banner>\r
+        }\r
 \r
     </div>\r
     <!--GitHub settings (only visible if not configured)-->\r
-    @if(!showSettingsButton()){\r
+    @if(!hasRepoConfig()){\r
     <div class="surface-card border-round-lg shadow-2 p-4 lg:mb-3 lg:w-4 w-full min-w-min">\r
         <aida-setup-repo />\r
         @if (projectData().github.hasBaselineRepo) {\r
         <div class="flex flex-column align-items-stretch mt-3">\r
-            <label for="export-type" class="text-sm font-semibold">{{ 'github.connect.export.label' | translate }}</label>\r
+            <label for="export-type" class="text-sm font-semibold">{{ 'exportPages.settings.exportVersion' | translate }}</label>\r
             <p-selectButton id="export-type"\r
                             [options]="exportTargetOptions"\r
                             [(ngModel)]="selectedExportTarget"\r
@@ -83646,15 +83181,18 @@ var ExportGithubComponent = class _ExportGithubComponent {
     @else{\r
     <!--Stats Card (only visible if GitHub repo is configured)-->\r
     <div class="surface-card border-round-lg shadow-2 p-4 lg:mb-3 lg:w-4 w-full min-w-min">\r
-        <h2 class="text-2xl my-1">{{ 'github.data' | translate }}</h2>\r
+        <h2 class="text-2xl my-1">{{ 'exportPages.data' | translate }}</h2>\r
         <!-- Last Export Date -->\r
         <div class="p-3 mb-3 text-center">\r
-            <div class="text-600 text-sm opacity-90">{{ 'github.data.lastExported' | translate }}</div>\r
+            <div class="text-600 text-sm opacity-90">{{ repoType() === 'github' ? ('exportPages.data.lastExported' | translate) : ('exportPages.data.lastDownloaded' | translate)}}</div>\r
             <div class="text-primary text-xl font-semibold">\r
-                @if (projectData().lastExported && (projectData().lastExported?.getTime() ?? 0)> 0) {\r
+                @if (repoType() === 'github' && projectData().lastExported && (projectData().lastExported?.getTime() ?? 0)> 0) {\r
                 {{ projectData().lastExported | date:'mediumDate' }}, {{ projectData().lastExported | date:'shortTime' }}\r
                 }\r
-                @else{ {{ 'github.data.neverExported' | translate }} }\r
+                @else if (repoType() === 'local' && projectData().lastDownloaded && (projectData().lastDownloaded?.getTime() ?? 0)> 0) {\r
+                {{ projectData().lastDownloaded | date:'mediumDate' }}, {{ projectData().lastDownloaded | date:'shortTime' }}\r
+                }\r
+                @else{ {{ 'common.never' | translate }} }\r
             </div>\r
         </div>\r
         <p-divider />\r
@@ -83664,10 +83202,10 @@ var ExportGithubComponent = class _ExportGithubComponent {
             <div class="flex flex-row justify-content-around">\r
                 <div>\r
                     <div class="text-5xl font-bold text-primary mb-1">\r
-                        {{ selectedExportTarget === 'prototype' ? inScopePageCount() : baselinePageCount() }}\r
+                        {{ projectFileCount() }}\r
                     </div>\r
                     <div class="text-600 text-sm">\r
-                        {{ selectedExportTarget === 'prototype' ? ('github.data.inScope' | translate) : ('github.data.baseline' | translate) }}\r
+                        {{ selectedExportTarget === 'prototype' ? ('exportPages.data.inScope' | translate) : ('exportPages.data.baseline' | translate) }}\r
                     </div>\r
                 </div>\r
                 <div>\r
@@ -83675,7 +83213,7 @@ var ExportGithubComponent = class _ExportGithubComponent {
                         {{ templateFileCount() }}\r
                     </div>\r
                     <div class="text-600 text-sm">\r
-                        {{ 'github.data.jekyll' | translate }}\r
+                        {{ 'exportPages.data.jekyll' | translate }}\r
                     </div>\r
                 </div>\r
             </div>\r
@@ -83686,15 +83224,15 @@ var ExportGithubComponent = class _ExportGithubComponent {
 \r
 <!-- Export file table-->\r
 <div class="surface-card border-round-lg shadow-2 p-4 my-3 lg:mt-0 min-w-min">\r
-    <h2 class="text-2xl my-1">{{'github.export._title' | translate}}</h2>\r
-    <p class="my-1">{{'github.export.description' | translate}}</p>\r
+    <h2 class="text-2xl my-1">{{'exportPages.export._title' | translate}}</h2>\r
+    <p class="my-1">{{ repoType() === 'github' ? ('exportPages.export.github.description' | translate) : ('exportPages.export.zip.description' | translate) }}</p>\r
     <!--Project files-->\r
     <p-table [value]="projectTable()" size="small">\r
         <ng-template pTemplate="header" stripedRows>\r
             <tr>\r
-                <th>{{'github.export.table.header.url' | translate}}</th>\r
+                <th>{{'common.path' | translate}}</th>\r
                 <th><span class="flex flex-row align-items-center gap-2">\r
-                        {{'github.export.table.header.status' | translate}}\r
+                        {{'common.status' | translate}}\r
                         <p-button icon="pi pi-angle-double-right" pTooltip="Skip all" tooltipPosition="top" size="small" severity="secondary" (onClick)="setAll('skip', 'project')" />\r
                         <p-button icon="pi pi-sync" pTooltip="Update all" tooltipPosition="top" size="small" severity="primary" (onClick)="setAll('export', 'project')" />\r
                     </span>\r
@@ -83715,14 +83253,14 @@ var ExportGithubComponent = class _ExportGithubComponent {
     </p-table>\r
 \r
     <!--Template files-->\r
-    <p-panel [header]="'github.export.templateFiles.header' | translate:{count: templateFileCount()}"\r
+    <p-panel [header]="'exportPages.export.templateFiles' | translate:{count: templateFileCount()}"\r
              [toggleable]="true" [collapsed]="true" styleClass="mt-4">\r
         <p-table [value]="templateTable()" size="small">\r
             <ng-template pTemplate="header" stripedRows>\r
                 <tr>\r
-                    <th>{{'github.export.table.header.url' | translate}}</th>\r
+                    <th>{{'common.path' | translate}}</th>\r
                     <th><span class="flex flex-row align-items-center gap-2">\r
-                            {{'github.export.table.header.status' | translate}}\r
+                            {{'common.status' | translate}}\r
                             <p-button icon="pi pi-angle-double-right" pTooltip="Skip all" tooltipPosition="top" size="small" severity="secondary" (onClick)="setAll('skip', 'template')" />\r
                             <p-button icon="pi pi-sync" pTooltip="Update all" tooltipPosition="top" size="small" severity="primary" (onClick)="setAll('export', 'template')" />\r
                         </span>\r
@@ -83744,12 +83282,21 @@ var ExportGithubComponent = class _ExportGithubComponent {
     </p-panel>\r
 \r
     <!--Export button-->\r
-    <p-button styleClass="my-3" icon="pi pi-github" label="Export to GitHub" severity="primary"\r
+    @if(repoType() === 'github'){\r
+    <p-button styleClass="my-3" icon="pi pi-github" [label]="'exportPages.export.button.github' | translate" severity="primary"\r
               (onClick)="exportProjectToGitHub()"\r
               [disabled]="projectFileCount() === 0 || !exportGitHubService.token() || !gitHubData().repo"\r
               [loading]="exportProgress()" />\r
+    }\r
+    @else{\r
+    <p-button styleClass="my-3" icon="pi pi-file-export" [label]="'exportPages.export.button.zip' | translate" severity="primary"\r
+              (onClick)="exportToFile()"\r
+              [disabled]="projectFileCount() === 0 || !gitHubData().repo"\r
+              [loading]="exportProgress()" />\r
+    }\r
     @if (filesTable().length) {\r
     <span class="text-color-secondary">\r
+        {{ 'exportPages.export.count' | translate:{ New: newCount(), Updated: updatedCount()} }}\r
         {{ newCount() }} new and {{ updatedCount() }} updated pages\r
     </span>\r
     }\r
@@ -83770,7 +83317,7 @@ var ExportGithubComponent = class _ExportGithubComponent {
 \r
 </div>\r
 \r
-@if(showSettingsButton()){\r
+@if(hasRepoConfig() && repoType() === 'github'){\r
 <!-- Bookmarklet-->\r
 <div class="surface-card border-round-lg shadow-2 p-4 my-3 lg:mt-0 min-w-min">\r
     <aida-bookmarklet></aida-bookmarklet>\r
@@ -83782,10 +83329,1508 @@ var ExportGithubComponent = class _ExportGithubComponent {
   }] });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(ExportGithubComponent, { className: "ExportGithubComponent", filePath: "src/app/views/github-assistant/export-github.component.ts", lineNumber: 89 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(ExportComponent, { className: "ExportComponent", filePath: "src/app/views/task/export-pages/export.component.ts", lineNumber: 83 });
 })();
 
-// src/app/views/404/not-found.component.ts
+// node_modules/primeng/fesm2022/primeng-organizationchart.mjs
+var _c037 = ["pOrganizationChartNode", ""];
+var _c157 = (a0, a1) => ({
+  "p-organizationchart-node": true,
+  "p-organizationchart-node-selectable": a0,
+  "p-organizationchart-node-selected": a1
+});
+var _c235 = (a0) => ({
+  $implicit: a0
+});
+var _c321 = (a0) => ({
+  "p-organizationchart-connector-top": a0
+});
+function OrganizationChartNode_tbody_0_div_4_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div");
+    \u0275\u0275text(1);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(ctx_r1.node.label);
+  }
+}
+function OrganizationChartNode_tbody_0_div_5_ng_container_1_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementContainer(0);
+  }
+}
+function OrganizationChartNode_tbody_0_div_5_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div");
+    \u0275\u0275template(1, OrganizationChartNode_tbody_0_div_5_ng_container_1_Template, 1, 0, "ng-container", 6);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance();
+    \u0275\u0275property("ngTemplateOutlet", ctx_r1.chart.getTemplateForNode(ctx_r1.node))("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c235, ctx_r1.node));
+  }
+}
+function OrganizationChartNode_tbody_0_ng_container_6_a_1_ng_container_1_ChevronDownIcon_1_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275element(0, "ChevronDownIcon", 11);
+  }
+  if (rf & 2) {
+    \u0275\u0275property("styleClass", "p-organizationchart-node-toggle-button-icon");
+    \u0275\u0275attribute("data-pc-section", "nodeTogglerIcon");
+  }
+}
+function OrganizationChartNode_tbody_0_ng_container_6_a_1_ng_container_1_ChevronUpIcon_2_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275element(0, "ChevronUpIcon", 11);
+  }
+  if (rf & 2) {
+    \u0275\u0275property("styleClass", "p-organizationchart-node-toggle-button-icon");
+    \u0275\u0275attribute("data-pc-section", "nodeTogglerIcon");
+  }
+}
+function OrganizationChartNode_tbody_0_ng_container_6_a_1_ng_container_1_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementContainerStart(0);
+    \u0275\u0275template(1, OrganizationChartNode_tbody_0_ng_container_6_a_1_ng_container_1_ChevronDownIcon_1_Template, 1, 2, "ChevronDownIcon", 10)(2, OrganizationChartNode_tbody_0_ng_container_6_a_1_ng_container_1_ChevronUpIcon_2_Template, 1, 2, "ChevronUpIcon", 10);
+    \u0275\u0275elementContainerEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(4);
+    \u0275\u0275advance();
+    \u0275\u0275property("ngIf", ctx_r1.node.expanded);
+    \u0275\u0275advance();
+    \u0275\u0275property("ngIf", !ctx_r1.node.expanded);
+  }
+}
+function OrganizationChartNode_tbody_0_ng_container_6_a_1_span_2_1_ng_template_0_Template(rf, ctx) {
+}
+function OrganizationChartNode_tbody_0_ng_container_6_a_1_span_2_1_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275template(0, OrganizationChartNode_tbody_0_ng_container_6_a_1_span_2_1_ng_template_0_Template, 0, 0, "ng-template");
+  }
+}
+function OrganizationChartNode_tbody_0_ng_container_6_a_1_span_2_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "span", 12);
+    \u0275\u0275template(1, OrganizationChartNode_tbody_0_ng_container_6_a_1_span_2_1_Template, 1, 0, null, 6);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(4);
+    \u0275\u0275attribute("data-pc-section", "nodeTogglerIcon");
+    \u0275\u0275advance();
+    \u0275\u0275property("ngTemplateOutlet", ctx_r1.chart.togglerIconTemplate || ctx_r1.chart._togglerIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(3, _c235, ctx_r1.node.expanded));
+  }
+}
+function OrganizationChartNode_tbody_0_ng_container_6_a_1_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r3 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "a", 8);
+    \u0275\u0275listener("click", function OrganizationChartNode_tbody_0_ng_container_6_a_1_Template_a_click_0_listener($event) {
+      \u0275\u0275restoreView(_r3);
+      const ctx_r1 = \u0275\u0275nextContext(3);
+      return \u0275\u0275resetView(ctx_r1.toggleNode($event, ctx_r1.node));
+    })("keydown.enter", function OrganizationChartNode_tbody_0_ng_container_6_a_1_Template_a_keydown_enter_0_listener($event) {
+      \u0275\u0275restoreView(_r3);
+      const ctx_r1 = \u0275\u0275nextContext(3);
+      return \u0275\u0275resetView(ctx_r1.toggleNode($event, ctx_r1.node));
+    })("keydown.space", function OrganizationChartNode_tbody_0_ng_container_6_a_1_Template_a_keydown_space_0_listener($event) {
+      \u0275\u0275restoreView(_r3);
+      const ctx_r1 = \u0275\u0275nextContext(3);
+      return \u0275\u0275resetView(ctx_r1.toggleNode($event, ctx_r1.node));
+    });
+    \u0275\u0275template(1, OrganizationChartNode_tbody_0_ng_container_6_a_1_ng_container_1_Template, 3, 2, "ng-container", 0)(2, OrganizationChartNode_tbody_0_ng_container_6_a_1_span_2_Template, 2, 5, "span", 9);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(3);
+    \u0275\u0275attribute("data-pc-section", "nodeToggler");
+    \u0275\u0275advance();
+    \u0275\u0275property("ngIf", !ctx_r1.chart.togglerIconTemplate && !ctx_r1.chart._togglerIconTemplate);
+    \u0275\u0275advance();
+    \u0275\u0275property("ngIf", ctx_r1.chart.togglerIconTemplate || ctx_r1.chart._togglerIconTemplate);
+  }
+}
+function OrganizationChartNode_tbody_0_ng_container_6_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementContainerStart(0);
+    \u0275\u0275template(1, OrganizationChartNode_tbody_0_ng_container_6_a_1_Template, 3, 3, "a", 7);
+    \u0275\u0275elementContainerEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance();
+    \u0275\u0275property("ngIf", !ctx_r1.leaf);
+  }
+}
+function OrganizationChartNode_tbody_0_ng_container_11_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementContainerStart(0);
+    \u0275\u0275elementStart(1, "td");
+    \u0275\u0275element(2, "div", 3);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementContainerEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance();
+    \u0275\u0275attribute("data-pc-section", "lineCell")("colspan", ctx_r1.colspan);
+    \u0275\u0275advance();
+    \u0275\u0275attribute("data-pc-section", "lineDown");
+  }
+}
+function OrganizationChartNode_tbody_0_ng_container_12_ng_template_1_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "td", 14);
+    \u0275\u0275text(1, "\xA0");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(2, "td", 15);
+    \u0275\u0275text(3, "\xA0");
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const first_r4 = ctx.first;
+    const last_r5 = ctx.last;
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(4, _c321, !first_r4));
+    \u0275\u0275attribute("data-pc-section", "lineLeft");
+    \u0275\u0275advance(2);
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(6, _c321, !last_r5));
+    \u0275\u0275attribute("data-pc-section", "lineRight");
+  }
+}
+function OrganizationChartNode_tbody_0_ng_container_12_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementContainerStart(0);
+    \u0275\u0275template(1, OrganizationChartNode_tbody_0_ng_container_12_ng_template_1_Template, 4, 8, "ng-template", 13);
+    \u0275\u0275elementContainerEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance();
+    \u0275\u0275property("ngForOf", ctx_r1.node.children);
+  }
+}
+function OrganizationChartNode_tbody_0_td_14_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "td", 16);
+    \u0275\u0275element(1, "table", 17);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const child_r6 = ctx.$implicit;
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    \u0275\u0275attribute("data-pc-section", "nodeCell");
+    \u0275\u0275advance();
+    \u0275\u0275property("node", child_r6)("collapsible", ctx_r1.node.children && ctx_r1.node.children.length > 0 && ctx_r1.collapsible);
+  }
+}
+function OrganizationChartNode_tbody_0_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r1 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "tbody")(1, "tr")(2, "td")(3, "div", 1);
+    \u0275\u0275listener("click", function OrganizationChartNode_tbody_0_Template_div_click_3_listener($event) {
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.onNodeClick($event, ctx_r1.node));
+    });
+    \u0275\u0275template(4, OrganizationChartNode_tbody_0_div_4_Template, 2, 1, "div", 0)(5, OrganizationChartNode_tbody_0_div_5_Template, 2, 4, "div", 0)(6, OrganizationChartNode_tbody_0_ng_container_6_Template, 2, 1, "ng-container", 0);
+    \u0275\u0275elementEnd()()();
+    \u0275\u0275elementStart(7, "tr", 2)(8, "td");
+    \u0275\u0275element(9, "div", 3);
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(10, "tr", 2);
+    \u0275\u0275template(11, OrganizationChartNode_tbody_0_ng_container_11_Template, 3, 3, "ng-container", 0)(12, OrganizationChartNode_tbody_0_ng_container_12_Template, 2, 1, "ng-container", 0);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(13, "tr", 4);
+    \u0275\u0275template(14, OrganizationChartNode_tbody_0_td_14_Template, 2, 3, "td", 5);
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext();
+    \u0275\u0275attribute("data-pc-section", "body");
+    \u0275\u0275advance();
+    \u0275\u0275attribute("data-pc-section", "row");
+    \u0275\u0275advance();
+    \u0275\u0275attribute("colspan", ctx_r1.colspan)("data-pc-section", "cell");
+    \u0275\u0275advance();
+    \u0275\u0275classMap(ctx_r1.node.styleClass);
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction2(26, _c157, ctx_r1.chart.selectionMode && ctx_r1.node.selectable !== false, ctx_r1.isSelected()));
+    \u0275\u0275attribute("data-pc-section", "node");
+    \u0275\u0275advance();
+    \u0275\u0275property("ngIf", !ctx_r1.chart.getTemplateForNode(ctx_r1.node));
+    \u0275\u0275advance();
+    \u0275\u0275property("ngIf", ctx_r1.chart.getTemplateForNode(ctx_r1.node));
+    \u0275\u0275advance();
+    \u0275\u0275property("ngIf", ctx_r1.collapsible);
+    \u0275\u0275advance();
+    \u0275\u0275property("ngStyle", ctx_r1.getChildStyle(ctx_r1.node))("@childState", "in");
+    \u0275\u0275attribute("data-pc-section", "lines");
+    \u0275\u0275advance();
+    \u0275\u0275attribute("data-pc-section", "lineCell")("colspan", ctx_r1.colspan);
+    \u0275\u0275advance();
+    \u0275\u0275attribute("data-pc-section", "lineDown");
+    \u0275\u0275advance();
+    \u0275\u0275property("ngStyle", ctx_r1.getChildStyle(ctx_r1.node))("@childState", "in");
+    \u0275\u0275attribute("data-pc-section", "lines");
+    \u0275\u0275advance();
+    \u0275\u0275property("ngIf", ctx_r1.node.children && ctx_r1.node.children.length === 1);
+    \u0275\u0275advance();
+    \u0275\u0275property("ngIf", ctx_r1.node.children && ctx_r1.node.children.length > 1);
+    \u0275\u0275advance();
+    \u0275\u0275property("ngStyle", ctx_r1.getChildStyle(ctx_r1.node))("@childState", "in");
+    \u0275\u0275attribute("data-pc-section", "nodes");
+    \u0275\u0275advance();
+    \u0275\u0275property("ngForOf", ctx_r1.node.children);
+  }
+}
+var _c418 = ["togglericon"];
+var _c516 = (a0) => ({
+  "p-organizationchart p-component": true,
+  "p-organizationchart-preservespace": a0
+});
+function OrganizationChart_table_1_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275element(0, "table", 2);
+  }
+  if (rf & 2) {
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275property("collapsible", ctx_r0.collapsible)("node", ctx_r0.root);
+  }
+}
+var theme22 = ({
+  dt
+}) => `
+.p-organizationchart-table {
+    border-spacing: 0;
+    border-collapse: separate;
+    margin: 0 auto;
+}
+
+.p-organizationchart-table > tbody > tr > td {
+    text-align: center;
+    vertical-align: top;
+    padding: 0 ${dt("organizationchart.gutter")};
+}
+
+.p-organizationchart-node {
+    display: inline-block;
+    position: relative;
+    border: 1px solid ${dt("organizationchart.node.border.color")};
+    background: ${dt("organizationchart.node.background")};
+    color: ${dt("organizationchart.node.color")};
+    padding: ${dt("organizationchart.node.padding")};
+    border-radius: ${dt("organizationchart.node.border.radius")};
+    transition: background ${dt("organizationchart.transition.duration")}, border-color ${dt("organizationchart.transition.duration")}, color ${dt("organizationchart.transition.duration")}, box-shadow ${dt("organizationchart.transition.duration")};
+}
+
+.p-organizationchart-node:has(.p-organizationchart-node-toggle-button) {
+    padding: ${dt("organizationchart.node.toggleable.padding")};
+}
+
+.p-organizationchart-node.p-organizationchart-node-selectable:not(.p-organizationchart-node-selected):hover {
+    background: ${dt("organizationchart.node.hover.background")};
+    color: ${dt("organizationchart.node.hover.color")};
+}
+
+.p-organizationchart-node-selected {
+    background: ${dt("organizationchart.node.selected.background")};
+    color: ${dt("organizationchart.node.selected.color")};
+}
+
+.p-organizationchart-node-toggle-button {
+    position: absolute;
+    inset-block-end: calc(-1 * calc(${dt("organizationchart.node.toggle.button.size")} / 2));
+    margin-inline-start: calc(-1 * calc(${dt("organizationchart.node.toggle.button.size")} / 2));
+    z-index: 2;
+    inset-inline-start: 50%;
+    user-select: none;
+    cursor: pointer;
+    width: ${dt("organizationchart.node.toggle.button.size")};
+    height: ${dt("organizationchart.node.toggle.button.size")};
+    text-decoration: none;
+    background: ${dt("organizationchart.node.toggle.button.background")};
+    color: ${dt("organizationchart.node.toggle.button.color")};
+    border-radius: ${dt("organizationchart.node.toggle.button.border.radius")};
+    border: 1px solid ${dt("organizationchart.node.toggle.button.border.color")};
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    outline-color: transparent;
+    transition: background ${dt("organizationchart.transition.duration")}, color ${dt("organizationchart.transition.duration")}, border-color ${dt("organizationchart.transition.duration")}, outline-color ${dt("organizationchart.transition.duration")}, box-shadow ${dt("organizationchart.transition.duration")};
+}
+
+.p-organizationchart-node-toggle-button:hover {
+    background: ${dt("organizationchart.node.toggle.button.hover.background")};
+    color: ${dt("organizationchart.node.toggle.button.hover.color")};
+}
+
+.p-organizationchart-node-toggle-button:focus-visible {
+    box-shadow: ${dt("breadcrumb.item.focus.ring.shadow")};
+    outline: ${dt("breadcrumb.item.focus.ring.width")} ${dt("breadcrumb.item.focus.ring.style")} ${dt("breadcrumb.item.focus.ring.color")};
+    outline-offset: ${dt("breadcrumb.item.focus.ring.offset")};
+}
+
+.p-organizationchart-node-toggle-button-icon {
+    position: relative;
+    inset-block-start: 1px;
+}
+
+.p-organizationchart-connector-down {
+    margin: 0 auto;
+    height: ${dt("organizationchart.connector.height")};
+    width: 1px;
+    background: ${dt("organizationchart.connector.color")};
+}
+
+.p-organizationchart-connector-right {
+    border-radius: 0;
+}
+
+.p-organizationchart-connector-left {
+    border-radius: 0;
+    border-inline-end: 1px solid ${dt("organizationchart.connector.color")};
+}
+
+.p-organizationchart-connector-top {
+    border-block-start: 1px solid ${dt("organizationchart.connector.color")};
+}
+
+.p-organizationchart-node-selectable {
+    cursor: pointer;
+}
+
+.p-organizationchart-connectors :nth-child(1 of .p-organizationchart-connector-left) {
+    border-inline-end: 0 none;
+}
+
+.p-organizationchart-connectors :nth-last-child(1 of .p-organizationchart-connector-left) {
+    border-start-end-radius: ${dt("organizationchart.connector.border.radius")};
+}
+
+.p-organizationchart-connectors :nth-child(1 of .p-organizationchart-connector-right) {
+    border-inline-start: 1px solid ${dt("organizationchart.connector.color")};
+    border-start-start-radius: ${dt("organizationchart.connector.border.radius")};
+}
+`;
+var classes23 = {
+  root: "p-organizationchart p-component",
+  table: "p-organizationchart-table",
+  node: ({
+    instance
+  }) => ["p-organizationchart-node", {
+    "p-organizationchart-node-selectable": instance.selectable,
+    "p-organizationchart-node-selected": instance.selected
+  }],
+  nodeToggleButton: "p-organizationchart-node-toggle-button",
+  nodeToggleButtonIcon: "p-organizationchart-node-toggle-button-icon",
+  connectors: "p-organizationchart-connectors",
+  connectorDown: "p-organizationchart-connector-down",
+  connectorLeft: ({
+    index
+  }) => ["p-organizationchart-connector-left", {
+    "p-organizationchart-connector-top": !(index === 0)
+  }],
+  connectorRight: ({
+    props,
+    index
+  }) => ["p-organizationchart-connector-right", {
+    "p-organizationchart-connector-top": !(index === props.node.children.length - 1)
+  }],
+  nodeChildren: "p-organizationchart-node-children"
+};
+var OrganizationChartStyle = class _OrganizationChartStyle extends BaseStyle {
+  name = "organizationchart";
+  theme = theme22;
+  classes = classes23;
+  static \u0275fac = /* @__PURE__ */ (() => {
+    let \u0275OrganizationChartStyle_BaseFactory;
+    return function OrganizationChartStyle_Factory(__ngFactoryType__) {
+      return (\u0275OrganizationChartStyle_BaseFactory || (\u0275OrganizationChartStyle_BaseFactory = \u0275\u0275getInheritedFactory(_OrganizationChartStyle)))(__ngFactoryType__ || _OrganizationChartStyle);
+    };
+  })();
+  static \u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({
+    token: _OrganizationChartStyle,
+    factory: _OrganizationChartStyle.\u0275fac
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(OrganizationChartStyle, [{
+    type: Injectable
+  }], null, null);
+})();
+var OrganizationChartClasses;
+(function(OrganizationChartClasses2) {
+  OrganizationChartClasses2["root"] = "p-organizationchart";
+  OrganizationChartClasses2["table"] = "p-organizationchart-table";
+  OrganizationChartClasses2["node"] = "p-organizationchart-node";
+  OrganizationChartClasses2["nodeToggleButton"] = "p-organizationchart-node-toggle-button";
+  OrganizationChartClasses2["nodeToggleButtonIcon"] = "p-organizationchart-node-toggle-button-icon";
+  OrganizationChartClasses2["connectors"] = "p-organizationchart-connectors";
+  OrganizationChartClasses2["connectorDown"] = "p-organizationchart-connector-down";
+  OrganizationChartClasses2["connectorLeft"] = "p-organizationchart-connector-left";
+  OrganizationChartClasses2["connectorRight"] = "p-organizationchart-connector-right";
+  OrganizationChartClasses2["nodeChildren"] = "p-organizationchart-node-children";
+})(OrganizationChartClasses || (OrganizationChartClasses = {}));
+var OrganizationChartNode = class _OrganizationChartNode {
+  cd;
+  node;
+  root;
+  first;
+  last;
+  collapsible;
+  chart;
+  subscription;
+  constructor(chart, cd) {
+    this.cd = cd;
+    this.chart = chart;
+    this.subscription = this.chart.selectionSource$.subscribe(() => {
+      this.cd.markForCheck();
+    });
+  }
+  get leaf() {
+    if (this.node) {
+      return this.node.leaf == false ? false : !(this.node.children && this.node.children.length);
+    }
+  }
+  get colspan() {
+    if (this.node) {
+      return this.node.children && this.node.children.length ? this.node.children.length * 2 : null;
+    }
+  }
+  getChildStyle(node) {
+    return {
+      visibility: !this.leaf && node.expanded ? "inherit" : "hidden"
+    };
+  }
+  onNodeClick(event2, node) {
+    this.chart.onNodeClick(event2, node);
+  }
+  toggleNode(event2, node) {
+    node.expanded = !node.expanded;
+    if (node.expanded) this.chart.onNodeExpand.emit({
+      originalEvent: event2,
+      node: this.node
+    });
+    else this.chart.onNodeCollapse.emit({
+      originalEvent: event2,
+      node: this.node
+    });
+    event2.preventDefault();
+  }
+  isSelected() {
+    return this.chart.isSelected(this.node);
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+  static \u0275fac = function OrganizationChartNode_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _OrganizationChartNode)(\u0275\u0275directiveInject(forwardRef(() => OrganizationChart)), \u0275\u0275directiveInject(ChangeDetectorRef));
+  };
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({
+    type: _OrganizationChartNode,
+    selectors: [["", "pOrganizationChartNode", ""]],
+    inputs: {
+      node: "node",
+      root: [2, "root", "root", booleanAttribute],
+      first: [2, "first", "first", booleanAttribute],
+      last: [2, "last", "last", booleanAttribute],
+      collapsible: [2, "collapsible", "collapsible", booleanAttribute]
+    },
+    attrs: _c037,
+    decls: 1,
+    vars: 1,
+    consts: [[4, "ngIf"], [3, "click", "ngClass"], [1, "p-organizationchart-connectors", 3, "ngStyle"], [1, "p-organizationchart-connector-down"], [1, "p-organizationchart-node-children", 3, "ngStyle"], ["colspan", "2", 4, "ngFor", "ngForOf"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], ["tabindex", "0", "class", "p-organizationchart-node-toggle-button", 3, "click", "keydown.enter", "keydown.space", 4, "ngIf"], ["tabindex", "0", 1, "p-organizationchart-node-toggle-button", 3, "click", "keydown.enter", "keydown.space"], ["class", "p-organizationchart-node-toggle-button-icon", 4, "ngIf"], [3, "styleClass", 4, "ngIf"], [3, "styleClass"], [1, "p-organizationchart-node-toggle-button-icon"], ["ngFor", "", 3, "ngForOf"], [1, "p-organizationchart-connector-left", 3, "ngClass"], [1, "p-organizationchart-connector-right", 3, "ngClass"], ["colspan", "2"], ["pOrganizationChartNode", "", 1, "p-organizationchart-table", 3, "node", "collapsible"]],
+    template: function OrganizationChartNode_Template(rf, ctx) {
+      if (rf & 1) {
+        \u0275\u0275template(0, OrganizationChartNode_tbody_0_Template, 15, 29, "tbody", 0);
+      }
+      if (rf & 2) {
+        \u0275\u0275property("ngIf", ctx.node);
+      }
+    },
+    dependencies: [_OrganizationChartNode, CommonModule, NgClass, NgForOf, NgIf, NgTemplateOutlet, NgStyle, ChevronDownIcon, ChevronUpIcon, SharedModule],
+    encapsulation: 2,
+    data: {
+      animation: [trigger("childState", [state("in", style({
+        opacity: 1
+      })), transition("void => *", [style({
+        opacity: 0
+      }), animate(150)]), transition("* => void", [animate(150, style({
+        opacity: 0
+      }))])])]
+    }
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(OrganizationChartNode, [{
+    type: Component,
+    args: [{
+      selector: "[pOrganizationChartNode]",
+      standalone: true,
+      imports: [CommonModule, ChevronDownIcon, ChevronUpIcon, SharedModule],
+      template: `
+        <tbody *ngIf="node" [attr.data-pc-section]="'body'">
+            <tr [attr.data-pc-section]="'row'">
+                <td [attr.colspan]="colspan" [attr.data-pc-section]="'cell'">
+                    <div
+                        [class]="node.styleClass"
+                        [ngClass]="{
+                            'p-organizationchart-node': true,
+                            'p-organizationchart-node-selectable': chart.selectionMode && node.selectable !== false,
+                            'p-organizationchart-node-selected': isSelected()
+                        }"
+                        (click)="onNodeClick($event, node)"
+                        [attr.data-pc-section]="'node'"
+                    >
+                        <div *ngIf="!chart.getTemplateForNode(node)">{{ node.label }}</div>
+                        <div *ngIf="chart.getTemplateForNode(node)">
+                            <ng-container *ngTemplateOutlet="chart.getTemplateForNode(node); context: { $implicit: node }"></ng-container>
+                        </div>
+                        <ng-container *ngIf="collapsible">
+                            <a
+                                *ngIf="!leaf"
+                                tabindex="0"
+                                class="p-organizationchart-node-toggle-button"
+                                (click)="toggleNode($event, node)"
+                                (keydown.enter)="toggleNode($event, node)"
+                                (keydown.space)="toggleNode($event, node)"
+                                [attr.data-pc-section]="'nodeToggler'"
+                            >
+                                <ng-container *ngIf="!chart.togglerIconTemplate && !chart._togglerIconTemplate">
+                                    <ChevronDownIcon *ngIf="node.expanded" [styleClass]="'p-organizationchart-node-toggle-button-icon'" [attr.data-pc-section]="'nodeTogglerIcon'" />
+                                    <ChevronUpIcon *ngIf="!node.expanded" [styleClass]="'p-organizationchart-node-toggle-button-icon'" [attr.data-pc-section]="'nodeTogglerIcon'" />
+                                </ng-container>
+                                <span class="p-organizationchart-node-toggle-button-icon" *ngIf="chart.togglerIconTemplate || chart._togglerIconTemplate" [attr.data-pc-section]="'nodeTogglerIcon'">
+                                    <ng-template *ngTemplateOutlet="chart.togglerIconTemplate || chart._togglerIconTemplate; context: { $implicit: node.expanded }"></ng-template>
+                                </span>
+                            </a>
+                        </ng-container>
+                    </div>
+                </td>
+            </tr>
+            <tr [ngStyle]="getChildStyle(node)" class="p-organizationchart-connectors" [@childState]="'in'" [attr.data-pc-section]="'lines'">
+                <td [attr.data-pc-section]="'lineCell'" [attr.colspan]="colspan">
+                    <div [attr.data-pc-section]="'lineDown'" class="p-organizationchart-connector-down"></div>
+                </td>
+            </tr>
+            <tr [ngStyle]="getChildStyle(node)" class="p-organizationchart-connectors" [@childState]="'in'" [attr.data-pc-section]="'lines'">
+                <ng-container *ngIf="node.children && node.children.length === 1">
+                    <td [attr.data-pc-section]="'lineCell'" [attr.colspan]="colspan">
+                        <div [attr.data-pc-section]="'lineDown'" class="p-organizationchart-connector-down"></div>
+                    </td>
+                </ng-container>
+                <ng-container *ngIf="node.children && node.children.length > 1">
+                    <ng-template ngFor let-child [ngForOf]="node.children" let-first="first" let-last="last">
+                        <td [attr.data-pc-section]="'lineLeft'" class="p-organizationchart-connector-left" [ngClass]="{ 'p-organizationchart-connector-top': !first }">&nbsp;</td>
+                        <td [attr.data-pc-section]="'lineRight'" class="p-organizationchart-connector-right" [ngClass]="{ 'p-organizationchart-connector-top': !last }">&nbsp;</td>
+                    </ng-template>
+                </ng-container>
+            </tr>
+            <tr [ngStyle]="getChildStyle(node)" class="p-organizationchart-node-children" [@childState]="'in'" [attr.data-pc-section]="'nodes'">
+                <td *ngFor="let child of node.children" colspan="2" [attr.data-pc-section]="'nodeCell'">
+                    <table class="p-organizationchart-table" pOrganizationChartNode [node]="child" [collapsible]="node.children && node.children.length > 0 && collapsible"></table>
+                </td>
+            </tr>
+        </tbody>
+    `,
+      animations: [trigger("childState", [state("in", style({
+        opacity: 1
+      })), transition("void => *", [style({
+        opacity: 0
+      }), animate(150)]), transition("* => void", [animate(150, style({
+        opacity: 0
+      }))])])],
+      encapsulation: ViewEncapsulation.None,
+      changeDetection: ChangeDetectionStrategy.Default
+    }]
+  }], () => [{
+    type: OrganizationChart,
+    decorators: [{
+      type: Inject,
+      args: [forwardRef(() => OrganizationChart)]
+    }]
+  }, {
+    type: ChangeDetectorRef
+  }], {
+    node: [{
+      type: Input
+    }],
+    root: [{
+      type: Input,
+      args: [{
+        transform: booleanAttribute
+      }]
+    }],
+    first: [{
+      type: Input,
+      args: [{
+        transform: booleanAttribute
+      }]
+    }],
+    last: [{
+      type: Input,
+      args: [{
+        transform: booleanAttribute
+      }]
+    }],
+    collapsible: [{
+      type: Input,
+      args: [{
+        transform: booleanAttribute
+      }]
+    }]
+  });
+})();
+var OrganizationChart = class _OrganizationChart extends BaseComponent {
+  el;
+  cd;
+  /**
+   * An array of nested TreeNodes.
+   * @group Props
+   */
+  value;
+  /**
+   * Inline style of the component.
+   * @group Props
+   */
+  style;
+  /**
+   * Style class of the component.
+   * @group Props
+   */
+  styleClass;
+  /**
+   * Defines the selection mode.
+   * @group Props
+   */
+  selectionMode;
+  /**
+   * Whether the nodes can be expanded or toggled.
+   * @group Props
+   */
+  collapsible;
+  /**
+   * Whether the space allocated by a node is preserved when hidden.
+   * @group Props
+   */
+  preserveSpace = true;
+  /**
+   * A single treenode instance or an array to refer to the selections.
+   * @group Props
+   */
+  get selection() {
+    return this._selection;
+  }
+  set selection(val) {
+    this._selection = val;
+    if (this.initialized) this.selectionSource.next(null);
+  }
+  /**
+   * Callback to invoke on selection change.
+   * @param {*} any - selected value.
+   * @group Emits
+   */
+  selectionChange = new EventEmitter();
+  /**
+   * Callback to invoke when a node is selected.
+   * @param {OrganizationChartNodeSelectEvent} event - custom node select event.
+   * @group Emits
+   */
+  onNodeSelect = new EventEmitter();
+  /**
+   * Callback to invoke when a node is unselected.
+   * @param {OrganizationChartNodeUnSelectEvent} event - custom node unselect event.
+   * @group Emits
+   */
+  onNodeUnselect = new EventEmitter();
+  /**
+   * Callback to invoke when a node is expanded.
+   * @param {OrganizationChartNodeExpandEvent} event - custom node expand event.
+   * @group Emits
+   */
+  onNodeExpand = new EventEmitter();
+  /**
+   * Callback to invoke when a node is collapsed.
+   * @param {OrganizationChartNodeCollapseEvent} event - custom node collapse event.
+   * @group Emits
+   */
+  onNodeCollapse = new EventEmitter();
+  templates;
+  togglerIconTemplate;
+  templateMap;
+  _togglerIconTemplate;
+  selectionSource = new Subject();
+  _selection;
+  initialized;
+  selectionSource$ = this.selectionSource.asObservable();
+  _componentStyle = inject(OrganizationChartStyle);
+  constructor(el, cd) {
+    super();
+    this.el = el;
+    this.cd = cd;
+  }
+  get root() {
+    return this.value && this.value.length ? this.value[0] : null;
+  }
+  ngAfterContentInit() {
+    if (this.templates.length) {
+      this.templateMap = {};
+    }
+    this.templates.forEach((item) => {
+      if (item.getType() === "togglericon") {
+        this._togglerIconTemplate = item.template;
+      } else {
+        this.templateMap[item.getType()] = item.template;
+      }
+    });
+    this.initialized = true;
+  }
+  getTemplateForNode(node) {
+    if (this.templateMap) return node.type ? this.templateMap[node.type] : this.templateMap["default"];
+    else return null;
+  }
+  onNodeClick(event2, node) {
+    let eventTarget = event2.target;
+    if (eventTarget.className && (hasClass(eventTarget, "p-organizationchart-node-toggle-button") || hasClass(eventTarget, "p-organizationchart-node-toggle-button-icon"))) {
+      return;
+    } else if (this.selectionMode) {
+      if (node.selectable === false) {
+        return;
+      }
+      let index = this.findIndexInSelection(node);
+      let selected = index >= 0;
+      if (this.selectionMode === "single") {
+        if (selected) {
+          this.selection = null;
+          this.onNodeUnselect.emit({
+            originalEvent: event2,
+            node
+          });
+        } else {
+          this.selection = node;
+          this.onNodeSelect.emit({
+            originalEvent: event2,
+            node
+          });
+        }
+      } else if (this.selectionMode === "multiple") {
+        if (selected) {
+          this.selection = this.selection.filter((val, i) => i != index);
+          this.onNodeUnselect.emit({
+            originalEvent: event2,
+            node
+          });
+        } else {
+          this.selection = [...this.selection || [], node];
+          this.onNodeSelect.emit({
+            originalEvent: event2,
+            node
+          });
+        }
+      }
+      this.selectionChange.emit(this.selection);
+      this.selectionSource.next(null);
+    }
+  }
+  findIndexInSelection(node) {
+    let index = -1;
+    if (this.selectionMode && this.selection) {
+      if (this.selectionMode === "single") {
+        index = this.selection == node ? 0 : -1;
+      } else if (this.selectionMode === "multiple") {
+        for (let i = 0; i < this.selection.length; i++) {
+          if (this.selection[i] == node) {
+            index = i;
+            break;
+          }
+        }
+      }
+    }
+    return index;
+  }
+  isSelected(node) {
+    return this.findIndexInSelection(node) != -1;
+  }
+  static \u0275fac = function OrganizationChart_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _OrganizationChart)(\u0275\u0275directiveInject(ElementRef), \u0275\u0275directiveInject(ChangeDetectorRef));
+  };
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({
+    type: _OrganizationChart,
+    selectors: [["p-organizationChart"], ["p-organization-chart"], ["p-organizationchart"]],
+    contentQueries: function OrganizationChart_ContentQueries(rf, ctx, dirIndex) {
+      if (rf & 1) {
+        \u0275\u0275contentQuery(dirIndex, _c418, 4);
+        \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
+      }
+      if (rf & 2) {
+        let _t;
+        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.togglerIconTemplate = _t.first);
+        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.templates = _t);
+      }
+    },
+    inputs: {
+      value: "value",
+      style: "style",
+      styleClass: "styleClass",
+      selectionMode: "selectionMode",
+      collapsible: [2, "collapsible", "collapsible", booleanAttribute],
+      preserveSpace: [2, "preserveSpace", "preserveSpace", booleanAttribute],
+      selection: "selection"
+    },
+    outputs: {
+      selectionChange: "selectionChange",
+      onNodeSelect: "onNodeSelect",
+      onNodeUnselect: "onNodeUnselect",
+      onNodeExpand: "onNodeExpand",
+      onNodeCollapse: "onNodeCollapse"
+    },
+    features: [\u0275\u0275ProvidersFeature([OrganizationChartStyle]), \u0275\u0275InheritDefinitionFeature],
+    decls: 2,
+    vars: 8,
+    consts: [[3, "ngStyle", "ngClass"], ["class", "p-organizationchart-table", "pOrganizationChartNode", "", 3, "collapsible", "node", 4, "ngIf"], ["pOrganizationChartNode", "", 1, "p-organizationchart-table", 3, "collapsible", "node"]],
+    template: function OrganizationChart_Template(rf, ctx) {
+      if (rf & 1) {
+        \u0275\u0275elementStart(0, "div", 0);
+        \u0275\u0275template(1, OrganizationChart_table_1_Template, 1, 2, "table", 1);
+        \u0275\u0275elementEnd();
+      }
+      if (rf & 2) {
+        \u0275\u0275classMap(ctx.styleClass);
+        \u0275\u0275property("ngStyle", ctx.style)("ngClass", \u0275\u0275pureFunction1(6, _c516, ctx.preserveSpace));
+        \u0275\u0275attribute("data-pc-section", "root");
+        \u0275\u0275advance();
+        \u0275\u0275property("ngIf", ctx.root);
+      }
+    },
+    dependencies: [CommonModule, NgClass, NgIf, NgStyle, OrganizationChartNode, SharedModule],
+    encapsulation: 2
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(OrganizationChart, [{
+    type: Component,
+    args: [{
+      selector: "p-organizationChart, p-organization-chart, p-organizationchart",
+      standalone: true,
+      imports: [CommonModule, OrganizationChartNode, SharedModule],
+      template: `
+        <div [ngStyle]="style" [class]="styleClass" [ngClass]="{ 'p-organizationchart p-component': true, 'p-organizationchart-preservespace': preserveSpace }" [attr.data-pc-section]="'root'">
+            <table class="p-organizationchart-table" [collapsible]="collapsible" pOrganizationChartNode [node]="root" *ngIf="root"></table>
+        </div>
+    `,
+      changeDetection: ChangeDetectionStrategy.Default,
+      providers: [OrganizationChartStyle]
+    }]
+  }], () => [{
+    type: ElementRef
+  }, {
+    type: ChangeDetectorRef
+  }], {
+    value: [{
+      type: Input
+    }],
+    style: [{
+      type: Input
+    }],
+    styleClass: [{
+      type: Input
+    }],
+    selectionMode: [{
+      type: Input
+    }],
+    collapsible: [{
+      type: Input,
+      args: [{
+        transform: booleanAttribute
+      }]
+    }],
+    preserveSpace: [{
+      type: Input,
+      args: [{
+        transform: booleanAttribute
+      }]
+    }],
+    selection: [{
+      type: Input
+    }],
+    selectionChange: [{
+      type: Output
+    }],
+    onNodeSelect: [{
+      type: Output
+    }],
+    onNodeUnselect: [{
+      type: Output
+    }],
+    onNodeExpand: [{
+      type: Output
+    }],
+    onNodeCollapse: [{
+      type: Output
+    }],
+    templates: [{
+      type: ContentChildren,
+      args: [PrimeTemplate]
+    }],
+    togglerIconTemplate: [{
+      type: ContentChild,
+      args: ["togglericon", {
+        descendants: false
+      }]
+    }]
+  });
+})();
+var OrganizationChartModule = class _OrganizationChartModule {
+  static \u0275fac = function OrganizationChartModule_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _OrganizationChartModule)();
+  };
+  static \u0275mod = /* @__PURE__ */ \u0275\u0275defineNgModule({
+    type: _OrganizationChartModule,
+    imports: [OrganizationChart, OrganizationChartNode, SharedModule],
+    exports: [OrganizationChart, OrganizationChartNode, SharedModule]
+  });
+  static \u0275inj = /* @__PURE__ */ \u0275\u0275defineInjector({
+    imports: [OrganizationChart, OrganizationChartNode, SharedModule, SharedModule]
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(OrganizationChartModule, [{
+    type: NgModule,
+    args: [{
+      imports: [OrganizationChart, OrganizationChartNode, SharedModule],
+      exports: [OrganizationChart, OrganizationChartNode, SharedModule]
+    }]
+  }], null, null);
+})();
+
+// src/app/components/ia-diagram/ia-diagram.component.ts
+var _c038 = ["menu"];
+var _c158 = () => ({ height: "90vh" });
+var _c236 = (a0) => ({ number: a0 });
+function IaDiagramComponent_ng_template_20_Conditional_0_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 16);
+    \u0275\u0275element(1, "i", 23);
+    \u0275\u0275pipe(2, "translate");
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    \u0275\u0275advance();
+    \u0275\u0275property("pTooltip", \u0275\u0275pipeBind1(2, 1, "iaDiagram.tooltip.orphan"));
+  }
+}
+function IaDiagramComponent_ng_template_20_Conditional_5_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275element(0, "i", 21);
+    \u0275\u0275pipe(1, "translate");
+  }
+  if (rf & 2) {
+    const node_r3 = \u0275\u0275nextContext().$implicit;
+    \u0275\u0275property("pTooltip", \u0275\u0275pipeBind2(1, 1, "iaDiagram.tooltip.hiddenPages", \u0275\u0275pureFunction1(4, _c236, (node_r3.data.collapsedChildren == null ? null : node_r3.data.collapsedChildren.length) + (node_r3.data.hiddenChildrenUrls == null ? null : node_r3.data.hiddenChildrenUrls.length))));
+  }
+}
+function IaDiagramComponent_ng_template_20_Conditional_6_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r5 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p-button", 24);
+    \u0275\u0275listener("click", function IaDiagramComponent_ng_template_20_Conditional_6_Template_p_button_click_0_listener() {
+      \u0275\u0275restoreView(_r5);
+      const node_r3 = \u0275\u0275nextContext().$implicit;
+      const ctx_r3 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r3.addUrlsService.addChildren(node_r3, ctx_r3.primaryLang));
+    });
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r3 = \u0275\u0275nextContext(2);
+    \u0275\u0275property("loading", ctx_r3.addUrlsService.urlState().isAdding);
+  }
+}
+function IaDiagramComponent_ng_template_20_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r2 = \u0275\u0275getCurrentView();
+    \u0275\u0275template(0, IaDiagramComponent_ng_template_20_Conditional_0_Template, 3, 3, "div", 16);
+    \u0275\u0275elementStart(1, "p-button", 17);
+    \u0275\u0275listener("click", function IaDiagramComponent_ng_template_20_Template_p_button_click_1_listener($event) {
+      const node_r3 = \u0275\u0275restoreView(_r2).$implicit;
+      const ctx_r3 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r3.onMenuClick($event, node_r3));
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(2, "div", 18);
+    \u0275\u0275listener("dragstart", function IaDiagramComponent_ng_template_20_Template_div_dragstart_2_listener() {
+      const node_r3 = \u0275\u0275restoreView(_r2).$implicit;
+      const ctx_r3 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r3.onDragStart(node_r3));
+    })("dragover", function IaDiagramComponent_ng_template_20_Template_div_dragover_2_listener($event) {
+      const node_r3 = \u0275\u0275restoreView(_r2).$implicit;
+      const ctx_r3 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r3.onDragOver($event, node_r3));
+    })("dragleave", function IaDiagramComponent_ng_template_20_Template_div_dragleave_2_listener() {
+      const node_r3 = \u0275\u0275restoreView(_r2).$implicit;
+      const ctx_r3 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r3.onDragLeave(node_r3));
+    })("drop", function IaDiagramComponent_ng_template_20_Template_div_drop_2_listener() {
+      const node_r3 = \u0275\u0275restoreView(_r2).$implicit;
+      const ctx_r3 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r3.onDrop(node_r3));
+    });
+    \u0275\u0275elementStart(3, "p", 19);
+    \u0275\u0275element(4, "a", 20);
+    \u0275\u0275elementEnd();
+    \u0275\u0275template(5, IaDiagramComponent_ng_template_20_Conditional_5_Template, 2, 6, "i", 21)(6, IaDiagramComponent_ng_template_20_Conditional_6_Template, 1, 1, "p-button", 22);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const node_r3 = ctx.$implicit;
+    const ctx_r3 = \u0275\u0275nextContext();
+    \u0275\u0275conditional((ctx_r3.selectedLanguage() === "en" ? node_r3.data.live.en.isOrphan : node_r3.data.live.fr.isOrphan) ? 0 : -1);
+    \u0275\u0275advance(4);
+    \u0275\u0275classProp("cursor-move", ctx_r3.selectedView() === "changes");
+    \u0275\u0275property("href", ctx_r3.selectedLanguage() === "en" ? node_r3.data.live.en.url : node_r3.data.live.fr.url, \u0275\u0275sanitizeUrl)("innerHTML", ctx_r3.getH1Display(node_r3), \u0275\u0275sanitizeHtml);
+    \u0275\u0275advance();
+    \u0275\u0275conditional((node_r3.data.collapsedChildren == null ? null : node_r3.data.collapsedChildren.length) || (node_r3.data.hiddenChildrenUrls == null ? null : node_r3.data.hiddenChildrenUrls.length) ? 5 : -1);
+    \u0275\u0275advance();
+    \u0275\u0275conditional(!node_r3.data.isCrawled && !node_r3.data.status.isNew && ctx_r3.selectedView() === "changes" ? 6 : -1);
+  }
+}
+function IaDiagramComponent_Conditional_24_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r6 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "aida-edit-node", 25);
+    \u0275\u0275listener("close", function IaDiagramComponent_Conditional_24_Template_aida_edit_node_close_0_listener() {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r3 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r3.editNode = false);
+    });
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r3 = \u0275\u0275nextContext();
+    \u0275\u0275property("node", ctx_r3.selectedNode)("isOpen", ctx_r3.editNode);
+  }
+}
+var IaDiagramComponent = class _IaDiagramComponent {
+  projectState = inject(ProjectStateService);
+  translate = inject(TranslateService);
+  iaDiagram = inject(IaDiagramService);
+  treeNodeStyleService = inject(TreeNodeStyleService);
+  addUrlsService = inject(AddUrlsService);
+  primaryLang = this.projectState.detectPrimaryLanguage();
+  projectTree = computed(() => {
+    let tree = this.projectState.getProject().projectData;
+    if (this.selectedTree() !== "full") {
+      const custom = this.projectState.findNodeByPath(tree, this.selectedTree(), this.primaryLang);
+      if (custom) {
+        tree = [custom];
+      }
+      ;
+    }
+    if (this.selectedView() === "baseline") {
+      tree = this.projectState.getBaselineTree(tree, this.selectedTree() === "full" ? "full" : "custom");
+    } else if (this.selectedView() === "final") {
+      tree = this.projectState.getFinalTree(tree);
+    }
+    if (this.collapsedNodes().size > 0 || this.hiddenNodes().size > 0) {
+      tree = this.projectState.getDisplayTree(tree, this.collapsedNodes(), this.hiddenNodes());
+    }
+    this.treeNodeStyleService.updateNodeStyles(tree);
+    return tree;
+  });
+  //View options
+  selectedView = signal("changes");
+  get viewOptions() {
+    return [
+      { label: this.translate.instant("iaDiagram.view.baseline"), value: "baseline" },
+      { label: this.translate.instant("iaDiagram.view.changes"), value: "changes" },
+      { label: this.translate.instant("iaDiagram.view.final"), value: "final" }
+    ];
+  }
+  changeView() {
+    const applyStatusColors = this.selectedView() === "changes";
+    this.treeNodeStyleService.updateNodeStyles(this.projectTree(), 0, applyStatusColors);
+  }
+  //Language options
+  selectedLanguage = signal(this.primaryLang);
+  get languageOptions() {
+    return [
+      { label: this.translate.instant("common.language.english"), value: "en" },
+      { label: this.translate.instant("common.language.french"), value: "fr" }
+    ];
+  }
+  // Display H1
+  getH1Display(node) {
+    const lang = this.selectedLanguage();
+    const liveH1 = node.data?.live?.[lang]?.h1 ?? "";
+    const protoH1 = node.data?.prototype?.[lang]?.h1 ?? "";
+    const changed = liveH1 !== protoH1;
+    if (this.selectedView() === "baseline")
+      return liveH1;
+    else if (this.selectedView() === "final")
+      return protoH1;
+    else if (changed)
+      return `<s class="text-color-secondary text-sm">${liveH1}</s><br>${protoH1}`;
+    else
+      return protoH1;
+  }
+  //Tree options
+  selectedTree = signal("full");
+  //Menu options
+  menu;
+  items = [];
+  editNode = false;
+  selectedNode = {};
+  onMenuClick(event2, node) {
+    if (!node.data.path[this.primaryLang])
+      return;
+    event2.preventDefault();
+    this.items = [
+      {
+        label: this.translate.instant(`common.actions`),
+        items: [
+          {
+            label: this.translate.instant(`common.editNode`),
+            icon: "pi pi-pen-to-square",
+            command: () => {
+              this.selectedNode = node;
+              this.editNode = true;
+            }
+          }
+        ]
+      },
+      {
+        label: this.translate.instant(`common.viewOptions`),
+        items: []
+      }
+    ];
+    const siblings = this.projectState.getSiblings(node);
+    const index = siblings.indexOf(node);
+    const canMoveLeft = index > 0;
+    const canMoveRight = index < siblings.length - 1;
+    if (this.selectedView() === "changes" && (canMoveRight || canMoveLeft)) {
+      this.items[0].items.push({ separator: true });
+    }
+    if (this.selectedView() === "changes" && canMoveLeft) {
+      this.items[0].items.push({
+        label: this.translate.instant(`common.moveLeft`),
+        icon: "pi pi-arrow-left",
+        command: () => this.projectState.reorderNode(node, "left")
+      });
+    }
+    if (this.selectedView() === "changes" && canMoveRight) {
+      this.items[0].items.push({
+        label: this.translate.instant(`common.moveRight`),
+        icon: "pi pi-arrow-right",
+        command: () => this.projectState.reorderNode(node, "right")
+      });
+    }
+    if (this.selectedView() === "changes" && (canMoveRight || canMoveLeft)) {
+      this.items[0].items.push({ separator: true });
+    }
+    if (this.selectedView() === "changes" && !node.data.isCrawled) {
+      this.items[0].items.push({
+        label: this.translate.instant(`iaDiagram.menu.findChildren`),
+        icon: "pi pi-search",
+        disabled: node.data.isCrawled,
+        command: () => {
+          this.addUrlsService.addChildren(node, this.primaryLang);
+          console.log("test");
+        }
+      });
+    }
+    if (this.selectedView() === "changes") {
+      this.items[0].items.push({
+        label: this.translate.instant(`iaDiagram.menu.createChild`),
+        icon: "pi pi-file-plus text-green-500",
+        command: () => {
+          this.projectState.createNode(node);
+        }
+      }, {
+        label: this.translate.instant(`iaDiagram.menu.deleteNode`),
+        icon: "pi pi-trash text-red-500",
+        command: () => {
+          this.projectState.deleteNode(node);
+        }
+      });
+    }
+    if (this.projectTree()[0].data.url !== node.data.url) {
+      this.items[1].items.push({
+        label: this.translate.instant(`iaDiagram.menu.viewAsRoot`),
+        icon: "pi pi-window-minimize",
+        command: () => this.selectedTree.set(node.data.url)
+      });
+    }
+    if (this.selectedTree() !== "full") {
+      this.items[1].items.push({
+        label: this.translate.instant(`iaDiagram.menu.viewFullTree`),
+        icon: "pi pi-window-maximize",
+        command: () => this.selectedTree.set("full")
+      });
+    }
+    if (node.children?.length) {
+      this.items[1].items.push({
+        label: this.translate.instant(`iaDiagram.menu.hideChildren`),
+        icon: "pi pi-eye-slash",
+        command: () => this.collapsedNodes.update((set) => /* @__PURE__ */ new Set([...set, node.data.url]))
+      });
+    }
+    if (!node.children?.length && (node.data.collapsedChildren?.length || node.data.hiddenChildrenUrls?.length)) {
+      this.items[1].items.push({
+        label: this.translate.instant(`iaDiagram.menu.showChildren`),
+        icon: "pi pi-eye",
+        command: () => {
+          this.collapsedNodes.update((set) => {
+            const next = new Set(set);
+            next.delete(node.data.url);
+            return next;
+          });
+          this.hiddenNodes.update((set) => {
+            const next = new Set(set);
+            (node.data.hiddenChildrenUrls ?? []).forEach((url) => next.delete(url));
+            return next;
+          });
+        }
+      });
+    }
+    if (node.parent) {
+      this.items[1].items.push({
+        label: this.translate.instant(`iaDiagram.menu.hideNode`),
+        icon: "pi pi-eye-slash",
+        command: () => this.hiddenNodes.update((set) => /* @__PURE__ */ new Set([...set, node.data.url]))
+      });
+    }
+    if (node.children?.length && node.data.hiddenChildrenUrls?.length) {
+      this.items[1].items.push({
+        label: this.translate.instant(`iaDiagram.menu.showHiddenNodes`),
+        icon: "pi pi-eye",
+        command: () => this.hiddenNodes.update((set) => {
+          const next = new Set(set);
+          node.data.hiddenChildrenUrls.forEach((url) => next.delete(url));
+          return next;
+        })
+      });
+    }
+    if (this.items[1].items.length === 0) {
+      this.items[1].items.push({
+        label: this.translate.instant(`iaDiagram.menu.noActions`),
+        disabled: true
+      });
+    }
+    this.menu.toggle(event2);
+  }
+  // Show/hide pages or children
+  collapsedNodes = signal(/* @__PURE__ */ new Set());
+  hiddenNodes = signal(/* @__PURE__ */ new Set());
+  // Drag & drop
+  dragNode = signal(null);
+  dropTarget = signal(null);
+  onDragStart(node) {
+    if (this.selectedView() !== "changes")
+      return;
+    this.dragNode.set(node);
+  }
+  onDragOver(event2, node) {
+    event2.preventDefault();
+    if (this.selectedView() !== "changes")
+      return;
+    if (node.data.path[this.primaryLang] !== this.dragNode()?.data?.path[this.primaryLang]) {
+      this.dropTarget.set(node);
+    }
+  }
+  onDragLeave(node) {
+    if (this.selectedView() !== "changes")
+      return;
+    if (this.dropTarget()?.data?.path[this.primaryLang] === node.data.path[this.primaryLang]) {
+      this.dropTarget.set(null);
+    }
+  }
+  onDrop(node) {
+    if (this.selectedView() !== "changes")
+      return;
+    const drag = this.dragNode();
+    const drop = this.dropTarget();
+    if (!drag || !drop || drag.data.path[this.primaryLang] === drop.data.path[this.primaryLang] || drag.parent?.data?.path[this.primaryLang] === drop.data.path[this.primaryLang]) {
+      this.dragNode.set(null);
+      this.dropTarget.set(null);
+      return;
+    }
+    this.projectState.moveNode(drag, drop);
+    this.dragNode.set(null);
+    this.dropTarget.set(null);
+  }
+  static \u0275fac = function IaDiagramComponent_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _IaDiagramComponent)();
+  };
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _IaDiagramComponent, selectors: [["aida-ia-diagram"]], viewQuery: function IaDiagramComponent_Query(rf, ctx) {
+    if (rf & 1) {
+      \u0275\u0275viewQuery(_c038, 5);
+    }
+    if (rf & 2) {
+      let _t;
+      \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.menu = _t.first);
+    }
+  }, decls: 25, vars: 27, consts: [["menu", ""], [1, "fullscreen-overlay", "surface-card"], [1, "flex", "flex-row", "justify-content-between", "align-items-center", "pl-2", "mx-3", "border-bottom-1", "border-200"], [1, "mb-2"], ["icon", "pi pi-times", "text", "", "rounded", "", 3, "onClick"], [1, "overflow-auto"], [1, "flex", "flex-row", "absolute"], [1, "flex", "flex-column", "hover:text-primary", "z-1", "ml-4"], ["for", "view", 1, "text-xs", "font-semibold", "xl:my-1"], ["id", "view", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "size", "small", "styleClass", "secondary-outline text-primary max-h-3rem", 3, "ngModelChange", "onChange", "options", "ngModel"], ["id", "view", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "size", "small", "styleClass", "secondary-outline text-primary max-h-3rem", 3, "ngModelChange", "options", "ngModel"], [3, "value"], ["pTemplate", "default"], [3, "model", "popup"], ["styleClass", "w-10", 3, "visibleChange", "header", "modal", "maximizable", "visible"], [3, "node", "isOpen"], [1, "-mt-6", "mb-6"], ["icon", "pi pi-ellipsis-h", "size", "small", "text", "", 1, "absolute", "top-0", "right-0", "-mt-1", "-mr-1", 3, "click"], [1, "h-full", 3, "dragstart", "dragover", "dragleave", "drop"], [1, "pb-2"], ["target", "_blank", 3, "href", "innerHTML"], ["tooltipPosition", "top", "tooltipStyleClass", "z-200", 1, "pi", "pi-eye-slash", "text-sm", "text-color-secondary", "opacity-70", "absolute", "bottom-0", "right-0", "mb-1", "mr-2", 3, "pTooltip"], ["icon", "pi pi-plus-circle", "rounded", "", "size", "small", "text", "", 1, "absolute", "left-50", "-translate-x-50", "bottom-0", "-mb-1", 3, "loading"], ["tooltipPosition", "top", "tooltipStyleClass", "z-200", 1, "pi", "pi-times", "text-red-500", 3, "pTooltip"], ["icon", "pi pi-plus-circle", "rounded", "", "size", "small", "text", "", 1, "absolute", "left-50", "-translate-x-50", "bottom-0", "-mb-1", 3, "click", "loading"], [3, "close", "node", "isOpen"]], template: function IaDiagramComponent_Template(rf, ctx) {
+    if (rf & 1) {
+      const _r1 = \u0275\u0275getCurrentView();
+      \u0275\u0275elementStart(0, "div", 1)(1, "div", 2)(2, "h1", 3);
+      \u0275\u0275text(3);
+      \u0275\u0275pipe(4, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(5, "p-button", 4);
+      \u0275\u0275pipe(6, "translate");
+      \u0275\u0275listener("onClick", function IaDiagramComponent_Template_p_button_onClick_5_listener() {
+        \u0275\u0275restoreView(_r1);
+        return \u0275\u0275resetView(ctx.iaDiagram.closeDiagram());
+      });
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(7, "div", 5)(8, "div", 6)(9, "div", 7)(10, "label", 8);
+      \u0275\u0275text(11);
+      \u0275\u0275pipe(12, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(13, "p-selectButton", 9);
+      \u0275\u0275twoWayListener("ngModelChange", function IaDiagramComponent_Template_p_selectButton_ngModelChange_13_listener($event) {
+        \u0275\u0275restoreView(_r1);
+        \u0275\u0275twoWayBindingSet(ctx.selectedView, $event) || (ctx.selectedView = $event);
+        return \u0275\u0275resetView($event);
+      });
+      \u0275\u0275listener("onChange", function IaDiagramComponent_Template_p_selectButton_onChange_13_listener() {
+        \u0275\u0275restoreView(_r1);
+        return \u0275\u0275resetView(ctx.changeView());
+      });
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(14, "div", 7)(15, "label", 8);
+      \u0275\u0275text(16);
+      \u0275\u0275pipe(17, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(18, "p-selectButton", 10);
+      \u0275\u0275twoWayListener("ngModelChange", function IaDiagramComponent_Template_p_selectButton_ngModelChange_18_listener($event) {
+        \u0275\u0275restoreView(_r1);
+        \u0275\u0275twoWayBindingSet(ctx.selectedLanguage, $event) || (ctx.selectedLanguage = $event);
+        return \u0275\u0275resetView($event);
+      });
+      \u0275\u0275elementEnd()()();
+      \u0275\u0275elementStart(19, "p-organization-chart", 11);
+      \u0275\u0275template(20, IaDiagramComponent_ng_template_20_Template, 7, 7, "ng-template", 12);
+      \u0275\u0275elementEnd()()();
+      \u0275\u0275element(21, "p-menu", 13, 0);
+      \u0275\u0275elementStart(23, "p-dialog", 14);
+      \u0275\u0275twoWayListener("visibleChange", function IaDiagramComponent_Template_p_dialog_visibleChange_23_listener($event) {
+        \u0275\u0275restoreView(_r1);
+        \u0275\u0275twoWayBindingSet(ctx.editNode, $event) || (ctx.editNode = $event);
+        return \u0275\u0275resetView($event);
+      });
+      \u0275\u0275template(24, IaDiagramComponent_Conditional_24_Template, 1, 2, "aida-edit-node", 15);
+      \u0275\u0275elementEnd();
+    }
+    if (rf & 2) {
+      \u0275\u0275advance(3);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 18, "iaDiagram._title"));
+      \u0275\u0275advance(2);
+      \u0275\u0275attribute("aria-label", \u0275\u0275pipeBind1(6, 20, "common.close"));
+      \u0275\u0275advance(6);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(12, 22, "common.view"));
+      \u0275\u0275advance(2);
+      \u0275\u0275property("options", ctx.viewOptions);
+      \u0275\u0275twoWayProperty("ngModel", ctx.selectedView);
+      \u0275\u0275advance(3);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(17, 24, "common.language"));
+      \u0275\u0275advance(2);
+      \u0275\u0275property("options", ctx.languageOptions);
+      \u0275\u0275twoWayProperty("ngModel", ctx.selectedLanguage);
+      \u0275\u0275advance();
+      \u0275\u0275property("value", ctx.projectTree());
+      \u0275\u0275advance(2);
+      \u0275\u0275property("model", ctx.items)("popup", true);
+      \u0275\u0275advance(2);
+      \u0275\u0275styleMap(\u0275\u0275pureFunction0(26, _c158));
+      \u0275\u0275property("header", ctx.selectedNode == null ? null : ctx.selectedNode.data == null ? null : ctx.selectedNode.data.prototype == null ? null : ctx.selectedNode.data.prototype[ctx.selectedLanguage()].h1)("modal", true)("maximizable", true);
+      \u0275\u0275twoWayProperty("visible", ctx.editNode);
+      \u0275\u0275advance();
+      \u0275\u0275conditional(ctx.selectedNode ? 24 : -1);
+    }
+  }, dependencies: [TranslateModule, TranslatePipe, FormsModule, NgControlStatus, NgModel, OrganizationChartModule, OrganizationChart, PrimeTemplate, ButtonModule, Button, TooltipModule, Tooltip, SelectButtonModule, SelectButton, MenuModule, Menu, DialogModule, Dialog, EditNodeComponent], styles: ["\n\n.fullscreen-overlay[_ngcontent-%COMP%] {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 200;\n  display: flex;\n  flex-direction: column;\n}\n.z-200[_ngcontent-%COMP%] {\n  z-index: 200 !important;\n}\n/*# sourceMappingURL=ia-diagram.component.css.map */"] });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(IaDiagramComponent, [{
+    type: Component,
+    args: [{ selector: "aida-ia-diagram", imports: [
+      TranslateModule,
+      FormsModule,
+      OrganizationChartModule,
+      ButtonModule,
+      TooltipModule,
+      SelectButtonModule,
+      MenuModule,
+      DialogModule,
+      EditNodeComponent
+    ], template: `<div class="fullscreen-overlay surface-card">\r
+    <div class="flex flex-row justify-content-between align-items-center pl-2 mx-3 border-bottom-1 border-200">\r
+        <h1 class="mb-2">{{'iaDiagram._title' | translate}}</h1>\r
+        <p-button icon="pi pi-times" text rounded (onClick)="iaDiagram.closeDiagram()" [attr.aria-label]="'common.close' | translate" />\r
+    </div>\r
+\r
+    <div class="overflow-auto">\r
+        <!--Toggle View-->\r
+        <div class="flex flex-row absolute">\r
+            <div class="flex flex-column hover:text-primary z-1 ml-4">\r
+                <label for="view" class="text-xs font-semibold xl:my-1">{{ 'common.view' | translate }}</label>\r
+                <p-selectButton id="view" allowEmpty="false" optionLabel="label" optionValue="value" size="small" styleClass="secondary-outline text-primary max-h-3rem"\r
+                                [options]="viewOptions" [(ngModel)]="selectedView" (onChange)="changeView()" />\r
+            </div>\r
+            <div class="flex flex-column hover:text-primary z-1 ml-4">\r
+                <label for="view" class="text-xs font-semibold xl:my-1">{{ 'common.language' | translate }}</label>\r
+                <p-selectButton id="view" allowEmpty="false" optionLabel="label" optionValue="value" size="small" styleClass="secondary-outline text-primary max-h-3rem"\r
+                                [options]="languageOptions" [(ngModel)]="selectedLanguage" />\r
+            </div>\r
+        </div>\r
+        <!--IA Diagram-->\r
+        <p-organization-chart [value]="projectTree()">\r
+            <ng-template let-node pTemplate="default">\r
+                <!--ORPHAN STATUS-->\r
+                @if(selectedLanguage() === 'en' ? node.data.live.en.isOrphan : node.data.live.fr.isOrphan){\r
+                <div class="-mt-6 mb-6">\r
+                    <i class="pi pi-times text-red-500" [pTooltip]="'iaDiagram.tooltip.orphan' | translate" tooltipPosition="top" tooltipStyleClass="z-200"></i>\r
+                </div>\r
+                }\r
+                <!--PAGE-->\r
+                <p-button (click)="onMenuClick($event, node)" icon="pi pi-ellipsis-h" size="small" text class="absolute top-0 right-0 -mt-1 -mr-1" />\r
+                <div class="h-full" (dragstart)="onDragStart(node)" (dragover)="onDragOver($event, node)" (dragleave)="onDragLeave(node)" (drop)="onDrop(node)">\r
+                    <p class="pb-2"><a [class.cursor-move]="selectedView()==='changes'" [href]="selectedLanguage() === 'en' ? node.data.live.en.url : node.data.live.fr.url" target="_blank" [innerHTML]="getH1Display(node)"></a></p>\r
+                    @if(node.data.collapsedChildren?.length || node.data.hiddenChildrenUrls?.length){\r
+                    <i class="pi pi-eye-slash text-sm text-color-secondary opacity-70 absolute bottom-0 right-0 mb-1 mr-2"\r
+                       [pTooltip]="'iaDiagram.tooltip.hiddenPages' | translate: {number: node.data.collapsedChildren?.length + node.data.hiddenChildrenUrls?.length}" tooltipPosition="top" tooltipStyleClass="z-200"></i>\r
+                    }\r
+                    @if(!node.data.isCrawled && !node.data.status.isNew && selectedView() === 'changes'){\r
+                    <p-button icon="pi pi-plus-circle" rounded size="small" text class="absolute left-50 -translate-x-50 bottom-0 -mb-1"\r
+                              (click)="addUrlsService.addChildren(node,primaryLang)" [loading]="addUrlsService.urlState().isAdding" />\r
+                    }\r
+                </div>\r
+            </ng-template>\r
+        </p-organization-chart>\r
+    </div>\r
+</div>\r
+<!--Context Menu-->\r
+<p-menu #menu [model]="items" [popup]="true" />\r
+\r
+<p-dialog [header]="selectedNode?.data?.prototype?.[selectedLanguage()].h1" [modal]="true" [maximizable]="true" [(visible)]="editNode" styleClass="w-10" [style]="{ height: '90vh' }">\r
+    @if(selectedNode) {\r
+    <aida-edit-node [node]="selectedNode" [isOpen]="editNode" (close)="editNode = false" />\r
+    }\r
+</p-dialog>`, styles: ["/* src/app/components/ia-diagram/ia-diagram.component.css */\n.fullscreen-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 200;\n  display: flex;\n  flex-direction: column;\n}\n.z-200 {\n  z-index: 200 !important;\n}\n/*# sourceMappingURL=ia-diagram.component.css.map */\n"] }]
+  }], null, { menu: [{
+    type: ViewChild,
+    args: ["menu"]
+  }] });
+})();
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(IaDiagramComponent, { className: "IaDiagramComponent", filePath: "src/app/components/ia-diagram/ia-diagram.component.ts", lineNumber: 29 });
+})();
+
+// src/app/views/static/404/not-found.component.ts
 var NotFoundComponent = class _NotFoundComponent {
   random404Key = "notFound.message.0";
   ngOnInit() {
@@ -83824,10 +84869,10 @@ var NotFoundComponent = class _NotFoundComponent {
   }], null, null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(NotFoundComponent, { className: "NotFoundComponent", filePath: "src/app/views/404/not-found.component.ts", lineNumber: 14 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(NotFoundComponent, { className: "NotFoundComponent", filePath: "src/app/views/static/404/not-found.component.ts", lineNumber: 14 });
 })();
 
-// src/app/views/about-us/about.component.ts
+// src/app/views/static/about-us/about.component.ts
 var AboutComponent = class _AboutComponent {
   static \u0275fac = function AboutComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _AboutComponent)();
@@ -83859,11 +84904,11 @@ var AboutComponent = class _AboutComponent {
   }], null, null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AboutComponent, { className: "AboutComponent", filePath: "src/app/views/about-us/about.component.ts", lineNumber: 13 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AboutComponent, { className: "AboutComponent", filePath: "src/app/views/static/about-us/about.component.ts", lineNumber: 13 });
 })();
 
-// src/app/views/help/help.component.ts
-var _c038 = () => [];
+// src/app/views/static/help/help.component.ts
+var _c039 = () => [];
 var HelpComponent = class _HelpComponent {
   static \u0275fac = function HelpComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _HelpComponent)();
@@ -84653,39 +85698,39 @@ var HelpComponent = class _HelpComponent {
       \u0275\u0275advance();
       \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 18, "help._title"));
       \u0275\u0275advance(8);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(20, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(20, _c039));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(21, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(21, _c039));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(22, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(22, _c039));
       \u0275\u0275advance(4);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(23, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(23, _c039));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(24, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(24, _c039));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(25, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(25, _c039));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(26, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(26, _c039));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(27, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(27, _c039));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(28, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(28, _c039));
       \u0275\u0275advance(4);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(29, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(29, _c039));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(30, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(30, _c039));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(31, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(31, _c039));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(32, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(32, _c039));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(33, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(33, _c039));
       \u0275\u0275advance(4);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(34, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(34, _c039));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(35, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(35, _c039));
       \u0275\u0275advance(3);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(36, _c038));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(36, _c039));
     }
   }, dependencies: [RouterLink, TranslateModule, TranslatePipe], encapsulation: 2 });
 };
@@ -85016,444 +86061,7 @@ var HelpComponent = class _HelpComponent {
   }], null, null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(HelpComponent, { className: "HelpComponent", filePath: "src/app/views/help/help.component.ts", lineNumber: 11 });
-})();
-
-// src/app/components/sign-in/github-connect.component.ts
-var _c039 = () => ({ width: "50vw" });
-var _c157 = () => ({ "1199px": "75vw", "575": "90vw" });
-function GithubConnectComponent_ng_template_2_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 15);
-    \u0275\u0275text(1);
-    \u0275\u0275pipe(2, "translate");
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const item_r2 = ctx.$implicit;
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 1, item_r2.label));
-  }
-}
-function GithubConnectComponent_ng_template_4_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "a", 16);
-    \u0275\u0275element(1, "i");
-    \u0275\u0275elementStart(2, "span");
-    \u0275\u0275text(3);
-    \u0275\u0275pipe(4, "translate");
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    const item_r3 = ctx.$implicit;
-    \u0275\u0275advance();
-    \u0275\u0275classMap(item_r3.icon);
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 3, item_r3.label));
-  }
-}
-function GithubConnectComponent_Conditional_6_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r4 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 17);
-    \u0275\u0275listener("onClick", function GithubConnectComponent_Conditional_6_Template_p_button_onClick_0_listener($event) {
-      \u0275\u0275restoreView(_r4);
-      \u0275\u0275nextContext();
-      const menu_r5 = \u0275\u0275reference(1);
-      return \u0275\u0275resetView(menu_r5.toggle($event));
-    });
-    \u0275\u0275element(1, "p-avatar", 18);
-    \u0275\u0275elementStart(2, "div", 19);
-    \u0275\u0275text(3);
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    const user_r6 = ctx;
-    \u0275\u0275property("outlined", true);
-    \u0275\u0275advance();
-    \u0275\u0275property("image", user_r6.avatar_url);
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(user_r6.name || user_r6.login);
-  }
-}
-function GithubConnectComponent_Conditional_7_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r7 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 17);
-    \u0275\u0275listener("onClick", function GithubConnectComponent_Conditional_7_Template_p_button_onClick_0_listener() {
-      \u0275\u0275restoreView(_r7);
-      const ctx_r7 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r7.connectGitHub());
-    });
-    \u0275\u0275element(1, "i", 20);
-    \u0275\u0275elementStart(2, "div", 19);
-    \u0275\u0275text(3);
-    \u0275\u0275pipe(4, "translate");
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    \u0275\u0275property("outlined", true);
-    \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 2, "common.signin"));
-  }
-}
-var GithubConnectComponent = class _GithubConnectComponent {
-  http = inject(HttpClient);
-  router = inject(Router);
-  authService = inject(GitHubAuthService);
-  exportGitHubService = inject(ExportGitHubService);
-  projectStorageService = inject(ProjectStorageService);
-  projectState = inject(ProjectStateService);
-  translate = inject(TranslateService);
-  // Variables
-  showPatSignIn = false;
-  showSettings = false;
-  connectGitHub() {
-    if (this.isApiGatewayAccessible()) {
-      this.authService.login(["repo", "user"]);
-    } else {
-      this.showPatSignIn = true;
-    }
-  }
-  validatePAT() {
-    this.showPatSignIn = false;
-    this.exportGitHubService.validatePAT();
-  }
-  markForTranslation() {
-    marker("common.new");
-    marker("common.search");
-    marker("common.signout");
-    marker("settings._nav");
-    marker("common.projects");
-    marker("common.profile");
-  }
-  items = [
-    {
-      label: "common.projects",
-      items: [
-        {
-          label: "common.new",
-          icon: "pi pi-plus",
-          command: () => {
-            this.projectStorageService.clearActiveProject();
-            this.projectState.resetProject();
-            this.router.navigate(["/new-project"]);
-          }
-        },
-        {
-          label: "common.search",
-          icon: "pi pi-search",
-          command: () => {
-            this.router.navigate(["/switch-project"]);
-          }
-        }
-      ]
-    },
-    {
-      label: "common.profile",
-      items: [
-        {
-          label: "settings._nav",
-          icon: "pi pi-cog",
-          command: () => {
-            this.showSettings = true;
-          }
-        },
-        {
-          label: "common.signout",
-          icon: "pi pi-sign-out",
-          command: () => {
-            this.authService.logout();
-            this.exportGitHubService.clearPAT();
-          }
-        }
-      ]
-    }
-  ];
-  // Signal to track if API Gateway is accessible
-  isApiGatewayAccessible = signal(true);
-  // Check if API gateway is available so we can surface the preferred sign-in method
-  checkApiGatewayAccess() {
-    if (window.location.hostname === "localhost") {
-      this.isApiGatewayAccessible.set(false);
-      return;
-    }
-    this.http.get(`${environment.apiGateway}/auth/github/url`, {
-      observe: "response"
-    }).pipe(timeout(3e3), catchError(() => {
-      return of(null);
-    })).subscribe((response) => {
-      this.isApiGatewayAccessible.set(response !== null);
-    });
-  }
-  ngOnInit() {
-    this.checkApiGatewayAccess();
-  }
-  static \u0275fac = function GithubConnectComponent_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _GithubConnectComponent)();
-  };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _GithubConnectComponent, selectors: [["aida-github-connect"]], decls: 29, vars: 27, consts: [["menu", ""], ["submenuheader", ""], ["item", ""], [3, "model", "popup"], ["size", "small", "rounded", "", "outlined", "", "styleClass", "secondary-outline p-1", 3, "outlined"], [1, "w-12", "lg:w-8", 3, "visibleChange", "header", "modal", "visible"], [1, "flex", "flex-row", "align-items-center", "gap-3", "-mt-2"], [1, "pi", "pi-key", "text-6xl", "text-900"], [1, "w-full"], [1, "text-sm", "text-color-secondary", "my-2"], [1, "flex", "justify-content-end", "mt-2"], [3, "onClick", "label"], [3, "visibleChange", "header", "modal", "visible", "breakpoints"], [1, "flex", "flex-row", "align-items-center", "gap-3"], [1, "pi", "pi-cog", "text-6xl", "text-900"], [1, "text-primary", "font-bold"], [1, "p-menu-item-link"], ["size", "small", "rounded", "", "outlined", "", "styleClass", "secondary-outline p-1", 3, "onClick", "outlined"], ["shape", "circle", 3, "image"], [1, "font-semibold", "pr-2"], [1, "pi", "pi-github", "text-4xl", "text-color-secondary"]], template: function GithubConnectComponent_Template(rf, ctx) {
-    if (rf & 1) {
-      const _r1 = \u0275\u0275getCurrentView();
-      \u0275\u0275elementStart(0, "p-menu", 3, 0);
-      \u0275\u0275template(2, GithubConnectComponent_ng_template_2_Template, 3, 3, "ng-template", null, 1, \u0275\u0275templateRefExtractor)(4, GithubConnectComponent_ng_template_4_Template, 5, 5, "ng-template", null, 2, \u0275\u0275templateRefExtractor);
-      \u0275\u0275elementEnd();
-      \u0275\u0275template(6, GithubConnectComponent_Conditional_6_Template, 4, 3, "p-button", 4)(7, GithubConnectComponent_Conditional_7_Template, 5, 4, "p-button", 4);
-      \u0275\u0275elementStart(8, "p-dialog", 5);
-      \u0275\u0275pipe(9, "translate");
-      \u0275\u0275twoWayListener("visibleChange", function GithubConnectComponent_Template_p_dialog_visibleChange_8_listener($event) {
-        \u0275\u0275restoreView(_r1);
-        \u0275\u0275twoWayBindingSet(ctx.showPatSignIn, $event) || (ctx.showPatSignIn = $event);
-        return \u0275\u0275resetView($event);
-      });
-      \u0275\u0275elementStart(10, "div", 6);
-      \u0275\u0275element(11, "i", 7);
-      \u0275\u0275elementStart(12, "div", 8)(13, "p", 9);
-      \u0275\u0275text(14);
-      \u0275\u0275pipe(15, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275element(16, "aida-pat");
-      \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(17, "div", 10)(18, "p-button", 11);
-      \u0275\u0275pipe(19, "translate");
-      \u0275\u0275listener("onClick", function GithubConnectComponent_Template_p_button_onClick_18_listener() {
-        \u0275\u0275restoreView(_r1);
-        return \u0275\u0275resetView(ctx.validatePAT());
-      });
-      \u0275\u0275elementEnd()()();
-      \u0275\u0275elementStart(20, "p-dialog", 12);
-      \u0275\u0275pipe(21, "translate");
-      \u0275\u0275twoWayListener("visibleChange", function GithubConnectComponent_Template_p_dialog_visibleChange_20_listener($event) {
-        \u0275\u0275restoreView(_r1);
-        \u0275\u0275twoWayBindingSet(ctx.showSettings, $event) || (ctx.showSettings = $event);
-        return \u0275\u0275resetView($event);
-      });
-      \u0275\u0275elementStart(22, "div", 13);
-      \u0275\u0275element(23, "i", 14);
-      \u0275\u0275elementStart(24, "div", 8);
-      \u0275\u0275element(25, "aida-user-settings");
-      \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(26, "div", 10)(27, "p-button", 11);
-      \u0275\u0275pipe(28, "translate");
-      \u0275\u0275listener("onClick", function GithubConnectComponent_Template_p_button_onClick_27_listener() {
-        \u0275\u0275restoreView(_r1);
-        return \u0275\u0275resetView(ctx.showSettings = false);
-      });
-      \u0275\u0275elementEnd()()();
-    }
-    if (rf & 2) {
-      let tmp_5_0;
-      \u0275\u0275property("model", ctx.items)("popup", true);
-      \u0275\u0275advance(6);
-      \u0275\u0275conditional((tmp_5_0 = ctx.exportGitHubService.user()) ? 6 : 7, tmp_5_0);
-      \u0275\u0275advance(2);
-      \u0275\u0275property("header", \u0275\u0275pipeBind1(9, 15, "github.connect.pat.header"))("modal", true);
-      \u0275\u0275twoWayProperty("visible", ctx.showPatSignIn);
-      \u0275\u0275advance(6);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(15, 17, "github.connect.pat.description"));
-      \u0275\u0275advance(4);
-      \u0275\u0275property("label", \u0275\u0275pipeBind1(19, 19, "common.signin"));
-      \u0275\u0275advance(2);
-      \u0275\u0275styleMap(\u0275\u0275pureFunction0(25, _c039));
-      \u0275\u0275property("header", \u0275\u0275pipeBind1(21, 21, "settings._title"))("modal", true);
-      \u0275\u0275twoWayProperty("visible", ctx.showSettings);
-      \u0275\u0275property("breakpoints", \u0275\u0275pureFunction0(26, _c157));
-      \u0275\u0275advance(7);
-      \u0275\u0275property("label", \u0275\u0275pipeBind1(28, 23, "common.close"));
-    }
-  }, dependencies: [
-    CommonModule,
-    TranslateModule,
-    TranslatePipe,
-    ButtonModule,
-    Button,
-    AvatarModule,
-    Avatar,
-    PopoverModule,
-    MenuModule,
-    Menu,
-    DialogModule,
-    Dialog,
-    IftaLabelModule,
-    PasswordModule,
-    PatComponent,
-    UserSettingsComponent
-  ], encapsulation: 2 });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(GithubConnectComponent, [{
-    type: Component,
-    args: [{ selector: "aida-github-connect", imports: [
-      CommonModule,
-      TranslateModule,
-      ButtonModule,
-      AvatarModule,
-      PopoverModule,
-      MenuModule,
-      DialogModule,
-      IftaLabelModule,
-      PasswordModule,
-      PatComponent,
-      UserSettingsComponent
-    ], template: `<p-menu #menu [model]="items" [popup]="true">\r
-    <ng-template #submenuheader let-item>\r
-        <span class="text-primary font-bold">{{ item.label | translate}}</span>\r
-    </ng-template>\r
-    <ng-template #item let-item>\r
-        <a class="p-menu-item-link">\r
-            <i [class]="item.icon"></i>\r
-            <span>{{ item.label | translate}}</span>\r
-        </a>\r
-    </ng-template>\r
-</p-menu>\r
-\r
-@if (exportGitHubService.user(); as user) {\r
-<p-button [outlined]="true" size="small" rounded outlined styleClass="secondary-outline p-1" (onClick)="menu.toggle($event)">\r
-    <p-avatar [image]="user.avatar_url" shape="circle" />\r
-    <div class="font-semibold pr-2">{{ user.name || user.login }}</div>\r
-</p-button>\r
-} @else {\r
-<p-button [outlined]="true" size="small" rounded outlined styleClass="secondary-outline p-1" (onClick)="connectGitHub()">\r
-    <i class="pi pi-github text-4xl text-color-secondary"></i>\r
-    <div class="font-semibold pr-2">{{'common.signin' | translate}}</div>\r
-</p-button>\r
-}\r
-\r
-<p-dialog [header]="'github.connect.pat.header' | translate" [modal]="true" [(visible)]="showPatSignIn" class="w-12 lg:w-8">\r
-    <div class="flex flex-row align-items-center gap-3 -mt-2">\r
-        <i class="pi pi-key text-6xl text-900"></i>\r
-        <div class="w-full">\r
-            <p class="text-sm text-color-secondary my-2">{{ 'github.connect.pat.description' | translate }}</p>\r
-            <aida-pat />\r
-        </div>\r
-    </div>\r
-    <div class="flex justify-content-end mt-2">\r
-        <p-button [label]="'common.signin' | translate" (onClick)="validatePAT()" />\r
-    </div>\r
-</p-dialog>\r
-\r
-<p-dialog [header]="'settings._title' | translate" [modal]="true" [(visible)]="showSettings" [style]="{width: '50vw'}" [breakpoints]="{'1199px': '75vw', '575': '90vw'}">\r
-    <div class="flex flex-row align-items-center gap-3">\r
-        <i class="pi pi-cog text-6xl text-900"></i>\r
-        <div class="w-full">\r
-            <aida-user-settings />\r
-        </div>\r
-    </div>\r
-    <div class="flex justify-content-end mt-2">\r
-        <p-button [label]="'common.close' | translate" (onClick)="showSettings = false" />\r
-    </div>\r
-</p-dialog>` }]
-  }], null, null);
-})();
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(GithubConnectComponent, { className: "GithubConnectComponent", filePath: "src/app/components/sign-in/github-connect.component.ts", lineNumber: 36 });
-})();
-
-// src/app/components/sign-in/auth-callback.component.ts
-function AuthCallbackComponent_Conditional_2_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275element(0, "p-progressSpinner", 3);
-    \u0275\u0275elementStart(1, "h2", 4);
-    \u0275\u0275text(2);
-    \u0275\u0275pipe(3, "translate");
-    \u0275\u0275element(4, "span", 5);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 1, "github.callback.authenticating"));
-  }
-}
-function AuthCallbackComponent_Conditional_3_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275element(0, "p-message", 2);
-    \u0275\u0275pipe(1, "translate");
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275property("text", \u0275\u0275pipeBind1(1, 1, ctx_r0.error()));
-  }
-}
-var AuthCallbackComponent = class _AuthCallbackComponent {
-  route = inject(ActivatedRoute);
-  router = inject(Router);
-  authService = inject(GitHubAuthService);
-  error = signal(null);
-  markForTranslation() {
-    marker("github.callback.error.invalidParams");
-    marker("github.callback.error.githubError");
-    marker("github.callback.error.serverError");
-  }
-  ngOnInit() {
-    const params = this.route.snapshot.queryParams;
-    const code = params["code"];
-    const state2 = params["state"];
-    const error = params["error"];
-    if (!code && !state2 && !error) {
-      this.router.navigate(["/"], { replaceUrl: true });
-      return;
-    }
-    if (error) {
-      console.error("OAuth GitHub error:", error);
-      this.error.set("github.callback.error.githubError");
-      return;
-    }
-    if (!code || !state2) {
-      this.error.set("github.callback.error.invalidParams");
-      return;
-    }
-    this.handleCallback(code, state2);
-  }
-  handleCallback(code, state2) {
-    return __async(this, null, function* () {
-      try {
-        yield this.authService.handleCallback(code, state2);
-        const returnUrl = sessionStorage.getItem("github_oauth_return_url") || "/export-github";
-        sessionStorage.removeItem("github_oauth_return_url");
-        this.router.navigate([returnUrl], { replaceUrl: true });
-      } catch (error) {
-        this.error.set("github.callback.error.serverError");
-        console.error("OAuth AWS server error:", error);
-      }
-    });
-  }
-  static \u0275fac = function AuthCallbackComponent_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _AuthCallbackComponent)();
-  };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AuthCallbackComponent, selectors: [["aida-auth-callback"]], decls: 4, vars: 1, consts: [[1, "flex", "align-items-center", "justify-content-center", 2, "min-height", "60vh"], [1, "text-center"], ["severity", "error", "size", "large", "icon", "pi pi-exclamation-triangle", 3, "text"], ["aria-labelledby", "authenticating"], ["id", "authenticating", 1, "mt-3"], [1, "loading-dots"]], template: function AuthCallbackComponent_Template(rf, ctx) {
-    if (rf & 1) {
-      \u0275\u0275elementStart(0, "div", 0)(1, "div", 1);
-      \u0275\u0275template(2, AuthCallbackComponent_Conditional_2_Template, 5, 3)(3, AuthCallbackComponent_Conditional_3_Template, 2, 3, "p-message", 2);
-      \u0275\u0275elementEnd()();
-    }
-    if (rf & 2) {
-      \u0275\u0275advance(2);
-      \u0275\u0275conditional(!ctx.error() ? 2 : 3);
-    }
-  }, dependencies: [CommonModule, TranslateModule, TranslatePipe, ProgressSpinnerModule, ProgressSpinner, MessageModule, Message], encapsulation: 2 });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(AuthCallbackComponent, [{
-    type: Component,
-    args: [{ selector: "aida-auth-callback", imports: [
-      CommonModule,
-      TranslateModule,
-      ProgressSpinnerModule,
-      MessageModule
-    ], template: `<div class="flex align-items-center justify-content-center" style="min-height: 60vh;">\r
-    <div class="text-center">\r
-        @if (!error()) {\r
-        <p-progressSpinner aria-labelledby="authenticating" />\r
-        <h2 id="authenticating" class="mt-3">{{'github.callback.authenticating' | translate}}<span class="loading-dots"></span></h2>\r
-        } @else {\r
-        <p-message severity="error" size="large" icon="pi pi-exclamation-triangle" [text]="error()! | translate" />\r
-        }\r
-    </div>\r
-</div>` }]
-  }], null, null);
-})();
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AuthCallbackComponent, { className: "AuthCallbackComponent", filePath: "src/app/components/sign-in/auth-callback.component.ts", lineNumber: 19 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(HelpComponent, { className: "HelpComponent", filePath: "src/app/views/static/help/help.component.ts", lineNumber: 11 });
 })();
 
 // src/app/views/standalone/standalone.component.ts
@@ -85724,533 +86332,111 @@ var StandaloneComponent = class _StandaloneComponent {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(StandaloneComponent, { className: "StandaloneComponent", filePath: "src/app/views/standalone/standalone.component.ts", lineNumber: 15 });
 })();
 
-// src/app/components/export-html/cdts.template.ts
-var CDTS_TEMPLATE_ENG = `<!DOCTYPE html>
-<html class="no-js" dir="ltr" lang="en" xmlns="https://www.w3.org/1999/xhtml">
-    <head prefix="og: https://ogp.me/ns#">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta charset="utf-8">
-        <!-- Web Experience Toolkit (WET) / Bo\xEEte \xE0 outils de l'exp\xE9rience Web (BOEW) wet-boew.github.io/wet-boew/License-en.html / wet-boew.github.io/wet-boew/Licence-fr.html -->
-        <title>{{TITLE}}</title>
-        <meta content="width=device-width, initial-scale=1" name="viewport">
-        <link rel="schema.dcterms" href="https://purl.org/dc/terms/">
-        <!-- Meta data -->
-        <meta name="description" content="{{DESCRIPTION}}">
-        <meta name="keywords" content="{{KEYWORDS}}">
-        <meta name="author" content="Canada Revenue Agency">
-        <meta name="dcterms.creator" content="Canada Revenue Agency">
-        <meta name="robots" content="{{ROBOTS}}">
-        <meta name="dcterms.language" title="ISO639-2/T" content="eng">
-        <meta name="dcterms.audience" content="general public">
-        <meta name="dcterms.spatial" content="Canada">
-        <meta name="dcterms.type" content="service description">
-        <meta name="dcterms.identifier" content="Canada_Revenue_Agency">
-        <!-- Meta data -->
-        <link rel="stylesheet" href="https://www.canada.ca/etc/designs/canada/wet-boew/css/theme.min.css">
-        <link rel="stylesheet" href="https://www.canada.ca/etc/designs/canada/wet-boew/m\xE9li-m\xE9lo/2025-12-mille-iles.min.css">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
-        <!-- START of GitHub only testing banner CSS -->
-        <link rel="stylesheet" href="https://cra-test-arc.canada.ca/core-prototype/source/css/testing-banner.css">
-        <!-- END of GitHub only testing banner CSS -->
-        {{STYLES}}
-        <link href="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v5_0_4/wet-boew/assets/favicon.ico" rel="shortcut icon">
-    </head>
-    <body vocab="https://schema.org/" typeof="WebPage" resource="#wb-webpage">
-        <noscript>
-            <!-- Write closure fall-back static file -->
-            <!-- /ROOT/etc/designs/canada/cdts/gcweb/v4_0_43/cdts/static/refTop.html -->
-            <!--#include virtual="/app/cls/WET/gcweb/v4_0_43/cdts/static/refTop.html" -->
-        </noscript>
-        <!-- Load closure template scripts -->
-        <!--<script src="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v4_0_43/cdts/compiled/soyutils.js"><\/script>-->
-        <script src="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v5_0_4/cdts/compiled/wet-en.js"><\/script>
-        <!-- START of GitHub only template section -->
-        <data id="devoptions" data-loc-storage="gitCRATemplateDevOptions" value="true"></data>
-        <data id="exitpage" data-exit-by-url="false" data-mod-link-file="source/data/exclude-redirect-links.json" value="source/exit-intent-e.html"></data>
-        <data id="relextlnk" data-origin="https://www.canada.ca" value="false"></data>
-        <div id="site-banner-inc" class="wb-disable-allow" data-ajax-replace="https://cra-test-arc.canada.ca/core-prototype/source/includes/site-banner-e.inc"></div>
-        <!-- END of GitHub only template section -->
-        <div id="def-top">
-            <!-- Write closure fall-back static file -->
-            <!-- /ROOT/etc/designs/canada/cdts/gcweb/v4_0_43/cdts/static/top-en.html -->
-            <!--#include virtual="/app/cls/WET/gcweb/v4_0_43/cdts/static/top-en.html" -->
-        </div>
-        <!-- Write closure template -->
-        <script>
-            var defTop = document.getElementById("def-top");
-            defTop.outerHTML = wet.builder.top({
-                lngLinks: [{
-                    lang: "fr", 
-                    href: "{{FRENCH}}", 
-                    text: "Fran\xE7ais"
-                }], 
-                customSearch: [{
-                    action: "https://www.canada.ca/en/revenue-agency/search.html", 
-                    placeholder: "CRA", 
-                    method: "get", 
-                }], 
-                auth: [{
-                    type: "contextual", 
-                    label: "sign in", 
-                    labelExtended: "CRA sign in", 
-                    link: "https://www.canada.ca/en/revenue-agency/services/e-services/cra-login-services.html"
-                }], 
-                breadcrumbs: [{{BREADCRUMBS}}]
-            });
-        <\/script>
-        <!-- Write closure template -->
-        <div class="container">
-            <div class="row">
-                <main property="mainContentOfPage" resource="#wb-main" typeof="WebPageElement" class="container">
-                    {{HEADER}}
-
-                    {{CONTENT}}
-
-                    <section class="pagedetails">
-                        <h2 class="wb-inv">Page details</h2>
-                        <div class="row">
-                            <div class="col-sm-8 col-md-9 col-lg-9">
-                                <div data-ajax-replace="https://www.canada.ca/etc/designs/canada/wet-boew/assets/feedback/page-feedback-en.html" class="wb-disable-allow" data-feedback-section="{{TITLE}}" data-feedback-theme="Taxes" data-feedback-institution="."></div>
-                            </div>
-                        </div>
-                        <dl id="wb-dtmd">
-                            <dt>Date modified:</dt>
-                            <dd><time property="dateModified">{{MODIFIED}}</time></dd>
-                        </dl>
-                    </section>
-                    <div id="def-preFooter">
-                        <!-- Write closure fall-back static file -->
-                        <!-- /ROOT/etc/designs/canada/cdts/gcweb/v4_0_43/cdts/static/preFooter-en.html -->
-                        <!--#include virtual="/app/cls/WET/gcweb/v4_0_43/cdts/static/preFooter-en.html" -->
-                    </div>
-                </main>
-            </div>
-        </div>
-        <!-- Write closure template -->
-        <script>
-            var defPreFooter = document.getElementById("def-preFooter");
-            defPreFooter.outerHTML = wet.builder.preFooter({
-                showShare: false, 
-                pagedetails: false
-            });
-        <\/script>
-        <div id="def-footer">
-            <!-- Write closure fall-back static file -->
-            <!-- /ROOT/app/cls/WET/gcweb/v4_0_43/cdts/static/footer-en.html -->
-            <!--#include virtual="/app/cls/WET/gcweb/v4_0_43/cdts/static/footer-en.html" -->
-        </div>
-        <!-- Write closure template -->
-        <script>
-            var defFooter = document.getElementById("def-footer");
-            defFooter.outerHTML = wet.builder.footer({
-                privacyLink: {
-                    href: "https://www.canada.ca/en/revenue-agency/corporate/privacy-notice.html"
-                }, 
-                contextualFooter: {
-                    title: "Canada Revenue Agency (CRA)", 
-                    links: [{
-                        text: "Contact the CRA", 
-                        href: "https://www.canada.ca/en/revenue-agency/corporate/contact-information.html"
-                    }, {
-                        text: "Update your information", 
-                        href: "https://www.canada.ca/en/revenue-agency/services/update-information-cra.html"
-                    }, {
-                        text: "About the CRA", 
-                        href: "https://www.canada.ca/en/revenue-agency/corporate/about-canada-revenue-agency-cra.html"
-                    }]
-                }
-            });
-        <\/script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"><\/script>
-        <script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/wet-boew.min.js"><\/script>
-        <span id="wb-rsz" class="wb-init">&nbsp;</span>
-        <script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/theme.min.js"><\/script>
-        <script src="https://www.canada.ca/etc/designs/canada/wet-boew/m\xE9li-m\xE9lo/2025-12-mille-iles.min.js"><\/script>
-        {{SCRIPTS}}
-    </body>
-</html>`;
-var CDTS_TEMPLATE_FRA = `<!DOCTYPE html>
-<html class="no-js" dir="ltr" lang="fr" xmlns="https://www.w3.org/1999/xhtml">
-    <head prefix="og: https://ogp.me/ns#">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta charset="utf-8">
-        <!-- Web Experience Toolkit (WET) / Bo\xEEte \xE0 outils de l'exp\xE9rience Web (BOEW) wet-boew.github.io/wet-boew/License-en.html / wet-boew.github.io/wet-boew/Licence-fr.html -->
-        <title>{{TITLE}}</title>
-        <meta content="width=device-width, initial-scale=1" name="viewport">
-        <link rel="schema.dcterms" href="https://purl.org/dc/terms/">
-        <!-- Meta data -->
-        <meta name="description" content="{{DESCRIPTION}}">
-        <meta name="keywords" content="{{KEYWORDS}}">
-        <meta name="author" content="Agence du revenu du Canada">
-        <meta name="dcterms.creator" content="Agence du revenu du Canada">
-        <meta name="robots" content="{{ROBOTS}}">
-        <meta name="dcterms.language" title="ISO639-2/T" content="fra">
-        <meta name="dcterms.audience" content="general public">
-        <meta name="dcterms.spatial" content="Canada">
-        <meta name="dcterms.type" content="service description">
-        <meta name="dcterms.identifier" content="Agence_du_revenu_du_Canada">
-        <!-- Meta data -->
-        <link rel="stylesheet" href="https://www.canada.ca/etc/designs/canada/wet-boew/css/theme.min.css">
-        <link rel="stylesheet" href="https://www.canada.ca/etc/designs/canada/wet-boew/m\xE9li-m\xE9lo/2025-12-mille-iles.min.css">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
-        <!-- START of GitHub only testing banner CSS -->
-        <link rel="stylesheet" href="https://cra-test-arc.canada.ca/core-prototype/source/css/testing-banner.css">
-        <!-- END of GitHub only testing banner CSS -->
-        {{STYLES}}
-        <link href="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v5_0_4/wet-boew/assets/favicon.ico" rel="shortcut icon">
-    </head>
-    <body vocab="https://schema.org/" typeof="WebPage" resource="#wb-webpage">
-        <noscript>
-            <!-- Write closure fall-back static file -->
-            <!-- /ROOT/etc/designs/canada/cdts/gcweb/v4_0_43/cdts/static/refTop.html -->
-            <!--#include virtual="/app/cls/WET/gcweb/v4_0_43/cdts/static/refTop.html" -->
-        </noscript>
-        <!-- Load closure template scripts -->
-        <!--<script src="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v4_0_43/cdts/compiled/soyutils.js"><\/script>-->
-        <script src="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v5_0_4/cdts/compiled/wet-fr.js"><\/script>
-        <!-- START of GitHub only template section -->
-        <data id="devoptions" data-loc-storage="gitCRATemplateDevOptions" value="true"></data>
-        <data id="exitpage" data-exit-by-url="false" data-mod-link-file="source/data/exclude-redirect-links.json" value="source/exit-intent-f.html"></data>
-        <data id="relextlnk" data-origin="https://www.canada.ca" value="false"></data>
-        <div id="site-banner-inc" class="wb-disable-allow" data-ajax-replace="https://cra-test-arc.canada.ca/core-prototype/source/includes/site-banner-f.inc"></div>
-        <!-- END of GitHub only template section -->
-        <div id="def-top">
-            <!-- Write closure fall-back static file -->
-            <!-- /ROOT/etc/designs/canada/cdts/gcweb/v4_0_43/cdts/static/top-fr.html -->
-            <!--#include virtual="/app/cls/WET/gcweb/v4_0_43/cdts/static/top-fr.html" -->
-        </div>
-        <!-- Write closure template -->
-        <script>
-            var defTop = document.getElementById("def-top");
-            defTop.outerHTML = wet.builder.top({
-                lngLinks: [{
-                    lang: "en", 
-                    href: "{{ENGLISH}}", 
-                    text: "English"
-                }], 
-                customSearch: [{
-                    action: "https://www.canada.ca/fr/agence-revenu/recherche.html", 
-                    placeholder: "ARC", 
-                    method: "get", 
-                }], 
-                auth: [{
-                    type: "contextual", 
-                    label: "Se connecter", 
-                    labelExtended: "Se connecter \xE0 l'ARC", 
-                    link: "https://www.canada.ca/fr/agence-revenu/services/services-electroniques/services-ouverture-session-arc.html"
-                }], 
-                breadcrumbs: [{{BREADCRUMBS}}]
-            });
-        <\/script>
-        <!-- Write closure template -->
-        <div class="container">
-            <div class="row">
-                <main property="mainContentOfPage" resource="#wb-main" typeof="WebPageElement" class="container">
-                    {{HEADER}}
-
-                    {{CONTENT}}
-
-                    <section class="pagedetails">
-                        <h2 class="wb-inv">D\xE9tails de la page</h2>
-                        <div class="row">
-                            <div class="col-sm-8 col-md-9 col-lg-9">
-                                <div data-ajax-replace="https://www.canada.ca/etc/designs/canada/wet-boew/assets/feedback/page-feedback-fr.html" class="wb-disable-allow" data-feedback-section="{{TITLE}}" data-feedback-theme="Taxes" data-feedback-institution="."></div>
-                            </div>
-                        </div>
-                        <dl id="wb-dtmd">
-                            <dt>Date de modification :</dt>
-                            <dd><time property="dateModified">{{MODIFIED}}</time></dd>
-                        </dl>
-                    </section>
-                    <div id="def-preFooter">
-                        <!-- Write closure fall-back static file -->
-                        <!-- /ROOT/etc/designs/canada/cdts/gcweb/v4_0_43/cdts/static/preFooter-fr.html -->
-                        <!--#include virtual="/app/cls/WET/gcweb/v4_0_43/cdts/static/preFooter-fr.html" -->
-                    </div>
-                </main>
-            </div>
-        </div>
-        <!-- Write closure template -->
-        <script>
-            var defPreFooter = document.getElementById("def-preFooter");
-            defPreFooter.outerHTML = wet.builder.preFooter({
-                showShare: false, 
-                pagedetails: false
-            });
-        <\/script>
-        <div id="def-footer">
-            <!-- Write closure fall-back static file -->
-            <!-- /ROOT/app/cls/WET/gcweb/v4_0_43/cdts/static/footer-fr.html -->
-            <!--#include virtual="/app/cls/WET/gcweb/v4_0_43/cdts/static/footer-fr.html" -->
-        </div>
-        <!-- Write closure template -->
-        <script>
-            var defFooter = document.getElementById("def-footer");
-            defFooter.outerHTML = wet.builder.footer({
-                privacyLink: {
-                    href: "https://www.canada.ca/fr/agence-revenu/organisation/avis-confidentialite.html"
-                }, 
-                contextualFooter: {
-                    title: "Agence du revenu du Canada (ARC)", 
-                    links: [{
-                        text: "Contacter l'ARC", 
-                        href: "https://www.canada.ca/fr/agence-revenu/organisation/coordonnees.html"
-                    }, {
-                        text: "Mettre \xE0 jour vos renseignements", 
-                        href: "https://www.canada.ca/fr/agence-revenu/services/mettre-a-jour-renseignements-arc.html"
-                    }, {
-                        text: "\xC0 propos de l'ARC", 
-                        href: "https://www.canada.ca/fr/agence-revenu/organisation/a-propos-agence-revenu-canada-arc.html"
-                    }]
-                }
-            });
-        <\/script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"><\/script>
-        <script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/wet-boew.min.js"><\/script>
-        <span id="wb-rsz" class="wb-init">&nbsp;</span>
-        <script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/theme.min.js"><\/script>
-        <script src="https://www.canada.ca/etc/designs/canada/wet-boew/m\xE9li-m\xE9lo/2025-12-mille-iles.min.js"><\/script>
-        {{SCRIPTS}}
-    </body>
-</html>`;
-
-// src/app/components/export-html/export-html.component.ts
-var _forTrack09 = ($index, $item) => $item.url;
-function ExportHTMLComponent_Conditional_12_For_5_Template(rf, ctx) {
+// src/app/components/sign-in/auth-callback.component.ts
+function AuthCallbackComponent_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    const _r1 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 9)(1, "p-checkbox", 10);
-    \u0275\u0275listener("ngModelChange", function ExportHTMLComponent_Conditional_12_For_5_Template_p_checkbox_ngModelChange_1_listener($event) {
-      const \u0275$index_27_r2 = \u0275\u0275restoreView(_r1).$index;
-      const ctx_r2 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r2.toggleExportUrl(\u0275$index_27_r2, $event));
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(2, "label", 11);
-    \u0275\u0275text(3);
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    const item_r4 = ctx.$implicit;
-    const \u0275$index_27_r2 = ctx.$index;
-    \u0275\u0275advance();
-    \u0275\u0275property("ngModel", item_r4.selected)("inputId", "url-" + \u0275$index_27_r2)("binary", true);
-    \u0275\u0275advance();
-    \u0275\u0275property("for", "url-" + \u0275$index_27_r2);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(item_r4.url);
-  }
-}
-function ExportHTMLComponent_Conditional_12_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "h3", 7);
-    \u0275\u0275text(1);
-    \u0275\u0275pipe(2, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "div", 8);
-    \u0275\u0275repeaterCreate(4, ExportHTMLComponent_Conditional_12_For_5_Template, 4, 5, "div", 9, _forTrack09);
+    \u0275\u0275element(0, "p-progressSpinner", 3);
+    \u0275\u0275elementStart(1, "h2", 4);
+    \u0275\u0275text(2);
+    \u0275\u0275pipe(3, "translate");
+    \u0275\u0275element(4, "span", 5);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext();
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 1, "common.urls"));
-    \u0275\u0275advance(3);
-    \u0275\u0275repeater(ctx_r2.exportUrls());
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 1, "github.callback.authenticating"));
   }
 }
-function ExportHTMLComponent_Conditional_13_Template(rf, ctx) {
+function AuthCallbackComponent_Conditional_3_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p");
-    \u0275\u0275text(1);
-    \u0275\u0275pipe(2, "translate");
-    \u0275\u0275elementEnd();
+    \u0275\u0275element(0, "p-message", 2);
+    \u0275\u0275pipe(1, "translate");
   }
   if (rf & 2) {
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 1, "exportHTML.noUrls"));
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275property("text", \u0275\u0275pipeBind1(1, 1, ctx_r0.error()));
   }
 }
-var ExportHTMLComponent = class _ExportHTMLComponent {
-  translate = inject(TranslateService);
-  projectState = inject(ProjectStateService);
-  fetchService = inject(FetchService);
-  htmlNormalizationService = inject(HtmlNormalizationService);
-  //Language options
-  primaryLang = this.projectState.detectPrimaryLanguage();
-  selectedLanguage = signal(this.primaryLang);
-  get languageOptions() {
-    return [
-      { label: this.translate.instant("common.language.english"), value: "en" },
-      { label: this.translate.instant("common.language.french"), value: "fr" },
-      { label: this.translate.instant("common.both"), value: "both" }
-    ];
+var AuthCallbackComponent = class _AuthCallbackComponent {
+  route = inject(ActivatedRoute);
+  router = inject(Router);
+  authService = inject(GitHubAuthService);
+  error = signal(null);
+  markForTranslation() {
+    marker("github.callback.error.invalidParams");
+    marker("github.callback.error.githubError");
+    marker("github.callback.error.serverError");
   }
-  //URLs to export
-  exportUrls = signal([]);
-  constructor() {
-    effect(() => {
-      const lang = this.selectedLanguage();
-      if (lang === "both") {
-        this.exportUrls.set([
-          ...[...this.projectState.getAllUrls("inScope", "en")].map((url) => ({ url, selected: true })),
-          ...[...this.projectState.getAllUrls("inScope", "fr")].map((url) => ({ url, selected: true }))
-        ]);
-      } else {
-        this.exportUrls.set([...this.projectState.getAllUrls("inScope", lang)].map((url) => ({ url, selected: true })));
-      }
-    });
+  ngOnInit() {
+    const params = this.route.snapshot.queryParams;
+    const code = params["code"];
+    const state2 = params["state"];
+    const error = params["error"];
+    if (!code && !state2 && !error) {
+      this.router.navigate(["/"], { replaceUrl: true });
+      return;
+    }
+    if (error) {
+      console.error("OAuth GitHub error:", error);
+      this.error.set("github.callback.error.githubError");
+      return;
+    }
+    if (!code || !state2) {
+      this.error.set("github.callback.error.invalidParams");
+      return;
+    }
+    this.handleCallback(code, state2);
   }
-  toggleExportUrl(index, selected) {
-    this.exportUrls.update((urls) => {
-      const updated = [...urls];
-      updated[index] = __spreadProps(__spreadValues({}, updated[index]), { selected });
-      return updated;
-    });
-  }
-  //Export selected pages
-  exportToFile() {
+  handleCallback(code, state2) {
     return __async(this, null, function* () {
-      const JSZip = (yield import("./chunk-SOT2YPTI.js")).default;
-      const zip = new JSZip();
-      const project = this.projectState.generateUrlFragment(this.projectState.getProject().projectName ?? "") || "my";
-      const urls = this.exportUrls().filter((item) => item.selected).map((item) => item.url);
-      for (const url of urls) {
-        const path = this.fetchService.generatePath(url);
-        const lang = this.fetchService.getLang(url);
-        const node = this.projectState.findNodeByPath(this.projectState.getProjectTree(), path, lang);
-        const h1 = node?.data.prototype[lang].h1;
-        const doubleH1 = node?.data.prototype[lang].doubleH1;
-        const title = doubleH1 ? `${h1}: ${doubleH1}` : h1;
-        const description = node?.data.prototype[lang].description;
-        const keywords = node?.data.prototype[lang].keywords;
-        const robots = node?.data.prototype[lang].noindex ? "noindex, nofollow" : "index, follow";
-        const enUrl = this.fetchService.generateUrl(node?.data.path.en, "live");
-        const frUrl = this.fetchService.generateUrl(node?.data.path.fr, "live");
-        const breadcrumbs = this.projectState.getBreadcrumbChain(path, lang).map((b) => `{ title: "${b.title}", href: "${b.link}" }`).join(", ");
-        ;
-        const header = doubleH1 ? `<p class="lead mrgn-tp-md mrgn-bttm-0 text-muted">${doubleH1}</p>
-<h1 property="name" id="wb-cont" dir="ltr" class="mrgn-tp-0">${h1}</h1>` : `<h1 property="name" id="wb-cont" dir="ltr">${h1}</h1>`;
-        const template = node?.data.prototype[lang].template;
-        const doc = yield this.fetchService.fetchContent(url, "both");
-        const { content, styles, scripts } = yield this.htmlNormalizationService.cleanContentForCdts(doc);
-        const date = (/* @__PURE__ */ new Date()).toISOString().split("T")[0];
-        const html = this.buildCdtsPage(lang === "fr" ? CDTS_TEMPLATE_FRA : CDTS_TEMPLATE_ENG, {
-          TITLE: title ?? "",
-          DESCRIPTION: description ?? "",
-          KEYWORDS: keywords ?? "",
-          ROBOTS: robots,
-          ENGLISH: enUrl ?? "",
-          FRENCH: frUrl ?? "",
-          BREADCRUMBS: breadcrumbs,
-          HEADER: header ?? "",
-          CONTENT: content,
-          MODIFIED: date,
-          STYLES: styles,
-          SCRIPTS: scripts
-        });
-        const file = path.split("/").pop();
-        zip.file(`${path}/${file}`, html);
+      try {
+        yield this.authService.handleCallback(code, state2);
+        const returnUrl = sessionStorage.getItem("github_oauth_return_url") || "/export-pages";
+        sessionStorage.removeItem("github_oauth_return_url");
+        this.router.navigate([returnUrl], { replaceUrl: true });
+      } catch (error) {
+        this.error.set("github.callback.error.serverError");
+        console.error("OAuth AWS server error:", error);
       }
-      const blob = yield zip.generateAsync({ type: "blob" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = `${project}-html-export-${(/* @__PURE__ */ new Date()).toISOString().split("T")[0]}.zip`;
-      a.click();
-      URL.revokeObjectURL(a.href);
     });
   }
-  buildCdtsPage(template, vars) {
-    return Object.entries(vars).reduce((html, [key2, value]) => html.replaceAll(`{{${key2}}}`, value), template);
-  }
-  static \u0275fac = function ExportHTMLComponent_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _ExportHTMLComponent)();
+  static \u0275fac = function AuthCallbackComponent_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _AuthCallbackComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _ExportHTMLComponent, selectors: [["aida-export-html"]], decls: 14, vars: 12, consts: [["id", "wb-cont"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "my-3", "lg:mt-0", "min-w-min"], [1, "flex", "flex-row", "align-items-end", "gap-2"], [1, "flex", "flex-column", "hover:text-primary"], ["for", "lang", 1, "text-xs", "font-semibold", "xl:my-1"], ["id", "lang", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "size", "small", "styleClass", "secondary-outline text-primary max-h-3rem", 3, "ngModelChange", "options", "ngModel"], ["icon", "pi pi-file-export", "size", "small", 1, "min-w-max", 3, "onClick", "label"], [1, "text-xl", "my-2"], [1, "flex", "flex-column", "gap-2", "max-h-64", "overflow-y-auto", "border", "border-color-border", "p-2", "rounded"], [1, "flex", "align-items-center", "gap-2"], ["size", "large", 3, "ngModelChange", "ngModel", "inputId", "binary"], [1, "break-all", 3, "for"]], template: function ExportHTMLComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AuthCallbackComponent, selectors: [["aida-auth-callback"]], decls: 4, vars: 1, consts: [[1, "flex", "align-items-center", "justify-content-center", 2, "min-height", "60vh"], [1, "text-center"], ["severity", "error", "size", "large", "icon", "pi pi-exclamation-triangle", 3, "text"], ["aria-labelledby", "authenticating"], ["id", "authenticating", 1, "mt-3"], [1, "loading-dots"]], template: function AuthCallbackComponent_Template(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275elementStart(0, "h1", 0);
-      \u0275\u0275text(1);
-      \u0275\u0275pipe(2, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(3, "div", 1)(4, "div", 2)(5, "div", 3)(6, "label", 4);
-      \u0275\u0275text(7);
-      \u0275\u0275pipe(8, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(9, "p-selectButton", 5);
-      \u0275\u0275twoWayListener("ngModelChange", function ExportHTMLComponent_Template_p_selectButton_ngModelChange_9_listener($event) {
-        \u0275\u0275twoWayBindingSet(ctx.selectedLanguage, $event) || (ctx.selectedLanguage = $event);
-        return $event;
-      });
+      \u0275\u0275elementStart(0, "div", 0)(1, "div", 1);
+      \u0275\u0275template(2, AuthCallbackComponent_Conditional_2_Template, 5, 3)(3, AuthCallbackComponent_Conditional_3_Template, 2, 3, "p-message", 2);
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(10, "p-button", 6);
-      \u0275\u0275pipe(11, "translate");
-      \u0275\u0275listener("onClick", function ExportHTMLComponent_Template_p_button_onClick_10_listener() {
-        return ctx.exportToFile();
-      });
-      \u0275\u0275elementEnd()();
-      \u0275\u0275template(12, ExportHTMLComponent_Conditional_12_Template, 6, 3)(13, ExportHTMLComponent_Conditional_13_Template, 3, 3, "p");
-      \u0275\u0275elementEnd();
     }
     if (rf & 2) {
-      \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 6, "exportHTML._title"));
-      \u0275\u0275advance(6);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(8, 8, "common.language"));
       \u0275\u0275advance(2);
-      \u0275\u0275property("options", ctx.languageOptions);
-      \u0275\u0275twoWayProperty("ngModel", ctx.selectedLanguage);
-      \u0275\u0275advance();
-      \u0275\u0275property("label", \u0275\u0275pipeBind1(11, 10, "exportHTML.button.export"));
-      \u0275\u0275advance(2);
-      \u0275\u0275conditional(ctx.exportUrls().length > 0 ? 12 : ctx.exportUrls().length === 0 ? 13 : -1);
+      \u0275\u0275conditional(!ctx.error() ? 2 : 3);
     }
-  }, dependencies: [FormsModule, NgControlStatus, NgModel, TranslateModule, TranslatePipe, SelectButtonModule, SelectButton, CheckboxModule, Checkbox, ButtonModule, Button], encapsulation: 2 });
+  }, dependencies: [CommonModule, TranslateModule, TranslatePipe, ProgressSpinnerModule, ProgressSpinner, MessageModule, Message], encapsulation: 2 });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(ExportHTMLComponent, [{
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(AuthCallbackComponent, [{
     type: Component,
-    args: [{ selector: "aida-export-html", imports: [
-      FormsModule,
+    args: [{ selector: "aida-auth-callback", imports: [
+      CommonModule,
       TranslateModule,
-      SelectButtonModule,
-      CheckboxModule,
-      ButtonModule
-    ], template: `<h1 id="wb-cont">{{ 'exportHTML._title' | translate }}</h1>\r
-\r
-<div class="surface-card border-round-lg shadow-2 p-4 my-3 lg:mt-0 min-w-min">\r
-    <div class="flex flex-row align-items-end gap-2">\r
-        <div class="flex flex-column hover:text-primary">\r
-            <label for="lang" class="text-xs font-semibold xl:my-1">{{ 'common.language' | translate }}</label>\r
-            <p-selectButton id="lang" allowEmpty="false" optionLabel="label" optionValue="value" size="small" styleClass="secondary-outline text-primary max-h-3rem"\r
-                            [options]="languageOptions" [(ngModel)]="selectedLanguage" />\r
-        </div>\r
-        <p-button [label]="'exportHTML.button.export' | translate" icon="pi pi-file-export" class="min-w-max" size="small"\r
-                  (onClick)="exportToFile()" />\r
-    </div>\r
-\r
-    @if(exportUrls().length > 0) {\r
-    <h3 class="text-xl my-2">{{'common.urls' | translate}}</h3>\r
-\r
-    <div class="flex flex-column gap-2 max-h-64 overflow-y-auto border border-color-border p-2 rounded">\r
-        @for(item of exportUrls(); track item.url; let i = $index) {\r
-        <div class="flex align-items-center gap-2">\r
-            <p-checkbox\r
-                        [ngModel]="item.selected"\r
-                        (ngModelChange)="toggleExportUrl(i, $event)"\r
-                        [inputId]="'url-' + i"\r
-                        [binary]="true"\r
-                        size="large" />\r
-            <label [for]="'url-' + i" class="break-all">{{item.url}}</label>\r
-        </div>\r
+      ProgressSpinnerModule,
+      MessageModule
+    ], template: `<div class="flex align-items-center justify-content-center" style="min-height: 60vh;">\r
+    <div class="text-center">\r
+        @if (!error()) {\r
+        <p-progressSpinner aria-labelledby="authenticating" />\r
+        <h2 id="authenticating" class="mt-3">{{'github.callback.authenticating' | translate}}<span class="loading-dots"></span></h2>\r
+        } @else {\r
+        <p-message severity="error" size="large" icon="pi pi-exclamation-triangle" [text]="error()! | translate" />\r
         }\r
     </div>\r
-    }\r
-    @else if(exportUrls().length === 0) { <p>{{ 'exportHTML.noUrls' | translate }}</p> }\r
 </div>` }]
-  }], () => [], null);
+  }], null, null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(ExportHTMLComponent, { className: "ExportHTMLComponent", filePath: "src/app/components/export-html/export-html.component.ts", lineNumber: 25 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AuthCallbackComponent, { className: "AuthCallbackComponent", filePath: "src/app/components/sign-in/auth-callback.component.ts", lineNumber: 19 });
 })();
 
 // src/app/app.routes.ts
@@ -86305,24 +86491,14 @@ var routes = [
     title: "importPage._title"
   },
   {
-    path: "auth/login",
-    component: GithubConnectComponent,
-    title: "app._title"
-  },
-  {
     path: "auth/callback",
     component: AuthCallbackComponent,
     title: "app._title"
   },
   {
-    path: "export-github",
-    component: ExportGithubComponent,
-    title: "github._nav"
-  },
-  {
-    path: "export-html",
-    component: ExportHTMLComponent,
-    title: "exportHTML._nav"
+    path: "export-pages",
+    component: ExportComponent,
+    title: "exportPages._nav"
   },
   {
     path: "inventory",
@@ -86374,27 +86550,27 @@ var routes = [
   },
   {
     path: "dev",
-    loadComponent: () => import("./chunk-2SZXBSKB.js").then((m) => m.DevToolsComponent),
+    loadComponent: () => import("./chunk-HUBQP3QR.js").then((m) => m.DevToolsComponent),
     title: "dev._title"
   },
   {
     path: "dev/monitoring",
-    loadComponent: () => import("./chunk-VJBATYUM.js").then((m) => m.UsageMonitoringComponent),
+    loadComponent: () => import("./chunk-NIQNMU6W.js").then((m) => m.UsageMonitoringComponent),
     title: "dev.usage._title"
   },
   {
     path: "dev/color-generator",
-    loadComponent: () => import("./chunk-LGOXRD7W.js").then((m) => m.ColorGeneratorComponent),
+    loadComponent: () => import("./chunk-TOI6QXLN.js").then((m) => m.ColorGeneratorComponent),
     title: "dev.colors._title"
   },
   {
     path: "dev/design-patterns",
-    loadComponent: () => import("./chunk-VCOYCBIR.js").then((m) => m.DesignPatternsComponent),
+    loadComponent: () => import("./chunk-AKGAHZEG.js").then((m) => m.DesignPatternsComponent),
     title: "dev.patterns._title"
   },
   {
     path: "dev/prompt-editor",
-    loadComponent: () => import("./chunk-SBLWOERQ.js").then((m) => m.PromptEditorComponent),
+    loadComponent: () => import("./chunk-JML25WZT.js").then((m) => m.PromptEditorComponent),
     title: "dev.prompts._title"
   },
   {
@@ -86450,7 +86626,7 @@ var appConfig = {
 
 // node_modules/primeng/fesm2022/primeng-toast.mjs
 var _c040 = ["container"];
-var _c158 = (a0, a1, a2, a3) => ({
+var _c159 = (a0, a1, a2, a3) => ({
   showTransformParams: a0,
   hideTransformParams: a1,
   showTransitionParams: a2,
@@ -87131,7 +87307,7 @@ var ToastItem = class _ToastItem extends BaseComponent {
       }
       if (rf & 2) {
         \u0275\u0275classMap(ctx.message == null ? null : ctx.message.styleClass);
-        \u0275\u0275property("ngClass", ctx.cx("message"))("@messageState", \u0275\u0275pureFunction1(13, _c237, \u0275\u0275pureFunction4(8, _c158, ctx.showTransformOptions, ctx.hideTransformOptions, ctx.showTransitionOptions, ctx.hideTransitionOptions)));
+        \u0275\u0275property("ngClass", ctx.cx("message"))("@messageState", \u0275\u0275pureFunction1(13, _c237, \u0275\u0275pureFunction4(8, _c159, ctx.showTransformOptions, ctx.hideTransformOptions, ctx.showTransitionOptions, ctx.hideTransitionOptions)));
         \u0275\u0275attribute("id", ctx.message == null ? null : ctx.message.id)("data-pc-name", "toast")("data-pc-section", "root");
         \u0275\u0275advance(2);
         \u0275\u0275conditional(ctx.headlessTemplate ? 2 : 3);
@@ -87742,6 +87918,336 @@ var ToastModule = class _ToastModule {
   }], null, null);
 })();
 
+// src/app/components/sign-in/sign-in-button.component.ts
+var _c041 = () => ({ width: "50vw" });
+var _c160 = () => ({ "1199px": "75vw", "575": "90vw" });
+function SignInButtonComponent_ng_template_2_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "span", 15);
+    \u0275\u0275text(1);
+    \u0275\u0275pipe(2, "translate");
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const item_r2 = ctx.$implicit;
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 1, item_r2.label));
+  }
+}
+function SignInButtonComponent_ng_template_4_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "a", 16);
+    \u0275\u0275element(1, "i");
+    \u0275\u0275elementStart(2, "span");
+    \u0275\u0275text(3);
+    \u0275\u0275pipe(4, "translate");
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    const item_r3 = ctx.$implicit;
+    \u0275\u0275advance();
+    \u0275\u0275classMap(item_r3.icon);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 3, item_r3.label));
+  }
+}
+function SignInButtonComponent_Conditional_6_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r4 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p-button", 17);
+    \u0275\u0275listener("onClick", function SignInButtonComponent_Conditional_6_Template_p_button_onClick_0_listener($event) {
+      \u0275\u0275restoreView(_r4);
+      \u0275\u0275nextContext();
+      const menu_r5 = \u0275\u0275reference(1);
+      return \u0275\u0275resetView(menu_r5.toggle($event));
+    });
+    \u0275\u0275element(1, "p-avatar", 18);
+    \u0275\u0275elementStart(2, "div", 19);
+    \u0275\u0275text(3);
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    const user_r6 = ctx;
+    \u0275\u0275property("outlined", true);
+    \u0275\u0275advance();
+    \u0275\u0275property("image", user_r6.avatar_url);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(user_r6.name || user_r6.login);
+  }
+}
+function SignInButtonComponent_Conditional_7_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r7 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p-button", 17);
+    \u0275\u0275listener("onClick", function SignInButtonComponent_Conditional_7_Template_p_button_onClick_0_listener() {
+      \u0275\u0275restoreView(_r7);
+      const ctx_r7 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r7.connectGitHub());
+    });
+    \u0275\u0275element(1, "i", 20);
+    \u0275\u0275elementStart(2, "div", 19);
+    \u0275\u0275text(3);
+    \u0275\u0275pipe(4, "translate");
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    \u0275\u0275property("outlined", true);
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 2, "common.signin"));
+  }
+}
+var SignInButtonComponent = class _SignInButtonComponent {
+  http = inject(HttpClient);
+  router = inject(Router);
+  authService = inject(GitHubAuthService);
+  exportGitHubService = inject(ExportGitHubService);
+  projectStorageService = inject(ProjectStorageService);
+  projectState = inject(ProjectStateService);
+  translate = inject(TranslateService);
+  // Variables
+  showPatSignIn = false;
+  showSettings = false;
+  connectGitHub() {
+    if (this.isApiGatewayAccessible()) {
+      this.authService.login(["repo", "user"]);
+    } else {
+      this.showPatSignIn = true;
+    }
+  }
+  validatePAT() {
+    this.showPatSignIn = false;
+    this.exportGitHubService.validatePAT();
+  }
+  markForTranslation() {
+    marker("common.new");
+    marker("common.search");
+    marker("common.signout");
+    marker("settings._nav");
+    marker("common.projects");
+    marker("common.profile");
+  }
+  items = [
+    {
+      label: "common.projects",
+      items: [
+        {
+          label: "common.new",
+          icon: "pi pi-plus",
+          command: () => {
+            this.projectStorageService.clearActiveProject();
+            this.projectState.resetProject();
+            this.router.navigate(["/new-project"]);
+          }
+        },
+        {
+          label: "common.search",
+          icon: "pi pi-search",
+          command: () => {
+            this.router.navigate(["/switch-project"]);
+          }
+        }
+      ]
+    },
+    {
+      label: "common.profile",
+      items: [
+        {
+          label: "settings._nav",
+          icon: "pi pi-cog",
+          command: () => {
+            this.showSettings = true;
+          }
+        },
+        {
+          label: "common.signout",
+          icon: "pi pi-sign-out",
+          command: () => {
+            this.authService.logout();
+            this.exportGitHubService.clearPAT();
+          }
+        }
+      ]
+    }
+  ];
+  // Signal to track if API Gateway is accessible
+  isApiGatewayAccessible = signal(true);
+  // Check if API gateway is available so we can surface the preferred sign-in method
+  checkApiGatewayAccess() {
+    if (window.location.hostname === "localhost") {
+      this.isApiGatewayAccessible.set(false);
+      return;
+    }
+    this.http.get(`${environment.apiGateway}/auth/github/url`, {
+      observe: "response"
+    }).pipe(timeout(3e3), catchError(() => {
+      return of(null);
+    })).subscribe((response) => {
+      this.isApiGatewayAccessible.set(response !== null);
+    });
+  }
+  ngOnInit() {
+    this.checkApiGatewayAccess();
+  }
+  static \u0275fac = function SignInButtonComponent_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _SignInButtonComponent)();
+  };
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SignInButtonComponent, selectors: [["aida-sign-in-button"]], decls: 29, vars: 27, consts: [["menu", ""], ["submenuheader", ""], ["item", ""], [3, "model", "popup"], ["size", "small", "rounded", "", "outlined", "", "styleClass", "secondary-outline p-1", 3, "outlined"], [1, "w-12", "lg:w-8", 3, "visibleChange", "header", "modal", "visible"], [1, "flex", "flex-row", "align-items-center", "gap-3", "-mt-2"], [1, "pi", "pi-key", "text-6xl", "text-900"], [1, "w-full"], [1, "text-sm", "text-color-secondary", "my-2"], [1, "flex", "justify-content-end", "mt-2"], [3, "onClick", "label"], [3, "visibleChange", "header", "modal", "visible", "breakpoints"], [1, "flex", "flex-row", "align-items-center", "gap-3"], [1, "pi", "pi-cog", "text-6xl", "text-900"], [1, "text-primary", "font-bold"], [1, "p-menu-item-link"], ["size", "small", "rounded", "", "outlined", "", "styleClass", "secondary-outline p-1", 3, "onClick", "outlined"], ["shape", "circle", 3, "image"], [1, "font-semibold", "pr-2"], [1, "pi", "pi-github", "text-4xl", "text-color-secondary"]], template: function SignInButtonComponent_Template(rf, ctx) {
+    if (rf & 1) {
+      const _r1 = \u0275\u0275getCurrentView();
+      \u0275\u0275elementStart(0, "p-menu", 3, 0);
+      \u0275\u0275template(2, SignInButtonComponent_ng_template_2_Template, 3, 3, "ng-template", null, 1, \u0275\u0275templateRefExtractor)(4, SignInButtonComponent_ng_template_4_Template, 5, 5, "ng-template", null, 2, \u0275\u0275templateRefExtractor);
+      \u0275\u0275elementEnd();
+      \u0275\u0275template(6, SignInButtonComponent_Conditional_6_Template, 4, 3, "p-button", 4)(7, SignInButtonComponent_Conditional_7_Template, 5, 4, "p-button", 4);
+      \u0275\u0275elementStart(8, "p-dialog", 5);
+      \u0275\u0275pipe(9, "translate");
+      \u0275\u0275twoWayListener("visibleChange", function SignInButtonComponent_Template_p_dialog_visibleChange_8_listener($event) {
+        \u0275\u0275restoreView(_r1);
+        \u0275\u0275twoWayBindingSet(ctx.showPatSignIn, $event) || (ctx.showPatSignIn = $event);
+        return \u0275\u0275resetView($event);
+      });
+      \u0275\u0275elementStart(10, "div", 6);
+      \u0275\u0275element(11, "i", 7);
+      \u0275\u0275elementStart(12, "div", 8)(13, "p", 9);
+      \u0275\u0275text(14);
+      \u0275\u0275pipe(15, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275element(16, "aida-pat");
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(17, "div", 10)(18, "p-button", 11);
+      \u0275\u0275pipe(19, "translate");
+      \u0275\u0275listener("onClick", function SignInButtonComponent_Template_p_button_onClick_18_listener() {
+        \u0275\u0275restoreView(_r1);
+        return \u0275\u0275resetView(ctx.validatePAT());
+      });
+      \u0275\u0275elementEnd()()();
+      \u0275\u0275elementStart(20, "p-dialog", 12);
+      \u0275\u0275pipe(21, "translate");
+      \u0275\u0275twoWayListener("visibleChange", function SignInButtonComponent_Template_p_dialog_visibleChange_20_listener($event) {
+        \u0275\u0275restoreView(_r1);
+        \u0275\u0275twoWayBindingSet(ctx.showSettings, $event) || (ctx.showSettings = $event);
+        return \u0275\u0275resetView($event);
+      });
+      \u0275\u0275elementStart(22, "div", 13);
+      \u0275\u0275element(23, "i", 14);
+      \u0275\u0275elementStart(24, "div", 8);
+      \u0275\u0275element(25, "aida-user-settings");
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(26, "div", 10)(27, "p-button", 11);
+      \u0275\u0275pipe(28, "translate");
+      \u0275\u0275listener("onClick", function SignInButtonComponent_Template_p_button_onClick_27_listener() {
+        \u0275\u0275restoreView(_r1);
+        return \u0275\u0275resetView(ctx.showSettings = false);
+      });
+      \u0275\u0275elementEnd()()();
+    }
+    if (rf & 2) {
+      let tmp_5_0;
+      \u0275\u0275property("model", ctx.items)("popup", true);
+      \u0275\u0275advance(6);
+      \u0275\u0275conditional((tmp_5_0 = ctx.exportGitHubService.user()) ? 6 : 7, tmp_5_0);
+      \u0275\u0275advance(2);
+      \u0275\u0275property("header", \u0275\u0275pipeBind1(9, 15, "github.connect.pat.header"))("modal", true);
+      \u0275\u0275twoWayProperty("visible", ctx.showPatSignIn);
+      \u0275\u0275advance(6);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(15, 17, "github.connect.pat.description"));
+      \u0275\u0275advance(4);
+      \u0275\u0275property("label", \u0275\u0275pipeBind1(19, 19, "common.signin"));
+      \u0275\u0275advance(2);
+      \u0275\u0275styleMap(\u0275\u0275pureFunction0(25, _c041));
+      \u0275\u0275property("header", \u0275\u0275pipeBind1(21, 21, "settings._title"))("modal", true);
+      \u0275\u0275twoWayProperty("visible", ctx.showSettings);
+      \u0275\u0275property("breakpoints", \u0275\u0275pureFunction0(26, _c160));
+      \u0275\u0275advance(7);
+      \u0275\u0275property("label", \u0275\u0275pipeBind1(28, 23, "common.close"));
+    }
+  }, dependencies: [
+    CommonModule,
+    TranslateModule,
+    TranslatePipe,
+    ButtonModule,
+    Button,
+    AvatarModule,
+    Avatar,
+    PopoverModule,
+    MenuModule,
+    Menu,
+    DialogModule,
+    Dialog,
+    IftaLabelModule,
+    PasswordModule,
+    PatComponent,
+    UserSettingsComponent
+  ], encapsulation: 2 });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(SignInButtonComponent, [{
+    type: Component,
+    args: [{ selector: "aida-sign-in-button", imports: [
+      CommonModule,
+      TranslateModule,
+      ButtonModule,
+      AvatarModule,
+      PopoverModule,
+      MenuModule,
+      DialogModule,
+      IftaLabelModule,
+      PasswordModule,
+      PatComponent,
+      UserSettingsComponent
+    ], template: `<p-menu #menu [model]="items" [popup]="true">\r
+    <ng-template #submenuheader let-item>\r
+        <span class="text-primary font-bold">{{ item.label | translate}}</span>\r
+    </ng-template>\r
+    <ng-template #item let-item>\r
+        <a class="p-menu-item-link">\r
+            <i [class]="item.icon"></i>\r
+            <span>{{ item.label | translate}}</span>\r
+        </a>\r
+    </ng-template>\r
+</p-menu>\r
+\r
+@if (exportGitHubService.user(); as user) {\r
+<p-button [outlined]="true" size="small" rounded outlined styleClass="secondary-outline p-1" (onClick)="menu.toggle($event)">\r
+    <p-avatar [image]="user.avatar_url" shape="circle" />\r
+    <div class="font-semibold pr-2">{{ user.name || user.login }}</div>\r
+</p-button>\r
+} @else {\r
+<p-button [outlined]="true" size="small" rounded outlined styleClass="secondary-outline p-1" (onClick)="connectGitHub()">\r
+    <i class="pi pi-github text-4xl text-color-secondary"></i>\r
+    <div class="font-semibold pr-2">{{'common.signin' | translate}}</div>\r
+</p-button>\r
+}\r
+\r
+<p-dialog [header]="'github.connect.pat.header' | translate" [modal]="true" [(visible)]="showPatSignIn" class="w-12 lg:w-8">\r
+    <div class="flex flex-row align-items-center gap-3 -mt-2">\r
+        <i class="pi pi-key text-6xl text-900"></i>\r
+        <div class="w-full">\r
+            <p class="text-sm text-color-secondary my-2">{{ 'github.connect.pat.description' | translate }}</p>\r
+            <aida-pat />\r
+        </div>\r
+    </div>\r
+    <div class="flex justify-content-end mt-2">\r
+        <p-button [label]="'common.signin' | translate" (onClick)="validatePAT()" />\r
+    </div>\r
+</p-dialog>\r
+\r
+<p-dialog [header]="'settings._title' | translate" [modal]="true" [(visible)]="showSettings" [style]="{width: '50vw'}" [breakpoints]="{'1199px': '75vw', '575': '90vw'}">\r
+    <div class="flex flex-row align-items-center gap-3">\r
+        <i class="pi pi-cog text-6xl text-900"></i>\r
+        <div class="w-full">\r
+            <aida-user-settings />\r
+        </div>\r
+    </div>\r
+    <div class="flex justify-content-end mt-2">\r
+        <p-button [label]="'common.close' | translate" (onClick)="showSettings = false" />\r
+    </div>\r
+</p-dialog>` }]
+  }], null, null);
+})();
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SignInButtonComponent, { className: "SignInButtonComponent", filePath: "src/app/components/sign-in/sign-in-button.component.ts", lineNumber: 36 });
+})();
+
 // src/app/template/header.component.ts
 function HeaderComponent_Conditional_5_Template(rf, ctx) {
   if (rf & 1) {
@@ -87857,7 +88363,7 @@ var HeaderComponent = class _HeaderComponent {
       \u0275\u0275pipe(3, "translate");
       \u0275\u0275elementStart(4, "div", 2);
       \u0275\u0275template(5, HeaderComponent_Conditional_5_Template, 3, 5);
-      \u0275\u0275element(6, "aida-github-connect");
+      \u0275\u0275element(6, "aida-sign-in-button");
       \u0275\u0275elementStart(7, "p-button", 3);
       \u0275\u0275listener("onClick", function HeaderComponent_Template_p_button_onClick_7_listener() {
         return ctx.settingsService.toggle();
@@ -87897,7 +88403,7 @@ var HeaderComponent = class _HeaderComponent {
       \u0275\u0275advance(3);
       \u0275\u0275conditional(!ctx.production ? 17 : -1);
     }
-  }, dependencies: [CommonModule, SlicePipe, TranslateModule, TranslatePipe, ButtonModule, Button, DividerModule, Divider, ToastModule, Toast, GithubConnectComponent], styles: ["\n\n  .darkmode-toggle:hover .p-button-icon {\n  color: var(--p-cyan-400) !important;\n}\n  html.dark-mode .darkmode-toggle:hover .p-button-icon {\n  color: var(--p-amber-400) !important;\n}\n/*# sourceMappingURL=header.component.css.map */"] });
+  }, dependencies: [CommonModule, SlicePipe, TranslateModule, TranslatePipe, ButtonModule, Button, DividerModule, Divider, ToastModule, Toast, SignInButtonComponent], styles: ["\n\n  .darkmode-toggle:hover .p-button-icon {\n  color: var(--p-cyan-400) !important;\n}\n  html.dark-mode .darkmode-toggle:hover .p-button-icon {\n  color: var(--p-amber-400) !important;\n}\n/*# sourceMappingURL=header.component.css.map */"] });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(HeaderComponent, [{
@@ -87908,7 +88414,7 @@ var HeaderComponent = class _HeaderComponent {
       ButtonModule,
       DividerModule,
       ToastModule,
-      GithubConnectComponent
+      SignInButtonComponent
     ], template: `
 <header>
   <div class="flex flex-row gap-2 justify-content-end py-2 border-bottom-1 surface-border">
@@ -87923,7 +88429,7 @@ var HeaderComponent = class _HeaderComponent {
           text rounded size="small" styleClass="white-space-nowrap -mr-2" />
         <p-divider layout="vertical" styleClass="mx-0" />
         }
-        <aida-github-connect />
+        <aida-sign-in-button />
         <p-button (onClick)="settingsService.toggle()" rounded outlined size="small" severity="secondary" [icon]="settingsService.icon()" styleClass="darkmode-toggle secondary-outline" ariaLabel="Toggle between dark and light mode" />
         <p-button (onClick)="settingsService.toggleLanguage();" rounded text styleClass="underline text-blue-500 hover:text-blue-400 nohover -ml-2" severity="secondary" [ariaLabel]="'_app.oppLang' | translate" >
           <span class="hidden sm:inline w-3rem">{{ '_app.oppLang' | translate }}</span>
@@ -88033,11 +88539,11 @@ ${bodyFr}`;
 })();
 
 // src/app/template/sidebar.component.ts
-var _c041 = () => ["/"];
-var _c159 = () => ["/switch-project"];
+var _c042 = () => ["/"];
+var _c161 = () => ["/switch-project"];
 var _c238 = () => ["bg-primary-500", "text-primary-50"];
 var _c324 = () => ["/inventory"];
-var _c420 = () => ["/export-github"];
+var _c420 = () => ["/export-pages"];
 var _c518 = () => ["/standalone"];
 var _c616 = () => ["/about-us"];
 var _c714 = () => ["/dashboard"];
@@ -88237,7 +88743,7 @@ var SidebarComponent = class _SidebarComponent {
     }
     if (rf & 2) {
       \u0275\u0275advance(4);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(50, _c041));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(50, _c042));
       \u0275\u0275advance(2);
       \u0275\u0275textInterpolate(ctx.production ? "design_services" : ctx.sandbox ? "handyman" : "construction");
       \u0275\u0275advance(2);
@@ -88253,7 +88759,7 @@ var SidebarComponent = class _SidebarComponent {
       \u0275\u0275advance();
       \u0275\u0275conditional(ctx.projectLoaded ? 18 : 19);
       \u0275\u0275advance(2);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(51, _c159))("routerLinkActive", \u0275\u0275pureFunction0(52, _c238));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(51, _c161))("routerLinkActive", \u0275\u0275pureFunction0(52, _c238));
       \u0275\u0275advance(4);
       \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(25, 36, "switch._nav"));
       \u0275\u0275advance(4);
@@ -88351,7 +88857,7 @@ var SidebarComponent = class _SidebarComponent {
             <span class="material-icons text-2xl">checklist_rtl</span>\r
             <span class="hidden md:inline text-md">{{ 'inventory._nav' | translate }}</span>\r
           </a>\r
-          <a [routerLink]="['/export-github']" [routerLinkActive]="['bg-primary-500', 'text-primary-50']"\r
+          <a [routerLink]="['/export-pages']" [routerLinkActive]="['bg-primary-500', 'text-primary-50']"\r
              class="flex align-items-center gap-3 py-1 px-2 m-1 border-round no-underline hover:bg-primary-600">\r
             <span class="material-icons-outlined text-2xl">drive_folder_upload</span>\r
             <span class="hidden md:inline text-md">{{ 'github._nav' | translate }}</span>\r

@@ -1,14 +1,14 @@
 import {
   Breadcrumb,
   BreadcrumbModule
-} from "./chunk-DKYHE2XY.js";
+} from "./chunk-BEYDROWB.js";
 import {
   environment
 } from "./chunk-MYYNWJMU.js";
 import {
   IftaLabel,
   IftaLabelModule
-} from "./chunk-5FX2UO7F.js";
+} from "./chunk-X4IFPB4Y.js";
 import {
   Divider,
   DividerModule,
@@ -16,12 +16,12 @@ import {
   SelectButtonModule,
   ToggleButton,
   ToggleButtonModule
-} from "./chunk-IXASFEHB.js";
+} from "./chunk-K5LXKZ2F.js";
 import {
   Select,
   SelectModule,
   UserSettingsService
-} from "./chunk-XLBGG5YP.js";
+} from "./chunk-FBUTZ4K6.js";
 import "./chunk-G3ZWOXEO.js";
 import {
   BaseComponent,
@@ -43,7 +43,7 @@ import {
   TranslatePipe,
   TranslateService,
   isPlatformBrowser
-} from "./chunk-TK4DWPTH.js";
+} from "./chunk-WUTT2HFF.js";
 import "./chunk-JKR6TEEB.js";
 import {
   ChangeDetectionStrategy,
@@ -99,7 +99,7 @@ import {
   ɵɵtextInterpolate,
   ɵɵtextInterpolate1,
   ɵɵtextInterpolate2
-} from "./chunk-ZNSAYBRC.js";
+} from "./chunk-C6EWZDCK.js";
 import "./chunk-OMRWFPLA.js";
 import "./chunk-BCDBKL6G.js";
 import "./chunk-OPLY3WLG.js";
@@ -17184,4 +17184,4 @@ chart.js/dist/chart.js:
    * Released under the MIT License
    *)
 */
-//# sourceMappingURL=chunk-VJBATYUM.js.map
+//# sourceMappingURL=chunk-NIQNMU6W.js.map

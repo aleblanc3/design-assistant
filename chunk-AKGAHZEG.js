@@ -1,24 +1,24 @@
 import {
   Breadcrumb,
   BreadcrumbModule
-} from "./chunk-DKYHE2XY.js";
+} from "./chunk-BEYDROWB.js";
 import {
   Tab,
   TabList,
   TabPanel,
   Tabs,
   TabsModule
-} from "./chunk-J2X34EDJ.js";
+} from "./chunk-UXCO4D3Y.js";
 import {
   IftaLabel,
   IftaLabelModule
-} from "./chunk-5FX2UO7F.js";
+} from "./chunk-X4IFPB4Y.js";
 import {
   Message,
   MessageModule,
   Textarea,
   TextareaModule
-} from "./chunk-RHYBJDSX.js";
+} from "./chunk-5R6FSZPH.js";
 import {
   marker
 } from "./chunk-NHG2MSCL.js";
@@ -30,7 +30,7 @@ import {
   Tooltip,
   TooltipModule,
   UserSettingsService
-} from "./chunk-XLBGG5YP.js";
+} from "./chunk-FBUTZ4K6.js";
 import "./chunk-G3ZWOXEO.js";
 import {
   Button,
@@ -44,7 +44,7 @@ import {
   RouterLink,
   TranslateModule,
   TranslatePipe
-} from "./chunk-TK4DWPTH.js";
+} from "./chunk-WUTT2HFF.js";
 import "./chunk-JKR6TEEB.js";
 import {
   Component,
@@ -82,7 +82,7 @@ import {
   ɵɵtwoWayListener,
   ɵɵtwoWayProperty,
   ɵɵviewQuery
-} from "./chunk-ZNSAYBRC.js";
+} from "./chunk-C6EWZDCK.js";
 import "./chunk-OMRWFPLA.js";
 import "./chunk-BCDBKL6G.js";
 import "./chunk-OPLY3WLG.js";
@@ -1168,4 +1168,4 @@ var DesignPatternsComponent = class _DesignPatternsComponent {
 export {
   DesignPatternsComponent
 };
-//# sourceMappingURL=chunk-VCOYCBIR.js.map
+//# sourceMappingURL=chunk-AKGAHZEG.js.map

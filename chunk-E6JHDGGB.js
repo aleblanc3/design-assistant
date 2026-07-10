@@ -4,12 +4,12 @@ import {
 import {
   SelectButton,
   SelectButtonModule
-} from "./chunk-IXASFEHB.js";
+} from "./chunk-K5LXKZ2F.js";
 import {
   Select,
   SelectModule,
   UserSettingsService
-} from "./chunk-XLBGG5YP.js";
+} from "./chunk-FBUTZ4K6.js";
 import {
   BaseComponent,
   BaseStyle,
@@ -24,7 +24,7 @@ import {
   SharedModule,
   TranslateModule,
   TranslatePipe
-} from "./chunk-TK4DWPTH.js";
+} from "./chunk-WUTT2HFF.js";
 import {
   ChangeDetectionStrategy,
   Component,
@@ -78,7 +78,7 @@ import {
   ɵɵtwoWayBindingSet,
   ɵɵtwoWayListener,
   ɵɵtwoWayProperty
-} from "./chunk-ZNSAYBRC.js";
+} from "./chunk-C6EWZDCK.js";
 
 // node_modules/primeng/fesm2022/primeng-tag.mjs
 var _c0 = ["icon"];
@@ -1034,4 +1034,4 @@ export {
   InputGroupAddonModule,
   UserSettingsComponent
 };
-//# sourceMappingURL=chunk-HATUI5F7.js.map
+//# sourceMappingURL=chunk-E6JHDGGB.js.map

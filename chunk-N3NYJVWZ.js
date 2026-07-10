@@ -1,7 +1,7 @@
 import {
   Checkbox,
   MinusIcon
-} from "./chunk-HLCZXW7A.js";
+} from "./chunk-MDDFLQAP.js";
 import {
   environment
 } from "./chunk-MYYNWJMU.js";
@@ -19,7 +19,7 @@ import {
   SearchIcon,
   TimesIcon,
   Tooltip
-} from "./chunk-XLBGG5YP.js";
+} from "./chunk-FBUTZ4K6.js";
 import {
   AutoFocus,
   BaseComponent,
@@ -59,7 +59,7 @@ import {
   isHidden,
   unblockBodyScroll,
   uuid
-} from "./chunk-TK4DWPTH.js";
+} from "./chunk-WUTT2HFF.js";
 import {
   animate,
   state,
@@ -143,7 +143,7 @@ import {
   ɵɵtwoWayListener,
   ɵɵtwoWayProperty,
   ɵɵviewQuery
-} from "./chunk-ZNSAYBRC.js";
+} from "./chunk-C6EWZDCK.js";
 import {
   deepEquals,
   equals,
@@ -1574,6 +1574,8 @@ var FetchService = class _FetchService {
         return `https://canada-preview.adobecqms.net/${path}`;
       case "ut":
         return `http://cra-ut.isvcs.net/test/aida/${repo}/${path}`;
+      case "ut-base":
+        return `http://cra-ut.isvcs.net/test/aida/${repo}-baseline/${path}`;
       case "upd":
         const currentLang = this.translate.currentLang?.startsWith("fr") ? "&lang=FR" : "";
         return `https://cra-arc.alpha.canada.ca/en/pages?url=https://www.canada.ca/${path}${currentLang}`;
@@ -1583,7 +1585,12 @@ var FetchService = class _FetchService {
   }
   //Get url language
   getLang(url) {
-    return url.includes("/fr/") || url.endsWith("fr.html") ? "fr" : "en";
+    if (url.includes("/en/") || url.endsWith("en.html") || url.startsWith("en/"))
+      return "en";
+    else if (url.includes("/fr/") || url.endsWith("fr.html") || url.startsWith("fr/"))
+      return "fr";
+    else
+      return null;
   }
   static \u0275fac = function FetchService_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _FetchService)();
@@ -2397,7 +2404,8 @@ ${mermaidChart}
         try {
           const urlParts = new URL(file).pathname.split("/");
           const destPath = urlParts.slice(4).join("/");
-          if (!templateFilesToExport.includes(destPath)) {
+          const includesAllowed = templateFilesToExport.includes("_includes/*") && destPath.startsWith("_includes/");
+          if (!templateFilesToExport.includes(destPath) && !includesAllowed) {
             console.log(`Skipping ${destPath} - not in export list`);
             continue;
           }
@@ -9400,4 +9408,4 @@ export {
   AiPromptService,
   OpenRouterService
 };
-//# sourceMappingURL=chunk-YNYOUEHY.js.map
+//# sourceMappingURL=chunk-N3NYJVWZ.js.map
