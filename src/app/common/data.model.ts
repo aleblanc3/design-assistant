@@ -146,10 +146,16 @@ export interface PageProblem {
 
 //Page notes
 export interface PageNotes {
+    issue: string;
+    solution: string;
+}
+
+export interface OldNotes {
     problem: string;
     solution: string;
 }
 
+// Old project data interface
 export interface ProjectTreeNodeData {
     h1: string;
     doubleH1: string;
@@ -159,41 +165,131 @@ export interface ProjectTreeNodeData {
     metadata?: PageMeta;
     metadataReview?: MetadataReview;   // AI generated metadata workflow
     problem?: PageProblem;
+    notes?: OldNotes;
+}
+
+// New project tree data interface
+export interface TreeNodeData {
+    lang: 'en' | 'fr';
+    path: {
+        en: string;
+        fr: string;
+    }
+    vanity?: {
+        en: string[];
+        fr: string[];
+    }
+    //Status requiring action
+    status: PageActions;
+    // Version-specific data
+    live?: PageData;
+    baseline?: PageData;
+    prototype?: PageData;
+    // AI generated metadata workflow
+    metadataReview?: MetadataReview;
+    // User notes
     notes?: PageNotes;
+    //Hidden tracking info
+    isContainer: boolean;            // True if page is a container page (used to group together pages for AI combine/split actions)
+    isCrawled: boolean;              // True after crawling for children
+}
+
+// New page status interface
+export interface PageActions {
+    inScope: boolean;                // True for user-added pages or toggled by user
+    isNew: boolean;                  // True if baseline is 404
+    isMoved: boolean;                // True if prototype or live originalParent doesn't match baseline originalParent
+    isROT: boolean;                  // True if user flags page as ROT (redundant, outdated, trivial)
+}
+
+// New page data interface
+export interface PageData {
+    en: LangData;
+    fr: LangData;
+}
+
+// New lang data interface
+export interface LangData {
+    h1?: string;
+    doubleH1?: string;
+    //Content
+    contentHash?: string;    // Hash of normalized page HTML at last crawl
+    lastChecked?: string;    // ISO string of fetch date
+    githubSha?: string;      // SHA of last GitHub export
+    //Metadata
+    title?: string;            // metadata title
+    description?: string;      // metadata description
+    keywords?: string;         // metadata keywords    
+    //Status
+    is404?: boolean;           // True if page is 404 (helps determine completion of NEW/ROT actions)
+    isOrphan: boolean;         // True if parent doesn't link to the page
+    noindex?: boolean;         // True if page is not indexed for search
+    isArchived: boolean;       // True if page has archive banner
+    linksToPortal: boolean;    // True if page links to a portal
+    hasChatbot: boolean;       // True if page has chatbot
+    // jrc:content.json
+    owner?: string;                 // gcContributor
+    email?: string;                 // gcBranch
+    lastPublished?: string;         // gcLastPublished
+    lastModified?: string;          // cq:lastModified
+    //Data
+    parentPath?: string;         // For page move detection
+    wordCount?: number;        // Count of words on page
+    linkCount?: number;        // Count of links on page
+    fleschKincaid?: number;          // Calculated reading grade level
+    gunningFog?: number;         // Calculated reading grade level
+    template?: PageTemplate;   // Determined based on page content & url pattern
+    phoneNumbers?: string[];
+    //Other data sources
+    task?: string[];                // Determined by comparing with task airtable data
+    visits?: number;                // Determined by comparing with UPD data
+    // Data from problem assistant
+    problem?: PageProblem;
 }
 
 export interface FlattenedTreeNode {
-    //Current language
-    h1: string;
-    doubleH1: string;
-    url: string;
-    //Opposite language
-    oppH1: string;
-    oppDoubleH1: string;
-    oppUrl: string;
-    //GitHub
-    prototypeUrl: string;
+    //English
+    enH1: string;
+    enDoubleH1: string;
+    enPath: string;
+    enVanity: string[];
+    //French
+    frH1: string;
+    frDoubleH1: string;
+    frPath: string;
+    frVanity: string[];
     //Status
     inScope: boolean;
-    isOrphan: boolean;
     isNew: boolean;
     isMoved: boolean;
     isROT: boolean;
-    linksToPortal: boolean;
-    noindex: 'both' | 'en-only' | 'fr-only' | 'none' | 'to-reindex' | 'to-deindex';
-    archiveStatus: 'current' | 'archived' | 'to-archive' | 'unarchive'
+    isArchived: boolean;
+    noindex: boolean;
+    //Actions
+    actions: string[];
+    //Problems
+    isOrphan: boolean;
     //Notes
-    problem: string,
+    issue: string,
     solution: string,
     //Data
     template: string;
+    linksToPortal: boolean;
+    hasChatbot: boolean;
     task: string[];
     visits: number | undefined;
+    updLink: string | undefined;
     lastModified: Date | undefined;
     lastPublished: Date | undefined;
+    fleschKincaid: number | undefined;
+    gunningFog: number | undefined;
     wordCount: number | undefined;
-    updLink: string | undefined;
-    //Metadata
+    linkCount: number | undefined;
+    phoneNumbers: string[] | undefined;
+    //Owner
+    owner: string;
+    email: string;
+    //Metadata (prototype)
     titleEN: string;
     titleFR: string;
     descriptionEN: string;
@@ -207,18 +303,15 @@ export interface FlattenedTreeNode {
     aiKeywordsFR: MetadataField | undefined;
     aiGeneratedAt: Date | undefined;
     aiModel: string | undefined;
-    //Owner
-    owner: string;
-    email: string;
 }
 
 export const FIELD_FILTERS = ['isNew', 'isMoved', 'isROT', 'linksToPortal', 'archiveStatus', 'noindex', 'isOrphan'] as const;
-export const COLUMN_GROUPS = ['page', 'oppPage', 'github', 'status', 'notes', 'problems', 'pageData', 'owner', 'metadata'] as const;
+export const COLUMN_GROUPS = ['english', 'french', 'status', 'actions', 'notes', 'problems', 'pageData', 'owner', 'metadata'] as const;
 export type ColumnGroups = typeof COLUMN_GROUPS[number];
 
 export interface TableColumn {
     field: keyof FlattenedTreeNode;
-    translationKey: string;
+    label: string;
     type: 'text' | 'longText' | 'textArea' | 'array' | 'url' | 'boolean' | 'number' | 'archive' | 'noindex' | 'date' | 'aiText' | 'upd' | 'template';
     frozen?: boolean;
     group: ColumnGroups;
@@ -239,6 +332,7 @@ export interface Project extends ProjectMetadata {
     created: Date;
     lastSaved: Date;
     lastExported: Date | null;
+    lastDownloaded: Date | null;
     baselinePages: number;
     projectData: TreeNode[];  // Full tree structure
 }
@@ -254,5 +348,6 @@ export interface ProjectMetadata {
     collaborators: GitHubUser[];
     github: GitHubRepo;
     storageType: 'local' | 'cloud';
+    repoType: 'local' | 'github';
     org?: string;
 }
