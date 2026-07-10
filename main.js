@@ -74516,6 +74516,7 @@ var InventoryComponent = class _InventoryComponent {
 })();
 
 // src/app/views/task/compare-versions/compare.service.ts
+var COMPARE_VERSIONS = ["live", "preview", "prototype", "baseline", "ut", "ut-base", "ai"];
 var CompareService = class _CompareService {
   // HTML content cache
   htmlCache = signal(/* @__PURE__ */ new Map());
@@ -74531,6 +74532,7 @@ var CompareService = class _CompareService {
   loadingBefore = signal(false);
   loadingAfter = signal(false);
   loadingAll = signal(false);
+  includePreview = signal(false);
   // Helpers to get & set HTML cache
   getCachedHtml(url) {
     return this.htmlCache().get(url);
@@ -77379,7 +77381,7 @@ var CompareSourceComponent = class _CompareSourceComponent {
 // src/app/views/task/compare-versions/compare.component.ts
 function CompareComponent_ng_template_19_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 27)(1, "span", 28);
+    \u0275\u0275elementStart(0, "div", 31)(1, "span", 32);
     \u0275\u0275text(2);
     \u0275\u0275elementEnd();
     \u0275\u0275text(3);
@@ -77399,14 +77401,14 @@ var CompareComponent = class _CompareComponent {
   compareService = inject(CompareService);
   fetchService = inject(FetchService);
   htmlNormalizationService = inject(HtmlNormalizationService);
-  owner = this.projectState.getProject().github.owner;
-  repo = this.projectState.getProject().github.repo;
   constructor() {
     effect(() => {
       const options = this.pageOptions;
       if (!this.compareService.selectedPage() && options.length > 0) {
         this.compareService.selectedPage.set(options[0].path);
         this.onPageSelectionChange(options[0].path);
+        console.log("PAGE:");
+        console.log(this.compareService.selectedPage());
       }
     });
   }
@@ -77424,12 +77426,32 @@ var CompareComponent = class _CompareComponent {
   get pageOptions() {
     return this.projectState.getAllPages("en", "live", "inScope");
   }
+  // Get list of versions to check
+  getVersionsToCheck(path) {
+    const project = this.projectState.getProject();
+    const versions = [{ url: this.fetchService.generateUrl(path, "live"), version: "live" }];
+    if (this.compareService.includePreview()) {
+      versions.push({ url: this.fetchService.generateUrl(path, "preview"), version: "preview" });
+    }
+    if (project.lastExported) {
+      versions.push({ url: this.fetchService.generateUrl(path, "prototype", project.github.owner, project.github.repo), version: "prototype" });
+      if (project.github.hasBaselineRepo)
+        versions.push({ url: this.fetchService.generateUrl(path, "baseline", project.github.owner, project.github.repo), version: "baseline" });
+    }
+    if (project.lastDownloaded) {
+      versions.push({ url: this.fetchService.generateUrl(path, "ut"), version: "ut" });
+      if (project.github.hasBaselineRepo)
+        versions.push({ url: this.fetchService.generateUrl(path, "ut-base"), version: "ut-base" });
+    }
+    return versions;
+  }
+  // Check a versions status
   checkVersion(url, version2, validVersions) {
     return __async(this, null, function* () {
       if (!url)
         return;
       const cached = this.compareService.getCachedStatus(url);
-      if (cached !== void 0) {
+      if (cached) {
         validVersions.push(version2);
         return;
       }
@@ -77438,26 +77460,21 @@ var CompareComponent = class _CompareComponent {
         if (version2 === "preview") {
           result = yield this.fetchService.fetchPreviewStatus(url);
         } else {
-          result = yield this.fetchService.fetchStatus(url, "both");
+          result = (yield this.fetchService.fetchStatus(url, "both")).ok;
         }
-        const ok = typeof result === "boolean" ? result : result.ok;
-        this.compareService.setCachedStatus(url, ok);
-        if (ok)
+        this.compareService.setCachedStatus(url, result);
+        if (result)
           validVersions.push(version2);
       } catch {
         this.compareService.setCachedStatus(url, false);
       }
     });
   }
+  // Update dropdown with valid versions & run comparison
   onPageSelectionChange(path) {
     return __async(this, null, function* () {
       this.compareService.loading.set(true);
-      const liveURL = this.fetchService.generateUrl(path, "live");
-      const previewURL = this.fetchService.generateUrl(path, "preview");
-      const utProtoURL = this.fetchService.generateUrl(path, "ut");
-      const utBaseURL = this.fetchService.generateUrl(path, "ut-base");
-      const gitProtoURL = this.fetchService.generateUrl(path, "prototype", this.owner, this.repo);
-      const gitBaseURL = this.fetchService.generateUrl(path, "baseline", this.owner, this.repo);
+      const versionsToCheck = this.getVersionsToCheck(path);
       try {
         this.compareService.selectedPage.set(path);
         if (!this.compareService.selectedPage)
@@ -77465,70 +77482,8 @@ var CompareComponent = class _CompareComponent {
         this.compareService.originalHtml.set(void 0);
         this.compareService.modifiedHtml.set(void 0);
         const validVersions = ["ai"];
-        const cachedLive = this.compareService.getCachedStatus(this.compareService.selectedPage());
-        if (cachedLive !== void 0) {
-          if (cachedLive)
-            validVersions.push("live");
-        } else {
-          try {
-            const liveResponse = yield this.fetchService.fetchStatus(this.compareService.selectedPage(), "prod");
-            this.compareService.setCachedStatus(this.compareService.selectedPage(), liveResponse.ok);
-            if (liveResponse.ok) {
-              validVersions.push("live");
-            }
-          } catch (error) {
-            this.compareService.setCachedStatus(this.compareService.selectedPage(), false);
-          }
-        }
-        const previewUrl = this.fetchService.generateOtherUrl(this.compareService.selectedPage(), "preview", this.owner, this.repo);
-        const cachedPreview = this.compareService.getCachedStatus(previewUrl);
-        if (cachedPreview !== void 0) {
-          if (cachedPreview)
-            validVersions.push("preview");
-        } else if (previewUrl) {
-          try {
-            const previewExists = yield this.fetchService.fetchPreviewStatus(previewUrl);
-            this.compareService.setCachedStatus(previewUrl, previewExists);
-            if (previewExists) {
-              validVersions.push("preview");
-            }
-          } catch (error) {
-            this.compareService.setCachedStatus(previewUrl, false);
-          }
-        }
-        const prototypeUrl = this.fetchService.generateOtherUrl(this.compareService.selectedPage(), "prototype", this.owner, this.repo);
-        const cachedPrototype = this.compareService.getCachedStatus(prototypeUrl);
-        if (cachedPrototype !== void 0) {
-          if (cachedPrototype)
-            validVersions.push("prototype");
-        } else if (prototypeUrl) {
-          try {
-            const protoResponse = yield this.fetchService.fetchStatus(prototypeUrl, "proto");
-            this.compareService.setCachedStatus(prototypeUrl, protoResponse.ok);
-            if (protoResponse.ok) {
-              validVersions.push("prototype");
-            }
-          } catch (error) {
-            this.compareService.setCachedStatus(prototypeUrl, false);
-          }
-        }
-        if (this.projectState.getProject().github.hasBaselineRepo) {
-          const baselineUrl = this.fetchService.generateOtherUrl(this.compareService.selectedPage(), "baseline", this.owner, this.repo);
-          const cachedBaseline = this.compareService.getCachedStatus(baselineUrl);
-          if (cachedBaseline !== void 0) {
-            if (cachedBaseline)
-              validVersions.push("baseline");
-          } else if (baselineUrl) {
-            try {
-              const baselineResponse = yield this.fetchService.fetchStatus(baselineUrl, "proto");
-              this.compareService.setCachedStatus(baselineUrl, baselineResponse.ok);
-              if (baselineResponse.ok) {
-                validVersions.push("baseline");
-              }
-            } catch (error) {
-              this.compareService.setCachedStatus(baselineUrl, false);
-            }
-          }
+        for (const { url, version: version2 } of versionsToCheck) {
+          yield this.checkVersion(url, version2, validVersions);
         }
         this.allOptions = validVersions;
         yield this.onBeforeSelectionChange(this.compareService.selectedBefore());
@@ -77538,49 +77493,22 @@ var CompareComponent = class _CompareComponent {
       }
     });
   }
+  // Update all page dropdowns with thier valid versions (speeds up page switching)
   setCacheForAll() {
     return __async(this, null, function* () {
+      this.cacheAbortController = new AbortController();
+      const signal2 = this.cacheAbortController.signal;
       this.compareService.loadingAll.set(true);
       try {
         const lang = this.projectState.detectPrimaryLanguage();
-        const allUrls = new Set(this.projectState.getAllPages(lang, "live", "inScope").map((u3) => u3.url));
-        for (const url of allUrls) {
-          if (!this.compareService.getCachedStatus(url)) {
-            try {
-              const liveResponse = yield this.fetchService.fetchStatus(url, "prod", 1, 0);
-              this.compareService.setCachedStatus(url, liveResponse.ok);
-            } catch {
-              this.compareService.setCachedStatus(url, false);
-            }
-          }
-          const previewUrl = this.fetchService.generateOtherUrl(url, "preview", this.owner, this.repo);
-          if (previewUrl && !this.compareService.getCachedStatus(previewUrl)) {
-            try {
-              const previewExists = yield this.fetchService.fetchPreviewStatus(previewUrl);
-              this.compareService.setCachedStatus(previewUrl, previewExists);
-            } catch {
-              this.compareService.setCachedStatus(previewUrl, false);
-            }
-          }
-          const prototypeUrl = this.fetchService.generateOtherUrl(url, "prototype", this.owner, this.repo);
-          if (prototypeUrl && !this.compareService.getCachedStatus(prototypeUrl)) {
-            try {
-              const protoResponse = yield this.fetchService.fetchStatus(prototypeUrl, "proto", 1, 0);
-              this.compareService.setCachedStatus(prototypeUrl, protoResponse.ok);
-            } catch {
-              this.compareService.setCachedStatus(prototypeUrl, false);
-            }
-          }
-          if (this.projectState.getProject().github.hasBaselineRepo) {
-            const baselineUrl = this.fetchService.generateOtherUrl(url, "baseline", this.owner, this.repo);
-            if (baselineUrl && !this.compareService.getCachedStatus(baselineUrl)) {
-              try {
-                const baselineResponse = yield this.fetchService.fetchStatus(baselineUrl, "proto", 1, 0);
-                this.compareService.setCachedStatus(baselineUrl, baselineResponse.ok);
-              } catch {
-                this.compareService.setCachedStatus(baselineUrl, false);
-              }
-            }
+        const allPaths = new Set(this.projectState.getAllPages(lang, "live", "inScope").map((p) => p.path));
+        for (const path of allPaths) {
+          if (signal2.aborted)
+            break;
+          const versionsToCheck = this.getVersionsToCheck(path);
+          const validVersions = ["ai"];
+          for (const { url, version: version2 } of versionsToCheck) {
+            yield this.checkVersion(url, version2, validVersions);
           }
         }
       } finally {
@@ -77588,60 +77516,58 @@ var CompareComponent = class _CompareComponent {
       }
     });
   }
+  cacheAbortController = null;
+  cancelSetCache() {
+    this.cacheAbortController?.abort();
+  }
   // Version dropdown options & on change
-  allOptions = ["live", "preview", "prototype", "baseline", "ai"];
+  allOptions = [...COMPARE_VERSIONS];
   get beforeOptions() {
-    return this.allOptions.filter((value) => value !== "ai" && (value !== "baseline" || this.projectState.getProject().github.hasBaselineRepo)).map((value) => ({
+    return this.allOptions.filter((value) => value !== "ai").map((value) => ({
       label: this.translate.instant(`compare.pageOptions.${value}`),
       value
     }));
   }
   get afterOptions() {
-    return this.allOptions.filter((value) => value !== "live" && (value !== "baseline" || this.projectState.getProject().github.hasBaselineRepo)).map((value) => ({
+    return this.allOptions.filter((value) => value !== "live").map((value) => ({
       label: this.translate.instant(`compare.pageOptions.${value}`),
       value
     }));
+  }
+  fetchVersion(version2) {
+    return __async(this, null, function* () {
+      if (!this.compareService.selectedPage())
+        return;
+      if (version2 !== "ai") {
+        const project = this.projectState.getProject();
+        const url = this.fetchService.generateUrl(this.compareService.selectedPage(), version2, project.github.owner, project.github.repo);
+        const cached = this.compareService.getCachedHtml(url);
+        if (cached) {
+          this.compareService.originalHtml.set(cached);
+          return;
+        }
+        let previewContent;
+        if (version2 === "preview") {
+          previewContent = yield this.fetchService.fetchPreview(url);
+        }
+        return __spreadProps(__spreadValues({}, previewContent ? yield this.htmlNormalizationService.normalizeHTML(previewContent, "string") : yield this.htmlNormalizationService.normalizeHTML(url, "url")), {
+          url,
+          version: version2
+        });
+      } else
+        return;
+    });
   }
   onBeforeSelectionChange(version2) {
     return __async(this, null, function* () {
       this.compareService.loadingBefore.set(true);
       try {
         this.compareService.selectedBefore.set(version2);
-        if (!this.compareService.selectedPage)
-          return;
-        if (this.compareService.selectedBefore() === "preview") {
-          const url = this.fetchService.generateOtherUrl(this.compareService.selectedPage(), "preview", this.owner, this.repo);
-          const cached = this.compareService.getCachedHtml(url);
-          if (cached) {
-            this.compareService.originalHtml.set(cached);
-            return;
-          }
-          const previewContent = yield this.fetchService.fetchPreview(url);
-          const normalizedContent = yield this.htmlNormalizationService.normalizeHTML(previewContent, "string");
-          const result = __spreadProps(__spreadValues({}, normalizedContent), {
-            url,
-            version: version2
-          });
-          this.compareService.setCachedHtml(url, result);
-          this.compareService.originalHtml.set(result);
-        } else {
-          let url = this.compareService.selectedPage();
-          if (this.compareService.selectedBefore() === "baseline") {
-            url = this.fetchService.generateOtherUrl(this.compareService.selectedPage(), "baseline", this.owner, this.repo);
-          } else if (this.compareService.selectedBefore() === "prototype") {
-            url = this.fetchService.generateOtherUrl(this.compareService.selectedPage(), "prototype", this.owner, this.repo);
-          }
-          const cached = this.compareService.getCachedHtml(url);
-          if (cached) {
-            this.compareService.originalHtml.set(cached);
-            return;
-          }
-          const result = __spreadProps(__spreadValues({}, yield this.htmlNormalizationService.normalizeHTML(url, "url")), {
-            version: version2
-          });
-          this.compareService.setCachedHtml(url, result);
-          this.compareService.originalHtml.set(result);
+        const result = yield this.fetchVersion(version2);
+        if (result && result.url) {
+          this.compareService.setCachedHtml(result.url, result);
         }
+        this.compareService.originalHtml.set(result);
       } finally {
         this.compareService.loadingBefore.set(false);
       }
@@ -77652,45 +77578,16 @@ var CompareComponent = class _CompareComponent {
       this.compareService.loadingAfter.set(true);
       try {
         this.compareService.selectedAfter.set(version2);
-        if (!this.compareService.selectedPage)
-          return;
-        if (this.compareService.selectedAfter() === "preview") {
-          const url = this.fetchService.generateOtherUrl(this.compareService.selectedPage(), "preview", this.owner, this.repo);
-          const cached = this.compareService.getCachedHtml(url);
-          if (cached) {
-            this.compareService.modifiedHtml.set(cached);
-            return;
-          }
-          const previewContent = yield this.fetchService.fetchPreview(url);
-          const normalizedContent = yield this.htmlNormalizationService.normalizeHTML(previewContent, "string");
-          const result = __spreadProps(__spreadValues({}, normalizedContent), {
-            url,
-            version: version2
-          });
-          this.compareService.setCachedHtml(url, result);
-          this.compareService.modifiedHtml.set(result);
-        } else if (this.compareService.selectedAfter() === "ai") {
-          this.compareService.modifiedHtml.set(__spreadProps(__spreadValues({}, this.compareService.originalHtml()), {
-            version: this.compareService.selectedAfter()
-          }));
-        } else {
-          let url = this.compareService.selectedPage();
-          if (this.compareService.selectedAfter() === "baseline") {
-            url = this.fetchService.generateOtherUrl(this.compareService.selectedPage(), "baseline", this.owner, this.repo);
-          } else if (this.compareService.selectedAfter() === "prototype") {
-            url = this.fetchService.generateOtherUrl(this.compareService.selectedPage(), "prototype", this.owner, this.repo);
-          }
-          const cached = this.compareService.getCachedHtml(url);
-          if (cached) {
-            this.compareService.modifiedHtml.set(cached);
-            return;
-          }
-          const result = __spreadProps(__spreadValues({}, yield this.htmlNormalizationService.normalizeHTML(url, "url")), {
-            version: version2
-          });
-          this.compareService.setCachedHtml(url, result);
-          this.compareService.modifiedHtml.set(result);
+        let result = yield this.fetchVersion(version2);
+        if (result && result.url) {
+          this.compareService.setCachedHtml(result.url, result);
         }
+        if (version2 === "ai") {
+          result = __spreadProps(__spreadValues({}, this.compareService.originalHtml()), {
+            version: version2
+          });
+        }
+        this.compareService.modifiedHtml.set(result);
       } finally {
         this.compareService.loadingAfter.set(false);
       }
@@ -77704,7 +77601,7 @@ var CompareComponent = class _CompareComponent {
   static \u0275fac = function CompareComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _CompareComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CompareComponent, selectors: [["aida-compare-versions"]], decls: 61, vars: 46, consts: [["item", ""], ["id", "wb-cont"], [1, "flex", "flex-column", "gap-3"], [1, "flex", "flex-column", "xl:flex-row", "gap-3", "min-w-min"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "xl:w-6", "min-w-min"], [1, "text-2xl", "my-1"], [1, "my-1"], [1, "flex", "flex-column", "lg:flex-row", "lg:align-items-center", "gap-2"], [1, "flex", "flex-column", "text-color-secondary", "hover:text-primary", "max-w-max"], [1, "text-xs", "my-1"], ["inputId", "page", "optionLabel", "label", "optionValue", "path", "filterBy", "label", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-27rem", 3, "ngModelChange", "options", "ngModel", "filter", "loading"], ["for", "page"], [1, "flex", "flex-column", "sm:flex-row", "sm:align-content-center", "gap-1", "sm:gap-3", "lg:gap-2"], ["inputId", "before", "optionLabel", "label", "optionValue", "value", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-13rem", 3, "ngModelChange", "options", "ngModel", "loading"], ["for", "before"], ["inputId", "after", "optionLabel", "label", "optionValue", "value", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-13rem", 3, "ngModelChange", "options", "ngModel", "loading"], ["for", "after"], [1, "flex", "justify-content-between", "w-full", "gap-2", "mt-4"], [1, "flex", "gap-2"], ["label", "Load all pages into cache", "icon", "pi pi-download", "severity", "success", 3, "onClick", "loading"], ["label", "Reset cache", "icon", "pi pi-trash", "severity", "danger", 3, "onClick"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min"], ["value", "0", 1, "mt-3"], ["value", "0"], [1, "pi", "pi-eye", "mr-1"], [1, "shadow-1"], [3, "contentChanged", "beforeContent", "afterContent"], [1, "flex", "flex-column"], [1, "font-bold", "-mb-1"]], template: function CompareComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CompareComponent, selectors: [["aida-compare-versions"]], decls: 66, vars: 49, consts: [["item", ""], ["id", "wb-cont"], [1, "flex", "flex-column", "gap-3"], [1, "flex", "flex-column", "xl:flex-row", "gap-3", "min-w-min"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "xl:w-6", "min-w-min"], [1, "text-2xl", "my-1"], [1, "my-1"], [1, "flex", "flex-column", "lg:flex-row", "lg:align-items-center", "gap-2"], [1, "flex", "flex-column", "text-color-secondary", "hover:text-primary", "max-w-max"], [1, "text-xs", "my-1"], ["inputId", "page", "optionLabel", "label", "optionValue", "path", "filterBy", "label", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-27rem", 3, "ngModelChange", "options", "ngModel", "filter", "loading"], ["for", "page"], [1, "flex", "flex-column", "sm:flex-row", "sm:align-content-center", "gap-1", "sm:gap-3", "lg:gap-2"], ["inputId", "before", "optionLabel", "label", "optionValue", "value", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-13rem", 3, "ngModelChange", "options", "ngModel", "loading"], ["for", "before"], ["inputId", "after", "optionLabel", "label", "optionValue", "value", "loadingIcon", "pi pi-spin pi-spinner", 1, "w-20rem", "sm:w-13rem", 3, "ngModelChange", "options", "ngModel", "loading"], ["for", "after"], [1, "flex", "justify-content-between", "w-full", "gap-2", "mt-4"], [1, "flex", "gap-2"], [1, "flex", "gap-1", "align-items-center"], ["inputId", "preview", "size", "large", 3, "ngModelChange", "binary", "ngModel"], ["for", "preview", 1, "white-space-nowrap"], ["label", "Load all pages into cache", "icon", "pi pi-download", "severity", "success", 3, "onClick", "loading"], ["label", "Cancel load cache", "icon", "pi pi-ban", "severity", "secondary", 3, "onClick", "disabled"], ["label", "Reset cache", "icon", "pi pi-trash", "severity", "danger", 3, "onClick"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min"], ["value", "0", 1, "mt-3"], ["value", "0"], [1, "pi", "pi-eye", "mr-1"], [1, "shadow-1"], [3, "contentChanged", "beforeContent", "afterContent"], [1, "flex", "flex-column"], [1, "font-bold", "-mb-1"]], template: function CompareComponent_Template(rf, ctx) {
     if (rf & 1) {
       const _r1 = \u0275\u0275getCurrentView();
       \u0275\u0275elementStart(0, "h1", 1);
@@ -77768,25 +77665,41 @@ var CompareComponent = class _CompareComponent {
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(46, "div", 17);
       \u0275\u0275element(47, "div", 18);
-      \u0275\u0275elementStart(48, "div", 18)(49, "p-button", 19);
-      \u0275\u0275listener("onClick", function CompareComponent_Template_p_button_onClick_49_listener() {
+      \u0275\u0275elementStart(48, "div", 18)(49, "div", 19)(50, "p-checkbox", 20);
+      \u0275\u0275twoWayListener("ngModelChange", function CompareComponent_Template_p_checkbox_ngModelChange_50_listener($event) {
+        \u0275\u0275restoreView(_r1);
+        \u0275\u0275twoWayBindingSet(ctx.compareService.includePreview, $event) || (ctx.compareService.includePreview = $event);
+        return \u0275\u0275resetView($event);
+      });
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(51, "label", 21);
+      \u0275\u0275text(52, "Include AEM preview");
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(53, "p-button", 22);
+      \u0275\u0275listener("onClick", function CompareComponent_Template_p_button_onClick_53_listener() {
         \u0275\u0275restoreView(_r1);
         return \u0275\u0275resetView(ctx.setCacheForAll());
       });
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(50, "p-button", 20);
-      \u0275\u0275listener("onClick", function CompareComponent_Template_p_button_onClick_50_listener() {
+      \u0275\u0275elementStart(54, "p-button", 23);
+      \u0275\u0275listener("onClick", function CompareComponent_Template_p_button_onClick_54_listener() {
+        \u0275\u0275restoreView(_r1);
+        return \u0275\u0275resetView(ctx.cancelSetCache());
+      });
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(55, "p-button", 24);
+      \u0275\u0275listener("onClick", function CompareComponent_Template_p_button_onClick_55_listener() {
         \u0275\u0275restoreView(_r1);
         return \u0275\u0275resetView(ctx.compareService.clearCache());
       });
       \u0275\u0275elementEnd()()()()();
-      \u0275\u0275elementStart(51, "div", 21)(52, "p-tabs", 22)(53, "p-tablist")(54, "p-tab", 23);
-      \u0275\u0275element(55, "i", 24);
-      \u0275\u0275text(56);
-      \u0275\u0275pipe(57, "translate");
+      \u0275\u0275elementStart(56, "div", 25)(57, "p-tabs", 26)(58, "p-tablist")(59, "p-tab", 27);
+      \u0275\u0275element(60, "i", 28);
+      \u0275\u0275text(61);
+      \u0275\u0275pipe(62, "translate");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(58, "p-tabpanels", 25)(59, "p-tabpanel", 23)(60, "aida-compare-rendered", 26);
-      \u0275\u0275listener("contentChanged", function CompareComponent_Template_aida_compare_rendered_contentChanged_60_listener($event) {
+      \u0275\u0275elementStart(63, "p-tabpanels", 29)(64, "p-tabpanel", 27)(65, "aida-compare-rendered", 30);
+      \u0275\u0275listener("contentChanged", function CompareComponent_Template_aida_compare_rendered_contentChanged_65_listener($event) {
         \u0275\u0275restoreView(_r1);
         return \u0275\u0275resetView(ctx.onContentChanged($event));
       });
@@ -77794,39 +77707,44 @@ var CompareComponent = class _CompareComponent {
     }
     if (rf & 2) {
       \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 24, "compare._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 27, "compare._title"));
       \u0275\u0275advance(6);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(8, 26, "compare.pageOptions._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(8, 29, "compare.pageOptions._title"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(11, 28, "compare.pageOptions.description"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(11, 31, "compare.pageOptions.description"));
       \u0275\u0275advance(5);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(16, 30, "compare.pageOptions.selection"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(16, 33, "compare.pageOptions.selection"));
       \u0275\u0275advance(3);
       \u0275\u0275property("options", ctx.pageOptions)("ngModel", ctx.compareService.selectedPage())("filter", true)("loading", ctx.compareService.loading() || ctx.compareService.loadingAll());
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(23, 32, "compare.pageOptions.page"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(23, 35, "compare.pageOptions.page"));
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(27, 34, "compare.pageOptions.versions"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(27, 37, "compare.pageOptions.versions"));
       \u0275\u0275advance(4);
       \u0275\u0275property("options", ctx.beforeOptions)("ngModel", ctx.compareService.selectedBefore())("loading", ctx.compareService.loading() || ctx.compareService.loadingAll() || ctx.compareService.loadingBefore());
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(33, 36, "compare.pageOptions.before"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(33, 39, "compare.pageOptions.before"));
       \u0275\u0275advance(3);
       \u0275\u0275property("options", ctx.afterOptions)("ngModel", ctx.compareService.selectedAfter())("loading", ctx.compareService.loading() || ctx.compareService.loadingAll() || ctx.compareService.loadingAfter());
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(38, 38, "compare.pageOptions.after"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(38, 41, "compare.pageOptions.after"));
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(42, 40, "compare.tools._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(42, 43, "compare.tools._title"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(45, 42, "compare.tools.description"));
-      \u0275\u0275advance(5);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(45, 45, "compare.tools.description"));
+      \u0275\u0275advance(6);
+      \u0275\u0275property("binary", true);
+      \u0275\u0275twoWayProperty("ngModel", ctx.compareService.includePreview);
+      \u0275\u0275advance(3);
       \u0275\u0275property("loading", ctx.compareService.loadingAll());
+      \u0275\u0275advance();
+      \u0275\u0275property("disabled", !ctx.compareService.loadingAll());
       \u0275\u0275advance(7);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(57, 44, "compare.tab.rendered"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(62, 47, "compare.tab.rendered"));
       \u0275\u0275advance(4);
       \u0275\u0275property("beforeContent", ctx.compareService.originalHtml())("afterContent", ctx.compareService.modifiedHtml());
     }
-  }, dependencies: [CommonModule, FormsModule, NgControlStatus, NgModel, TranslateModule, TranslatePipe, ButtonModule, Button, TabsModule, Tabs, TabPanels, TabPanel, TabList, Tab, IftaLabelModule, IftaLabel, SelectModule, Select, CompareRenderedComponent], encapsulation: 2 });
+  }, dependencies: [CommonModule, FormsModule, NgControlStatus, NgModel, TranslateModule, TranslatePipe, ButtonModule, Button, TabsModule, Tabs, TabPanels, TabPanel, TabList, Tab, IftaLabelModule, IftaLabel, SelectModule, Select, CheckboxModule, Checkbox, CompareRenderedComponent], encapsulation: 2 });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(CompareComponent, [{
@@ -77839,6 +77757,7 @@ var CompareComponent = class _CompareComponent {
       TabsModule,
       IftaLabelModule,
       SelectModule,
+      CheckboxModule,
       CompareRenderedComponent,
       CompareSourceComponent
     ], template: `<h1 id="wb-cont">{{ 'compare._title' | translate }}</h1>\r
@@ -77917,12 +77836,23 @@ var CompareComponent = class _CompareComponent {
                     severity="secondary"\r
                     (onClick)="shareLink()"\r
                     *ngIf="canShare" /-->\r
+          <div class="flex gap-1 align-items-center">\r
+            <p-checkbox inputId="preview" [binary]="true" size="large"\r
+                        [(ngModel)]="compareService.includePreview" />\r
+            <label for="preview" class="white-space-nowrap">Include AEM preview</label>\r
+          </div>\r
           <p-button\r
                     label="Load all pages into cache"\r
                     icon="pi pi-download"\r
                     severity="success"\r
-                    (onClick)="this.setCacheForAll()"\r
+                    (onClick)="setCacheForAll()"\r
                     [loading]="compareService.loadingAll()" />\r
+          <p-button\r
+                    label="Cancel load cache"\r
+                    icon="pi pi-ban"\r
+                    severity="secondary"\r
+                    (onClick)="cancelSetCache()"\r
+                    [disabled]="!compareService.loadingAll()" />\r
           <p-button\r
                     label="Reset cache"\r
                     icon="pi pi-trash"\r
@@ -77959,7 +77889,7 @@ var CompareComponent = class _CompareComponent {
   }], () => [], null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CompareComponent, { className: "CompareComponent", filePath: "src/app/views/task/compare-versions/compare.component.ts", lineNumber: 35 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CompareComponent, { className: "CompareComponent", filePath: "src/app/views/task/compare-versions/compare.component.ts", lineNumber: 38 });
 })();
 
 // node_modules/primeng/fesm2022/primeng-panel.mjs
@@ -81385,7 +81315,7 @@ var CDTS_TEMPLATE_ENG = `<!DOCTYPE html>
         <span id="wb-rsz" class="wb-init">&nbsp;</span>
         <script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/theme.min.js"><\/script>
         <script src="https://www.canada.ca/etc/designs/canada/wet-boew/m\xE9li-m\xE9lo/2025-12-mille-iles.min.js"><\/script>
-        <script src="{DEPTH}}source/scripts/external-link-detour.js"><\/script>
+        <script src="{{DEPTH}}source/scripts/external-link-detour.js"><\/script>
         {{SCRIPTS}}
     </body>
 </html>`;
@@ -81530,7 +81460,7 @@ var CDTS_TEMPLATE_FRA = `<!DOCTYPE html>
         <span id="wb-rsz" class="wb-init">&nbsp;</span>
         <script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/theme.min.js"><\/script>
         <script src="https://www.canada.ca/etc/designs/canada/wet-boew/m\xE9li-m\xE9lo/2025-12-mille-iles.min.js"><\/script>
-        <script src="{DEPTH}}source/scripts/external-link-detour.js"><\/script>
+        <script src="{{DEPTH}}source/scripts/external-link-detour.js"><\/script>
         {{SCRIPTS}}
     </body>
 </html>`;
@@ -81589,7 +81519,7 @@ var EXIT_PAGE_TEMPLATE_ENG = `<!DOCTYPE html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha384-rY/jv8mMhqDabXSo+UCggqKtdmBfd3qC2/KvyTDNQ6PcUJXaxK1tMepoQda4g5vB" crossorigin="anonymous"><\/script>
 <script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/wet-boew.min.js"><\/script>
 <script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/theme.min.js"><\/script>
-<script src="{DEPTH}}source/scripts/external-link-detour.js"><\/script>
+<script src="{{DEPTH}}source/scripts/external-link-detour.js"><\/script>
 <script src="https://cra-test-arc.canada.ca/core-prototype/source/scripts/exit-page.js"><\/script>
 </body>
 </html>`;
@@ -81648,7 +81578,7 @@ var EXIT_PAGE_TEMPLATE_FRA = `<!DOCTYPE html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha384-rY/jv8mMhqDabXSo+UCggqKtdmBfd3qC2/KvyTDNQ6PcUJXaxK1tMepoQda4g5vB" crossorigin="anonymous"><\/script>
 <script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/wet-boew.min.js"><\/script>
 <script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/theme.min.js"><\/script>
-<script src="{DEPTH}}source/scripts/external-link-detour.js"><\/script>
+<script src="{{DEPTH}}source/scripts/external-link-detour.js"><\/script>
 <script src="https://cra-test-arc.canada.ca/core-prototype/source/scripts/exit-page.js"><\/script>
 </body>
 </html>`;
@@ -81663,7 +81593,7 @@ var LINK_DETOUR_JS = `/*
 
 //  exitPage.value = "exit-intent-e.html", 
 //  exitPage.dataset.exitByUrl = "false", 
-//  exitPage.dataset.modLinkFile = "data/exclude-redircet-links.json", 
+//  exitPage.dataset.modLinkFile = "data/exclude-redirect-links.json", 
 //  relExternalLnk.value = "false", 
 //  relExternalLnk.dataset.origin = "https://www.canada.ca", 
 
