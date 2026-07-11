@@ -13,7 +13,8 @@ import { CheckboxModule } from 'primeng/checkbox';
 
 // Services
 import { AirtableService } from '../../../services/airtable.service';
-import { AddPagesStateService } from '../../add-pages/services/add-pages-state.service';
+import { AddUrlsService } from '../../add-urls/add-urls.service';
+import { ProjectStateService } from '../../../services/project-state.service';
 
 export interface TaskOption {
   id: number;
@@ -36,7 +37,8 @@ export class GetTaskUrlsComponent implements OnInit {
   // Services    
   public airtableService = inject(AirtableService);
   private translate = inject(TranslateService);
-  private addPagesState = inject(AddPagesStateService);
+  private addUrlsService = inject(AddUrlsService);
+  private projectState = inject(ProjectStateService);
 
   // Signals
   private currentLanguage = signal<'en' | 'fr'>(
@@ -164,17 +166,21 @@ export class GetTaskUrlsComponent implements OnInit {
       .join('\n');
 
     // Get existing rawUrls
-    const currentRawUrls = this.addPagesState.getValidationState().rawUrls;
+    const currentRawUrls = this.addUrlsService.urlState().rawUrls
 
     // Append new URLs
     const updatedRawUrls = currentRawUrls
       ? `${currentRawUrls}\n${selectedUrls}`
       : selectedUrls;
 
-    // Update the add pages validation state
-    this.addPagesState.setValidationState({
+    // Add to "Add urls" input for user to review
+    const lang = this.projectState.detectPrimaryLanguage()
+    const { parsedUrls } = this.addUrlsService.parseUrls(updatedRawUrls, new Set(this.projectState.getAllPages(lang, "live", "inScope").map(u => u.url)), lang)
+
+    this.addUrlsService.setUrlState({
       rawUrls: updatedRawUrls,
-    });
+      urlsToValidate: parsedUrls
+    })
 
     // Clear selection after adding
     this.selectedTaskIds.set([]);

@@ -12,20 +12,8 @@ import { CheckboxModule } from 'primeng/checkbox';
 
 // Services
 import { ProjectStateService } from '../../../services/project-state.service';
-import { FetchService } from '../../../services/fetch.service';
 import { GetChildPagesService } from './get-child-pages.service';
-import { BreadcrumbNode } from '../../add-pages/add-pages.model';
-import { AddPagesStateService } from '../../add-pages/services/add-pages-state.service';
-
-interface PageToAdd {
-    url: string;
-    depthFromInScope: number;
-}
-
-interface CachedPage {
-    url: string;
-    breadcrumbs: BreadcrumbNode[];
-}
+import { AddUrlsService } from '../../add-urls/add-urls.service';
 
 @Component({
     selector: 'aida-get-child-pages',
@@ -40,9 +28,8 @@ interface CachedPage {
 export class GetChildPagesComponent {
     // Services    
     private projectState = inject(ProjectStateService);
-    private addPagesState = inject(AddPagesStateService);
-    private fetchService = inject(FetchService);
     public getChildPagesService = inject(GetChildPagesService);
+    private addUrlsService = inject(AddUrlsService);
 
     childUrls = signal<{ url: string; selected: boolean }[]>([]);
 
@@ -64,8 +51,10 @@ export class GetChildPagesComponent {
         const depth = this.getChildPagesService.depth;
         if (depth < 1) return;
 
+        const lang = this.projectState.detectPrimaryLanguage();
+
         // Get in-scope URLs
-        const inScopeUrls = this.projectState.getAllUrls("inScope", "primary");
+        const inScopeUrls = new Set(this.projectState.getAllPages(lang, "live", "inScope").map(u => u.url));
 
         // Get child pages up to specified depth
         const childPages = await this.getChildPagesService.findChildren(inScopeUrls, depth);
@@ -80,17 +69,16 @@ export class GetChildPagesComponent {
             .filter(item => item.selected)
             .map(item => item.url)
 
-        // Add to "Add pages" input for user to review
-        this.addPagesState.setValidationState({
-            rawUrls: selectedUrls.join('\n'),
-            urls: selectedUrls.map(url => ({ href: url, status: 'ok' })),
-            urlTotal: selectedUrls.length,
-            urlChecked: selectedUrls.length,
-            urlPercent: 100,
-            isValidating: false,
-            isValidated: true,
-            isOk: true,
-        });
+        // Add to "Add urls" input for user to review
+        const lang = this.projectState.detectPrimaryLanguage();
+        const rawUrls = selectedUrls.join('\n')
+        const { parsedUrls } = this.addUrlsService.parseUrls(rawUrls, new Set(this.projectState.getAllPages(lang, "live", "inScope").map(u => u.url)), lang)
+
+        this.addUrlsService.setUrlState({
+            rawUrls: rawUrls,
+            urlsToValidate: parsedUrls
+        })
+
         this.childUrls.set([]);
     }
 }

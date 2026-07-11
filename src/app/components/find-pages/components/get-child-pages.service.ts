@@ -1,10 +1,6 @@
-import { Injectable, inject, signal, computed } from '@angular/core';
-import { TreeNode } from 'primeng/api';
+import { Injectable, inject, signal } from '@angular/core';
 
-import { ProjectStateService } from '../../../services/project-state.service';
-import { FetchService } from '../../../services/fetch.service';
-import { BreadcrumbNode } from '../../add-pages/add-pages.model';
-import { AddPagesStateService } from '../../add-pages/services/add-pages-state.service';
+import { FetchService, BreadcrumbNode } from '../../../services/fetch.service';
 
 interface PageToAdd {
     url: string;
@@ -26,8 +22,6 @@ interface SearchProgress {
     providedIn: 'root'
 })
 export class GetChildPagesService {
-    private projectState = inject(ProjectStateService);
-    private addPagesState = inject(AddPagesStateService);
     private fetchService = inject(FetchService);
 
     //Variables
