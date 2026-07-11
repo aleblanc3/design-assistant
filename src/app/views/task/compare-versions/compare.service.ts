@@ -1,5 +1,8 @@
 import { Injectable, signal } from '@angular/core';
-import { htmlProcessingResult } from '../../services/html-normalization.service';
+import { htmlProcessingResult } from '../../../services/html-normalization.service';
+
+export const COMPARE_VERSIONS = ['live', 'preview', 'prototype', 'baseline', 'ut', 'ut-base', 'ai'] as const
+export type CompareVersion = typeof COMPARE_VERSIONS[number];
 
 @Injectable({
     providedIn: 'root'
@@ -14,13 +17,14 @@ export class CompareService {
 
     // User selections & defaults
     selectedPage = signal('');
-    selectedBefore = signal<'live' | 'preview' | 'prototype' | 'baseline' | 'ai'>('live');
-    selectedAfter = signal<'live' | 'preview' | 'prototype' | 'baseline' | 'ai'>('prototype');
+    selectedBefore = signal<CompareVersion>('live');
+    selectedAfter = signal<CompareVersion>('prototype');
     selectedView = signal<'original' | 'diff' | 'modified'>('diff');
     loading = signal<boolean>(false);
     loadingBefore = signal<boolean>(false);
     loadingAfter = signal<boolean>(false);
     loadingAll = signal<boolean>(false);
+    includePreview = signal<boolean>(false);
 
     // Helpers to get & set HTML cache
     getCachedHtml(url: string): htmlProcessingResult | undefined {

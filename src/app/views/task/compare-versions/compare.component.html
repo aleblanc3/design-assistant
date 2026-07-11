@@ -12,8 +12,14 @@
           <span class="text-xs my-1">{{ 'compare.pageOptions.selection' | translate }}</span>
           <p-iftalabel>
             <p-select inputId="page" [options]="pageOptions" [ngModel]="compareService.selectedPage()" (ngModelChange)="onPageSelectionChange($event)"
-                      optionLabel="label" optionValue="value" class="w-20rem sm:w-27rem"
-                      [loading]="compareService.loading() || compareService.loadingAll()" loadingIcon="pi pi-spin pi-spinner" />
+                      optionLabel="label" optionValue="path" [filter]="true" filterBy="label" class="w-20rem sm:w-27rem"
+                      [loading]="compareService.loading() || compareService.loadingAll()" loadingIcon="pi pi-spin pi-spinner">
+              <ng-template let-page #item>
+                <div class="flex flex-column">
+                  <span class="font-bold -mb-1">{{ page.label }}</span>
+                  {{ page.path }}
+                </div>
+              </ng-template></p-select>
             <label for="page">{{'compare.pageOptions.page' | translate}}</label>
           </p-iftalabel>
         </div>
@@ -68,12 +74,23 @@
                     severity="secondary"
                     (onClick)="shareLink()"
                     *ngIf="canShare" /-->
+          <div class="flex gap-1 align-items-center">
+            <p-checkbox inputId="preview" [binary]="true" size="large"
+                        [(ngModel)]="compareService.includePreview" />
+            <label for="preview" class="white-space-nowrap">Include AEM preview</label>
+          </div>
           <p-button
                     label="Load all pages into cache"
                     icon="pi pi-download"
                     severity="success"
-                    (onClick)="this.setCacheForAll()"
+                    (onClick)="setCacheForAll()"
                     [loading]="compareService.loadingAll()" />
+          <p-button
+                    label="Cancel load cache"
+                    icon="pi pi-ban"
+                    severity="secondary"
+                    (onClick)="cancelSetCache()"
+                    [disabled]="!compareService.loadingAll()" />
           <p-button
                     label="Reset cache"
                     icon="pi pi-trash"
