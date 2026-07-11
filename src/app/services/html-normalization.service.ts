@@ -501,4 +501,59 @@ export class HtmlNormalizationService {
     }
 
 
+    // Clean up HTML for export with CDTS template
+    public async cleanContentForCdts(doc: Document): Promise<{ content: string; styles: string; scripts: string }> {
+        const mainEl = doc.querySelector('main');
+        if (!mainEl) return { content: '', styles: '', scripts: '' };
+
+        // Remove page details
+        mainEl.querySelectorAll('section.pagedetails, div.pagedetails').forEach(el => el.remove());
+
+        // Remove H1 and lead paragraph (injected via {{HEADER}} in template)
+        const h1 = mainEl.querySelector('h1');
+        const leadAboveH1 = h1?.previousElementSibling?.matches('p.lead') ? h1.previousElementSibling : null;
+        leadAboveH1?.remove();
+        h1?.remove();
+
+        // Flatten AEM mws wrappers
+        mainEl.querySelectorAll('div[class^="mws"]').forEach(div => {
+            while (div.firstChild) {
+                div.parentNode?.insertBefore(div.firstChild, div);
+            }
+            div.remove();
+        });
+
+        // Fix relative URLs
+        mainEl.querySelectorAll<HTMLElement>('*').forEach(el => {
+            for (const attr of Array.from(el.attributes)) {
+                if (attr.value.includes('"/')) {
+                    attr.value = attr.value.replace(/"\//g, '"https://www.canada.ca/');
+                }
+                if (attr.value.startsWith('/')) {
+                    attr.value = `https://www.canada.ca${attr.value}`;
+                }
+            }
+        });
+
+        // Extract inline styles and scripts
+        const styles = Array.from(doc.querySelectorAll('style'))
+            .map(s => `<style>${s.textContent}</style>`)
+            .join('\n');
+        const scripts = Array.from(doc.querySelectorAll('body script:not([src])'))
+            .map(s => `<script>${s.textContent}<\/script>`)
+            .join('\n');
+
+        // Whitespace cleanup
+        const raw = mainEl.innerHTML
+            .replace(/[ \t]+$/gm, '')
+            .replace(/\n{2,}/g, '\n');
+
+        const formatted = await this.formatHtml(raw);
+
+        return {
+            content: formatted,
+            styles,
+            scripts
+        };
+    }
 }
