@@ -4,10 +4,10 @@ import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
-import { ProjectStorageService } from '../../services/storage/project-storage.service';
-import { AddPagesStateService } from '../../components/add-pages/services/add-pages-state.service';
-import { ProjectStateService } from '../../services/project-state.service';
+import { ProjectStorageService } from '../../../services/storage/project-storage.service';
+import { ProjectStateService } from '../../../services/project-state.service';
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
+import { AddUrlsService } from '../../../components/add-urls/add-urls.service';
 
 @Component({
     selector: 'aida-import-page',
@@ -20,7 +20,7 @@ export class ImportPageComponent implements OnInit {
     route = inject(ActivatedRoute);
     private projectState = inject(ProjectStateService);
     private projectStorageService = inject(ProjectStorageService);
-    addPagesState = inject(AddPagesStateService);
+    private addUrlsService = inject(AddUrlsService)
 
     isLoading = false;
 
@@ -47,7 +47,7 @@ export class ImportPageComponent implements OnInit {
                     const parsedUrl = new URL(url);
                     if (parsedUrl.hostname === 'canada.ca' || parsedUrl.hostname === 'www.canada.ca') {
                         //Add to "Add pages" input
-                        this.addPagesState.setValidationState({
+                        this.addUrlsService.setUrlState({
                             rawUrls: parsedUrl.href,
                         });
                         //Set project name if unnamed
@@ -55,7 +55,7 @@ export class ImportPageComponent implements OnInit {
                             this.projectState.setProjectName(title);
                         }
                         //Set highlight signal
-                        this.addPagesState.setHighlight(true);
+                        this.addUrlsService.setHighlight(true);
                         this.router.navigate(['/new-project']);
                         return;
                     }

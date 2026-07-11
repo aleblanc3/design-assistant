@@ -10,19 +10,19 @@ import { DrawerModule } from 'primeng/drawer';
 import { MessageModule } from 'primeng/message';
 
 //Custom components and services
-import { ProjectStateService } from '../../services/project-state.service';
-import { IaDiagramService } from '../../components/ia-diagram/ia-diagram.service';
-import { SetupProjectComponent } from '../../components/setup-project/setup-project.component';
-import { SetupRepoComponent } from '../../components/setup-repo/setup-repo.component';
-import { AddCollaboratorsComponent } from '../../components/add-collaborators/add-collaborators.component';
-import { AddPagesComponent } from '../../components/add-pages/add-pages.component';
-import { FindPagesComponent } from '../../components/find-pages/find-pages.component';
+import { ProjectStateService } from '../../../services/project-state.service';
+import { IaDiagramService } from '../../../components/ia-diagram/ia-diagram.service';
+import { SetupProjectComponent } from '../../../components/setup-project/setup-project.component';
+import { SetupRepoComponent } from '../../../components/setup-repo/setup-repo.component';
+import { AddCollaboratorsComponent } from '../../../components/add-collaborators/add-collaborators.component';
+import { FindPagesComponent } from '../../../components/find-pages/find-pages.component';
+import { AddUrlsComponent } from '../../../components/add-urls/add-urls.component';
 
 @Component({
   selector: 'aida-edit-project',
   imports: [
     CommonModule, FormsModule, TranslateModule, RouterLink,
-    SetupProjectComponent, SetupRepoComponent, AddCollaboratorsComponent, AddPagesComponent, FindPagesComponent,
+    SetupProjectComponent, SetupRepoComponent, AddCollaboratorsComponent, FindPagesComponent, AddUrlsComponent,
     DrawerModule, ButtonModule, MessageModule
   ],
   templateUrl: './edit-project.component.html',
@@ -42,6 +42,8 @@ export class EditProjectComponent {
     const repo = this.projectState.getProject().github.repo;
     return !!repo;
   }
+
+  lang = this.projectState.detectPrimaryLanguage();
 
   //Todo: Collaborators management
   collaborators = this.projectState.getProject().collaborators;

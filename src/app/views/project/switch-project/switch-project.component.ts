@@ -34,16 +34,16 @@ import { SelectModule } from 'primeng/select';
 import { MultiSelectModule } from 'primeng/multiselect';
 
 //Services
-import { SetupProjectComponent } from '../../components/setup-project/setup-project.component';
-import { AddCollaboratorsComponent } from '../../components/add-collaborators/add-collaborators.component';
-import { GitHubAuthService } from '../../services/github/github-auth.service';
-import { CollaboratorService } from '../../services/collaborator.service';
+import { SetupProjectComponent } from '../../../components/setup-project/setup-project.component';
+import { AddCollaboratorsComponent } from '../../../components/add-collaborators/add-collaborators.component';
+import { GitHubAuthService } from '../../../services/github/github-auth.service';
+import { CollaboratorService } from '../../../services/collaborator.service';
 
 //Storage
-import { ProjectStateService } from '../../services/project-state.service';
-import { ProjectStorageService } from '../../services/storage/project-storage.service';
-import { CloudStorageService } from '../../services/storage/cloud-storage.service';
-import { ProjectMetadata, ProjectPhase } from '../../common/data.model';
+import { ProjectStateService } from '../../../services/project-state.service';
+import { ProjectStorageService } from '../../../services/storage/project-storage.service';
+import { CloudStorageService } from '../../../services/storage/cloud-storage.service';
+import { ProjectMetadata, ProjectPhase } from '../../../common/data.model';
 
 //TODO: FIX HARDCODED TRANSLATIONS
 

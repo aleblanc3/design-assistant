@@ -15,11 +15,11 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { DividerModule } from 'primeng/divider';
 
 //Custom services and data interfaces
-import { ProjectStateService } from '../../services/project-state.service';
-import { ProjectPhase, PhaseStatus, CurrentPhase, GitHubRepo } from '../../common/data.model';
-import { ExportProjectComponent } from '../../components/export-project/export-project.component';
-import { AddCollaboratorsComponent } from '../../components/add-collaborators/add-collaborators.component';
-import { environment } from '../../../environments/environment';
+import { ProjectStateService } from '../../../services/project-state.service';
+import { ProjectPhase, PhaseStatus, CurrentPhase, GitHubRepo } from '../../../common/data.model';
+import { ExportProjectComponent } from '../../../components/export-project/export-project.component';
+import { AddCollaboratorsComponent } from '../../../components/add-collaborators/add-collaborators.component';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'aida-dashboard',
