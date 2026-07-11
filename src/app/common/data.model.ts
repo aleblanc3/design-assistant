@@ -175,6 +175,15 @@ export interface TreeNodeData {
         en: string;
         fr: string;
     }
+    //Other data sources (airtable, UPD, vanity list)
+    task?: {
+        en: string[];
+        fr: string[];
+    }
+    visits?: {
+        en: number;
+        fr: number;
+    }
     vanity?: {
         en: string[];
         fr: string[];
@@ -182,9 +191,18 @@ export interface TreeNodeData {
     //Status requiring action
     status: PageActions;
     // Version-specific data
-    live?: PageData;
-    baseline?: PageData;
-    prototype?: PageData;
+    live?: {
+        en: LangData;
+        fr: LangData;
+    }
+    baseline?: {
+        en: LangData;
+        fr: LangData;
+    }
+    prototype?: {
+        en: LangData;
+        fr: LangData;
+    }
     // AI generated metadata workflow
     metadataReview?: MetadataReview;
     // User notes
@@ -200,12 +218,6 @@ export interface PageActions {
     isNew: boolean;                  // True if baseline is 404
     isMoved: boolean;                // True if prototype or live originalParent doesn't match baseline originalParent
     isROT: boolean;                  // True if user flags page as ROT (redundant, outdated, trivial)
-}
-
-// New page data interface
-export interface PageData {
-    en: LangData;
-    fr: LangData;
 }
 
 // New lang data interface
@@ -240,9 +252,6 @@ export interface LangData {
     gunningFog?: number;         // Calculated reading grade level
     template?: PageTemplate;   // Determined based on page content & url pattern
     phoneNumbers?: string[];
-    //Other data sources
-    task?: string[];                // Determined by comparing with task airtable data
-    visits?: number;                // Determined by comparing with UPD data
     // Data from problem assistant
     problem?: PageProblem;
 }
