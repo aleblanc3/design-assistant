@@ -1,7 +1,7 @@
 <h2 class="text-2xl mt-3 mb-1">{{connectionStatus() === 'connected' ? ('github.connected' | translate) : ('github.connect' | translate) }}</h2>
 <div class="flex flex-column gap-3">
     <!--Sign in options -->
-    @if (!exportGitHubService.user(); as user) {
+    @if (!exportGitHubService.token()) {
     <p class="my-0">{{ 'github.connect.description' | translate }}</p>
     <!-- Option 1: OAuth Sign In -->
     <div class="flex flex-column lg:flex-row gap-2">

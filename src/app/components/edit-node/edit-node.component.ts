@@ -20,8 +20,7 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 
 //Services
 import { ProjectStateService } from '../../services/project-state.service';
-import { FetchService } from '../../services/fetch.service';
-import { environment } from '../../../environments/environment';
+import { TreeNodeData } from '../../common/data.model';
 
 @Component({
     selector: 'aida-edit-node',
@@ -36,13 +35,12 @@ import { environment } from '../../../environments/environment';
 export class EditNodeComponent {
     public projectState = inject(ProjectStateService);
     private translate = inject(TranslateService);
-    private fetchService = inject(FetchService);
 
     node = input.required<TreeNode>();
     isOpen = input<boolean>(false);
-    close = output<void>();
+    dialogClose = output<void>();
 
-    originalData = signal<any>(null);
+    originalData = signal<TreeNodeData | null>(null);
     hasChanges = signal(false);
     refreshing = signal(false);
     moveError = signal(false);
@@ -74,12 +72,12 @@ export class EditNodeComponent {
         this.projectState.setModifiedDate();
         this.hasChanges.set(false);
         this.originalData.set(structuredClone(this.node().data));
-        this.close.emit();
+        this.dialogClose.emit();
     }
     cancel() {
         Object.assign(this.node().data, structuredClone(this.originalData()));
         this.hasChanges.set(false);
-        this.close.emit();
+        this.dialogClose.emit();
     }
     protected enableEdits(): void {
         this.editsEnabled.set(true);

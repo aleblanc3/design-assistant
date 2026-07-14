@@ -110,7 +110,7 @@
       <p-tabpanels class="shadow-1">
         <!-- Rendered page -->
         <p-tabpanel value="0">
-          <aida-compare-rendered [beforeContent]="compareService.originalHtml()" [afterContent]="compareService.modifiedHtml()" (contentChanged)="onContentChanged($event)"></aida-compare-rendered>
+          <aida-compare-rendered [beforeContent]="compareService.originalHtml()" [afterContent]="compareService.modifiedHtml()" (contentChanged)="onContentChanged($event)" />
         </p-tabpanel>
         <!-- Source code -->
         <!--p-tabpanel value="1">

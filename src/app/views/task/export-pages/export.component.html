@@ -97,7 +97,7 @@
             </div>
         </div>
         @if(repoType() === 'github'){
-        <aida-sign-in-banner></aida-sign-in-banner>
+        <aida-sign-in-banner />
         }
 
     </div>
@@ -239,7 +239,6 @@
     @if (filesTable().length) {
     <span class="text-color-secondary">
         {{ 'exportPages.export.count' | translate:{ New: newCount(), Updated: updatedCount()} }}
-        {{ newCount() }} new and {{ updatedCount() }} updated pages
     </span>
     }
     @if(exportProgress(); as progress) {
@@ -262,6 +261,6 @@
 @if(hasRepoConfig() && repoType() === 'github'){
 <!-- Bookmarklet-->
 <div class="surface-card border-round-lg shadow-2 p-4 my-3 lg:mt-0 min-w-min">
-    <aida-bookmarklet></aida-bookmarklet>
+    <aida-bookmarklet />
 </div>
 }

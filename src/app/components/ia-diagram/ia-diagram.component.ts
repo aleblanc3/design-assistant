@@ -3,7 +3,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 
 // PrimeNG modules
-import { OrganizationChartModule, OrganizationChartNodeExpandEvent, OrganizationChartNodeCollapseEvent } from 'primeng/organizationchart';
+import { OrganizationChartModule } from 'primeng/organizationchart';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import { SelectButtonModule } from 'primeng/selectbutton';
@@ -102,7 +102,7 @@ export class IaDiagramComponent {
   items: MenuItem[] = [];
 
 
-  editNode: boolean = false;
+  editNode = false;
   selectedNode: TreeNode = {};
 
   onMenuClick(event: MouseEvent, node: TreeNode) {
@@ -276,7 +276,7 @@ export class IaDiagramComponent {
     }
   }
 
-  onDrop(node: TreeNode) {
+  onDrop() {
     if (this.selectedView() !== 'changes') return;
     const drag = this.dragNode();
     const drop = this.dropTarget();

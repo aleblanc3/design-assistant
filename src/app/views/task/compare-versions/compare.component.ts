@@ -212,7 +212,7 @@ export class CompareComponent {
       this.compareService.selectedBefore.set(version);
       const result = await this.fetchVersion(version);
       // Save result to cache
-      if (result && result.url) {
+      if (result?.url) {
         this.compareService.setCachedHtml(result.url, result);
       }
       // Set original HTML
@@ -228,7 +228,7 @@ export class CompareComponent {
       this.compareService.selectedAfter.set(version);
       let result = await this.fetchVersion(version);
       // Save result to cache
-      if (result && result.url) {
+      if (result?.url) {
         this.compareService.setCachedHtml(result.url, result);
       }
       // Initialize AI version

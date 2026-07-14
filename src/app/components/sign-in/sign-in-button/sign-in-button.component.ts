@@ -15,13 +15,14 @@ import { DialogModule } from 'primeng/dialog';
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { PasswordModule } from 'primeng/password';
 
-import { GitHubAuthService } from '../../services/github/github-auth.service';
-import { ExportGitHubService } from '../../services/github/export-github.service';
-import { ProjectStorageService } from '../../services/storage/project-storage.service';
-import { ProjectStateService } from '../../services/project-state.service';
-import { environment } from '../../../environments/environment';
-import { PatComponent } from './pat.component';
-import { UserSettingsComponent } from '../user-settings/user-settings.component';
+import { GitHubAuthService } from '../../../services/github/github-auth.service';
+import { ExportGitHubService } from '../../../services/github/export-github.service';
+import { ProjectStorageService } from '../../../services/storage/project-storage.service';
+import { ProjectStateService } from '../../../services/project-state.service';
+import { environment } from '../../../../environments/environment';
+import { PatComponent } from '../pat/pat.component';
+import { UserSettingsComponent } from '../../user-settings/user-settings.component';
+import { GitHubUser } from '../../../common/data.model';
 
 @Component({
   selector: 'aida-sign-in-button',
@@ -42,22 +43,24 @@ export class SignInButtonComponent implements OnInit {
   private projectState = inject(ProjectStateService);
   private translate = inject(TranslateService);
 
+  user = signal<GitHubUser | null>(this.exportGitHubService.user());
+
   // Variables
   showPatSignIn = false;
   showSettings = false;
 
   connectGitHub() {
     if (this.isApiGatewayAccessible()) {
-      this.authService.login(['repo', 'user']);
+      this.authService.login();
     }
     else {
       this.showPatSignIn = true;
     }
   }
 
-  validatePAT() {
+  async validatePAT() {
     this.showPatSignIn = false;
-    this.exportGitHubService.validatePAT();
+    await this.exportGitHubService.validatePAT();
   }
 
   markForTranslation() {

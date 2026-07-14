@@ -1,4 +1,4 @@
-<p-contextMenu #cm [model]="options"></p-contextMenu>
+<p-contextMenu #cm [model]="options" />
 <p-tree [value]="projectTree()"
         [selectionMode]="selectable ? 'multiple' : null" [(selection)]="selectedNode"
         [draggableNodes]="draggable" [droppableNodes]="true" draggableScope="self" droppableScope="self" (onNodeDrop)="handleNodeDrop($event)" [validateDrop]="true"
@@ -19,6 +19,6 @@
 
 <p-dialog [header]="selectedNode?.data?.prototype?.[currentLang].h1" [modal]="true" [maximizable]="true" [(visible)]="editNode" styleClass="w-10" [style]="{ height: '90vh' }">
     @if(selectedNode) {
-    <aida-edit-node [node]="selectedNode" [isOpen]="editNode" (close)="editNode = false" />
+    <aida-edit-node [node]="selectedNode" [isOpen]="editNode" (dialogClose)="editNode = false" />
     }
 </p-dialog>

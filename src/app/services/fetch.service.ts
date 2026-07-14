@@ -623,9 +623,9 @@ export class FetchService {
 
   //Get relative path
   generatePath(url: string): string {
-    const GITHUB_DOMAINS = /cra-test-arc\.canada\.ca|test\.canada\.ca|github\.io/;
-    const LOCAL_DOMAINS = /cra-ut\.isvcs\.net/;
-    const slice = LOCAL_DOMAINS.test(url) ? 4 : GITHUB_DOMAINS.test(url) ? 2 : 1;
+    const isLocal = url.includes('cra-ut.isvcs.net');
+    const isGithub = url.includes('cra-test-arc.canada.ca') || url.includes('test.canada.ca') || url.includes('github.io');
+    const slice = isLocal ? 4 : isGithub ? 2 : 1;
     try {
       return (new URL(url).pathname).split('/').slice(slice).join('/');
     } catch {
@@ -649,9 +649,10 @@ export class FetchService {
         return `http://cra-ut.isvcs.net/test/aida/${repo}/${path}`
       case 'ut-base':
         return `http://cra-ut.isvcs.net/test/aida/${repo}-baseline/${path}`
-      case 'upd':
+      case 'upd': {
         const currentLang = this.translate.currentLang?.startsWith('fr') ? '&lang=FR' : '';
         return `https://cra-arc.alpha.canada.ca/en/pages?url=https://www.canada.ca/${path}${currentLang}`
+      }
       default:
         return `https://www.canada.ca/${path}`
     }

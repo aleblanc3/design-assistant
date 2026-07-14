@@ -101,11 +101,11 @@
 
                     <!-- Bulk actions toolbar - Actions -->
                     <p-button [label]="'common.actions' | translate" icon="pi pi-chevron-down" iconPos="right" severity="primary" outlined styleClass="secondary-outline"
-                              (onClick)="updateDropdown('actions'); menu.toggle($event)"></p-button>
+                              (onClick)="updateDropdown('actions'); menu.toggle($event)" />
 
                     <!-- Bulk actions toolbar - View -->
                     <p-button [label]="'common.view' | translate" icon="pi pi-chevron-down" iconPos="right" severity="secondary" outlined styleClass="secondary-outline"
-                              (onClick)="updateDropdown('view'); menu.toggle($event)"></p-button>
+                              (onClick)="updateDropdown('view'); menu.toggle($event)" />
                 </div>
 
 
@@ -185,8 +185,7 @@
                             <p-tableCheckbox [value]="node" size="large" />
                             <p-button icon="pi pi-pen-to-square" rounded text
                                       [pTooltip]="'common.edit' | translate" tooltipPosition="top" appendTo="body" showDelay="300" hideDelay="0"
-                                      (onClick)="edit(node)">
-                            </p-button>
+                                      (onClick)="edit(node)" />
                         </div>
                     </td>
                     @for(col of frozenColumns(); track col.field){
@@ -196,7 +195,7 @@
                     <!-- Scrollable columns -->
                     @for(col of scrollableColumns(); track col.field){
                     <td [ngClass]="{ 'border-right-1': isLastInGroup(col.field), 'surface-border': isLastInGroup(col.field), 'hasMenu': hasContextMenu(col.group, col.type) }"
-                        (contextmenu)="onRightClick($event, node, col)" (touchstart)="onTouchStart($event, node, col)" (touchend)="onTouchEnd($event, node, col)" (click)="onLeftClick(node, col)"
+                        (contextmenu)="onRightClick($event, node, col)" (touchstart)="onTouchStart($event, node, col)" (touchend)="onTouchEnd()" (click)="onLeftClick(node, col)"
                         [pEditableColumn]="node.field" pEditableColumnField="template">
                         <!-- Text fields -->
                         @if(col.type === 'text'){
@@ -341,8 +340,7 @@
                             </span>
                             <p-button icon="pi pi-external-link" rounded outlined size="small" styleClass="secondary-outline"
                                       [pTooltip]="'common.openNewTab' | translate" tooltipPosition="top" appendTo="body" showDelay="300" hideDelay="0"
-                                      (onClick)="updateDropdown('newTab', node[col.field]); menu.toggle($event)">
-                            </p-button>
+                                      (onClick)="updateDropdown('newTab', node[col.field]); menu.toggle($event)" />
                             <!--a [href]="node[col.field]" target="_blank" rel="noopener" [pTooltip]="expandAllUrls ? null : node[col.field]" [class.line-clamp-2]="!expandAllUrls" tooltipPosition="top" appendTo="body" showDelay="300" hideDelay="0">{{ node[col.field].split('/').pop() }}</a-->
                         </div>
                         }
@@ -391,7 +389,7 @@
         </p-table>
         }
         @else if(projectState.selectedInventoryView === "tree"){
-        <aida-ia-table></aida-ia-table>
+        <aida-ia-table />
         }
     </div>
 
@@ -422,11 +420,11 @@
     </ng-template>
 </p-menu>
 <!--Context Menus-->
-<p-contextMenu #menuContext [model]="itemsContext"></p-contextMenu>
+<p-contextMenu #menuContext [model]="itemsContext" />
 <!-- Edit node popup-->
 <p-dialog [header]="selectedNode.data?.prototype?.[currentLang].h1" [modal]="true" [maximizable]="true" [(visible)]="editNode" styleClass="w-10" [style]="{ height: '90vh' }">
     @if(selectedNode) {
-    <aida-edit-node [node]="selectedNode" [isOpen]="editNode" (close)="editNode = false" />
+    <aida-edit-node [node]="selectedNode" [isOpen]="editNode" (dialogClose)="editNode = false" />
     }
 </p-dialog>
 <!--Confirm deletion-->

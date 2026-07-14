@@ -7,7 +7,7 @@ import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MessageModule } from 'primeng/message';
 
-import { GitHubAuthService } from '../../services/github/github-auth.service';
+import { GitHubAuthService } from '../../../services/github/github-auth.service';
 
 @Component({
   selector: 'aida-auth-callback',

@@ -18,7 +18,7 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { MenuModule } from 'primeng/menu';
-import { ConfirmationService, MenuItem, SortEvent, TreeNode } from 'primeng/api';
+import { ConfirmationService, MenuItem, SortEvent, TreeNode, SelectItemGroup, SelectItem } from 'primeng/api';
 import { ContextMenuModule, ContextMenu } from 'primeng/contextmenu';
 import { SelectModule, SelectChangeEvent } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
@@ -211,9 +211,10 @@ export class InventoryComponent implements OnInit {
     }
 
     // For colspan - count visible columns in group (including frozen)
-    getVisibleColumnCount(group: any): number {
-        return group.items.filter((item: any) => {
+    getVisibleColumnCount(group: SelectItemGroup): number {
+        return group.items.filter((item: SelectItem) => {
             const col = this.allColumns().find(c => c.field === item.value);
+            // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
             return col?.frozen || this.selectedColumnFields.includes(item.value);
         }).length;
     }
@@ -222,18 +223,18 @@ export class InventoryComponent implements OnInit {
     isLastInGroup(field: string): boolean {
         // Find which group this column belongs to
         const group = this.groupedHeaders.find(g =>
-            g.items.some((item: any) => item.value === field)
+            g.items.some((item: SelectItem) => item.value === field)
         );
 
         if (!group) return false;
 
         // Get visible columns in this group
         const visibleInGroup = group.items
-            .filter((item: any) => {
+            .filter((item: SelectItem) => {
                 const col = this.allColumns().find(c => c.field === item.value);
-                return col?.frozen || this.selectedColumnFields.includes(item.value);
+                return col?.frozen ?? this.selectedColumnFields.includes(item.value);
             })
-            .map((item: any) => item.value);
+            .map((item: SelectItem) => item.value);
 
         // Check if this is the last visible column
         const isLast = visibleInGroup[visibleInGroup.length - 1] === field;
@@ -354,7 +355,7 @@ export class InventoryComponent implements OnInit {
 
         //Fully selected groups
         this.selectedGroups = Array.from(groupMembers.entries())
-            .filter(([group, fields]) => {
+            .filter(([, fields]) => {
                 const hasAnySelected = fields.some(field =>
                     this.selectedColumnFields.includes(field)
                 );
@@ -845,7 +846,7 @@ export class InventoryComponent implements OnInit {
         }, 500); // 500ms long press
     }
 
-    onTouchEnd(event: TouchEvent, node: FlattenedTreeNode, col: TableColumn) {
+    onTouchEnd() {
         if (this.touchTimer) {
             clearTimeout(this.touchTimer);
             this.touchTimer = null;
@@ -934,7 +935,7 @@ export class InventoryComponent implements OnInit {
     // Edit metadata (context menu)
     isEditing = false
 
-    isEditingMetadata(node: FlattenedTreeNode, col: TableColumn, editing: boolean = false) {
+    isEditingMetadata(node: FlattenedTreeNode, col: TableColumn, editing = false) {
         return this.currentEditNode === node && this.currentEditCol === col && editing === true;
     }
 
@@ -1004,7 +1005,7 @@ export class InventoryComponent implements OnInit {
 
     // 3. Dialog popup (edit node)
     get currentLang() { return this.translate.currentLang.startsWith('fr') ? 'fr' : 'en' }
-    editNode: boolean = false;
+    editNode = false;
     selectedNode: TreeNode = {};
     edit(node: FlattenedTreeNode) {
         const path = this.lang === 'fr' ? node.frPath : node.enPath;

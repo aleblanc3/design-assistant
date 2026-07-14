@@ -6,13 +6,13 @@ import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
 
 //Components
-import { PatComponent } from './pat.component';
+import { PatComponent } from '../pat/pat.component';
 
 //Services
-import { ProjectStateService } from '../../services/project-state.service';
-import { UserSettingsService } from '../../services/user-settings.service';
-import { ExportGitHubService } from '../../services/github/export-github.service';
-import { GitHubAuthService } from '../../services/github/github-auth.service';
+import { ProjectStateService } from '../../../services/project-state.service';
+import { UserSettingsService } from '../../../services/user-settings.service';
+import { ExportGitHubService } from '../../../services/github/export-github.service';
+import { GitHubAuthService } from '../../../services/github/github-auth.service';
 
 type ConnectionStatus = 'checking' | 'connected' | 'warning' | 'error' | 'missing';
 
@@ -47,9 +47,9 @@ export class SignInBannerComponent implements OnInit {
             const owner = this.projectData().github.owner;
             const repo = this.projectData().github.repo;
             // Only run precheck if we have a token and repo configured
-            if (token && owner && repo) {
+            if (token && token.length >= 40 && owner && repo) {
                 untracked(() => this.validateConnection());
-                //console.warn("Running validation again!")
+                console.warn("Running validation again!")
             } else if (!token) {
                 // No authentication method available
                 this.connectionStatus.set('missing');
@@ -89,6 +89,9 @@ export class SignInBannerComponent implements OnInit {
         } else {
             this.connectionStatus.set('connected');
             this.showDisclaimer.set(result.showDisclaimer ?? false);
+            if (!this.authService.isAuthenticated() && !this.exportGitHubService.user()) {
+                await this.exportGitHubService.validatePAT();
+            }
             //if (result.showDisclaimer) {
             //  console.warn('Connected to GitHub but PAT scope cannot be verified. Please ensure PAT has appropriate scopes.');
             //}

@@ -13,14 +13,6 @@ export interface GitHubFileRequest {
   sha?: string;    // needed when overwriting
 }
 
-interface MermaidNode {
-  id: string;
-  h1: string;
-  url: string;
-  inScope: boolean;
-  children: MermaidNode[];
-}
-
 @Injectable({ providedIn: 'root' })
 export class ExportGitHubService {
   private fetchService = inject(FetchService);
@@ -73,20 +65,20 @@ export class ExportGitHubService {
   }
 
   // PAT - user (fallback access when OAuth not available)
-  private mapGitHubUser(patUser: any): GitHubUser {
+  private mapGitHubUser(patUser: unknown): GitHubUser {
+    const user = patUser as Record<string, unknown>;
     return {
-      login: patUser.login,
-      id: patUser.id,
-      avatar_url: patUser.avatar_url,
-      name: patUser.name,
-      email: patUser.email
+      login: user['login'] as string,
+      id: user['id'] as number,
+      avatar_url: user['avatar_url'] as string,
+      name: user['name'] as string,
+      email: user['email'] as string
     };
   }
 
   // Validate PAT
   public async validatePAT() {
     const token = this.pat;
-    console.log('Validating: ' + token);
     try {
       // Step 1: Validate token by calling /user endpoint
       const userResponse = await fetch('https://api.github.com/user', {
@@ -103,8 +95,10 @@ export class ExportGitHubService {
         const user = await userResponse.json();
         this.patUser.set(this.mapGitHubUser(user));
         sessionStorage.setItem(this.PAT_USER_STORAGE_KEY, JSON.stringify(user));
+        console.log('patUser set:', this.patUser());
+        console.log('user computed:', this.user());
       }
-    } catch (error) {
+    } catch {
       console.log('Network error validating token')
     }
   }
@@ -130,10 +124,8 @@ export class ExportGitHubService {
       }
 
       const user = await userResponse.json();
-      //if (!this.authService.isAuthenticated()) {
-      //  this.patUser.set(this.mapGitHubUser(user));
-      //}
-      const tokenScopes = userResponse.headers.get('x-oauth-scopes')?.split(',').map(s => s.trim()) || []; //Will be empty if using PAT
+
+      const tokenScopes = userResponse.headers.get('x-oauth-scopes')?.split(',').map(s => s.trim()) ?? []; //Will be empty if using PAT
 
       // Step 2: Check if repo exists (and get permissions if it does)
       const repoResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
@@ -217,7 +209,7 @@ export class ExportGitHubService {
       else {
         return { valid: false, error: `Error checking repo: ${repoResponse.status}` };
       }
-    } catch (error) {
+    } catch {
       return { valid: false, error: 'Network error validating token' };
     }
   }
@@ -239,8 +231,8 @@ export class ExportGitHubService {
 
   //TODO: replace this with version from html-normalization service
   private async formatHtmlWithPrettier(html: string): Promise<string> {
-    if (!(navigator as any).languages) {
-      (navigator as any).languages = ['en']; // fallback locale
+    if (!navigator.languages?.length) {
+      Object.assign(navigator, { languages: ['en'] });
     }
 
     try {
@@ -387,10 +379,10 @@ export class ExportGitHubService {
       // Fix relative URLs
       mainEl.querySelectorAll<HTMLElement>("*").forEach(el => {
         for (const attr of Array.from(el.attributes)) {
-          if (attr.value && attr.value.includes('"/')) {
+          if (attr?.value.includes('"/')) {
             attr.value = attr.value.replace(/"\//g, '"https://www.canada.ca/');
           }
-          if (attr.value && attr.value.startsWith("/")) {
+          if (attr?.value.startsWith("/")) {
             attr.value = `https://www.canada.ca${attr.value}`;
           }
         }
@@ -399,6 +391,7 @@ export class ExportGitHubService {
       // Change layout for atypical H1's or full width banners (most requested etc.)
       const h1s = doc.querySelectorAll("h1");
       const hasSubway = doc.querySelector(".gc-subway");
+      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
       const hasLeadAboveH1 = h1s[0]?.previousElementSibling?.matches("p.lead") || !!h1s[0]?.previousElementSibling?.querySelector?.("p.lead");
       const hasHgroup = doc.querySelector("hgroup");
       if (

@@ -1,4 +1,4 @@
-import { Component, inject, computed, ViewChild, effect, signal } from '@angular/core';
+import { Component, inject, computed, ViewChild, effect, OnInit } from '@angular/core';
 import { CommonModule, LocationStrategy } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -35,7 +35,7 @@ import { FetchService } from '../../services/fetch.service';
     templateUrl: './ia-table.component.html',
     styleUrl: './ia-table.component.css'
 })
-export class IaTableComponent {
+export class IaTableComponent implements OnInit {
     private projectState = inject(ProjectStateService);
     private treeNodeStyleService = inject(TreeNodeStyleService);
     private settingsService = inject(UserSettingsService);
@@ -48,7 +48,7 @@ export class IaTableComponent {
     selectedNode: TreeNode = {};
 
     //For edit node popup
-    editNode: boolean = false;
+    editNode = false;
 
     //Drag & drop states
     draggable = true;
@@ -86,13 +86,16 @@ export class IaTableComponent {
         if (!path) return;
 
         // Edit node
-        this.options = [
-            {
-                label: this.translate.instant(`common.editNode`),
-                icon: "pi pi-pen-to-square",
-                command: () => { this.editNode = true }
-            }
-        ];
+        this.options = []
+
+        if (!isContainer) {
+            this.options.push(
+                {
+                    label: this.translate.instant(`common.editNode`),
+                    icon: "pi pi-pen-to-square",
+                    command: () => { this.editNode = true }
+                });
+        }
 
         // Reorder siblings
         const siblings = this.projectState.getSiblings(this.selectedNode);
@@ -123,7 +126,7 @@ export class IaTableComponent {
         }
 
         // Find child pages
-        if (!this.selectedNode.data.isCrawled) {
+        if (!this.selectedNode.data.isCrawled && !isContainer) {
             this.options.push({
                 label: this.translate.instant(`iaDiagram.menu.findChildren`),
                 icon: "pi pi-search",
@@ -152,39 +155,41 @@ export class IaTableComponent {
         const prototypeUrl = this.fetchService.generateUrl(path, "prototype", github.owner, github.repo);
         const baselineUrl = this.fetchService.generateUrl(path, "baseline", github.owner, github.repo);
         const updUrl = `https://cra-arc.alpha.canada.ca/en/pages?url=${liveUrl}${this.currentLang}`;
-        this.options.push(
-            { separator: true },
-            {
-                label: this.translate.instant('common.openNewTab'),
-                icon: 'pi pi-external-link',
-                items: [
-                    {
-                        label: this.translate.instant('inventory.menu.newTab.liveUrl'),
-                        icon: 'pi pi-external-link',
-                        command: () => { window.open(liveUrl, '_blank'); }
-                    },
-                    {
-                        label: this.translate.instant('inventory.menu.newTab.previewUrl'),
-                        icon: 'pi pi-external-link',
-                        command: () => { window.open(previewUrl, '_blank'); }
-                    },
-                    {
-                        label: this.translate.instant('inventory.menu.newTab.prototypeUrl'),
-                        icon: 'pi pi-external-link',
-                        command: () => { window.open(prototypeUrl, '_blank'); }
-                    },
-                    {
-                        label: this.translate.instant('inventory.menu.newTab.baselineUrl'),
-                        icon: 'pi pi-external-link',
-                        command: () => { window.open(baselineUrl, '_blank'); }
-                    },
-                    {
-                        label: this.translate.instant('inventory.menu.newTab.UPD'),
-                        icon: 'pi pi-external-link',
-                        command: () => { window.open(updUrl, '_blank'); }
-                    },
-                ]
-            });
+        if (!isContainer) {
+            this.options.push(
+                { separator: true },
+                {
+                    label: this.translate.instant('common.openNewTab'),
+                    icon: 'pi pi-external-link',
+                    items: [
+                        {
+                            label: this.translate.instant('inventory.menu.newTab.liveUrl'),
+                            icon: 'pi pi-external-link',
+                            command: () => { window.open(liveUrl, '_blank'); }
+                        },
+                        {
+                            label: this.translate.instant('inventory.menu.newTab.previewUrl'),
+                            icon: 'pi pi-external-link',
+                            command: () => { window.open(previewUrl, '_blank'); }
+                        },
+                        {
+                            label: this.translate.instant('inventory.menu.newTab.prototypeUrl'),
+                            icon: 'pi pi-external-link',
+                            command: () => { window.open(prototypeUrl, '_blank'); }
+                        },
+                        {
+                            label: this.translate.instant('inventory.menu.newTab.baselineUrl'),
+                            icon: 'pi pi-external-link',
+                            command: () => { window.open(baselineUrl, '_blank'); }
+                        },
+                        {
+                            label: this.translate.instant('inventory.menu.newTab.UPD'),
+                            icon: 'pi pi-external-link',
+                            command: () => { window.open(updUrl, '_blank'); }
+                        },
+                    ]
+                });
+        }
     }
 
     // Page moves

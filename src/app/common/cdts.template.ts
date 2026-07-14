@@ -547,7 +547,7 @@ let inlineStyleText1, inlineStyleText2,
         }
     }, 
     getDomain = function (url) {
-        let pattern = new RegExp("^(https?:\/\/[^\/]+\/[^\/]*\/?)"), 
+        let pattern = new RegExp("^(https?://[^/]+/[^/]*/?)"), 
             domains = pattern.exec(url);
 
         if (domains !== null) {

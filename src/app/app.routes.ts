@@ -24,7 +24,7 @@ import { HelpComponent } from './views/static/help/help.component';
 import { StandaloneComponent } from './views/standalone/standalone.component';
 
 // Authentication
-import { AuthCallbackComponent } from './components/sign-in/auth-callback.component';
+import { AuthCallbackComponent } from './components/sign-in/auth-callback/auth-callback.component';
 
 // Project Storage (for route guards)
 import { ProjectStorageService } from './services/storage/project-storage.service';

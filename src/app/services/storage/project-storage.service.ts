@@ -2,7 +2,7 @@ import { Injectable, inject, signal, computed } from '@angular/core';
 import { CloudStorageService } from './cloud-storage.service';
 import { LocalStorageService } from './local-storage.service';
 import { FetchService } from '../fetch.service';
-import { Project, ProjectMetadata, ProjectTreeNodeData, LangData } from '../../common/data.model';
+import { Project, ProjectMetadata, ProjectTreeNodeData, LangData, PageTemplate } from '../../common/data.model';
 import { TreeNode } from 'primeng/api';
 
 export interface ActiveProject {
@@ -485,15 +485,15 @@ export class ProjectStorageService {
         const enPath = enUrl ? this.fetchService.generatePath(enUrl) : undefined;
         const frPath = frUrl ? this.fetchService.generatePath(frUrl) : undefined;
 
-        const enData = {
-            h1: urlLang === 'en' ? old.h1 : old.metadata?.oppTitle,
+        const enData: LangData = {
+            h1: urlLang === 'en' ? old.h1 : old.metadata?.oppTitle ?? '',
             doubleH1: urlLang === 'en' ? old.doubleH1 : old.metadata?.oppSectionTitle,
             contentHash: undefined,
             lastChecked: undefined,
             githubSha: undefined,
-            title: old.metadata?.title,
-            description: old.metadata?.description,
-            keywords: old.metadata?.keywords,
+            title: old.metadata?.title ?? '',
+            description: old.metadata?.description ?? '',
+            keywords: old.metadata?.keywords ?? '',
             is404: old.status?.isNew ?? false,
             isOrphan: old.status?.isOrphan ?? false,
             noindex: old.status?.noindexEN === true,
@@ -509,22 +509,24 @@ export class ProjectStorageService {
                 ? old.metadata.lastModified.toISOString()
                 : old.metadata?.lastModified,
             parentPath: this.fetchService.generatePath(old.originalParent),
-            wordCount: old.metadata?.wordCount,
-            template: old.metadata?.template,
-            task: old.metadata?.task,
-            visits: old.metadata?.visits,
+            wordCount: old.metadata?.wordCount ?? -1,
+            linkCount: -1,
+            fleschKincaid: -1,
+            gunningFog: -1,
+            phoneNumbers: [],
+            template: old.metadata?.template ?? PageTemplate.Content,
             problem: undefined,
         };
 
-        const frData = {
-            h1: urlLang === 'fr' ? old.h1 : old.metadata?.oppTitle,
+        const frData: LangData = {
+            h1: urlLang === 'fr' ? old.h1 : old.metadata?.oppTitle ?? '',
             doubleH1: urlLang === 'fr' ? old.doubleH1 : old.metadata?.oppSectionTitle,
             contentHash: undefined,
             lastChecked: undefined,
             githubSha: undefined,
-            title: old.metadata?.titleFR,
-            description: old.metadata?.descriptionFR,
-            keywords: old.metadata?.keywordsFR,
+            title: old.metadata?.titleFR ?? '',
+            description: old.metadata?.descriptionFR ?? '',
+            keywords: old.metadata?.keywordsFR ?? '',
             is404: old.status?.isNew ?? false,
             isOrphan: old.status?.isOrphan ?? false,
             noindex: old.status?.noindexFR === true,
@@ -540,10 +542,12 @@ export class ProjectStorageService {
                 ? old.metadata.lastModified.toISOString()
                 : old.metadata?.lastModified,
             parentPath: this.fetchService.generatePath(old.originalParent),
-            wordCount: old.metadata?.wordCount,
-            template: old.metadata?.template,
-            task: old.metadata?.task,
-            visits: old.metadata?.visits,
+            wordCount: old.metadata?.wordCount ?? -1,
+            linkCount: -1,
+            fleschKincaid: -1,
+            gunningFog: -1,
+            phoneNumbers: [],
+            template: old.metadata?.template ?? PageTemplate.Content,
             problem: undefined,
         };
 
@@ -561,6 +565,9 @@ export class ProjectStorageService {
                     isMoved: old.status?.isMoved ?? false,
                     isROT: old.status?.isROT ?? false,
                 },
+                task: { en: old.metadata?.task ?? [], fr: old.metadata?.task ?? [] },
+                visits: { en: old.metadata?.visits ?? -1, fr: old.metadata?.visits ?? -1 },
+                vanities: { en: [], fr: [] },
                 live: { en: enData, fr: frData },
                 baseline: { en: githubEnData, fr: githubFrData },
                 prototype: { en: githubEnData, fr: githubFrData },

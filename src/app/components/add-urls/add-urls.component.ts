@@ -1,8 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { marker } from '@colsen1991/ngx-translate-extract-marker';
 
 //PrimeNG
 import { IftaLabelModule } from 'primeng/iftalabel';
@@ -24,7 +23,7 @@ import { AddUrlsService } from './add-urls.service';
     templateUrl: './add-urls.component.html',
     styles: ``
 })
-export class AddUrlsComponent {
+export class AddUrlsComponent implements OnInit {
     private translate = inject(TranslateService)
     private projectState = inject(ProjectStateService)
     public addUrlsService = inject(AddUrlsService);

@@ -1,9 +1,8 @@
 import { Injectable, signal, computed, inject, effect } from '@angular/core';
-import { Project, ProjectMetadata, ProjectPhase, GitHubRepo, GitHubUser, ProjectTreeNodeData, TreeNodeData, FlattenedTreeNode, TableColumn, MetadataReview, PageTemplate, LangData } from '../common/data.model';
+import { Project, ProjectPhase, GitHubRepo, GitHubUser, ProjectTreeNodeData, TreeNodeData, FlattenedTreeNode, TableColumn, MetadataReview, PageTemplate, LangData } from '../common/data.model';
 import { TreeNode } from 'primeng/api';
 import { environment } from '../../environments/environment';
 import { TranslateService } from '@ngx-translate/core';
-import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { version as appVersion } from '../../../package.json'
 
 import { ProjectStorageService } from '../services/storage/project-storage.service';
@@ -118,7 +117,6 @@ export class ProjectStateService {
 
     // Set entire project
     setProject(project: Project) {
-        const diff = project.lastSaved.getTime() - project.lastModified.getTime();
         this.project.set(project);
     }
 
@@ -395,7 +393,7 @@ export class ProjectStateService {
                 // Merge children
                 if (node.children?.length) {
                     existing.children = this.mergeTreeNodes(
-                        existing.children || [],
+                        existing.children ?? [],
                         node.children
                     );
                 }
@@ -509,7 +507,7 @@ export class ProjectStateService {
         const blob = new Blob([data], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
 
-        const filename = project.github.repo || project.projectName || project.id;
+        const filename = project.github.repo ?? project.projectName ?? project.id;
         const a = document.createElement('a');
         a.href = url;
         a.download = `${filename}.json`;
@@ -592,33 +590,33 @@ export class ProjectStateService {
                 flatNodes.push({
                     //English
                     enPath: data.path.en,
-                    enH1: data.prototype?.en.h1 || '',
-                    enDoubleH1: data.prototype?.en.doubleH1 || '',
-                    enVanity: data.vanity?.en || [],
+                    enH1: data.prototype?.en.h1 ?? '',
+                    enDoubleH1: data.prototype?.en.doubleH1 ?? '',
+                    enVanity: data.vanity?.en ?? [],
                     //French
                     frPath: data.path.fr,
-                    frH1: data.prototype?.fr.h1 || '',
-                    frDoubleH1: data.prototype?.fr.doubleH1 || '',
-                    frVanity: data.vanity?.fr || [],
+                    frH1: data.prototype?.fr.h1 ?? '',
+                    frDoubleH1: data.prototype?.fr.doubleH1 ?? '',
+                    frVanity: data.vanity?.fr ?? [],
                     //Status
                     inScope: data.status.inScope,
                     isNew: data.status.isNew,
                     isMoved: data.status.isMoved,
                     isROT: data.status.isROT,
-                    isArchived: data.prototype?.en.isArchived || data.prototype?.fr.isArchived || false,
-                    noindex: data.prototype?.en.noindex || data.prototype?.fr.noindex || false,
+                    isArchived: data.prototype?.en.isArchived ?? data.prototype?.fr.isArchived ?? false,
+                    noindex: data.prototype?.en.noindex ?? data.prototype?.fr.noindex ?? false,
                     //Actions
                     actions: [],
                     //Problems
-                    isOrphan: data.live?.en.isOrphan || data.live?.fr.isOrphan || false,
+                    isOrphan: data.live?.en.isOrphan ?? data.live?.fr.isOrphan ?? false,
                     //Notes
-                    issue: data.notes?.issue || '',
-                    solution: data.notes?.solution || '',
+                    issue: data.notes?.issue ?? '',
+                    solution: data.notes?.solution ?? '',
                     //Data
-                    template: data.prototype?.[lang].template || '',
-                    linksToPortal: data.live?.en.linksToPortal || data.live?.fr.linksToPortal || false,
-                    hasChatbot: data.live?.en.hasChatbot || data.live?.fr.hasChatbot || false,
-                    task: data.task?.[lang] || [],
+                    template: data.prototype?.[lang].template ?? '',
+                    linksToPortal: data.live?.en.linksToPortal ?? data.live?.fr.linksToPortal ?? false,
+                    hasChatbot: data.live?.en.hasChatbot ?? data.live?.fr.hasChatbot ?? false,
+                    task: data.task?.[lang] ?? [],
                     visits: data.visits?.[lang] ?? undefined,
                     updLink: '',
                     wordCount: data.live?.[lang].wordCount,
@@ -629,15 +627,15 @@ export class ProjectStateService {
                     lastModified: data.live?.[lang]?.lastModified ? new Date(data.live[lang]!.lastModified!) : undefined,
                     lastPublished: data.live?.[lang]?.lastPublished ? new Date(data.live[lang]!.lastPublished!) : undefined,
                     //Owner
-                    owner: data.live?.[lang].owner || '',
-                    email: data.live?.[lang].email || '',
+                    owner: data.live?.[lang].owner ?? '',
+                    email: data.live?.[lang].email ?? '',
                     //Metadata (prototype)
-                    titleEN: data.prototype?.en.title || '',
-                    descriptionEN: data.prototype?.en.description || '',
-                    keywordsEN: data.prototype?.en.keywords || '',
-                    titleFR: data.prototype?.fr.title || '',
-                    descriptionFR: data.prototype?.fr.description || '',
-                    keywordsFR: data.prototype?.fr.keywords || '',
+                    titleEN: data.prototype?.en.title ?? '',
+                    descriptionEN: data.prototype?.en.description ?? '',
+                    keywordsEN: data.prototype?.en.keywords ?? '',
+                    titleFR: data.prototype?.fr.title ?? '',
+                    descriptionFR: data.prototype?.fr.description ?? '',
+                    keywordsFR: data.prototype?.fr.keywords ?? '',
                     //AI Metadata
                     aiDescriptionEN: data.metadataReview?.en.description,
                     aiKeywordsEN: data.metadataReview?.en.keywords,
@@ -772,19 +770,19 @@ export class ProjectStateService {
             'Original Parent URL',
         ].join(','));
 
-        const walk = (nodes: TreeNode<ProjectTreeNodeData>[], parentUrl: string | null = null) => {
+        const walk = (nodes: TreeNode<ProjectTreeNodeData>[]) => {
             for (const node of nodes) {
                 const data = node.data;
                 if (!data) continue;
 
                 rows.push([
                     //Current language
-                    data.h1 || '',
-                    data.doubleH1 || '',
-                    data.url || '',
+                    data.h1 ?? '',
+                    data.doubleH1 ?? '',
+                    data.url ?? '',
                     //Opposite language
-                    `"${data.metadata?.oppTitle || ''}"`,
-                    data.metadata?.oppUrl || '',
+                    `"${data.metadata?.oppTitle ?? ''}"`,
+                    data.metadata?.oppUrl ?? '',
                     //GitHub
                     //this.generatePrototypeUrl(data.url),
                     //Status
@@ -797,23 +795,23 @@ export class ProjectStateService {
                     data.status.archiveStatus ?? '',
                     //Problems
                     //Owner
-                    data.metadata?.owner || '',
-                    data.metadata?.email || '',
+                    data.metadata?.owner ?? '',
+                    data.metadata?.email ?? '',
                     //Data
-                    data.metadata?.template || '',
-                    data.metadata?.task || '',
-                    data.metadata?.visits || '',
+                    data.metadata?.template ?? '',
+                    data.metadata?.task ?? '',
+                    data.metadata?.visits ?? '',
                     //Metadata
-                    data.metadata?.title || '',
-                    data.metadata?.description || '',
-                    data.metadata?.keywords || '',
+                    data.metadata?.title ?? '',
+                    data.metadata?.description ?? '',
+                    data.metadata?.keywords ?? '',
                     //Move info
-                    data.originalParent || '',
+                    data.originalParent ?? '',
 
                 ].join(','));
 
                 if (node.children?.length) {
-                    walk(node.children, data.url);
+                    walk(node.children);
                 }
             }
         };
@@ -824,7 +822,7 @@ export class ProjectStateService {
         const url = URL.createObjectURL(blob);
 
         const proj = this.project();
-        const filename = proj.github.repo || proj.projectName || proj.id;
+        const filename = proj.github.repo ?? proj.projectName ?? proj.id;
         const a = document.createElement('a');
         a.href = url;
         a.download = `${filename}-content-inventory.csv`;
@@ -890,7 +888,7 @@ export class ProjectStateService {
         const url = URL.createObjectURL(blob);
 
         const proj = this.project();
-        const filename = proj.github.repo || proj.projectName || proj.id;
+        const filename = proj.github.repo ?? proj.projectName ?? proj.id;
         const a = document.createElement('a');
         a.href = url;
         a.download = `${filename}-tree-testing.csv`;
@@ -988,8 +986,8 @@ export class ProjectStateService {
                 if (url && !selectedUrls.has(url)) {
                     additionalPages.push({
                         url,
-                        h1: desc.data?.prototype?.[lang].h1 || '',
-                        inScope: desc.data?.status.inScope || false
+                        h1: desc.data?.prototype?.[lang].h1 ?? '',
+                        inScope: desc.data?.status.inScope ?? false
                     });
                     selectedUrls.add(url);
                 }
@@ -1018,7 +1016,6 @@ export class ProjectStateService {
 
     deleteNode(nodeToDelete: TreeNode) {
         const projectTree = this.getProjectTree();
-        const lang = this.detectPrimaryLanguage();
 
         // Root-level
         const rootIndex = this.project().projectData.findIndex(n => n === nodeToDelete)
@@ -1069,8 +1066,8 @@ export class ProjectStateService {
                             const url = this.fetchService.generateUrl(ancestor.data.path[lang], "live");
                             const h1 = ancestor.data.live?.[lang].h1
                             breadcrumbs.push({
-                                title: h1 || "",
-                                link: url || ""
+                                title: h1 ?? "",
+                                link: url ?? ""
                             });
                         }
                     }
@@ -1228,8 +1225,8 @@ export class ProjectStateService {
         }
         // Other data sources
         data.visits = {
-            en: this.updService.findVisitsByUrl(liveEnUrl.replace('https://', '')) || - 1,
-            fr: this.updService.findVisitsByUrl(liveFrUrl.replace('https://', '')) || - 1,
+            en: this.updService.findVisitsByUrl(liveEnUrl.replace('https://', '')) ?? - 1,
+            fr: this.updService.findVisitsByUrl(liveFrUrl.replace('https://', '')) ?? - 1,
         };
         data.task = {
             en: this.airtableService.findTaskNamesByUrl(liveEnUrl, 'en'),
@@ -1242,7 +1239,7 @@ export class ProjectStateService {
         this.setModifiedDate();
     }
 
-    public getPath(url: string, live: boolean = true): string {
+    public getPath(url: string, live = true): string {
         try {
             let pathName = new URL(url).pathname;
             if (!live) {
@@ -1271,9 +1268,9 @@ export class ProjectStateService {
             lastChecked: undefined,
             githubSha: undefined,
             //Metadata
-            title: undefined,
-            description: undefined,
-            keywords: undefined,
+            title: '',
+            description: '',
+            keywords: '',
             //Status
             is404: true,
             isOrphan: false,
@@ -1288,8 +1285,11 @@ export class ProjectStateService {
             lastModified: undefined,
             //Data
             parentPath: parentPathEN,
-            wordCount: undefined,
-            linkCount: undefined,
+            wordCount: 0,
+            linkCount: 0,
+            fleschKincaid: 0,
+            gunningFog: 0,
+            phoneNumbers: [],
             template: PageTemplate.Content,
             // Data from problem assistant
             problem: undefined,
@@ -1304,25 +1304,30 @@ export class ProjectStateService {
 
         const lang = parent.data.lang;
 
+        const data: TreeNodeData = {
+            lang: lang,
+            path: { en: placeholderPathEN, fr: placeholderPathFR },
+            task: { en: [], fr: [] },
+            visits: { en: -1, fr: -1 },
+            vanity: { en: [], fr: [] },
+            status: {
+                inScope: true,
+                isNew: true,
+                isMoved: false,
+                isROT: false,
+            },
+            baseline: { en: enData, fr: frData },
+            live: { en: enData, fr: frData },
+            prototype: { en: enData, fr: frData },
+            metadataReview: undefined,
+            notes: undefined,
+            isContainer: false,
+            isCrawled: false,
+        }
+
         const node: TreeNode = {
             label: lang === 'fr' ? 'Nouvelle page' : 'New Page',
-            data: {
-                lang: lang,
-                path: { en: placeholderPathEN, fr: placeholderPathFR },
-                status: {
-                    inScope: true,
-                    isNew: true,
-                    isMoved: false,
-                    isROT: false,
-                },
-                baseline: { en: enData, fr: frData },
-                live: { en: enData, fr: frData },
-                prototype: { en: enData, fr: frData },
-                metadataReview: undefined,
-                notes: undefined,
-                isContainer: false,
-                isCrawled: false,
-            },
+            data: data,
             expanded: true,
             children: [],
             parent,
@@ -1339,7 +1344,7 @@ export class ProjectStateService {
         if (nodes.length > 0 && nodes[0].children && nodes[0].children.length > 0) {
             if (nodes[0].children[0].data.lang) { return nodes[0].children[0].data.lang }
             //Fallback for older method of storing primary lang (can be removed when all projects converted)
-            const firstUrl = nodes[0].children[0].data?.url || '';
+            const firstUrl = nodes[0].children[0].data?.url ?? '';
             return firstUrl.includes('/en/') || firstUrl.includes('/en.html') ? 'en' : 'fr';
         }
         return 'en'; // fallback
@@ -1434,7 +1439,7 @@ export class ProjectStateService {
         // Check for moved nodes and keep processing until no more are found        
         let hasMovedNodes = true;
         while (hasMovedNodes) {
-            const movedNodes: Array<{ node: TreeNode, originalParentUrl: string }> = [];
+            const movedNodes: { node: TreeNode, originalParentUrl: string }[] = [];
             this.collectMovedNodes(clonedTree, movedNodes, true, mode);
 
             if (movedNodes.length === 0) {
@@ -1448,7 +1453,7 @@ export class ProjectStateService {
                     : this.findNodeByPath(clonedTree, originalParentUrl, lang);
 
                 if (originalParent) {
-                    originalParent.children = originalParent.children || [];
+                    originalParent.children ??= [];
                     originalParent.children.push(node);
                     node.parent = originalParent;
                 }
@@ -1477,7 +1482,7 @@ export class ProjectStateService {
         return clonedTree;
     }
 
-    private collectMovedNodes(nodes: TreeNode[], movedNodes: Array<{ node: TreeNode, originalParentUrl: string }>, isTopLevel = false, mode: 'full' | 'custom' = 'full'): void {
+    private collectMovedNodes(nodes: TreeNode[], movedNodes: { node: TreeNode, originalParentUrl: string }[], isTopLevel = false, mode: 'full' | 'custom' = 'full'): void {
         for (let i = nodes.length - 1; i >= 0; i--) {
             const node = nodes[i];
             const lang = this.detectPrimaryLanguage();

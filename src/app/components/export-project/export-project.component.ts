@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { Router } from '@angular/router';
 
 //PrimeNG modules
@@ -32,14 +31,16 @@ export class ExportProjectComponent {
                 label: this.translate.instant('export.github'),
                 icon: 'pi pi-github',
                 command: () => {
-                    this.projectState.getProject().repoType = 'github', this.router.navigate(['/export-pages']);
+                    this.projectState.getProject().repoType = 'github';
+                    this.router.navigate(['/export-pages']);
                 },
             },
             {
                 label: this.translate.instant('export.html'),
                 icon: 'pi pi-link',
                 command: () => {
-                    this.projectState.getProject().repoType = 'local', this.router.navigate(['/export-pages']);
+                    this.projectState.getProject().repoType = 'local';
+                    this.router.navigate(['/export-pages']);
                 },
             },
             {

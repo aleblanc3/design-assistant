@@ -28,7 +28,7 @@ import { HtmlNormalizationService } from '../../../services/html-normalization.s
 
 //Components
 import { SetupRepoComponent } from '../../../components/setup-repo/setup-repo.component';
-import { SignInBannerComponent } from '../../../components/sign-in/sign-in-banner.component';
+import { SignInBannerComponent } from '../../../components/sign-in/sign-in-banner/sign-in-banner.component';
 import { BookmarkletComponent } from '../../../components/bookmarklet/bookmarklet.component';
 
 import { CDTS_TEMPLATE_ENG, CDTS_TEMPLATE_FRA, EXIT_PAGE_TEMPLATE_ENG, EXIT_PAGE_TEMPLATE_FRA, LINK_DETOUR_JS } from '../../../common/cdts.template';
@@ -119,7 +119,7 @@ export class ExportComponent implements OnInit {
   constructor() {
     // Watch for changes to repo settings and run compareFiles()
     effect(async () => {
-      const token = this.exportGitHubService.token();
+      void this.exportGitHubService.token(); // track signal
       const owner = this.projectData().github.owner;
       const repo = this.projectData().github.repo;
       const repoType = this.projectData().repoType;
@@ -346,7 +346,7 @@ export class ExportComponent implements OnInit {
 
   getIcon(status: ExportStatus): string {
     const config = this.colorConfig[status];
-    return `${config.icon} ${config.text}` || '';
+    return `${config.icon} ${config.text}`;
   }
 
   getBgAndText(status: ExportStatus): string {
@@ -469,7 +469,7 @@ export class ExportComponent implements OnInit {
       const depth = "../".repeat(path.split("/").length - 1);
 
       //Content (TODO: subway templates)
-      const template = node?.data.prototype[lang].template;
+      //const template = node?.data.prototype[lang].template;
       const doc = await this.fetchService.fetchContent(url, "both");
       const { content, styles, scripts } = await this.htmlNormalizationService.cleanContentForCdts(doc);
 
@@ -650,7 +650,6 @@ export class ExportComponent implements OnInit {
     // Step 4: Export each page to GitHub
     const existingFiles = await this.exportGitHubService.getRepoTree(owner, repo, branch, token);
     const progressPerFile = 60 / exportPages.length;
-    const primaryLang = this.projectState.detectPrimaryLanguage();
 
     for (const [index, page] of exportPages.entries()) {
       try {

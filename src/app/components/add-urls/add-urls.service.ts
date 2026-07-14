@@ -362,16 +362,16 @@ export class AddUrlsService {
 
         // Step 4: Create node
         const enData: LangData = {
-            h1: pageDataEN?.h1,
+            h1: pageDataEN?.h1 ?? 'Missing H1',
             doubleH1: pageDataEN?.doubleH1,
             //Content
             contentHash: pageDataEN?.contentHash,
             lastChecked: pageDataEN?.lastChecked,
             githubSha: undefined,
             //Metadata
-            title: pageDataEN?.title,
-            description: pageDataEN?.description,
-            keywords: pageDataEN?.keywords,
+            title: pageDataEN?.title ?? '',
+            description: pageDataEN?.description ?? '',
+            keywords: pageDataEN?.keywords ?? '',
             //Status
             is404: !pageDataEN, //TODO: set to true for baseline/prototype until export
             isOrphan: enOrphan,
@@ -386,27 +386,27 @@ export class AddUrlsService {
             lastModified: jsonDataEN?.lastModified,
             //Data
             parentPath: pageDataEN?.parentPath,
-            wordCount: pageDataEN?.wordCount,
-            linkCount: pageDataEN?.linkCount,
-            template: jsonDataEN?.isFreestyle ? PageTemplate.Freestyle : pageDataEN?.template,
-            fleschKincaid: pageDataEN?.fleschKincaid,
-            gunningFog: pageDataEN?.gunningFog,
+            wordCount: pageDataEN?.wordCount ?? -1,
+            linkCount: pageDataEN?.linkCount ?? -1,
+            template: jsonDataEN?.isFreestyle ? PageTemplate.Freestyle : pageDataEN?.template ?? PageTemplate.Content,
+            fleschKincaid: pageDataEN?.fleschKincaid ?? -1,
+            gunningFog: pageDataEN?.gunningFog ?? -1,
             phoneNumbers: pageDataEN?.phoneNumbers ?? [],
             // Data from problem assistant
             problem: undefined,
         };
 
         const frData: LangData = {
-            h1: pageDataFR?.h1,
+            h1: pageDataFR?.h1 ?? 'Missing H1',
             doubleH1: pageDataFR?.doubleH1,
             //Content
             contentHash: pageDataFR?.contentHash,
             lastChecked: pageDataFR?.lastChecked,
             githubSha: undefined,
             //Metadata
-            title: pageDataFR?.title,
-            description: pageDataFR?.description,
-            keywords: pageDataFR?.keywords,
+            title: pageDataFR?.title ?? '',
+            description: pageDataFR?.description ?? '',
+            keywords: pageDataFR?.keywords ?? '',
             //Status
             is404: !pageDataFR,
             isOrphan: frOrphan,
@@ -421,11 +421,11 @@ export class AddUrlsService {
             lastModified: jsonDataFR?.lastModified,
             //Data
             parentPath: pageDataFR?.parentPath,
-            wordCount: pageDataFR?.wordCount,
-            linkCount: pageDataFR?.linkCount,
-            template: jsonDataFR?.isFreestyle ? PageTemplate.Freestyle : pageDataFR?.template,
-            fleschKincaid: pageDataFR?.fleschKincaid,
-            gunningFog: pageDataFR?.gunningFog,
+            wordCount: pageDataFR?.wordCount ?? -1,
+            linkCount: pageDataFR?.linkCount ?? -1,
+            template: jsonDataFR?.isFreestyle ? PageTemplate.Freestyle : pageDataFR?.template ?? PageTemplate.Content,
+            fleschKincaid: pageDataFR?.fleschKincaid ?? -1,
+            gunningFog: pageDataFR?.gunningFog ?? -1,
             phoneNumbers: pageDataEN?.phoneNumbers ?? [],
             // Data from problem assistant
             problem: undefined,

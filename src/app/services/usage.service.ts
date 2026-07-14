@@ -23,7 +23,7 @@ export class UsageService {
         originalKeywordsFR: string[] | undefined,
         review: MetadataReview,
         promptConfig: object,
-        isUpdate: boolean = false
+        isUpdate = false
     ): Promise<void> {
         try {
             await firstValueFrom(

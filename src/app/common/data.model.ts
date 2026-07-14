@@ -222,20 +222,20 @@ export interface PageActions {
 
 // New lang data interface
 export interface LangData {
-    h1?: string;
+    h1: string;
     doubleH1?: string;
     //Content
     contentHash?: string;    // Hash of normalized page HTML at last crawl
     lastChecked?: string;    // ISO string of fetch date
     githubSha?: string;      // SHA of last GitHub export
     //Metadata
-    title?: string;            // metadata title
-    description?: string;      // metadata description
-    keywords?: string;         // metadata keywords    
+    title: string;            // metadata title
+    description: string;      // metadata description
+    keywords: string;         // metadata keywords    
     //Status
-    is404?: boolean;           // True if page is 404 (helps determine completion of NEW/ROT actions)
+    is404: boolean;           // True if page is 404 (helps determine completion of NEW/ROT actions)
     isOrphan: boolean;         // True if parent doesn't link to the page
-    noindex?: boolean;         // True if page is not indexed for search
+    noindex: boolean;         // True if page is not indexed for search
     isArchived: boolean;       // True if page has archive banner
     linksToPortal: boolean;    // True if page links to a portal
     hasChatbot: boolean;       // True if page has chatbot
@@ -246,12 +246,12 @@ export interface LangData {
     lastModified?: string;          // cq:lastModified
     //Data
     parentPath?: string;         // For page move detection
-    wordCount?: number;        // Count of words on page
-    linkCount?: number;        // Count of links on page
-    fleschKincaid?: number;          // Calculated reading grade level
-    gunningFog?: number;         // Calculated reading grade level
-    template?: PageTemplate;   // Determined based on page content & url pattern
-    phoneNumbers?: string[];
+    wordCount: number;        // Count of words on page
+    linkCount: number;        // Count of links on page
+    fleschKincaid: number;          // Calculated reading grade level
+    gunningFog: number;         // Calculated reading grade level
+    template: PageTemplate;   // Determined based on page content & url pattern
+    phoneNumbers: string[];
     // Data from problem assistant
     problem?: PageProblem;
 }

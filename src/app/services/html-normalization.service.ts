@@ -1,7 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import * as parserHtml from 'prettier/parser-html';
+//import * as parserHtml from 'prettier/parser-html';
 import { FetchService } from './fetch.service';
-import { ExportGitHubService } from './github/export-github.service';
 
 export interface htmlProcessingResult {
     html: string;
@@ -20,8 +19,8 @@ export class HtmlNormalizationService {
 
     // Format HTML with prettier
     public async formatHtml(html: string): Promise<string> {
-        if (!(navigator as any).languages) {
-            (navigator as any).languages = ['en']; // fallback locale
+        if (!navigator.languages?.length) {
+            Object.assign(navigator, { languages: ['en'] });
         }
 
         try {
@@ -119,7 +118,7 @@ export class HtmlNormalizationService {
 
         images.forEach((img) => {
             const src = img.getAttribute('src');
-            if (src && src.startsWith('/')) {
+            if (src?.startsWith('/')) {
                 img.setAttribute('src', `${baseUrl}${src}`);
             }
         });
@@ -540,7 +539,7 @@ export class HtmlNormalizationService {
             .map(s => `<style>${s.textContent}</style>`)
             .join('\n');
         const scripts = Array.from(doc.querySelectorAll('body script:not([src])'))
-            .map(s => `<script>${s.textContent}<\/script>`)
+            .map(s => `<script>${s.textContent}</script>`)
             .join('\n');
 
         // Whitespace cleanup

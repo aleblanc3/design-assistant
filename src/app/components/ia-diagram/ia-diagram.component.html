@@ -29,7 +29,7 @@
                 }
                 <!--PAGE-->
                 <p-button (click)="onMenuClick($event, node)" icon="pi pi-ellipsis-h" size="small" text class="absolute top-0 right-0 -mt-1 -mr-1" />
-                <div class="h-full" (dragstart)="onDragStart(node)" (dragover)="onDragOver($event, node)" (dragleave)="onDragLeave(node)" (drop)="onDrop(node)">
+                <div class="h-full" (dragstart)="onDragStart(node)" (dragover)="onDragOver($event, node)" (dragleave)="onDragLeave(node)" (drop)="onDrop()">
                     <p class="pb-2"><a [class.cursor-move]="selectedView()==='changes'" [href]="selectedLanguage() === 'en' ? node.data.live.en.url : node.data.live.fr.url" target="_blank" [innerHTML]="getH1Display(node)"></a></p>
                     @if(node.data.collapsedChildren?.length || node.data.hiddenChildrenUrls?.length){
                     <i class="pi pi-eye-slash text-sm text-color-secondary opacity-70 absolute bottom-0 right-0 mb-1 mr-2"
@@ -49,6 +49,6 @@
 
 <p-dialog [header]="selectedNode?.data?.prototype?.[selectedLanguage()].h1" [modal]="true" [maximizable]="true" [(visible)]="editNode" styleClass="w-10" [style]="{ height: '90vh' }">
     @if(selectedNode) {
-    <aida-edit-node [node]="selectedNode" [isOpen]="editNode" (close)="editNode = false" />
+    <aida-edit-node [node]="selectedNode" [isOpen]="editNode" (dialogClose)="editNode = false" />
     }
 </p-dialog>

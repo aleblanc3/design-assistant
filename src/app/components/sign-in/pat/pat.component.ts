@@ -8,8 +8,8 @@ import { PasswordModule } from 'primeng/password';
 import { TooltipModule } from 'primeng/tooltip';
 import { DialogModule } from 'primeng/dialog';
 
-import { ExportGitHubService } from '../../services/github/export-github.service';
-import { environment } from '../../../environments/environment';
+import { ExportGitHubService } from '../../../services/github/export-github.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
     selector: 'aida-pat',
@@ -33,4 +33,11 @@ export class PatComponent {
 
     showHelp = false;
     defaultOrg = environment.defaultOrg;
+
+    async onPatBlur() {
+        console.log("RUNNING BLUR")
+        if (this.validateOnBlur) {
+            //await this.exportGitHubService.validatePAT();
+        }
+    }
 }
