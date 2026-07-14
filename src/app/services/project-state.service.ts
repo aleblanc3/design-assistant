@@ -202,7 +202,7 @@ export class ProjectStateService {
 
     setMetadataReview(path: string, review: MetadataReview, promptConfig?: object): void {
         const tree = this.getProjectTree();
-        const lang = this.detectPrimaryLanguage()
+        const lang = this.fetchService.getLang(path) ?? 'en';
         const node = this.findNodeByPath(tree, path, lang);
 
         if (node?.data) {

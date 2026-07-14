@@ -535,6 +535,7 @@ export class InventoryComponent implements OnInit {
 
     // 1. Refresh (prototype or live data)
     async refreshData(version: 'live' | 'prototype') {
+        console.log(this.selectedNodes);
         if (!this.selectedNodes.length) return;
         for (const node of this.selectedNodes) {
             const treeNode = this.projectState.findNodeByPath(this.projectState.getProjectTree(), node.enPath, "en");
@@ -602,10 +603,10 @@ export class InventoryComponent implements OnInit {
             }
 
             // Parse and merge into tree
-            const url = this.lang === 'fr' ? frUrl : enUrl;
+            const path = this.lang === 'fr' ? node.frPath : node.enPath;
             try {
                 const parsed = JSON.parse(response);
-                this.projectState.setMetadataReview(url, {
+                this.projectState.setMetadataReview(path, {
                     generatedAt: new Date(),
                     model: this.openRouterService.state().respondingModel ?? 'unknown',
                     en: {
@@ -618,10 +619,9 @@ export class InventoryComponent implements OnInit {
                     },
                 }, InventoryPrompts[InventoryPromptKey.Metadata]);
             } catch (error) {
-                console.warn(`Skipping ${url} — could not parse AI response`, error);
+                console.warn(`Skipping ${path} — could not parse AI response`, error);
                 continue;
             }
-
         }
     }
 
@@ -674,11 +674,13 @@ export class InventoryComponent implements OnInit {
                         styleClass: 'text-primary-500',
                         items: [
                             {
-                                label: this.translate.instant('inventory.menu.metadata.generate', { pageCount: numPages }),
-                                icon: 'pi pi-sparkles',
-                                disabled: numPages === 0,
-                                command: () => {
-                                    this.generateMetadata()
+                                label: this.openRouterService.state().loading
+                                    ? this.translate.instant('inventory.menu.metadata.generating', { pageCount: numPages })
+                                    : this.translate.instant('inventory.menu.metadata.generate', { pageCount: numPages }),
+                                icon: this.openRouterService.state().loading ? 'pi pi-spin pi-spinner' : 'pi pi-sparkles',
+                                disabled: numPages === 0 || this.openRouterService.state().loading,
+                                command: async () => {
+                                    await this.generateMetadata()
                                 }
                             },
                         ]
