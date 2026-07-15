@@ -168,6 +168,9 @@ export interface ProjectTreeNodeData {
     notes?: OldNotes;
 }
 
+// All types used by TreeNodeData
+export type TreeNodeTypes = string | number | boolean | string[] | PageTemplate | PageProblem | undefined;
+
 // New project tree data interface
 export interface TreeNodeData {
     lang: 'en' | 'fr';
@@ -325,7 +328,7 @@ export interface TableColumn {
     frozen?: boolean;
     group: ColumnGroups;
     visibleByDefault: boolean;
-    dataSection: string; //reference to how the data is nested in the TreeNode
+    dataSection: string[]; //reference to how the data is nested in the TreeNode
 }
 
 export interface ColumnGroup {
