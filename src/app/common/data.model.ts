@@ -328,7 +328,7 @@ export interface TableColumn {
     frozen?: boolean;
     group: ColumnGroups;
     visibleByDefault: boolean;
-    dataSection: string[]; //reference to how the data is nested in the TreeNode
+    dataSection: string[]; //reference to how the data is nested in the TreeNode, only need to fill out for user-editable data
 }
 
 export interface ColumnGroup {
