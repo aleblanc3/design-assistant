@@ -662,17 +662,17 @@ export class ProjectStateService {
         const frPrimary = lang === 'fr' ? true : false
 
         const enData: TableColumn[] = [
-            { field: 'enH1', label: this.translate.instant('inventory.header.enH1'), type: 'text', frozen: enPrimary, group: 'english', visibleByDefault: enPrimary, dataSection: 'prototype.en.h1' },
-            { field: 'enDoubleH1', label: this.translate.instant('inventory.header.enDoubleH1'), type: 'text', group: 'english', visibleByDefault: false, dataSection: 'prototype.en.doubleH1' },
-            { field: 'enPath', label: this.translate.instant('inventory.header.enPath'), type: 'url', group: 'english', visibleByDefault: false, dataSection: 'path.en' },
-            { field: 'enVanity', label: this.translate.instant('inventory.header.enVanity'), type: 'array', group: 'english', visibleByDefault: false, dataSection: 'vanity.en' },
+            { field: 'enH1', label: this.translate.instant('inventory.header.enH1'), type: 'text', frozen: enPrimary, group: 'english', visibleByDefault: enPrimary, dataSection: ['prototype', 'en', 'h1'] },
+            { field: 'enDoubleH1', label: this.translate.instant('inventory.header.enDoubleH1'), type: 'text', group: 'english', visibleByDefault: false, dataSection: ['prototype', 'en', 'doubleH1'] },
+            { field: 'enPath', label: this.translate.instant('inventory.header.enPath'), type: 'url', group: 'english', visibleByDefault: false, dataSection: ['path', 'en'] },
+            { field: 'enVanity', label: this.translate.instant('inventory.header.enVanity'), type: 'array', group: 'english', visibleByDefault: false, dataSection: ['vanity', 'en'] },
 
         ]
         const frData: TableColumn[] = [
-            { field: 'frH1', label: this.translate.instant('inventory.header.frH1'), type: 'text', frozen: frPrimary, group: 'french', visibleByDefault: frPrimary, dataSection: 'prototype.fr.h1' },
-            { field: 'frDoubleH1', label: this.translate.instant('inventory.header.frDoubleH1'), type: 'text', group: 'french', visibleByDefault: false, dataSection: 'prototype.fr.doubleH1' },
-            { field: 'frPath', label: this.translate.instant('inventory.header.frPath'), type: 'url', group: 'french', visibleByDefault: false, dataSection: 'path.fr' },
-            { field: 'frVanity', label: this.translate.instant('inventory.header.frVanity'), type: 'array', group: 'french', visibleByDefault: false, dataSection: 'vanity.fr' },
+            { field: 'frH1', label: this.translate.instant('inventory.header.frH1'), type: 'text', frozen: frPrimary, group: 'french', visibleByDefault: frPrimary, dataSection: ['prototype', 'fr', 'h1'] },
+            { field: 'frDoubleH1', label: this.translate.instant('inventory.header.frDoubleH1'), type: 'text', group: 'french', visibleByDefault: false, dataSection: ['prototype', 'fr', 'doubleH1'] },
+            { field: 'frPath', label: this.translate.instant('inventory.header.frPath'), type: 'url', group: 'french', visibleByDefault: false, dataSection: ['path', 'fr'] },
+            { field: 'frVanity', label: this.translate.instant('inventory.header.frVanity'), type: 'array', group: 'french', visibleByDefault: false, dataSection: ['vanity', 'fr'] },
         ]
 
         const order = lang === 'fr' ? [frData, enData] : [enData, frData];
@@ -684,51 +684,51 @@ export class ProjectStateService {
         return [
             ...langColumns,
             //Status
-            { field: 'inScope', label: this.translate.instant('inventory.header.inScope'), type: 'boolean', group: 'status', visibleByDefault: true, dataSection: 'status' },
-            { field: 'isNew', label: this.translate.instant('inventory.header.isNew'), type: 'boolean', group: 'status', visibleByDefault: true, dataSection: 'status' },
-            { field: 'isMoved', label: this.translate.instant('inventory.header.isMoved'), type: 'boolean', group: 'status', visibleByDefault: true, dataSection: 'status' },
-            { field: 'isROT', label: this.translate.instant('inventory.header.isROT'), type: 'boolean', group: 'status', visibleByDefault: true, dataSection: 'status' },
-            { field: 'isArchived', label: this.translate.instant('inventory.header.archiveStatus'), type: 'boolean', group: 'status', visibleByDefault: true, dataSection: 'prototype.lang.isArchived' },
-            { field: 'noindex', label: this.translate.instant('inventory.header.noindex'), type: 'boolean', group: 'status', visibleByDefault: true, dataSection: 'prototype.lang.noindex' },
+            { field: 'inScope', label: this.translate.instant('inventory.header.inScope'), type: 'boolean', group: 'status', visibleByDefault: true, dataSection: ['status', 'inScope'] },
+            { field: 'isNew', label: this.translate.instant('inventory.header.isNew'), type: 'boolean', group: 'status', visibleByDefault: true, dataSection: ['status', 'isNew'] },
+            { field: 'isMoved', label: this.translate.instant('inventory.header.isMoved'), type: 'boolean', group: 'status', visibleByDefault: true, dataSection: ['status', 'isMoved'] },
+            { field: 'isROT', label: this.translate.instant('inventory.header.isROT'), type: 'boolean', group: 'status', visibleByDefault: true, dataSection: ['status', 'isROT'] },
+            { field: 'isArchived', label: this.translate.instant('inventory.header.archiveStatus'), type: 'boolean', group: 'status', visibleByDefault: true, dataSection: ['prototype', 'lang', 'isArchived'] },
+            { field: 'noindex', label: this.translate.instant('inventory.header.noindex'), type: 'boolean', group: 'status', visibleByDefault: true, dataSection: ['prototype', 'lang', 'noindex'] },
             //Actions
-            { field: 'actions', label: this.translate.instant('inventory.header.actions'), type: 'array', group: 'actions', visibleByDefault: false, dataSection: '' },
+            { field: 'actions', label: this.translate.instant('inventory.header.actions'), type: 'array', group: 'actions', visibleByDefault: false, dataSection: [] },
             //Notes
-            { field: 'issue', label: this.translate.instant('inventory.header.issue'), type: 'textArea', group: 'notes', visibleByDefault: false, dataSection: 'notes.issue' },
-            { field: 'solution', label: this.translate.instant('inventory.header.solution'), type: 'textArea', group: 'notes', visibleByDefault: false, dataSection: 'notes.issue' },
+            { field: 'issue', label: this.translate.instant('inventory.header.issue'), type: 'textArea', group: 'notes', visibleByDefault: false, dataSection: ['notes', 'issue'] },
+            { field: 'solution', label: this.translate.instant('inventory.header.solution'), type: 'textArea', group: 'notes', visibleByDefault: false, dataSection: ['notes', 'solution'] },
             //Problems
-            { field: 'isOrphan', label: this.translate.instant('inventory.header.isOrphan'), type: 'boolean', group: 'problems', visibleByDefault: true, dataSection: 'prototype.lang.isOrphan' },
+            { field: 'isOrphan', label: this.translate.instant('inventory.header.isOrphan'), type: 'boolean', group: 'problems', visibleByDefault: true, dataSection: ['prototype', 'lang', 'isOrphan'] },
             //ADD 404's!!!
             //Data
-            { field: 'template', label: this.translate.instant('inventory.header.template'), type: 'template', group: 'pageData', visibleByDefault: true, dataSection: 'prototype.lang.template' },
-            { field: 'linksToPortal', label: this.translate.instant('inventory.header.linksToPortal'), type: 'boolean', group: 'pageData', visibleByDefault: false, dataSection: 'live.lang.linksToPortal' },
-            { field: 'hasChatbot', label: this.translate.instant('inventory.header.hasChatbot'), type: 'boolean', group: 'pageData', visibleByDefault: false, dataSection: 'live.lang.hasChatbot' },
-            { field: 'task', label: this.translate.instant('inventory.header.task'), type: 'array', group: 'pageData', visibleByDefault: false, dataSection: 'live.lang.task' },
-            { field: 'visits', label: this.translate.instant('inventory.header.visits'), type: 'number', group: 'pageData', visibleByDefault: true, dataSection: 'live.lang.visits' },
-            { field: 'updLink', label: this.translate.instant('inventory.header.updLink'), type: 'upd', group: 'pageData', visibleByDefault: true, dataSection: '' },
-            { field: 'fleschKincaid', label: this.translate.instant('common.readability.fleschKincaid'), type: 'number', group: 'pageData', visibleByDefault: true, dataSection: 'prototype.lang.fleshKincaid' },
-            { field: 'gunningFog', label: this.translate.instant('common.readability.gunningFog'), type: 'number', group: 'pageData', visibleByDefault: false, dataSection: 'prototype.lang.gunningFog' },
-            { field: 'wordCount', label: this.translate.instant('inventory.header.wordCount'), type: 'number', group: 'pageData', visibleByDefault: true, dataSection: 'prototype.lang.wordCount' },
-            { field: 'linkCount', label: this.translate.instant('inventory.header.linkCount'), type: 'number', group: 'pageData', visibleByDefault: false, dataSection: 'prototype.lang.linkCount' },
-            { field: 'phoneNumbers', label: this.translate.instant('inventory.header.phoneNumbers'), type: 'array', group: 'pageData', visibleByDefault: false, dataSection: 'prototype.lang.phoneNumbers' },
-            { field: 'lastModified', label: this.translate.instant('inventory.header.lastModified'), type: 'date', group: 'pageData', visibleByDefault: true, dataSection: 'live.lang.lastModified' },
-            { field: 'lastPublished', label: this.translate.instant('inventory.header.lastPublished'), type: 'date', group: 'pageData', visibleByDefault: false, dataSection: 'live.lang.lastPublished' },
+            { field: 'template', label: this.translate.instant('inventory.header.template'), type: 'template', group: 'pageData', visibleByDefault: true, dataSection: ['prototype', 'lang', 'template'] },
+            { field: 'linksToPortal', label: this.translate.instant('inventory.header.linksToPortal'), type: 'boolean', group: 'pageData', visibleByDefault: false, dataSection: [] },
+            { field: 'hasChatbot', label: this.translate.instant('inventory.header.hasChatbot'), type: 'boolean', group: 'pageData', visibleByDefault: false, dataSection: [] },
+            { field: 'task', label: this.translate.instant('inventory.header.task'), type: 'array', group: 'pageData', visibleByDefault: false, dataSection: [] },
+            { field: 'visits', label: this.translate.instant('inventory.header.visits'), type: 'number', group: 'pageData', visibleByDefault: true, dataSection: [] },
+            { field: 'updLink', label: this.translate.instant('inventory.header.updLink'), type: 'upd', group: 'pageData', visibleByDefault: true, dataSection: [] },
+            { field: 'fleschKincaid', label: this.translate.instant('common.readability.fleschKincaid'), type: 'number', group: 'pageData', visibleByDefault: true, dataSection: [] },
+            { field: 'gunningFog', label: this.translate.instant('common.readability.gunningFog'), type: 'number', group: 'pageData', visibleByDefault: false, dataSection: [] },
+            { field: 'wordCount', label: this.translate.instant('inventory.header.wordCount'), type: 'number', group: 'pageData', visibleByDefault: true, dataSection: [] },
+            { field: 'linkCount', label: this.translate.instant('inventory.header.linkCount'), type: 'number', group: 'pageData', visibleByDefault: false, dataSection: [] },
+            { field: 'phoneNumbers', label: this.translate.instant('inventory.header.phoneNumbers'), type: 'array', group: 'pageData', visibleByDefault: false, dataSection: [] },
+            { field: 'lastModified', label: this.translate.instant('inventory.header.lastModified'), type: 'date', group: 'pageData', visibleByDefault: true, dataSection: [] },
+            { field: 'lastPublished', label: this.translate.instant('inventory.header.lastPublished'), type: 'date', group: 'pageData', visibleByDefault: false, dataSection: [] },
             //Owner
-            { field: 'owner', label: this.translate.instant('inventory.header.owner'), type: 'text', group: 'owner', visibleByDefault: true, dataSection: 'owner' },
-            { field: 'email', label: this.translate.instant('inventory.header.email'), type: 'text', group: 'owner', visibleByDefault: false, dataSection: 'email' },
+            { field: 'owner', label: this.translate.instant('inventory.header.owner'), type: 'text', group: 'owner', visibleByDefault: true, dataSection: [] },
+            { field: 'email', label: this.translate.instant('inventory.header.email'), type: 'text', group: 'owner', visibleByDefault: false, dataSection: [] },
             //Metadata & AI metadata
-            { field: 'titleEN', label: this.translate.instant('inventory.header.titleEN'), type: 'text', group: 'metadata', visibleByDefault: false, dataSection: 'prototype.en.title' },
-            { field: 'titleFR', label: this.translate.instant('inventory.header.titleFR'), type: 'text', group: 'metadata', visibleByDefault: false, dataSection: 'prototype.fr.title' },
-            { field: 'descriptionEN', label: this.translate.instant('inventory.header.descriptionEN'), type: 'longText', group: 'metadata', visibleByDefault: false, dataSection: 'prototype.en.description' },
-            { field: 'aiDescriptionEN', label: this.translate.instant('inventory.header.ai.descriptionEN'), type: 'aiText', group: 'metadata', visibleByDefault: false, dataSection: 'metadataReview.en' },
-            { field: 'descriptionFR', label: this.translate.instant('inventory.header.descriptionFR'), type: 'longText', group: 'metadata', visibleByDefault: false, dataSection: 'prototype.fr.description' },
-            { field: 'aiDescriptionFR', label: this.translate.instant('inventory.header.ai.descriptionFR'), type: 'aiText', group: 'metadata', visibleByDefault: false, dataSection: 'metadataReview.fr' },
-            { field: 'keywordsEN', label: this.translate.instant('inventory.header.keywordsEN'), type: 'longText', group: 'metadata', visibleByDefault: false, dataSection: 'prototype.en.keywords' },
-            { field: 'aiKeywordsEN', label: this.translate.instant('inventory.header.ai.keywordsEN'), type: 'aiText', group: 'metadata', visibleByDefault: false, dataSection: 'metadataReview.en' },
-            { field: 'keywordsFR', label: this.translate.instant('inventory.header.keywordsFR'), type: 'longText', group: 'metadata', visibleByDefault: false, dataSection: 'prototype.fr.keywords' },
-            { field: 'aiKeywordsFR', label: this.translate.instant('inventory.header.ai.keywordsFR'), type: 'aiText', group: 'metadata', visibleByDefault: false, dataSection: 'metadataReview.fr' },
+            { field: 'titleEN', label: this.translate.instant('inventory.header.titleEN'), type: 'text', group: 'metadata', visibleByDefault: false, dataSection: [] },
+            { field: 'titleFR', label: this.translate.instant('inventory.header.titleFR'), type: 'text', group: 'metadata', visibleByDefault: false, dataSection: [] },
+            { field: 'descriptionEN', label: this.translate.instant('inventory.header.descriptionEN'), type: 'longText', group: 'metadata', visibleByDefault: false, dataSection: [] },
+            { field: 'aiDescriptionEN', label: this.translate.instant('inventory.header.ai.descriptionEN'), type: 'aiText', group: 'metadata', visibleByDefault: false, dataSection: [] },
+            { field: 'descriptionFR', label: this.translate.instant('inventory.header.descriptionFR'), type: 'longText', group: 'metadata', visibleByDefault: false, dataSection: [] },
+            { field: 'aiDescriptionFR', label: this.translate.instant('inventory.header.ai.descriptionFR'), type: 'aiText', group: 'metadata', visibleByDefault: false, dataSection: [] },
+            { field: 'keywordsEN', label: this.translate.instant('inventory.header.keywordsEN'), type: 'longText', group: 'metadata', visibleByDefault: false, dataSection: [] },
+            { field: 'aiKeywordsEN', label: this.translate.instant('inventory.header.ai.keywordsEN'), type: 'aiText', group: 'metadata', visibleByDefault: false, dataSection: [] },
+            { field: 'keywordsFR', label: this.translate.instant('inventory.header.keywordsFR'), type: 'longText', group: 'metadata', visibleByDefault: false, dataSection: [] },
+            { field: 'aiKeywordsFR', label: this.translate.instant('inventory.header.ai.keywordsFR'), type: 'aiText', group: 'metadata', visibleByDefault: false, dataSection: [] },
             //AI Metadata
-            { field: 'aiModel', label: this.translate.instant('inventory.header.ai.model'), type: 'text', group: 'metadata', visibleByDefault: false, dataSection: 'metadataReview.model' },
-            { field: 'aiGeneratedAt', label: this.translate.instant('inventory.header.ai.date'), type: 'date', group: 'metadata', visibleByDefault: false, dataSection: 'metadataReview.generatedAt' },
+            { field: 'aiModel', label: this.translate.instant('inventory.header.ai.model'), type: 'text', group: 'metadata', visibleByDefault: false, dataSection: [] },
+            { field: 'aiGeneratedAt', label: this.translate.instant('inventory.header.ai.date'), type: 'date', group: 'metadata', visibleByDefault: false, dataSection: [] },
         ];
     });
 
