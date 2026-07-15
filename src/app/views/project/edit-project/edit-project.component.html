@@ -53,7 +53,7 @@
                           size="small"
                           styleClass="secondary-outline w-full min-w-max"
                           (click)="showUrls = true" />
-                <p-drawer header="URLs" [(visible)]="showUrls" position="right" styleClass="w-6">
+                <p-drawer [header]="'common.urls' | translate" [(visible)]="showUrls" position="right" styleClass="w-6">
                     <ul>
                         @for(url of projectState.getAllPages(lang,'live','inScope'); track url.url){
                         <li>{{url.url}}</li>
