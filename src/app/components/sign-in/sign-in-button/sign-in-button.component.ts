@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { timeout, catchError, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
-import { marker } from '@colsen1991/ngx-translate-extract-marker';
 
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
@@ -63,57 +62,51 @@ export class SignInButtonComponent implements OnInit {
     await this.exportGitHubService.validatePAT();
   }
 
-  markForTranslation() {
-    marker('common.new');
-    marker('common.search');
-    marker('common.signout');
-    marker('settings._nav');
-    marker('common.projects');
-    marker('common.profile');
+  get items(): MenuItem[] {
+    return [
+      {
+        label: this.translate.instant('common.projects'),
+        items: [
+          {
+            label: this.translate.instant('common.new'),
+            icon: 'pi pi-plus',
+            command: () => {
+              this.projectStorageService.clearActiveProject();
+              this.projectState.resetProject();
+              this.router.navigate(['/new-project']);
+            }
+          },
+          {
+            label: this.translate.instant('common.search'),
+            icon: 'pi pi-search',
+            command: () => {
+              this.router.navigate(['/switch-project']);
+            }
+          }
+        ]
+      },
+      {
+        label: this.translate.instant('common.profile'),
+        items: [
+          {
+            label: this.translate.instant('settings._nav'),
+            icon: 'pi pi-cog',
+            command: () => {
+              this.showSettings = true;
+            }
+          },
+          {
+            label: this.translate.instant('common.signout'),
+            icon: 'pi pi-sign-out',
+            command: () => {
+              this.authService.logout();
+              this.exportGitHubService.clearPAT();
+            }
+          }
+        ]
+      }
+    ]
   }
-  items: MenuItem[] = [
-    {
-      label: 'common.projects',
-      items: [
-        {
-          label: 'common.new',
-          icon: 'pi pi-plus',
-          command: () => {
-            this.projectStorageService.clearActiveProject();
-            this.projectState.resetProject();
-            this.router.navigate(['/new-project']);
-          }
-        },
-        {
-          label: 'common.search',
-          icon: 'pi pi-search',
-          command: () => {
-            this.router.navigate(['/switch-project']);
-          }
-        }
-      ]
-    },
-    {
-      label: 'common.profile',
-      items: [
-        {
-          label: 'settings._nav',
-          icon: 'pi pi-cog',
-          command: () => {
-            this.showSettings = true;
-          }
-        },
-        {
-          label: 'common.signout',
-          icon: 'pi pi-sign-out',
-          command: () => {
-            this.authService.logout();
-            this.exportGitHubService.clearPAT();
-          }
-        }
-      ]
-    }
-  ]
 
   // Signal to track if API Gateway is accessible
   isApiGatewayAccessible = signal<boolean>(true);
