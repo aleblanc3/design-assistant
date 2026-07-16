@@ -508,7 +508,7 @@ export class ProjectStorageService {
             lastModified: old.metadata?.lastModified instanceof Date
                 ? old.metadata.lastModified.toISOString()
                 : old.metadata?.lastModified,
-            parentPath: this.fetchService.generatePath(old.originalParent),
+            parentPath: old.originalParent ? this.fetchService.generatePath(old.originalParent) : undefined,
             wordCount: old.metadata?.wordCount ?? -1,
             linkCount: -1,
             fleschKincaid: -1,
@@ -541,7 +541,7 @@ export class ProjectStorageService {
             lastModified: old.metadata?.lastModified instanceof Date
                 ? old.metadata.lastModified.toISOString()
                 : old.metadata?.lastModified,
-            parentPath: this.fetchService.generatePath(old.originalParent),
+            parentPath: old.originalParent ? this.fetchService.generatePath(old.originalParent) : undefined,
             wordCount: old.metadata?.wordCount ?? -1,
             linkCount: -1,
             fleschKincaid: -1,
