@@ -256,7 +256,7 @@ export class InventoryComponent implements OnInit {
         const visibleInGroup = group.items
             .filter((item: SelectItem) => {
                 const col = this.allColumns().find(c => c.field === item.value);
-                return col?.frozen ?? this.selectedColumnFields.includes(item.value);
+                return col?.frozen || this.selectedColumnFields.includes(item.value);
             })
             .map((item: SelectItem) => item.value);
 
