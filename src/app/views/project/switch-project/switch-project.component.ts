@@ -267,6 +267,9 @@ export class SwitchProjectComponent implements OnInit {
 
       if (project) {
         this.projectState.setProject(project); // Update the project state
+        //Refresh live data if project is missing properties (for patching legacy data)
+        await this.projectState.refreshAll(project.projectData, "live", true);
+        await this.projectState.refreshAll(project.projectData, "baseline", true, true);
       } else {
         console.error('Failed to load project'); // Show error message
       }

@@ -270,6 +270,7 @@ export class AddUrlsService {
         // Load UPD & Airtable data
         await this.updService.fetchData();
         await this.airtableService.fetchTasks();
+        await this.vanityService.fetchData();
         this.setPreviousProjectData(this.projectState.getProjectTree());
 
         for (const url of urls) {
