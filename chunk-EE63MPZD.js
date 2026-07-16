@@ -903,7 +903,7 @@ var require_core = __commonJS({
       }
       return mode;
     }
-    var version = "11.9.0";
+    var version = "11.11.1";
     var HTMLInjectionError = class extends Error {
       constructor(reason, html) {
         super(reason);
@@ -1225,6 +1225,7 @@ var require_core = __commonJS({
             }
           }
           if (match.type === "illegal" && lexeme === "") {
+            modeBuffer += "\n";
             return 1;
           }
           if (iterations > 1e5 && iterations > match.index * 3) {
@@ -1413,18 +1414,18 @@ var require_core = __commonJS({
       }
       let wantsHighlight = false;
       function highlightAll() {
+        function boot() {
+          highlightAll();
+        }
         if (document.readyState === "loading") {
+          if (!wantsHighlight) {
+            window.addEventListener("DOMContentLoaded", boot, false);
+          }
           wantsHighlight = true;
           return;
         }
         const blocks = document.querySelectorAll(options.cssSelector);
         blocks.forEach(highlightElement);
-      }
-      function boot() {
-        if (wantsHighlight) highlightAll();
-      }
-      if (typeof window !== "undefined" && window.addEventListener) {
-        window.addEventListener("DOMContentLoaded", boot, false);
       }
       function registerLanguage(languageName, languageDefinition) {
         let lang = null;
@@ -1604,13 +1605,18 @@ var require_cpp = __commonJS({
       };
       const NUMBERS = {
         className: "number",
-        variants: [{
-          begin: "\\b(0b[01']+)"
-        }, {
-          begin: "(-?)\\b([\\d']+(\\.[\\d']*)?|\\.[\\d']+)((ll|LL|l|L)(u|U)?|(u|U)(ll|LL|l|L)?|f|F|b|B)"
-        }, {
-          begin: "(-?)(\\b0[xX][a-fA-F0-9']+|(\\b[\\d']+(\\.[\\d']*)?|\\.[\\d']+)([eE][-+]?[\\d']+)?)"
-        }],
+        variants: [
+          // Floating-point literal.
+          {
+            begin: "[+-]?(?:(?:[0-9](?:'?[0-9])*\\.(?:[0-9](?:'?[0-9])*)?|\\.[0-9](?:'?[0-9])*)(?:[Ee][+-]?[0-9](?:'?[0-9])*)?|[0-9](?:'?[0-9])*[Ee][+-]?[0-9](?:'?[0-9])*|0[Xx](?:[0-9A-Fa-f](?:'?[0-9A-Fa-f])*(?:\\.(?:[0-9A-Fa-f](?:'?[0-9A-Fa-f])*)?)?|\\.[0-9A-Fa-f](?:'?[0-9A-Fa-f])*)[Pp][+-]?[0-9](?:'?[0-9])*)(?:[Ff](?:16|32|64|128)?|(BF|bf)16|[Ll]|)"
+          },
+          // Integer literal.
+          {
+            begin: "[+-]?\\b(?:0[Bb][01](?:'?[01])*|0[Xx][0-9A-Fa-f](?:'?[0-9A-Fa-f])*|0(?:'?[0-7])*|[1-9](?:'?[0-9])*)(?:[Uu](?:LL?|ll?)|[Uu][Zz]?|(?:LL?|ll?)[Uu]?|[Zz][Uu]|)"
+            // Note: there are user-defined literal suffixes too, but perhaps having the custom suffix not part of the
+            // literal highlight actually makes it stand out more.
+          }
+        ],
         relevance: 0
       };
       const PREPROCESSOR = {
@@ -1638,7 +1644,7 @@ var require_cpp = __commonJS({
       const FUNCTION_TITLE = regex.optional(NAMESPACE_RE) + hljs.IDENT_RE + "\\s*\\(";
       const RESERVED_KEYWORDS = ["alignas", "alignof", "and", "and_eq", "asm", "atomic_cancel", "atomic_commit", "atomic_noexcept", "auto", "bitand", "bitor", "break", "case", "catch", "class", "co_await", "co_return", "co_yield", "compl", "concept", "const_cast|10", "consteval", "constexpr", "constinit", "continue", "decltype", "default", "delete", "do", "dynamic_cast|10", "else", "enum", "explicit", "export", "extern", "false", "final", "for", "friend", "goto", "if", "import", "inline", "module", "mutable", "namespace", "new", "noexcept", "not", "not_eq", "nullptr", "operator", "or", "or_eq", "override", "private", "protected", "public", "reflexpr", "register", "reinterpret_cast|10", "requires", "return", "sizeof", "static_assert", "static_cast|10", "struct", "switch", "synchronized", "template", "this", "thread_local", "throw", "transaction_safe", "transaction_safe_dynamic", "true", "try", "typedef", "typeid", "typename", "union", "using", "virtual", "volatile", "while", "xor", "xor_eq"];
       const RESERVED_TYPES = ["bool", "char", "char16_t", "char32_t", "char8_t", "double", "float", "int", "long", "short", "void", "wchar_t", "unsigned", "signed", "const", "static"];
-      const TYPE_HINTS = ["any", "auto_ptr", "barrier", "binary_semaphore", "bitset", "complex", "condition_variable", "condition_variable_any", "counting_semaphore", "deque", "false_type", "future", "imaginary", "initializer_list", "istringstream", "jthread", "latch", "lock_guard", "multimap", "multiset", "mutex", "optional", "ostringstream", "packaged_task", "pair", "promise", "priority_queue", "queue", "recursive_mutex", "recursive_timed_mutex", "scoped_lock", "set", "shared_future", "shared_lock", "shared_mutex", "shared_timed_mutex", "shared_ptr", "stack", "string_view", "stringstream", "timed_mutex", "thread", "true_type", "tuple", "unique_lock", "unique_ptr", "unordered_map", "unordered_multimap", "unordered_multiset", "unordered_set", "variant", "vector", "weak_ptr", "wstring", "wstring_view"];
+      const TYPE_HINTS = ["any", "auto_ptr", "barrier", "binary_semaphore", "bitset", "complex", "condition_variable", "condition_variable_any", "counting_semaphore", "deque", "false_type", "flat_map", "flat_set", "future", "imaginary", "initializer_list", "istringstream", "jthread", "latch", "lock_guard", "multimap", "multiset", "mutex", "optional", "ostringstream", "packaged_task", "pair", "promise", "priority_queue", "queue", "recursive_mutex", "recursive_timed_mutex", "scoped_lock", "set", "shared_future", "shared_lock", "shared_mutex", "shared_timed_mutex", "shared_ptr", "stack", "string_view", "stringstream", "timed_mutex", "thread", "true_type", "tuple", "unique_lock", "unique_ptr", "unordered_map", "unordered_multimap", "unordered_multiset", "unordered_set", "variant", "vector", "weak_ptr", "wstring", "wstring_view"];
       const FUNCTION_HINTS = ["abort", "abs", "acos", "apply", "as_const", "asin", "atan", "atan2", "calloc", "ceil", "cerr", "cin", "clog", "cos", "cosh", "cout", "declval", "endl", "exchange", "exit", "exp", "fabs", "floor", "fmod", "forward", "fprintf", "fputs", "free", "frexp", "fscanf", "future", "invoke", "isalnum", "isalpha", "iscntrl", "isdigit", "isgraph", "islower", "isprint", "ispunct", "isspace", "isupper", "isxdigit", "labs", "launder", "ldexp", "log", "log10", "make_pair", "make_shared", "make_shared_for_overwrite", "make_tuple", "make_unique", "malloc", "memchr", "memcmp", "memcpy", "memset", "modf", "move", "pow", "printf", "putchar", "puts", "realloc", "scanf", "sin", "sinh", "snprintf", "sprintf", "sqrt", "sscanf", "std", "stderr", "stdin", "stdout", "strcat", "strchr", "strcmp", "strcpy", "strcspn", "strlen", "strncat", "strncmp", "strncpy", "strpbrk", "strrchr", "strspn", "strstr", "swap", "tan", "tanh", "terminate", "to_underlying", "tolower", "toupper", "vfprintf", "visit", "vprintf", "vsprintf"];
       const LITERALS = ["NULL", "false", "nullopt", "nullptr", "true"];
       const BUILT_IN = ["_Pragma"];
@@ -1760,7 +1766,7 @@ var require_cpp = __commonJS({
         },
         contains: [].concat(EXPRESSION_CONTEXT, FUNCTION_DECLARATION, FUNCTION_DISPATCH, EXPRESSION_CONTAINS, [PREPROCESSOR, {
           // containers: ie, `vector <int> rooms (9);`
-          begin: "\\b(deque|list|queue|priority_queue|pair|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array|tuple|optional|variant|function)\\s*<(?!<)",
+          begin: "\\b(deque|list|queue|priority_queue|pair|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array|tuple|optional|variant|function|flat_map|flat_set)\\s*<(?!<)",
           end: ">",
           keywords: CPP_KEYWORDS,
           contains: ["self", CPP_PRIMITIVE_TYPES]
@@ -2053,6 +2059,12 @@ var require_bash = __commonJS({
         end: /\)/,
         contains: [hljs.BACKSLASH_ESCAPE]
       };
+      const COMMENT = hljs.inherit(hljs.COMMENT(), {
+        match: [/(^|\s)/, /#.*$/],
+        scope: {
+          2: "comment"
+        }
+      });
       const HERE_DOC = {
         begin: /<<-?\s*(?=\w+)/,
         starts: {
@@ -2103,13 +2115,13 @@ var require_bash = __commonJS({
         })],
         relevance: 0
       };
-      const KEYWORDS = ["if", "then", "else", "elif", "fi", "for", "while", "until", "in", "do", "done", "case", "esac", "function", "select"];
+      const KEYWORDS = ["if", "then", "else", "elif", "fi", "time", "for", "while", "until", "in", "do", "done", "case", "esac", "coproc", "function", "select"];
       const LITERALS = ["true", "false"];
       const PATH_MODE = {
         match: /(\/[a-z._-]+)+/
       };
       const SHELL_BUILT_INS = ["break", "cd", "continue", "eval", "exec", "exit", "export", "getopts", "hash", "pwd", "readonly", "return", "shift", "test", "times", "trap", "umask", "unset"];
-      const BASH_BUILT_INS = ["alias", "bind", "builtin", "caller", "command", "declare", "echo", "enable", "help", "let", "local", "logout", "mapfile", "printf", "read", "readarray", "source", "type", "typeset", "ulimit", "unalias"];
+      const BASH_BUILT_INS = ["alias", "bind", "builtin", "caller", "command", "declare", "echo", "enable", "help", "let", "local", "logout", "mapfile", "printf", "read", "readarray", "source", "sudo", "type", "typeset", "ulimit", "unalias"];
       const ZSH_BUILT_INS = ["autoload", "bg", "bindkey", "bye", "cap", "chdir", "clone", "comparguments", "compcall", "compctl", "compdescribe", "compfiles", "compgroups", "compquote", "comptags", "comptry", "compvalues", "dirs", "disable", "disown", "echotc", "echoti", "emulate", "fc", "fg", "float", "functions", "getcap", "getln", "history", "integer", "jobs", "kill", "limit", "log", "noglob", "popd", "print", "pushd", "pushln", "rehash", "sched", "setcap", "setopt", "stat", "suspend", "ttyctl", "unfunction", "unhash", "unlimit", "unsetopt", "vared", "wait", "whence", "where", "which", "zcompile", "zformat", "zftp", "zle", "zmodload", "zparseopts", "zprof", "zpty", "zregexparse", "zsocket", "zstyle", "ztcp"];
       const GNU_CORE_UTILS = [
         "chcon",
@@ -2218,7 +2230,7 @@ var require_bash = __commonJS({
       ];
       return {
         name: "Bash",
-        aliases: ["sh"],
+        aliases: ["sh", "zsh"],
         keywords: {
           $pattern: /\b[a-z][a-z0-9._-]+\b/,
           keyword: KEYWORDS,
@@ -2240,7 +2252,7 @@ var require_bash = __commonJS({
           // to catch unknown shells but still highlight the shebang
           FUNCTION,
           ARITHMETIC,
-          hljs.HASH_COMMENT_MODE,
+          COMMENT,
           HERE_DOC,
           PATH_MODE,
           QUOTE_STRING,
@@ -2298,11 +2310,13 @@ var require_c = __commonJS({
       const NUMBERS = {
         className: "number",
         variants: [{
-          begin: "\\b(0b[01']+)"
+          match: /\b(0b[01']+)/
         }, {
-          begin: "(-?)\\b([\\d']+(\\.[\\d']*)?|\\.[\\d']+)((ll|LL|l|L)(u|U)?|(u|U)(ll|LL|l|L)?|f|F|b|B)"
+          match: /(-?)\b([\d']+(\.[\d']*)?|\.[\d']+)((ll|LL|l|L)(u|U)?|(u|U)(ll|LL|l|L)?|f|F|b|B)/
         }, {
-          begin: "(-?)(\\b0[xX][a-fA-F0-9']+|(\\b[\\d']+(\\.[\\d']*)?|\\.[\\d']+)([eE][-+]?[\\d']+)?)"
+          match: /(-?)\b(0[xX][a-fA-F0-9]+(?:'[a-fA-F0-9]+)*(?:\.[a-fA-F0-9]*(?:'[a-fA-F0-9]*)*)?(?:[pP][-+]?[0-9]+)?(l|L)?(u|U)?)/
+        }, {
+          match: /(-?)\b\d+(?:'\d+)*(?:\.\d*(?:'\d*)*)?(?:[eE][-+]?\d+)?/
         }],
         relevance: 0
       };
@@ -2311,7 +2325,7 @@ var require_c = __commonJS({
         begin: /#\s*[a-z]+\b/,
         end: /$/,
         keywords: {
-          keyword: "if else elif endif define undef warning error line pragma _Pragma ifdef ifndef include"
+          keyword: "if else elif endif define undef warning error line pragma _Pragma ifdef ifndef elifdef elifndef include"
         },
         contains: [{
           begin: /\\\n/,
@@ -2349,6 +2363,8 @@ var require_c = __commonJS({
         "restrict",
         "return",
         "sizeof",
+        "typeof",
+        "typeof_unqual",
         "struct",
         "switch",
         "typedef",
@@ -2382,14 +2398,26 @@ var require_c = __commonJS({
         "char",
         "void",
         "_Bool",
+        "_BitInt",
         "_Complex",
         "_Imaginary",
         "_Decimal32",
         "_Decimal64",
+        "_Decimal96",
         "_Decimal128",
+        "_Decimal64x",
+        "_Decimal128x",
+        "_Float16",
+        "_Float32",
+        "_Float64",
+        "_Float128",
+        "_Float32x",
+        "_Float64x",
+        "_Float128x",
         // modifiers
         "const",
         "static",
+        "constexpr",
         // aliases
         "complex",
         "bool",
@@ -2911,7 +2939,7 @@ var require_csharp = __commonJS({
       const FUNCTION_MODIFIERS = ["public", "private", "protected", "static", "internal", "protected", "abstract", "async", "extern", "override", "unsafe", "virtual", "new", "sealed", "partial"];
       const LITERAL_KEYWORDS = ["default", "false", "null", "true"];
       const NORMAL_KEYWORDS = ["abstract", "as", "base", "break", "case", "catch", "class", "const", "continue", "do", "else", "event", "explicit", "extern", "finally", "fixed", "for", "foreach", "goto", "if", "implicit", "in", "interface", "internal", "is", "lock", "namespace", "new", "operator", "out", "override", "params", "private", "protected", "public", "readonly", "record", "ref", "return", "scoped", "sealed", "sizeof", "stackalloc", "static", "struct", "switch", "this", "throw", "try", "typeof", "unchecked", "unsafe", "using", "virtual", "void", "volatile", "while"];
-      const CONTEXTUAL_KEYWORDS = ["add", "alias", "and", "ascending", "async", "await", "by", "descending", "equals", "from", "get", "global", "group", "init", "into", "join", "let", "nameof", "not", "notnull", "on", "or", "orderby", "partial", "remove", "select", "set", "unmanaged", "value|0", "var", "when", "where", "with", "yield"];
+      const CONTEXTUAL_KEYWORDS = ["add", "alias", "and", "ascending", "args", "async", "await", "by", "descending", "dynamic", "equals", "file", "from", "get", "global", "group", "init", "into", "join", "let", "nameof", "not", "notnull", "on", "or", "orderby", "partial", "record", "remove", "required", "scoped", "select", "set", "unmanaged", "value|0", "var", "when", "where", "with", "yield"];
       const KEYWORDS = {
         keyword: NORMAL_KEYWORDS.concat(CONTEXTUAL_KEYWORDS),
         built_in: BUILT_IN_KEYWORDS,
@@ -2930,6 +2958,11 @@ var require_csharp = __commonJS({
           begin: "(-?)(\\b0[xX][a-fA-F0-9']+|(\\b[\\d']+(\\.[\\d']*)?|\\.[\\d']+)([eE][-+]?[\\d']+)?)"
         }],
         relevance: 0
+      };
+      const RAW_STRING = {
+        className: "string",
+        begin: /"""("*)(?!")(.|\n)*?"""\1/,
+        relevance: 1
       };
       const VERBATIM_STRING = {
         className: "string",
@@ -2989,7 +3022,7 @@ var require_csharp = __commonJS({
         illegal: /\n/
       })];
       const STRING = {
-        variants: [INTERPOLATED_VERBATIM_STRING, INTERPOLATED_STRING, VERBATIM_STRING, hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE]
+        variants: [RAW_STRING, INTERPOLATED_VERBATIM_STRING, INTERPOLATED_STRING, VERBATIM_STRING, hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE]
       };
       const GENERIC_MODIFIER = {
         begin: "<",
@@ -3176,7 +3209,9 @@ var require_css = __commonJS({
         }
       };
     };
-    var TAGS = ["a", "abbr", "address", "article", "aside", "audio", "b", "blockquote", "body", "button", "canvas", "caption", "cite", "code", "dd", "del", "details", "dfn", "div", "dl", "dt", "em", "fieldset", "figcaption", "figure", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "header", "hgroup", "html", "i", "iframe", "img", "input", "ins", "kbd", "label", "legend", "li", "main", "mark", "menu", "nav", "object", "ol", "p", "q", "quote", "samp", "section", "span", "strong", "summary", "sup", "table", "tbody", "td", "textarea", "tfoot", "th", "thead", "time", "tr", "ul", "var", "video"];
+    var HTML_TAGS = ["a", "abbr", "address", "article", "aside", "audio", "b", "blockquote", "body", "button", "canvas", "caption", "cite", "code", "dd", "del", "details", "dfn", "div", "dl", "dt", "em", "fieldset", "figcaption", "figure", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "header", "hgroup", "html", "i", "iframe", "img", "input", "ins", "kbd", "label", "legend", "li", "main", "mark", "menu", "nav", "object", "ol", "optgroup", "option", "p", "picture", "q", "quote", "samp", "section", "select", "source", "span", "strong", "summary", "sup", "table", "tbody", "td", "textarea", "tfoot", "th", "thead", "time", "tr", "ul", "var", "video"];
+    var SVG_TAGS = ["defs", "g", "marker", "mask", "pattern", "svg", "switch", "symbol", "feBlend", "feColorMatrix", "feComponentTransfer", "feComposite", "feConvolveMatrix", "feDiffuseLighting", "feDisplacementMap", "feFlood", "feGaussianBlur", "feImage", "feMerge", "feMorphology", "feOffset", "feSpecularLighting", "feTile", "feTurbulence", "linearGradient", "radialGradient", "stop", "circle", "ellipse", "image", "line", "path", "polygon", "polyline", "rect", "text", "use", "textPath", "tspan", "foreignObject", "clipPath"];
+    var TAGS = [...HTML_TAGS, ...SVG_TAGS];
     var MEDIA_FEATURES = [
       "any-hover",
       "any-pointer",
@@ -3212,7 +3247,7 @@ var require_css = __commonJS({
       "max-width",
       "min-height",
       "max-height"
-    ];
+    ].sort().reverse();
     var PSEUDO_CLASSES = [
       "active",
       "any-link",
@@ -3287,14 +3322,18 @@ var require_css = __commonJS({
       "visited",
       "where"
       // where()
-    ];
-    var PSEUDO_ELEMENTS = ["after", "backdrop", "before", "cue", "cue-region", "first-letter", "first-line", "grammar-error", "marker", "part", "placeholder", "selection", "slotted", "spelling-error"];
+    ].sort().reverse();
+    var PSEUDO_ELEMENTS = ["after", "backdrop", "before", "cue", "cue-region", "first-letter", "first-line", "grammar-error", "marker", "part", "placeholder", "selection", "slotted", "spelling-error"].sort().reverse();
     var ATTRIBUTES = [
+      "accent-color",
       "align-content",
       "align-items",
       "align-self",
+      "alignment-baseline",
       "all",
+      "anchor-name",
       "animation",
+      "animation-composition",
       "animation-delay",
       "animation-direction",
       "animation-duration",
@@ -3302,7 +3341,14 @@ var require_css = __commonJS({
       "animation-iteration-count",
       "animation-name",
       "animation-play-state",
+      "animation-range",
+      "animation-range-end",
+      "animation-range-start",
+      "animation-timeline",
       "animation-timing-function",
+      "appearance",
+      "aspect-ratio",
+      "backdrop-filter",
       "backface-visibility",
       "background",
       "background-attachment",
@@ -3312,8 +3358,11 @@ var require_css = __commonJS({
       "background-image",
       "background-origin",
       "background-position",
+      "background-position-x",
+      "background-position-y",
       "background-repeat",
       "background-size",
+      "baseline-shift",
       "block-size",
       "border",
       "border-block",
@@ -3336,6 +3385,8 @@ var require_css = __commonJS({
       "border-bottom-width",
       "border-collapse",
       "border-color",
+      "border-end-end-radius",
+      "border-end-start-radius",
       "border-image",
       "border-image-outset",
       "border-image-repeat",
@@ -3364,6 +3415,8 @@ var require_css = __commonJS({
       "border-right-style",
       "border-right-width",
       "border-spacing",
+      "border-start-end-radius",
+      "border-start-start-radius",
       "border-style",
       "border-top",
       "border-top-color",
@@ -3373,7 +3426,15 @@ var require_css = __commonJS({
       "border-top-width",
       "border-width",
       "bottom",
+      "box-align",
       "box-decoration-break",
+      "box-direction",
+      "box-flex",
+      "box-flex-group",
+      "box-lines",
+      "box-ordinal-group",
+      "box-orient",
+      "box-pack",
       "box-shadow",
       "box-sizing",
       "break-after",
@@ -3386,6 +3447,11 @@ var require_css = __commonJS({
       "clip-path",
       "clip-rule",
       "color",
+      "color-interpolation",
+      "color-interpolation-filters",
+      "color-profile",
+      "color-rendering",
+      "color-scheme",
       "column-count",
       "column-fill",
       "column-gap",
@@ -3397,17 +3463,34 @@ var require_css = __commonJS({
       "column-width",
       "columns",
       "contain",
+      "contain-intrinsic-block-size",
+      "contain-intrinsic-height",
+      "contain-intrinsic-inline-size",
+      "contain-intrinsic-size",
+      "contain-intrinsic-width",
+      "container",
+      "container-name",
+      "container-type",
       "content",
       "content-visibility",
       "counter-increment",
       "counter-reset",
+      "counter-set",
       "cue",
       "cue-after",
       "cue-before",
       "cursor",
+      "cx",
+      "cy",
       "direction",
       "display",
+      "dominant-baseline",
       "empty-cells",
+      "enable-background",
+      "field-sizing",
+      "fill",
+      "fill-opacity",
+      "fill-rule",
       "filter",
       "flex",
       "flex-basis",
@@ -3417,6 +3500,8 @@ var require_css = __commonJS({
       "flex-shrink",
       "flex-wrap",
       "float",
+      "flood-color",
+      "flood-opacity",
       "flow",
       "font",
       "font-display",
@@ -3424,21 +3509,32 @@ var require_css = __commonJS({
       "font-feature-settings",
       "font-kerning",
       "font-language-override",
+      "font-optical-sizing",
+      "font-palette",
       "font-size",
       "font-size-adjust",
+      "font-smooth",
       "font-smoothing",
       "font-stretch",
       "font-style",
       "font-synthesis",
+      "font-synthesis-position",
+      "font-synthesis-small-caps",
+      "font-synthesis-style",
+      "font-synthesis-weight",
       "font-variant",
+      "font-variant-alternates",
       "font-variant-caps",
       "font-variant-east-asian",
+      "font-variant-emoji",
       "font-variant-ligatures",
       "font-variant-numeric",
       "font-variant-position",
       "font-variation-settings",
       "font-weight",
+      "forced-color-adjust",
       "gap",
+      "glyph-orientation-horizontal",
       "glyph-orientation-vertical",
       "grid",
       "grid-area",
@@ -3458,19 +3554,36 @@ var require_css = __commonJS({
       "grid-template-rows",
       "hanging-punctuation",
       "height",
+      "hyphenate-character",
+      "hyphenate-limit-chars",
       "hyphens",
       "icon",
       "image-orientation",
       "image-rendering",
       "image-resolution",
       "ime-mode",
+      "initial-letter",
+      "initial-letter-align",
       "inline-size",
+      "inset",
+      "inset-area",
+      "inset-block",
+      "inset-block-end",
+      "inset-block-start",
+      "inset-inline",
+      "inset-inline-end",
+      "inset-inline-start",
       "isolation",
       "justify-content",
+      "justify-items",
+      "justify-self",
+      "kerning",
       "left",
       "letter-spacing",
+      "lighting-color",
       "line-break",
       "line-height",
+      "line-height-step",
       "list-style",
       "list-style-image",
       "list-style-position",
@@ -3486,6 +3599,11 @@ var require_css = __commonJS({
       "margin-left",
       "margin-right",
       "margin-top",
+      "margin-trim",
+      "marker",
+      "marker-end",
+      "marker-mid",
+      "marker-start",
       "marks",
       "mask",
       "mask-border",
@@ -3504,6 +3622,10 @@ var require_css = __commonJS({
       "mask-repeat",
       "mask-size",
       "mask-type",
+      "masonry-auto-flow",
+      "math-depth",
+      "math-shift",
+      "math-style",
       "max-block-size",
       "max-height",
       "max-inline-size",
@@ -3522,6 +3644,12 @@ var require_css = __commonJS({
       "normal",
       "object-fit",
       "object-position",
+      "offset",
+      "offset-anchor",
+      "offset-distance",
+      "offset-path",
+      "offset-position",
+      "offset-rotate",
       "opacity",
       "order",
       "orphans",
@@ -3531,9 +3659,19 @@ var require_css = __commonJS({
       "outline-style",
       "outline-width",
       "overflow",
+      "overflow-anchor",
+      "overflow-block",
+      "overflow-clip-margin",
+      "overflow-inline",
       "overflow-wrap",
       "overflow-x",
       "overflow-y",
+      "overlay",
+      "overscroll-behavior",
+      "overscroll-behavior-block",
+      "overscroll-behavior-inline",
+      "overscroll-behavior-x",
+      "overscroll-behavior-y",
       "padding",
       "padding-block",
       "padding-block-end",
@@ -3545,23 +3683,37 @@ var require_css = __commonJS({
       "padding-left",
       "padding-right",
       "padding-top",
+      "page",
       "page-break-after",
       "page-break-before",
       "page-break-inside",
+      "paint-order",
       "pause",
       "pause-after",
       "pause-before",
       "perspective",
       "perspective-origin",
+      "place-content",
+      "place-items",
+      "place-self",
       "pointer-events",
       "position",
+      "position-anchor",
+      "position-visibility",
+      "print-color-adjust",
       "quotes",
+      "r",
       "resize",
       "rest",
       "rest-after",
       "rest-before",
       "right",
+      "rotate",
       "row-gap",
+      "ruby-align",
+      "ruby-position",
+      "scale",
+      "scroll-behavior",
       "scroll-margin",
       "scroll-margin-block",
       "scroll-margin-block-end",
@@ -3587,26 +3739,44 @@ var require_css = __commonJS({
       "scroll-snap-align",
       "scroll-snap-stop",
       "scroll-snap-type",
+      "scroll-timeline",
+      "scroll-timeline-axis",
+      "scroll-timeline-name",
       "scrollbar-color",
       "scrollbar-gutter",
       "scrollbar-width",
       "shape-image-threshold",
       "shape-margin",
       "shape-outside",
+      "shape-rendering",
       "speak",
       "speak-as",
       "src",
       // @font-face
+      "stop-color",
+      "stop-opacity",
+      "stroke",
+      "stroke-dasharray",
+      "stroke-dashoffset",
+      "stroke-linecap",
+      "stroke-linejoin",
+      "stroke-miterlimit",
+      "stroke-opacity",
+      "stroke-width",
       "tab-size",
       "table-layout",
       "text-align",
       "text-align-all",
       "text-align-last",
+      "text-anchor",
       "text-combine-upright",
       "text-decoration",
       "text-decoration-color",
       "text-decoration-line",
+      "text-decoration-skip",
+      "text-decoration-skip-ink",
       "text-decoration-style",
+      "text-decoration-thickness",
       "text-emphasis",
       "text-emphasis-color",
       "text-emphasis-position",
@@ -3617,20 +3787,37 @@ var require_css = __commonJS({
       "text-overflow",
       "text-rendering",
       "text-shadow",
+      "text-size-adjust",
       "text-transform",
+      "text-underline-offset",
       "text-underline-position",
+      "text-wrap",
+      "text-wrap-mode",
+      "text-wrap-style",
+      "timeline-scope",
       "top",
+      "touch-action",
       "transform",
       "transform-box",
       "transform-origin",
       "transform-style",
       "transition",
+      "transition-behavior",
       "transition-delay",
       "transition-duration",
       "transition-property",
       "transition-timing-function",
+      "translate",
       "unicode-bidi",
+      "user-modify",
+      "user-select",
+      "vector-effect",
       "vertical-align",
+      "view-timeline",
+      "view-timeline-axis",
+      "view-timeline-inset",
+      "view-timeline-name",
+      "view-transition-name",
       "visibility",
       "voice-balance",
       "voice-duration",
@@ -3641,6 +3828,7 @@ var require_css = __commonJS({
       "voice-stress",
       "voice-volume",
       "white-space",
+      "white-space-collapse",
       "widows",
       "width",
       "will-change",
@@ -3648,10 +3836,11 @@ var require_css = __commonJS({
       "word-spacing",
       "word-wrap",
       "writing-mode",
-      "z-index"
-      // reverse makes sure longer attributes `font-weight` are matched fully
-      // instead of getting false positives on say `font`
-    ].reverse();
+      "x",
+      "y",
+      "z-index",
+      "zoom"
+    ].sort().reverse();
     function css(hljs) {
       const regex = hljs.regex;
       const modes = MODES(hljs);
@@ -3968,10 +4157,15 @@ var require_markdown = __commonJS({
         contains: CONTAINABLE,
         end: "$"
       };
+      const ENTITY = {
+        //https://spec.commonmark.org/0.31.2/#entity-references
+        scope: "literal",
+        match: /&([a-zA-Z0-9]+|#[0-9]{1,7}|#[Xx][0-9a-fA-F]{1,6});/
+      };
       return {
         name: "Markdown",
         aliases: ["md", "mkdown", "mkd"],
-        contains: [HEADER, INLINE_HTML, LIST, BOLD, ITALIC, BLOCKQUOTE, CODE, HORIZONTAL_RULE, LINK, LINK_REFERENCE]
+        contains: [HEADER, INLINE_HTML, LIST, BOLD, ITALIC, BLOCKQUOTE, CODE, HORIZONTAL_RULE, LINK, LINK_REFERENCE, ENTITY]
       };
     }
     module.exports = markdown;
@@ -3996,6 +4190,15 @@ var require_dart = __commonJS({
           end: /\}/
         }],
         keywords: "true false null this is new super"
+      };
+      const NUMBER = {
+        className: "number",
+        relevance: 0,
+        variants: [{
+          match: /\b[0-9][0-9_]*(\.[0-9][0-9_]*)?([eE][+-]?[0-9][0-9_]*)?\b/
+        }, {
+          match: /\b0[xX][0-9A-Fa-f][0-9A-Fa-f_]*\b/
+        }]
       };
       const STRING = {
         className: "string",
@@ -4033,7 +4236,7 @@ var require_dart = __commonJS({
           contains: [hljs.BACKSLASH_ESCAPE, SUBST, BRACED_SUBST]
         }]
       };
-      BRACED_SUBST.contains = [hljs.C_NUMBER_MODE, STRING];
+      BRACED_SUBST.contains = [NUMBER, STRING];
       const BUILT_IN_TYPES = [
         // dart:core
         "Comparable",
@@ -4103,7 +4306,7 @@ var require_dart = __commonJS({
           contains: [{
             beginKeywords: "extends implements"
           }, hljs.UNDERSCORE_TITLE_MODE]
-        }, hljs.C_NUMBER_MODE, {
+        }, NUMBER, {
           className: "meta",
           begin: "@[A-Za-z]+"
         }, {
@@ -4700,7 +4903,7 @@ var require_ruby = __commonJS({
         begin: `(\\$\\W)|((\\$|@@?)(\\w+))(?=[^@$?])(?![A-Za-z])(?![@$?'])`
       }, {
         className: "params",
-        begin: /\|/,
+        begin: /\|(?!=)/,
         end: /\|/,
         excludeBegin: true,
         excludeEnd: true,
@@ -4777,7 +4980,7 @@ var require_erlang = __commonJS({
       const BASIC_ATOM_RE = "[a-z'][a-zA-Z0-9_']*";
       const FUNCTION_NAME_RE = "(" + BASIC_ATOM_RE + ":" + BASIC_ATOM_RE + "|" + BASIC_ATOM_RE + ")";
       const ERLANG_RESERVED = {
-        keyword: "after and andalso|10 band begin bnot bor bsl bzr bxor case catch cond div end fun if let not of orelse|10 query receive rem try when xor",
+        keyword: "after and andalso|10 band begin bnot bor bsl bzr bxor case catch cond div end fun if let not of orelse|10 query receive rem try when xor maybe else",
         literal: "false true"
       };
       const COMMENT = hljs.COMMENT("%", "$");
@@ -4834,19 +5037,64 @@ var require_erlang = __commonJS({
           // "contains" defined later
         }]
       };
+      const CHAR_LITERAL = {
+        scope: "string",
+        match: /\$(\\([^0-9]|[0-9]{1,3}|)|.)/
+      };
+      const TRIPLE_QUOTE = {
+        scope: "string",
+        match: /"""("*)(?!")[\s\S]*?"""\1/
+      };
+      const SIGIL = {
+        scope: "string",
+        contains: [hljs.BACKSLASH_ESCAPE],
+        variants: [{
+          match: /~\w?"""("*)(?!")[\s\S]*?"""\1/
+        }, {
+          begin: /~\w?\(/,
+          end: /\)/
+        }, {
+          begin: /~\w?\[/,
+          end: /\]/
+        }, {
+          begin: /~\w?{/,
+          end: /}/
+        }, {
+          begin: /~\w?</,
+          end: />/
+        }, {
+          begin: /~\w?\//,
+          end: /\//
+        }, {
+          begin: /~\w?\|/,
+          end: /\|/
+        }, {
+          begin: /~\w?'/,
+          end: /'/
+        }, {
+          begin: /~\w?"/,
+          end: /"/
+        }, {
+          begin: /~\w?`/,
+          end: /`/
+        }, {
+          begin: /~\w?#/,
+          end: /#/
+        }]
+      };
       const BLOCK_STATEMENTS = {
-        beginKeywords: "fun receive if try case",
+        beginKeywords: "fun receive if try case maybe",
         end: "end",
         keywords: ERLANG_RESERVED
       };
       BLOCK_STATEMENTS.contains = [COMMENT, NAMED_FUN, hljs.inherit(hljs.APOS_STRING_MODE, {
         className: ""
-      }), BLOCK_STATEMENTS, FUNCTION_CALL, hljs.QUOTE_STRING_MODE, NUMBER, TUPLE, VAR1, VAR2, RECORD_ACCESS];
-      const BASIC_MODES = [COMMENT, NAMED_FUN, BLOCK_STATEMENTS, FUNCTION_CALL, hljs.QUOTE_STRING_MODE, NUMBER, TUPLE, VAR1, VAR2, RECORD_ACCESS];
+      }), BLOCK_STATEMENTS, FUNCTION_CALL, SIGIL, TRIPLE_QUOTE, hljs.QUOTE_STRING_MODE, NUMBER, TUPLE, VAR1, VAR2, RECORD_ACCESS, CHAR_LITERAL];
+      const BASIC_MODES = [COMMENT, NAMED_FUN, BLOCK_STATEMENTS, FUNCTION_CALL, SIGIL, TRIPLE_QUOTE, hljs.QUOTE_STRING_MODE, NUMBER, TUPLE, VAR1, VAR2, RECORD_ACCESS, CHAR_LITERAL];
       FUNCTION_CALL.contains[1].contains = BASIC_MODES;
       TUPLE.contains = BASIC_MODES;
       RECORD_ACCESS.contains[1].contains = BASIC_MODES;
-      const DIRECTIVES = ["-module", "-record", "-undef", "-export", "-ifdef", "-ifndef", "-author", "-copyright", "-doc", "-vsn", "-import", "-include", "-include_lib", "-compile", "-define", "-else", "-endif", "-file", "-behaviour", "-behavior", "-spec"];
+      const DIRECTIVES = ["-module", "-record", "-undef", "-export", "-ifdef", "-ifndef", "-author", "-copyright", "-doc", "-moduledoc", "-vsn", "-import", "-include", "-include_lib", "-compile", "-define", "-else", "-endif", "-file", "-behaviour", "-behavior", "-spec", "-on_load", "-nifs"];
       const PARAMS = {
         className: "params",
         begin: "\\(",
@@ -4885,14 +5133,17 @@ var require_erlang = __commonJS({
               $pattern: "-" + hljs.IDENT_RE,
               keyword: DIRECTIVES.map((x) => `${x}|1.5`).join(" ")
             },
-            contains: [PARAMS]
+            contains: [PARAMS, SIGIL, TRIPLE_QUOTE, hljs.QUOTE_STRING_MODE]
           },
           NUMBER,
+          SIGIL,
+          TRIPLE_QUOTE,
           hljs.QUOTE_STRING_MODE,
           RECORD_ACCESS,
           VAR1,
           VAR2,
           TUPLE,
+          CHAR_LITERAL,
           {
             begin: /\.$/
           }
@@ -5412,9 +5663,26 @@ var require_go = __commonJS({
         }, {
           className: "number",
           variants: [{
-            begin: hljs.C_NUMBER_RE + "[i]",
-            relevance: 1
-          }, hljs.C_NUMBER_MODE]
+            match: /-?\b0[xX]\.[a-fA-F0-9](_?[a-fA-F0-9])*[pP][+-]?\d(_?\d)*i?/,
+            // hex without a present digit before . (making a digit afterwards required)
+            relevance: 0
+          }, {
+            match: /-?\b0[xX](_?[a-fA-F0-9])+((\.([a-fA-F0-9](_?[a-fA-F0-9])*)?)?[pP][+-]?\d(_?\d)*)?i?/,
+            // hex with a present digit before . (making a digit afterwards optional)
+            relevance: 0
+          }, {
+            match: /-?\b0[oO](_?[0-7])*i?/,
+            // leading 0o octal
+            relevance: 0
+          }, {
+            match: /-?\.\d(_?\d)*([eE][+-]?\d(_?\d)*)?i?/,
+            // decimal without a present digit before . (making a digit afterwards required)
+            relevance: 0
+          }, {
+            match: /-?\b\d(_?\d)*(\.(\d(_?\d)*)?)?([eE][+-]?\d(_?\d)*)?i?/,
+            // decimal with a present digit before . (making a digit afterwards optional)
+            relevance: 0
+          }]
         }, {
           begin: /:=/
           // relevance booster
@@ -6077,7 +6345,7 @@ var require_java = __commonJS({
       const regex = hljs.regex;
       const JAVA_IDENT_RE = "[\xC0-\u02B8a-zA-Z_$][\xC0-\u02B8a-zA-Z_$0-9]*";
       const GENERIC_IDENT_RE = JAVA_IDENT_RE + recurRegex("(?:<" + JAVA_IDENT_RE + "~~~(?:\\s*,\\s*" + JAVA_IDENT_RE + "~~~)*>)?", /~~~/g, 2);
-      const MAIN_KEYWORDS = ["synchronized", "abstract", "private", "var", "static", "if", "const ", "for", "while", "strictfp", "finally", "protected", "import", "native", "final", "void", "enum", "else", "break", "transient", "catch", "instanceof", "volatile", "case", "assert", "package", "default", "public", "try", "switch", "continue", "throws", "protected", "public", "private", "module", "requires", "exports", "do", "sealed", "yield", "permits"];
+      const MAIN_KEYWORDS = ["synchronized", "abstract", "private", "var", "static", "if", "const ", "for", "while", "strictfp", "finally", "protected", "import", "native", "final", "void", "enum", "else", "break", "transient", "catch", "instanceof", "volatile", "case", "assert", "package", "default", "public", "try", "switch", "continue", "throws", "protected", "public", "private", "module", "requires", "exports", "do", "sealed", "yield", "permits", "goto", "when"];
       const BUILT_INS = ["super", "this"];
       const LITERALS = ["false", "true", "null"];
       const TYPES = ["char", "boolean", "long", "float", "int", "byte", "short", "double"];
@@ -6244,7 +6512,9 @@ var require_javascript = __commonJS({
       "import",
       "from",
       "export",
-      "extends"
+      "extends",
+      // It's reached stage 3, which is "recommended for implementation":
+      "using"
     ];
     var LITERALS = ["true", "false", "null", "undefined", "NaN", "Infinity"];
     var TYPES = [
@@ -6422,7 +6692,7 @@ var require_javascript = __commonJS({
         // defined later
       };
       const HTML_TEMPLATE = {
-        begin: "html`",
+        begin: ".?html`",
         end: "",
         starts: {
           end: "`",
@@ -6432,7 +6702,7 @@ var require_javascript = __commonJS({
         }
       };
       const CSS_TEMPLATE = {
-        begin: "css`",
+        begin: ".?css`",
         end: "",
         starts: {
           end: "`",
@@ -6442,7 +6712,7 @@ var require_javascript = __commonJS({
         }
       };
       const GRAPHQL_TEMPLATE = {
-        begin: "gql`",
+        begin: ".?gql`",
         end: "",
         starts: {
           end: "`",
@@ -6522,7 +6792,7 @@ var require_javascript = __commonJS({
       const PARAMS_CONTAINS = SUBST_AND_COMMENTS.concat([
         // eat recursive parens in sub expressions
         {
-          begin: /\(/,
+          begin: /(\s*)\(/,
           end: /\)/,
           keywords: KEYWORDS$1,
           contains: ["self"].concat(SUBST_AND_COMMENTS)
@@ -6530,7 +6800,9 @@ var require_javascript = __commonJS({
       ]);
       const PARAMS = {
         className: "params",
-        begin: /\(/,
+        // convert this to negative lookbehind in v12
+        begin: /(\s*)\(/,
+        // to match the parms with
         end: /\)/,
         excludeBegin: true,
         excludeEnd: true,
@@ -6617,7 +6889,7 @@ var require_javascript = __commonJS({
         return regex.concat("(?!", list.join("|"), ")");
       }
       const FUNCTION_CALL = {
-        match: regex.concat(/\b/, noneOf([...BUILT_IN_GLOBALS, "super", "import"]), IDENT_RE$1, regex.lookahead(/\(/)),
+        match: regex.concat(/\b/, noneOf([...BUILT_IN_GLOBALS, "super", "import"].map((x) => `${x}\\s*\\(`)), IDENT_RE$1, regex.lookahead(/\s*\(/)),
         className: "title.function",
         relevance: 0
       };
@@ -6690,8 +6962,8 @@ var require_javascript = __commonJS({
           NUMBER,
           CLASS_REFERENCE,
           {
-            className: "attr",
-            begin: IDENT_RE$1 + regex.lookahead(":"),
+            scope: "attr",
+            match: IDENT_RE$1 + regex.lookahead(":"),
             relevance: 0
           },
           FUNCTION_VARIABLE,
@@ -6718,7 +6990,7 @@ var require_javascript = __commonJS({
                   begin: /\(\s*\)/,
                   skip: true
                 }, {
-                  begin: /\(/,
+                  begin: /(\s*)\(/,
                   end: /\)/,
                   excludeBegin: true,
                   excludeEnd: true,
@@ -6832,6 +7104,7 @@ var require_json = __commonJS({
       };
       return {
         name: "JSON",
+        aliases: ["jsonc"],
         keywords: {
           literal: LITERALS
         },
@@ -7098,7 +7371,9 @@ var require_less = __commonJS({
         }
       };
     };
-    var TAGS = ["a", "abbr", "address", "article", "aside", "audio", "b", "blockquote", "body", "button", "canvas", "caption", "cite", "code", "dd", "del", "details", "dfn", "div", "dl", "dt", "em", "fieldset", "figcaption", "figure", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "header", "hgroup", "html", "i", "iframe", "img", "input", "ins", "kbd", "label", "legend", "li", "main", "mark", "menu", "nav", "object", "ol", "p", "q", "quote", "samp", "section", "span", "strong", "summary", "sup", "table", "tbody", "td", "textarea", "tfoot", "th", "thead", "time", "tr", "ul", "var", "video"];
+    var HTML_TAGS = ["a", "abbr", "address", "article", "aside", "audio", "b", "blockquote", "body", "button", "canvas", "caption", "cite", "code", "dd", "del", "details", "dfn", "div", "dl", "dt", "em", "fieldset", "figcaption", "figure", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "header", "hgroup", "html", "i", "iframe", "img", "input", "ins", "kbd", "label", "legend", "li", "main", "mark", "menu", "nav", "object", "ol", "optgroup", "option", "p", "picture", "q", "quote", "samp", "section", "select", "source", "span", "strong", "summary", "sup", "table", "tbody", "td", "textarea", "tfoot", "th", "thead", "time", "tr", "ul", "var", "video"];
+    var SVG_TAGS = ["defs", "g", "marker", "mask", "pattern", "svg", "switch", "symbol", "feBlend", "feColorMatrix", "feComponentTransfer", "feComposite", "feConvolveMatrix", "feDiffuseLighting", "feDisplacementMap", "feFlood", "feGaussianBlur", "feImage", "feMerge", "feMorphology", "feOffset", "feSpecularLighting", "feTile", "feTurbulence", "linearGradient", "radialGradient", "stop", "circle", "ellipse", "image", "line", "path", "polygon", "polyline", "rect", "text", "use", "textPath", "tspan", "foreignObject", "clipPath"];
+    var TAGS = [...HTML_TAGS, ...SVG_TAGS];
     var MEDIA_FEATURES = [
       "any-hover",
       "any-pointer",
@@ -7134,7 +7409,7 @@ var require_less = __commonJS({
       "max-width",
       "min-height",
       "max-height"
-    ];
+    ].sort().reverse();
     var PSEUDO_CLASSES = [
       "active",
       "any-link",
@@ -7209,14 +7484,18 @@ var require_less = __commonJS({
       "visited",
       "where"
       // where()
-    ];
-    var PSEUDO_ELEMENTS = ["after", "backdrop", "before", "cue", "cue-region", "first-letter", "first-line", "grammar-error", "marker", "part", "placeholder", "selection", "slotted", "spelling-error"];
+    ].sort().reverse();
+    var PSEUDO_ELEMENTS = ["after", "backdrop", "before", "cue", "cue-region", "first-letter", "first-line", "grammar-error", "marker", "part", "placeholder", "selection", "slotted", "spelling-error"].sort().reverse();
     var ATTRIBUTES = [
+      "accent-color",
       "align-content",
       "align-items",
       "align-self",
+      "alignment-baseline",
       "all",
+      "anchor-name",
       "animation",
+      "animation-composition",
       "animation-delay",
       "animation-direction",
       "animation-duration",
@@ -7224,7 +7503,14 @@ var require_less = __commonJS({
       "animation-iteration-count",
       "animation-name",
       "animation-play-state",
+      "animation-range",
+      "animation-range-end",
+      "animation-range-start",
+      "animation-timeline",
       "animation-timing-function",
+      "appearance",
+      "aspect-ratio",
+      "backdrop-filter",
       "backface-visibility",
       "background",
       "background-attachment",
@@ -7234,8 +7520,11 @@ var require_less = __commonJS({
       "background-image",
       "background-origin",
       "background-position",
+      "background-position-x",
+      "background-position-y",
       "background-repeat",
       "background-size",
+      "baseline-shift",
       "block-size",
       "border",
       "border-block",
@@ -7258,6 +7547,8 @@ var require_less = __commonJS({
       "border-bottom-width",
       "border-collapse",
       "border-color",
+      "border-end-end-radius",
+      "border-end-start-radius",
       "border-image",
       "border-image-outset",
       "border-image-repeat",
@@ -7286,6 +7577,8 @@ var require_less = __commonJS({
       "border-right-style",
       "border-right-width",
       "border-spacing",
+      "border-start-end-radius",
+      "border-start-start-radius",
       "border-style",
       "border-top",
       "border-top-color",
@@ -7295,7 +7588,15 @@ var require_less = __commonJS({
       "border-top-width",
       "border-width",
       "bottom",
+      "box-align",
       "box-decoration-break",
+      "box-direction",
+      "box-flex",
+      "box-flex-group",
+      "box-lines",
+      "box-ordinal-group",
+      "box-orient",
+      "box-pack",
       "box-shadow",
       "box-sizing",
       "break-after",
@@ -7308,6 +7609,11 @@ var require_less = __commonJS({
       "clip-path",
       "clip-rule",
       "color",
+      "color-interpolation",
+      "color-interpolation-filters",
+      "color-profile",
+      "color-rendering",
+      "color-scheme",
       "column-count",
       "column-fill",
       "column-gap",
@@ -7319,17 +7625,34 @@ var require_less = __commonJS({
       "column-width",
       "columns",
       "contain",
+      "contain-intrinsic-block-size",
+      "contain-intrinsic-height",
+      "contain-intrinsic-inline-size",
+      "contain-intrinsic-size",
+      "contain-intrinsic-width",
+      "container",
+      "container-name",
+      "container-type",
       "content",
       "content-visibility",
       "counter-increment",
       "counter-reset",
+      "counter-set",
       "cue",
       "cue-after",
       "cue-before",
       "cursor",
+      "cx",
+      "cy",
       "direction",
       "display",
+      "dominant-baseline",
       "empty-cells",
+      "enable-background",
+      "field-sizing",
+      "fill",
+      "fill-opacity",
+      "fill-rule",
       "filter",
       "flex",
       "flex-basis",
@@ -7339,6 +7662,8 @@ var require_less = __commonJS({
       "flex-shrink",
       "flex-wrap",
       "float",
+      "flood-color",
+      "flood-opacity",
       "flow",
       "font",
       "font-display",
@@ -7346,21 +7671,32 @@ var require_less = __commonJS({
       "font-feature-settings",
       "font-kerning",
       "font-language-override",
+      "font-optical-sizing",
+      "font-palette",
       "font-size",
       "font-size-adjust",
+      "font-smooth",
       "font-smoothing",
       "font-stretch",
       "font-style",
       "font-synthesis",
+      "font-synthesis-position",
+      "font-synthesis-small-caps",
+      "font-synthesis-style",
+      "font-synthesis-weight",
       "font-variant",
+      "font-variant-alternates",
       "font-variant-caps",
       "font-variant-east-asian",
+      "font-variant-emoji",
       "font-variant-ligatures",
       "font-variant-numeric",
       "font-variant-position",
       "font-variation-settings",
       "font-weight",
+      "forced-color-adjust",
       "gap",
+      "glyph-orientation-horizontal",
       "glyph-orientation-vertical",
       "grid",
       "grid-area",
@@ -7380,19 +7716,36 @@ var require_less = __commonJS({
       "grid-template-rows",
       "hanging-punctuation",
       "height",
+      "hyphenate-character",
+      "hyphenate-limit-chars",
       "hyphens",
       "icon",
       "image-orientation",
       "image-rendering",
       "image-resolution",
       "ime-mode",
+      "initial-letter",
+      "initial-letter-align",
       "inline-size",
+      "inset",
+      "inset-area",
+      "inset-block",
+      "inset-block-end",
+      "inset-block-start",
+      "inset-inline",
+      "inset-inline-end",
+      "inset-inline-start",
       "isolation",
       "justify-content",
+      "justify-items",
+      "justify-self",
+      "kerning",
       "left",
       "letter-spacing",
+      "lighting-color",
       "line-break",
       "line-height",
+      "line-height-step",
       "list-style",
       "list-style-image",
       "list-style-position",
@@ -7408,6 +7761,11 @@ var require_less = __commonJS({
       "margin-left",
       "margin-right",
       "margin-top",
+      "margin-trim",
+      "marker",
+      "marker-end",
+      "marker-mid",
+      "marker-start",
       "marks",
       "mask",
       "mask-border",
@@ -7426,6 +7784,10 @@ var require_less = __commonJS({
       "mask-repeat",
       "mask-size",
       "mask-type",
+      "masonry-auto-flow",
+      "math-depth",
+      "math-shift",
+      "math-style",
       "max-block-size",
       "max-height",
       "max-inline-size",
@@ -7444,6 +7806,12 @@ var require_less = __commonJS({
       "normal",
       "object-fit",
       "object-position",
+      "offset",
+      "offset-anchor",
+      "offset-distance",
+      "offset-path",
+      "offset-position",
+      "offset-rotate",
       "opacity",
       "order",
       "orphans",
@@ -7453,9 +7821,19 @@ var require_less = __commonJS({
       "outline-style",
       "outline-width",
       "overflow",
+      "overflow-anchor",
+      "overflow-block",
+      "overflow-clip-margin",
+      "overflow-inline",
       "overflow-wrap",
       "overflow-x",
       "overflow-y",
+      "overlay",
+      "overscroll-behavior",
+      "overscroll-behavior-block",
+      "overscroll-behavior-inline",
+      "overscroll-behavior-x",
+      "overscroll-behavior-y",
       "padding",
       "padding-block",
       "padding-block-end",
@@ -7467,23 +7845,37 @@ var require_less = __commonJS({
       "padding-left",
       "padding-right",
       "padding-top",
+      "page",
       "page-break-after",
       "page-break-before",
       "page-break-inside",
+      "paint-order",
       "pause",
       "pause-after",
       "pause-before",
       "perspective",
       "perspective-origin",
+      "place-content",
+      "place-items",
+      "place-self",
       "pointer-events",
       "position",
+      "position-anchor",
+      "position-visibility",
+      "print-color-adjust",
       "quotes",
+      "r",
       "resize",
       "rest",
       "rest-after",
       "rest-before",
       "right",
+      "rotate",
       "row-gap",
+      "ruby-align",
+      "ruby-position",
+      "scale",
+      "scroll-behavior",
       "scroll-margin",
       "scroll-margin-block",
       "scroll-margin-block-end",
@@ -7509,26 +7901,44 @@ var require_less = __commonJS({
       "scroll-snap-align",
       "scroll-snap-stop",
       "scroll-snap-type",
+      "scroll-timeline",
+      "scroll-timeline-axis",
+      "scroll-timeline-name",
       "scrollbar-color",
       "scrollbar-gutter",
       "scrollbar-width",
       "shape-image-threshold",
       "shape-margin",
       "shape-outside",
+      "shape-rendering",
       "speak",
       "speak-as",
       "src",
       // @font-face
+      "stop-color",
+      "stop-opacity",
+      "stroke",
+      "stroke-dasharray",
+      "stroke-dashoffset",
+      "stroke-linecap",
+      "stroke-linejoin",
+      "stroke-miterlimit",
+      "stroke-opacity",
+      "stroke-width",
       "tab-size",
       "table-layout",
       "text-align",
       "text-align-all",
       "text-align-last",
+      "text-anchor",
       "text-combine-upright",
       "text-decoration",
       "text-decoration-color",
       "text-decoration-line",
+      "text-decoration-skip",
+      "text-decoration-skip-ink",
       "text-decoration-style",
+      "text-decoration-thickness",
       "text-emphasis",
       "text-emphasis-color",
       "text-emphasis-position",
@@ -7539,20 +7949,37 @@ var require_less = __commonJS({
       "text-overflow",
       "text-rendering",
       "text-shadow",
+      "text-size-adjust",
       "text-transform",
+      "text-underline-offset",
       "text-underline-position",
+      "text-wrap",
+      "text-wrap-mode",
+      "text-wrap-style",
+      "timeline-scope",
       "top",
+      "touch-action",
       "transform",
       "transform-box",
       "transform-origin",
       "transform-style",
       "transition",
+      "transition-behavior",
       "transition-delay",
       "transition-duration",
       "transition-property",
       "transition-timing-function",
+      "translate",
       "unicode-bidi",
+      "user-modify",
+      "user-select",
+      "vector-effect",
       "vertical-align",
+      "view-timeline",
+      "view-timeline-axis",
+      "view-timeline-inset",
+      "view-timeline-name",
+      "view-transition-name",
       "visibility",
       "voice-balance",
       "voice-duration",
@@ -7563,6 +7990,7 @@ var require_less = __commonJS({
       "voice-stress",
       "voice-volume",
       "white-space",
+      "white-space-collapse",
       "widows",
       "width",
       "will-change",
@@ -7570,11 +7998,12 @@ var require_less = __commonJS({
       "word-spacing",
       "word-wrap",
       "writing-mode",
-      "z-index"
-      // reverse makes sure longer attributes `font-weight` are matched fully
-      // instead of getting false positives on say `font`
-    ].reverse();
-    var PSEUDO_SELECTORS = PSEUDO_CLASSES.concat(PSEUDO_ELEMENTS);
+      "x",
+      "y",
+      "z-index",
+      "zoom"
+    ].sort().reverse();
+    var PSEUDO_SELECTORS = PSEUDO_CLASSES.concat(PSEUDO_ELEMENTS).sort().reverse();
     function less(hljs) {
       const modes = MODES(hljs);
       const PSEUDO_SELECTORS$1 = PSEUDO_SELECTORS;
@@ -7903,6 +8332,7 @@ var require_lua = __commonJS({
       })];
       return {
         name: "Lua",
+        aliases: ["pluto"],
         keywords: {
           $pattern: hljs.UNDERSCORE_IDENT_RE,
           literal: "true false nil",
@@ -7964,7 +8394,11 @@ var require_makefile = __commonJS({
         keywords: {
           built_in: "subst patsubst strip findstring filter filter-out sort word wordlist firstword lastword dir notdir suffix basename addsuffix addprefix join wildcard realpath abspath error warning shell origin flavor foreach if or and call eval file value"
         },
-        contains: [VARIABLE]
+        contains: [
+          VARIABLE,
+          QUOTE_STRING
+          // Added QUOTE_STRING as they can be a part of functions
+        ]
       };
       const ASSIGNMENT = {
         begin: "^" + hljs.UNDERSCORE_IDENT_RE + "\\s*(?=[:+?]?=)"
@@ -8004,7 +8438,7 @@ var require_perl = __commonJS({
     "use strict";
     function perl(hljs) {
       const regex = hljs.regex;
-      const KEYWORDS = ["abs", "accept", "alarm", "and", "atan2", "bind", "binmode", "bless", "break", "caller", "chdir", "chmod", "chomp", "chop", "chown", "chr", "chroot", "close", "closedir", "connect", "continue", "cos", "crypt", "dbmclose", "dbmopen", "defined", "delete", "die", "do", "dump", "each", "else", "elsif", "endgrent", "endhostent", "endnetent", "endprotoent", "endpwent", "endservent", "eof", "eval", "exec", "exists", "exit", "exp", "fcntl", "fileno", "flock", "for", "foreach", "fork", "format", "formline", "getc", "getgrent", "getgrgid", "getgrnam", "gethostbyaddr", "gethostbyname", "gethostent", "getlogin", "getnetbyaddr", "getnetbyname", "getnetent", "getpeername", "getpgrp", "getpriority", "getprotobyname", "getprotobynumber", "getprotoent", "getpwent", "getpwnam", "getpwuid", "getservbyname", "getservbyport", "getservent", "getsockname", "getsockopt", "given", "glob", "gmtime", "goto", "grep", "gt", "hex", "if", "index", "int", "ioctl", "join", "keys", "kill", "last", "lc", "lcfirst", "length", "link", "listen", "local", "localtime", "log", "lstat", "lt", "ma", "map", "mkdir", "msgctl", "msgget", "msgrcv", "msgsnd", "my", "ne", "next", "no", "not", "oct", "open", "opendir", "or", "ord", "our", "pack", "package", "pipe", "pop", "pos", "print", "printf", "prototype", "push", "q|0", "qq", "quotemeta", "qw", "qx", "rand", "read", "readdir", "readline", "readlink", "readpipe", "recv", "redo", "ref", "rename", "require", "reset", "return", "reverse", "rewinddir", "rindex", "rmdir", "say", "scalar", "seek", "seekdir", "select", "semctl", "semget", "semop", "send", "setgrent", "sethostent", "setnetent", "setpgrp", "setpriority", "setprotoent", "setpwent", "setservent", "setsockopt", "shift", "shmctl", "shmget", "shmread", "shmwrite", "shutdown", "sin", "sleep", "socket", "socketpair", "sort", "splice", "split", "sprintf", "sqrt", "srand", "stat", "state", "study", "sub", "substr", "symlink", "syscall", "sysopen", "sysread", "sysseek", "system", "syswrite", "tell", "telldir", "tie", "tied", "time", "times", "tr", "truncate", "uc", "ucfirst", "umask", "undef", "unless", "unlink", "unpack", "unshift", "untie", "until", "use", "utime", "values", "vec", "wait", "waitpid", "wantarray", "warn", "when", "while", "write", "x|0", "xor", "y|0"];
+      const KEYWORDS = ["abs", "accept", "alarm", "and", "atan2", "bind", "binmode", "bless", "break", "caller", "chdir", "chmod", "chomp", "chop", "chown", "chr", "chroot", "class", "close", "closedir", "connect", "continue", "cos", "crypt", "dbmclose", "dbmopen", "defined", "delete", "die", "do", "dump", "each", "else", "elsif", "endgrent", "endhostent", "endnetent", "endprotoent", "endpwent", "endservent", "eof", "eval", "exec", "exists", "exit", "exp", "fcntl", "field", "fileno", "flock", "for", "foreach", "fork", "format", "formline", "getc", "getgrent", "getgrgid", "getgrnam", "gethostbyaddr", "gethostbyname", "gethostent", "getlogin", "getnetbyaddr", "getnetbyname", "getnetent", "getpeername", "getpgrp", "getpriority", "getprotobyname", "getprotobynumber", "getprotoent", "getpwent", "getpwnam", "getpwuid", "getservbyname", "getservbyport", "getservent", "getsockname", "getsockopt", "given", "glob", "gmtime", "goto", "grep", "gt", "hex", "if", "index", "int", "ioctl", "join", "keys", "kill", "last", "lc", "lcfirst", "length", "link", "listen", "local", "localtime", "log", "lstat", "lt", "ma", "map", "method", "mkdir", "msgctl", "msgget", "msgrcv", "msgsnd", "my", "ne", "next", "no", "not", "oct", "open", "opendir", "or", "ord", "our", "pack", "package", "pipe", "pop", "pos", "print", "printf", "prototype", "push", "q|0", "qq", "quotemeta", "qw", "qx", "rand", "read", "readdir", "readline", "readlink", "readpipe", "recv", "redo", "ref", "rename", "require", "reset", "return", "reverse", "rewinddir", "rindex", "rmdir", "say", "scalar", "seek", "seekdir", "select", "semctl", "semget", "semop", "send", "setgrent", "sethostent", "setnetent", "setpgrp", "setpriority", "setprotoent", "setpwent", "setservent", "setsockopt", "shift", "shmctl", "shmget", "shmread", "shmwrite", "shutdown", "sin", "sleep", "socket", "socketpair", "sort", "splice", "split", "sprintf", "sqrt", "srand", "stat", "state", "study", "sub", "substr", "symlink", "syscall", "sysopen", "sysread", "sysseek", "system", "syswrite", "tell", "telldir", "tie", "tied", "time", "times", "tr", "truncate", "uc", "ucfirst", "umask", "undef", "unless", "unlink", "unpack", "unshift", "untie", "until", "use", "utime", "values", "vec", "wait", "waitpid", "wantarray", "warn", "when", "while", "write", "x|0", "xor", "y|0"];
       const REGEX_MODIFIERS = /[dualxmsipngr]{0,12}/;
       const PERL_KEYWORDS = {
         $pattern: /[\w.]+/,
@@ -8021,20 +8455,53 @@ var require_perl = __commonJS({
         end: /\}/
         // contains defined later
       };
+      const ATTR = {
+        scope: "attr",
+        match: /\s+:\s*\w+(\s*\(.*?\))?/
+      };
       const VAR = {
+        scope: "variable",
         variants: [{
           begin: /\$\d/
         }, {
           begin: regex.concat(
-            /[$%@](\^\w\b|#\w+(::\w+)*|\{\w+\}|\w+(::\w*)*)/,
+            /[$%@](?!")(\^\w\b|#\w+(::\w+)*|\{\w+\}|\w+(::\w*)*)/,
             // negative look-ahead tries to avoid matching patterns that are not
             // Perl at all like $ident$, @ident@, etc.
             `(?![A-Za-z])(?![@$%])`
           )
         }, {
-          begin: /[$%@][^\s\w{]/,
+          // Only $= is a special Perl variable and one can't declare @= or %=.
+          begin: /[$%@](?!")[^\s\w{=]|\$=/,
           relevance: 0
-        }]
+        }],
+        contains: [ATTR]
+      };
+      const NUMBER = {
+        className: "number",
+        variants: [
+          // decimal numbers:
+          // include the case where a number starts with a dot (eg. .9), and
+          // the leading 0? avoids mixing the first and second match on 0.x cases
+          {
+            match: /0?\.[0-9][0-9_]+\b/
+          },
+          // include the special versioned number (eg. v5.38)
+          {
+            match: /\bv?(0|[1-9][0-9_]*(\.[0-9_]+)?|[1-9][0-9_]*)\b/
+          },
+          // non-decimal numbers:
+          {
+            match: /\b0[0-7][0-7_]*\b/
+          },
+          {
+            match: /\b0x[0-9a-fA-F][0-9a-fA-F_]*\b/
+          },
+          {
+            match: /\b0b[0-1][0-1_]*\b/
+          }
+        ],
+        relevance: 0
       };
       const STRING_CONTAINS = [hljs.BACKSLASH_ESCAPE, SUBST, VAR];
       const REGEX_DELIMS = [
@@ -8102,11 +8569,7 @@ var require_perl = __commonJS({
           begin: "-?\\w+\\s*=>",
           relevance: 0
         }]
-      }, {
-        className: "number",
-        begin: "(\\b0[0-7_]+)|(\\b0x[0-9a-fA-F_]+)|(\\b[1-9][0-9_]*(\\.[0-9_]+)?)|[0_]\\b",
-        relevance: 0
-      }, {
+      }, NUMBER, {
         // regexp container
         begin: "(\\/\\/|" + hljs.RE_STARTERS_RE + "|\\b(split|return|print|reverse|grep)\\b)\\s*",
         keywords: "split return print reverse grep",
@@ -8165,11 +8628,18 @@ var require_perl = __commonJS({
         }]
       }, {
         className: "function",
-        beginKeywords: "sub",
+        beginKeywords: "sub method",
         end: "(\\s*\\(.*?\\))?[;{]",
         excludeEnd: true,
         relevance: 5,
-        contains: [hljs.TITLE_MODE]
+        contains: [hljs.TITLE_MODE, ATTR]
+      }, {
+        className: "class",
+        beginKeywords: "class",
+        end: "[;{]",
+        excludeEnd: true,
+        relevance: 5,
+        contains: [hljs.TITLE_MODE, ATTR, NUMBER]
       }, {
         begin: "-\\w\\b",
         relevance: 0
@@ -8709,6 +9179,7 @@ var require_php = __commonJS({
       const NOT_PERL_ETC = /(?![A-Za-z0-9])(?![$])/;
       const IDENT_RE = regex.concat(/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/, NOT_PERL_ETC);
       const PASCAL_CASE_CLASS_NAME_RE = regex.concat(/(\\?[A-Z][a-z0-9_\x7f-\xff]+|\\?[A-Z]+(?=[A-Z][a-z0-9_\x7f-\xff])){1,}/, NOT_PERL_ETC);
+      const UPCASE_NAME_RE = regex.concat(/[A-Z]+/, NOT_PERL_ETC);
       const VARIABLE = {
         scope: "variable",
         match: "\\$+" + IDENT_RE
@@ -9088,7 +9559,7 @@ var require_php = __commonJS({
       PARAMS_MODE.contains.push(FUNCTION_INVOKE);
       const ATTRIBUTE_CONTAINS = [NAMED_ARGUMENT, LEFT_AND_RIGHT_SIDE_OF_DOUBLE_COLON, hljs.C_BLOCK_COMMENT_MODE, STRING, NUMBER, CONSTRUCTOR_CALL];
       const ATTRIBUTES = {
-        begin: regex.concat(/#\[\s*/, PASCAL_CASE_CLASS_NAME_RE),
+        begin: regex.concat(/#\[\s*\\?/, regex.either(PASCAL_CASE_CLASS_NAME_RE, UPCASE_NAME_RE)),
         beginScope: "meta",
         end: /]/,
         endScope: "meta",
@@ -9106,7 +9577,11 @@ var require_php = __commonJS({
           contains: ["self", ...ATTRIBUTE_CONTAINS]
         }, ...ATTRIBUTE_CONTAINS, {
           scope: "meta",
-          match: PASCAL_CASE_CLASS_NAME_RE
+          variants: [{
+            match: PASCAL_CASE_CLASS_NAME_RE
+          }, {
+            match: UPCASE_NAME_RE
+          }]
         }]
       };
       return {
@@ -9171,7 +9646,7 @@ var require_php = __commonJS({
               excludeBegin: true,
               excludeEnd: true,
               keywords: KEYWORDS,
-              contains: ["self", VARIABLE, LEFT_AND_RIGHT_SIDE_OF_DOUBLE_COLON, hljs.C_BLOCK_COMMENT_MODE, STRING, NUMBER]
+              contains: ["self", ATTRIBUTES, VARIABLE, LEFT_AND_RIGHT_SIDE_OF_DOUBLE_COLON, hljs.C_BLOCK_COMMENT_MODE, STRING, NUMBER]
             }]
           },
           {
@@ -9729,12 +10204,16 @@ var require_python = __commonJS({
         illegal: /(<\/|\?)|=>/,
         contains: [PROMPT, NUMBER, {
           // very common convention
-          begin: /\bself\b/
+          scope: "variable.language",
+          match: /\bself\b/
         }, {
           // eat "if" prior to string so that it won't accidentally be
           // labeled as an f-string
           beginKeywords: "if",
           relevance: 0
+        }, {
+          match: /\bor\b/,
+          scope: "keyword"
         }, STRING, COMMENT_TYPE, hljs.HASH_COMMENT_MODE, {
           match: [/\bdef/, /\s+/, IDENT_RE],
           scope: {
@@ -9771,13 +10250,16 @@ var require_rust = __commonJS({
     "use strict";
     function rust(hljs) {
       const regex = hljs.regex;
+      const RAW_IDENTIFIER = /(r#)?/;
+      const UNDERSCORE_IDENT_RE = regex.concat(RAW_IDENTIFIER, hljs.UNDERSCORE_IDENT_RE);
+      const IDENT_RE = regex.concat(RAW_IDENTIFIER, hljs.IDENT_RE);
       const FUNCTION_INVOKE = {
         className: "title.function.invoke",
         relevance: 0,
-        begin: regex.concat(/\b/, /(?!let|for|while|if|else|match\b)/, hljs.IDENT_RE, regex.lookahead(/\s*\(/))
+        begin: regex.concat(/\b/, /(?!let|for|while|if|else|match\b)/, IDENT_RE, regex.lookahead(/\s*\(/))
       };
       const NUMBER_SUFFIX = "([ui](8|16|32|64|128|size)|f(32|64))?";
-      const KEYWORDS = ["abstract", "as", "async", "await", "become", "box", "break", "const", "continue", "crate", "do", "dyn", "else", "enum", "extern", "false", "final", "fn", "for", "if", "impl", "in", "let", "loop", "macro", "match", "mod", "move", "mut", "override", "priv", "pub", "ref", "return", "self", "Self", "static", "struct", "super", "trait", "true", "try", "type", "typeof", "unsafe", "unsized", "use", "virtual", "where", "while", "yield"];
+      const KEYWORDS = ["abstract", "as", "async", "await", "become", "box", "break", "const", "continue", "crate", "do", "dyn", "else", "enum", "extern", "false", "final", "fn", "for", "if", "impl", "in", "let", "loop", "macro", "match", "mod", "move", "mut", "override", "priv", "pub", "ref", "return", "self", "Self", "static", "struct", "super", "trait", "true", "try", "type", "typeof", "union", "unsafe", "unsized", "use", "virtual", "where", "while", "yield"];
       const LITERALS = ["true", "false", "Some", "None", "Ok", "Err"];
       const BUILTINS = [
         // functions
@@ -9869,16 +10351,22 @@ var require_rust = __commonJS({
             illegal: null
           }),
           {
-            className: "string",
+            className: "symbol",
+            // negative lookahead to avoid matching `'`
+            begin: /'[a-zA-Z_][a-zA-Z0-9_]*(?!')/
+          },
+          {
+            scope: "string",
             variants: [{
               begin: /b?r(#*)"(.|\n)*?"\1(?!#)/
             }, {
-              begin: /b?'\\?(x\w{2}|u\w{4}|U\w{8}|.)'/
+              begin: /b?'/,
+              end: /'/,
+              contains: [{
+                scope: "char.escape",
+                match: /\\('|\w|x\w{2}|u\w{4}|U\w{8})/
+              }]
             }]
-          },
-          {
-            className: "symbol",
-            begin: /'[a-zA-Z_][a-zA-Z0-9_]*/
           },
           {
             className: "number",
@@ -9894,7 +10382,7 @@ var require_rust = __commonJS({
             relevance: 0
           },
           {
-            begin: [/fn/, /\s+/, hljs.UNDERSCORE_IDENT_RE],
+            begin: [/fn/, /\s+/, UNDERSCORE_IDENT_RE],
             className: {
               1: "keyword",
               3: "title.function"
@@ -9907,11 +10395,12 @@ var require_rust = __commonJS({
             contains: [{
               className: "string",
               begin: /"/,
-              end: /"/
+              end: /"/,
+              contains: [hljs.BACKSLASH_ESCAPE]
             }]
           },
           {
-            begin: [/let/, /\s+/, /(?:mut\s+)?/, hljs.UNDERSCORE_IDENT_RE],
+            begin: [/let/, /\s+/, /(?:mut\s+)?/, UNDERSCORE_IDENT_RE],
             className: {
               1: "keyword",
               3: "keyword",
@@ -9920,7 +10409,7 @@ var require_rust = __commonJS({
           },
           // must come before impl/for rule later
           {
-            begin: [/for/, /\s+/, hljs.UNDERSCORE_IDENT_RE, /\s+/, /in/],
+            begin: [/for/, /\s+/, UNDERSCORE_IDENT_RE, /\s+/, /in/],
             className: {
               1: "keyword",
               3: "variable",
@@ -9928,14 +10417,14 @@ var require_rust = __commonJS({
             }
           },
           {
-            begin: [/type/, /\s+/, hljs.UNDERSCORE_IDENT_RE],
+            begin: [/type/, /\s+/, UNDERSCORE_IDENT_RE],
             className: {
               1: "keyword",
               3: "title.class"
             }
           },
           {
-            begin: [/(?:trait|enum|struct|union|impl|for)/, /\s+/, hljs.UNDERSCORE_IDENT_RE],
+            begin: [/(?:trait|enum|struct|union|impl|for)/, /\s+/, UNDERSCORE_IDENT_RE],
             className: {
               1: "keyword",
               3: "title.class"
@@ -10152,7 +10641,9 @@ var require_scss = __commonJS({
         }
       };
     };
-    var TAGS = ["a", "abbr", "address", "article", "aside", "audio", "b", "blockquote", "body", "button", "canvas", "caption", "cite", "code", "dd", "del", "details", "dfn", "div", "dl", "dt", "em", "fieldset", "figcaption", "figure", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "header", "hgroup", "html", "i", "iframe", "img", "input", "ins", "kbd", "label", "legend", "li", "main", "mark", "menu", "nav", "object", "ol", "p", "q", "quote", "samp", "section", "span", "strong", "summary", "sup", "table", "tbody", "td", "textarea", "tfoot", "th", "thead", "time", "tr", "ul", "var", "video"];
+    var HTML_TAGS = ["a", "abbr", "address", "article", "aside", "audio", "b", "blockquote", "body", "button", "canvas", "caption", "cite", "code", "dd", "del", "details", "dfn", "div", "dl", "dt", "em", "fieldset", "figcaption", "figure", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "header", "hgroup", "html", "i", "iframe", "img", "input", "ins", "kbd", "label", "legend", "li", "main", "mark", "menu", "nav", "object", "ol", "optgroup", "option", "p", "picture", "q", "quote", "samp", "section", "select", "source", "span", "strong", "summary", "sup", "table", "tbody", "td", "textarea", "tfoot", "th", "thead", "time", "tr", "ul", "var", "video"];
+    var SVG_TAGS = ["defs", "g", "marker", "mask", "pattern", "svg", "switch", "symbol", "feBlend", "feColorMatrix", "feComponentTransfer", "feComposite", "feConvolveMatrix", "feDiffuseLighting", "feDisplacementMap", "feFlood", "feGaussianBlur", "feImage", "feMerge", "feMorphology", "feOffset", "feSpecularLighting", "feTile", "feTurbulence", "linearGradient", "radialGradient", "stop", "circle", "ellipse", "image", "line", "path", "polygon", "polyline", "rect", "text", "use", "textPath", "tspan", "foreignObject", "clipPath"];
+    var TAGS = [...HTML_TAGS, ...SVG_TAGS];
     var MEDIA_FEATURES = [
       "any-hover",
       "any-pointer",
@@ -10188,7 +10679,7 @@ var require_scss = __commonJS({
       "max-width",
       "min-height",
       "max-height"
-    ];
+    ].sort().reverse();
     var PSEUDO_CLASSES = [
       "active",
       "any-link",
@@ -10263,14 +10754,18 @@ var require_scss = __commonJS({
       "visited",
       "where"
       // where()
-    ];
-    var PSEUDO_ELEMENTS = ["after", "backdrop", "before", "cue", "cue-region", "first-letter", "first-line", "grammar-error", "marker", "part", "placeholder", "selection", "slotted", "spelling-error"];
+    ].sort().reverse();
+    var PSEUDO_ELEMENTS = ["after", "backdrop", "before", "cue", "cue-region", "first-letter", "first-line", "grammar-error", "marker", "part", "placeholder", "selection", "slotted", "spelling-error"].sort().reverse();
     var ATTRIBUTES = [
+      "accent-color",
       "align-content",
       "align-items",
       "align-self",
+      "alignment-baseline",
       "all",
+      "anchor-name",
       "animation",
+      "animation-composition",
       "animation-delay",
       "animation-direction",
       "animation-duration",
@@ -10278,7 +10773,14 @@ var require_scss = __commonJS({
       "animation-iteration-count",
       "animation-name",
       "animation-play-state",
+      "animation-range",
+      "animation-range-end",
+      "animation-range-start",
+      "animation-timeline",
       "animation-timing-function",
+      "appearance",
+      "aspect-ratio",
+      "backdrop-filter",
       "backface-visibility",
       "background",
       "background-attachment",
@@ -10288,8 +10790,11 @@ var require_scss = __commonJS({
       "background-image",
       "background-origin",
       "background-position",
+      "background-position-x",
+      "background-position-y",
       "background-repeat",
       "background-size",
+      "baseline-shift",
       "block-size",
       "border",
       "border-block",
@@ -10312,6 +10817,8 @@ var require_scss = __commonJS({
       "border-bottom-width",
       "border-collapse",
       "border-color",
+      "border-end-end-radius",
+      "border-end-start-radius",
       "border-image",
       "border-image-outset",
       "border-image-repeat",
@@ -10340,6 +10847,8 @@ var require_scss = __commonJS({
       "border-right-style",
       "border-right-width",
       "border-spacing",
+      "border-start-end-radius",
+      "border-start-start-radius",
       "border-style",
       "border-top",
       "border-top-color",
@@ -10349,7 +10858,15 @@ var require_scss = __commonJS({
       "border-top-width",
       "border-width",
       "bottom",
+      "box-align",
       "box-decoration-break",
+      "box-direction",
+      "box-flex",
+      "box-flex-group",
+      "box-lines",
+      "box-ordinal-group",
+      "box-orient",
+      "box-pack",
       "box-shadow",
       "box-sizing",
       "break-after",
@@ -10362,6 +10879,11 @@ var require_scss = __commonJS({
       "clip-path",
       "clip-rule",
       "color",
+      "color-interpolation",
+      "color-interpolation-filters",
+      "color-profile",
+      "color-rendering",
+      "color-scheme",
       "column-count",
       "column-fill",
       "column-gap",
@@ -10373,17 +10895,34 @@ var require_scss = __commonJS({
       "column-width",
       "columns",
       "contain",
+      "contain-intrinsic-block-size",
+      "contain-intrinsic-height",
+      "contain-intrinsic-inline-size",
+      "contain-intrinsic-size",
+      "contain-intrinsic-width",
+      "container",
+      "container-name",
+      "container-type",
       "content",
       "content-visibility",
       "counter-increment",
       "counter-reset",
+      "counter-set",
       "cue",
       "cue-after",
       "cue-before",
       "cursor",
+      "cx",
+      "cy",
       "direction",
       "display",
+      "dominant-baseline",
       "empty-cells",
+      "enable-background",
+      "field-sizing",
+      "fill",
+      "fill-opacity",
+      "fill-rule",
       "filter",
       "flex",
       "flex-basis",
@@ -10393,6 +10932,8 @@ var require_scss = __commonJS({
       "flex-shrink",
       "flex-wrap",
       "float",
+      "flood-color",
+      "flood-opacity",
       "flow",
       "font",
       "font-display",
@@ -10400,21 +10941,32 @@ var require_scss = __commonJS({
       "font-feature-settings",
       "font-kerning",
       "font-language-override",
+      "font-optical-sizing",
+      "font-palette",
       "font-size",
       "font-size-adjust",
+      "font-smooth",
       "font-smoothing",
       "font-stretch",
       "font-style",
       "font-synthesis",
+      "font-synthesis-position",
+      "font-synthesis-small-caps",
+      "font-synthesis-style",
+      "font-synthesis-weight",
       "font-variant",
+      "font-variant-alternates",
       "font-variant-caps",
       "font-variant-east-asian",
+      "font-variant-emoji",
       "font-variant-ligatures",
       "font-variant-numeric",
       "font-variant-position",
       "font-variation-settings",
       "font-weight",
+      "forced-color-adjust",
       "gap",
+      "glyph-orientation-horizontal",
       "glyph-orientation-vertical",
       "grid",
       "grid-area",
@@ -10434,19 +10986,36 @@ var require_scss = __commonJS({
       "grid-template-rows",
       "hanging-punctuation",
       "height",
+      "hyphenate-character",
+      "hyphenate-limit-chars",
       "hyphens",
       "icon",
       "image-orientation",
       "image-rendering",
       "image-resolution",
       "ime-mode",
+      "initial-letter",
+      "initial-letter-align",
       "inline-size",
+      "inset",
+      "inset-area",
+      "inset-block",
+      "inset-block-end",
+      "inset-block-start",
+      "inset-inline",
+      "inset-inline-end",
+      "inset-inline-start",
       "isolation",
       "justify-content",
+      "justify-items",
+      "justify-self",
+      "kerning",
       "left",
       "letter-spacing",
+      "lighting-color",
       "line-break",
       "line-height",
+      "line-height-step",
       "list-style",
       "list-style-image",
       "list-style-position",
@@ -10462,6 +11031,11 @@ var require_scss = __commonJS({
       "margin-left",
       "margin-right",
       "margin-top",
+      "margin-trim",
+      "marker",
+      "marker-end",
+      "marker-mid",
+      "marker-start",
       "marks",
       "mask",
       "mask-border",
@@ -10480,6 +11054,10 @@ var require_scss = __commonJS({
       "mask-repeat",
       "mask-size",
       "mask-type",
+      "masonry-auto-flow",
+      "math-depth",
+      "math-shift",
+      "math-style",
       "max-block-size",
       "max-height",
       "max-inline-size",
@@ -10498,6 +11076,12 @@ var require_scss = __commonJS({
       "normal",
       "object-fit",
       "object-position",
+      "offset",
+      "offset-anchor",
+      "offset-distance",
+      "offset-path",
+      "offset-position",
+      "offset-rotate",
       "opacity",
       "order",
       "orphans",
@@ -10507,9 +11091,19 @@ var require_scss = __commonJS({
       "outline-style",
       "outline-width",
       "overflow",
+      "overflow-anchor",
+      "overflow-block",
+      "overflow-clip-margin",
+      "overflow-inline",
       "overflow-wrap",
       "overflow-x",
       "overflow-y",
+      "overlay",
+      "overscroll-behavior",
+      "overscroll-behavior-block",
+      "overscroll-behavior-inline",
+      "overscroll-behavior-x",
+      "overscroll-behavior-y",
       "padding",
       "padding-block",
       "padding-block-end",
@@ -10521,23 +11115,37 @@ var require_scss = __commonJS({
       "padding-left",
       "padding-right",
       "padding-top",
+      "page",
       "page-break-after",
       "page-break-before",
       "page-break-inside",
+      "paint-order",
       "pause",
       "pause-after",
       "pause-before",
       "perspective",
       "perspective-origin",
+      "place-content",
+      "place-items",
+      "place-self",
       "pointer-events",
       "position",
+      "position-anchor",
+      "position-visibility",
+      "print-color-adjust",
       "quotes",
+      "r",
       "resize",
       "rest",
       "rest-after",
       "rest-before",
       "right",
+      "rotate",
       "row-gap",
+      "ruby-align",
+      "ruby-position",
+      "scale",
+      "scroll-behavior",
       "scroll-margin",
       "scroll-margin-block",
       "scroll-margin-block-end",
@@ -10563,26 +11171,44 @@ var require_scss = __commonJS({
       "scroll-snap-align",
       "scroll-snap-stop",
       "scroll-snap-type",
+      "scroll-timeline",
+      "scroll-timeline-axis",
+      "scroll-timeline-name",
       "scrollbar-color",
       "scrollbar-gutter",
       "scrollbar-width",
       "shape-image-threshold",
       "shape-margin",
       "shape-outside",
+      "shape-rendering",
       "speak",
       "speak-as",
       "src",
       // @font-face
+      "stop-color",
+      "stop-opacity",
+      "stroke",
+      "stroke-dasharray",
+      "stroke-dashoffset",
+      "stroke-linecap",
+      "stroke-linejoin",
+      "stroke-miterlimit",
+      "stroke-opacity",
+      "stroke-width",
       "tab-size",
       "table-layout",
       "text-align",
       "text-align-all",
       "text-align-last",
+      "text-anchor",
       "text-combine-upright",
       "text-decoration",
       "text-decoration-color",
       "text-decoration-line",
+      "text-decoration-skip",
+      "text-decoration-skip-ink",
       "text-decoration-style",
+      "text-decoration-thickness",
       "text-emphasis",
       "text-emphasis-color",
       "text-emphasis-position",
@@ -10593,20 +11219,37 @@ var require_scss = __commonJS({
       "text-overflow",
       "text-rendering",
       "text-shadow",
+      "text-size-adjust",
       "text-transform",
+      "text-underline-offset",
       "text-underline-position",
+      "text-wrap",
+      "text-wrap-mode",
+      "text-wrap-style",
+      "timeline-scope",
       "top",
+      "touch-action",
       "transform",
       "transform-box",
       "transform-origin",
       "transform-style",
       "transition",
+      "transition-behavior",
       "transition-delay",
       "transition-duration",
       "transition-property",
       "transition-timing-function",
+      "translate",
       "unicode-bidi",
+      "user-modify",
+      "user-select",
+      "vector-effect",
       "vertical-align",
+      "view-timeline",
+      "view-timeline-axis",
+      "view-timeline-inset",
+      "view-timeline-name",
+      "view-transition-name",
       "visibility",
       "voice-balance",
       "voice-duration",
@@ -10617,6 +11260,7 @@ var require_scss = __commonJS({
       "voice-stress",
       "voice-volume",
       "white-space",
+      "white-space-collapse",
       "widows",
       "width",
       "will-change",
@@ -10624,10 +11268,11 @@ var require_scss = __commonJS({
       "word-spacing",
       "word-wrap",
       "writing-mode",
-      "z-index"
-      // reverse makes sure longer attributes `font-weight` are matched fully
-      // instead of getting false positives on say `font`
-    ].reverse();
+      "x",
+      "y",
+      "z-index",
+      "zoom"
+    ].sort().reverse();
     function scss(hljs) {
       const modes = MODES(hljs);
       const PSEUDO_ELEMENTS$1 = PSEUDO_ELEMENTS;
@@ -10764,12 +11409,12 @@ var require_sql = __commonJS({
       const regex = hljs.regex;
       const COMMENT_MODE = hljs.COMMENT("--", "$");
       const STRING = {
-        className: "string",
+        scope: "string",
         variants: [{
           begin: /'/,
           end: /'/,
           contains: [{
-            begin: /''/
+            match: /''/
           }]
         }]
       };
@@ -10777,7 +11422,7 @@ var require_sql = __commonJS({
         begin: /"/,
         end: /"/,
         contains: [{
-          begin: /""/
+          match: /""/
         }]
       };
       const LITERALS = [
@@ -10828,20 +11473,30 @@ var require_sql = __commonJS({
         return !RESERVED_FUNCTIONS.includes(keyword);
       });
       const VARIABLE = {
-        className: "variable",
-        begin: /@[a-z0-9][a-z0-9_]*/
+        scope: "variable",
+        match: /@[a-z0-9][a-z0-9_]*/
       };
       const OPERATOR = {
-        className: "operator",
-        begin: /[-+*/=%^~]|&&?|\|\|?|!=?|<(?:=>?|<|>)?|>[>=]?/,
+        scope: "operator",
+        match: /[-+*/=%^~]|&&?|\|\|?|!=?|<(?:=>?|<|>)?|>[>=]?/,
         relevance: 0
       };
       const FUNCTION_CALL = {
-        begin: regex.concat(/\b/, regex.either(...FUNCTIONS), /\s*\(/),
+        match: regex.concat(/\b/, regex.either(...FUNCTIONS), /\s*\(/),
         relevance: 0,
         keywords: {
           built_in: FUNCTIONS
         }
+      };
+      function kws_to_regex(list) {
+        return regex.concat(/\b/, regex.either(...list.map((kw) => {
+          return kw.replace(/\s+/, "\\s+");
+        })), /\b/);
+      }
+      const MULTI_WORD_KEYWORDS = {
+        scope: "keyword",
+        match: kws_to_regex(COMBOS),
+        relevance: 0
       };
       function reduceRelevancy(list, {
         exceptions,
@@ -10874,18 +11529,9 @@ var require_sql = __commonJS({
           built_in: POSSIBLE_WITHOUT_PARENS
         },
         contains: [{
-          begin: regex.either(...COMBOS),
-          relevance: 0,
-          keywords: {
-            $pattern: /[\w\.]+/,
-            keyword: KEYWORDS.concat(COMBOS),
-            literal: LITERALS,
-            type: TYPES
-          }
-        }, {
-          className: "type",
-          begin: regex.either(...MULTI_WORD_TYPES)
-        }, FUNCTION_CALL, VARIABLE, STRING, QUOTED_IDENTIFIER, hljs.C_NUMBER_MODE, hljs.C_BLOCK_COMMENT_MODE, COMMENT_MODE, OPERATOR]
+          scope: "type",
+          match: kws_to_regex(MULTI_WORD_TYPES)
+        }, MULTI_WORD_KEYWORDS, FUNCTION_CALL, VARIABLE, STRING, QUOTED_IDENTIFIER, hljs.C_NUMBER_MODE, hljs.C_BLOCK_COMMENT_MODE, COMMENT_MODE, OPERATOR]
       };
     }
     module.exports = sql;
@@ -11020,6 +11666,7 @@ var require_swift = __commonJS({
       // contextual
       "override",
       // contextual
+      "package",
       "postfix",
       // contextual
       "precedencegroup",
@@ -11284,7 +11931,7 @@ var require_swift = __commonJS({
       };
       const KEYWORD_ATTRIBUTE = {
         scope: "keyword",
-        match: concat(/@/, either(...keywordAttributes))
+        match: concat(/@/, either(...keywordAttributes), lookahead(either(/\(/, /\s+/)))
       };
       const USER_DEFINED_ATTRIBUTE = {
         scope: "meta",
@@ -11396,6 +12043,39 @@ var require_swift = __commonJS({
         keywords: [...precedencegroupKeywords, ...literals],
         end: /}/
       };
+      const CLASS_FUNC_DECLARATION = {
+        match: [/class\b/, /\s+/, /func\b/, /\s+/, /\b[A-Za-z_][A-Za-z0-9_]*\b/],
+        scope: {
+          1: "keyword",
+          3: "keyword",
+          5: "title.function"
+        }
+      };
+      const CLASS_VAR_DECLARATION = {
+        match: [/class\b/, /\s+/, /var\b/],
+        scope: {
+          1: "keyword",
+          3: "keyword"
+        }
+      };
+      const TYPE_DECLARATION = {
+        begin: [/(struct|protocol|class|extension|enum|actor)/, /\s+/, identifier, /\s*/],
+        beginScope: {
+          1: "keyword",
+          3: "title.class"
+        },
+        keywords: KEYWORDS,
+        contains: [GENERIC_PARAMETERS, ...KEYWORD_MODES, {
+          begin: /:/,
+          end: /\{/,
+          keywords: KEYWORDS,
+          contains: [{
+            scope: "title.class.inherited",
+            match: typeIdentifier
+          }, ...KEYWORD_MODES],
+          relevance: 0
+        }]
+      };
       for (const variant of STRING.variants) {
         const interpolation = variant.contains.find((mode) => mode.label === "interpol");
         interpolation.keywords = KEYWORDS;
@@ -11409,16 +12089,7 @@ var require_swift = __commonJS({
       return {
         name: "Swift",
         keywords: KEYWORDS,
-        contains: [...COMMENTS, FUNCTION_OR_MACRO, INIT_SUBSCRIPT, {
-          beginKeywords: "struct protocol class extension enum actor",
-          end: "\\{",
-          excludeEnd: true,
-          keywords: KEYWORDS,
-          contains: [hljs.inherit(hljs.TITLE_MODE, {
-            className: "title.class",
-            begin: /[A-Za-z$_][\u00C0-\u02B80-9A-Za-z$_]*/
-          }), ...KEYWORD_MODES]
-        }, OPERATOR_DECLARATION, PRECEDENCEGROUP, {
+        contains: [...COMMENTS, FUNCTION_OR_MACRO, INIT_SUBSCRIPT, CLASS_FUNC_DECLARATION, CLASS_VAR_DECLARATION, TYPE_DECLARATION, OPERATOR_DECLARATION, PRECEDENCEGROUP, {
           beginKeywords: "import",
           end: /$/,
           contains: [...COMMENTS],
@@ -11439,15 +12110,20 @@ var require_yaml = __commonJS({
       const URI_CHARACTERS = "[\\w#;/?:@&=+$,.~*'()[\\]]+";
       const KEY = {
         className: "attr",
-        variants: [{
-          begin: "\\w[\\w :\\/.-]*:(?=[ 	]|$)"
-        }, {
-          // double quoted keys
-          begin: '"\\w[\\w :\\/.-]*":(?=[ 	]|$)'
-        }, {
-          // single quoted keys
-          begin: "'\\w[\\w :\\/.-]*':(?=[ 	]|$)"
-        }]
+        variants: [
+          // added brackets support and special char support
+          {
+            begin: /[\w*@][\w*@ :()\./-]*:(?=[ \t]|$)/
+          },
+          {
+            // double quoted keys - with brackets and special char support
+            begin: /"[\w*@][\w*@ :()\./-]*":(?=[ \t]|$)/
+          },
+          {
+            // single quoted keys - with brackets and special char support
+            begin: /'[\w*@][\w*@ :()\./-]*':(?=[ \t]|$)/
+          }
+        ]
       };
       const TEMPLATE_VARIABLES = {
         className: "template-variable",
@@ -11461,13 +12137,21 @@ var require_yaml = __commonJS({
           end: /\}/
         }]
       };
+      const SINGLE_QUOTE_STRING = {
+        className: "string",
+        relevance: 0,
+        begin: /'/,
+        end: /'/,
+        contains: [{
+          match: /''/,
+          scope: "char.escape",
+          relevance: 0
+        }]
+      };
       const STRING = {
         className: "string",
         relevance: 0,
         variants: [{
-          begin: /'/,
-          end: /'/
-        }, {
           begin: /"/,
           end: /"/
         }, {
@@ -11478,7 +12162,11 @@ var require_yaml = __commonJS({
       const CONTAINER_STRING = hljs.inherit(STRING, {
         variants: [{
           begin: /'/,
-          end: /'/
+          end: /'/,
+          contains: [{
+            begin: /''/,
+            relevance: 0
+          }]
         }, {
           begin: /"/,
           end: /"/
@@ -11595,6 +12283,7 @@ var require_yaml = __commonJS({
         },
         OBJECT,
         ARRAY,
+        SINGLE_QUOTE_STRING,
         STRING
       ];
       const VALUE_MODES = [...MODES];
@@ -11659,7 +12348,9 @@ var require_typescript = __commonJS({
       "import",
       "from",
       "export",
-      "extends"
+      "extends",
+      // It's reached stage 3, which is "recommended for implementation":
+      "using"
     ];
     var LITERALS = ["true", "false", "null", "undefined", "NaN", "Infinity"];
     var TYPES = [
@@ -11837,7 +12528,7 @@ var require_typescript = __commonJS({
         // defined later
       };
       const HTML_TEMPLATE = {
-        begin: "html`",
+        begin: ".?html`",
         end: "",
         starts: {
           end: "`",
@@ -11847,7 +12538,7 @@ var require_typescript = __commonJS({
         }
       };
       const CSS_TEMPLATE = {
-        begin: "css`",
+        begin: ".?css`",
         end: "",
         starts: {
           end: "`",
@@ -11857,7 +12548,7 @@ var require_typescript = __commonJS({
         }
       };
       const GRAPHQL_TEMPLATE = {
-        begin: "gql`",
+        begin: ".?gql`",
         end: "",
         starts: {
           end: "`",
@@ -11937,7 +12628,7 @@ var require_typescript = __commonJS({
       const PARAMS_CONTAINS = SUBST_AND_COMMENTS.concat([
         // eat recursive parens in sub expressions
         {
-          begin: /\(/,
+          begin: /(\s*)\(/,
           end: /\)/,
           keywords: KEYWORDS$1,
           contains: ["self"].concat(SUBST_AND_COMMENTS)
@@ -11945,7 +12636,9 @@ var require_typescript = __commonJS({
       ]);
       const PARAMS = {
         className: "params",
-        begin: /\(/,
+        // convert this to negative lookbehind in v12
+        begin: /(\s*)\(/,
+        // to match the parms with
         end: /\)/,
         excludeBegin: true,
         excludeEnd: true,
@@ -12032,7 +12725,7 @@ var require_typescript = __commonJS({
         return regex.concat("(?!", list.join("|"), ")");
       }
       const FUNCTION_CALL = {
-        match: regex.concat(/\b/, noneOf([...BUILT_IN_GLOBALS, "super", "import"]), IDENT_RE$1, regex.lookahead(/\(/)),
+        match: regex.concat(/\b/, noneOf([...BUILT_IN_GLOBALS, "super", "import"].map((x) => `${x}\\s*\\(`)), IDENT_RE$1, regex.lookahead(/\s*\(/)),
         className: "title.function",
         relevance: 0
       };
@@ -12105,8 +12798,8 @@ var require_typescript = __commonJS({
           NUMBER,
           CLASS_REFERENCE,
           {
-            className: "attr",
-            begin: IDENT_RE$1 + regex.lookahead(":"),
+            scope: "attr",
+            match: IDENT_RE$1 + regex.lookahead(":"),
             relevance: 0
           },
           FUNCTION_VARIABLE,
@@ -12133,7 +12826,7 @@ var require_typescript = __commonJS({
                   begin: /\(\s*\)/,
                   skip: true
                 }, {
-                  begin: /\(/,
+                  begin: /(\s*)\(/,
                   end: /\)/,
                   excludeBegin: true,
                   excludeEnd: true,
@@ -12222,14 +12915,16 @@ var require_typescript = __commonJS({
       };
     }
     function typescript(hljs) {
+      const regex = hljs.regex;
       const tsLanguage = javascript(hljs);
       const IDENT_RE$1 = IDENT_RE;
       const TYPES2 = ["any", "void", "number", "boolean", "string", "object", "never", "symbol", "bigint", "unknown"];
       const NAMESPACE = {
-        beginKeywords: "namespace",
-        end: /\{/,
-        excludeEnd: true,
-        contains: [tsLanguage.exports.CLASS_REFERENCE]
+        begin: [/namespace/, /\s+/, hljs.IDENT_RE],
+        beginScope: {
+          1: "keyword",
+          3: "title.class"
+        }
       };
       const INTERFACE = {
         beginKeywords: "interface",
@@ -12246,7 +12941,21 @@ var require_typescript = __commonJS({
         relevance: 10,
         begin: /^\s*['"]use strict['"]/
       };
-      const TS_SPECIFIC_KEYWORDS = ["type", "namespace", "interface", "public", "private", "protected", "implements", "declare", "abstract", "readonly", "enum", "override"];
+      const TS_SPECIFIC_KEYWORDS = [
+        "type",
+        // "namespace",
+        "interface",
+        "public",
+        "private",
+        "protected",
+        "implements",
+        "declare",
+        "abstract",
+        "readonly",
+        "enum",
+        "override",
+        "satisfies"
+      ];
       const KEYWORDS$1 = {
         $pattern: IDENT_RE,
         keyword: KEYWORDS.concat(TS_SPECIFIC_KEYWORDS),
@@ -12267,7 +12976,25 @@ var require_typescript = __commonJS({
       };
       Object.assign(tsLanguage.keywords, KEYWORDS$1);
       tsLanguage.exports.PARAMS_CONTAINS.push(DECORATOR);
-      tsLanguage.contains = tsLanguage.contains.concat([DECORATOR, NAMESPACE, INTERFACE]);
+      const ATTRIBUTE_HIGHLIGHT = tsLanguage.contains.find((c) => c.scope === "attr");
+      const OPTIONAL_KEY_OR_ARGUMENT = Object.assign({}, ATTRIBUTE_HIGHLIGHT, {
+        match: regex.concat(IDENT_RE$1, regex.lookahead(/\s*\?:/))
+      });
+      tsLanguage.exports.PARAMS_CONTAINS.push([
+        tsLanguage.exports.CLASS_REFERENCE,
+        // class reference for highlighting the params types
+        ATTRIBUTE_HIGHLIGHT,
+        // highlight the params key
+        OPTIONAL_KEY_OR_ARGUMENT
+        // Added for optional property assignment highlighting
+      ]);
+      tsLanguage.contains = tsLanguage.contains.concat([
+        DECORATOR,
+        NAMESPACE,
+        INTERFACE,
+        OPTIONAL_KEY_OR_ARGUMENT
+        // Added for optional property assignment highlighting
+      ]);
       swapMode(tsLanguage, "shebang", hljs.SHEBANG());
       swapMode(tsLanguage, "use_strict", USE_STRICT);
       const functionDeclaration = tsLanguage.contains.find((m) => m.label === "func.def");
@@ -13341,304 +14068,319 @@ var require_diff_parser = __commonJS({
   }
 });
 
-// node_modules/diff2html/node_modules/diff/lib/diff/base.js
+// node_modules/diff/libcjs/diff/base.js
 var require_base = __commonJS({
-  "node_modules/diff2html/node_modules/diff/lib/diff/base.js"(exports) {
+  "node_modules/diff/libcjs/diff/base.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
-    exports["default"] = Diff;
-    function Diff() {
-    }
-    Diff.prototype = {
-      /*istanbul ignore start*/
-      /*istanbul ignore end*/
-      diff: function diff(oldString, newString) {
-        var _options$timeout;
-        var options = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {};
-        var callback = options.callback;
-        if (typeof options === "function") {
-          callback = options;
-          options = {};
+    var Diff = (
+      /** @class */
+      function() {
+        function Diff2() {
         }
-        var self = this;
-        function done(value) {
-          value = self.postProcess(value, options);
+        Diff2.prototype.diff = function(oldStr, newStr, options) {
+          if (options === void 0) {
+            options = {};
+          }
+          var callback;
+          if (typeof options === "function") {
+            callback = options;
+            options = {};
+          } else if ("callback" in options) {
+            callback = options.callback;
+          }
+          var oldString = this.castInput(oldStr, options);
+          var newString = this.castInput(newStr, options);
+          var oldTokens = this.removeEmpty(this.tokenize(oldString, options));
+          var newTokens = this.removeEmpty(this.tokenize(newString, options));
+          return this.diffWithOptionsObj(oldTokens, newTokens, options, callback);
+        };
+        Diff2.prototype.diffWithOptionsObj = function(oldTokens, newTokens, options, callback) {
+          var _this = this;
+          var _a;
+          var done = function(value) {
+            value = _this.postProcess(value, options);
+            if (callback) {
+              setTimeout(function() {
+                callback(value);
+              }, 0);
+              return void 0;
+            } else {
+              return value;
+            }
+          };
+          var newLen = newTokens.length, oldLen = oldTokens.length;
+          var editLength = 1;
+          var maxEditLength = newLen + oldLen;
+          if (options.maxEditLength != null) {
+            maxEditLength = Math.min(maxEditLength, options.maxEditLength);
+          }
+          var maxExecutionTime = (_a = options.timeout) !== null && _a !== void 0 ? _a : Infinity;
+          var abortAfterTimestamp = Date.now() + maxExecutionTime;
+          var bestPath = [{
+            oldPos: -1,
+            lastComponent: void 0
+          }];
+          var newPos = this.extractCommon(bestPath[0], newTokens, oldTokens, 0, options);
+          if (bestPath[0].oldPos + 1 >= oldLen && newPos + 1 >= newLen) {
+            return done(this.buildValues(bestPath[0].lastComponent, newTokens, oldTokens));
+          }
+          var minDiagonalToConsider = -Infinity, maxDiagonalToConsider = Infinity;
+          var execEditLength = function() {
+            for (var diagonalPath = Math.max(minDiagonalToConsider, -editLength); diagonalPath <= Math.min(maxDiagonalToConsider, editLength); diagonalPath += 2) {
+              var basePath = void 0;
+              var removePath = bestPath[diagonalPath - 1], addPath = bestPath[diagonalPath + 1];
+              if (removePath) {
+                bestPath[diagonalPath - 1] = void 0;
+              }
+              var canAdd = false;
+              if (addPath) {
+                var addPathNewPos = addPath.oldPos - diagonalPath;
+                canAdd = addPath && 0 <= addPathNewPos && addPathNewPos < newLen;
+              }
+              var canRemove = removePath && removePath.oldPos + 1 < oldLen;
+              if (!canAdd && !canRemove) {
+                bestPath[diagonalPath] = void 0;
+                continue;
+              }
+              if (!canRemove || canAdd && removePath.oldPos < addPath.oldPos) {
+                basePath = _this.addToPath(addPath, true, false, 0, options);
+              } else {
+                basePath = _this.addToPath(removePath, false, true, 1, options);
+              }
+              newPos = _this.extractCommon(basePath, newTokens, oldTokens, diagonalPath, options);
+              if (basePath.oldPos + 1 >= oldLen && newPos + 1 >= newLen) {
+                return done(_this.buildValues(basePath.lastComponent, newTokens, oldTokens)) || true;
+              } else {
+                bestPath[diagonalPath] = basePath;
+                if (basePath.oldPos + 1 >= oldLen) {
+                  maxDiagonalToConsider = Math.min(maxDiagonalToConsider, diagonalPath - 1);
+                }
+                if (newPos + 1 >= newLen) {
+                  minDiagonalToConsider = Math.max(minDiagonalToConsider, diagonalPath + 1);
+                }
+              }
+            }
+            editLength++;
+          };
           if (callback) {
-            setTimeout(function() {
-              callback(value);
-            }, 0);
-            return true;
+            (function exec() {
+              setTimeout(function() {
+                if (editLength > maxEditLength || Date.now() > abortAfterTimestamp) {
+                  return callback(void 0);
+                }
+                if (!execEditLength()) {
+                  exec();
+                }
+              }, 0);
+            })();
           } else {
-            return value;
-          }
-        }
-        oldString = this.castInput(oldString, options);
-        newString = this.castInput(newString, options);
-        oldString = this.removeEmpty(this.tokenize(oldString, options));
-        newString = this.removeEmpty(this.tokenize(newString, options));
-        var newLen = newString.length, oldLen = oldString.length;
-        var editLength = 1;
-        var maxEditLength = newLen + oldLen;
-        if (options.maxEditLength != null) {
-          maxEditLength = Math.min(maxEditLength, options.maxEditLength);
-        }
-        var maxExecutionTime = (
-          /*istanbul ignore start*/
-          (_options$timeout = /*istanbul ignore end*/
-          options.timeout) !== null && _options$timeout !== void 0 ? _options$timeout : Infinity
-        );
-        var abortAfterTimestamp = Date.now() + maxExecutionTime;
-        var bestPath = [{
-          oldPos: -1,
-          lastComponent: void 0
-        }];
-        var newPos = this.extractCommon(bestPath[0], newString, oldString, 0, options);
-        if (bestPath[0].oldPos + 1 >= oldLen && newPos + 1 >= newLen) {
-          return done(buildValues(self, bestPath[0].lastComponent, newString, oldString, self.useLongestToken));
-        }
-        var minDiagonalToConsider = -Infinity, maxDiagonalToConsider = Infinity;
-        function execEditLength() {
-          for (var diagonalPath = Math.max(minDiagonalToConsider, -editLength); diagonalPath <= Math.min(maxDiagonalToConsider, editLength); diagonalPath += 2) {
-            var basePath = (
-              /*istanbul ignore start*/
-              void 0
-            );
-            var removePath = bestPath[diagonalPath - 1], addPath = bestPath[diagonalPath + 1];
-            if (removePath) {
-              bestPath[diagonalPath - 1] = void 0;
-            }
-            var canAdd = false;
-            if (addPath) {
-              var addPathNewPos = addPath.oldPos - diagonalPath;
-              canAdd = addPath && 0 <= addPathNewPos && addPathNewPos < newLen;
-            }
-            var canRemove = removePath && removePath.oldPos + 1 < oldLen;
-            if (!canAdd && !canRemove) {
-              bestPath[diagonalPath] = void 0;
-              continue;
-            }
-            if (!canRemove || canAdd && removePath.oldPos < addPath.oldPos) {
-              basePath = self.addToPath(addPath, true, false, 0, options);
-            } else {
-              basePath = self.addToPath(removePath, false, true, 1, options);
-            }
-            newPos = self.extractCommon(basePath, newString, oldString, diagonalPath, options);
-            if (basePath.oldPos + 1 >= oldLen && newPos + 1 >= newLen) {
-              return done(buildValues(self, basePath.lastComponent, newString, oldString, self.useLongestToken));
-            } else {
-              bestPath[diagonalPath] = basePath;
-              if (basePath.oldPos + 1 >= oldLen) {
-                maxDiagonalToConsider = Math.min(maxDiagonalToConsider, diagonalPath - 1);
-              }
-              if (newPos + 1 >= newLen) {
-                minDiagonalToConsider = Math.max(minDiagonalToConsider, diagonalPath + 1);
+            while (editLength <= maxEditLength && Date.now() <= abortAfterTimestamp) {
+              var ret = execEditLength();
+              if (ret) {
+                return ret;
               }
             }
           }
-          editLength++;
-        }
-        if (callback) {
-          (function exec() {
-            setTimeout(function() {
-              if (editLength > maxEditLength || Date.now() > abortAfterTimestamp) {
-                return callback();
+        };
+        Diff2.prototype.addToPath = function(path, added, removed, oldPosInc, options) {
+          var last = path.lastComponent;
+          if (last && !options.oneChangePerToken && last.added === added && last.removed === removed) {
+            return {
+              oldPos: path.oldPos + oldPosInc,
+              lastComponent: {
+                count: last.count + 1,
+                added,
+                removed,
+                previousComponent: last.previousComponent
               }
-              if (!execEditLength()) {
-                exec();
+            };
+          } else {
+            return {
+              oldPos: path.oldPos + oldPosInc,
+              lastComponent: {
+                count: 1,
+                added,
+                removed,
+                previousComponent: last
               }
-            }, 0);
-          })();
-        } else {
-          while (editLength <= maxEditLength && Date.now() <= abortAfterTimestamp) {
-            var ret = execEditLength();
-            if (ret) {
-              return ret;
+            };
+          }
+        };
+        Diff2.prototype.extractCommon = function(basePath, newTokens, oldTokens, diagonalPath, options) {
+          var newLen = newTokens.length, oldLen = oldTokens.length;
+          var oldPos = basePath.oldPos, newPos = oldPos - diagonalPath, commonCount = 0;
+          while (newPos + 1 < newLen && oldPos + 1 < oldLen && this.equals(oldTokens[oldPos + 1], newTokens[newPos + 1], options)) {
+            newPos++;
+            oldPos++;
+            commonCount++;
+            if (options.oneChangePerToken) {
+              basePath.lastComponent = {
+                count: 1,
+                previousComponent: basePath.lastComponent,
+                added: false,
+                removed: false
+              };
             }
           }
-        }
-      },
-      /*istanbul ignore start*/
-      /*istanbul ignore end*/
-      addToPath: function addToPath(path, added, removed, oldPosInc, options) {
-        var last = path.lastComponent;
-        if (last && !options.oneChangePerToken && last.added === added && last.removed === removed) {
-          return {
-            oldPos: path.oldPos + oldPosInc,
-            lastComponent: {
-              count: last.count + 1,
-              added,
-              removed,
-              previousComponent: last.previousComponent
-            }
-          };
-        } else {
-          return {
-            oldPos: path.oldPos + oldPosInc,
-            lastComponent: {
-              count: 1,
-              added,
-              removed,
-              previousComponent: last
-            }
-          };
-        }
-      },
-      /*istanbul ignore start*/
-      /*istanbul ignore end*/
-      extractCommon: function extractCommon(basePath, newString, oldString, diagonalPath, options) {
-        var newLen = newString.length, oldLen = oldString.length, oldPos = basePath.oldPos, newPos = oldPos - diagonalPath, commonCount = 0;
-        while (newPos + 1 < newLen && oldPos + 1 < oldLen && this.equals(oldString[oldPos + 1], newString[newPos + 1], options)) {
-          newPos++;
-          oldPos++;
-          commonCount++;
-          if (options.oneChangePerToken) {
+          if (commonCount && !options.oneChangePerToken) {
             basePath.lastComponent = {
-              count: 1,
+              count: commonCount,
               previousComponent: basePath.lastComponent,
               added: false,
               removed: false
             };
           }
-        }
-        if (commonCount && !options.oneChangePerToken) {
-          basePath.lastComponent = {
-            count: commonCount,
-            previousComponent: basePath.lastComponent,
-            added: false,
-            removed: false
-          };
-        }
-        basePath.oldPos = oldPos;
-        return newPos;
-      },
-      /*istanbul ignore start*/
-      /*istanbul ignore end*/
-      equals: function equals(left, right, options) {
-        if (options.comparator) {
-          return options.comparator(left, right);
-        } else {
-          return left === right || options.ignoreCase && left.toLowerCase() === right.toLowerCase();
-        }
-      },
-      /*istanbul ignore start*/
-      /*istanbul ignore end*/
-      removeEmpty: function removeEmpty(array) {
-        var ret = [];
-        for (var i = 0; i < array.length; i++) {
-          if (array[i]) {
-            ret.push(array[i]);
-          }
-        }
-        return ret;
-      },
-      /*istanbul ignore start*/
-      /*istanbul ignore end*/
-      castInput: function castInput(value) {
-        return value;
-      },
-      /*istanbul ignore start*/
-      /*istanbul ignore end*/
-      tokenize: function tokenize(value) {
-        return Array.from(value);
-      },
-      /*istanbul ignore start*/
-      /*istanbul ignore end*/
-      join: function join(chars) {
-        return chars.join("");
-      },
-      /*istanbul ignore start*/
-      /*istanbul ignore end*/
-      postProcess: function postProcess(changeObjects) {
-        return changeObjects;
-      }
-    };
-    function buildValues(diff, lastComponent, newString, oldString, useLongestToken) {
-      var components = [];
-      var nextComponent;
-      while (lastComponent) {
-        components.push(lastComponent);
-        nextComponent = lastComponent.previousComponent;
-        delete lastComponent.previousComponent;
-        lastComponent = nextComponent;
-      }
-      components.reverse();
-      var componentPos = 0, componentLen = components.length, newPos = 0, oldPos = 0;
-      for (; componentPos < componentLen; componentPos++) {
-        var component = components[componentPos];
-        if (!component.removed) {
-          if (!component.added && useLongestToken) {
-            var value = newString.slice(newPos, newPos + component.count);
-            value = value.map(function(value2, i) {
-              var oldValue = oldString[oldPos + i];
-              return oldValue.length > value2.length ? oldValue : value2;
-            });
-            component.value = diff.join(value);
+          basePath.oldPos = oldPos;
+          return newPos;
+        };
+        Diff2.prototype.equals = function(left, right, options) {
+          if (options.comparator) {
+            return options.comparator(left, right);
           } else {
-            component.value = diff.join(newString.slice(newPos, newPos + component.count));
+            return left === right || !!options.ignoreCase && left.toLowerCase() === right.toLowerCase();
           }
-          newPos += component.count;
-          if (!component.added) {
-            oldPos += component.count;
+        };
+        Diff2.prototype.removeEmpty = function(array) {
+          var ret = [];
+          for (var i = 0; i < array.length; i++) {
+            if (array[i]) {
+              ret.push(array[i]);
+            }
           }
-        } else {
-          component.value = diff.join(oldString.slice(oldPos, oldPos + component.count));
-          oldPos += component.count;
-        }
-      }
-      return components;
-    }
+          return ret;
+        };
+        Diff2.prototype.castInput = function(value, options) {
+          return value;
+        };
+        Diff2.prototype.tokenize = function(value, options) {
+          return Array.from(value);
+        };
+        Diff2.prototype.join = function(chars) {
+          return chars.join("");
+        };
+        Diff2.prototype.postProcess = function(changeObjects, options) {
+          return changeObjects;
+        };
+        Object.defineProperty(Diff2.prototype, "useLongestToken", {
+          get: function() {
+            return false;
+          },
+          enumerable: false,
+          configurable: true
+        });
+        Diff2.prototype.buildValues = function(lastComponent, newTokens, oldTokens) {
+          var components = [];
+          var nextComponent;
+          while (lastComponent) {
+            components.push(lastComponent);
+            nextComponent = lastComponent.previousComponent;
+            delete lastComponent.previousComponent;
+            lastComponent = nextComponent;
+          }
+          components.reverse();
+          var componentLen = components.length;
+          var componentPos = 0, newPos = 0, oldPos = 0;
+          for (; componentPos < componentLen; componentPos++) {
+            var component = components[componentPos];
+            if (!component.removed) {
+              if (!component.added && this.useLongestToken) {
+                var value = newTokens.slice(newPos, newPos + component.count);
+                value = value.map(function(value2, i) {
+                  var oldValue = oldTokens[oldPos + i];
+                  return oldValue.length > value2.length ? oldValue : value2;
+                });
+                component.value = this.join(value);
+              } else {
+                component.value = this.join(newTokens.slice(newPos, newPos + component.count));
+              }
+              newPos += component.count;
+              if (!component.added) {
+                oldPos += component.count;
+              }
+            } else {
+              component.value = this.join(oldTokens.slice(oldPos, oldPos + component.count));
+              oldPos += component.count;
+            }
+          }
+          return components;
+        };
+        return Diff2;
+      }()
+    );
+    exports.default = Diff;
   }
 });
 
-// node_modules/diff2html/node_modules/diff/lib/diff/character.js
+// node_modules/diff/libcjs/diff/character.js
 var require_character = __commonJS({
-  "node_modules/diff2html/node_modules/diff/lib/diff/character.js"(exports) {
+  "node_modules/diff/libcjs/diff/character.js"(exports) {
     "use strict";
+    var __extends = exports && exports.__extends || /* @__PURE__ */ function() {
+      var extendStatics = function(d, b) {
+        extendStatics = Object.setPrototypeOf || {
+          __proto__: []
+        } instanceof Array && function(d2, b2) {
+          d2.__proto__ = b2;
+        } || function(d2, b2) {
+          for (var p in b2) if (Object.prototype.hasOwnProperty.call(b2, p)) d2[p] = b2[p];
+        };
+        return extendStatics(d, b);
+      };
+      return function(d, b) {
+        if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() {
+          this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+      };
+    }();
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
     exports.characterDiff = void 0;
     exports.diffChars = diffChars;
-    var _base = _interopRequireDefault(require_base());
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : {
-        "default": obj
-      };
-    }
-    var characterDiff = (
-      /*istanbul ignore start*/
-      exports.characterDiff = /*istanbul ignore end*/
-      new /*istanbul ignore start*/
-      _base[
-        /*istanbul ignore start*/
-        "default"
-        /*istanbul ignore end*/
-      ]()
+    var base_js_1 = require_base();
+    var CharacterDiff = (
+      /** @class */
+      function(_super) {
+        __extends(CharacterDiff2, _super);
+        function CharacterDiff2() {
+          return _super !== null && _super.apply(this, arguments) || this;
+        }
+        return CharacterDiff2;
+      }(base_js_1.default)
     );
+    exports.characterDiff = new CharacterDiff();
     function diffChars(oldStr, newStr, options) {
-      return characterDiff.diff(oldStr, newStr, options);
+      return exports.characterDiff.diff(oldStr, newStr, options);
     }
   }
 });
 
-// node_modules/diff2html/node_modules/diff/lib/util/string.js
+// node_modules/diff/libcjs/util/string.js
 var require_string = __commonJS({
-  "node_modules/diff2html/node_modules/diff/lib/util/string.js"(exports) {
+  "node_modules/diff/libcjs/util/string.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
-    exports.hasOnlyUnixLineEndings = hasOnlyUnixLineEndings;
-    exports.hasOnlyWinLineEndings = hasOnlyWinLineEndings;
     exports.longestCommonPrefix = longestCommonPrefix;
     exports.longestCommonSuffix = longestCommonSuffix;
-    exports.maximumOverlap = maximumOverlap;
-    exports.removePrefix = removePrefix;
-    exports.removeSuffix = removeSuffix;
     exports.replacePrefix = replacePrefix;
     exports.replaceSuffix = replaceSuffix;
+    exports.removePrefix = removePrefix;
+    exports.removeSuffix = removeSuffix;
+    exports.maximumOverlap = maximumOverlap;
+    exports.hasOnlyWinLineEndings = hasOnlyWinLineEndings;
+    exports.hasOnlyUnixLineEndings = hasOnlyUnixLineEndings;
+    exports.segment = segment;
+    exports.trailingWs = trailingWs;
+    exports.leadingWs = leadingWs;
+    exports.leadingAndTrailingWs = leadingAndTrailingWs;
     function longestCommonPrefix(str1, str2) {
       var i;
       for (i = 0; i < str1.length && i < str2.length; i++) {
@@ -13662,14 +14404,7 @@ var require_string = __commonJS({
     }
     function replacePrefix(string, oldPrefix, newPrefix) {
       if (string.slice(0, oldPrefix.length) != oldPrefix) {
-        throw Error(
-          /*istanbul ignore start*/
-          "string ".concat(
-            /*istanbul ignore end*/
-            JSON.stringify(string),
-            " doesn't start with prefix "
-          ).concat(JSON.stringify(oldPrefix), "; this is a bug")
-        );
+        throw Error("string ".concat(JSON.stringify(string), " doesn't start with prefix ").concat(JSON.stringify(oldPrefix), "; this is a bug"));
       }
       return newPrefix + string.slice(oldPrefix.length);
     }
@@ -13678,14 +14413,7 @@ var require_string = __commonJS({
         return string + newSuffix;
       }
       if (string.slice(-oldSuffix.length) != oldSuffix) {
-        throw Error(
-          /*istanbul ignore start*/
-          "string ".concat(
-            /*istanbul ignore end*/
-            JSON.stringify(string),
-            " doesn't end with suffix "
-          ).concat(JSON.stringify(oldSuffix), "; this is a bug")
-        );
+        throw Error("string ".concat(JSON.stringify(string), " doesn't end with suffix ").concat(JSON.stringify(oldSuffix), "; this is a bug"));
       }
       return string.slice(0, -oldSuffix.length) + newSuffix;
     }
@@ -13740,284 +14468,253 @@ var require_string = __commonJS({
     function hasOnlyUnixLineEndings(string) {
       return !string.includes("\r\n") && string.includes("\n");
     }
+    function segment(string, segmenter) {
+      var parts = [];
+      for (var _i = 0, _a = Array.from(segmenter.segment(string)); _i < _a.length; _i++) {
+        var segmentObj = _a[_i];
+        var segment_1 = segmentObj.segment;
+        if (parts.length && /\s/.test(parts[parts.length - 1]) && /\s/.test(segment_1)) {
+          parts[parts.length - 1] += segment_1;
+        } else {
+          parts.push(segment_1);
+        }
+      }
+      return parts;
+    }
+    function trailingWs(string, segmenter) {
+      if (segmenter) {
+        return leadingAndTrailingWs(string, segmenter)[1];
+      }
+      var i;
+      for (i = string.length - 1; i >= 0; i--) {
+        if (!string[i].match(/\s/)) {
+          break;
+        }
+      }
+      return string.substring(i + 1);
+    }
+    function leadingWs(string, segmenter) {
+      if (segmenter) {
+        return leadingAndTrailingWs(string, segmenter)[0];
+      }
+      var match = string.match(/^\s*/);
+      return match ? match[0] : "";
+    }
+    function leadingAndTrailingWs(string, segmenter) {
+      if (!segmenter) {
+        return [leadingWs(string), trailingWs(string)];
+      }
+      if (segmenter.resolvedOptions().granularity != "word") {
+        throw new Error('The segmenter passed must have a granularity of "word"');
+      }
+      var segments = segment(string, segmenter);
+      var firstSeg = segments[0];
+      var lastSeg = segments[segments.length - 1];
+      var head = /\s/.test(firstSeg) ? firstSeg : "";
+      var tail = /\s/.test(lastSeg) ? lastSeg : "";
+      return [head, tail];
+    }
   }
 });
 
-// node_modules/diff2html/node_modules/diff/lib/diff/word.js
+// node_modules/diff/libcjs/diff/word.js
 var require_word = __commonJS({
-  "node_modules/diff2html/node_modules/diff/lib/diff/word.js"(exports) {
+  "node_modules/diff/libcjs/diff/word.js"(exports) {
     "use strict";
+    var __extends = exports && exports.__extends || /* @__PURE__ */ function() {
+      var extendStatics = function(d, b) {
+        extendStatics = Object.setPrototypeOf || {
+          __proto__: []
+        } instanceof Array && function(d2, b2) {
+          d2.__proto__ = b2;
+        } || function(d2, b2) {
+          for (var p in b2) if (Object.prototype.hasOwnProperty.call(b2, p)) d2[p] = b2[p];
+        };
+        return extendStatics(d, b);
+      };
+      return function(d, b) {
+        if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() {
+          this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+      };
+    }();
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
+    exports.wordsWithSpaceDiff = exports.wordDiff = void 0;
     exports.diffWords = diffWords;
     exports.diffWordsWithSpace = diffWordsWithSpace;
-    exports.wordWithSpaceDiff = exports.wordDiff = void 0;
-    var _base = _interopRequireDefault(require_base());
-    var _string = require_string();
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : {
-        "default": obj
-      };
-    }
-    var extendedWordChars = "a-zA-Z0-9_\\u{C0}-\\u{FF}\\u{D8}-\\u{F6}\\u{F8}-\\u{2C6}\\u{2C8}-\\u{2D7}\\u{2DE}-\\u{2FF}\\u{1E00}-\\u{1EFF}";
-    var tokenizeIncludingWhitespace = new RegExp(
-      /*istanbul ignore start*/
-      "[".concat(
-        /*istanbul ignore end*/
-        extendedWordChars,
-        "]+|\\s+|[^"
-      ).concat(extendedWordChars, "]"),
-      "ug"
-    );
-    var wordDiff = (
-      /*istanbul ignore start*/
-      exports.wordDiff = /*istanbul ignore end*/
-      new /*istanbul ignore start*/
-      _base[
-        /*istanbul ignore start*/
-        "default"
-        /*istanbul ignore end*/
-      ]()
-    );
-    wordDiff.equals = function(left, right, options) {
-      if (options.ignoreCase) {
-        left = left.toLowerCase();
-        right = right.toLowerCase();
-      }
-      return left.trim() === right.trim();
-    };
-    wordDiff.tokenize = function(value) {
-      var options = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
-      var parts;
-      if (options.intlSegmenter) {
-        if (options.intlSegmenter.resolvedOptions().granularity != "word") {
-          throw new Error('The segmenter passed must have a granularity of "word"');
+    var base_js_1 = require_base();
+    var string_js_1 = require_string();
+    var extendedWordChars = "a-zA-Z0-9_\\u{AD}\\u{C0}-\\u{D6}\\u{D8}-\\u{F6}\\u{F8}-\\u{2C6}\\u{2C8}-\\u{2D7}\\u{2DE}-\\u{2FF}\\u{1E00}-\\u{1EFF}";
+    var tokenizeIncludingWhitespace = new RegExp("[".concat(extendedWordChars, "]+|\\s+|[^").concat(extendedWordChars, "]"), "ug");
+    var WordDiff = (
+      /** @class */
+      function(_super) {
+        __extends(WordDiff2, _super);
+        function WordDiff2() {
+          return _super !== null && _super.apply(this, arguments) || this;
         }
-        parts = Array.from(options.intlSegmenter.segment(value), function(segment) {
-          return (
-            /*istanbul ignore end*/
-            segment.segment
-          );
-        });
-      } else {
-        parts = value.match(tokenizeIncludingWhitespace) || [];
-      }
-      var tokens = [];
-      var prevPart = null;
-      parts.forEach(function(part) {
-        if (/\s/.test(part)) {
-          if (prevPart == null) {
-            tokens.push(part);
-          } else {
-            tokens.push(tokens.pop() + part);
+        WordDiff2.prototype.equals = function(left, right, options) {
+          if (options.ignoreCase) {
+            left = left.toLowerCase();
+            right = right.toLowerCase();
           }
-        } else if (/\s/.test(prevPart)) {
-          if (tokens[tokens.length - 1] == prevPart) {
-            tokens.push(tokens.pop() + part);
-          } else {
-            tokens.push(prevPart + part);
+          return left.trim() === right.trim();
+        };
+        WordDiff2.prototype.tokenize = function(value, options) {
+          if (options === void 0) {
+            options = {};
           }
-        } else {
-          tokens.push(part);
-        }
-        prevPart = part;
-      });
-      return tokens;
-    };
-    wordDiff.join = function(tokens) {
-      return tokens.map(function(token, i) {
-        if (i == 0) {
-          return token;
-        } else {
-          return token.replace(/^\s+/, "");
-        }
-      }).join("");
-    };
-    wordDiff.postProcess = function(changes, options) {
-      if (!changes || options.oneChangePerToken) {
-        return changes;
-      }
-      var lastKeep = null;
-      var insertion = null;
-      var deletion = null;
-      changes.forEach(function(change) {
-        if (change.added) {
-          insertion = change;
-        } else if (change.removed) {
-          deletion = change;
-        } else {
+          var parts;
+          if (options.intlSegmenter) {
+            var segmenter = options.intlSegmenter;
+            if (segmenter.resolvedOptions().granularity != "word") {
+              throw new Error('The segmenter passed must have a granularity of "word"');
+            }
+            parts = (0, string_js_1.segment)(value, segmenter);
+          } else {
+            parts = value.match(tokenizeIncludingWhitespace) || [];
+          }
+          var tokens = [];
+          var prevPart = null;
+          parts.forEach(function(part) {
+            if (/\s/.test(part)) {
+              if (prevPart == null) {
+                tokens.push(part);
+              } else {
+                tokens.push(tokens.pop() + part);
+              }
+            } else if (prevPart != null && /\s/.test(prevPart)) {
+              if (tokens[tokens.length - 1] == prevPart) {
+                tokens.push(tokens.pop() + part);
+              } else {
+                tokens.push(prevPart + part);
+              }
+            } else {
+              tokens.push(part);
+            }
+            prevPart = part;
+          });
+          return tokens;
+        };
+        WordDiff2.prototype.join = function(tokens) {
+          return tokens.map(function(token, i) {
+            if (i == 0) {
+              return token;
+            } else {
+              return token.replace(/^\s+/, "");
+            }
+          }).join("");
+        };
+        WordDiff2.prototype.postProcess = function(changes, options) {
+          if (!changes || options.oneChangePerToken) {
+            return changes;
+          }
+          var lastKeep = null;
+          var insertion = null;
+          var deletion = null;
+          changes.forEach(function(change) {
+            if (change.added) {
+              insertion = change;
+            } else if (change.removed) {
+              deletion = change;
+            } else {
+              if (insertion || deletion) {
+                dedupeWhitespaceInChangeObjects(lastKeep, deletion, insertion, change, options.intlSegmenter);
+              }
+              lastKeep = change;
+              insertion = null;
+              deletion = null;
+            }
+          });
           if (insertion || deletion) {
-            dedupeWhitespaceInChangeObjects(lastKeep, deletion, insertion, change);
+            dedupeWhitespaceInChangeObjects(lastKeep, deletion, insertion, null, options.intlSegmenter);
           }
-          lastKeep = change;
-          insertion = null;
-          deletion = null;
-        }
-      });
-      if (insertion || deletion) {
-        dedupeWhitespaceInChangeObjects(lastKeep, deletion, insertion, null);
-      }
-      return changes;
-    };
+          return changes;
+        };
+        return WordDiff2;
+      }(base_js_1.default)
+    );
+    exports.wordDiff = new WordDiff();
     function diffWords(oldStr, newStr, options) {
-      if (
-        /*istanbul ignore start*/
-        /*istanbul ignore end*/
-        (options === null || options === void 0 ? void 0 : options.ignoreWhitespace) != null && !options.ignoreWhitespace
-      ) {
+      if ((options === null || options === void 0 ? void 0 : options.ignoreWhitespace) != null && !options.ignoreWhitespace) {
         return diffWordsWithSpace(oldStr, newStr, options);
       }
-      return wordDiff.diff(oldStr, newStr, options);
+      return exports.wordDiff.diff(oldStr, newStr, options);
     }
-    function dedupeWhitespaceInChangeObjects(startKeep, deletion, insertion, endKeep) {
+    function dedupeWhitespaceInChangeObjects(startKeep, deletion, insertion, endKeep, segmenter) {
       if (deletion && insertion) {
-        var oldWsPrefix = deletion.value.match(/^\s*/)[0];
-        var oldWsSuffix = deletion.value.match(/\s*$/)[0];
-        var newWsPrefix = insertion.value.match(/^\s*/)[0];
-        var newWsSuffix = insertion.value.match(/\s*$/)[0];
+        var _a = (0, string_js_1.leadingAndTrailingWs)(deletion.value, segmenter), oldWsPrefix = _a[0], oldWsSuffix = _a[1];
+        var _b = (0, string_js_1.leadingAndTrailingWs)(insertion.value, segmenter), newWsPrefix = _b[0], newWsSuffix = _b[1];
         if (startKeep) {
-          var commonWsPrefix = (
-            /*istanbul ignore start*/
-            (0, /*istanbul ignore end*/
-            /*istanbul ignore start*/
-            _string.longestCommonPrefix)(oldWsPrefix, newWsPrefix)
-          );
-          startKeep.value = /*istanbul ignore start*/
-          (0, /*istanbul ignore end*/
-          /*istanbul ignore start*/
-          _string.replaceSuffix)(startKeep.value, newWsPrefix, commonWsPrefix);
-          deletion.value = /*istanbul ignore start*/
-          (0, /*istanbul ignore end*/
-          /*istanbul ignore start*/
-          _string.removePrefix)(deletion.value, commonWsPrefix);
-          insertion.value = /*istanbul ignore start*/
-          (0, /*istanbul ignore end*/
-          /*istanbul ignore start*/
-          _string.removePrefix)(insertion.value, commonWsPrefix);
+          var commonWsPrefix = (0, string_js_1.longestCommonPrefix)(oldWsPrefix, newWsPrefix);
+          startKeep.value = (0, string_js_1.replaceSuffix)(startKeep.value, newWsPrefix, commonWsPrefix);
+          deletion.value = (0, string_js_1.removePrefix)(deletion.value, commonWsPrefix);
+          insertion.value = (0, string_js_1.removePrefix)(insertion.value, commonWsPrefix);
         }
         if (endKeep) {
-          var commonWsSuffix = (
-            /*istanbul ignore start*/
-            (0, /*istanbul ignore end*/
-            /*istanbul ignore start*/
-            _string.longestCommonSuffix)(oldWsSuffix, newWsSuffix)
-          );
-          endKeep.value = /*istanbul ignore start*/
-          (0, /*istanbul ignore end*/
-          /*istanbul ignore start*/
-          _string.replacePrefix)(endKeep.value, newWsSuffix, commonWsSuffix);
-          deletion.value = /*istanbul ignore start*/
-          (0, /*istanbul ignore end*/
-          /*istanbul ignore start*/
-          _string.removeSuffix)(deletion.value, commonWsSuffix);
-          insertion.value = /*istanbul ignore start*/
-          (0, /*istanbul ignore end*/
-          /*istanbul ignore start*/
-          _string.removeSuffix)(insertion.value, commonWsSuffix);
+          var commonWsSuffix = (0, string_js_1.longestCommonSuffix)(oldWsSuffix, newWsSuffix);
+          endKeep.value = (0, string_js_1.replacePrefix)(endKeep.value, newWsSuffix, commonWsSuffix);
+          deletion.value = (0, string_js_1.removeSuffix)(deletion.value, commonWsSuffix);
+          insertion.value = (0, string_js_1.removeSuffix)(insertion.value, commonWsSuffix);
         }
       } else if (insertion) {
         if (startKeep) {
-          insertion.value = insertion.value.replace(/^\s*/, "");
+          var ws = (0, string_js_1.leadingWs)(insertion.value, segmenter);
+          insertion.value = insertion.value.substring(ws.length);
         }
         if (endKeep) {
-          endKeep.value = endKeep.value.replace(/^\s*/, "");
+          var ws = (0, string_js_1.leadingWs)(endKeep.value, segmenter);
+          endKeep.value = endKeep.value.substring(ws.length);
         }
       } else if (startKeep && endKeep) {
-        var newWsFull = endKeep.value.match(/^\s*/)[0], delWsStart = deletion.value.match(/^\s*/)[0], delWsEnd = deletion.value.match(/\s*$/)[0];
-        var newWsStart = (
-          /*istanbul ignore start*/
-          (0, /*istanbul ignore end*/
-          /*istanbul ignore start*/
-          _string.longestCommonPrefix)(newWsFull, delWsStart)
-        );
-        deletion.value = /*istanbul ignore start*/
-        (0, /*istanbul ignore end*/
-        /*istanbul ignore start*/
-        _string.removePrefix)(deletion.value, newWsStart);
-        var newWsEnd = (
-          /*istanbul ignore start*/
-          (0, /*istanbul ignore end*/
-          /*istanbul ignore start*/
-          _string.longestCommonSuffix)(
-            /*istanbul ignore start*/
-            (0, /*istanbul ignore end*/
-            /*istanbul ignore start*/
-            _string.removePrefix)(newWsFull, newWsStart),
-            delWsEnd
-          )
-        );
-        deletion.value = /*istanbul ignore start*/
-        (0, /*istanbul ignore end*/
-        /*istanbul ignore start*/
-        _string.removeSuffix)(deletion.value, newWsEnd);
-        endKeep.value = /*istanbul ignore start*/
-        (0, /*istanbul ignore end*/
-        /*istanbul ignore start*/
-        _string.replacePrefix)(endKeep.value, newWsFull, newWsEnd);
-        startKeep.value = /*istanbul ignore start*/
-        (0, /*istanbul ignore end*/
-        /*istanbul ignore start*/
-        _string.replaceSuffix)(startKeep.value, newWsFull, newWsFull.slice(0, newWsFull.length - newWsEnd.length));
+        var newWsFull = (0, string_js_1.leadingWs)(endKeep.value, segmenter), _c = (0, string_js_1.leadingAndTrailingWs)(deletion.value, segmenter), delWsStart = _c[0], delWsEnd = _c[1];
+        var newWsStart = (0, string_js_1.longestCommonPrefix)(newWsFull, delWsStart);
+        deletion.value = (0, string_js_1.removePrefix)(deletion.value, newWsStart);
+        var newWsEnd = (0, string_js_1.longestCommonSuffix)((0, string_js_1.removePrefix)(newWsFull, newWsStart), delWsEnd);
+        deletion.value = (0, string_js_1.removeSuffix)(deletion.value, newWsEnd);
+        endKeep.value = (0, string_js_1.replacePrefix)(endKeep.value, newWsFull, newWsEnd);
+        startKeep.value = (0, string_js_1.replaceSuffix)(startKeep.value, newWsFull, newWsFull.slice(0, newWsFull.length - newWsEnd.length));
       } else if (endKeep) {
-        var endKeepWsPrefix = endKeep.value.match(/^\s*/)[0];
-        var deletionWsSuffix = deletion.value.match(/\s*$/)[0];
-        var overlap = (
-          /*istanbul ignore start*/
-          (0, /*istanbul ignore end*/
-          /*istanbul ignore start*/
-          _string.maximumOverlap)(deletionWsSuffix, endKeepWsPrefix)
-        );
-        deletion.value = /*istanbul ignore start*/
-        (0, /*istanbul ignore end*/
-        /*istanbul ignore start*/
-        _string.removeSuffix)(deletion.value, overlap);
+        var endKeepWsPrefix = (0, string_js_1.leadingWs)(endKeep.value, segmenter);
+        var deletionWsSuffix = (0, string_js_1.trailingWs)(deletion.value, segmenter);
+        var overlap = (0, string_js_1.maximumOverlap)(deletionWsSuffix, endKeepWsPrefix);
+        deletion.value = (0, string_js_1.removeSuffix)(deletion.value, overlap);
       } else if (startKeep) {
-        var startKeepWsSuffix = startKeep.value.match(/\s*$/)[0];
-        var deletionWsPrefix = deletion.value.match(/^\s*/)[0];
-        var _overlap = (
-          /*istanbul ignore start*/
-          (0, /*istanbul ignore end*/
-          /*istanbul ignore start*/
-          _string.maximumOverlap)(startKeepWsSuffix, deletionWsPrefix)
-        );
-        deletion.value = /*istanbul ignore start*/
-        (0, /*istanbul ignore end*/
-        /*istanbul ignore start*/
-        _string.removePrefix)(deletion.value, _overlap);
+        var startKeepWsSuffix = (0, string_js_1.trailingWs)(startKeep.value, segmenter);
+        var deletionWsPrefix = (0, string_js_1.leadingWs)(deletion.value, segmenter);
+        var overlap = (0, string_js_1.maximumOverlap)(startKeepWsSuffix, deletionWsPrefix);
+        deletion.value = (0, string_js_1.removePrefix)(deletion.value, overlap);
       }
     }
-    var wordWithSpaceDiff = (
-      /*istanbul ignore start*/
-      exports.wordWithSpaceDiff = /*istanbul ignore end*/
-      new /*istanbul ignore start*/
-      _base[
-        /*istanbul ignore start*/
-        "default"
-        /*istanbul ignore end*/
-      ]()
+    var WordsWithSpaceDiff = (
+      /** @class */
+      function(_super) {
+        __extends(WordsWithSpaceDiff2, _super);
+        function WordsWithSpaceDiff2() {
+          return _super !== null && _super.apply(this, arguments) || this;
+        }
+        WordsWithSpaceDiff2.prototype.tokenize = function(value) {
+          var regex = new RegExp("(\\r?\\n)|[".concat(extendedWordChars, "]+|[^\\S\\n\\r]+|[^").concat(extendedWordChars, "]"), "ug");
+          return value.match(regex) || [];
+        };
+        return WordsWithSpaceDiff2;
+      }(base_js_1.default)
     );
-    wordWithSpaceDiff.tokenize = function(value) {
-      var regex = new RegExp(
-        /*istanbul ignore start*/
-        "(\\r?\\n)|[".concat(
-          /*istanbul ignore end*/
-          extendedWordChars,
-          "]+|[^\\S\\n\\r]+|[^"
-        ).concat(extendedWordChars, "]"),
-        "ug"
-      );
-      return value.match(regex) || [];
-    };
+    exports.wordsWithSpaceDiff = new WordsWithSpaceDiff();
     function diffWordsWithSpace(oldStr, newStr, options) {
-      return wordWithSpaceDiff.diff(oldStr, newStr, options);
+      return exports.wordsWithSpaceDiff.diff(oldStr, newStr, options);
     }
   }
 });
 
-// node_modules/diff2html/node_modules/diff/lib/util/params.js
+// node_modules/diff/libcjs/util/params.js
 var require_params = __commonJS({
-  "node_modules/diff2html/node_modules/diff/lib/util/params.js"(exports) {
+  "node_modules/diff/libcjs/util/params.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {
       value: true
@@ -14028,7 +14725,7 @@ var require_params = __commonJS({
         defaults.callback = options;
       } else if (options) {
         for (var name in options) {
-          if (options.hasOwnProperty(name)) {
+          if (Object.prototype.hasOwnProperty.call(options, name)) {
             defaults[name] = options[name];
           }
         }
@@ -14038,34 +14735,80 @@ var require_params = __commonJS({
   }
 });
 
-// node_modules/diff2html/node_modules/diff/lib/diff/line.js
+// node_modules/diff/libcjs/diff/line.js
 var require_line = __commonJS({
-  "node_modules/diff2html/node_modules/diff/lib/diff/line.js"(exports) {
+  "node_modules/diff/libcjs/diff/line.js"(exports) {
     "use strict";
+    var __extends = exports && exports.__extends || /* @__PURE__ */ function() {
+      var extendStatics = function(d, b) {
+        extendStatics = Object.setPrototypeOf || {
+          __proto__: []
+        } instanceof Array && function(d2, b2) {
+          d2.__proto__ = b2;
+        } || function(d2, b2) {
+          for (var p in b2) if (Object.prototype.hasOwnProperty.call(b2, p)) d2[p] = b2[p];
+        };
+        return extendStatics(d, b);
+      };
+      return function(d, b) {
+        if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() {
+          this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+      };
+    }();
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
+    exports.lineDiff = void 0;
     exports.diffLines = diffLines;
     exports.diffTrimmedLines = diffTrimmedLines;
-    exports.lineDiff = void 0;
-    var _base = _interopRequireDefault(require_base());
-    var _params = require_params();
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : {
-        "default": obj
-      };
-    }
-    var lineDiff = (
-      /*istanbul ignore start*/
-      exports.lineDiff = /*istanbul ignore end*/
-      new /*istanbul ignore start*/
-      _base[
-        /*istanbul ignore start*/
-        "default"
-        /*istanbul ignore end*/
-      ]()
+    exports.tokenize = tokenize;
+    var base_js_1 = require_base();
+    var params_js_1 = require_params();
+    var LineDiff = (
+      /** @class */
+      function(_super) {
+        __extends(LineDiff2, _super);
+        function LineDiff2() {
+          var _this = _super !== null && _super.apply(this, arguments) || this;
+          _this.tokenize = tokenize;
+          return _this;
+        }
+        LineDiff2.prototype.equals = function(left, right, options) {
+          if (options.ignoreWhitespace) {
+            if (!options.newlineIsToken || !left.includes("\n")) {
+              left = left.trim();
+            }
+            if (!options.newlineIsToken || !right.includes("\n")) {
+              right = right.trim();
+            }
+          } else if (options.ignoreNewlineAtEof && !options.newlineIsToken) {
+            if (left.endsWith("\n")) {
+              left = left.slice(0, -1);
+            }
+            if (right.endsWith("\n")) {
+              right = right.slice(0, -1);
+            }
+          }
+          return _super.prototype.equals.call(this, left, right, options);
+        };
+        return LineDiff2;
+      }(base_js_1.default)
     );
-    lineDiff.tokenize = function(value, options) {
+    exports.lineDiff = new LineDiff();
+    function diffLines(oldStr, newStr, options) {
+      return exports.lineDiff.diff(oldStr, newStr, options);
+    }
+    function diffTrimmedLines(oldStr, newStr, options) {
+      options = (0, params_js_1.generateOptions)(options, {
+        ignoreWhitespace: true
+      });
+      return exports.lineDiff.diff(oldStr, newStr, options);
+    }
+    function tokenize(value, options) {
       if (options.stripTrailingCr) {
         value = value.replace(/\r\n/g, "\n");
       }
@@ -14082,185 +14825,200 @@ var require_line = __commonJS({
         }
       }
       return retLines;
-    };
-    lineDiff.equals = function(left, right, options) {
-      if (options.ignoreWhitespace) {
-        if (!options.newlineIsToken || !left.includes("\n")) {
-          left = left.trim();
-        }
-        if (!options.newlineIsToken || !right.includes("\n")) {
-          right = right.trim();
-        }
-      } else if (options.ignoreNewlineAtEof && !options.newlineIsToken) {
-        if (left.endsWith("\n")) {
-          left = left.slice(0, -1);
-        }
-        if (right.endsWith("\n")) {
-          right = right.slice(0, -1);
-        }
-      }
-      return (
-        /*istanbul ignore start*/
-        _base[
-          /*istanbul ignore start*/
-          "default"
-          /*istanbul ignore end*/
-        ].prototype.equals.call(this, left, right, options)
-      );
-    };
-    function diffLines(oldStr, newStr, callback) {
-      return lineDiff.diff(oldStr, newStr, callback);
-    }
-    function diffTrimmedLines(oldStr, newStr, callback) {
-      var options = (
-        /*istanbul ignore start*/
-        (0, /*istanbul ignore end*/
-        /*istanbul ignore start*/
-        _params.generateOptions)(callback, {
-          ignoreWhitespace: true
-        })
-      );
-      return lineDiff.diff(oldStr, newStr, options);
     }
   }
 });
 
-// node_modules/diff2html/node_modules/diff/lib/diff/sentence.js
+// node_modules/diff/libcjs/diff/sentence.js
 var require_sentence = __commonJS({
-  "node_modules/diff2html/node_modules/diff/lib/diff/sentence.js"(exports) {
+  "node_modules/diff/libcjs/diff/sentence.js"(exports) {
     "use strict";
+    var __extends = exports && exports.__extends || /* @__PURE__ */ function() {
+      var extendStatics = function(d, b) {
+        extendStatics = Object.setPrototypeOf || {
+          __proto__: []
+        } instanceof Array && function(d2, b2) {
+          d2.__proto__ = b2;
+        } || function(d2, b2) {
+          for (var p in b2) if (Object.prototype.hasOwnProperty.call(b2, p)) d2[p] = b2[p];
+        };
+        return extendStatics(d, b);
+      };
+      return function(d, b) {
+        if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() {
+          this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+      };
+    }();
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
-    exports.diffSentences = diffSentences;
     exports.sentenceDiff = void 0;
-    var _base = _interopRequireDefault(require_base());
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : {
-        "default": obj
-      };
+    exports.diffSentences = diffSentences;
+    var base_js_1 = require_base();
+    function isSentenceEndPunct(char) {
+      return char == "." || char == "!" || char == "?";
     }
-    var sentenceDiff = (
-      /*istanbul ignore start*/
-      exports.sentenceDiff = /*istanbul ignore end*/
-      new /*istanbul ignore start*/
-      _base[
-        /*istanbul ignore start*/
-        "default"
-        /*istanbul ignore end*/
-      ]()
+    var SentenceDiff = (
+      /** @class */
+      function(_super) {
+        __extends(SentenceDiff2, _super);
+        function SentenceDiff2() {
+          return _super !== null && _super.apply(this, arguments) || this;
+        }
+        SentenceDiff2.prototype.tokenize = function(value) {
+          var _a;
+          var result = [];
+          var tokenStartI = 0;
+          for (var i = 0; i < value.length; i++) {
+            if (i == value.length - 1) {
+              result.push(value.slice(tokenStartI));
+              break;
+            }
+            if (isSentenceEndPunct(value[i]) && value[i + 1].match(/\s/)) {
+              result.push(value.slice(tokenStartI, i + 1));
+              i = tokenStartI = i + 1;
+              while ((_a = value[i + 1]) === null || _a === void 0 ? void 0 : _a.match(/\s/)) {
+                i++;
+              }
+              result.push(value.slice(tokenStartI, i + 1));
+              tokenStartI = i + 1;
+            }
+          }
+          return result;
+        };
+        return SentenceDiff2;
+      }(base_js_1.default)
     );
-    sentenceDiff.tokenize = function(value) {
-      return value.split(/(\S.+?[.!?])(?=\s+|$)/);
-    };
-    function diffSentences(oldStr, newStr, callback) {
-      return sentenceDiff.diff(oldStr, newStr, callback);
+    exports.sentenceDiff = new SentenceDiff();
+    function diffSentences(oldStr, newStr, options) {
+      return exports.sentenceDiff.diff(oldStr, newStr, options);
     }
   }
 });
 
-// node_modules/diff2html/node_modules/diff/lib/diff/css.js
+// node_modules/diff/libcjs/diff/css.js
 var require_css2 = __commonJS({
-  "node_modules/diff2html/node_modules/diff/lib/diff/css.js"(exports) {
+  "node_modules/diff/libcjs/diff/css.js"(exports) {
     "use strict";
+    var __extends = exports && exports.__extends || /* @__PURE__ */ function() {
+      var extendStatics = function(d, b) {
+        extendStatics = Object.setPrototypeOf || {
+          __proto__: []
+        } instanceof Array && function(d2, b2) {
+          d2.__proto__ = b2;
+        } || function(d2, b2) {
+          for (var p in b2) if (Object.prototype.hasOwnProperty.call(b2, p)) d2[p] = b2[p];
+        };
+        return extendStatics(d, b);
+      };
+      return function(d, b) {
+        if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() {
+          this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+      };
+    }();
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
     exports.cssDiff = void 0;
     exports.diffCss = diffCss;
-    var _base = _interopRequireDefault(require_base());
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : {
-        "default": obj
-      };
-    }
-    var cssDiff = (
-      /*istanbul ignore start*/
-      exports.cssDiff = /*istanbul ignore end*/
-      new /*istanbul ignore start*/
-      _base[
-        /*istanbul ignore start*/
-        "default"
-        /*istanbul ignore end*/
-      ]()
+    var base_js_1 = require_base();
+    var CssDiff = (
+      /** @class */
+      function(_super) {
+        __extends(CssDiff2, _super);
+        function CssDiff2() {
+          return _super !== null && _super.apply(this, arguments) || this;
+        }
+        CssDiff2.prototype.tokenize = function(value) {
+          return value.split(/([{}:;,]|\s+)/);
+        };
+        return CssDiff2;
+      }(base_js_1.default)
     );
-    cssDiff.tokenize = function(value) {
-      return value.split(/([{}:;,]|\s+)/);
-    };
-    function diffCss(oldStr, newStr, callback) {
-      return cssDiff.diff(oldStr, newStr, callback);
+    exports.cssDiff = new CssDiff();
+    function diffCss(oldStr, newStr, options) {
+      return exports.cssDiff.diff(oldStr, newStr, options);
     }
   }
 });
 
-// node_modules/diff2html/node_modules/diff/lib/diff/json.js
+// node_modules/diff/libcjs/diff/json.js
 var require_json2 = __commonJS({
-  "node_modules/diff2html/node_modules/diff/lib/diff/json.js"(exports) {
+  "node_modules/diff/libcjs/diff/json.js"(exports) {
     "use strict";
+    var __extends = exports && exports.__extends || /* @__PURE__ */ function() {
+      var extendStatics = function(d, b) {
+        extendStatics = Object.setPrototypeOf || {
+          __proto__: []
+        } instanceof Array && function(d2, b2) {
+          d2.__proto__ = b2;
+        } || function(d2, b2) {
+          for (var p in b2) if (Object.prototype.hasOwnProperty.call(b2, p)) d2[p] = b2[p];
+        };
+        return extendStatics(d, b);
+      };
+      return function(d, b) {
+        if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() {
+          this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+      };
+    }();
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
-    exports.canonicalize = canonicalize;
-    exports.diffJson = diffJson;
     exports.jsonDiff = void 0;
-    var _base = _interopRequireDefault(require_base());
-    var _line = require_line();
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : {
-        "default": obj
-      };
-    }
-    function _typeof(o) {
-      "@babel/helpers - typeof";
-      return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o2) {
-        return typeof o2;
-      } : function(o2) {
-        return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
-      }, _typeof(o);
-    }
-    var jsonDiff = (
-      /*istanbul ignore start*/
-      exports.jsonDiff = /*istanbul ignore end*/
-      new /*istanbul ignore start*/
-      _base[
-        /*istanbul ignore start*/
-        "default"
-        /*istanbul ignore end*/
-      ]()
+    exports.diffJson = diffJson;
+    exports.canonicalize = canonicalize;
+    var base_js_1 = require_base();
+    var line_js_1 = require_line();
+    var JsonDiff = (
+      /** @class */
+      function(_super) {
+        __extends(JsonDiff2, _super);
+        function JsonDiff2() {
+          var _this = _super !== null && _super.apply(this, arguments) || this;
+          _this.tokenize = line_js_1.tokenize;
+          return _this;
+        }
+        Object.defineProperty(JsonDiff2.prototype, "useLongestToken", {
+          get: function() {
+            return true;
+          },
+          enumerable: false,
+          configurable: true
+        });
+        JsonDiff2.prototype.castInput = function(value, options) {
+          var undefinedReplacement = options.undefinedReplacement, _a = options.stringifyReplacer, stringifyReplacer = _a === void 0 ? function(k, v) {
+            return typeof v === "undefined" ? undefinedReplacement : v;
+          } : _a;
+          return typeof value === "string" ? value : JSON.stringify(canonicalize(value, null, null, stringifyReplacer), null, "  ");
+        };
+        JsonDiff2.prototype.equals = function(left, right, options) {
+          return _super.prototype.equals.call(this, left.replace(/,([\r\n])/g, "$1"), right.replace(/,([\r\n])/g, "$1"), options);
+        };
+        return JsonDiff2;
+      }(base_js_1.default)
     );
-    jsonDiff.useLongestToken = true;
-    jsonDiff.tokenize = /*istanbul ignore start*/
-    _line.lineDiff.tokenize;
-    jsonDiff.castInput = function(value, options) {
-      var undefinedReplacement = options.undefinedReplacement, _options$stringifyRep = (
-        /*istanbul ignore end*/
-        options.stringifyReplacer
-      ), stringifyReplacer = _options$stringifyRep === void 0 ? function(k, v) {
-        return (
-          /*istanbul ignore end*/
-          typeof v === "undefined" ? undefinedReplacement : v
-        );
-      } : _options$stringifyRep;
-      return typeof value === "string" ? value : JSON.stringify(canonicalize(value, null, null, stringifyReplacer), stringifyReplacer, "  ");
-    };
-    jsonDiff.equals = function(left, right, options) {
-      return (
-        /*istanbul ignore start*/
-        _base[
-          /*istanbul ignore start*/
-          "default"
-          /*istanbul ignore end*/
-        ].prototype.equals.call(jsonDiff, left.replace(/,([\r\n])/g, "$1"), right.replace(/,([\r\n])/g, "$1"), options)
-      );
-    };
-    function diffJson(oldObj, newObj, options) {
-      return jsonDiff.diff(oldObj, newObj, options);
+    exports.jsonDiff = new JsonDiff();
+    function diffJson(oldStr, newStr, options) {
+      return exports.jsonDiff.diff(oldStr, newStr, options);
     }
     function canonicalize(obj, stack, replacementStack, replacer, key2) {
       stack = stack || [];
       replacementStack = replacementStack || [];
       if (replacer) {
-        obj = replacer(key2, obj);
+        obj = replacer(key2 === void 0 ? "" : key2, obj);
       }
       var i;
       for (i = 0; i < stack.length; i += 1) {
@@ -14274,7 +15032,7 @@ var require_json2 = __commonJS({
         canonicalizedObj = new Array(obj.length);
         replacementStack.push(canonicalizedObj);
         for (i = 0; i < obj.length; i += 1) {
-          canonicalizedObj[i] = canonicalize(obj[i], stack, replacementStack, replacer, key2);
+          canonicalizedObj[i] = canonicalize(obj[i], stack, replacementStack, replacer, String(i));
         }
         stack.pop();
         replacementStack.pop();
@@ -14283,26 +15041,21 @@ var require_json2 = __commonJS({
       if (obj && obj.toJSON) {
         obj = obj.toJSON();
       }
-      if (
-        /*istanbul ignore start*/
-        _typeof(
-          /*istanbul ignore end*/
-          obj
-        ) === "object" && obj !== null
-      ) {
+      if (typeof obj === "object" && obj !== null) {
         stack.push(obj);
         canonicalizedObj = {};
         replacementStack.push(canonicalizedObj);
-        var sortedKeys = [], _key;
-        for (_key in obj) {
-          if (Object.prototype.hasOwnProperty.call(obj, _key)) {
-            sortedKeys.push(_key);
+        var sortedKeys = [];
+        var key_1;
+        for (key_1 in obj) {
+          if (Object.prototype.hasOwnProperty.call(obj, key_1)) {
+            sortedKeys.push(key_1);
           }
         }
         sortedKeys.sort();
         for (i = 0; i < sortedKeys.length; i += 1) {
-          _key = sortedKeys[i];
-          canonicalizedObj[_key] = canonicalize(obj[_key], stack, replacementStack, replacer, _key);
+          key_1 = sortedKeys[i];
+          canonicalizedObj[key_1] = canonicalize(obj[key_1], stack, replacementStack, replacer, key_1);
         }
         stack.pop();
         replacementStack.pop();
@@ -14314,190 +15067,126 @@ var require_json2 = __commonJS({
   }
 });
 
-// node_modules/diff2html/node_modules/diff/lib/diff/array.js
+// node_modules/diff/libcjs/diff/array.js
 var require_array = __commonJS({
-  "node_modules/diff2html/node_modules/diff/lib/diff/array.js"(exports) {
+  "node_modules/diff/libcjs/diff/array.js"(exports) {
     "use strict";
+    var __extends = exports && exports.__extends || /* @__PURE__ */ function() {
+      var extendStatics = function(d, b) {
+        extendStatics = Object.setPrototypeOf || {
+          __proto__: []
+        } instanceof Array && function(d2, b2) {
+          d2.__proto__ = b2;
+        } || function(d2, b2) {
+          for (var p in b2) if (Object.prototype.hasOwnProperty.call(b2, p)) d2[p] = b2[p];
+        };
+        return extendStatics(d, b);
+      };
+      return function(d, b) {
+        if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() {
+          this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+      };
+    }();
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
     exports.arrayDiff = void 0;
     exports.diffArrays = diffArrays;
-    var _base = _interopRequireDefault(require_base());
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : {
-        "default": obj
-      };
-    }
-    var arrayDiff = (
-      /*istanbul ignore start*/
-      exports.arrayDiff = /*istanbul ignore end*/
-      new /*istanbul ignore start*/
-      _base[
-        /*istanbul ignore start*/
-        "default"
-        /*istanbul ignore end*/
-      ]()
+    var base_js_1 = require_base();
+    var ArrayDiff = (
+      /** @class */
+      function(_super) {
+        __extends(ArrayDiff2, _super);
+        function ArrayDiff2() {
+          return _super !== null && _super.apply(this, arguments) || this;
+        }
+        ArrayDiff2.prototype.tokenize = function(value) {
+          return value.slice();
+        };
+        ArrayDiff2.prototype.join = function(value) {
+          return value;
+        };
+        ArrayDiff2.prototype.removeEmpty = function(value) {
+          return value;
+        };
+        return ArrayDiff2;
+      }(base_js_1.default)
     );
-    arrayDiff.tokenize = function(value) {
-      return value.slice();
-    };
-    arrayDiff.join = arrayDiff.removeEmpty = function(value) {
-      return value;
-    };
-    function diffArrays(oldArr, newArr, callback) {
-      return arrayDiff.diff(oldArr, newArr, callback);
+    exports.arrayDiff = new ArrayDiff();
+    function diffArrays(oldArr, newArr, options) {
+      return exports.arrayDiff.diff(oldArr, newArr, options);
     }
   }
 });
 
-// node_modules/diff2html/node_modules/diff/lib/patch/line-endings.js
+// node_modules/diff/libcjs/patch/line-endings.js
 var require_line_endings = __commonJS({
-  "node_modules/diff2html/node_modules/diff/lib/patch/line-endings.js"(exports) {
+  "node_modules/diff/libcjs/patch/line-endings.js"(exports) {
     "use strict";
+    var __assign = exports && exports.__assign || function() {
+      __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+          s = arguments[i];
+          for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+      };
+      return __assign.apply(this, arguments);
+    };
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
-    exports.isUnix = isUnix;
-    exports.isWin = isWin;
     exports.unixToWin = unixToWin;
     exports.winToUnix = winToUnix;
-    function _typeof(o) {
-      "@babel/helpers - typeof";
-      return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o2) {
-        return typeof o2;
-      } : function(o2) {
-        return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
-      }, _typeof(o);
-    }
-    function ownKeys(e, r) {
-      var t = Object.keys(e);
-      if (Object.getOwnPropertySymbols) {
-        var o = Object.getOwnPropertySymbols(e);
-        r && (o = o.filter(function(r2) {
-          return Object.getOwnPropertyDescriptor(e, r2).enumerable;
-        })), t.push.apply(t, o);
-      }
-      return t;
-    }
-    function _objectSpread(e) {
-      for (var r = 1; r < arguments.length; r++) {
-        var t = null != arguments[r] ? arguments[r] : {};
-        r % 2 ? ownKeys(Object(t), true).forEach(function(r2) {
-          _defineProperty(e, r2, t[r2]);
-        }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function(r2) {
-          Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
-        });
-      }
-      return e;
-    }
-    function _defineProperty(obj, key2, value) {
-      key2 = _toPropertyKey(key2);
-      if (key2 in obj) {
-        Object.defineProperty(obj, key2, {
-          value,
-          enumerable: true,
-          configurable: true,
-          writable: true
-        });
-      } else {
-        obj[key2] = value;
-      }
-      return obj;
-    }
-    function _toPropertyKey(t) {
-      var i = _toPrimitive(t, "string");
-      return "symbol" == _typeof(i) ? i : i + "";
-    }
-    function _toPrimitive(t, r) {
-      if ("object" != _typeof(t) || !t) return t;
-      var e = t[Symbol.toPrimitive];
-      if (void 0 !== e) {
-        var i = e.call(t, r || "default");
-        if ("object" != _typeof(i)) return i;
-        throw new TypeError("@@toPrimitive must return a primitive value.");
-      }
-      return ("string" === r ? String : Number)(t);
-    }
+    exports.isUnix = isUnix;
+    exports.isWin = isWin;
     function unixToWin(patch) {
       if (Array.isArray(patch)) {
-        return patch.map(unixToWin);
+        return patch.map(function(p) {
+          return unixToWin(p);
+        });
       }
-      return (
-        /*istanbul ignore start*/
-        _objectSpread(_objectSpread(
-          {},
-          /*istanbul ignore end*/
-          patch
-        ), {}, {
-          hunks: patch.hunks.map(function(hunk) {
-            return _objectSpread(_objectSpread(
-              {},
-              /*istanbul ignore end*/
-              hunk
-            ), {}, {
-              lines: hunk.lines.map(function(line, i) {
-                var _hunk$lines;
-                return (
-                  /*istanbul ignore end*/
-                  line.startsWith("\\") || line.endsWith("\r") || /*istanbul ignore start*/
-                  (_hunk$lines = /*istanbul ignore end*/
-                  hunk.lines[i + 1]) !== null && _hunk$lines !== void 0 && /*istanbul ignore start*/
-                  _hunk$lines.startsWith("\\") ? line : line + "\r"
-                );
-              })
-            });
-          })
+      return __assign(__assign({}, patch), {
+        hunks: patch.hunks.map(function(hunk) {
+          return __assign(__assign({}, hunk), {
+            lines: hunk.lines.map(function(line, i) {
+              var _a;
+              return line.startsWith("\\") || line.endsWith("\r") || ((_a = hunk.lines[i + 1]) === null || _a === void 0 ? void 0 : _a.startsWith("\\")) ? line : line + "\r";
+            })
+          });
         })
-      );
+      });
     }
     function winToUnix(patch) {
       if (Array.isArray(patch)) {
-        return patch.map(winToUnix);
+        return patch.map(function(p) {
+          return winToUnix(p);
+        });
       }
-      return (
-        /*istanbul ignore start*/
-        _objectSpread(_objectSpread(
-          {},
-          /*istanbul ignore end*/
-          patch
-        ), {}, {
-          hunks: patch.hunks.map(function(hunk) {
-            return _objectSpread(_objectSpread(
-              {},
-              /*istanbul ignore end*/
-              hunk
-            ), {}, {
-              lines: hunk.lines.map(function(line) {
-                return (
-                  /*istanbul ignore end*/
-                  line.endsWith("\r") ? line.substring(0, line.length - 1) : line
-                );
-              })
-            });
-          })
+      return __assign(__assign({}, patch), {
+        hunks: patch.hunks.map(function(hunk) {
+          return __assign(__assign({}, hunk), {
+            lines: hunk.lines.map(function(line) {
+              return line.endsWith("\r") ? line.substring(0, line.length - 1) : line;
+            })
+          });
         })
-      );
+      });
     }
     function isUnix(patch) {
       if (!Array.isArray(patch)) {
         patch = [patch];
       }
       return !patch.some(function(index) {
-        return (
-          /*istanbul ignore end*/
-          index.hunks.some(function(hunk) {
-            return (
-              /*istanbul ignore end*/
-              hunk.lines.some(function(line) {
-                return (
-                  /*istanbul ignore end*/
-                  !line.startsWith("\\") && line.endsWith("\r")
-                );
-              })
-            );
-          })
-        );
+        return index.hunks.some(function(hunk) {
+          return hunk.lines.some(function(line) {
+            return !line.startsWith("\\") && line.endsWith("\r");
+          });
+        });
       });
     }
     function isWin(patch) {
@@ -14505,67 +15194,45 @@ var require_line_endings = __commonJS({
         patch = [patch];
       }
       return patch.some(function(index) {
-        return (
-          /*istanbul ignore end*/
-          index.hunks.some(function(hunk) {
-            return (
-              /*istanbul ignore end*/
-              hunk.lines.some(function(line) {
-                return (
-                  /*istanbul ignore end*/
-                  line.endsWith("\r")
-                );
-              })
-            );
-          })
-        );
+        return index.hunks.some(function(hunk) {
+          return hunk.lines.some(function(line) {
+            return line.endsWith("\r");
+          });
+        });
       }) && patch.every(function(index) {
-        return (
-          /*istanbul ignore end*/
-          index.hunks.every(function(hunk) {
-            return (
-              /*istanbul ignore end*/
-              hunk.lines.every(function(line, i) {
-                var _hunk$lines2;
-                return (
-                  /*istanbul ignore end*/
-                  line.startsWith("\\") || line.endsWith("\r") || /*istanbul ignore start*/
-                  ((_hunk$lines2 = /*istanbul ignore end*/
-                  hunk.lines[i + 1]) === null || _hunk$lines2 === void 0 ? void 0 : (
-                    /*istanbul ignore start*/
-                    _hunk$lines2.startsWith("\\")
-                  ))
-                );
-              })
-            );
-          })
-        );
+        return index.hunks.every(function(hunk) {
+          return hunk.lines.every(function(line, i) {
+            var _a;
+            return line.startsWith("\\") || line.endsWith("\r") || ((_a = hunk.lines[i + 1]) === null || _a === void 0 ? void 0 : _a.startsWith("\\"));
+          });
+        });
       });
     }
   }
 });
 
-// node_modules/diff2html/node_modules/diff/lib/patch/parse.js
+// node_modules/diff/libcjs/patch/parse.js
 var require_parse = __commonJS({
-  "node_modules/diff2html/node_modules/diff/lib/patch/parse.js"(exports) {
+  "node_modules/diff/libcjs/patch/parse.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
     exports.parsePatch = parsePatch;
     function parsePatch(uniDiff) {
-      var diffstr = uniDiff.split(/\n/), list = [], i = 0;
+      var diffstr = uniDiff.split(/\n/), list = [];
+      var i = 0;
       function parseIndex() {
         var index = {};
         list.push(index);
         while (i < diffstr.length) {
           var line = diffstr[i];
-          if (/^(\-\-\-|\+\+\+|@@)\s/.test(line)) {
+          if (/^(---|\+\+\+|@@)\s/.test(line)) {
             break;
           }
-          var header = /^(?:Index:|diff(?: -r \w+)+)\s+(.+?)\s*$/.exec(line);
-          if (header) {
-            index.index = header[1];
+          var headerMatch = /^(?:Index:|diff(?: -r \w+)+)\s+/.exec(line);
+          if (headerMatch) {
+            index.index = line.substring(headerMatch[0].length).trim();
           }
           i++;
         }
@@ -14573,33 +15240,38 @@ var require_parse = __commonJS({
         parseFileHeader(index);
         index.hunks = [];
         while (i < diffstr.length) {
-          var _line = diffstr[i];
-          if (/^(Index:\s|diff\s|\-\-\-\s|\+\+\+\s|===================================================================)/.test(_line)) {
+          var line = diffstr[i];
+          if (/^(Index:\s|diff\s|---\s|\+\+\+\s|===================================================================)/.test(line)) {
             break;
-          } else if (/^@@/.test(_line)) {
+          } else if (/^@@/.test(line)) {
             index.hunks.push(parseHunk());
-          } else if (_line) {
-            throw new Error("Unknown line " + (i + 1) + " " + JSON.stringify(_line));
+          } else if (line) {
+            throw new Error("Unknown line " + (i + 1) + " " + JSON.stringify(line));
           } else {
             i++;
           }
         }
       }
       function parseFileHeader(index) {
-        var fileHeader = /^(---|\+\+\+)\s+(.*)\r?$/.exec(diffstr[i]);
-        if (fileHeader) {
-          var keyPrefix = fileHeader[1] === "---" ? "old" : "new";
-          var data = fileHeader[2].split("	", 2);
+        var fileHeaderMatch = /^(---|\+\+\+)\s+/.exec(diffstr[i]);
+        if (fileHeaderMatch) {
+          var prefix = fileHeaderMatch[1], data = diffstr[i].substring(3).trim().split("	", 2), header = (data[1] || "").trim();
           var fileName = data[0].replace(/\\\\/g, "\\");
-          if (/^".*"$/.test(fileName)) {
+          if (fileName.startsWith('"') && fileName.endsWith('"')) {
             fileName = fileName.substr(1, fileName.length - 2);
           }
-          index[keyPrefix + "FileName"] = fileName;
-          index[keyPrefix + "Header"] = (data[1] || "").trim();
+          if (prefix === "---") {
+            index.oldFileName = fileName;
+            index.oldHeader = header;
+          } else {
+            index.newFileName = fileName;
+            index.newHeader = header;
+          }
           i++;
         }
       }
       function parseHunk() {
+        var _a;
         var chunkHeaderIndex = i, chunkHeaderLine = diffstr[i++], chunkHeader = chunkHeaderLine.split(/@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@/);
         var hunk = {
           oldStart: +chunkHeader[1],
@@ -14615,11 +15287,7 @@ var require_parse = __commonJS({
           hunk.newStart += 1;
         }
         var addCount = 0, removeCount = 0;
-        for (; i < diffstr.length && (removeCount < hunk.oldLines || addCount < hunk.newLines || /*istanbul ignore start*/
-        (_diffstr$i = /*istanbul ignore end*/
-        diffstr[i]) !== null && _diffstr$i !== void 0 && /*istanbul ignore start*/
-        _diffstr$i.startsWith("\\")); i++) {
-          var _diffstr$i;
+        for (; i < diffstr.length && (removeCount < hunk.oldLines || addCount < hunk.newLines || ((_a = diffstr[i]) === null || _a === void 0 ? void 0 : _a.startsWith("\\"))); i++) {
           var operation = diffstr[i].length == 0 && i != diffstr.length - 1 ? " " : diffstr[i][0];
           if (operation === "+" || operation === "-" || operation === " " || operation === "\\") {
             hunk.lines.push(diffstr[i]);
@@ -14632,14 +15300,7 @@ var require_parse = __commonJS({
               removeCount++;
             }
           } else {
-            throw new Error(
-              /*istanbul ignore start*/
-              "Hunk at line ".concat(
-                /*istanbul ignore end*/
-                chunkHeaderIndex + 1,
-                " contained invalid line "
-              ).concat(diffstr[i])
-            );
+            throw new Error("Hunk at line ".concat(chunkHeaderIndex + 1, " contained invalid line ").concat(diffstr[i]));
           }
         }
         if (!addCount && hunk.newLines === 1) {
@@ -14664,15 +15325,15 @@ var require_parse = __commonJS({
   }
 });
 
-// node_modules/diff2html/node_modules/diff/lib/util/distance-iterator.js
+// node_modules/diff/libcjs/util/distance-iterator.js
 var require_distance_iterator = __commonJS({
-  "node_modules/diff2html/node_modules/diff/lib/util/distance-iterator.js"(exports) {
+  "node_modules/diff/libcjs/util/distance-iterator.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
-    exports["default"] = _default;
-    function _default(start, minLine, maxLine) {
+    exports.default = default_1;
+    function default_1(start, minLine, maxLine) {
       var wantForward = true, backwardExhausted = false, forwardExhausted = false, localOffset = 1;
       return function iterator() {
         if (wantForward && !forwardExhausted) {
@@ -14696,78 +15357,57 @@ var require_distance_iterator = __commonJS({
           backwardExhausted = true;
           return iterator();
         }
+        return void 0;
       };
     }
   }
 });
 
-// node_modules/diff2html/node_modules/diff/lib/patch/apply.js
+// node_modules/diff/libcjs/patch/apply.js
 var require_apply = __commonJS({
-  "node_modules/diff2html/node_modules/diff/lib/patch/apply.js"(exports) {
+  "node_modules/diff/libcjs/patch/apply.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
     exports.applyPatch = applyPatch;
     exports.applyPatches = applyPatches;
-    var _string = require_string();
-    var _lineEndings = require_line_endings();
-    var _parse = require_parse();
-    var _distanceIterator = _interopRequireDefault(require_distance_iterator());
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : {
-        "default": obj
-      };
-    }
-    function applyPatch(source, uniDiff) {
-      var options = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {};
-      if (typeof uniDiff === "string") {
-        uniDiff = /*istanbul ignore start*/
-        (0, /*istanbul ignore end*/
-        /*istanbul ignore start*/
-        _parse.parsePatch)(uniDiff);
+    var string_js_1 = require_string();
+    var line_endings_js_1 = require_line_endings();
+    var parse_js_1 = require_parse();
+    var distance_iterator_js_1 = require_distance_iterator();
+    function applyPatch(source, patch, options) {
+      if (options === void 0) {
+        options = {};
       }
-      if (Array.isArray(uniDiff)) {
-        if (uniDiff.length > 1) {
-          throw new Error("applyPatch only works with a single input.");
-        }
-        uniDiff = uniDiff[0];
+      var patches;
+      if (typeof patch === "string") {
+        patches = (0, parse_js_1.parsePatch)(patch);
+      } else if (Array.isArray(patch)) {
+        patches = patch;
+      } else {
+        patches = [patch];
+      }
+      if (patches.length > 1) {
+        throw new Error("applyPatch only works with a single input.");
+      }
+      return applyStructuredPatch(source, patches[0], options);
+    }
+    function applyStructuredPatch(source, patch, options) {
+      if (options === void 0) {
+        options = {};
       }
       if (options.autoConvertLineEndings || options.autoConvertLineEndings == null) {
-        if (
-          /*istanbul ignore start*/
-          (0, /*istanbul ignore end*/
-          /*istanbul ignore start*/
-          _string.hasOnlyWinLineEndings)(source) && /*istanbul ignore start*/
-          (0, /*istanbul ignore end*/
-          /*istanbul ignore start*/
-          _lineEndings.isUnix)(uniDiff)
-        ) {
-          uniDiff = /*istanbul ignore start*/
-          (0, /*istanbul ignore end*/
-          /*istanbul ignore start*/
-          _lineEndings.unixToWin)(uniDiff);
-        } else if (
-          /*istanbul ignore start*/
-          (0, /*istanbul ignore end*/
-          /*istanbul ignore start*/
-          _string.hasOnlyUnixLineEndings)(source) && /*istanbul ignore start*/
-          (0, /*istanbul ignore end*/
-          /*istanbul ignore start*/
-          _lineEndings.isWin)(uniDiff)
-        ) {
-          uniDiff = /*istanbul ignore start*/
-          (0, /*istanbul ignore end*/
-          /*istanbul ignore start*/
-          _lineEndings.winToUnix)(uniDiff);
+        if ((0, string_js_1.hasOnlyWinLineEndings)(source) && (0, line_endings_js_1.isUnix)(patch)) {
+          patch = (0, line_endings_js_1.unixToWin)(patch);
+        } else if ((0, string_js_1.hasOnlyUnixLineEndings)(source) && (0, line_endings_js_1.isWin)(patch)) {
+          patch = (0, line_endings_js_1.winToUnix)(patch);
         }
       }
-      var lines = source.split("\n"), hunks = uniDiff.hunks, compareLine = options.compareLine || function(lineNumber, line2, operation, patchContent) {
-        return (
-          /*istanbul ignore end*/
-          line2 === patchContent
-        );
-      }, fuzzFactor = options.fuzzFactor || 0, minLine = 0;
+      var lines = source.split("\n"), hunks = patch.hunks, compareLine = options.compareLine || function(lineNumber, line2, operation, patchContent) {
+        return line2 === patchContent;
+      }, fuzzFactor = options.fuzzFactor || 0;
+      var minLine = 0;
       if (fuzzFactor < 0 || !Number.isInteger(fuzzFactor)) {
         throw new Error("fuzzFactor must be a non-negative integer");
       }
@@ -14803,11 +15443,19 @@ var require_apply = __commonJS({
           return false;
         }
       }
-      function applyHunk(hunkLines, toPos2, maxErrors2) {
-        var hunkLinesI = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : 0;
-        var lastContextLineMatched = arguments.length > 4 && arguments[4] !== void 0 ? arguments[4] : true;
-        var patchedLines = arguments.length > 5 && arguments[5] !== void 0 ? arguments[5] : [];
-        var patchedLinesLength = arguments.length > 6 && arguments[6] !== void 0 ? arguments[6] : 0;
+      function applyHunk(hunkLines, toPos2, maxErrors2, hunkLinesI, lastContextLineMatched, patchedLines, patchedLinesLength) {
+        if (hunkLinesI === void 0) {
+          hunkLinesI = 0;
+        }
+        if (lastContextLineMatched === void 0) {
+          lastContextLineMatched = true;
+        }
+        if (patchedLines === void 0) {
+          patchedLines = [];
+        }
+        if (patchedLinesLength === void 0) {
+          patchedLinesLength = 0;
+        }
         var nConsecutiveOldContextLines = 0;
         var nextContextLineMustMatch = false;
         for (; hunkLinesI < hunkLines.length; hunkLinesI++) {
@@ -14859,29 +15507,14 @@ var require_apply = __commonJS({
       }
       var resultLines = [];
       var prevHunkOffset = 0;
-      for (var _i = 0; _i < hunks.length; _i++) {
-        var hunk = hunks[_i];
-        var hunkResult = (
-          /*istanbul ignore start*/
-          void 0
-        );
+      for (var i = 0; i < hunks.length; i++) {
+        var hunk = hunks[i];
+        var hunkResult = void 0;
         var maxLine = lines.length - hunk.oldLines + fuzzFactor;
-        var toPos = (
-          /*istanbul ignore start*/
-          void 0
-        );
+        var toPos = void 0;
         for (var maxErrors = 0; maxErrors <= fuzzFactor; maxErrors++) {
           toPos = hunk.oldStart + prevHunkOffset - 1;
-          var iterator = (
-            /*istanbul ignore start*/
-            (0, /*istanbul ignore end*/
-            /*istanbul ignore start*/
-            _distanceIterator[
-              /*istanbul ignore start*/
-              "default"
-              /*istanbul ignore end*/
-            ])(toPos, minLine, maxLine)
-          );
+          var iterator = (0, distance_iterator_js_1.default)(toPos, minLine, maxLine);
           for (; toPos !== void 0; toPos = iterator()) {
             hunkResult = applyHunk(hunk.lines, toPos, maxErrors);
             if (hunkResult) {
@@ -14895,31 +15528,26 @@ var require_apply = __commonJS({
         if (!hunkResult) {
           return false;
         }
-        for (var _i2 = minLine; _i2 < toPos; _i2++) {
-          resultLines.push(lines[_i2]);
+        for (var i_1 = minLine; i_1 < toPos; i_1++) {
+          resultLines.push(lines[i_1]);
         }
-        for (var _i3 = 0; _i3 < hunkResult.patchedLines.length; _i3++) {
-          var _line = hunkResult.patchedLines[_i3];
-          resultLines.push(_line);
+        for (var i_2 = 0; i_2 < hunkResult.patchedLines.length; i_2++) {
+          var line = hunkResult.patchedLines[i_2];
+          resultLines.push(line);
         }
         minLine = hunkResult.oldLineLastI + 1;
         prevHunkOffset = toPos + 1 - hunk.oldStart;
       }
-      for (var _i4 = minLine; _i4 < lines.length; _i4++) {
-        resultLines.push(lines[_i4]);
+      for (var i = minLine; i < lines.length; i++) {
+        resultLines.push(lines[i]);
       }
       return resultLines.join("\n");
     }
     function applyPatches(uniDiff, options) {
-      if (typeof uniDiff === "string") {
-        uniDiff = /*istanbul ignore start*/
-        (0, /*istanbul ignore end*/
-        /*istanbul ignore start*/
-        _parse.parsePatch)(uniDiff);
-      }
+      var spDiff = typeof uniDiff === "string" ? (0, parse_js_1.parsePatch)(uniDiff) : uniDiff;
       var currentIndex = 0;
       function processIndex() {
-        var index = uniDiff[currentIndex++];
+        var index = spDiff[currentIndex++];
         if (!index) {
           return options.complete();
         }
@@ -14941,144 +15569,123 @@ var require_apply = __commonJS({
   }
 });
 
-// node_modules/diff2html/node_modules/diff/lib/patch/create.js
-var require_create = __commonJS({
-  "node_modules/diff2html/node_modules/diff/lib/patch/create.js"(exports) {
+// node_modules/diff/libcjs/patch/reverse.js
+var require_reverse = __commonJS({
+  "node_modules/diff/libcjs/patch/reverse.js"(exports) {
     "use strict";
+    var __assign = exports && exports.__assign || function() {
+      __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+          s = arguments[i];
+          for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+      };
+      return __assign.apply(this, arguments);
+    };
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
-    exports.createPatch = createPatch;
-    exports.createTwoFilesPatch = createTwoFilesPatch;
-    exports.formatPatch = formatPatch;
+    exports.reversePatch = reversePatch;
+    function reversePatch(structuredPatch) {
+      if (Array.isArray(structuredPatch)) {
+        return structuredPatch.map(function(patch) {
+          return reversePatch(patch);
+        }).reverse();
+      }
+      return __assign(__assign({}, structuredPatch), {
+        oldFileName: structuredPatch.newFileName,
+        oldHeader: structuredPatch.newHeader,
+        newFileName: structuredPatch.oldFileName,
+        newHeader: structuredPatch.oldHeader,
+        hunks: structuredPatch.hunks.map(function(hunk) {
+          return {
+            oldLines: hunk.newLines,
+            oldStart: hunk.newStart,
+            newLines: hunk.oldLines,
+            newStart: hunk.oldStart,
+            lines: hunk.lines.map(function(l) {
+              if (l.startsWith("-")) {
+                return "+".concat(l.slice(1));
+              }
+              if (l.startsWith("+")) {
+                return "-".concat(l.slice(1));
+              }
+              return l;
+            })
+          };
+        })
+      });
+    }
+  }
+});
+
+// node_modules/diff/libcjs/patch/create.js
+var require_create = __commonJS({
+  "node_modules/diff/libcjs/patch/create.js"(exports) {
+    "use strict";
+    var __assign = exports && exports.__assign || function() {
+      __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+          s = arguments[i];
+          for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+      };
+      return __assign.apply(this, arguments);
+    };
+    Object.defineProperty(exports, "__esModule", {
+      value: true
+    });
+    exports.OMIT_HEADERS = exports.FILE_HEADERS_ONLY = exports.INCLUDE_HEADERS = void 0;
     exports.structuredPatch = structuredPatch;
-    var _line = require_line();
-    function _typeof(o) {
-      "@babel/helpers - typeof";
-      return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o2) {
-        return typeof o2;
-      } : function(o2) {
-        return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
-      }, _typeof(o);
-    }
-    function _toConsumableArray(arr) {
-      return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
-    }
-    function _nonIterableSpread() {
-      throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-    }
-    function _unsupportedIterableToArray(o, minLen) {
-      if (!o) return;
-      if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-      var n = Object.prototype.toString.call(o).slice(8, -1);
-      if (n === "Object" && o.constructor) n = o.constructor.name;
-      if (n === "Map" || n === "Set") return Array.from(o);
-      if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-    }
-    function _iterableToArray(iter) {
-      if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
-    }
-    function _arrayWithoutHoles(arr) {
-      if (Array.isArray(arr)) return _arrayLikeToArray(arr);
-    }
-    function _arrayLikeToArray(arr, len) {
-      if (len == null || len > arr.length) len = arr.length;
-      for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-      return arr2;
-    }
-    function ownKeys(e, r) {
-      var t = Object.keys(e);
-      if (Object.getOwnPropertySymbols) {
-        var o = Object.getOwnPropertySymbols(e);
-        r && (o = o.filter(function(r2) {
-          return Object.getOwnPropertyDescriptor(e, r2).enumerable;
-        })), t.push.apply(t, o);
-      }
-      return t;
-    }
-    function _objectSpread(e) {
-      for (var r = 1; r < arguments.length; r++) {
-        var t = null != arguments[r] ? arguments[r] : {};
-        r % 2 ? ownKeys(Object(t), true).forEach(function(r2) {
-          _defineProperty(e, r2, t[r2]);
-        }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function(r2) {
-          Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
-        });
-      }
-      return e;
-    }
-    function _defineProperty(obj, key2, value) {
-      key2 = _toPropertyKey(key2);
-      if (key2 in obj) {
-        Object.defineProperty(obj, key2, {
-          value,
-          enumerable: true,
-          configurable: true,
-          writable: true
-        });
-      } else {
-        obj[key2] = value;
-      }
-      return obj;
-    }
-    function _toPropertyKey(t) {
-      var i = _toPrimitive(t, "string");
-      return "symbol" == _typeof(i) ? i : i + "";
-    }
-    function _toPrimitive(t, r) {
-      if ("object" != _typeof(t) || !t) return t;
-      var e = t[Symbol.toPrimitive];
-      if (void 0 !== e) {
-        var i = e.call(t, r || "default");
-        if ("object" != _typeof(i)) return i;
-        throw new TypeError("@@toPrimitive must return a primitive value.");
-      }
-      return ("string" === r ? String : Number)(t);
-    }
+    exports.formatPatch = formatPatch;
+    exports.createTwoFilesPatch = createTwoFilesPatch;
+    exports.createPatch = createPatch;
+    var line_js_1 = require_line();
+    exports.INCLUDE_HEADERS = {
+      includeIndex: true,
+      includeUnderline: true,
+      includeFileHeaders: true
+    };
+    exports.FILE_HEADERS_ONLY = {
+      includeIndex: false,
+      includeUnderline: false,
+      includeFileHeaders: true
+    };
+    exports.OMIT_HEADERS = {
+      includeIndex: false,
+      includeUnderline: false,
+      includeFileHeaders: false
+    };
     function structuredPatch(oldFileName, newFileName, oldStr, newStr, oldHeader, newHeader, options) {
+      var optionsObj;
       if (!options) {
-        options = {};
-      }
-      if (typeof options === "function") {
-        options = {
+        optionsObj = {};
+      } else if (typeof options === "function") {
+        optionsObj = {
           callback: options
         };
+      } else {
+        optionsObj = options;
       }
-      if (typeof options.context === "undefined") {
-        options.context = 4;
+      if (typeof optionsObj.context === "undefined") {
+        optionsObj.context = 4;
       }
-      if (options.newlineIsToken) {
+      var context = optionsObj.context;
+      if (optionsObj.newlineIsToken) {
         throw new Error("newlineIsToken may not be used with patch-generation functions, only with diffing functions");
       }
-      if (!options.callback) {
-        return diffLinesResultToPatch(
-          /*istanbul ignore start*/
-          (0, /*istanbul ignore end*/
-          /*istanbul ignore start*/
-          _line.diffLines)(oldStr, newStr, options)
-        );
+      if (!optionsObj.callback) {
+        return diffLinesResultToPatch((0, line_js_1.diffLines)(oldStr, newStr, optionsObj));
       } else {
-        var _options = (
-          /*istanbul ignore end*/
-          options
-        ), _callback = _options.callback;
-        (0, /*istanbul ignore end*/
-        /*istanbul ignore start*/
-        _line.diffLines)(
-          oldStr,
-          newStr,
-          /*istanbul ignore start*/
-          _objectSpread(_objectSpread(
-            {},
-            /*istanbul ignore end*/
-            options
-          ), {}, {
-            callback: function callback(diff) {
-              var patch = diffLinesResultToPatch(diff);
-              _callback(patch);
-            }
-          })
-        );
+        var callback_1 = optionsObj.callback;
+        (0, line_js_1.diffLines)(oldStr, newStr, __assign(__assign({}, optionsObj), {
+          callback: function(diff) {
+            var patch = diffLinesResultToPatch(diff);
+            callback_1(patch);
+          }
+        }));
       }
       function diffLinesResultToPatch(diff) {
         if (!diff) {
@@ -15088,40 +15695,31 @@ var require_create = __commonJS({
           value: "",
           lines: []
         });
-        function contextLines(lines) {
-          return lines.map(function(entry) {
+        function contextLines(lines2) {
+          return lines2.map(function(entry) {
             return " " + entry;
           });
         }
         var hunks = [];
         var oldRangeStart = 0, newRangeStart = 0, curRange = [], oldLine = 1, newLine = 1;
-        var _loop = function _loop2() {
+        for (var i = 0; i < diff.length; i++) {
           var current = diff[i], lines = current.lines || splitLines(current.value);
           current.lines = lines;
           if (current.added || current.removed) {
-            var _curRange;
             if (!oldRangeStart) {
               var prev = diff[i - 1];
               oldRangeStart = oldLine;
               newRangeStart = newLine;
               if (prev) {
-                curRange = options.context > 0 ? contextLines(prev.lines.slice(-options.context)) : [];
+                curRange = context > 0 ? contextLines(prev.lines.slice(-context)) : [];
                 oldRangeStart -= curRange.length;
                 newRangeStart -= curRange.length;
               }
             }
-            (_curRange = /*istanbul ignore end*/
-            curRange).push.apply(
-              /*istanbul ignore start*/
-              _curRange,
-              /*istanbul ignore start*/
-              _toConsumableArray(
-                /*istanbul ignore end*/
-                lines.map(function(entry) {
-                  return (current.added ? "+" : "-") + entry;
-                })
-              )
-            );
+            for (var _i = 0, lines_1 = lines; _i < lines_1.length; _i++) {
+              var line = lines_1[_i];
+              curRange.push((current.added ? "+" : "-") + line);
+            }
             if (current.added) {
               newLine += lines.length;
             } else {
@@ -15129,39 +15727,25 @@ var require_create = __commonJS({
             }
           } else {
             if (oldRangeStart) {
-              if (lines.length <= options.context * 2 && i < diff.length - 2) {
-                var _curRange2;
-                (_curRange2 = /*istanbul ignore end*/
-                curRange).push.apply(
-                  /*istanbul ignore start*/
-                  _curRange2,
-                  /*istanbul ignore start*/
-                  _toConsumableArray(
-                    /*istanbul ignore end*/
-                    contextLines(lines)
-                  )
-                );
+              if (lines.length <= context * 2 && i < diff.length - 2) {
+                for (var _a = 0, _b = contextLines(lines); _a < _b.length; _a++) {
+                  var line = _b[_a];
+                  curRange.push(line);
+                }
               } else {
-                var _curRange3;
-                var contextSize = Math.min(lines.length, options.context);
-                (_curRange3 = /*istanbul ignore end*/
-                curRange).push.apply(
-                  /*istanbul ignore start*/
-                  _curRange3,
-                  /*istanbul ignore start*/
-                  _toConsumableArray(
-                    /*istanbul ignore end*/
-                    contextLines(lines.slice(0, contextSize))
-                  )
-                );
-                var _hunk = {
+                var contextSize = Math.min(lines.length, context);
+                for (var _c = 0, _d = contextLines(lines.slice(0, contextSize)); _c < _d.length; _c++) {
+                  var line = _d[_c];
+                  curRange.push(line);
+                }
+                var hunk = {
                   oldStart: oldRangeStart,
                   oldLines: oldLine - oldRangeStart + contextSize,
                   newStart: newRangeStart,
                   newLines: newLine - newRangeStart + contextSize,
                   lines: curRange
                 };
-                hunks.push(_hunk);
+                hunks.push(hunk);
                 oldRangeStart = 0;
                 newRangeStart = 0;
                 curRange = [];
@@ -15170,30 +15754,15 @@ var require_create = __commonJS({
             oldLine += lines.length;
             newLine += lines.length;
           }
-        };
-        for (var i = 0; i < diff.length; i++) {
-          _loop();
         }
-        for (
-          var _i = 0, _hunks = (
-            /*istanbul ignore end*/
-            hunks
-          );
-          /*istanbul ignore start*/
-          _i < _hunks.length;
-          /*istanbul ignore start*/
-          _i++
-        ) {
-          var hunk = (
-            /*istanbul ignore start*/
-            _hunks[_i]
-          );
-          for (var _i2 = 0; _i2 < hunk.lines.length; _i2++) {
-            if (hunk.lines[_i2].endsWith("\n")) {
-              hunk.lines[_i2] = hunk.lines[_i2].slice(0, -1);
+        for (var _e = 0, hunks_1 = hunks; _e < hunks_1.length; _e++) {
+          var hunk = hunks_1[_e];
+          for (var i = 0; i < hunk.lines.length; i++) {
+            if (hunk.lines[i].endsWith("\n")) {
+              hunk.lines[i] = hunk.lines[i].slice(0, -1);
             } else {
-              hunk.lines.splice(_i2 + 1, 0, "\\ No newline at end of file");
-              _i2++;
+              hunk.lines.splice(i + 1, 0, "\\ No newline at end of file");
+              i++;
             }
           }
         }
@@ -15206,19 +15775,31 @@ var require_create = __commonJS({
         };
       }
     }
-    function formatPatch(diff) {
-      if (Array.isArray(diff)) {
-        return diff.map(formatPatch).join("\n");
+    function formatPatch(patch, headerOptions) {
+      if (!headerOptions) {
+        headerOptions = exports.INCLUDE_HEADERS;
+      }
+      if (Array.isArray(patch)) {
+        if (patch.length > 1 && !headerOptions.includeFileHeaders) {
+          throw new Error("Cannot omit file headers on a multi-file patch. (The result would be unparseable; how would a tool trying to apply the patch know which changes are to which file?)");
+        }
+        return patch.map(function(p) {
+          return formatPatch(p, headerOptions);
+        }).join("\n");
       }
       var ret = [];
-      if (diff.oldFileName == diff.newFileName) {
-        ret.push("Index: " + diff.oldFileName);
+      if (headerOptions.includeIndex && patch.oldFileName == patch.newFileName) {
+        ret.push("Index: " + patch.oldFileName);
       }
-      ret.push("===================================================================");
-      ret.push("--- " + diff.oldFileName + (typeof diff.oldHeader === "undefined" ? "" : "	" + diff.oldHeader));
-      ret.push("+++ " + diff.newFileName + (typeof diff.newHeader === "undefined" ? "" : "	" + diff.newHeader));
-      for (var i = 0; i < diff.hunks.length; i++) {
-        var hunk = diff.hunks[i];
+      if (headerOptions.includeUnderline) {
+        ret.push("===================================================================");
+      }
+      if (headerOptions.includeFileHeaders) {
+        ret.push("--- " + patch.oldFileName + (typeof patch.oldHeader === "undefined" ? "" : "	" + patch.oldHeader));
+        ret.push("+++ " + patch.newFileName + (typeof patch.newHeader === "undefined" ? "" : "	" + patch.newHeader));
+      }
+      for (var i = 0; i < patch.hunks.length; i++) {
+        var hunk = patch.hunks[i];
         if (hunk.oldLines === 0) {
           hunk.oldStart -= 1;
         }
@@ -15226,53 +15807,36 @@ var require_create = __commonJS({
           hunk.newStart -= 1;
         }
         ret.push("@@ -" + hunk.oldStart + "," + hunk.oldLines + " +" + hunk.newStart + "," + hunk.newLines + " @@");
-        ret.push.apply(ret, hunk.lines);
+        for (var _i = 0, _a = hunk.lines; _i < _a.length; _i++) {
+          var line = _a[_i];
+          ret.push(line);
+        }
       }
       return ret.join("\n") + "\n";
     }
     function createTwoFilesPatch(oldFileName, newFileName, oldStr, newStr, oldHeader, newHeader, options) {
-      var _options2;
       if (typeof options === "function") {
         options = {
           callback: options
         };
       }
-      if (!/*istanbul ignore start*/
-      ((_options2 = /*istanbul ignore end*/
-      options) !== null && _options2 !== void 0 && /*istanbul ignore start*/
-      _options2.callback)) {
+      if (!(options === null || options === void 0 ? void 0 : options.callback)) {
         var patchObj = structuredPatch(oldFileName, newFileName, oldStr, newStr, oldHeader, newHeader, options);
         if (!patchObj) {
           return;
         }
-        return formatPatch(patchObj);
+        return formatPatch(patchObj, options === null || options === void 0 ? void 0 : options.headerOptions);
       } else {
-        var _options3 = (
-          /*istanbul ignore end*/
-          options
-        ), _callback2 = _options3.callback;
-        structuredPatch(
-          oldFileName,
-          newFileName,
-          oldStr,
-          newStr,
-          oldHeader,
-          newHeader,
-          /*istanbul ignore start*/
-          _objectSpread(_objectSpread(
-            {},
-            /*istanbul ignore end*/
-            options
-          ), {}, {
-            callback: function callback(patchObj2) {
-              if (!patchObj2) {
-                _callback2();
-              } else {
-                _callback2(formatPatch(patchObj2));
-              }
+        var callback_2 = options.callback;
+        structuredPatch(oldFileName, newFileName, oldStr, newStr, oldHeader, newHeader, __assign(__assign({}, options), {
+          callback: function(patchObj2) {
+            if (!patchObj2) {
+              callback_2(void 0);
+            } else {
+              callback_2(formatPatch(patchObj2, options.headerOptions));
             }
-          })
-        );
+          }
+        }));
       }
     }
     function createPatch(fileName, oldStr, newStr, oldHeader, newHeader, options) {
@@ -15281,10 +15845,7 @@ var require_create = __commonJS({
     function splitLines(text) {
       var hasTrailingNl = text.endsWith("\n");
       var result = text.split("\n").map(function(line) {
-        return (
-          /*istanbul ignore end*/
-          line + "\n"
-        );
+        return line + "\n";
       });
       if (hasTrailingNl) {
         result.pop();
@@ -15296,581 +15857,17 @@ var require_create = __commonJS({
   }
 });
 
-// node_modules/diff2html/node_modules/diff/lib/util/array.js
-var require_array2 = __commonJS({
-  "node_modules/diff2html/node_modules/diff/lib/util/array.js"(exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", {
-      value: true
-    });
-    exports.arrayEqual = arrayEqual;
-    exports.arrayStartsWith = arrayStartsWith;
-    function arrayEqual(a, b) {
-      if (a.length !== b.length) {
-        return false;
-      }
-      return arrayStartsWith(a, b);
-    }
-    function arrayStartsWith(array, start) {
-      if (start.length > array.length) {
-        return false;
-      }
-      for (var i = 0; i < start.length; i++) {
-        if (start[i] !== array[i]) {
-          return false;
-        }
-      }
-      return true;
-    }
-  }
-});
-
-// node_modules/diff2html/node_modules/diff/lib/patch/merge.js
-var require_merge = __commonJS({
-  "node_modules/diff2html/node_modules/diff/lib/patch/merge.js"(exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", {
-      value: true
-    });
-    exports.calcLineCount = calcLineCount;
-    exports.merge = merge;
-    var _create = require_create();
-    var _parse = require_parse();
-    var _array = require_array2();
-    function _toConsumableArray(arr) {
-      return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
-    }
-    function _nonIterableSpread() {
-      throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-    }
-    function _unsupportedIterableToArray(o, minLen) {
-      if (!o) return;
-      if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-      var n = Object.prototype.toString.call(o).slice(8, -1);
-      if (n === "Object" && o.constructor) n = o.constructor.name;
-      if (n === "Map" || n === "Set") return Array.from(o);
-      if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-    }
-    function _iterableToArray(iter) {
-      if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
-    }
-    function _arrayWithoutHoles(arr) {
-      if (Array.isArray(arr)) return _arrayLikeToArray(arr);
-    }
-    function _arrayLikeToArray(arr, len) {
-      if (len == null || len > arr.length) len = arr.length;
-      for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-      return arr2;
-    }
-    function calcLineCount(hunk) {
-      var _calcOldNewLineCount = (
-        /*istanbul ignore end*/
-        calcOldNewLineCount(hunk.lines)
-      ), oldLines = _calcOldNewLineCount.oldLines, newLines = _calcOldNewLineCount.newLines;
-      if (oldLines !== void 0) {
-        hunk.oldLines = oldLines;
-      } else {
-        delete hunk.oldLines;
-      }
-      if (newLines !== void 0) {
-        hunk.newLines = newLines;
-      } else {
-        delete hunk.newLines;
-      }
-    }
-    function merge(mine, theirs, base) {
-      mine = loadPatch(mine, base);
-      theirs = loadPatch(theirs, base);
-      var ret = {};
-      if (mine.index || theirs.index) {
-        ret.index = mine.index || theirs.index;
-      }
-      if (mine.newFileName || theirs.newFileName) {
-        if (!fileNameChanged(mine)) {
-          ret.oldFileName = theirs.oldFileName || mine.oldFileName;
-          ret.newFileName = theirs.newFileName || mine.newFileName;
-          ret.oldHeader = theirs.oldHeader || mine.oldHeader;
-          ret.newHeader = theirs.newHeader || mine.newHeader;
-        } else if (!fileNameChanged(theirs)) {
-          ret.oldFileName = mine.oldFileName;
-          ret.newFileName = mine.newFileName;
-          ret.oldHeader = mine.oldHeader;
-          ret.newHeader = mine.newHeader;
-        } else {
-          ret.oldFileName = selectField(ret, mine.oldFileName, theirs.oldFileName);
-          ret.newFileName = selectField(ret, mine.newFileName, theirs.newFileName);
-          ret.oldHeader = selectField(ret, mine.oldHeader, theirs.oldHeader);
-          ret.newHeader = selectField(ret, mine.newHeader, theirs.newHeader);
-        }
-      }
-      ret.hunks = [];
-      var mineIndex = 0, theirsIndex = 0, mineOffset = 0, theirsOffset = 0;
-      while (mineIndex < mine.hunks.length || theirsIndex < theirs.hunks.length) {
-        var mineCurrent = mine.hunks[mineIndex] || {
-          oldStart: Infinity
-        }, theirsCurrent = theirs.hunks[theirsIndex] || {
-          oldStart: Infinity
-        };
-        if (hunkBefore(mineCurrent, theirsCurrent)) {
-          ret.hunks.push(cloneHunk(mineCurrent, mineOffset));
-          mineIndex++;
-          theirsOffset += mineCurrent.newLines - mineCurrent.oldLines;
-        } else if (hunkBefore(theirsCurrent, mineCurrent)) {
-          ret.hunks.push(cloneHunk(theirsCurrent, theirsOffset));
-          theirsIndex++;
-          mineOffset += theirsCurrent.newLines - theirsCurrent.oldLines;
-        } else {
-          var mergedHunk = {
-            oldStart: Math.min(mineCurrent.oldStart, theirsCurrent.oldStart),
-            oldLines: 0,
-            newStart: Math.min(mineCurrent.newStart + mineOffset, theirsCurrent.oldStart + theirsOffset),
-            newLines: 0,
-            lines: []
-          };
-          mergeLines(mergedHunk, mineCurrent.oldStart, mineCurrent.lines, theirsCurrent.oldStart, theirsCurrent.lines);
-          theirsIndex++;
-          mineIndex++;
-          ret.hunks.push(mergedHunk);
-        }
-      }
-      return ret;
-    }
-    function loadPatch(param, base) {
-      if (typeof param === "string") {
-        if (/^@@/m.test(param) || /^Index:/m.test(param)) {
-          return (
-            /*istanbul ignore start*/
-            (0, /*istanbul ignore end*/
-            /*istanbul ignore start*/
-            _parse.parsePatch)(param)[0]
-          );
-        }
-        if (!base) {
-          throw new Error("Must provide a base reference or pass in a patch");
-        }
-        return (
-          /*istanbul ignore start*/
-          (0, /*istanbul ignore end*/
-          /*istanbul ignore start*/
-          _create.structuredPatch)(void 0, void 0, base, param)
-        );
-      }
-      return param;
-    }
-    function fileNameChanged(patch) {
-      return patch.newFileName && patch.newFileName !== patch.oldFileName;
-    }
-    function selectField(index, mine, theirs) {
-      if (mine === theirs) {
-        return mine;
-      } else {
-        index.conflict = true;
-        return {
-          mine,
-          theirs
-        };
-      }
-    }
-    function hunkBefore(test, check) {
-      return test.oldStart < check.oldStart && test.oldStart + test.oldLines < check.oldStart;
-    }
-    function cloneHunk(hunk, offset) {
-      return {
-        oldStart: hunk.oldStart,
-        oldLines: hunk.oldLines,
-        newStart: hunk.newStart + offset,
-        newLines: hunk.newLines,
-        lines: hunk.lines
-      };
-    }
-    function mergeLines(hunk, mineOffset, mineLines, theirOffset, theirLines) {
-      var mine = {
-        offset: mineOffset,
-        lines: mineLines,
-        index: 0
-      }, their = {
-        offset: theirOffset,
-        lines: theirLines,
-        index: 0
-      };
-      insertLeading(hunk, mine, their);
-      insertLeading(hunk, their, mine);
-      while (mine.index < mine.lines.length && their.index < their.lines.length) {
-        var mineCurrent = mine.lines[mine.index], theirCurrent = their.lines[their.index];
-        if ((mineCurrent[0] === "-" || mineCurrent[0] === "+") && (theirCurrent[0] === "-" || theirCurrent[0] === "+")) {
-          mutualChange(hunk, mine, their);
-        } else if (mineCurrent[0] === "+" && theirCurrent[0] === " ") {
-          var _hunk$lines;
-          (_hunk$lines = /*istanbul ignore end*/
-          hunk.lines).push.apply(
-            /*istanbul ignore start*/
-            _hunk$lines,
-            /*istanbul ignore start*/
-            _toConsumableArray(
-              /*istanbul ignore end*/
-              collectChange(mine)
-            )
-          );
-        } else if (theirCurrent[0] === "+" && mineCurrent[0] === " ") {
-          var _hunk$lines2;
-          (_hunk$lines2 = /*istanbul ignore end*/
-          hunk.lines).push.apply(
-            /*istanbul ignore start*/
-            _hunk$lines2,
-            /*istanbul ignore start*/
-            _toConsumableArray(
-              /*istanbul ignore end*/
-              collectChange(their)
-            )
-          );
-        } else if (mineCurrent[0] === "-" && theirCurrent[0] === " ") {
-          removal(hunk, mine, their);
-        } else if (theirCurrent[0] === "-" && mineCurrent[0] === " ") {
-          removal(hunk, their, mine, true);
-        } else if (mineCurrent === theirCurrent) {
-          hunk.lines.push(mineCurrent);
-          mine.index++;
-          their.index++;
-        } else {
-          conflict(hunk, collectChange(mine), collectChange(their));
-        }
-      }
-      insertTrailing(hunk, mine);
-      insertTrailing(hunk, their);
-      calcLineCount(hunk);
-    }
-    function mutualChange(hunk, mine, their) {
-      var myChanges = collectChange(mine), theirChanges = collectChange(their);
-      if (allRemoves(myChanges) && allRemoves(theirChanges)) {
-        if (
-          /*istanbul ignore start*/
-          (0, /*istanbul ignore end*/
-          /*istanbul ignore start*/
-          _array.arrayStartsWith)(myChanges, theirChanges) && skipRemoveSuperset(their, myChanges, myChanges.length - theirChanges.length)
-        ) {
-          var _hunk$lines3;
-          (_hunk$lines3 = /*istanbul ignore end*/
-          hunk.lines).push.apply(
-            /*istanbul ignore start*/
-            _hunk$lines3,
-            /*istanbul ignore start*/
-            _toConsumableArray(
-              /*istanbul ignore end*/
-              myChanges
-            )
-          );
-          return;
-        } else if (
-          /*istanbul ignore start*/
-          (0, /*istanbul ignore end*/
-          /*istanbul ignore start*/
-          _array.arrayStartsWith)(theirChanges, myChanges) && skipRemoveSuperset(mine, theirChanges, theirChanges.length - myChanges.length)
-        ) {
-          var _hunk$lines4;
-          (_hunk$lines4 = /*istanbul ignore end*/
-          hunk.lines).push.apply(
-            /*istanbul ignore start*/
-            _hunk$lines4,
-            /*istanbul ignore start*/
-            _toConsumableArray(
-              /*istanbul ignore end*/
-              theirChanges
-            )
-          );
-          return;
-        }
-      } else if (
-        /*istanbul ignore start*/
-        (0, /*istanbul ignore end*/
-        /*istanbul ignore start*/
-        _array.arrayEqual)(myChanges, theirChanges)
-      ) {
-        var _hunk$lines5;
-        (_hunk$lines5 = /*istanbul ignore end*/
-        hunk.lines).push.apply(
-          /*istanbul ignore start*/
-          _hunk$lines5,
-          /*istanbul ignore start*/
-          _toConsumableArray(
-            /*istanbul ignore end*/
-            myChanges
-          )
-        );
-        return;
-      }
-      conflict(hunk, myChanges, theirChanges);
-    }
-    function removal(hunk, mine, their, swap) {
-      var myChanges = collectChange(mine), theirChanges = collectContext(their, myChanges);
-      if (theirChanges.merged) {
-        var _hunk$lines6;
-        (_hunk$lines6 = /*istanbul ignore end*/
-        hunk.lines).push.apply(
-          /*istanbul ignore start*/
-          _hunk$lines6,
-          /*istanbul ignore start*/
-          _toConsumableArray(
-            /*istanbul ignore end*/
-            theirChanges.merged
-          )
-        );
-      } else {
-        conflict(hunk, swap ? theirChanges : myChanges, swap ? myChanges : theirChanges);
-      }
-    }
-    function conflict(hunk, mine, their) {
-      hunk.conflict = true;
-      hunk.lines.push({
-        conflict: true,
-        mine,
-        theirs: their
-      });
-    }
-    function insertLeading(hunk, insert, their) {
-      while (insert.offset < their.offset && insert.index < insert.lines.length) {
-        var line = insert.lines[insert.index++];
-        hunk.lines.push(line);
-        insert.offset++;
-      }
-    }
-    function insertTrailing(hunk, insert) {
-      while (insert.index < insert.lines.length) {
-        var line = insert.lines[insert.index++];
-        hunk.lines.push(line);
-      }
-    }
-    function collectChange(state) {
-      var ret = [], operation = state.lines[state.index][0];
-      while (state.index < state.lines.length) {
-        var line = state.lines[state.index];
-        if (operation === "-" && line[0] === "+") {
-          operation = "+";
-        }
-        if (operation === line[0]) {
-          ret.push(line);
-          state.index++;
-        } else {
-          break;
-        }
-      }
-      return ret;
-    }
-    function collectContext(state, matchChanges) {
-      var changes = [], merged = [], matchIndex = 0, contextChanges = false, conflicted = false;
-      while (matchIndex < matchChanges.length && state.index < state.lines.length) {
-        var change = state.lines[state.index], match = matchChanges[matchIndex];
-        if (match[0] === "+") {
-          break;
-        }
-        contextChanges = contextChanges || change[0] !== " ";
-        merged.push(match);
-        matchIndex++;
-        if (change[0] === "+") {
-          conflicted = true;
-          while (change[0] === "+") {
-            changes.push(change);
-            change = state.lines[++state.index];
-          }
-        }
-        if (match.substr(1) === change.substr(1)) {
-          changes.push(change);
-          state.index++;
-        } else {
-          conflicted = true;
-        }
-      }
-      if ((matchChanges[matchIndex] || "")[0] === "+" && contextChanges) {
-        conflicted = true;
-      }
-      if (conflicted) {
-        return changes;
-      }
-      while (matchIndex < matchChanges.length) {
-        merged.push(matchChanges[matchIndex++]);
-      }
-      return {
-        merged,
-        changes
-      };
-    }
-    function allRemoves(changes) {
-      return changes.reduce(function(prev, change) {
-        return prev && change[0] === "-";
-      }, true);
-    }
-    function skipRemoveSuperset(state, removeChanges, delta) {
-      for (var i = 0; i < delta; i++) {
-        var changeContent = removeChanges[removeChanges.length - delta + i].substr(1);
-        if (state.lines[state.index + i] !== " " + changeContent) {
-          return false;
-        }
-      }
-      state.index += delta;
-      return true;
-    }
-    function calcOldNewLineCount(lines) {
-      var oldLines = 0;
-      var newLines = 0;
-      lines.forEach(function(line) {
-        if (typeof line !== "string") {
-          var myCount = calcOldNewLineCount(line.mine);
-          var theirCount = calcOldNewLineCount(line.theirs);
-          if (oldLines !== void 0) {
-            if (myCount.oldLines === theirCount.oldLines) {
-              oldLines += myCount.oldLines;
-            } else {
-              oldLines = void 0;
-            }
-          }
-          if (newLines !== void 0) {
-            if (myCount.newLines === theirCount.newLines) {
-              newLines += myCount.newLines;
-            } else {
-              newLines = void 0;
-            }
-          }
-        } else {
-          if (newLines !== void 0 && (line[0] === "+" || line[0] === " ")) {
-            newLines++;
-          }
-          if (oldLines !== void 0 && (line[0] === "-" || line[0] === " ")) {
-            oldLines++;
-          }
-        }
-      });
-      return {
-        oldLines,
-        newLines
-      };
-    }
-  }
-});
-
-// node_modules/diff2html/node_modules/diff/lib/patch/reverse.js
-var require_reverse = __commonJS({
-  "node_modules/diff2html/node_modules/diff/lib/patch/reverse.js"(exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", {
-      value: true
-    });
-    exports.reversePatch = reversePatch;
-    function _typeof(o) {
-      "@babel/helpers - typeof";
-      return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o2) {
-        return typeof o2;
-      } : function(o2) {
-        return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
-      }, _typeof(o);
-    }
-    function ownKeys(e, r) {
-      var t = Object.keys(e);
-      if (Object.getOwnPropertySymbols) {
-        var o = Object.getOwnPropertySymbols(e);
-        r && (o = o.filter(function(r2) {
-          return Object.getOwnPropertyDescriptor(e, r2).enumerable;
-        })), t.push.apply(t, o);
-      }
-      return t;
-    }
-    function _objectSpread(e) {
-      for (var r = 1; r < arguments.length; r++) {
-        var t = null != arguments[r] ? arguments[r] : {};
-        r % 2 ? ownKeys(Object(t), true).forEach(function(r2) {
-          _defineProperty(e, r2, t[r2]);
-        }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function(r2) {
-          Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
-        });
-      }
-      return e;
-    }
-    function _defineProperty(obj, key2, value) {
-      key2 = _toPropertyKey(key2);
-      if (key2 in obj) {
-        Object.defineProperty(obj, key2, {
-          value,
-          enumerable: true,
-          configurable: true,
-          writable: true
-        });
-      } else {
-        obj[key2] = value;
-      }
-      return obj;
-    }
-    function _toPropertyKey(t) {
-      var i = _toPrimitive(t, "string");
-      return "symbol" == _typeof(i) ? i : i + "";
-    }
-    function _toPrimitive(t, r) {
-      if ("object" != _typeof(t) || !t) return t;
-      var e = t[Symbol.toPrimitive];
-      if (void 0 !== e) {
-        var i = e.call(t, r || "default");
-        if ("object" != _typeof(i)) return i;
-        throw new TypeError("@@toPrimitive must return a primitive value.");
-      }
-      return ("string" === r ? String : Number)(t);
-    }
-    function reversePatch(structuredPatch) {
-      if (Array.isArray(structuredPatch)) {
-        return structuredPatch.map(reversePatch).reverse();
-      }
-      return (
-        /*istanbul ignore start*/
-        _objectSpread(_objectSpread(
-          {},
-          /*istanbul ignore end*/
-          structuredPatch
-        ), {}, {
-          oldFileName: structuredPatch.newFileName,
-          oldHeader: structuredPatch.newHeader,
-          newFileName: structuredPatch.oldFileName,
-          newHeader: structuredPatch.oldHeader,
-          hunks: structuredPatch.hunks.map(function(hunk) {
-            return {
-              oldLines: hunk.newLines,
-              oldStart: hunk.newStart,
-              newLines: hunk.oldLines,
-              newStart: hunk.oldStart,
-              lines: hunk.lines.map(function(l) {
-                if (l.startsWith("-")) {
-                  return (
-                    /*istanbul ignore start*/
-                    "+".concat(
-                      /*istanbul ignore end*/
-                      l.slice(1)
-                    )
-                  );
-                }
-                if (l.startsWith("+")) {
-                  return (
-                    /*istanbul ignore start*/
-                    "-".concat(
-                      /*istanbul ignore end*/
-                      l.slice(1)
-                    )
-                  );
-                }
-                return l;
-              })
-            };
-          })
-        })
-      );
-    }
-  }
-});
-
-// node_modules/diff2html/node_modules/diff/lib/convert/dmp.js
+// node_modules/diff/libcjs/convert/dmp.js
 var require_dmp = __commonJS({
-  "node_modules/diff2html/node_modules/diff/lib/convert/dmp.js"(exports) {
+  "node_modules/diff/libcjs/convert/dmp.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
     exports.convertChangesToDMP = convertChangesToDMP;
     function convertChangesToDMP(changes) {
-      var ret = [], change, operation;
+      var ret = [];
+      var change, operation;
       for (var i = 0; i < changes.length; i++) {
         change = changes[i];
         if (change.added) {
@@ -15887,9 +15884,9 @@ var require_dmp = __commonJS({
   }
 });
 
-// node_modules/diff2html/node_modules/diff/lib/convert/xml.js
+// node_modules/diff/libcjs/convert/xml.js
 var require_xml2 = __commonJS({
-  "node_modules/diff2html/node_modules/diff/lib/convert/xml.js"(exports) {
+  "node_modules/diff/libcjs/convert/xml.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {
       value: true
@@ -15924,165 +15921,215 @@ var require_xml2 = __commonJS({
   }
 });
 
-// node_modules/diff2html/node_modules/diff/lib/index.js
-var require_lib = __commonJS({
-  "node_modules/diff2html/node_modules/diff/lib/index.js"(exports) {
+// node_modules/diff/libcjs/index.js
+var require_libcjs = __commonJS({
+  "node_modules/diff/libcjs/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
-    Object.defineProperty(exports, "Diff", {
-      enumerable: true,
-      get: function get() {
-        return _base["default"];
-      }
-    });
-    Object.defineProperty(exports, "applyPatch", {
-      enumerable: true,
-      get: function get() {
-        return _apply.applyPatch;
-      }
-    });
-    Object.defineProperty(exports, "applyPatches", {
-      enumerable: true,
-      get: function get() {
-        return _apply.applyPatches;
-      }
-    });
-    Object.defineProperty(exports, "canonicalize", {
-      enumerable: true,
-      get: function get() {
-        return _json.canonicalize;
-      }
-    });
-    Object.defineProperty(exports, "convertChangesToDMP", {
-      enumerable: true,
-      get: function get() {
-        return _dmp.convertChangesToDMP;
-      }
-    });
-    Object.defineProperty(exports, "convertChangesToXML", {
-      enumerable: true,
-      get: function get() {
-        return _xml.convertChangesToXML;
-      }
-    });
-    Object.defineProperty(exports, "createPatch", {
-      enumerable: true,
-      get: function get() {
-        return _create.createPatch;
-      }
-    });
-    Object.defineProperty(exports, "createTwoFilesPatch", {
-      enumerable: true,
-      get: function get() {
-        return _create.createTwoFilesPatch;
-      }
-    });
-    Object.defineProperty(exports, "diffArrays", {
-      enumerable: true,
-      get: function get() {
-        return _array.diffArrays;
-      }
-    });
+    exports.canonicalize = exports.convertChangesToXML = exports.convertChangesToDMP = exports.reversePatch = exports.parsePatch = exports.applyPatches = exports.applyPatch = exports.OMIT_HEADERS = exports.FILE_HEADERS_ONLY = exports.INCLUDE_HEADERS = exports.formatPatch = exports.createPatch = exports.createTwoFilesPatch = exports.structuredPatch = exports.arrayDiff = exports.diffArrays = exports.jsonDiff = exports.diffJson = exports.cssDiff = exports.diffCss = exports.sentenceDiff = exports.diffSentences = exports.diffTrimmedLines = exports.lineDiff = exports.diffLines = exports.wordsWithSpaceDiff = exports.diffWordsWithSpace = exports.wordDiff = exports.diffWords = exports.characterDiff = exports.diffChars = exports.Diff = void 0;
+    var base_js_1 = require_base();
+    exports.Diff = base_js_1.default;
+    var character_js_1 = require_character();
     Object.defineProperty(exports, "diffChars", {
       enumerable: true,
-      get: function get() {
-        return _character.diffChars;
+      get: function() {
+        return character_js_1.diffChars;
       }
     });
-    Object.defineProperty(exports, "diffCss", {
+    Object.defineProperty(exports, "characterDiff", {
       enumerable: true,
-      get: function get() {
-        return _css.diffCss;
+      get: function() {
+        return character_js_1.characterDiff;
       }
     });
-    Object.defineProperty(exports, "diffJson", {
-      enumerable: true,
-      get: function get() {
-        return _json.diffJson;
-      }
-    });
-    Object.defineProperty(exports, "diffLines", {
-      enumerable: true,
-      get: function get() {
-        return _line.diffLines;
-      }
-    });
-    Object.defineProperty(exports, "diffSentences", {
-      enumerable: true,
-      get: function get() {
-        return _sentence.diffSentences;
-      }
-    });
-    Object.defineProperty(exports, "diffTrimmedLines", {
-      enumerable: true,
-      get: function get() {
-        return _line.diffTrimmedLines;
-      }
-    });
+    var word_js_1 = require_word();
     Object.defineProperty(exports, "diffWords", {
       enumerable: true,
-      get: function get() {
-        return _word.diffWords;
+      get: function() {
+        return word_js_1.diffWords;
       }
     });
     Object.defineProperty(exports, "diffWordsWithSpace", {
       enumerable: true,
-      get: function get() {
-        return _word.diffWordsWithSpace;
+      get: function() {
+        return word_js_1.diffWordsWithSpace;
+      }
+    });
+    Object.defineProperty(exports, "wordDiff", {
+      enumerable: true,
+      get: function() {
+        return word_js_1.wordDiff;
+      }
+    });
+    Object.defineProperty(exports, "wordsWithSpaceDiff", {
+      enumerable: true,
+      get: function() {
+        return word_js_1.wordsWithSpaceDiff;
+      }
+    });
+    var line_js_1 = require_line();
+    Object.defineProperty(exports, "diffLines", {
+      enumerable: true,
+      get: function() {
+        return line_js_1.diffLines;
+      }
+    });
+    Object.defineProperty(exports, "diffTrimmedLines", {
+      enumerable: true,
+      get: function() {
+        return line_js_1.diffTrimmedLines;
+      }
+    });
+    Object.defineProperty(exports, "lineDiff", {
+      enumerable: true,
+      get: function() {
+        return line_js_1.lineDiff;
+      }
+    });
+    var sentence_js_1 = require_sentence();
+    Object.defineProperty(exports, "diffSentences", {
+      enumerable: true,
+      get: function() {
+        return sentence_js_1.diffSentences;
+      }
+    });
+    Object.defineProperty(exports, "sentenceDiff", {
+      enumerable: true,
+      get: function() {
+        return sentence_js_1.sentenceDiff;
+      }
+    });
+    var css_js_1 = require_css2();
+    Object.defineProperty(exports, "diffCss", {
+      enumerable: true,
+      get: function() {
+        return css_js_1.diffCss;
+      }
+    });
+    Object.defineProperty(exports, "cssDiff", {
+      enumerable: true,
+      get: function() {
+        return css_js_1.cssDiff;
+      }
+    });
+    var json_js_1 = require_json2();
+    Object.defineProperty(exports, "diffJson", {
+      enumerable: true,
+      get: function() {
+        return json_js_1.diffJson;
+      }
+    });
+    Object.defineProperty(exports, "canonicalize", {
+      enumerable: true,
+      get: function() {
+        return json_js_1.canonicalize;
+      }
+    });
+    Object.defineProperty(exports, "jsonDiff", {
+      enumerable: true,
+      get: function() {
+        return json_js_1.jsonDiff;
+      }
+    });
+    var array_js_1 = require_array();
+    Object.defineProperty(exports, "diffArrays", {
+      enumerable: true,
+      get: function() {
+        return array_js_1.diffArrays;
+      }
+    });
+    Object.defineProperty(exports, "arrayDiff", {
+      enumerable: true,
+      get: function() {
+        return array_js_1.arrayDiff;
+      }
+    });
+    var apply_js_1 = require_apply();
+    Object.defineProperty(exports, "applyPatch", {
+      enumerable: true,
+      get: function() {
+        return apply_js_1.applyPatch;
+      }
+    });
+    Object.defineProperty(exports, "applyPatches", {
+      enumerable: true,
+      get: function() {
+        return apply_js_1.applyPatches;
+      }
+    });
+    var parse_js_1 = require_parse();
+    Object.defineProperty(exports, "parsePatch", {
+      enumerable: true,
+      get: function() {
+        return parse_js_1.parsePatch;
+      }
+    });
+    var reverse_js_1 = require_reverse();
+    Object.defineProperty(exports, "reversePatch", {
+      enumerable: true,
+      get: function() {
+        return reverse_js_1.reversePatch;
+      }
+    });
+    var create_js_1 = require_create();
+    Object.defineProperty(exports, "structuredPatch", {
+      enumerable: true,
+      get: function() {
+        return create_js_1.structuredPatch;
+      }
+    });
+    Object.defineProperty(exports, "createTwoFilesPatch", {
+      enumerable: true,
+      get: function() {
+        return create_js_1.createTwoFilesPatch;
+      }
+    });
+    Object.defineProperty(exports, "createPatch", {
+      enumerable: true,
+      get: function() {
+        return create_js_1.createPatch;
       }
     });
     Object.defineProperty(exports, "formatPatch", {
       enumerable: true,
-      get: function get() {
-        return _create.formatPatch;
+      get: function() {
+        return create_js_1.formatPatch;
       }
     });
-    Object.defineProperty(exports, "merge", {
+    Object.defineProperty(exports, "INCLUDE_HEADERS", {
       enumerable: true,
-      get: function get() {
-        return _merge.merge;
+      get: function() {
+        return create_js_1.INCLUDE_HEADERS;
       }
     });
-    Object.defineProperty(exports, "parsePatch", {
+    Object.defineProperty(exports, "FILE_HEADERS_ONLY", {
       enumerable: true,
-      get: function get() {
-        return _parse.parsePatch;
+      get: function() {
+        return create_js_1.FILE_HEADERS_ONLY;
       }
     });
-    Object.defineProperty(exports, "reversePatch", {
+    Object.defineProperty(exports, "OMIT_HEADERS", {
       enumerable: true,
-      get: function get() {
-        return _reverse.reversePatch;
+      get: function() {
+        return create_js_1.OMIT_HEADERS;
       }
     });
-    Object.defineProperty(exports, "structuredPatch", {
+    var dmp_js_1 = require_dmp();
+    Object.defineProperty(exports, "convertChangesToDMP", {
       enumerable: true,
-      get: function get() {
-        return _create.structuredPatch;
+      get: function() {
+        return dmp_js_1.convertChangesToDMP;
       }
     });
-    var _base = _interopRequireDefault(require_base());
-    var _character = require_character();
-    var _word = require_word();
-    var _line = require_line();
-    var _sentence = require_sentence();
-    var _css = require_css2();
-    var _json = require_json2();
-    var _array = require_array();
-    var _apply = require_apply();
-    var _parse = require_parse();
-    var _merge = require_merge();
-    var _reverse = require_reverse();
-    var _create = require_create();
-    var _dmp = require_dmp();
-    var _xml = require_xml2();
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : {
-        "default": obj
-      };
-    }
+    var xml_js_1 = require_xml2();
+    Object.defineProperty(exports, "convertChangesToXML", {
+      enumerable: true,
+      get: function() {
+        return xml_js_1.convertChangesToXML;
+      }
+    });
   }
 });
 
@@ -16244,7 +16291,7 @@ var require_render_utils = __commonJS({
     exports.getHtmlId = getHtmlId;
     exports.getFileIcon = getFileIcon;
     exports.diffHighlight = diffHighlight;
-    var jsDiff = __importStar(require_lib());
+    var jsDiff = __importStar(require_libcjs());
     var utils_1 = require_utils();
     var rematch = __importStar(require_rematch());
     var types_1 = require_types();
@@ -17047,9 +17094,9 @@ var require_side_by_side_renderer = __commonJS({
   }
 });
 
-// node_modules/hogan.js/lib/compiler.js
+// node_modules/@profoundlogic/hogan/lib/compiler.js
 var require_compiler = __commonJS({
-  "node_modules/hogan.js/lib/compiler.js"(exports) {
+  "node_modules/@profoundlogic/hogan/lib/compiler.js"(exports) {
     "use strict";
     (function(Hogan2) {
       var rIsWhitespace = /\S/, rQuot = /\"/g, rNewline = /\n/g, rCr = /\r/g, rSlash = /\\/g, rLineSep = /\u2028/, rParagraphSep = /\u2029/;
@@ -17405,9 +17452,9 @@ var require_compiler = __commonJS({
   }
 });
 
-// node_modules/hogan.js/lib/template.js
+// node_modules/@profoundlogic/hogan/lib/template.js
 var require_template = __commonJS({
-  "node_modules/hogan.js/lib/template.js"(exports) {
+  "node_modules/@profoundlogic/hogan/lib/template.js"(exports) {
     "use strict";
     var Hogan2 = {};
     (function(Hogan3) {
@@ -17548,10 +17595,10 @@ var require_template = __commonJS({
           return val;
         },
         // higher order templates
-        ls: function(func, cx, partials, text, tags) {
+        ls: function(func, cx, ctx, partials, text, tags) {
           var oldTags = this.options.delimiters;
           this.options.delimiters = tags;
-          this.b(this.ct(coerceToString(func.call(cx, text)), cx, partials));
+          this.b(this.ct(coerceToString(func.call(cx, text, ctx)), cx, partials));
           this.options.delimiters = oldTags;
           return false;
         },
@@ -17579,7 +17626,7 @@ var require_template = __commonJS({
               return true;
             } else {
               textSource = this.activeSub && this.subsText && this.subsText[this.activeSub] ? this.subsText[this.activeSub] : this.text;
-              return this.ls(result, cx, partials, textSource.substring(start, end), tags);
+              return this.ls(result, cx, ctx, partials, textSource.substring(start, end), tags);
             }
           }
           return result;
@@ -17661,9 +17708,9 @@ var require_template = __commonJS({
   }
 });
 
-// node_modules/hogan.js/lib/hogan.js
+// node_modules/@profoundlogic/hogan/lib/hogan.js
 var require_hogan = __commonJS({
-  "node_modules/hogan.js/lib/hogan.js"(exports, module) {
+  "node_modules/@profoundlogic/hogan/lib/hogan.js"(exports, module) {
     "use strict";
     var Hogan2 = require_compiler();
     Hogan2.Template = require_template().Template;
@@ -18592,4 +18639,4 @@ var require_diff2html_ui_slim = __commonJS({
 export {
   require_diff2html_ui_slim
 };
-//# sourceMappingURL=chunk-5NUGUT2X.js.map
+//# sourceMappingURL=chunk-EE63MPZD.js.map

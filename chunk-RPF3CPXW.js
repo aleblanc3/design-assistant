@@ -15773,7 +15773,7 @@ var _c0 = (a0) => ({ feature: a0 });
 var _forTrack0 = ($index, $item) => $item.label;
 function UsageMonitoringComponent_ng_template_1_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "a", 29);
+    \u0275\u0275elementStart(0, "a", 30);
     \u0275\u0275text(1);
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275elementEnd();
@@ -15787,7 +15787,7 @@ function UsageMonitoringComponent_ng_template_1_Conditional_0_Template(rf, ctx) 
 }
 function UsageMonitoringComponent_ng_template_1_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 30);
+    \u0275\u0275elementStart(0, "span", 31);
     \u0275\u0275text(1);
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275elementEnd();
@@ -15800,7 +15800,7 @@ function UsageMonitoringComponent_ng_template_1_Conditional_1_Template(rf, ctx) 
 }
 function UsageMonitoringComponent_ng_template_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, UsageMonitoringComponent_ng_template_1_Conditional_0_Template, 3, 4, "a", 29)(1, UsageMonitoringComponent_ng_template_1_Conditional_1_Template, 3, 3, "span", 30);
+    \u0275\u0275template(0, UsageMonitoringComponent_ng_template_1_Conditional_0_Template, 3, 4, "a", 30)(1, UsageMonitoringComponent_ng_template_1_Conditional_1_Template, 3, 3, "span", 31);
   }
   if (rf & 2) {
     const item_r1 = ctx.$implicit;
@@ -15811,15 +15811,15 @@ function UsageMonitoringComponent_Conditional_6_Template(rf, ctx) {
   if (rf & 1) {
     const _r2 = \u0275\u0275getCurrentView();
     \u0275\u0275elementStart(0, "div", 4);
-    \u0275\u0275element(1, "i", 31);
-    \u0275\u0275elementStart(2, "div")(3, "p", 32);
+    \u0275\u0275element(1, "i", 32);
+    \u0275\u0275elementStart(2, "div")(3, "p", 33);
     \u0275\u0275text(4);
     \u0275\u0275pipe(5, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(6, "p", 33);
+    \u0275\u0275elementStart(6, "p", 34);
     \u0275\u0275text(7);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(8, "p-button", 34);
+    \u0275\u0275elementStart(8, "p-button", 35);
     \u0275\u0275pipe(9, "translate");
     \u0275\u0275listener("onClick", function UsageMonitoringComponent_Conditional_6_Template_p_button_onClick_8_listener() {
       \u0275\u0275restoreView(_r2);
@@ -15845,16 +15845,16 @@ function UsageMonitoringComponent_Conditional_14_Template(rf, ctx) {
 }
 function UsageMonitoringComponent_Conditional_15_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p", 35);
+    \u0275\u0275elementStart(0, "p", 36);
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(2, "div", 36)(3, "span", 37);
-    \u0275\u0275element(4, "i", 38);
+    \u0275\u0275elementStart(2, "div", 37)(3, "span", 38);
+    \u0275\u0275element(4, "i", 39);
     \u0275\u0275text(5);
     \u0275\u0275pipe(6, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(7, "span", 37);
-    \u0275\u0275element(8, "i", 39);
+    \u0275\u0275elementStart(7, "span", 38);
+    \u0275\u0275element(8, "i", 40);
     \u0275\u0275text(9);
     \u0275\u0275pipe(10, "translate");
     \u0275\u0275elementEnd()();
@@ -15879,16 +15879,16 @@ function UsageMonitoringComponent_Conditional_22_Template(rf, ctx) {
 }
 function UsageMonitoringComponent_Conditional_23_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p", 35);
+    \u0275\u0275elementStart(0, "p", 36);
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(2, "div", 36)(3, "span", 37);
-    \u0275\u0275element(4, "i", 40);
+    \u0275\u0275elementStart(2, "div", 37)(3, "span", 38);
+    \u0275\u0275element(4, "i", 41);
     \u0275\u0275text(5);
     \u0275\u0275pipe(6, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(7, "span", 37);
-    \u0275\u0275element(8, "i", 41);
+    \u0275\u0275elementStart(7, "span", 38);
+    \u0275\u0275element(8, "i", 42);
     \u0275\u0275text(9);
     \u0275\u0275pipe(10, "translate");
     \u0275\u0275elementEnd()();
@@ -15913,16 +15913,16 @@ function UsageMonitoringComponent_Conditional_30_Template(rf, ctx) {
 }
 function UsageMonitoringComponent_Conditional_31_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p", 35);
+    \u0275\u0275elementStart(0, "p", 36);
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(2, "div", 36)(3, "span", 37);
-    \u0275\u0275element(4, "i", 42);
+    \u0275\u0275elementStart(2, "div", 37)(3, "span", 38);
+    \u0275\u0275element(4, "i", 43);
     \u0275\u0275text(5);
     \u0275\u0275pipe(6, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(7, "span", 37);
-    \u0275\u0275element(8, "i", 42);
+    \u0275\u0275elementStart(7, "span", 38);
+    \u0275\u0275element(8, "i", 43);
     \u0275\u0275text(9);
     \u0275\u0275pipe(10, "translate");
     \u0275\u0275elementEnd()();
@@ -15947,16 +15947,16 @@ function UsageMonitoringComponent_Conditional_38_Template(rf, ctx) {
 }
 function UsageMonitoringComponent_Conditional_39_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p", 35);
+    \u0275\u0275elementStart(0, "p", 36);
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(2, "div", 36)(3, "span", 37);
-    \u0275\u0275element(4, "i", 43);
+    \u0275\u0275elementStart(2, "div", 37)(3, "span", 38);
+    \u0275\u0275element(4, "i", 44);
     \u0275\u0275text(5);
     \u0275\u0275pipe(6, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(7, "span", 37);
-    \u0275\u0275element(8, "i", 44);
+    \u0275\u0275elementStart(7, "span", 38);
+    \u0275\u0275element(8, "i", 45);
     \u0275\u0275text(9);
     \u0275\u0275pipe(10, "translate");
     \u0275\u0275elementEnd()();
@@ -15981,16 +15981,16 @@ function UsageMonitoringComponent_Conditional_46_Template(rf, ctx) {
 }
 function UsageMonitoringComponent_Conditional_47_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p", 35);
+    \u0275\u0275elementStart(0, "p", 36);
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(2, "div", 36)(3, "span", 37);
-    \u0275\u0275element(4, "i", 42);
+    \u0275\u0275elementStart(2, "div", 37)(3, "span", 38);
+    \u0275\u0275element(4, "i", 43);
     \u0275\u0275text(5);
     \u0275\u0275pipe(6, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(7, "span", 37);
-    \u0275\u0275element(8, "i", 42);
+    \u0275\u0275elementStart(7, "span", 38);
+    \u0275\u0275element(8, "i", 43);
     \u0275\u0275text(9);
     \u0275\u0275pipe(10, "translate");
     \u0275\u0275elementEnd()();
@@ -16001,11 +16001,11 @@ function UsageMonitoringComponent_Conditional_47_Template(rf, ctx) {
     let tmp_3_0;
     const ctx_r2 = \u0275\u0275nextContext();
     \u0275\u0275advance();
-    \u0275\u0275textInterpolate((tmp_1_0 = (tmp_1_0 = ctx_r2.stats()) == null ? null : tmp_1_0.exportCount) !== null && tmp_1_0 !== void 0 ? tmp_1_0 : 0);
+    \u0275\u0275textInterpolate((tmp_1_0 = (tmp_1_0 = ctx_r2.stats()) == null ? null : tmp_1_0.exportCountGit) !== null && tmp_1_0 !== void 0 ? tmp_1_0 : 0);
     \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate2("", (tmp_2_0 = (tmp_2_0 = ctx_r2.stats()) == null ? null : tmp_2_0.enPageCount) !== null && tmp_2_0 !== void 0 ? tmp_2_0 : 0, " ", \u0275\u0275pipeBind1(6, 5, "common.language.englishPages"), " ");
+    \u0275\u0275textInterpolate2("", (tmp_2_0 = (tmp_2_0 = ctx_r2.stats()) == null ? null : tmp_2_0.enPageCountGit) !== null && tmp_2_0 !== void 0 ? tmp_2_0 : 0, " ", \u0275\u0275pipeBind1(6, 5, "common.language.englishPages"), " ");
     \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate2("", (tmp_3_0 = (tmp_3_0 = ctx_r2.stats()) == null ? null : tmp_3_0.frPageCount) !== null && tmp_3_0 !== void 0 ? tmp_3_0 : 0, " ", \u0275\u0275pipeBind1(10, 7, "common.language.frenchPages"), " ");
+    \u0275\u0275textInterpolate2("", (tmp_3_0 = (tmp_3_0 = ctx_r2.stats()) == null ? null : tmp_3_0.frPageCountGit) !== null && tmp_3_0 !== void 0 ? tmp_3_0 : 0, " ", \u0275\u0275pipeBind1(10, 7, "common.language.frenchPages"), " ");
   }
 }
 function UsageMonitoringComponent_Conditional_54_Template(rf, ctx) {
@@ -16015,16 +16015,16 @@ function UsageMonitoringComponent_Conditional_54_Template(rf, ctx) {
 }
 function UsageMonitoringComponent_Conditional_55_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p", 35);
+    \u0275\u0275elementStart(0, "p", 36);
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(2, "div", 36)(3, "span", 37);
-    \u0275\u0275element(4, "i", 43);
+    \u0275\u0275elementStart(2, "div", 37)(3, "span", 38);
+    \u0275\u0275element(4, "i", 46);
     \u0275\u0275text(5);
     \u0275\u0275pipe(6, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(7, "span", 37);
-    \u0275\u0275element(8, "i", 45);
+    \u0275\u0275elementStart(7, "span", 38);
+    \u0275\u0275element(8, "i", 47);
     \u0275\u0275text(9);
     \u0275\u0275pipe(10, "translate");
     \u0275\u0275elementEnd()();
@@ -16035,28 +16035,96 @@ function UsageMonitoringComponent_Conditional_55_Template(rf, ctx) {
     let tmp_3_0;
     const ctx_r2 = \u0275\u0275nextContext();
     \u0275\u0275advance();
-    \u0275\u0275textInterpolate((tmp_1_0 = (tmp_1_0 = ctx_r2.stats()) == null ? null : tmp_1_0.uniqueRepos) !== null && tmp_1_0 !== void 0 ? tmp_1_0 : 0);
+    \u0275\u0275textInterpolate((tmp_1_0 = (tmp_1_0 = ctx_r2.stats()) == null ? null : tmp_1_0.uniqueReposGit) !== null && tmp_1_0 !== void 0 ? tmp_1_0 : 0);
     \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate2("", (tmp_2_0 = (tmp_2_0 = ctx_r2.stats()) == null ? null : tmp_2_0.prototypeRepos) !== null && tmp_2_0 !== void 0 ? tmp_2_0 : 0, " ", \u0275\u0275pipeBind1(6, 5, "dev.monitoring.totalRepos.prototype"), " ");
+    \u0275\u0275textInterpolate2("", (tmp_2_0 = (tmp_2_0 = ctx_r2.stats()) == null ? null : tmp_2_0.prototypeReposGit) !== null && tmp_2_0 !== void 0 ? tmp_2_0 : 0, " ", \u0275\u0275pipeBind1(6, 5, "dev.monitoring.totalRepos.prototype"), " ");
     \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate2("", (tmp_3_0 = (tmp_3_0 = ctx_r2.stats()) == null ? null : tmp_3_0.baselineRepos) !== null && tmp_3_0 !== void 0 ? tmp_3_0 : 0, " ", \u0275\u0275pipeBind1(10, 7, "dev.monitoring.totalRepos.baseline"), " ");
+    \u0275\u0275textInterpolate2("", (tmp_3_0 = (tmp_3_0 = ctx_r2.stats()) == null ? null : tmp_3_0.baselineReposGit) !== null && tmp_3_0 !== void 0 ? tmp_3_0 : 0, " ", \u0275\u0275pipeBind1(10, 7, "dev.monitoring.totalRepos.baseline"), " ");
   }
 }
-function UsageMonitoringComponent_Conditional_68_Template(rf, ctx) {
+function UsageMonitoringComponent_Conditional_62_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275element(0, "p-skeleton", 10);
+  }
+}
+function UsageMonitoringComponent_Conditional_63_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "p", 36);
+    \u0275\u0275text(1);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(2, "div", 37)(3, "span", 38);
+    \u0275\u0275element(4, "i", 43);
+    \u0275\u0275text(5);
+    \u0275\u0275pipe(6, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(7, "span", 38);
+    \u0275\u0275element(8, "i", 43);
+    \u0275\u0275text(9);
+    \u0275\u0275pipe(10, "translate");
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    let tmp_1_0;
+    let tmp_2_0;
+    let tmp_3_0;
+    const ctx_r2 = \u0275\u0275nextContext();
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate((tmp_1_0 = (tmp_1_0 = ctx_r2.stats()) == null ? null : tmp_1_0.exportCountLocal) !== null && tmp_1_0 !== void 0 ? tmp_1_0 : 0);
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate2("", (tmp_2_0 = (tmp_2_0 = ctx_r2.stats()) == null ? null : tmp_2_0.enPageCountLocal) !== null && tmp_2_0 !== void 0 ? tmp_2_0 : 0, " ", \u0275\u0275pipeBind1(6, 5, "common.language.englishPages"), " ");
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate2("", (tmp_3_0 = (tmp_3_0 = ctx_r2.stats()) == null ? null : tmp_3_0.frPageCountLocal) !== null && tmp_3_0 !== void 0 ? tmp_3_0 : 0, " ", \u0275\u0275pipeBind1(10, 7, "common.language.frenchPages"), " ");
+  }
+}
+function UsageMonitoringComponent_Conditional_70_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275element(0, "p-skeleton", 10);
+  }
+}
+function UsageMonitoringComponent_Conditional_71_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "p", 36);
+    \u0275\u0275text(1);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(2, "div", 37)(3, "span", 38);
+    \u0275\u0275element(4, "i", 46);
+    \u0275\u0275text(5);
+    \u0275\u0275pipe(6, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(7, "span", 38);
+    \u0275\u0275element(8, "i", 47);
+    \u0275\u0275text(9);
+    \u0275\u0275pipe(10, "translate");
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    let tmp_1_0;
+    let tmp_2_0;
+    let tmp_3_0;
+    const ctx_r2 = \u0275\u0275nextContext();
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate((tmp_1_0 = (tmp_1_0 = ctx_r2.stats()) == null ? null : tmp_1_0.uniqueReposLocal) !== null && tmp_1_0 !== void 0 ? tmp_1_0 : 0);
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate2("", (tmp_2_0 = (tmp_2_0 = ctx_r2.stats()) == null ? null : tmp_2_0.prototypeReposLocal) !== null && tmp_2_0 !== void 0 ? tmp_2_0 : 0, " ", \u0275\u0275pipeBind1(6, 5, "dev.monitoring.totalRepos.prototype"), " ");
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate2("", (tmp_3_0 = (tmp_3_0 = ctx_r2.stats()) == null ? null : tmp_3_0.baselineReposLocal) !== null && tmp_3_0 !== void 0 ? tmp_3_0 : 0, " ", \u0275\u0275pipeBind1(10, 7, "dev.monitoring.totalRepos.baseline"), " ");
+  }
+}
+function UsageMonitoringComponent_Conditional_84_Template(rf, ctx) {
   if (rf & 1) {
     const _r4 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 24);
-    \u0275\u0275element(1, "i", 31);
-    \u0275\u0275elementStart(2, "div")(3, "p", 32);
+    \u0275\u0275elementStart(0, "div", 25);
+    \u0275\u0275element(1, "i", 32);
+    \u0275\u0275elementStart(2, "div")(3, "p", 33);
     \u0275\u0275text(4);
     \u0275\u0275pipe(5, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(6, "p", 33);
+    \u0275\u0275elementStart(6, "p", 34);
     \u0275\u0275text(7);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(8, "p-button", 34);
+    \u0275\u0275elementStart(8, "p-button", 35);
     \u0275\u0275pipe(9, "translate");
-    \u0275\u0275listener("onClick", function UsageMonitoringComponent_Conditional_68_Template_p_button_onClick_8_listener() {
+    \u0275\u0275listener("onClick", function UsageMonitoringComponent_Conditional_84_Template_p_button_onClick_8_listener() {
       \u0275\u0275restoreView(_r4);
       const ctx_r2 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r2.loadFeature(ctx_r2.selectedFeature()));
@@ -16073,28 +16141,28 @@ function UsageMonitoringComponent_Conditional_68_Template(rf, ctx) {
     \u0275\u0275property("label", \u0275\u0275pipeBind1(9, 5, "common.retry"));
   }
 }
-function UsageMonitoringComponent_Conditional_69_Template(rf, ctx) {
+function UsageMonitoringComponent_Conditional_85_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 25)(1, "div", 46);
-    \u0275\u0275element(2, "p-skeleton", 47);
+    \u0275\u0275elementStart(0, "div", 26)(1, "div", 48);
+    \u0275\u0275element(2, "p-skeleton", 49);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "div", 46);
-    \u0275\u0275element(4, "p-skeleton", 47);
+    \u0275\u0275elementStart(3, "div", 48);
+    \u0275\u0275element(4, "p-skeleton", 49);
     \u0275\u0275elementEnd()();
   }
 }
-function UsageMonitoringComponent_Conditional_70_Conditional_24_Conditional_2_Template(rf, ctx) {
+function UsageMonitoringComponent_Conditional_86_Conditional_24_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 64)(1, "span", 67);
+    \u0275\u0275elementStart(0, "div", 66)(1, "span", 69);
     \u0275\u0275text(2, "A");
     \u0275\u0275elementEnd()();
   }
 }
-function UsageMonitoringComponent_Conditional_70_Conditional_24_For_5_Template(rf, ctx) {
+function UsageMonitoringComponent_Conditional_86_Conditional_24_For_5_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 66);
-    \u0275\u0275element(1, "span", 68);
-    \u0275\u0275elementStart(2, "span", 69);
+    \u0275\u0275elementStart(0, "div", 68);
+    \u0275\u0275element(1, "span", 70);
+    \u0275\u0275elementStart(2, "span", 71);
     \u0275\u0275text(3);
     \u0275\u0275pipe(4, "translate");
     \u0275\u0275elementEnd()();
@@ -16107,14 +16175,14 @@ function UsageMonitoringComponent_Conditional_70_Conditional_24_For_5_Template(r
     \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind1(4, 4, item_r6.label), " (", item_r6.count, ")");
   }
 }
-function UsageMonitoringComponent_Conditional_70_Conditional_24_Template(rf, ctx) {
+function UsageMonitoringComponent_Conditional_86_Conditional_24_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 62);
-    \u0275\u0275element(1, "p-chart", 63);
-    \u0275\u0275template(2, UsageMonitoringComponent_Conditional_70_Conditional_24_Conditional_2_Template, 3, 0, "div", 64);
+    \u0275\u0275elementStart(0, "div", 64);
+    \u0275\u0275element(1, "p-chart", 65);
+    \u0275\u0275template(2, UsageMonitoringComponent_Conditional_86_Conditional_24_Conditional_2_Template, 3, 0, "div", 66);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "div", 65);
-    \u0275\u0275repeaterCreate(4, UsageMonitoringComponent_Conditional_70_Conditional_24_For_5_Template, 5, 6, "div", 66, _forTrack0);
+    \u0275\u0275elementStart(3, "div", 67);
+    \u0275\u0275repeaterCreate(4, UsageMonitoringComponent_Conditional_86_Conditional_24_For_5_Template, 5, 6, "div", 68, _forTrack0);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -16127,9 +16195,9 @@ function UsageMonitoringComponent_Conditional_70_Conditional_24_Template(rf, ctx
     \u0275\u0275repeater(ctx_r2.chartDataA().legendItems);
   }
 }
-function UsageMonitoringComponent_Conditional_70_Conditional_25_Template(rf, ctx) {
+function UsageMonitoringComponent_Conditional_86_Conditional_25_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 58);
+    \u0275\u0275elementStart(0, "div", 60);
     \u0275\u0275text(1);
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275elementEnd();
@@ -16139,11 +16207,11 @@ function UsageMonitoringComponent_Conditional_70_Conditional_25_Template(rf, ctx
     \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(2, 1, "dev.monitoring.noData"), " ");
   }
 }
-function UsageMonitoringComponent_Conditional_70_Conditional_28_Conditional_23_For_7_Template(rf, ctx) {
+function UsageMonitoringComponent_Conditional_86_Conditional_28_Conditional_23_For_7_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 66);
-    \u0275\u0275element(1, "span", 68);
-    \u0275\u0275elementStart(2, "span", 69);
+    \u0275\u0275elementStart(0, "div", 68);
+    \u0275\u0275element(1, "span", 70);
+    \u0275\u0275elementStart(2, "span", 71);
     \u0275\u0275text(3);
     \u0275\u0275pipe(4, "translate");
     \u0275\u0275elementEnd()();
@@ -16156,15 +16224,15 @@ function UsageMonitoringComponent_Conditional_70_Conditional_28_Conditional_23_F
     \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind1(4, 4, item_r8.label), " (", item_r8.count, ")");
   }
 }
-function UsageMonitoringComponent_Conditional_70_Conditional_28_Conditional_23_Template(rf, ctx) {
+function UsageMonitoringComponent_Conditional_86_Conditional_28_Conditional_23_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 62);
-    \u0275\u0275element(1, "p-chart", 63);
-    \u0275\u0275elementStart(2, "div", 64)(3, "span", 67);
+    \u0275\u0275elementStart(0, "div", 64);
+    \u0275\u0275element(1, "p-chart", 65);
+    \u0275\u0275elementStart(2, "div", 66)(3, "span", 69);
     \u0275\u0275text(4, "B");
     \u0275\u0275elementEnd()()();
-    \u0275\u0275elementStart(5, "div", 65);
-    \u0275\u0275repeaterCreate(6, UsageMonitoringComponent_Conditional_70_Conditional_28_Conditional_23_For_7_Template, 5, 6, "div", 66, _forTrack0);
+    \u0275\u0275elementStart(5, "div", 67);
+    \u0275\u0275repeaterCreate(6, UsageMonitoringComponent_Conditional_86_Conditional_28_Conditional_23_For_7_Template, 5, 6, "div", 68, _forTrack0);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -16175,9 +16243,9 @@ function UsageMonitoringComponent_Conditional_70_Conditional_28_Conditional_23_T
     \u0275\u0275repeater(ctx_r2.chartDataB().legendItems);
   }
 }
-function UsageMonitoringComponent_Conditional_70_Conditional_28_Conditional_24_Template(rf, ctx) {
+function UsageMonitoringComponent_Conditional_86_Conditional_28_Conditional_24_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 58);
+    \u0275\u0275elementStart(0, "div", 60);
     \u0275\u0275text(1);
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275elementEnd();
@@ -16187,55 +16255,55 @@ function UsageMonitoringComponent_Conditional_70_Conditional_28_Conditional_24_T
     \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(2, 1, "dev.monitoring.noData"), " ");
   }
 }
-function UsageMonitoringComponent_Conditional_70_Conditional_28_Template(rf, ctx) {
+function UsageMonitoringComponent_Conditional_86_Conditional_28_Template(rf, ctx) {
   if (rf & 1) {
     const _r7 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 48)(1, "div", 70)(2, "p-iftalabel", 46)(3, "p-select", 71);
-    \u0275\u0275listener("ngModelChange", function UsageMonitoringComponent_Conditional_70_Conditional_28_Template_p_select_ngModelChange_3_listener($event) {
+    \u0275\u0275elementStart(0, "div", 50)(1, "div", 72)(2, "p-iftalabel", 48)(3, "p-select", 73);
+    \u0275\u0275listener("ngModelChange", function UsageMonitoringComponent_Conditional_86_Conditional_28_Template_p_select_ngModelChange_3_listener($event) {
       \u0275\u0275restoreView(_r7);
       const ctx_r2 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r2.updateFilterB("field", $event));
     });
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(4, "label", 72);
+    \u0275\u0275elementStart(4, "label", 74);
     \u0275\u0275text(5);
     \u0275\u0275pipe(6, "translate");
     \u0275\u0275pipe(7, "translate");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(8, "p-iftalabel", 46)(9, "p-select", 73);
-    \u0275\u0275listener("ngModelChange", function UsageMonitoringComponent_Conditional_70_Conditional_28_Template_p_select_ngModelChange_9_listener($event) {
+    \u0275\u0275elementStart(8, "p-iftalabel", 48)(9, "p-select", 75);
+    \u0275\u0275listener("ngModelChange", function UsageMonitoringComponent_Conditional_86_Conditional_28_Template_p_select_ngModelChange_9_listener($event) {
       \u0275\u0275restoreView(_r7);
       const ctx_r2 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r2.updateFilterB("model", $event));
     });
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(10, "label", 74);
+    \u0275\u0275elementStart(10, "label", 76);
     \u0275\u0275text(11);
     \u0275\u0275pipe(12, "translate");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(13, "p-iftalabel", 46)(14, "p-select", 75);
-    \u0275\u0275listener("ngModelChange", function UsageMonitoringComponent_Conditional_70_Conditional_28_Template_p_select_ngModelChange_14_listener($event) {
+    \u0275\u0275elementStart(13, "p-iftalabel", 48)(14, "p-select", 77);
+    \u0275\u0275listener("ngModelChange", function UsageMonitoringComponent_Conditional_86_Conditional_28_Template_p_select_ngModelChange_14_listener($event) {
       \u0275\u0275restoreView(_r7);
       const ctx_r2 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r2.updateFilterB("promptVersion", $event));
     });
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(15, "label", 76);
+    \u0275\u0275elementStart(15, "label", 78);
     \u0275\u0275text(16);
     \u0275\u0275pipe(17, "translate");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(18, "p-iftalabel", 46)(19, "p-select", 77);
-    \u0275\u0275listener("ngModelChange", function UsageMonitoringComponent_Conditional_70_Conditional_28_Template_p_select_ngModelChange_19_listener($event) {
+    \u0275\u0275elementStart(18, "p-iftalabel", 48)(19, "p-select", 79);
+    \u0275\u0275listener("ngModelChange", function UsageMonitoringComponent_Conditional_86_Conditional_28_Template_p_select_ngModelChange_19_listener($event) {
       \u0275\u0275restoreView(_r7);
       const ctx_r2 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r2.updateFilterB("userId", $event));
     });
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(20, "label", 78);
+    \u0275\u0275elementStart(20, "label", 80);
     \u0275\u0275text(21);
     \u0275\u0275pipe(22, "translate");
     \u0275\u0275elementEnd()()();
-    \u0275\u0275template(23, UsageMonitoringComponent_Conditional_70_Conditional_28_Conditional_23_Template, 8, 2)(24, UsageMonitoringComponent_Conditional_70_Conditional_28_Conditional_24_Template, 3, 3, "div", 58);
+    \u0275\u0275template(23, UsageMonitoringComponent_Conditional_86_Conditional_28_Conditional_23_Template, 8, 2)(24, UsageMonitoringComponent_Conditional_86_Conditional_28_Conditional_24_Template, 3, 3, "div", 60);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -16260,18 +16328,18 @@ function UsageMonitoringComponent_Conditional_70_Conditional_28_Template(rf, ctx
     \u0275\u0275conditional(ctx_r2.chartDataB().labels.length > 0 ? 23 : 24);
   }
 }
-function UsageMonitoringComponent_Conditional_70_Conditional_29_For_5_Template(rf, ctx) {
+function UsageMonitoringComponent_Conditional_86_Conditional_29_For_5_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 18);
-    \u0275\u0275element(1, "span", 68);
-    \u0275\u0275elementStart(2, "span", 80);
+    \u0275\u0275elementStart(0, "div", 19);
+    \u0275\u0275element(1, "span", 70);
+    \u0275\u0275elementStart(2, "span", 82);
     \u0275\u0275text(3);
     \u0275\u0275pipe(4, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(5, "span", 81);
+    \u0275\u0275elementStart(5, "span", 83);
     \u0275\u0275text(6);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(7, "span", 82);
+    \u0275\u0275elementStart(7, "span", 84);
     \u0275\u0275text(8);
     \u0275\u0275pipe(9, "percent");
     \u0275\u0275elementEnd()();
@@ -16289,14 +16357,14 @@ function UsageMonitoringComponent_Conditional_70_Conditional_29_For_5_Template(r
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind3(9, 7, item_r9.percent / 100, "1.0-0", ctx_r2.currentLang() === "fr" ? "fr-CA" : "en-CA"));
   }
 }
-function UsageMonitoringComponent_Conditional_70_Conditional_29_Conditional_6_Template(rf, ctx) {
+function UsageMonitoringComponent_Conditional_86_Conditional_29_Conditional_6_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275element(0, "p-divider");
-    \u0275\u0275elementStart(1, "div", 83)(2, "span");
+    \u0275\u0275elementStart(1, "div", 85)(2, "span");
     \u0275\u0275text(3);
     \u0275\u0275pipe(4, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(5, "span", 84);
+    \u0275\u0275elementStart(5, "span", 86);
     \u0275\u0275text(6);
     \u0275\u0275elementEnd()();
   }
@@ -16308,14 +16376,14 @@ function UsageMonitoringComponent_Conditional_70_Conditional_29_Conditional_6_Te
     \u0275\u0275textInterpolate2("", ctx_r2.totalFieldsReviewed(), " / ", ctx_r2.totalFields(), "");
   }
 }
-function UsageMonitoringComponent_Conditional_70_Conditional_29_Template(rf, ctx) {
+function UsageMonitoringComponent_Conditional_86_Conditional_29_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 61)(1, "p", 79);
+    \u0275\u0275elementStart(0, "div", 63)(1, "p", 81);
     \u0275\u0275text(2);
     \u0275\u0275pipe(3, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275repeaterCreate(4, UsageMonitoringComponent_Conditional_70_Conditional_29_For_5_Template, 10, 11, "div", 18, _forTrack0);
-    \u0275\u0275template(6, UsageMonitoringComponent_Conditional_70_Conditional_29_Conditional_6_Template, 7, 5);
+    \u0275\u0275repeaterCreate(4, UsageMonitoringComponent_Conditional_86_Conditional_29_For_5_Template, 10, 11, "div", 19, _forTrack0);
+    \u0275\u0275template(6, UsageMonitoringComponent_Conditional_86_Conditional_29_Conditional_6_Template, 7, 5);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -16328,58 +16396,58 @@ function UsageMonitoringComponent_Conditional_70_Conditional_29_Template(rf, ctx
     \u0275\u0275conditional(ctx_r2.selectedFeature() === "metadata" ? 6 : -1);
   }
 }
-function UsageMonitoringComponent_Conditional_70_Template(rf, ctx) {
+function UsageMonitoringComponent_Conditional_86_Template(rf, ctx) {
   if (rf & 1) {
     const _r5 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 26)(1, "div", 48)(2, "div", 49)(3, "p-iftalabel", 46)(4, "p-select", 50);
-    \u0275\u0275listener("ngModelChange", function UsageMonitoringComponent_Conditional_70_Template_p_select_ngModelChange_4_listener($event) {
+    \u0275\u0275elementStart(0, "div", 27)(1, "div", 50)(2, "div", 51)(3, "p-iftalabel", 48)(4, "p-select", 52);
+    \u0275\u0275listener("ngModelChange", function UsageMonitoringComponent_Conditional_86_Template_p_select_ngModelChange_4_listener($event) {
       \u0275\u0275restoreView(_r5);
       const ctx_r2 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r2.updateFilterA("field", $event));
     });
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(5, "label", 51);
+    \u0275\u0275elementStart(5, "label", 53);
     \u0275\u0275text(6);
     \u0275\u0275pipe(7, "translate");
     \u0275\u0275pipe(8, "translate");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(9, "p-iftalabel", 46)(10, "p-select", 52);
-    \u0275\u0275listener("ngModelChange", function UsageMonitoringComponent_Conditional_70_Template_p_select_ngModelChange_10_listener($event) {
+    \u0275\u0275elementStart(9, "p-iftalabel", 48)(10, "p-select", 54);
+    \u0275\u0275listener("ngModelChange", function UsageMonitoringComponent_Conditional_86_Template_p_select_ngModelChange_10_listener($event) {
       \u0275\u0275restoreView(_r5);
       const ctx_r2 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r2.updateFilterA("model", $event));
     });
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(11, "label", 53);
+    \u0275\u0275elementStart(11, "label", 55);
     \u0275\u0275text(12);
     \u0275\u0275pipe(13, "translate");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(14, "p-iftalabel", 46)(15, "p-select", 54);
-    \u0275\u0275listener("ngModelChange", function UsageMonitoringComponent_Conditional_70_Template_p_select_ngModelChange_15_listener($event) {
+    \u0275\u0275elementStart(14, "p-iftalabel", 48)(15, "p-select", 56);
+    \u0275\u0275listener("ngModelChange", function UsageMonitoringComponent_Conditional_86_Template_p_select_ngModelChange_15_listener($event) {
       \u0275\u0275restoreView(_r5);
       const ctx_r2 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r2.updateFilterA("promptVersion", $event));
     });
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(16, "label", 55);
+    \u0275\u0275elementStart(16, "label", 57);
     \u0275\u0275text(17);
     \u0275\u0275pipe(18, "translate");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(19, "p-iftalabel", 46)(20, "p-select", 56);
-    \u0275\u0275listener("ngModelChange", function UsageMonitoringComponent_Conditional_70_Template_p_select_ngModelChange_20_listener($event) {
+    \u0275\u0275elementStart(19, "p-iftalabel", 48)(20, "p-select", 58);
+    \u0275\u0275listener("ngModelChange", function UsageMonitoringComponent_Conditional_86_Template_p_select_ngModelChange_20_listener($event) {
       \u0275\u0275restoreView(_r5);
       const ctx_r2 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r2.updateFilterA("userId", $event));
     });
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(21, "label", 57);
+    \u0275\u0275elementStart(21, "label", 59);
     \u0275\u0275text(22);
     \u0275\u0275pipe(23, "translate");
     \u0275\u0275elementEnd()()();
-    \u0275\u0275template(24, UsageMonitoringComponent_Conditional_70_Conditional_24_Template, 6, 3)(25, UsageMonitoringComponent_Conditional_70_Conditional_25_Template, 3, 3, "div", 58);
+    \u0275\u0275template(24, UsageMonitoringComponent_Conditional_86_Conditional_24_Template, 6, 3)(25, UsageMonitoringComponent_Conditional_86_Conditional_25_Template, 3, 3, "div", 60);
     \u0275\u0275elementEnd();
-    \u0275\u0275element(26, "p-divider", 59)(27, "p-divider", 60);
-    \u0275\u0275template(28, UsageMonitoringComponent_Conditional_70_Conditional_28_Template, 25, 23, "div", 48)(29, UsageMonitoringComponent_Conditional_70_Conditional_29_Template, 7, 4, "div", 61);
+    \u0275\u0275element(26, "p-divider", 61)(27, "p-divider", 62);
+    \u0275\u0275template(28, UsageMonitoringComponent_Conditional_86_Conditional_28_Template, 25, 23, "div", 50)(29, UsageMonitoringComponent_Conditional_86_Conditional_29_Template, 7, 4, "div", 63);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -16646,7 +16714,7 @@ var UsageMonitoringComponent = class _UsageMonitoringComponent {
   static \u0275fac = function UsageMonitoringComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _UsageMonitoringComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _UsageMonitoringComponent, selectors: [["aida-usage-monitoring"]], decls: 74, vars: 52, consts: [[3, "model"], ["pTemplate", "item"], ["id", "wb-cont"], [1, "flex", "flex-column", "gap-3"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "flex", "align-items-center", "gap-3"], [1, "flex", "flex-column", "md:flex-row", "gap-3"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "flex-1"], [1, "flex", "align-items-center", "gap-2", "mb-2"], [1, "pi", "pi-users", "text-primary", "text-xl"], [1, "text-600", "text-sm"], ["styleClass", "h-4rem w-full"], [1, "pi", "pi-folder", "text-primary", "text-xl"], [1, "pi", "pi-link", "text-primary", "text-xl"], [1, "pi", "pi-sparkles", "text-primary", "text-xl"], [1, "pi", "pi-file-export", "text-primary", "text-xl"], [1, "pi", "pi-github", "text-primary", "text-xl"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "min-w-min"], [1, "flex", "flex-column", "md:flex-row", "justify-content-between", "align-items-start", "md:align-items-center", "gap-3", "mb-4"], [1, "flex", "align-items-center", "gap-2"], [1, "pi", "pi-chart-pie", "text-primary", "text-xl"], [1, "text-lg", "font-semibold", "text-900", "m-0"], [1, "flex", "flex-column", "md:flex-row", "align-items-start", "md:align-items-center", "gap-2"], ["optionLabel", "label", "optionValue", "value", 3, "ngModelChange", "options", "ngModel"], [1, "w-11rem", 3, "ngModelChange", "ngModel", "onLabel", "offLabel", "onIcon", "offIcon"], [1, "bg-red-50", "border-round-lg", "shadow-2", "p-4", "flex", "align-items-center", "gap-3", "mb-3"], [1, "flex", "flex-row", "gap-3", "w-full"], [1, "flex", "flex-column", "lg:flex-row", "gap-4"], [1, "flex", "justify-content-end", "mt-3"], ["icon", "pi pi-refresh", "size", "small", "outlined", "", 3, "onClick", "label", "loading"], [1, "p-menuitem-link", 3, "routerLink"], [1, "p-menuitem-text"], [1, "pi", "pi-exclamation-triangle", "text-red-500", "text-2xl"], [1, "font-semibold", "m-0"], [1, "text-600", "text-sm", "m-0"], ["icon", "pi pi-refresh", "size", "small", "outlined", "", 1, "ml-auto", 3, "onClick", "label"], [1, "text-4xl", "font-bold", "text-900", "text-center", "m-0"], [1, "flex", "justify-content-center", "gap-3", "mt-1"], [1, "text-xs", "text-600"], [1, "pi", "pi-github", "mr-1"], [1, "pi", "pi-user", "mr-1"], [1, "pi", "pi-cloud", "mr-1"], [1, "pi", "pi-desktop", "mr-1"], [1, "pi", "pi-globe", "mr-1"], [1, "pi", "pi-list", "mr-1"], [1, "pi", "pi-file", "mr-1"], [1, "pi", "pi-sitemap", "mr-1"], [1, "flex-1"], ["styleClass", "h-20rem"], [1, "flex", "flex-column", "gap-3", "flex-1"], [1, "flex", "flex-column", "md:flex-row", "gap-1"], ["id", "fieldA", "optionLabel", "label", "optionValue", "value", "styleClass", "w-full max-w-15rem", 3, "ngModelChange", "options", "ngModel"], ["for", "fieldA", 1, "text-xs", "text-600"], ["id", "modelA", "optionLabel", "label", "optionValue", "value", "styleClass", "w-full max-w-15rem", 3, "ngModelChange", "options", "ngModel"], ["for", "modelA", 1, "text-xs", "text-600"], ["id", "promptA", "optionLabel", "label", "optionValue", "value", "styleClass", "w-full max-w-15rem", 3, "ngModelChange", "options", "ngModel"], ["for", "promptA", 1, "text-xs", "text-600"], ["id", "userA", "optionLabel", "label", "optionValue", "value", "styleClass", "w-full max-w-15rem", 3, "ngModelChange", "options", "ngModel"], ["for", "userA", 1, "text-xs", "text-600"], [1, "flex", "align-items-center", "justify-content-center", "h-10rem", "text-600", "text-sm"], ["layout", "vertical", "styleClass", "hidden lg:flex"], ["styleClass", "flex lg:hidden"], [1, "flex", "flex-column", "gap-2", "flex-1"], [1, "relative", "flex", "justify-content-center"], ["type", "doughnut", 2, "width", "280px", 3, "data", "options"], [1, "absolute", "flex", "align-items-center", "justify-content-center", 2, "top", "50%", "left", "50%", "transform", "translate(-50%, -50%)", "pointer-events", "none"], [1, "flex", "flex-wrap", "gap-2", "justify-content-center"], [1, "flex", "align-items-center", "gap-1"], [1, "text-4xl", "font-bold", "text-primary"], [1, "border-circle", "w-1rem", "h-1rem", "flex-shrink-0"], [1, "text-xs", "text-700"], [1, "flex", "flex-column", "md:flex-row", "gap-2"], ["id", "fieldB", "optionLabel", "label", "optionValue", "value", "styleClass", "w-full max-w-15rem", 3, "ngModelChange", "options", "ngModel"], ["for", "fieldB", 1, "text-xs", "text-600"], ["id", "modelB", "optionLabel", "label", "optionValue", "value", "styleClass", "w-full max-w-15rem", 3, "ngModelChange", "options", "ngModel"], ["for", "modelB", 1, "text-xs", "text-600"], ["id", "promptB", "optionLabel", "label", "optionValue", "value", "styleClass", "w-full max-w-15rem", 3, "ngModelChange", "options", "ngModel"], ["for", "promptB", 1, "text-xs", "text-600"], ["id", "userB", "optionLabel", "label", "optionValue", "value", "styleClass", "w-full max-w-15rem", 3, "ngModelChange", "options", "ngModel"], ["for", "userB", 1, "text-xs", "text-600"], [1, "text-sm", "font-semibold", "text-600", "m-0", "mb-1"], [1, "text-sm", "text-700", "flex-1"], [1, "text-sm", "font-bold", "text-900"], [1, "text-xs", "text-400", "w-3rem", "text-right"], [1, "flex", "justify-content-between", "text-sm", "text-600"], [1, "font-bold", "text-900"]], template: function UsageMonitoringComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _UsageMonitoringComponent, selectors: [["aida-usage-monitoring"]], decls: 90, vars: 60, consts: [[3, "model"], ["pTemplate", "item"], ["id", "wb-cont"], [1, "flex", "flex-column", "gap-3"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "flex", "align-items-center", "gap-3"], [1, "flex", "flex-column", "md:flex-row", "gap-3"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "flex-1"], [1, "flex", "align-items-center", "gap-2", "mb-2"], [1, "pi", "pi-users", "text-primary", "text-xl"], [1, "text-600", "text-sm"], ["styleClass", "h-4rem w-full"], [1, "pi", "pi-folder", "text-primary", "text-xl"], [1, "pi", "pi-link", "text-primary", "text-xl"], [1, "pi", "pi-sparkles", "text-primary", "text-xl"], [1, "pi", "pi-file-export", "text-primary", "text-xl"], [1, "pi", "pi-github", "text-primary", "text-xl"], [1, "pi", "pi-folder-plus", "text-primary", "text-xl"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "min-w-min"], [1, "flex", "flex-column", "md:flex-row", "justify-content-between", "align-items-start", "md:align-items-center", "gap-3", "mb-4"], [1, "flex", "align-items-center", "gap-2"], [1, "pi", "pi-chart-pie", "text-primary", "text-xl"], [1, "text-lg", "font-semibold", "text-900", "m-0"], [1, "flex", "flex-column", "md:flex-row", "align-items-start", "md:align-items-center", "gap-2"], ["optionLabel", "label", "optionValue", "value", 3, "ngModelChange", "options", "ngModel"], [1, "w-11rem", 3, "ngModelChange", "ngModel", "onLabel", "offLabel", "onIcon", "offIcon"], [1, "bg-red-50", "border-round-lg", "shadow-2", "p-4", "flex", "align-items-center", "gap-3", "mb-3"], [1, "flex", "flex-row", "gap-3", "w-full"], [1, "flex", "flex-column", "lg:flex-row", "gap-4"], [1, "flex", "justify-content-end", "mt-3"], ["icon", "pi pi-refresh", "size", "small", "outlined", "", 3, "onClick", "label", "loading"], [1, "p-menuitem-link", 3, "routerLink"], [1, "p-menuitem-text"], [1, "pi", "pi-exclamation-triangle", "text-red-500", "text-2xl"], [1, "font-semibold", "m-0"], [1, "text-600", "text-sm", "m-0"], ["icon", "pi pi-refresh", "size", "small", "outlined", "", 1, "ml-auto", 3, "onClick", "label"], [1, "text-4xl", "font-bold", "text-900", "text-center", "m-0"], [1, "flex", "justify-content-center", "gap-3", "mt-1"], [1, "text-xs", "text-600"], [1, "pi", "pi-github", "mr-1"], [1, "pi", "pi-user", "mr-1"], [1, "pi", "pi-cloud", "mr-1"], [1, "pi", "pi-desktop", "mr-1"], [1, "pi", "pi-globe", "mr-1"], [1, "pi", "pi-list", "mr-1"], [1, "pi", "pi-file", "mr-1"], [1, "pi", "pi-list-check", "mr-1"], [1, "pi", "pi-sitemap", "mr-1"], [1, "flex-1"], ["styleClass", "h-20rem"], [1, "flex", "flex-column", "gap-3", "flex-1"], [1, "flex", "flex-column", "md:flex-row", "gap-1"], ["id", "fieldA", "optionLabel", "label", "optionValue", "value", "styleClass", "w-full max-w-15rem", 3, "ngModelChange", "options", "ngModel"], ["for", "fieldA", 1, "text-xs", "text-600"], ["id", "modelA", "optionLabel", "label", "optionValue", "value", "styleClass", "w-full max-w-15rem", 3, "ngModelChange", "options", "ngModel"], ["for", "modelA", 1, "text-xs", "text-600"], ["id", "promptA", "optionLabel", "label", "optionValue", "value", "styleClass", "w-full max-w-15rem", 3, "ngModelChange", "options", "ngModel"], ["for", "promptA", 1, "text-xs", "text-600"], ["id", "userA", "optionLabel", "label", "optionValue", "value", "styleClass", "w-full max-w-15rem", 3, "ngModelChange", "options", "ngModel"], ["for", "userA", 1, "text-xs", "text-600"], [1, "flex", "align-items-center", "justify-content-center", "h-10rem", "text-600", "text-sm"], ["layout", "vertical", "styleClass", "hidden lg:flex"], ["styleClass", "flex lg:hidden"], [1, "flex", "flex-column", "gap-2", "flex-1"], [1, "relative", "flex", "justify-content-center"], ["type", "doughnut", 2, "width", "280px", 3, "data", "options"], [1, "absolute", "flex", "align-items-center", "justify-content-center", 2, "top", "50%", "left", "50%", "transform", "translate(-50%, -50%)", "pointer-events", "none"], [1, "flex", "flex-wrap", "gap-2", "justify-content-center"], [1, "flex", "align-items-center", "gap-1"], [1, "text-4xl", "font-bold", "text-primary"], [1, "border-circle", "w-1rem", "h-1rem", "flex-shrink-0"], [1, "text-xs", "text-700"], [1, "flex", "flex-column", "md:flex-row", "gap-2"], ["id", "fieldB", "optionLabel", "label", "optionValue", "value", "styleClass", "w-full max-w-15rem", 3, "ngModelChange", "options", "ngModel"], ["for", "fieldB", 1, "text-xs", "text-600"], ["id", "modelB", "optionLabel", "label", "optionValue", "value", "styleClass", "w-full max-w-15rem", 3, "ngModelChange", "options", "ngModel"], ["for", "modelB", 1, "text-xs", "text-600"], ["id", "promptB", "optionLabel", "label", "optionValue", "value", "styleClass", "w-full max-w-15rem", 3, "ngModelChange", "options", "ngModel"], ["for", "promptB", 1, "text-xs", "text-600"], ["id", "userB", "optionLabel", "label", "optionValue", "value", "styleClass", "w-full max-w-15rem", 3, "ngModelChange", "options", "ngModel"], ["for", "userB", 1, "text-xs", "text-600"], [1, "text-sm", "font-semibold", "text-600", "m-0", "mb-1"], [1, "text-sm", "text-700", "flex-1"], [1, "text-sm", "font-bold", "text-900"], [1, "text-xs", "text-400", "w-3rem", "text-right"], [1, "flex", "justify-content-between", "text-sm", "text-600"], [1, "font-bold", "text-900"]], template: function UsageMonitoringComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "p-breadcrumb", 0);
       \u0275\u0275template(1, UsageMonitoringComponent_ng_template_1_Template, 2, 1, "ng-template", 1);
@@ -16704,29 +16772,45 @@ var UsageMonitoringComponent = class _UsageMonitoringComponent {
       \u0275\u0275pipe(53, "translate");
       \u0275\u0275elementEnd()();
       \u0275\u0275template(54, UsageMonitoringComponent_Conditional_54_Template, 1, 0, "p-skeleton", 10)(55, UsageMonitoringComponent_Conditional_55_Template, 11, 9);
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(56, "div", 6)(57, "div", 7);
+      \u0275\u0275element(58, "i", 14);
+      \u0275\u0275elementStart(59, "span", 9);
+      \u0275\u0275text(60);
+      \u0275\u0275pipe(61, "translate");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(56, "div", 16)(57, "div", 17)(58, "div", 18);
-      \u0275\u0275element(59, "i", 19);
-      \u0275\u0275elementStart(60, "h2", 20);
-      \u0275\u0275text(61);
-      \u0275\u0275pipe(62, "translate");
+      \u0275\u0275template(62, UsageMonitoringComponent_Conditional_62_Template, 1, 0, "p-skeleton", 10)(63, UsageMonitoringComponent_Conditional_63_Template, 11, 9);
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(64, "div", 6)(65, "div", 7);
+      \u0275\u0275element(66, "i", 16);
+      \u0275\u0275elementStart(67, "span", 9);
+      \u0275\u0275text(68);
+      \u0275\u0275pipe(69, "translate");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(63, "div", 21)(64, "p-selectbutton", 22);
-      \u0275\u0275listener("ngModelChange", function UsageMonitoringComponent_Template_p_selectbutton_ngModelChange_64_listener($event) {
+      \u0275\u0275template(70, UsageMonitoringComponent_Conditional_70_Template, 1, 0, "p-skeleton", 10)(71, UsageMonitoringComponent_Conditional_71_Template, 11, 9);
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(72, "div", 17)(73, "div", 18)(74, "div", 19);
+      \u0275\u0275element(75, "i", 20);
+      \u0275\u0275elementStart(76, "h2", 21);
+      \u0275\u0275text(77);
+      \u0275\u0275pipe(78, "translate");
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(79, "div", 22)(80, "p-selectbutton", 23);
+      \u0275\u0275listener("ngModelChange", function UsageMonitoringComponent_Template_p_selectbutton_ngModelChange_80_listener($event) {
         return ctx.onFeatureChange($event);
       });
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(65, "p-togglebutton", 23);
-      \u0275\u0275pipe(66, "translate");
-      \u0275\u0275pipe(67, "translate");
-      \u0275\u0275listener("ngModelChange", function UsageMonitoringComponent_Template_p_togglebutton_ngModelChange_65_listener($event) {
+      \u0275\u0275elementStart(81, "p-togglebutton", 24);
+      \u0275\u0275pipe(82, "translate");
+      \u0275\u0275pipe(83, "translate");
+      \u0275\u0275listener("ngModelChange", function UsageMonitoringComponent_Template_p_togglebutton_ngModelChange_81_listener($event) {
         return ctx.compareMode.set($event);
       });
       \u0275\u0275elementEnd()()();
-      \u0275\u0275template(68, UsageMonitoringComponent_Conditional_68_Template, 10, 7, "div", 24)(69, UsageMonitoringComponent_Conditional_69_Template, 5, 0, "div", 25)(70, UsageMonitoringComponent_Conditional_70_Template, 30, 25, "div", 26);
-      \u0275\u0275elementStart(71, "div", 27)(72, "p-button", 28);
-      \u0275\u0275pipe(73, "translate");
-      \u0275\u0275listener("onClick", function UsageMonitoringComponent_Template_p_button_onClick_72_listener() {
+      \u0275\u0275template(84, UsageMonitoringComponent_Conditional_84_Template, 10, 7, "div", 25)(85, UsageMonitoringComponent_Conditional_85_Template, 5, 0, "div", 26)(86, UsageMonitoringComponent_Conditional_86_Template, 30, 25, "div", 27);
+      \u0275\u0275elementStart(87, "div", 28)(88, "p-button", 29);
+      \u0275\u0275pipe(89, "translate");
+      \u0275\u0275listener("onClick", function UsageMonitoringComponent_Template_p_button_onClick_88_listener() {
         return ctx.load();
       });
       \u0275\u0275elementEnd()()()();
@@ -16734,45 +16818,53 @@ var UsageMonitoringComponent = class _UsageMonitoringComponent {
     if (rf & 2) {
       \u0275\u0275property("model", ctx.breadcrumbs);
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 27, "dev.monitoring._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 31, "dev.monitoring._title"));
       \u0275\u0275advance(3);
       \u0275\u0275conditional(ctx.error() ? 6 : -1);
       \u0275\u0275advance(6);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(13, 29, "dev.monitoring.totalUsers"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(13, 33, "dev.monitoring.totalUsers"));
       \u0275\u0275advance(2);
       \u0275\u0275conditional(ctx.loading() ? 14 : 15);
       \u0275\u0275advance(6);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(21, 31, "dev.monitoring.totalProjects"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(21, 35, "dev.monitoring.totalProjects"));
       \u0275\u0275advance(2);
       \u0275\u0275conditional(ctx.loading() ? 22 : 23);
       \u0275\u0275advance(6);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(29, 33, "dev.monitoring.totalPages"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(29, 37, "dev.monitoring.totalPages"));
       \u0275\u0275advance(2);
       \u0275\u0275conditional(ctx.loading() ? 30 : 31);
       \u0275\u0275advance(6);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(37, 35, "dev.monitoring.totalGenerations"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(37, 39, "dev.monitoring.totalGenerations"));
       \u0275\u0275advance(2);
       \u0275\u0275conditional(ctx.loading() ? 38 : 39);
       \u0275\u0275advance(6);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(45, 37, "dev.monitoring.totalExports"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(45, 41, "dev.monitoring.totalExportsGit"));
       \u0275\u0275advance(2);
       \u0275\u0275conditional(ctx.loading() ? 46 : 47);
       \u0275\u0275advance(6);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(53, 39, "dev.monitoring.totalRepos"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(53, 43, "dev.monitoring.totalReposGit"));
       \u0275\u0275advance(2);
       \u0275\u0275conditional(ctx.loading() ? 54 : 55);
+      \u0275\u0275advance(6);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(61, 45, "dev.monitoring.totalExportsLocal"));
+      \u0275\u0275advance(2);
+      \u0275\u0275conditional(ctx.loading() ? 62 : 63);
+      \u0275\u0275advance(6);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(69, 47, "dev.monitoring.totalReposLocal"));
+      \u0275\u0275advance(2);
+      \u0275\u0275conditional(ctx.loading() ? 70 : 71);
       \u0275\u0275advance(7);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(62, 41, "dev.monitoring.feature", \u0275\u0275pureFunction1(50, _c0, ctx.selectedFeatureLabel())));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(78, 49, "dev.monitoring.feature", \u0275\u0275pureFunction1(58, _c0, ctx.selectedFeatureLabel())));
       \u0275\u0275advance(3);
       \u0275\u0275property("options", ctx.featureOptions())("ngModel", ctx.selectedFeature());
       \u0275\u0275advance();
-      \u0275\u0275property("ngModel", ctx.compareMode())("onLabel", \u0275\u0275pipeBind1(66, 44, "dev.monitoring.feature.single"))("offLabel", \u0275\u0275pipeBind1(67, 46, "dev.monitoring.feature.ab"))("onIcon", "pi pi-chart-pie")("offIcon", "pi pi-chart-pie");
+      \u0275\u0275property("ngModel", ctx.compareMode())("onLabel", \u0275\u0275pipeBind1(82, 52, "dev.monitoring.feature.single"))("offLabel", \u0275\u0275pipeBind1(83, 54, "dev.monitoring.feature.ab"))("onIcon", "pi pi-chart-pie")("offIcon", "pi pi-chart-pie");
       \u0275\u0275advance(3);
-      \u0275\u0275conditional(ctx.featureItemsError() ? 68 : -1);
+      \u0275\u0275conditional(ctx.featureItemsError() ? 84 : -1);
       \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.loading() || ctx.featureItemsLoading() ? 69 : 70);
+      \u0275\u0275conditional(ctx.loading() || ctx.featureItemsLoading() ? 85 : 86);
       \u0275\u0275advance(3);
-      \u0275\u0275property("label", \u0275\u0275pipeBind1(73, 48, "common.refresh"))("loading", ctx.loading());
+      \u0275\u0275property("label", \u0275\u0275pipeBind1(89, 56, "common.refresh"))("loading", ctx.loading());
     }
   }, dependencies: [
     CommonModule,
@@ -16931,41 +17023,81 @@ var UsageMonitoringComponent = class _UsageMonitoringComponent {
             }\r
         </div>\r
 \r
-        <!-- Export Count -->\r
+        <!-- GitHub Export Count -->\r
         <div class="surface-card border-round-lg shadow-2 p-4 flex-1">\r
             <div class="flex align-items-center gap-2 mb-2">\r
                 <i class="pi pi-file-export text-primary text-xl"></i>\r
-                <span class="text-600 text-sm">{{ 'dev.monitoring.totalExports' | translate }}</span>\r
+                <span class="text-600 text-sm">{{ 'dev.monitoring.totalExportsGit' | translate }}</span>\r
             </div>\r
             @if(loading()) { <p-skeleton styleClass="h-4rem w-full" /> }\r
             @else {\r
-            <p class="text-4xl font-bold text-900 text-center m-0">{{ stats()?.exportCount ?? 0 }}</p>\r
+            <p class="text-4xl font-bold text-900 text-center m-0">{{ stats()?.exportCountGit ?? 0 }}</p>\r
             <div class="flex justify-content-center gap-3 mt-1">\r
                 <span class="text-xs text-600">\r
-                    <i class="pi pi-globe mr-1"></i>{{ stats()?.enPageCount ?? 0 }} {{ 'common.language.englishPages' | translate }}\r
+                    <i class="pi pi-globe mr-1"></i>{{ stats()?.enPageCountGit ?? 0 }} {{ 'common.language.englishPages' | translate }}\r
                 </span>\r
                 <span class="text-xs text-600">\r
-                    <i class="pi pi-globe mr-1"></i>{{ stats()?.frPageCount ?? 0 }} {{ 'common.language.frenchPages' | translate }}\r
+                    <i class="pi pi-globe mr-1"></i>{{ stats()?.frPageCountGit ?? 0 }} {{ 'common.language.frenchPages' | translate }}\r
                 </span>\r
             </div>\r
             }\r
         </div>\r
 \r
-        <!-- Repo Count -->\r
+        <!-- GitHub Repo Count -->\r
         <div class="surface-card border-round-lg shadow-2 p-4 flex-1">\r
             <div class="flex align-items-center gap-2 mb-2">\r
                 <i class="pi pi-github text-primary text-xl"></i>\r
-                <span class="text-600 text-sm">{{ 'dev.monitoring.totalRepos' | translate }}</span>\r
+                <span class="text-600 text-sm">{{ 'dev.monitoring.totalReposGit' | translate }}</span>\r
             </div>\r
             @if(loading()) { <p-skeleton styleClass="h-4rem w-full" /> }\r
             @else {\r
-            <p class="text-4xl font-bold text-900 text-center m-0">{{ stats()?.uniqueRepos ?? 0 }}</p>\r
+            <p class="text-4xl font-bold text-900 text-center m-0">{{ stats()?.uniqueReposGit ?? 0 }}</p>\r
             <div class="flex justify-content-center gap-3 mt-1">\r
                 <span class="text-xs text-600">\r
-                    <i class="pi pi-list mr-1"></i>{{ stats()?.prototypeRepos ?? 0 }} {{ 'dev.monitoring.totalRepos.prototype' | translate }}\r
+                    <i class="pi pi-list-check mr-1"></i>{{ stats()?.prototypeReposGit ?? 0 }} {{ 'dev.monitoring.totalRepos.prototype' | translate }}\r
                 </span>\r
                 <span class="text-xs text-600">\r
-                    <i class="pi pi-sitemap mr-1"></i>{{ stats()?.baselineRepos ?? 0 }} {{ 'dev.monitoring.totalRepos.baseline' | translate }}\r
+                    <i class="pi pi-sitemap mr-1"></i>{{ stats()?.baselineReposGit ?? 0 }} {{ 'dev.monitoring.totalRepos.baseline' | translate }}\r
+                </span>\r
+            </div>\r
+            }\r
+        </div>\r
+\r
+        <!-- Local Export Count -->\r
+        <div class="surface-card border-round-lg shadow-2 p-4 flex-1">\r
+            <div class="flex align-items-center gap-2 mb-2">\r
+                <i class="pi pi-file-export text-primary text-xl"></i>\r
+                <span class="text-600 text-sm">{{ 'dev.monitoring.totalExportsLocal' | translate }}</span>\r
+            </div>\r
+            @if(loading()) { <p-skeleton styleClass="h-4rem w-full" /> }\r
+            @else {\r
+            <p class="text-4xl font-bold text-900 text-center m-0">{{ stats()?.exportCountLocal ?? 0 }}</p>\r
+            <div class="flex justify-content-center gap-3 mt-1">\r
+                <span class="text-xs text-600">\r
+                    <i class="pi pi-globe mr-1"></i>{{ stats()?.enPageCountLocal ?? 0 }} {{ 'common.language.englishPages' | translate }}\r
+                </span>\r
+                <span class="text-xs text-600">\r
+                    <i class="pi pi-globe mr-1"></i>{{ stats()?.frPageCountLocal ?? 0 }} {{ 'common.language.frenchPages' | translate }}\r
+                </span>\r
+            </div>\r
+            }\r
+        </div>\r
+\r
+        <!-- Local Repo Count -->\r
+        <div class="surface-card border-round-lg shadow-2 p-4 flex-1">\r
+            <div class="flex align-items-center gap-2 mb-2">\r
+                <i class="pi pi-folder-plus text-primary text-xl"></i>\r
+                <span class="text-600 text-sm">{{ 'dev.monitoring.totalReposLocal' | translate }}</span>\r
+            </div>\r
+            @if(loading()) { <p-skeleton styleClass="h-4rem w-full" /> }\r
+            @else {\r
+            <p class="text-4xl font-bold text-900 text-center m-0">{{ stats()?.uniqueReposLocal ?? 0 }}</p>\r
+            <div class="flex justify-content-center gap-3 mt-1">\r
+                <span class="text-xs text-600">\r
+                    <i class="pi pi-list-check mr-1"></i>{{ stats()?.prototypeReposLocal ?? 0 }} {{ 'dev.monitoring.totalRepos.prototype' | translate }}\r
+                </span>\r
+                <span class="text-xs text-600">\r
+                    <i class="pi pi-sitemap mr-1"></i>{{ stats()?.baselineReposLocal ?? 0 }} {{ 'dev.monitoring.totalRepos.baseline' | translate }}\r
                 </span>\r
             </div>\r
             }\r
@@ -17164,7 +17296,7 @@ var UsageMonitoringComponent = class _UsageMonitoringComponent {
   }], null, null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(UsageMonitoringComponent, { className: "UsageMonitoringComponent", filePath: "src/app/views/standalone/components/dev-tools/usage-monitoring/usage-monitoring.component.ts", lineNumber: 96 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(UsageMonitoringComponent, { className: "UsageMonitoringComponent", filePath: "src/app/views/standalone/components/dev-tools/usage-monitoring/usage-monitoring.component.ts", lineNumber: 104 });
 })();
 export {
   UsageMonitoringComponent
@@ -17188,4 +17320,4 @@ chart.js/dist/chart.js:
    * Released under the MIT License
    *)
 */
-//# sourceMappingURL=chunk-KGVUD34P.js.map
+//# sourceMappingURL=chunk-RPF3CPXW.js.map

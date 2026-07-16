@@ -64,10 +64,13 @@ var DevToolsComponent = class _DevToolsComponent {
     marker("save._");
     marker("feedback._");
     marker("common._");
-    marker("common.no");
-    marker("common.save");
-    marker("common.delete");
+    marker("common.complete");
     marker("common.cra");
+    marker("common.edited");
+    marker("common.error");
+    marker("common.pending");
+    marker("common.no");
+    marker("common.yes");
   }
   static \u0275fac = function DevToolsComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _DevToolsComponent)();
@@ -171,4 +174,4 @@ var DevToolsComponent = class _DevToolsComponent {
 export {
   DevToolsComponent
 };
-//# sourceMappingURL=chunk-K3BYNLFE.js.map
+//# sourceMappingURL=chunk-3ACDLLVV.js.map

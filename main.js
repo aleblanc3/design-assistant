@@ -1,13 +1,13 @@
 import {
   DevToolsComponent
-} from "./chunk-K3BYNLFE.js";
+} from "./chunk-3ACDLLVV.js";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupAddonModule,
   InputGroupModule,
   UserSettingsComponent
-} from "./chunk-IFWVAK66.js";
+} from "./chunk-FLKJGFCI.js";
 import {
   Divider,
   DividerModule,
@@ -45,7 +45,7 @@ import {
   FindPagesComponent,
   InputNumber,
   InputNumberModule
-} from "./chunk-EKMGEGN3.js";
+} from "./chunk-HAVDAT5M.js";
 import {
   Tag,
   TagModule
@@ -87,7 +87,7 @@ import {
 } from "./chunk-27HYBFZ6.js";
 import {
   AddUrlsComponent
-} from "./chunk-5RX7HII7.js";
+} from "./chunk-4FQO7SSX.js";
 import {
   Message,
   MessageModule,
@@ -105,7 +105,7 @@ import {
   TreeNodeStyleService,
   UsageService,
   version
-} from "./chunk-32ZIU6QX.js";
+} from "./chunk-KUKADQOZ.js";
 import {
   COLUMN_GROUPS,
   ExportGitHubService,
@@ -115,7 +115,7 @@ import {
   PageTemplate,
   PhaseStatus,
   ProjectPhase
-} from "./chunk-LWD65AXW.js";
+} from "./chunk-A67ORX53.js";
 import {
   environment
 } from "./chunk-MYYNWJMU.js";
@@ -238,11 +238,11 @@ import {
 import "./chunk-G3ZWOXEO.js";
 import {
   require_diff2html_ui_slim
-} from "./chunk-5NUGUT2X.js";
+} from "./chunk-EE63MPZD.js";
 import "./chunk-HKIL6DU6.js";
 import {
   createPatch
-} from "./chunk-VLG55BFN.js";
+} from "./chunk-EYFEDUKZ.js";
 import {
   animate,
   animateChild,
@@ -33739,7 +33739,7 @@ function EditProjectComponent_Conditional_4_Template(rf, ctx) {
     \u0275\u0275property("text", \u0275\u0275pipeBind1(1, 1, "project.message.noRepo"));
   }
 }
-function EditProjectComponent_For_31_Template(rf, ctx) {
+function EditProjectComponent_For_32_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "li");
     \u0275\u0275text(1);
@@ -33774,7 +33774,7 @@ var EditProjectComponent = class _EditProjectComponent {
   static \u0275fac = function EditProjectComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _EditProjectComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _EditProjectComponent, selectors: [["aida-edit-project"]], decls: 45, vars: 29, consts: [["id", "wb-cont"], ["severity", "info", "icon", "pi pi-info-circle font-bold", "styleClass", "mb-2", 3, "text"], [1, "flex", "flex-column", "gap-3"], [1, "flex", "lg:flex-row", "flex-column", "gap-3"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "lg:w-4", "min-w-min"], ["mode", "list"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "lg:w-6", "min-w-min"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min", "mb-2"], [1, "flex", "flex-column", "gap-2", "lg:flex-row", "lg:gap-4", "lg:align-items-center"], [1, "text-2xl", "my-1"], [1, "flex", "flex-row", "gap-1"], ["icon", "pi pi-list", "outlined", "", "size", "small", "styleClass", "secondary-outline w-full min-w-max", 3, "click", "label"], ["header", "URLs", "position", "right", "styleClass", "w-6", 3, "visibleChange", "visible"], ["icon", "pi pi-sitemap", "outlined", "", "size", "small", "styleClass", "secondary-outline w-full min-w-max", 3, "click", "label"], ["icon", "pi pi-list-check", "outlined", "", "size", "small", "styleClass", "secondary-outline w-full min-w-max", "routerLink", "/inventory", 3, "label"], [1, "flex", "flex-row", "gap-1", "lg:justify-content-center", "lg:align-items-center"], [1, "pi", "pi-copy", "text-primary", "text-5xl"], [1, "flex", "flex-column"], [1, "my-0", "font-bold", "text-xl"], [1, "my-0", "text-sm"]], template: function EditProjectComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _EditProjectComponent, selectors: [["aida-edit-project"]], decls: 46, vars: 32, consts: [["id", "wb-cont"], ["severity", "info", "icon", "pi pi-info-circle font-bold", "styleClass", "mb-2", 3, "text"], [1, "flex", "flex-column", "gap-3"], [1, "flex", "lg:flex-row", "flex-column", "gap-3"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "lg:w-4", "min-w-min"], ["mode", "list"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "lg:w-6", "min-w-min"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min", "mb-2"], [1, "flex", "flex-column", "gap-2", "lg:flex-row", "lg:gap-4", "lg:align-items-center"], [1, "text-2xl", "my-1"], [1, "flex", "flex-row", "gap-1"], ["icon", "pi pi-list", "outlined", "", "size", "small", "styleClass", "secondary-outline w-full min-w-max", 3, "click", "label"], ["position", "right", "styleClass", "w-6", 3, "visibleChange", "header", "visible"], ["icon", "pi pi-sitemap", "outlined", "", "size", "small", "styleClass", "secondary-outline w-full min-w-max", 3, "click", "label"], ["icon", "pi pi-list-check", "outlined", "", "size", "small", "styleClass", "secondary-outline w-full min-w-max", "routerLink", "/inventory", 3, "label"], [1, "flex", "flex-row", "gap-1", "lg:justify-content-center", "lg:align-items-center"], [1, "pi", "pi-copy", "text-primary", "text-5xl"], [1, "flex", "flex-column"], [1, "my-0", "font-bold", "text-xl"], [1, "my-0", "text-sm"]], template: function EditProjectComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "h1", 0);
       \u0275\u0275text(1);
@@ -33809,56 +33809,58 @@ var EditProjectComponent = class _EditProjectComponent {
       });
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(28, "p-drawer", 12);
+      \u0275\u0275pipe(29, "translate");
       \u0275\u0275twoWayListener("visibleChange", function EditProjectComponent_Template_p_drawer_visibleChange_28_listener($event) {
         \u0275\u0275twoWayBindingSet(ctx.showUrls, $event) || (ctx.showUrls = $event);
         return $event;
       });
-      \u0275\u0275elementStart(29, "ul");
-      \u0275\u0275repeaterCreate(30, EditProjectComponent_For_31_Template, 2, 1, "li", null, _forTrack04);
+      \u0275\u0275elementStart(30, "ul");
+      \u0275\u0275repeaterCreate(31, EditProjectComponent_For_32_Template, 2, 1, "li", null, _forTrack04);
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(32, "p-button", 13);
-      \u0275\u0275pipe(33, "translate");
+      \u0275\u0275elementStart(33, "p-button", 13);
       \u0275\u0275pipe(34, "translate");
-      \u0275\u0275listener("click", function EditProjectComponent_Template_p_button_click_32_listener() {
+      \u0275\u0275pipe(35, "translate");
+      \u0275\u0275listener("click", function EditProjectComponent_Template_p_button_click_33_listener() {
         return ctx.iaDiagram.openDiagram();
       });
       \u0275\u0275elementEnd();
-      \u0275\u0275element(35, "p-button", 14);
-      \u0275\u0275pipe(36, "translate");
+      \u0275\u0275element(36, "p-button", 14);
+      \u0275\u0275pipe(37, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(37, "div", 15);
-      \u0275\u0275element(38, "i", 16);
-      \u0275\u0275elementStart(39, "div", 17)(40, "p", 18);
-      \u0275\u0275text(41);
+      \u0275\u0275elementStart(38, "div", 15);
+      \u0275\u0275element(39, "i", 16);
+      \u0275\u0275elementStart(40, "div", 17)(41, "p", 18);
+      \u0275\u0275text(42);
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(42, "p", 19);
-      \u0275\u0275text(43);
-      \u0275\u0275pipe(44, "translate");
+      \u0275\u0275elementStart(43, "p", 19);
+      \u0275\u0275text(44);
+      \u0275\u0275pipe(45, "translate");
       \u0275\u0275elementEnd()()()()()();
     }
     if (rf & 2) {
       \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 11, ctx.hasName ? "project._nav.edit" : "project._nav.new"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 12, ctx.hasName ? "project._nav.edit" : "project._nav.new"));
       \u0275\u0275advance(2);
       \u0275\u0275conditional(!ctx.hasName ? 3 : -1);
       \u0275\u0275advance();
       \u0275\u0275conditional(!ctx.hasRepo ? 4 : -1);
       \u0275\u0275advance(17);
-      \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind1(22, 13, "common.view"), " ", \u0275\u0275pipeBind1(23, 15, "common.pages"), "");
+      \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind1(22, 14, "common.view"), " ", \u0275\u0275pipeBind1(23, 16, "common.pages"), "");
       \u0275\u0275advance(4);
-      \u0275\u0275property("label", \u0275\u0275pipeBind1(26, 17, "common.view") + " " + \u0275\u0275pipeBind1(27, 19, "project.urls"));
+      \u0275\u0275property("label", \u0275\u0275pipeBind1(26, 18, "common.view") + " " + \u0275\u0275pipeBind1(27, 20, "project.urls"));
       \u0275\u0275advance(3);
+      \u0275\u0275property("header", \u0275\u0275pipeBind1(29, 22, "common.urls"));
       \u0275\u0275twoWayProperty("visible", ctx.showUrls);
-      \u0275\u0275advance(2);
+      \u0275\u0275advance(3);
       \u0275\u0275repeater(ctx.projectState.getAllPages(ctx.lang, "live", "inScope"));
       \u0275\u0275advance(2);
-      \u0275\u0275property("label", \u0275\u0275pipeBind1(33, 21, "common.view") + " " + \u0275\u0275pipeBind1(34, 23, "iaDiagram._title"));
+      \u0275\u0275property("label", \u0275\u0275pipeBind1(34, 24, "common.view") + " " + \u0275\u0275pipeBind1(35, 26, "iaDiagram._title"));
       \u0275\u0275advance(3);
-      \u0275\u0275property("label", \u0275\u0275pipeBind1(36, 25, "inventory._title"));
+      \u0275\u0275property("label", \u0275\u0275pipeBind1(37, 28, "inventory._title"));
       \u0275\u0275advance(6);
       \u0275\u0275textInterpolate(ctx.inScopePageCount());
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(44, 27, "common.pages"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(45, 30, "common.pages"));
     }
   }, dependencies: [
     CommonModule,
@@ -33950,7 +33952,7 @@ var EditProjectComponent = class _EditProjectComponent {
                           size="small"\r
                           styleClass="secondary-outline w-full min-w-max"\r
                           (click)="showUrls = true" />\r
-                <p-drawer header="URLs" [(visible)]="showUrls" position="right" styleClass="w-6">\r
+                <p-drawer [header]="'common.urls' | translate" [(visible)]="showUrls" position="right" styleClass="w-6">\r
                     <ul>\r
                         @for(url of projectState.getAllPages(lang,'live','inScope'); track url.url){\r
                         <li>{{url.url}}</li>\r
@@ -34083,1055 +34085,19 @@ var ImportPageComponent = class _ImportPageComponent {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(ImportPageComponent, { className: "ImportPageComponent", filePath: "src/app/views/project/import-page/import-page.component.ts", lineNumber: 18 });
 })();
 
-// node_modules/primeng/fesm2022/primeng-popover.mjs
-var _c018 = ["content"];
-var _c126 = ["*"];
-var _c214 = (a0, a1) => ({
-  showTransitionParams: a0,
-  hideTransitionParams: a1
-});
-var _c312 = (a0, a1) => ({
-  value: a0,
-  params: a1
-});
-var _c411 = (a0) => ({
-  closeCallback: a0
-});
-function Popover_div_0_3_ng_template_0_Template(rf, ctx) {
-}
-function Popover_div_0_3_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275template(0, Popover_div_0_3_ng_template_0_Template, 0, 0, "ng-template");
-  }
-}
-function Popover_div_0_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r1 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 1);
-    \u0275\u0275listener("click", function Popover_div_0_Template_div_click_0_listener($event) {
-      \u0275\u0275restoreView(_r1);
-      const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.onOverlayClick($event));
-    })("@animation.start", function Popover_div_0_Template_div_animation_animation_start_0_listener($event) {
-      \u0275\u0275restoreView(_r1);
-      const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.onAnimationStart($event));
-    })("@animation.done", function Popover_div_0_Template_div_animation_animation_done_0_listener($event) {
-      \u0275\u0275restoreView(_r1);
-      const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.onAnimationEnd($event));
-    });
-    \u0275\u0275elementStart(1, "div", 2);
-    \u0275\u0275listener("click", function Popover_div_0_Template_div_click_1_listener($event) {
-      \u0275\u0275restoreView(_r1);
-      const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.onContentClick($event));
-    })("mousedown", function Popover_div_0_Template_div_mousedown_1_listener($event) {
-      \u0275\u0275restoreView(_r1);
-      const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.onContentClick($event));
-    });
-    \u0275\u0275projection(2);
-    \u0275\u0275template(3, Popover_div_0_3_Template, 1, 0, null, 3);
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext();
-    \u0275\u0275classMap(ctx_r1.styleClass);
-    \u0275\u0275property("ngClass", "p-popover p-component")("ngStyle", ctx_r1.style)("@animation", \u0275\u0275pureFunction2(13, _c312, ctx_r1.overlayVisible ? "open" : "close", \u0275\u0275pureFunction2(10, _c214, ctx_r1.showTransitionOptions, ctx_r1.hideTransitionOptions)));
-    \u0275\u0275attribute("aria-modal", ctx_r1.overlayVisible)("aria-label", ctx_r1.ariaLabel)("aria-labelledBy", ctx_r1.ariaLabelledBy);
-    \u0275\u0275advance(3);
-    \u0275\u0275property("ngTemplateOutlet", ctx_r1.contentTemplate || ctx_r1._contentTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(16, _c411, ctx_r1.onCloseClick.bind(ctx_r1)));
-  }
-}
-var theme13 = ({
-  dt
-}) => `
-.p-popover {
-    margin-top: ${dt("popover.gutter")};
-    background: ${dt("popover.background")};
-    color: ${dt("popover.color")};
-    border: 1px solid ${dt("popover.border.color")};
-    border-radius: ${dt("popover.border.radius")};
-    box-shadow: ${dt("popover.shadow")};
-    position: absolute
-}
-
-.p-popover-content {
-    padding: ${dt("popover.content.padding")};
-}
-
-.p-popover-flipped {
-    margin-top: calc(${dt("popover.gutter")} * -1);
-    margin-bottom: ${dt("popover.gutter")};
-}
-
-.p-popover-enter-from {
-    opacity: 0;
-    transform: scaleY(0.8);
-}
-
-.p-popover-leave-to {
-    opacity: 0;
-}
-
-.p-popover-enter-active {
-    transition: transform 0.12s cubic-bezier(0, 0, 0.2, 1), opacity 0.12s cubic-bezier(0, 0, 0.2, 1);
-}
-
-.p-popover-leave-active {
-    transition: opacity 0.1s linear;
-}
-
-.p-popover:after,
-.p-popover:before {
-    bottom: 100%;
-    left: calc(${dt("popover.arrow.offset")} + ${dt("popover.arrow.left")});
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-}
-
-.p-popover:after {
-    border-width: calc(${dt("popover.gutter")} - 2px);
-    margin-left: calc(-1 * (${dt("popover.gutter")} - 2px));
-    border-style: solid;
-    border-color: transparent;
-    border-bottom-color: ${dt("popover.background")};
-}
-
-.p-popover:before {
-    border-width: ${dt("popover.gutter")};
-    margin-left: calc(-1 * ${dt("popover.gutter")});
-    border-style: solid;
-    border-color: transparent;
-    border-bottom-color: ${dt("popover.border.color")};
-}
-
-.p-popover-flipped:after,
-.p-popover-flipped:before {
-    bottom: auto;
-    top: 100%;
-}
-
-.p-popover.p-popover-flipped:after {
-    border-bottom-color: transparent;
-    border-top-color: ${dt("popover.background")};
-}
-
-.p-popover.p-popover-flipped:before {
-    border-bottom-color: transparent;
-    border-top-color: ${dt("popover.border.color")};
-}
-
-`;
-var classes14 = {
-  root: "p-popover p-component",
-  content: "p-popover-content"
-};
-var PopoverStyle = class _PopoverStyle extends BaseStyle {
-  name = "popover";
-  theme = theme13;
-  classes = classes14;
-  static \u0275fac = /* @__PURE__ */ (() => {
-    let \u0275PopoverStyle_BaseFactory;
-    return function PopoverStyle_Factory(__ngFactoryType__) {
-      return (\u0275PopoverStyle_BaseFactory || (\u0275PopoverStyle_BaseFactory = \u0275\u0275getInheritedFactory(_PopoverStyle)))(__ngFactoryType__ || _PopoverStyle);
-    };
-  })();
-  static \u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({
-    token: _PopoverStyle,
-    factory: _PopoverStyle.\u0275fac
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(PopoverStyle, [{
-    type: Injectable
-  }], null, null);
-})();
-var Popover = class _Popover extends BaseComponent {
-  /**
-   * Defines a string that labels the input for accessibility.
-   * @group Props
-   */
-  ariaLabel;
-  /**
-   * Establishes relationships between the component and label(s) where its value should be one or more element IDs.
-   * @group Props
-   */
-  ariaLabelledBy;
-  /**
-   * Enables to hide the overlay when outside is clicked.
-   * @group Props
-   */
-  dismissable = true;
-  /**
-   * Inline style of the component.
-   * @group Props
-   */
-  style;
-  /**
-   * Style class of the component.
-   * @group Props
-   */
-  styleClass;
-  /**
-   * Target element to attach the panel, valid values are "body" or a local ng-template variable of another element (note: use binding with brackets for template variables, e.g. [appendTo]="mydiv" for a div element having #mydiv as variable name).
-   * @group Props
-   */
-  appendTo = "body";
-  /**
-   * Whether to automatically manage layering.
-   * @group Props
-   */
-  autoZIndex = true;
-  /**
-   * Aria label of the close icon.
-   * @group Props
-   */
-  ariaCloseLabel;
-  /**
-   * Base zIndex value to use in layering.
-   * @group Props
-   */
-  baseZIndex = 0;
-  /**
-   * When enabled, first button receives focus on show.
-   * @group Props
-   */
-  focusOnShow = true;
-  /**
-   * Transition options of the show animation.
-   * @group Props
-   */
-  showTransitionOptions = ".12s cubic-bezier(0, 0, 0.2, 1)";
-  /**
-   * Transition options of the hide animation.
-   * @group Props
-   */
-  hideTransitionOptions = ".1s linear";
-  /**
-   * Callback to invoke when an overlay becomes visible.
-   * @group Emits
-   */
-  onShow = new EventEmitter();
-  /**
-   * Callback to invoke when an overlay gets hidden.
-   * @group Emits
-   */
-  onHide = new EventEmitter();
-  container;
-  overlayVisible = false;
-  render = false;
-  isOverlayAnimationInProgress = false;
-  selfClick = false;
-  documentClickListener;
-  target;
-  willHide;
-  scrollHandler;
-  documentResizeListener;
-  /**
-   * Custom content template.
-   * @group Templates
-   */
-  contentTemplate;
-  templates;
-  _contentTemplate;
-  destroyCallback;
-  overlayEventListener;
-  overlaySubscription;
-  _componentStyle = inject(PopoverStyle);
-  zone = inject(NgZone);
-  overlayService = inject(OverlayService);
-  ngAfterContentInit() {
-    this.templates.forEach((item) => {
-      switch (item.getType()) {
-        case "content":
-          this._contentTemplate = item.template;
-          break;
-      }
-    });
-  }
-  bindDocumentClickListener() {
-    if (isPlatformBrowser(this.platformId)) {
-      if (!this.documentClickListener) {
-        let documentEvent = isIOS() ? "touchstart" : "click";
-        const documentTarget = this.el ? this.el.nativeElement.ownerDocument : this.document;
-        this.documentClickListener = this.renderer.listen(documentTarget, documentEvent, (event2) => {
-          if (!this.dismissable) {
-            return;
-          }
-          if (!this.container?.contains(event2.target) && this.target !== event2.target && !this.target.contains(event2.target) && !this.selfClick) {
-            this.hide();
-          }
-          this.selfClick = false;
-          this.cd.markForCheck();
-        });
-      }
-    }
-  }
-  unbindDocumentClickListener() {
-    if (this.documentClickListener) {
-      this.documentClickListener();
-      this.documentClickListener = null;
-      this.selfClick = false;
-    }
-  }
-  /**
-   * Toggles the visibility of the panel.
-   * @param {Event} event - Browser event
-   * @param {Target} target - Target element.
-   * @group Method
-   */
-  toggle(event2, target) {
-    if (this.isOverlayAnimationInProgress) {
-      return;
-    }
-    if (this.overlayVisible) {
-      if (this.hasTargetChanged(event2, target)) {
-        this.destroyCallback = () => {
-          this.show(null, target || event2.currentTarget || event2.target);
-        };
-      }
-      this.hide();
-    } else {
-      this.show(event2, target);
-    }
-  }
-  /**
-   * Displays the panel.
-   * @param {Event} event - Browser event
-   * @param {Target} target - Target element.
-   * @group Method
-   */
-  show(event2, target) {
-    target && event2 && event2.stopPropagation();
-    if (this.isOverlayAnimationInProgress) {
-      return;
-    }
-    this.target = target || event2.currentTarget || event2.target;
-    this.overlayVisible = true;
-    this.render = true;
-    this.cd.markForCheck();
-  }
-  onOverlayClick(event2) {
-    this.overlayService.add({
-      originalEvent: event2,
-      target: this.el.nativeElement
-    });
-    this.selfClick = true;
-  }
-  onContentClick(event2) {
-    const targetElement = event2.target;
-    this.selfClick = event2.offsetX < targetElement.clientWidth && event2.offsetY < targetElement.clientHeight;
-  }
-  hasTargetChanged(event2, target) {
-    return this.target != null && this.target !== (target || event2.currentTarget || event2.target);
-  }
-  appendContainer() {
-    if (this.appendTo) {
-      if (this.appendTo === "body") this.renderer.appendChild(this.document.body, this.container);
-      else appendChild(this.appendTo, this.container);
-    }
-  }
-  restoreAppend() {
-    if (this.container && this.appendTo) {
-      this.renderer.appendChild(this.el.nativeElement, this.container);
-    }
-  }
-  align() {
-    if (this.autoZIndex) {
-      zindexutils.set("overlay", this.container, this.baseZIndex + this.config.zIndex.overlay);
-    }
-    absolutePosition(this.container, this.target, false);
-    const containerOffset = getOffset(this.container);
-    const targetOffset = getOffset(this.target);
-    const borderRadius = this.document.defaultView?.getComputedStyle(this.container).getPropertyValue("border-radius");
-    let arrowLeft = 0;
-    if (containerOffset.left < targetOffset.left) {
-      arrowLeft = targetOffset.left - containerOffset.left - parseFloat(borderRadius) * 2;
-    }
-    this.container?.style.setProperty($dt("popover.arrow.left").name, `${arrowLeft}px`);
-    if (containerOffset.top < targetOffset.top) {
-      this.container.setAttribute("data-p-popover-flipped", "true");
-      addClass(this.container, "p-popover-flipped");
-    }
-  }
-  onAnimationStart(event2) {
-    if (event2.toState === "open") {
-      this.container = event2.element;
-      this.container?.setAttribute(this.attrSelector, "");
-      this.appendContainer();
-      this.align();
-      this.bindDocumentClickListener();
-      this.bindDocumentResizeListener();
-      this.bindScrollListener();
-      if (this.focusOnShow) {
-        this.focus();
-      }
-      this.overlayEventListener = (e) => {
-        if (this.container && this.container.contains(e.target)) {
-          this.selfClick = true;
-        }
-      };
-      this.overlaySubscription = this.overlayService.clickObservable.subscribe(this.overlayEventListener);
-      this.onShow.emit(null);
-    }
-    this.isOverlayAnimationInProgress = true;
-  }
-  onAnimationEnd(event2) {
-    switch (event2.toState) {
-      case "void":
-        if (this.destroyCallback) {
-          this.destroyCallback();
-          this.destroyCallback = null;
-        }
-        if (this.overlaySubscription) {
-          this.overlaySubscription.unsubscribe();
-        }
-        break;
-      case "close":
-        if (this.autoZIndex) {
-          zindexutils.clear(this.container);
-        }
-        if (this.overlaySubscription) {
-          this.overlaySubscription.unsubscribe();
-        }
-        this.onContainerDestroy();
-        this.onHide.emit({});
-        this.render = false;
-        break;
-    }
-    this.isOverlayAnimationInProgress = false;
-  }
-  focus() {
-    let focusable = findSingle(this.container, "[autofocus]");
-    if (focusable) {
-      this.zone.runOutsideAngular(() => {
-        setTimeout(() => focusable.focus(), 5);
-      });
-    }
-  }
-  /**
-   * Hides the panel.
-   * @group Method
-   */
-  hide() {
-    this.overlayVisible = false;
-    this.cd.markForCheck();
-  }
-  onCloseClick(event2) {
-    this.hide();
-    event2.preventDefault();
-  }
-  onEscapeKeydown(event2) {
-    this.hide();
-  }
-  onWindowResize() {
-    if (this.overlayVisible && !isTouchDevice()) {
-      this.hide();
-    }
-  }
-  bindDocumentResizeListener() {
-    if (isPlatformBrowser(this.platformId)) {
-      if (!this.documentResizeListener) {
-        const window2 = this.document.defaultView;
-        this.documentResizeListener = this.renderer.listen(window2, "resize", this.onWindowResize.bind(this));
-      }
-    }
-  }
-  unbindDocumentResizeListener() {
-    if (this.documentResizeListener) {
-      this.documentResizeListener();
-      this.documentResizeListener = null;
-    }
-  }
-  bindScrollListener() {
-    if (isPlatformBrowser(this.platformId)) {
-      if (!this.scrollHandler) {
-        this.scrollHandler = new ConnectedOverlayScrollHandler(this.target, () => {
-          if (this.overlayVisible) {
-            this.hide();
-          }
-        });
-      }
-      this.scrollHandler.bindScrollListener();
-    }
-  }
-  unbindScrollListener() {
-    if (this.scrollHandler) {
-      this.scrollHandler.unbindScrollListener();
-    }
-  }
-  onContainerDestroy() {
-    if (!this.cd.destroyed) {
-      this.target = null;
-    }
-    this.unbindDocumentClickListener();
-    this.unbindDocumentResizeListener();
-    this.unbindScrollListener();
-  }
-  ngOnDestroy() {
-    if (this.scrollHandler) {
-      this.scrollHandler.destroy();
-      this.scrollHandler = null;
-    }
-    if (this.container && this.autoZIndex) {
-      zindexutils.clear(this.container);
-    }
-    if (!this.cd.destroyed) {
-      this.target = null;
-    }
-    this.destroyCallback = null;
-    if (this.container) {
-      this.restoreAppend();
-      this.onContainerDestroy();
-    }
-    if (this.overlaySubscription) {
-      this.overlaySubscription.unsubscribe();
-    }
-    super.ngOnDestroy();
-  }
-  static \u0275fac = /* @__PURE__ */ (() => {
-    let \u0275Popover_BaseFactory;
-    return function Popover_Factory(__ngFactoryType__) {
-      return (\u0275Popover_BaseFactory || (\u0275Popover_BaseFactory = \u0275\u0275getInheritedFactory(_Popover)))(__ngFactoryType__ || _Popover);
-    };
-  })();
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({
-    type: _Popover,
-    selectors: [["p-popover"]],
-    contentQueries: function Popover_ContentQueries(rf, ctx, dirIndex) {
-      if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c018, 4);
-        \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
-      }
-      if (rf & 2) {
-        let _t;
-        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.contentTemplate = _t.first);
-        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.templates = _t);
-      }
-    },
-    hostBindings: function Popover_HostBindings(rf, ctx) {
-      if (rf & 1) {
-        \u0275\u0275listener("keydown.escape", function Popover_keydown_escape_HostBindingHandler($event) {
-          return ctx.onEscapeKeydown($event);
-        }, false, \u0275\u0275resolveDocument);
-      }
-    },
-    inputs: {
-      ariaLabel: "ariaLabel",
-      ariaLabelledBy: "ariaLabelledBy",
-      dismissable: [2, "dismissable", "dismissable", booleanAttribute],
-      style: "style",
-      styleClass: "styleClass",
-      appendTo: "appendTo",
-      autoZIndex: [2, "autoZIndex", "autoZIndex", booleanAttribute],
-      ariaCloseLabel: "ariaCloseLabel",
-      baseZIndex: [2, "baseZIndex", "baseZIndex", numberAttribute],
-      focusOnShow: [2, "focusOnShow", "focusOnShow", booleanAttribute],
-      showTransitionOptions: "showTransitionOptions",
-      hideTransitionOptions: "hideTransitionOptions"
-    },
-    outputs: {
-      onShow: "onShow",
-      onHide: "onHide"
-    },
-    features: [\u0275\u0275ProvidersFeature([PopoverStyle]), \u0275\u0275InheritDefinitionFeature],
-    ngContentSelectors: _c126,
-    decls: 1,
-    vars: 1,
-    consts: [["role", "dialog", 3, "ngClass", "ngStyle", "class", "click", 4, "ngIf"], ["role", "dialog", 3, "click", "ngClass", "ngStyle"], [1, "p-popover-content", 3, "click", "mousedown"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"]],
-    template: function Popover_Template(rf, ctx) {
-      if (rf & 1) {
-        \u0275\u0275projectionDef();
-        \u0275\u0275template(0, Popover_div_0_Template, 4, 18, "div", 0);
-      }
-      if (rf & 2) {
-        \u0275\u0275property("ngIf", ctx.render);
-      }
-    },
-    dependencies: [CommonModule, NgClass, NgIf, NgTemplateOutlet, NgStyle, SharedModule],
-    encapsulation: 2,
-    data: {
-      animation: [trigger("animation", [state("void", style({
-        transform: "scaleY(0.8)",
-        opacity: 0
-      })), state("close", style({
-        opacity: 0
-      })), state("open", style({
-        transform: "translateY(0)",
-        opacity: 1
-      })), transition("void => open", animate("{{showTransitionParams}}")), transition("open => close", animate("{{hideTransitionParams}}"))])]
-    },
-    changeDetection: 0
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(Popover, [{
-    type: Component,
-    args: [{
-      selector: "p-popover",
-      standalone: true,
-      imports: [CommonModule, SharedModule],
-      template: `
-        <div
-            *ngIf="render"
-            [ngClass]="'p-popover p-component'"
-            [ngStyle]="style"
-            [class]="styleClass"
-            (click)="onOverlayClick($event)"
-            [@animation]="{
-                value: overlayVisible ? 'open' : 'close',
-                params: { showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions }
-            }"
-            (@animation.start)="onAnimationStart($event)"
-            (@animation.done)="onAnimationEnd($event)"
-            role="dialog"
-            [attr.aria-modal]="overlayVisible"
-            [attr.aria-label]="ariaLabel"
-            [attr.aria-labelledBy]="ariaLabelledBy"
-        >
-            <div class="p-popover-content" (click)="onContentClick($event)" (mousedown)="onContentClick($event)">
-                <ng-content></ng-content>
-                <ng-template *ngTemplateOutlet="contentTemplate || _contentTemplate; context: { closeCallback: onCloseClick.bind(this) }"></ng-template>
-            </div>
-        </div>
-    `,
-      animations: [trigger("animation", [state("void", style({
-        transform: "scaleY(0.8)",
-        opacity: 0
-      })), state("close", style({
-        opacity: 0
-      })), state("open", style({
-        transform: "translateY(0)",
-        opacity: 1
-      })), transition("void => open", animate("{{showTransitionParams}}")), transition("open => close", animate("{{hideTransitionParams}}"))])],
-      changeDetection: ChangeDetectionStrategy.OnPush,
-      encapsulation: ViewEncapsulation.None,
-      providers: [PopoverStyle]
-    }]
-  }], null, {
-    ariaLabel: [{
-      type: Input
-    }],
-    ariaLabelledBy: [{
-      type: Input
-    }],
-    dismissable: [{
-      type: Input,
-      args: [{
-        transform: booleanAttribute
-      }]
-    }],
-    style: [{
-      type: Input
-    }],
-    styleClass: [{
-      type: Input
-    }],
-    appendTo: [{
-      type: Input
-    }],
-    autoZIndex: [{
-      type: Input,
-      args: [{
-        transform: booleanAttribute
-      }]
-    }],
-    ariaCloseLabel: [{
-      type: Input
-    }],
-    baseZIndex: [{
-      type: Input,
-      args: [{
-        transform: numberAttribute
-      }]
-    }],
-    focusOnShow: [{
-      type: Input,
-      args: [{
-        transform: booleanAttribute
-      }]
-    }],
-    showTransitionOptions: [{
-      type: Input
-    }],
-    hideTransitionOptions: [{
-      type: Input
-    }],
-    onShow: [{
-      type: Output
-    }],
-    onHide: [{
-      type: Output
-    }],
-    contentTemplate: [{
-      type: ContentChild,
-      args: ["content", {
-        descendants: false
-      }]
-    }],
-    templates: [{
-      type: ContentChildren,
-      args: [PrimeTemplate]
-    }],
-    onEscapeKeydown: [{
-      type: HostListener,
-      args: ["document:keydown.escape", ["$event"]]
-    }]
-  });
-})();
-var PopoverModule = class _PopoverModule {
-  static \u0275fac = function PopoverModule_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _PopoverModule)();
-  };
-  static \u0275mod = /* @__PURE__ */ \u0275\u0275defineNgModule({
-    type: _PopoverModule,
-    imports: [Popover, SharedModule],
-    exports: [Popover, SharedModule]
-  });
-  static \u0275inj = /* @__PURE__ */ \u0275\u0275defineInjector({
-    imports: [Popover, SharedModule, SharedModule]
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(PopoverModule, [{
-    type: NgModule,
-    args: [{
-      imports: [Popover, SharedModule],
-      exports: [Popover, SharedModule]
-    }]
-  }], null, null);
-})();
-
-// node_modules/primeng/fesm2022/primeng-toolbar.mjs
-var _c019 = ["start"];
-var _c127 = ["end"];
-var _c215 = ["center"];
-var _c313 = ["*"];
-function Toolbar_div_2_ng_container_1_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function Toolbar_div_2_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 4);
-    \u0275\u0275template(1, Toolbar_div_2_ng_container_1_Template, 1, 0, "ng-container", 5);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275attribute("data-pc-section", "start");
-    \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r0.startTemplate || ctx_r0._startTemplate);
-  }
-}
-function Toolbar_div_3_ng_container_1_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function Toolbar_div_3_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 6);
-    \u0275\u0275template(1, Toolbar_div_3_ng_container_1_Template, 1, 0, "ng-container", 5);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275attribute("data-pc-section", "center");
-    \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r0.centerTemplate || ctx_r0._centerTemplate);
-  }
-}
-function Toolbar_div_4_ng_container_1_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function Toolbar_div_4_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 7);
-    \u0275\u0275template(1, Toolbar_div_4_ng_container_1_Template, 1, 0, "ng-container", 5);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275attribute("data-pc-section", "end");
-    \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r0.endTemplate || ctx_r0._endTemplate);
-  }
-}
-var theme14 = ({
-  dt
-}) => `
-.p-toolbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    padding: ${dt("toolbar.padding")};
-    background: ${dt("toolbar.background")};
-    border: 1px solid ${dt("toolbar.border.color")};
-    color: ${dt("toolbar.color")};
-    border-radius: ${dt("toolbar.border.radius")};
-    gap: ${dt("toolbar.gap")};
-}
-
-.p-toolbar-start,
-.p-toolbar-center,
-.p-toolbar-end {
-    display: flex;
-    align-items: center;
-}
-`;
-var classes15 = {
-  root: "p-toolbar p-component",
-  start: "p-toolbar-start",
-  center: "p-toolbar-center",
-  end: "p-toolbar-end"
-};
-var ToolbarStyle = class _ToolbarStyle extends BaseStyle {
-  name = "toolbar";
-  theme = theme14;
-  classes = classes15;
-  static \u0275fac = /* @__PURE__ */ (() => {
-    let \u0275ToolbarStyle_BaseFactory;
-    return function ToolbarStyle_Factory(__ngFactoryType__) {
-      return (\u0275ToolbarStyle_BaseFactory || (\u0275ToolbarStyle_BaseFactory = \u0275\u0275getInheritedFactory(_ToolbarStyle)))(__ngFactoryType__ || _ToolbarStyle);
-    };
-  })();
-  static \u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({
-    token: _ToolbarStyle,
-    factory: _ToolbarStyle.\u0275fac
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(ToolbarStyle, [{
-    type: Injectable
-  }], null, null);
-})();
-var ToolbarClasses;
-(function(ToolbarClasses2) {
-  ToolbarClasses2["root"] = "p-toolbar";
-  ToolbarClasses2["start"] = "p-toolbar-start";
-  ToolbarClasses2["center"] = "p-toolbar-center";
-  ToolbarClasses2["end"] = "p-toolbar-end";
-})(ToolbarClasses || (ToolbarClasses = {}));
-var Toolbar = class _Toolbar extends BaseComponent {
-  /**
-   * Inline style of the component.
-   * @group Props
-   */
-  style;
-  /**
-   * Style class of the component.
-   * @group Props
-   */
-  styleClass;
-  /**
-   * Defines a string value that labels an interactive element.
-   * @group Props
-   */
-  ariaLabelledBy;
-  _componentStyle = inject(ToolbarStyle);
-  getBlockableElement() {
-    return this.el.nativeElement.children[0];
-  }
-  /**
-   * Defines template option for start.
-   * @group Templates
-   */
-  startTemplate;
-  /**
-   * Defines template option for end.
-   * @group Templates
-   */
-  endTemplate;
-  /**
-   * Defines template option for center.
-   * @group Templates
-   */
-  centerTemplate;
-  templates;
-  _startTemplate;
-  _endTemplate;
-  _centerTemplate;
-  ngAfterContentInit() {
-    this.templates.forEach((item) => {
-      switch (item.getType()) {
-        case "start":
-        case "left":
-          this._startTemplate = item.template;
-          break;
-        case "end":
-        case "right":
-          this._endTemplate = item.template;
-          break;
-        case "center":
-          this._centerTemplate = item.template;
-          break;
-      }
-    });
-  }
-  static \u0275fac = /* @__PURE__ */ (() => {
-    let \u0275Toolbar_BaseFactory;
-    return function Toolbar_Factory(__ngFactoryType__) {
-      return (\u0275Toolbar_BaseFactory || (\u0275Toolbar_BaseFactory = \u0275\u0275getInheritedFactory(_Toolbar)))(__ngFactoryType__ || _Toolbar);
-    };
-  })();
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({
-    type: _Toolbar,
-    selectors: [["p-toolbar"]],
-    contentQueries: function Toolbar_ContentQueries(rf, ctx, dirIndex) {
-      if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c019, 4);
-        \u0275\u0275contentQuery(dirIndex, _c127, 4);
-        \u0275\u0275contentQuery(dirIndex, _c215, 4);
-        \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
-      }
-      if (rf & 2) {
-        let _t;
-        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.startTemplate = _t.first);
-        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.endTemplate = _t.first);
-        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.centerTemplate = _t.first);
-        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.templates = _t);
-      }
-    },
-    inputs: {
-      style: "style",
-      styleClass: "styleClass",
-      ariaLabelledBy: "ariaLabelledBy"
-    },
-    features: [\u0275\u0275ProvidersFeature([ToolbarStyle]), \u0275\u0275InheritDefinitionFeature],
-    ngContentSelectors: _c313,
-    decls: 5,
-    vars: 9,
-    consts: [["role", "toolbar", 3, "ngClass", "ngStyle"], ["class", "p-toolbar-start", 4, "ngIf"], ["class", "p-toolbar-center", 4, "ngIf"], ["class", "p-toolbar-end", 4, "ngIf"], [1, "p-toolbar-start"], [4, "ngTemplateOutlet"], [1, "p-toolbar-center"], [1, "p-toolbar-end"]],
-    template: function Toolbar_Template(rf, ctx) {
-      if (rf & 1) {
-        \u0275\u0275projectionDef();
-        \u0275\u0275elementStart(0, "div", 0);
-        \u0275\u0275projection(1);
-        \u0275\u0275template(2, Toolbar_div_2_Template, 2, 2, "div", 1)(3, Toolbar_div_3_Template, 2, 2, "div", 2)(4, Toolbar_div_4_Template, 2, 2, "div", 3);
-        \u0275\u0275elementEnd();
-      }
-      if (rf & 2) {
-        \u0275\u0275classMap(ctx.styleClass);
-        \u0275\u0275property("ngClass", "p-toolbar p-component")("ngStyle", ctx.style);
-        \u0275\u0275attribute("aria-labelledby", ctx.ariaLabelledBy)("data-pc-name", "toolbar");
-        \u0275\u0275advance(2);
-        \u0275\u0275property("ngIf", ctx.startTemplate || ctx._startTemplate);
-        \u0275\u0275advance();
-        \u0275\u0275property("ngIf", ctx.centerTemplate || ctx._centerTemplate);
-        \u0275\u0275advance();
-        \u0275\u0275property("ngIf", ctx.endTemplate || ctx._endTemplate);
-      }
-    },
-    dependencies: [CommonModule, NgClass, NgIf, NgTemplateOutlet, NgStyle, SharedModule],
-    encapsulation: 2,
-    changeDetection: 0
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(Toolbar, [{
-    type: Component,
-    args: [{
-      selector: "p-toolbar",
-      standalone: true,
-      imports: [CommonModule, SharedModule],
-      template: `
-        <div [ngClass]="'p-toolbar p-component'" [attr.aria-labelledby]="ariaLabelledBy" [ngStyle]="style" [class]="styleClass" role="toolbar" [attr.data-pc-name]="'toolbar'">
-            <ng-content></ng-content>
-            <div class="p-toolbar-start" *ngIf="startTemplate || _startTemplate" [attr.data-pc-section]="'start'">
-                <ng-container *ngTemplateOutlet="startTemplate || _startTemplate"></ng-container>
-            </div>
-            <div class="p-toolbar-center" *ngIf="centerTemplate || _centerTemplate" [attr.data-pc-section]="'center'">
-                <ng-container *ngTemplateOutlet="centerTemplate || _centerTemplate"></ng-container>
-            </div>
-            <div class="p-toolbar-end" *ngIf="endTemplate || _endTemplate" [attr.data-pc-section]="'end'">
-                <ng-container *ngTemplateOutlet="endTemplate || _endTemplate"></ng-container>
-            </div>
-        </div>
-    `,
-      changeDetection: ChangeDetectionStrategy.OnPush,
-      encapsulation: ViewEncapsulation.None,
-      providers: [ToolbarStyle]
-    }]
-  }], null, {
-    style: [{
-      type: Input
-    }],
-    styleClass: [{
-      type: Input
-    }],
-    ariaLabelledBy: [{
-      type: Input
-    }],
-    startTemplate: [{
-      type: ContentChild,
-      args: ["start", {
-        descendants: false
-      }]
-    }],
-    endTemplate: [{
-      type: ContentChild,
-      args: ["end", {
-        descendants: false
-      }]
-    }],
-    centerTemplate: [{
-      type: ContentChild,
-      args: ["center", {
-        descendants: false
-      }]
-    }],
-    templates: [{
-      type: ContentChildren,
-      args: [PrimeTemplate]
-    }]
-  });
-})();
-var ToolbarModule = class _ToolbarModule {
-  static \u0275fac = function ToolbarModule_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _ToolbarModule)();
-  };
-  static \u0275mod = /* @__PURE__ */ \u0275\u0275defineNgModule({
-    type: _ToolbarModule,
-    imports: [Toolbar, SharedModule],
-    exports: [Toolbar, SharedModule]
-  });
-  static \u0275inj = /* @__PURE__ */ \u0275\u0275defineInjector({
-    imports: [Toolbar, SharedModule, SharedModule]
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(ToolbarModule, [{
-    type: NgModule,
-    args: [{
-      imports: [Toolbar, SharedModule],
-      exports: [Toolbar, SharedModule]
-    }]
-  }], null, null);
-})();
-
 // node_modules/primeng/fesm2022/primeng-contextmenu.mjs
-var _c020 = ["sublist"];
-var _c128 = (a0, a1) => ({
+var _c018 = ["sublist"];
+var _c126 = (a0, a1) => ({
   "p-contextmenu-submenu": a0,
   "p-contextmenu-root-list": a1
 });
-var _c216 = () => ({
+var _c214 = () => ({
   "p-contextmenu-item-link": true
 });
-var _c314 = () => ({
+var _c312 = () => ({
   class: "p-contextmenu-submenu-icon"
 });
-var _c412 = () => ({
+var _c411 = () => ({
   exact: false
 });
 var _c511 = (a0) => ({
@@ -35229,7 +34195,7 @@ function ContextMenuSub_ul_0_ng_template_2_li_1_ng_container_3_a_1_ng_container_
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", !ctx_r2.contextMenu.submenuIconTemplate && !ctx_r2.contextMenu._submenuIconTemplate);
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r2.contextMenu.submenuIconTemplate || ctx_r2.contextMenu._submenuIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction0(3, _c314));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r2.contextMenu.submenuIconTemplate || ctx_r2.contextMenu._submenuIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction0(3, _c312));
   }
 }
 function ContextMenuSub_ul_0_ng_template_2_li_1_ng_container_3_a_1_Template(rf, ctx) {
@@ -35242,7 +34208,7 @@ function ContextMenuSub_ul_0_ng_template_2_li_1_ng_container_3_a_1_Template(rf, 
     const htmlLabel_r6 = \u0275\u0275reference(4);
     const processedItem_r4 = \u0275\u0275nextContext(3).$implicit;
     const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("target", ctx_r2.getItemProp(processedItem_r4, "target"))("ngClass", \u0275\u0275pureFunction0(12, _c216));
+    \u0275\u0275property("target", ctx_r2.getItemProp(processedItem_r4, "target"))("ngClass", \u0275\u0275pureFunction0(12, _c214));
     \u0275\u0275attribute("href", ctx_r2.getItemProp(processedItem_r4, "url"), \u0275\u0275sanitizeUrl)("aria-hidden", true)("data-automationid", ctx_r2.getItemProp(processedItem_r4, "automationId"))("data-pc-section", "action")("tabindex", -1);
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.getItemProp(processedItem_r4, "icon"));
@@ -35330,7 +34296,7 @@ function ContextMenuSub_ul_0_ng_template_2_li_1_ng_container_3_a_2_ng_container_
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", !ctx_r2.contextMenu.submenuIconTemplate && !ctx_r2.contextMenu._submenuIconTemplate);
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", !ctx_r2.contextMenu.submenuIconTemplate || !ctx_r2.contextMenu._submenuIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction0(3, _c314));
+    \u0275\u0275property("ngTemplateOutlet", !ctx_r2.contextMenu.submenuIconTemplate || !ctx_r2.contextMenu._submenuIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction0(3, _c312));
   }
 }
 function ContextMenuSub_ul_0_ng_template_2_li_1_ng_container_3_a_2_Template(rf, ctx) {
@@ -35343,7 +34309,7 @@ function ContextMenuSub_ul_0_ng_template_2_li_1_ng_container_3_a_2_Template(rf, 
     const htmlLabel_r7 = \u0275\u0275reference(4);
     const processedItem_r4 = \u0275\u0275nextContext(3).$implicit;
     const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("routerLink", ctx_r2.getItemProp(processedItem_r4, "routerLink"))("queryParams", ctx_r2.getItemProp(processedItem_r4, "queryParams"))("routerLinkActiveOptions", ctx_r2.getItemProp(processedItem_r4, "routerLinkActiveOptions") || \u0275\u0275pureFunction0(20, _c412))("target", ctx_r2.getItemProp(processedItem_r4, "target"))("ngClass", \u0275\u0275pureFunction1(21, _c511, ctx_r2.getItemProp(processedItem_r4, "disabled")))("fragment", ctx_r2.getItemProp(processedItem_r4, "fragment"))("queryParamsHandling", ctx_r2.getItemProp(processedItem_r4, "queryParamsHandling"))("preserveFragment", ctx_r2.getItemProp(processedItem_r4, "preserveFragment"))("skipLocationChange", ctx_r2.getItemProp(processedItem_r4, "skipLocationChange"))("replaceUrl", ctx_r2.getItemProp(processedItem_r4, "replaceUrl"))("state", ctx_r2.getItemProp(processedItem_r4, "state"));
+    \u0275\u0275property("routerLink", ctx_r2.getItemProp(processedItem_r4, "routerLink"))("queryParams", ctx_r2.getItemProp(processedItem_r4, "queryParams"))("routerLinkActiveOptions", ctx_r2.getItemProp(processedItem_r4, "routerLinkActiveOptions") || \u0275\u0275pureFunction0(20, _c411))("target", ctx_r2.getItemProp(processedItem_r4, "target"))("ngClass", \u0275\u0275pureFunction1(21, _c511, ctx_r2.getItemProp(processedItem_r4, "disabled")))("fragment", ctx_r2.getItemProp(processedItem_r4, "fragment"))("queryParamsHandling", ctx_r2.getItemProp(processedItem_r4, "queryParamsHandling"))("preserveFragment", ctx_r2.getItemProp(processedItem_r4, "preserveFragment"))("skipLocationChange", ctx_r2.getItemProp(processedItem_r4, "skipLocationChange"))("replaceUrl", ctx_r2.getItemProp(processedItem_r4, "replaceUrl"))("state", ctx_r2.getItemProp(processedItem_r4, "state"));
     \u0275\u0275attribute("data-automationid", ctx_r2.getItemProp(processedItem_r4, "automationId"))("tabindex", -1)("aria-hidden", true)("data-pc-section", "action");
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r2.getItemProp(processedItem_r4, "icon"));
@@ -35491,7 +34457,7 @@ function ContextMenuSub_ul_0_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r2 = \u0275\u0275nextContext();
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction2(10, _c128, !ctx_r2.root, ctx_r2.root))("@overlayAnimation", ctx_r2.visible)("tabindex", ctx_r2.tabindex);
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction2(10, _c126, !ctx_r2.root, ctx_r2.root))("@overlayAnimation", ctx_r2.visible)("tabindex", ctx_r2.tabindex);
     \u0275\u0275attribute("id", ctx_r2.menuId + "_list")("aria-label", ctx_r2.ariaLabel)("aria-labelledBy", ctx_r2.ariaLabelledBy)("aria-activedescendant", ctx_r2.focusedItemId)("aria-orientation", "vertical")("data-pc-section", "menu");
     \u0275\u0275advance(2);
     \u0275\u0275property("ngForOf", ctx_r2.items);
@@ -35505,7 +34471,7 @@ var _c1111 = (a0) => ({
   "p-contextmenu p-component": true,
   "p-contextmenu-mobile": a0
 });
-var _c129 = () => ({
+var _c127 = () => ({
   value: "visible"
 });
 function ContextMenu_div_0_Template(rf, ctx) {
@@ -35548,13 +34514,13 @@ function ContextMenu_div_0_Template(rf, ctx) {
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext();
     \u0275\u0275classMap(ctx_r1.styleClass);
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(20, _c1111, ctx_r1.queryMatches))("ngStyle", ctx_r1.style)("@overlayAnimation", \u0275\u0275pureFunction0(22, _c129));
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(20, _c1111, ctx_r1.queryMatches))("ngStyle", ctx_r1.style)("@overlayAnimation", \u0275\u0275pureFunction0(22, _c127));
     \u0275\u0275attribute("data-pc-section", "root")("data-pc-name", "contextmenu")("id", ctx_r1.id);
     \u0275\u0275advance(2);
     \u0275\u0275property("root", true)("items", ctx_r1.processedItems)("itemTemplate", ctx_r1.itemTemplate || ctx_r1._itemTemplate)("menuId", ctx_r1.id)("tabindex", !ctx_r1.disabled ? ctx_r1.tabindex : -1)("ariaLabel", ctx_r1.ariaLabel)("ariaLabelledBy", ctx_r1.ariaLabelledBy)("baseZIndex", ctx_r1.baseZIndex)("autoZIndex", ctx_r1.autoZIndex)("visible", ctx_r1.submenuVisible())("focusedItemId", ctx_r1.focused ? ctx_r1.focusedItemId : void 0)("activeItemPath", ctx_r1.activeItemPath());
   }
 }
-var theme15 = ({
+var theme13 = ({
   dt
 }) => `
 .p-contextmenu {
@@ -35714,7 +34680,7 @@ var theme15 = ({
     margin-right: auto;
 }
 `;
-var classes16 = {
+var classes14 = {
   root: "p-contextmenu p-component",
   rootList: "p-contextmenu-root-list",
   item: ({
@@ -35735,8 +34701,8 @@ var classes16 = {
 };
 var ContextMenuStyle = class _ContextMenuStyle extends BaseStyle {
   name = "contextmenu";
-  theme = theme15;
-  classes = classes16;
+  theme = theme13;
+  classes = classes14;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275ContextMenuStyle_BaseFactory;
     return function ContextMenuStyle_Factory(__ngFactoryType__) {
@@ -35888,7 +34854,7 @@ var ContextMenuSub = class _ContextMenuSub extends BaseComponent {
     selectors: [["p-contextMenuSub"], ["p-contextmenu-sub"]],
     viewQuery: function ContextMenuSub_Query(rf, ctx) {
       if (rf & 1) {
-        \u0275\u0275viewQuery(_c020, 5);
+        \u0275\u0275viewQuery(_c018, 5);
       }
       if (rf & 2) {
         let _t;
@@ -37205,22 +36171,22 @@ var ContextMenuModule = class _ContextMenuModule {
 })();
 
 // node_modules/primeng/fesm2022/primeng-tree.mjs
-var _c021 = (a0) => ({
+var _c019 = (a0) => ({
   height: a0
 });
-var _c130 = (a0) => ({
+var _c128 = (a0) => ({
   "p-tree-node-droppoint-active": a0
 });
-var _c217 = (a0, a1) => ({
+var _c215 = (a0, a1) => ({
   $implicit: a0,
   loading: a1
 });
-var _c315 = (a0, a1) => ({
+var _c313 = (a0, a1) => ({
   $implicit: a0,
   partialSelected: a1,
   class: "p-tree-node-checkbox"
 });
-var _c413 = (a0) => ({
+var _c412 = (a0) => ({
   $implicit: a0
 });
 function UITreeNode_Conditional_0_li_0_Template(rf, ctx) {
@@ -37248,7 +36214,7 @@ function UITreeNode_Conditional_0_li_0_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(2, _c130, ctx_r2.draghoverPrev));
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(2, _c128, ctx_r2.draghoverPrev));
     \u0275\u0275attribute("aria-hidden", true);
   }
 }
@@ -37323,7 +36289,7 @@ function UITreeNode_Conditional_0_span_5_Template(rf, ctx) {
   if (rf & 2) {
     const ctx_r2 = \u0275\u0275nextContext(2);
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r2.tree.togglerIconTemplate || ctx_r2.tree._togglerIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c217, ctx_r2.node.expanded, ctx_r2.node.loading));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r2.tree.togglerIconTemplate || ctx_r2.tree._togglerIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c215, ctx_r2.node.expanded, ctx_r2.node.loading));
   }
 }
 function UITreeNode_Conditional_0_p_checkbox_6_ng_container_1_ng_template_1_0_ng_template_0_Template(rf, ctx) {
@@ -37339,7 +36305,7 @@ function UITreeNode_Conditional_0_p_checkbox_6_ng_container_1_ng_template_1_Temp
   }
   if (rf & 2) {
     const ctx_r2 = \u0275\u0275nextContext(4);
-    \u0275\u0275property("ngTemplateOutlet", ctx_r2.tree.checkboxIconTemplate || ctx_r2.tree._checkboxIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c315, ctx_r2.isSelected(), ctx_r2.node.partialSelected));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r2.tree.checkboxIconTemplate || ctx_r2.tree._checkboxIconTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c313, ctx_r2.isSelected(), ctx_r2.node.partialSelected));
   }
 }
 function UITreeNode_Conditional_0_p_checkbox_6_ng_container_1_Template(rf, ctx) {
@@ -37403,7 +36369,7 @@ function UITreeNode_Conditional_0_span_10_Template(rf, ctx) {
   if (rf & 2) {
     const ctx_r2 = \u0275\u0275nextContext(2);
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r2.tree.getTemplateForNode(ctx_r2.node))("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c413, ctx_r2.node));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r2.tree.getTemplateForNode(ctx_r2.node))("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c412, ctx_r2.node));
   }
 }
 function UITreeNode_Conditional_0_ul_11_p_treeNode_1_Template(rf, ctx) {
@@ -37457,7 +36423,7 @@ function UITreeNode_Conditional_0_li_12_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(2, _c130, ctx_r2.draghoverNext));
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction1(2, _c128, ctx_r2.draghoverNext));
     \u0275\u0275attribute("aria-hidden", true);
   }
 }
@@ -37535,7 +36501,7 @@ function UITreeNode_Conditional_0_Template(rf, ctx) {
     \u0275\u0275advance();
     \u0275\u0275styleMap(ctx_r2.node.style);
     \u0275\u0275classMap(ctx_r2.node.styleClass);
-    \u0275\u0275property("ngClass", ctx_r2.nodeClass)("ngStyle", \u0275\u0275pureFunction1(29, _c021, ctx_r2.itemSize + "px"));
+    \u0275\u0275property("ngClass", ctx_r2.nodeClass)("ngStyle", \u0275\u0275pureFunction1(29, _c019, ctx_r2.itemSize + "px"));
     \u0275\u0275attribute("aria-label", ctx_r2.node.label)("aria-checked", ctx_r2.checked)("aria-setsize", ctx_r2.node.children ? ctx_r2.node.children.length : 0)("aria-selected", ctx_r2.selected)("aria-expanded", ctx_r2.node.expanded)("aria-posinset", ctx_r2.index + 1)("aria-level", ctx_r2.level + 1)("tabindex", ctx_r2.index === 0 ? 0 : -1)("data-id", ctx_r2.node.key);
     \u0275\u0275advance();
     \u0275\u0275styleProp("padding-left", ctx_r2.level * ctx_r2.indentation + "rem");
@@ -37567,7 +36533,7 @@ var _c89 = ["footer"];
 var _c99 = ["loader"];
 var _c109 = ["empty"];
 var _c1112 = ["togglericon"];
-var _c1210 = ["checkboxicon"];
+var _c129 = ["checkboxicon"];
 var _c135 = ["loadingicon"];
 var _c145 = ["filtericon"];
 var _c154 = ["scroller"];
@@ -37655,7 +36621,7 @@ function Tree_Conditional_3_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275property("ngTemplateOutlet", ctx_r0.filterTemplate || ctx_r0._filterTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c413, ctx_r0.filterOptions));
+    \u0275\u0275property("ngTemplateOutlet", ctx_r0.filterTemplate || ctx_r0._filterTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c412, ctx_r0.filterOptions));
   }
 }
 function Tree_Conditional_4_p_iconField_0_SearchIcon_4_Template(rf, ctx) {
@@ -37804,7 +36770,7 @@ function Tree_ng_container_5_p_scroller_1_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r0 = \u0275\u0275nextContext(2);
-    \u0275\u0275styleMap(\u0275\u0275pureFunction1(9, _c021, ctx_r0.scrollHeight !== "flex" ? ctx_r0.scrollHeight : void 0));
+    \u0275\u0275styleMap(\u0275\u0275pureFunction1(9, _c019, ctx_r0.scrollHeight !== "flex" ? ctx_r0.scrollHeight : void 0));
     \u0275\u0275property("items", ctx_r0.serializedValue)("tabindex", -1)("scrollHeight", ctx_r0.scrollHeight !== "flex" ? void 0 : "100%")("itemSize", ctx_r0.virtualScrollItemSize || ctx_r0._virtualNodeHeight)("lazy", ctx_r0.lazy)("options", ctx_r0.virtualScrollOptions);
     \u0275\u0275advance(4);
     \u0275\u0275property("ngIf", ctx_r0.loaderTemplate || ctx_r0._loaderTemplate);
@@ -37904,7 +36870,7 @@ function Tree_ng_container_7_Template(rf, ctx) {
     \u0275\u0275elementContainer(0);
   }
 }
-var theme16 = ({
+var theme14 = ({
   dt
 }) => `
 .p-tree {
@@ -38129,7 +37095,7 @@ var theme16 = ({
     height: 0;
 }
 `;
-var classes17 = {
+var classes15 = {
   root: ({
     instance
   }) => ({
@@ -38169,8 +37135,8 @@ var classes17 = {
 };
 var TreeStyle = class _TreeStyle extends BaseStyle {
   name = "tree";
-  theme = theme16;
-  classes = classes17;
+  theme = theme14;
+  classes = classes15;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275TreeStyle_BaseFactory;
     return function TreeStyle_Factory(__ngFactoryType__) {
@@ -39804,7 +38770,7 @@ var Tree = class _Tree extends BaseComponent {
         \u0275\u0275contentQuery(dirIndex, _c99, 4);
         \u0275\u0275contentQuery(dirIndex, _c109, 4);
         \u0275\u0275contentQuery(dirIndex, _c1112, 4);
-        \u0275\u0275contentQuery(dirIndex, _c1210, 4);
+        \u0275\u0275contentQuery(dirIndex, _c129, 4);
         \u0275\u0275contentQuery(dirIndex, _c135, 4);
         \u0275\u0275contentQuery(dirIndex, _c145, 4);
         \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
@@ -40349,7 +39315,7 @@ var TreeModule = class _TreeModule {
 })();
 
 // src/app/components/edit-node/edit-node.component.ts
-var _c022 = (a0) => ({ days: a0 });
+var _c020 = (a0) => ({ days: a0 });
 function EditNodeComponent_Conditional_23_Template(rf, ctx) {
   if (rf & 1) {
     const _r1 = \u0275\u0275getCurrentView();
@@ -41886,7 +40852,7 @@ var EditNodeComponent = class _EditNodeComponent {
       \u0275\u0275advance(3);
       \u0275\u0275property("label", \u0275\u0275pipeBind1(18, 20, "common.refresh"))("disabled", ctx.selectedVersion() === "baseline" && !ctx.editsEnabled())("loading", ctx.refreshing());
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate1(" ", ctx.daysSinceRefresh() !== null ? \u0275\u0275pipeBind2(21, 22, "editNode.lastRefreshed", \u0275\u0275pureFunction1(27, _c022, ctx.daysSinceRefresh())) : \u0275\u0275pipeBind1(22, 25, "editNode.neverRefreshed"), " ");
+      \u0275\u0275textInterpolate1(" ", ctx.daysSinceRefresh() !== null ? \u0275\u0275pipeBind2(21, 22, "editNode.lastRefreshed", \u0275\u0275pureFunction1(27, _c020, ctx.daysSinceRefresh())) : \u0275\u0275pipeBind1(22, 25, "editNode.neverRefreshed"), " ");
       \u0275\u0275advance(3);
       \u0275\u0275conditional(((tmp_11_0 = ctx.node().data) == null ? null : tmp_11_0.status) ? 23 : -1);
       \u0275\u0275advance();
@@ -42397,8 +41363,8 @@ var EditNodeComponent = class _EditNodeComponent {
 })();
 
 // src/app/components/ia-table/ia-table.component.ts
-var _c023 = ["cm"];
-var _c131 = () => ({ height: "90vh" });
+var _c021 = ["cm"];
+var _c130 = () => ({ height: "90vh" });
 function IaTableComponent_ng_template_3_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275element(0, "i", 7);
@@ -42645,7 +41611,7 @@ var IaTableComponent = class _IaTableComponent {
   };
   static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _IaTableComponent, selectors: [["aida-ia-table"]], viewQuery: function IaTableComponent_Query(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275viewQuery(_c023, 5);
+      \u0275\u0275viewQuery(_c021, 5);
     }
     if (rf & 2) {
       let _t;
@@ -42687,7 +41653,7 @@ var IaTableComponent = class _IaTableComponent {
       \u0275\u0275twoWayProperty("selection", ctx.selectedNode);
       \u0275\u0275property("draggableNodes", ctx.draggable)("droppableNodes", true)("validateDrop", true)("contextMenu", cm_r6);
       \u0275\u0275advance(2);
-      \u0275\u0275styleMap(\u0275\u0275pureFunction0(15, _c131));
+      \u0275\u0275styleMap(\u0275\u0275pureFunction0(15, _c130));
       \u0275\u0275property("header", ctx.selectedNode == null ? null : ctx.selectedNode.data == null ? null : ctx.selectedNode.data.prototype == null ? null : ctx.selectedNode.data.prototype[ctx.currentLang].h1)("modal", true)("maximizable", true);
       \u0275\u0275twoWayProperty("visible", ctx.editNode);
       \u0275\u0275advance();
@@ -42843,12 +41809,12 @@ function isKnownNumber(number) {
 }
 
 // src/app/views/task/manage-inventory/inventory.component.ts
-var _c024 = ["dt"];
-var _c136 = ["menuContext"];
-var InventoryComponent_Defer_42_DepsFn = () => [import("./chunk-KQ5BKUKZ.js").then((m) => m.AddUrlsComponent), import("./chunk-Z2FNTVGT.js").then((m) => m.FindPagesComponent)];
-var _c218 = () => ({ height: "90vh" });
-var _c316 = (a0) => [25, 50, 100, a0];
-var _c414 = (a0) => ({ column: a0 });
+var _c022 = ["dt"];
+var _c131 = ["menuContext"];
+var InventoryComponent_Defer_42_DepsFn = () => [import("./chunk-GUBZ2A7R.js").then((m) => m.AddUrlsComponent), import("./chunk-ZSXIX6LZ.js").then((m) => m.FindPagesComponent)];
+var _c216 = () => ({ height: "90vh" });
+var _c314 = (a0) => [25, 50, 100, a0];
+var _c413 = (a0) => ({ column: a0 });
 var _c513 = (a0, a1, a2) => ({ "border-right-1": a0, "surface-border": a1, "hasMenu": a2 });
 var _forTrack05 = ($index, $item) => $item.value;
 var _forTrack12 = ($index, $item) => $item.field;
@@ -43048,7 +42014,7 @@ function InventoryComponent_Conditional_39_ng_template_2_For_10_Conditional_1_Te
   if (rf & 2) {
     const col_r12 = \u0275\u0275nextContext().$implicit;
     const ctx_r2 = \u0275\u0275nextContext(3);
-    \u0275\u0275property("label", col_r12.label)("icon", ctx_r2.isColumnFiltered(col_r12.field) ? "pi pi-filter" : "pi pi-filter-slash")("severity", ctx_r2.isColumnFiltered(col_r12.field) ? "primary" : "contrast")("pTooltip", ctx_r2.isColumnFiltered(col_r12.field) ? \u0275\u0275pipeBind1(1, 4, "inventory.filter.showAll") : \u0275\u0275pipeBind2(2, 6, "inventory.filter.showTrue", \u0275\u0275pureFunction1(9, _c414, col_r12.label)));
+    \u0275\u0275property("label", col_r12.label)("icon", ctx_r2.isColumnFiltered(col_r12.field) ? "pi pi-filter" : "pi pi-filter-slash")("severity", ctx_r2.isColumnFiltered(col_r12.field) ? "primary" : "contrast")("pTooltip", ctx_r2.isColumnFiltered(col_r12.field) ? \u0275\u0275pipeBind1(1, 4, "inventory.filter.showAll") : \u0275\u0275pipeBind2(2, 6, "inventory.filter.showTrue", \u0275\u0275pureFunction1(9, _c413, col_r12.label)));
   }
 }
 function InventoryComponent_Conditional_39_ng_template_2_For_10_Conditional_2_Template(rf, ctx) {
@@ -43836,7 +42802,7 @@ function InventoryComponent_Conditional_39_Template(rf, ctx) {
     const ctx_r2 = \u0275\u0275nextContext();
     \u0275\u0275property("value", ctx_r2.tableData());
     \u0275\u0275twoWayProperty("selection", ctx_r2.selectedNodes);
-    \u0275\u0275property("scrollable", false)("customSort", true)("paginator", ctx_r2.projectState.getProject().baselinePages > 50)("rows", 50)("rowsPerPageOptions", \u0275\u0275pureFunction1(7, _c316, ctx_r2.projectState.getProject().baselinePages));
+    \u0275\u0275property("scrollable", false)("customSort", true)("paginator", ctx_r2.projectState.getProject().baselinePages > 50)("rows", 50)("rowsPerPageOptions", \u0275\u0275pureFunction1(7, _c314, ctx_r2.projectState.getProject().baselinePages));
   }
 }
 function InventoryComponent_Conditional_40_Template(rf, ctx) {
@@ -43918,19 +42884,55 @@ var InventoryComponent = class _InventoryComponent {
       this.updateVisibleColumns();
     });
   }
-  // Current selections
+  dt;
+  menuContext;
+  // Variables
+  allColumns = computed(() => this.projectState.treeTableColumns());
+  // All table columns
+  frozenColumns = signal([]);
+  // Visible table columns
+  scrollableColumns = signal([]);
+  // Visible table columns
   selectedNodes = [];
-  // Flattened TreeNode data (for delete, status toggles, etc.)
+  // Flattened TreeNode data (for bulk actions - refresh, generate metadata, delete etc.)
   selectedColumnFields = [];
   // Multiselect column data
   selectedGroups = [];
   // Multiselect group data
-  unselectedGroups = [];
-  // Multiselect group data
-  /***********************************************************/
-  // Local storage key for loading previous table settings
+  currentEditNode;
+  // Flattened TreeNode data (for individual actions - edit node, context menus etc.)
+  currentEditCol;
+  // Table column (for determining which field is being edited or accessing other column properties)
+  isEditing = false;
+  // Tracks if currently making inline edits
+  touchTimer = null;
+  // Touch is alternative to right click for mobile cibtext menus
+  editNode = false;
+  // Tracks if currently making dialog edits
+  selectedNode = {};
+  // TreeNode data for edit node dialog (not flattened!)
+  sortField = signal(null);
+  sortOrder = signal(1);
+  // 1 = ascending, -1 = descending
+  lastSortField = null;
+  lastSortOrder = null;
   COLUMN_KEY = "inventoryColumnVisibility";
+  // Local storage key for loading previous table settings
   GROUP_KEY = "inventoryGroupVisibility";
+  // Local storage key for loading previous table settings
+  expandAll = { metadata: false, notes: false, task: false, phoneNumbers: false, enVanity: false, frVanity: false };
+  // Tracks "expand all" state per group
+  expandedCells = { metadata: /* @__PURE__ */ new Set(), notes: /* @__PURE__ */ new Set(), task: /* @__PURE__ */ new Set(), phoneNumbers: /* @__PURE__ */ new Set(), enVanity: /* @__PURE__ */ new Set(), frVanity: /* @__PURE__ */ new Set() };
+  // Tracks individual cell expansion per group  
+  fieldFilters = FIELD_FILTERS;
+  // Fields that are filterable
+  columnFilters = signal({ inScope: true, anyUnusual: false });
+  // Tracks preset filter statuses
+  itemsContext = [];
+  // context menu items (dynamically built)
+  itemsDropdown = [];
+  // dropdown menu items (dynamically built)
+  /***********************************************************/
   // Update column visibility on first load
   ngOnInit() {
     this.loadColumnVisibility();
@@ -43955,7 +42957,6 @@ var InventoryComponent = class _InventoryComponent {
   *                                                         *
   **********************************************************/
   // Table - get current data
-  dt;
   tableData = computed(() => {
     const allNodes = this.projectState.flattenTree();
     const filters = this.columnFilters();
@@ -44047,7 +43048,7 @@ var InventoryComponent = class _InventoryComponent {
       return false;
     const visibleInGroup = group.items.filter((item) => {
       const col = this.allColumns().find((c) => c.field === item.value);
-      return col?.frozen ?? this.selectedColumnFields.includes(item.value);
+      return col?.frozen || this.selectedColumnFields.includes(item.value);
     }).map((item) => item.value);
     const isLast = visibleInGroup[visibleInGroup.length - 1] === field;
     const isLastGroup = this.groupedHeaders[this.groupedHeaders.length - 1].value === group.value;
@@ -44090,7 +43091,7 @@ var InventoryComponent = class _InventoryComponent {
   *    columns, sort, filter, ex/hide                       *
   *                                                         *
   **********************************************************/
-  // 1. Visible column dropdowns
+  // 1. Visible column dropdowns   
   // All column groups
   get columnGroups() {
     const groups = [...COLUMN_GROUPS];
@@ -44119,13 +43120,13 @@ var InventoryComponent = class _InventoryComponent {
       }))
     }));
   }
-  // Multiselect - selection change handler
+  // Multiselect - column selection change handler
   onColumnSelectionChange() {
     this.updateVisibleColumns();
     this.saveColumnVisibility();
     this.syncSelectedGroups();
   }
-  // Select Button - selection change handler
+  // Multiselect - group selection change handler
   onGroupSelectionChange() {
     this.selectedColumnFields = this.allColumns().filter((col) => !col.frozen && this.selectedGroups.includes(col.group)).map((col) => col.field);
     this.updateVisibleColumns();
@@ -44150,11 +43151,6 @@ var InventoryComponent = class _InventoryComponent {
     localStorage.setItem(this.COLUMN_KEY, JSON.stringify(this.selectedColumnFields));
     localStorage.setItem(this.GROUP_KEY, JSON.stringify(this.selectedGroups));
   }
-  // All table columns
-  allColumns = computed(() => this.projectState.treeTableColumns());
-  // Visible table columns
-  frozenColumns = signal([]);
-  scrollableColumns = signal([]);
   // Update visible columns & check if any data should autoexpand
   updateVisibleColumns() {
     this.frozenColumns.set(this.allColumns().filter((col) => col.frozen));
@@ -44162,28 +43158,20 @@ var InventoryComponent = class _InventoryComponent {
     this.checkAutoExpand();
   }
   // 2. Visible column buttons
-  //Default view
-  viewDefault() {
+  applyView(filter) {
     localStorage.removeItem("inventoryColumnVisibility");
     localStorage.removeItem("inventoryGroupVisibility");
-    this.selectedColumnFields = this.allColumns().filter((col) => col.visibleByDefault && !col.frozen).map((col) => col.field);
+    this.selectedColumnFields = this.allColumns().filter(filter).map((col) => col.field);
     this.syncSelectedGroups();
     this.updateVisibleColumns();
   }
-  //Metadata view
+  viewDefault() {
+    this.applyView((col) => col.visibleByDefault && !col.frozen);
+  }
   viewMetadata() {
-    localStorage.removeItem("inventoryColumnVisibility");
-    localStorage.removeItem("inventoryGroupVisibility");
-    this.selectedColumnFields = this.allColumns().filter((col) => col.group === "metadata").map((col) => col.field);
-    this.syncSelectedGroups();
-    this.updateVisibleColumns();
+    this.applyView((col) => col.group === "metadata");
   }
   // 3. Sort
-  sortField = signal(null);
-  sortOrder = signal(1);
-  // 1 = ascending, -1 = descending
-  lastSortField = null;
-  lastSortOrder = null;
   // Sort table
   customSort(event2) {
     if (event2.field === this.lastSortField && event2.order === 1 && this.lastSortOrder === -1) {
@@ -44200,12 +43188,6 @@ var InventoryComponent = class _InventoryComponent {
     }
   }
   // 4. Filter
-  fieldFilters = FIELD_FILTERS;
-  columnFilters = signal({
-    inScope: true,
-    // Default filter applied
-    anyUnusual: false
-  });
   resetFilters() {
     this.columnFilters.set({
       inScope: true
@@ -44239,10 +43221,6 @@ var InventoryComponent = class _InventoryComponent {
     });
   }
   // 5. Ex/Hides
-  // Expand-all state per group
-  expandAll = { metadata: false, notes: false, task: false, phoneNumbers: false, enVanity: false, frVanity: false };
-  // Individual cell expansion per group  
-  expandedCells = { metadata: /* @__PURE__ */ new Set(), notes: /* @__PURE__ */ new Set(), task: /* @__PURE__ */ new Set(), phoneNumbers: /* @__PURE__ */ new Set(), enVanity: /* @__PURE__ */ new Set(), frVanity: /* @__PURE__ */ new Set() };
   // Auto-expand when group is the only visible one
   checkAutoExpand() {
     const selectedGroups = new Set(this.scrollableColumns().map((col) => col.group));
@@ -44388,7 +43366,7 @@ var InventoryComponent = class _InventoryComponent {
   onBlurMetadata() {
     this.isEditing = false;
   }
-  // 2c. Save AI metadata status
+  // 2c. Save AI metadata status (NOTE: KEEP THIS AS SEPARATE FUNCTION SINCE IT CALLS TRACK USAGE)
   saveMetadata(node, col, status) {
     node[col.field].status = status;
     if (!node["aiGeneratedAt"] || !node["aiModel"] || !node["aiDescriptionEN"] || !node["aiKeywordsEN"] || !node["aiDescriptionFR"] || !node["aiKeywordsFR"])
@@ -44408,7 +43386,7 @@ var InventoryComponent = class _InventoryComponent {
     };
     this.projectState.setMetadataReview(path, review);
   }
-  // 3. Save new value
+  // 3. Save new cell value
   saveCell(newValue) {
     if (!this.currentEditNode || !this.currentEditCol?.dataSection)
       return;
@@ -44438,44 +43416,17 @@ var InventoryComponent = class _InventoryComponent {
     }
   }
   getNestedValue(obj, path) {
-    return path.reduce((current, key) => current?.[key], obj);
+    return path.reduce((current, key) => current && typeof current === "object" ? current[key] : void 0, obj);
   }
   setNestedValue(obj, path, value) {
     const last = path[path.length - 1];
     const target = path.slice(0, -1).reduce((current, key) => {
-      current[key] ??= {};
+      if (!current[key] || typeof current[key] !== "object")
+        current[key] = {};
       return current[key];
     }, obj);
     if (target)
       target[last] = value;
-  }
-  /*
-      saveValue(newValue: boolean | string) {
-          if (this.currentEditNode && this.currentEditCol?.dataSection) {
-              const section = this.currentEditCol.dataSection.replace("lang", this.lang);
-              const path = this.lang === 'fr' ? this.currentEditNode['frPath'] : this.currentEditNode['enPath']
-              const node = this.projectState.findNodeByPath(this.projectState.getProjectTree(), path, this.lang);
-              const currentValue = node?.data[section];
-              if (node && (this.currentEditCol.dataSection).match("lang")) {
-                  const enSection = section.replace("lang", "en");
-                  const frSection = section.replace("lang", "fr");
-                  node.data[enSection] ??= {};
-                  node.data[frSection] ??= {};
-                  node.data[enSection] = newValue;
-                  node.data[frSection] = newValue;
-                  this.projectState.setModifiedDate();
-              }
-              if (node && currentValue !== newValue) {
-                  node.data[section] ??= {};
-                  node.data[section] = newValue;
-                  this.projectState.setModifiedDate();
-              }
-          }
-      }*/
-  onTemplateSelect(event2, node, col) {
-    const path = this.lang === "fr" ? node["frPath"] : node["enPath"];
-    const treeNode = this.projectState.findNodeByPath(this.projectState.getProjectTree(), path, this.lang);
-    const newValue = node[col.field];
   }
   /**********************************************************
   *                                                         *
@@ -44490,7 +43441,6 @@ var InventoryComponent = class _InventoryComponent {
    *                                                        *
    **********************************************************/
   // 1. Dropdown menus (p-menu)
-  itemsDropdown = [];
   updateDropdown(mode, path) {
     switch (mode) {
       case "actions": {
@@ -44667,11 +43617,6 @@ var InventoryComponent = class _InventoryComponent {
     }
   }
   // 2. Context menus (for flipping booleans & updating AI text)
-  menuContext;
-  itemsContext = [];
-  currentEditNode;
-  currentEditCol;
-  touchTimer = null;
   // Update context menu 
   updateContext(event2, type, field, value) {
     this.itemsContext = [];
@@ -44693,7 +43638,7 @@ var InventoryComponent = class _InventoryComponent {
         }
         break;
       }
-      case "aiText":
+      case "aiText": {
         const status = value?.status;
         const ai = value?.ai;
         const edited = value?.edited;
@@ -44745,6 +43690,7 @@ var InventoryComponent = class _InventoryComponent {
           });
         }
         break;
+      }
     }
     this.menuContext.show(event2);
   }
@@ -44805,29 +43751,26 @@ var InventoryComponent = class _InventoryComponent {
         return;
     }
   }
-  isEditing = false;
   isEditingCell(node, col, requireConfirm = false) {
     return this.currentEditNode === node && this.currentEditCol === col && (requireConfirm ? this.isEditing : true);
   }
-  // 4. Edit template
+  // 3. Template dropdown options
   get templateOptions() {
     return Object.values(PageTemplate).map((key) => ({
       value: key,
       label: this.translate.instant(key)
     })).sort((a, b) => a.label.localeCompare(b.label, this.translate.currentLang));
   }
-  // 3. Dialog popup (edit node)
+  // 4. Dialog popup (edit node)
   get currentLang() {
     return this.translate.currentLang.startsWith("fr") ? "fr" : "en";
   }
-  editNode = false;
-  selectedNode = {};
   edit(node) {
     const path = this.lang === "fr" ? node.frPath : node.enPath;
     this.selectedNode = this.projectState.findNodeByPath(this.projectState.getProjectTree(), path, this.lang) ?? {};
     this.editNode = true;
   }
-  // 4. Confirmation dialogs (deletions)
+  // 5. Confirmation dialogs (deletions)
   onDeleteSelected() {
     if (!this.selectedNodes.length)
       return;
@@ -44916,8 +43859,6 @@ var InventoryComponent = class _InventoryComponent {
     marker("inventory.columnGroups.pageData");
     marker("inventory.columnGroups.owner");
     marker("inventory.columnGroups.metadata");
-    marker("inventory.view.table");
-    marker("inventory.view.tree");
     marker("inventory.tooltip.boolean.inScope.true");
     marker("inventory.tooltip.boolean.inScope.false");
     marker("inventory.tooltip.boolean.isOrphan.true");
@@ -44930,16 +43871,10 @@ var InventoryComponent = class _InventoryComponent {
     marker("inventory.tooltip.boolean.isROT.false");
     marker("inventory.tooltip.boolean.linksToPortal.true");
     marker("inventory.tooltip.boolean.linksToPortal.false");
-    marker("inventory.tooltip.archive.current");
-    marker("inventory.tooltip.archive.to-archive");
-    marker("inventory.tooltip.archive.archived");
-    marker("inventory.tooltip.archive.unarchive");
-    marker("inventory.tooltip.noindex.none");
-    marker("inventory.tooltip.noindex.en-only");
-    marker("inventory.tooltip.noindex.fr-only");
-    marker("inventory.tooltip.noindex.both");
-    marker("inventory.tooltip.noindex.to-reindex");
-    marker("inventory.tooltip.noindex.to-deindex");
+    marker("inventory.tooltip.boolean.archive.true");
+    marker("inventory.tooltip.boolean.archive.false");
+    marker("inventory.tooltip.boolean.noindex.true");
+    marker("inventory.tooltip.boolean.noindex.false");
     marker("inventory.contextMenu.inScope.true");
     marker("inventory.contextMenu.inScope.false");
     marker("inventory.contextMenu.isNew.true");
@@ -44956,20 +43891,14 @@ var InventoryComponent = class _InventoryComponent {
     marker("inventory.contextMenu.isArchived.false");
     marker("inventory.contextMenu.noindex.true");
     marker("inventory.contextMenu.noindex.false");
-    marker("common.pending");
-    marker("common.edited");
-    marker("common.approved");
-    marker("common.complete");
-    marker("common.error");
-    marker("common.yes");
   }
   static \u0275fac = function InventoryComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _InventoryComponent)();
   };
   static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _InventoryComponent, selectors: [["aida-inventory"]], viewQuery: function InventoryComponent_Query(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275viewQuery(_c024, 5);
-      \u0275\u0275viewQuery(_c136, 5);
+      \u0275\u0275viewQuery(_c022, 5);
+      \u0275\u0275viewQuery(_c131, 5);
     }
     if (rf & 2) {
       let _t;
@@ -45086,16 +44015,16 @@ var InventoryComponent = class _InventoryComponent {
       \u0275\u0275advance(6);
       \u0275\u0275property("model", ctx.itemsContext);
       \u0275\u0275advance(2);
-      \u0275\u0275styleMap(\u0275\u0275pureFunction0(44, _c218));
+      \u0275\u0275styleMap(\u0275\u0275pureFunction0(44, _c216));
       \u0275\u0275property("header", ctx.selectedNode.data == null ? null : ctx.selectedNode.data.prototype == null ? null : ctx.selectedNode.data.prototype[ctx.currentLang].h1)("modal", true)("maximizable", true);
       \u0275\u0275twoWayProperty("visible", ctx.editNode);
       \u0275\u0275advance();
       \u0275\u0275conditional(ctx.selectedNode ? 53 : -1);
     }
-  }, dependencies: [CommonModule, NgClass, DecimalPipe, DatePipe, FormsModule, DefaultValueAccessor, NgControlStatus, NgModel, TranslateModule, TranslatePipe, TableModule, Table, PrimeTemplate, SortableColumn, SelectableRow, EditableColumn, SortIcon, TableCheckbox, TableHeaderCheckbox, ButtonModule, Button, PopoverModule, TooltipModule, Tooltip, ToolbarModule, IftaLabelModule, IftaLabel, MultiSelectModule, MultiSelect, SelectButtonModule, MenuModule, Menu, SelectModule, Select, TextareaModule, Textarea, TagModule, Tag, ToggleButtonModule, ConfirmDialogModule, ConfirmDialog, ContextMenuModule, ContextMenu, DialogModule, Dialog, RadioButtonModule, RadioButton, ExportProjectComponent, IaTableComponent, EditNodeComponent], styles: ["\n\n.sticky-toolbar[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  top: 0;\n  z-index: 20;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n  padding-right: 0rem;\n  box-sizing: border-box;\n}\n.sticky-toolbar-table[_ngcontent-%COMP%] {\n  width: calc(100vw - var(--nav-width) - 2rem);\n}\n@media screen and (min-width: 768px) {\n  .sticky-toolbar[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n    padding-right: 5rem;\n  }\n  .sticky-toolbar-table[_ngcontent-%COMP%] {\n    width: calc(100vw - var(--nav-width) - 7rem - 5rem);\n  }\n}\n  .p-datatable-table-container {\n  overflow: visible !important;\n}\n.sticky-h[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width) + 2rem);\n  z-index: 11;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-h[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 9rem);\n  }\n}\n.sticky-c[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  z-index: 11;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-c[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n  }\n}\n.sticky-r[_ngcontent-%COMP%] {\n  position: sticky;\n  top: 9rem;\n  z-index: 12;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n  .p-datatable .p-datatable-thead {\n  z-index: 13 !important;\n}\n.sticky-rh[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width) + 2rem);\n  top: 9rem;\n  z-index: 14;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-rh[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 9rem);\n  }\n}\n.sticky-rc[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  top: 9rem;\n  z-index: 14;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-rc[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n  }\n}\n.sticky-horizontal[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  z-index: 10;\n  width: calc(100vw - var(--nav-width) - 2rem);\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n  padding-right: 0rem;\n  box-sizing: border-box;\n}\n@media screen and (min-width: 768px) {\n  .sticky-horizontal[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n    width: calc(100vw - var(--nav-width) - 7rem - 3.5rem);\n    padding-right: 5rem;\n  }\n}\n.hasMenu[_ngcontent-%COMP%]:hover {\n  background-color: var(--p-primary-100) !important;\n}\nhtml.dark-mode[_ngcontent-%COMP%]   .hasMenu[_ngcontent-%COMP%]:hover {\n  background-color: var(--p-primary-500) !important;\n}\n/*# sourceMappingURL=inventory.component.css.map */"] });
+  }, dependencies: [CommonModule, NgClass, DecimalPipe, DatePipe, FormsModule, DefaultValueAccessor, NgControlStatus, NgModel, TranslateModule, TranslatePipe, TableModule, Table, PrimeTemplate, SortableColumn, SelectableRow, EditableColumn, SortIcon, TableCheckbox, TableHeaderCheckbox, TooltipModule, Tooltip, TagModule, Tag, ButtonModule, Button, RadioButtonModule, RadioButton, IftaLabelModule, IftaLabel, MultiSelectModule, MultiSelect, SelectModule, Select, TextareaModule, Textarea, MenuModule, Menu, ContextMenuModule, ContextMenu, ConfirmDialogModule, ConfirmDialog, DialogModule, Dialog, ExportProjectComponent, IaTableComponent, EditNodeComponent], styles: ["\n\n.sticky-toolbar[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  top: 0;\n  z-index: 20;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n  padding-right: 0rem;\n  box-sizing: border-box;\n}\n.sticky-toolbar-table[_ngcontent-%COMP%] {\n  width: calc(100vw - var(--nav-width) - 2rem);\n}\n@media screen and (min-width: 768px) {\n  .sticky-toolbar[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n    padding-right: 5rem;\n  }\n  .sticky-toolbar-table[_ngcontent-%COMP%] {\n    width: calc(100vw - var(--nav-width) - 7rem - 5rem);\n  }\n}\n  .p-datatable-table-container {\n  overflow: visible !important;\n}\n.sticky-h[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width) + 2rem);\n  z-index: 11;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-h[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 9rem);\n  }\n}\n.sticky-c[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  z-index: 11;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-c[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n  }\n}\n.sticky-r[_ngcontent-%COMP%] {\n  position: sticky;\n  top: 9rem;\n  z-index: 12;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n  .p-datatable .p-datatable-thead {\n  z-index: 13 !important;\n}\n.sticky-rh[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width) + 2rem);\n  top: 9rem;\n  z-index: 14;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-rh[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 9rem);\n  }\n}\n.sticky-rc[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  top: 9rem;\n  z-index: 14;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-rc[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n  }\n}\n.sticky-horizontal[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  z-index: 10;\n  width: calc(100vw - var(--nav-width) - 2rem);\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n  padding-right: 0rem;\n  box-sizing: border-box;\n}\n@media screen and (min-width: 768px) {\n  .sticky-horizontal[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n    width: calc(100vw - var(--nav-width) - 7rem - 3.5rem);\n    padding-right: 5rem;\n  }\n}\n.hasMenu[_ngcontent-%COMP%]:hover {\n  background-color: var(--p-primary-100) !important;\n}\nhtml.dark-mode[_ngcontent-%COMP%]   .hasMenu[_ngcontent-%COMP%]:hover {\n  background-color: var(--p-primary-500) !important;\n}\n/*# sourceMappingURL=inventory.component.css.map */"] });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(InventoryComponent, () => [import("./chunk-KQ5BKUKZ.js").then((m) => m.AddUrlsComponent), import("./chunk-Z2FNTVGT.js").then((m) => m.FindPagesComponent)], (AddUrlsComponent2, FindPagesComponent2) => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(InventoryComponent, () => [import("./chunk-GUBZ2A7R.js").then((m) => m.AddUrlsComponent), import("./chunk-ZSXIX6LZ.js").then((m) => m.FindPagesComponent)], (AddUrlsComponent2, FindPagesComponent2) => {
     setClassMetadata(InventoryComponent, [{
       type: Component,
       args: [{ selector: "aida-inventory", imports: [
@@ -45103,27 +44032,23 @@ var InventoryComponent = class _InventoryComponent {
         FormsModule,
         TranslateModule,
         TableModule,
-        ButtonModule,
-        PopoverModule,
         TooltipModule,
-        ToolbarModule,
+        TagModule,
+        ButtonModule,
+        RadioButtonModule,
         IftaLabelModule,
         MultiSelectModule,
-        SelectButtonModule,
-        MenuModule,
         SelectModule,
         TextareaModule,
-        TagModule,
-        ToggleButtonModule,
-        ConfirmDialogModule,
+        MenuModule,
         ContextMenuModule,
+        ConfirmDialogModule,
         DialogModule,
-        RadioButtonModule,
         ExportProjectComponent,
-        AddUrlsComponent2,
-        FindPagesComponent2,
         IaTableComponent,
-        EditNodeComponent
+        EditNodeComponent,
+        AddUrlsComponent2,
+        FindPagesComponent2
       ], template: `<div [class.min-w-min]="projectState.selectedInventoryView === 'table'">\r
     <div class="flex flex-row flex-wrap justify-content-between sticky-horizontal">\r
         <div>\r
@@ -45565,7 +44490,7 @@ var InventoryComponent = class _InventoryComponent {
   });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(InventoryComponent, { className: "InventoryComponent", filePath: "src/app/views/task/manage-inventory/inventory.component.ts", lineNumber: 55 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(InventoryComponent, { className: "InventoryComponent", filePath: "src/app/views/task/manage-inventory/inventory.component.ts", lineNumber: 50 });
 })();
 
 // src/app/views/task/compare-versions/compare.service.ts
@@ -46096,6 +45021,318 @@ var HtmlNormalizationService = class _HtmlNormalizationService {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(HtmlNormalizationService, [{
     type: Injectable,
     args: [{ providedIn: "root" }]
+  }], null, null);
+})();
+
+// node_modules/primeng/fesm2022/primeng-toolbar.mjs
+var _c023 = ["start"];
+var _c136 = ["end"];
+var _c217 = ["center"];
+var _c315 = ["*"];
+function Toolbar_div_2_ng_container_1_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementContainer(0);
+  }
+}
+function Toolbar_div_2_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 4);
+    \u0275\u0275template(1, Toolbar_div_2_ng_container_1_Template, 1, 0, "ng-container", 5);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275attribute("data-pc-section", "start");
+    \u0275\u0275advance();
+    \u0275\u0275property("ngTemplateOutlet", ctx_r0.startTemplate || ctx_r0._startTemplate);
+  }
+}
+function Toolbar_div_3_ng_container_1_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementContainer(0);
+  }
+}
+function Toolbar_div_3_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 6);
+    \u0275\u0275template(1, Toolbar_div_3_ng_container_1_Template, 1, 0, "ng-container", 5);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275attribute("data-pc-section", "center");
+    \u0275\u0275advance();
+    \u0275\u0275property("ngTemplateOutlet", ctx_r0.centerTemplate || ctx_r0._centerTemplate);
+  }
+}
+function Toolbar_div_4_ng_container_1_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementContainer(0);
+  }
+}
+function Toolbar_div_4_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 7);
+    \u0275\u0275template(1, Toolbar_div_4_ng_container_1_Template, 1, 0, "ng-container", 5);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275attribute("data-pc-section", "end");
+    \u0275\u0275advance();
+    \u0275\u0275property("ngTemplateOutlet", ctx_r0.endTemplate || ctx_r0._endTemplate);
+  }
+}
+var theme15 = ({
+  dt
+}) => `
+.p-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: ${dt("toolbar.padding")};
+    background: ${dt("toolbar.background")};
+    border: 1px solid ${dt("toolbar.border.color")};
+    color: ${dt("toolbar.color")};
+    border-radius: ${dt("toolbar.border.radius")};
+    gap: ${dt("toolbar.gap")};
+}
+
+.p-toolbar-start,
+.p-toolbar-center,
+.p-toolbar-end {
+    display: flex;
+    align-items: center;
+}
+`;
+var classes16 = {
+  root: "p-toolbar p-component",
+  start: "p-toolbar-start",
+  center: "p-toolbar-center",
+  end: "p-toolbar-end"
+};
+var ToolbarStyle = class _ToolbarStyle extends BaseStyle {
+  name = "toolbar";
+  theme = theme15;
+  classes = classes16;
+  static \u0275fac = /* @__PURE__ */ (() => {
+    let \u0275ToolbarStyle_BaseFactory;
+    return function ToolbarStyle_Factory(__ngFactoryType__) {
+      return (\u0275ToolbarStyle_BaseFactory || (\u0275ToolbarStyle_BaseFactory = \u0275\u0275getInheritedFactory(_ToolbarStyle)))(__ngFactoryType__ || _ToolbarStyle);
+    };
+  })();
+  static \u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({
+    token: _ToolbarStyle,
+    factory: _ToolbarStyle.\u0275fac
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(ToolbarStyle, [{
+    type: Injectable
+  }], null, null);
+})();
+var ToolbarClasses;
+(function(ToolbarClasses2) {
+  ToolbarClasses2["root"] = "p-toolbar";
+  ToolbarClasses2["start"] = "p-toolbar-start";
+  ToolbarClasses2["center"] = "p-toolbar-center";
+  ToolbarClasses2["end"] = "p-toolbar-end";
+})(ToolbarClasses || (ToolbarClasses = {}));
+var Toolbar = class _Toolbar extends BaseComponent {
+  /**
+   * Inline style of the component.
+   * @group Props
+   */
+  style;
+  /**
+   * Style class of the component.
+   * @group Props
+   */
+  styleClass;
+  /**
+   * Defines a string value that labels an interactive element.
+   * @group Props
+   */
+  ariaLabelledBy;
+  _componentStyle = inject(ToolbarStyle);
+  getBlockableElement() {
+    return this.el.nativeElement.children[0];
+  }
+  /**
+   * Defines template option for start.
+   * @group Templates
+   */
+  startTemplate;
+  /**
+   * Defines template option for end.
+   * @group Templates
+   */
+  endTemplate;
+  /**
+   * Defines template option for center.
+   * @group Templates
+   */
+  centerTemplate;
+  templates;
+  _startTemplate;
+  _endTemplate;
+  _centerTemplate;
+  ngAfterContentInit() {
+    this.templates.forEach((item) => {
+      switch (item.getType()) {
+        case "start":
+        case "left":
+          this._startTemplate = item.template;
+          break;
+        case "end":
+        case "right":
+          this._endTemplate = item.template;
+          break;
+        case "center":
+          this._centerTemplate = item.template;
+          break;
+      }
+    });
+  }
+  static \u0275fac = /* @__PURE__ */ (() => {
+    let \u0275Toolbar_BaseFactory;
+    return function Toolbar_Factory(__ngFactoryType__) {
+      return (\u0275Toolbar_BaseFactory || (\u0275Toolbar_BaseFactory = \u0275\u0275getInheritedFactory(_Toolbar)))(__ngFactoryType__ || _Toolbar);
+    };
+  })();
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({
+    type: _Toolbar,
+    selectors: [["p-toolbar"]],
+    contentQueries: function Toolbar_ContentQueries(rf, ctx, dirIndex) {
+      if (rf & 1) {
+        \u0275\u0275contentQuery(dirIndex, _c023, 4);
+        \u0275\u0275contentQuery(dirIndex, _c136, 4);
+        \u0275\u0275contentQuery(dirIndex, _c217, 4);
+        \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
+      }
+      if (rf & 2) {
+        let _t;
+        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.startTemplate = _t.first);
+        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.endTemplate = _t.first);
+        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.centerTemplate = _t.first);
+        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.templates = _t);
+      }
+    },
+    inputs: {
+      style: "style",
+      styleClass: "styleClass",
+      ariaLabelledBy: "ariaLabelledBy"
+    },
+    features: [\u0275\u0275ProvidersFeature([ToolbarStyle]), \u0275\u0275InheritDefinitionFeature],
+    ngContentSelectors: _c315,
+    decls: 5,
+    vars: 9,
+    consts: [["role", "toolbar", 3, "ngClass", "ngStyle"], ["class", "p-toolbar-start", 4, "ngIf"], ["class", "p-toolbar-center", 4, "ngIf"], ["class", "p-toolbar-end", 4, "ngIf"], [1, "p-toolbar-start"], [4, "ngTemplateOutlet"], [1, "p-toolbar-center"], [1, "p-toolbar-end"]],
+    template: function Toolbar_Template(rf, ctx) {
+      if (rf & 1) {
+        \u0275\u0275projectionDef();
+        \u0275\u0275elementStart(0, "div", 0);
+        \u0275\u0275projection(1);
+        \u0275\u0275template(2, Toolbar_div_2_Template, 2, 2, "div", 1)(3, Toolbar_div_3_Template, 2, 2, "div", 2)(4, Toolbar_div_4_Template, 2, 2, "div", 3);
+        \u0275\u0275elementEnd();
+      }
+      if (rf & 2) {
+        \u0275\u0275classMap(ctx.styleClass);
+        \u0275\u0275property("ngClass", "p-toolbar p-component")("ngStyle", ctx.style);
+        \u0275\u0275attribute("aria-labelledby", ctx.ariaLabelledBy)("data-pc-name", "toolbar");
+        \u0275\u0275advance(2);
+        \u0275\u0275property("ngIf", ctx.startTemplate || ctx._startTemplate);
+        \u0275\u0275advance();
+        \u0275\u0275property("ngIf", ctx.centerTemplate || ctx._centerTemplate);
+        \u0275\u0275advance();
+        \u0275\u0275property("ngIf", ctx.endTemplate || ctx._endTemplate);
+      }
+    },
+    dependencies: [CommonModule, NgClass, NgIf, NgTemplateOutlet, NgStyle, SharedModule],
+    encapsulation: 2,
+    changeDetection: 0
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(Toolbar, [{
+    type: Component,
+    args: [{
+      selector: "p-toolbar",
+      standalone: true,
+      imports: [CommonModule, SharedModule],
+      template: `
+        <div [ngClass]="'p-toolbar p-component'" [attr.aria-labelledby]="ariaLabelledBy" [ngStyle]="style" [class]="styleClass" role="toolbar" [attr.data-pc-name]="'toolbar'">
+            <ng-content></ng-content>
+            <div class="p-toolbar-start" *ngIf="startTemplate || _startTemplate" [attr.data-pc-section]="'start'">
+                <ng-container *ngTemplateOutlet="startTemplate || _startTemplate"></ng-container>
+            </div>
+            <div class="p-toolbar-center" *ngIf="centerTemplate || _centerTemplate" [attr.data-pc-section]="'center'">
+                <ng-container *ngTemplateOutlet="centerTemplate || _centerTemplate"></ng-container>
+            </div>
+            <div class="p-toolbar-end" *ngIf="endTemplate || _endTemplate" [attr.data-pc-section]="'end'">
+                <ng-container *ngTemplateOutlet="endTemplate || _endTemplate"></ng-container>
+            </div>
+        </div>
+    `,
+      changeDetection: ChangeDetectionStrategy.OnPush,
+      encapsulation: ViewEncapsulation.None,
+      providers: [ToolbarStyle]
+    }]
+  }], null, {
+    style: [{
+      type: Input
+    }],
+    styleClass: [{
+      type: Input
+    }],
+    ariaLabelledBy: [{
+      type: Input
+    }],
+    startTemplate: [{
+      type: ContentChild,
+      args: ["start", {
+        descendants: false
+      }]
+    }],
+    endTemplate: [{
+      type: ContentChild,
+      args: ["end", {
+        descendants: false
+      }]
+    }],
+    centerTemplate: [{
+      type: ContentChild,
+      args: ["center", {
+        descendants: false
+      }]
+    }],
+    templates: [{
+      type: ContentChildren,
+      args: [PrimeTemplate]
+    }]
+  });
+})();
+var ToolbarModule = class _ToolbarModule {
+  static \u0275fac = function ToolbarModule_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _ToolbarModule)();
+  };
+  static \u0275mod = /* @__PURE__ */ \u0275\u0275defineNgModule({
+    type: _ToolbarModule,
+    imports: [Toolbar, SharedModule],
+    exports: [Toolbar, SharedModule]
+  });
+  static \u0275inj = /* @__PURE__ */ \u0275\u0275defineInjector({
+    imports: [Toolbar, SharedModule, SharedModule]
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(ToolbarModule, [{
+    type: NgModule,
+    args: [{
+      imports: [Toolbar, SharedModule],
+      exports: [Toolbar, SharedModule]
+    }]
   }], null, null);
 })();
 
@@ -46847,9 +46084,9 @@ var CompareRenderedService = class _CompareRenderedService {
 })();
 
 // src/app/components/compare-rendered/compare-rendered.component.ts
-var _c025 = ["liveContainer"];
+var _c024 = ["liveContainer"];
 var _c137 = (a0) => ({ ariaLabel: a0 });
-var _c219 = (a0, a1) => ({ "background-color": a0, "border": a1 });
+var _c218 = (a0, a1) => ({ "background-color": a0, "border": a1 });
 var _forTrack06 = ($index, $item) => $item.value;
 var _forTrack13 = ($index, $item) => $item.text;
 function CompareRenderedComponent_For_6_Template(rf, ctx) {
@@ -47030,7 +46267,7 @@ function CompareRenderedComponent_For_12_Template(rf, ctx) {
   if (rf & 2) {
     const item_r6 = ctx.$implicit;
     \u0275\u0275advance();
-    \u0275\u0275property("ngStyle", \u0275\u0275pureFunction2(4, _c219, item_r6.style === "highlight" ? item_r6.colour : "transparent", item_r6.style === "line" ? "2px " + (item_r6.lineStyle || "solid") + " " + item_r6.colour : "none"));
+    \u0275\u0275property("ngStyle", \u0275\u0275pureFunction2(4, _c218, item_r6.style === "highlight" ? item_r6.colour : "transparent", item_r6.style === "line" ? "2px " + (item_r6.lineStyle || "solid") + " " + item_r6.colour : "none"));
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 2, item_r6.text));
   }
@@ -47555,7 +46792,7 @@ var CompareRenderedComponent = class _CompareRenderedComponent {
   };
   static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CompareRenderedComponent, selectors: [["aida-compare-rendered"]], viewQuery: function CompareRenderedComponent_Query(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275viewQuery(_c025, 5);
+      \u0275\u0275viewQuery(_c024, 5);
     }
     if (rf & 2) {
       let _t;
@@ -48487,9 +47724,733 @@ var CompareComponent = class _CompareComponent {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CompareComponent, { className: "CompareComponent", filePath: "src/app/views/task/compare-versions/compare.component.ts", lineNumber: 38 });
 })();
 
+// node_modules/primeng/fesm2022/primeng-popover.mjs
+var _c025 = ["content"];
+var _c138 = ["*"];
+var _c219 = (a0, a1) => ({
+  showTransitionParams: a0,
+  hideTransitionParams: a1
+});
+var _c316 = (a0, a1) => ({
+  value: a0,
+  params: a1
+});
+var _c414 = (a0) => ({
+  closeCallback: a0
+});
+function Popover_div_0_3_ng_template_0_Template(rf, ctx) {
+}
+function Popover_div_0_3_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275template(0, Popover_div_0_3_ng_template_0_Template, 0, 0, "ng-template");
+  }
+}
+function Popover_div_0_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r1 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 1);
+    \u0275\u0275listener("click", function Popover_div_0_Template_div_click_0_listener($event) {
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.onOverlayClick($event));
+    })("@animation.start", function Popover_div_0_Template_div_animation_animation_start_0_listener($event) {
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.onAnimationStart($event));
+    })("@animation.done", function Popover_div_0_Template_div_animation_animation_done_0_listener($event) {
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.onAnimationEnd($event));
+    });
+    \u0275\u0275elementStart(1, "div", 2);
+    \u0275\u0275listener("click", function Popover_div_0_Template_div_click_1_listener($event) {
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.onContentClick($event));
+    })("mousedown", function Popover_div_0_Template_div_mousedown_1_listener($event) {
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.onContentClick($event));
+    });
+    \u0275\u0275projection(2);
+    \u0275\u0275template(3, Popover_div_0_3_Template, 1, 0, null, 3);
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext();
+    \u0275\u0275classMap(ctx_r1.styleClass);
+    \u0275\u0275property("ngClass", "p-popover p-component")("ngStyle", ctx_r1.style)("@animation", \u0275\u0275pureFunction2(13, _c316, ctx_r1.overlayVisible ? "open" : "close", \u0275\u0275pureFunction2(10, _c219, ctx_r1.showTransitionOptions, ctx_r1.hideTransitionOptions)));
+    \u0275\u0275attribute("aria-modal", ctx_r1.overlayVisible)("aria-label", ctx_r1.ariaLabel)("aria-labelledBy", ctx_r1.ariaLabelledBy);
+    \u0275\u0275advance(3);
+    \u0275\u0275property("ngTemplateOutlet", ctx_r1.contentTemplate || ctx_r1._contentTemplate)("ngTemplateOutletContext", \u0275\u0275pureFunction1(16, _c414, ctx_r1.onCloseClick.bind(ctx_r1)));
+  }
+}
+var theme16 = ({
+  dt
+}) => `
+.p-popover {
+    margin-top: ${dt("popover.gutter")};
+    background: ${dt("popover.background")};
+    color: ${dt("popover.color")};
+    border: 1px solid ${dt("popover.border.color")};
+    border-radius: ${dt("popover.border.radius")};
+    box-shadow: ${dt("popover.shadow")};
+    position: absolute
+}
+
+.p-popover-content {
+    padding: ${dt("popover.content.padding")};
+}
+
+.p-popover-flipped {
+    margin-top: calc(${dt("popover.gutter")} * -1);
+    margin-bottom: ${dt("popover.gutter")};
+}
+
+.p-popover-enter-from {
+    opacity: 0;
+    transform: scaleY(0.8);
+}
+
+.p-popover-leave-to {
+    opacity: 0;
+}
+
+.p-popover-enter-active {
+    transition: transform 0.12s cubic-bezier(0, 0, 0.2, 1), opacity 0.12s cubic-bezier(0, 0, 0.2, 1);
+}
+
+.p-popover-leave-active {
+    transition: opacity 0.1s linear;
+}
+
+.p-popover:after,
+.p-popover:before {
+    bottom: 100%;
+    left: calc(${dt("popover.arrow.offset")} + ${dt("popover.arrow.left")});
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.p-popover:after {
+    border-width: calc(${dt("popover.gutter")} - 2px);
+    margin-left: calc(-1 * (${dt("popover.gutter")} - 2px));
+    border-style: solid;
+    border-color: transparent;
+    border-bottom-color: ${dt("popover.background")};
+}
+
+.p-popover:before {
+    border-width: ${dt("popover.gutter")};
+    margin-left: calc(-1 * ${dt("popover.gutter")});
+    border-style: solid;
+    border-color: transparent;
+    border-bottom-color: ${dt("popover.border.color")};
+}
+
+.p-popover-flipped:after,
+.p-popover-flipped:before {
+    bottom: auto;
+    top: 100%;
+}
+
+.p-popover.p-popover-flipped:after {
+    border-bottom-color: transparent;
+    border-top-color: ${dt("popover.background")};
+}
+
+.p-popover.p-popover-flipped:before {
+    border-bottom-color: transparent;
+    border-top-color: ${dt("popover.border.color")};
+}
+
+`;
+var classes17 = {
+  root: "p-popover p-component",
+  content: "p-popover-content"
+};
+var PopoverStyle = class _PopoverStyle extends BaseStyle {
+  name = "popover";
+  theme = theme16;
+  classes = classes17;
+  static \u0275fac = /* @__PURE__ */ (() => {
+    let \u0275PopoverStyle_BaseFactory;
+    return function PopoverStyle_Factory(__ngFactoryType__) {
+      return (\u0275PopoverStyle_BaseFactory || (\u0275PopoverStyle_BaseFactory = \u0275\u0275getInheritedFactory(_PopoverStyle)))(__ngFactoryType__ || _PopoverStyle);
+    };
+  })();
+  static \u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({
+    token: _PopoverStyle,
+    factory: _PopoverStyle.\u0275fac
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(PopoverStyle, [{
+    type: Injectable
+  }], null, null);
+})();
+var Popover = class _Popover extends BaseComponent {
+  /**
+   * Defines a string that labels the input for accessibility.
+   * @group Props
+   */
+  ariaLabel;
+  /**
+   * Establishes relationships between the component and label(s) where its value should be one or more element IDs.
+   * @group Props
+   */
+  ariaLabelledBy;
+  /**
+   * Enables to hide the overlay when outside is clicked.
+   * @group Props
+   */
+  dismissable = true;
+  /**
+   * Inline style of the component.
+   * @group Props
+   */
+  style;
+  /**
+   * Style class of the component.
+   * @group Props
+   */
+  styleClass;
+  /**
+   * Target element to attach the panel, valid values are "body" or a local ng-template variable of another element (note: use binding with brackets for template variables, e.g. [appendTo]="mydiv" for a div element having #mydiv as variable name).
+   * @group Props
+   */
+  appendTo = "body";
+  /**
+   * Whether to automatically manage layering.
+   * @group Props
+   */
+  autoZIndex = true;
+  /**
+   * Aria label of the close icon.
+   * @group Props
+   */
+  ariaCloseLabel;
+  /**
+   * Base zIndex value to use in layering.
+   * @group Props
+   */
+  baseZIndex = 0;
+  /**
+   * When enabled, first button receives focus on show.
+   * @group Props
+   */
+  focusOnShow = true;
+  /**
+   * Transition options of the show animation.
+   * @group Props
+   */
+  showTransitionOptions = ".12s cubic-bezier(0, 0, 0.2, 1)";
+  /**
+   * Transition options of the hide animation.
+   * @group Props
+   */
+  hideTransitionOptions = ".1s linear";
+  /**
+   * Callback to invoke when an overlay becomes visible.
+   * @group Emits
+   */
+  onShow = new EventEmitter();
+  /**
+   * Callback to invoke when an overlay gets hidden.
+   * @group Emits
+   */
+  onHide = new EventEmitter();
+  container;
+  overlayVisible = false;
+  render = false;
+  isOverlayAnimationInProgress = false;
+  selfClick = false;
+  documentClickListener;
+  target;
+  willHide;
+  scrollHandler;
+  documentResizeListener;
+  /**
+   * Custom content template.
+   * @group Templates
+   */
+  contentTemplate;
+  templates;
+  _contentTemplate;
+  destroyCallback;
+  overlayEventListener;
+  overlaySubscription;
+  _componentStyle = inject(PopoverStyle);
+  zone = inject(NgZone);
+  overlayService = inject(OverlayService);
+  ngAfterContentInit() {
+    this.templates.forEach((item) => {
+      switch (item.getType()) {
+        case "content":
+          this._contentTemplate = item.template;
+          break;
+      }
+    });
+  }
+  bindDocumentClickListener() {
+    if (isPlatformBrowser(this.platformId)) {
+      if (!this.documentClickListener) {
+        let documentEvent = isIOS() ? "touchstart" : "click";
+        const documentTarget = this.el ? this.el.nativeElement.ownerDocument : this.document;
+        this.documentClickListener = this.renderer.listen(documentTarget, documentEvent, (event2) => {
+          if (!this.dismissable) {
+            return;
+          }
+          if (!this.container?.contains(event2.target) && this.target !== event2.target && !this.target.contains(event2.target) && !this.selfClick) {
+            this.hide();
+          }
+          this.selfClick = false;
+          this.cd.markForCheck();
+        });
+      }
+    }
+  }
+  unbindDocumentClickListener() {
+    if (this.documentClickListener) {
+      this.documentClickListener();
+      this.documentClickListener = null;
+      this.selfClick = false;
+    }
+  }
+  /**
+   * Toggles the visibility of the panel.
+   * @param {Event} event - Browser event
+   * @param {Target} target - Target element.
+   * @group Method
+   */
+  toggle(event2, target) {
+    if (this.isOverlayAnimationInProgress) {
+      return;
+    }
+    if (this.overlayVisible) {
+      if (this.hasTargetChanged(event2, target)) {
+        this.destroyCallback = () => {
+          this.show(null, target || event2.currentTarget || event2.target);
+        };
+      }
+      this.hide();
+    } else {
+      this.show(event2, target);
+    }
+  }
+  /**
+   * Displays the panel.
+   * @param {Event} event - Browser event
+   * @param {Target} target - Target element.
+   * @group Method
+   */
+  show(event2, target) {
+    target && event2 && event2.stopPropagation();
+    if (this.isOverlayAnimationInProgress) {
+      return;
+    }
+    this.target = target || event2.currentTarget || event2.target;
+    this.overlayVisible = true;
+    this.render = true;
+    this.cd.markForCheck();
+  }
+  onOverlayClick(event2) {
+    this.overlayService.add({
+      originalEvent: event2,
+      target: this.el.nativeElement
+    });
+    this.selfClick = true;
+  }
+  onContentClick(event2) {
+    const targetElement = event2.target;
+    this.selfClick = event2.offsetX < targetElement.clientWidth && event2.offsetY < targetElement.clientHeight;
+  }
+  hasTargetChanged(event2, target) {
+    return this.target != null && this.target !== (target || event2.currentTarget || event2.target);
+  }
+  appendContainer() {
+    if (this.appendTo) {
+      if (this.appendTo === "body") this.renderer.appendChild(this.document.body, this.container);
+      else appendChild(this.appendTo, this.container);
+    }
+  }
+  restoreAppend() {
+    if (this.container && this.appendTo) {
+      this.renderer.appendChild(this.el.nativeElement, this.container);
+    }
+  }
+  align() {
+    if (this.autoZIndex) {
+      zindexutils.set("overlay", this.container, this.baseZIndex + this.config.zIndex.overlay);
+    }
+    absolutePosition(this.container, this.target, false);
+    const containerOffset = getOffset(this.container);
+    const targetOffset = getOffset(this.target);
+    const borderRadius = this.document.defaultView?.getComputedStyle(this.container).getPropertyValue("border-radius");
+    let arrowLeft = 0;
+    if (containerOffset.left < targetOffset.left) {
+      arrowLeft = targetOffset.left - containerOffset.left - parseFloat(borderRadius) * 2;
+    }
+    this.container?.style.setProperty($dt("popover.arrow.left").name, `${arrowLeft}px`);
+    if (containerOffset.top < targetOffset.top) {
+      this.container.setAttribute("data-p-popover-flipped", "true");
+      addClass(this.container, "p-popover-flipped");
+    }
+  }
+  onAnimationStart(event2) {
+    if (event2.toState === "open") {
+      this.container = event2.element;
+      this.container?.setAttribute(this.attrSelector, "");
+      this.appendContainer();
+      this.align();
+      this.bindDocumentClickListener();
+      this.bindDocumentResizeListener();
+      this.bindScrollListener();
+      if (this.focusOnShow) {
+        this.focus();
+      }
+      this.overlayEventListener = (e) => {
+        if (this.container && this.container.contains(e.target)) {
+          this.selfClick = true;
+        }
+      };
+      this.overlaySubscription = this.overlayService.clickObservable.subscribe(this.overlayEventListener);
+      this.onShow.emit(null);
+    }
+    this.isOverlayAnimationInProgress = true;
+  }
+  onAnimationEnd(event2) {
+    switch (event2.toState) {
+      case "void":
+        if (this.destroyCallback) {
+          this.destroyCallback();
+          this.destroyCallback = null;
+        }
+        if (this.overlaySubscription) {
+          this.overlaySubscription.unsubscribe();
+        }
+        break;
+      case "close":
+        if (this.autoZIndex) {
+          zindexutils.clear(this.container);
+        }
+        if (this.overlaySubscription) {
+          this.overlaySubscription.unsubscribe();
+        }
+        this.onContainerDestroy();
+        this.onHide.emit({});
+        this.render = false;
+        break;
+    }
+    this.isOverlayAnimationInProgress = false;
+  }
+  focus() {
+    let focusable = findSingle(this.container, "[autofocus]");
+    if (focusable) {
+      this.zone.runOutsideAngular(() => {
+        setTimeout(() => focusable.focus(), 5);
+      });
+    }
+  }
+  /**
+   * Hides the panel.
+   * @group Method
+   */
+  hide() {
+    this.overlayVisible = false;
+    this.cd.markForCheck();
+  }
+  onCloseClick(event2) {
+    this.hide();
+    event2.preventDefault();
+  }
+  onEscapeKeydown(event2) {
+    this.hide();
+  }
+  onWindowResize() {
+    if (this.overlayVisible && !isTouchDevice()) {
+      this.hide();
+    }
+  }
+  bindDocumentResizeListener() {
+    if (isPlatformBrowser(this.platformId)) {
+      if (!this.documentResizeListener) {
+        const window2 = this.document.defaultView;
+        this.documentResizeListener = this.renderer.listen(window2, "resize", this.onWindowResize.bind(this));
+      }
+    }
+  }
+  unbindDocumentResizeListener() {
+    if (this.documentResizeListener) {
+      this.documentResizeListener();
+      this.documentResizeListener = null;
+    }
+  }
+  bindScrollListener() {
+    if (isPlatformBrowser(this.platformId)) {
+      if (!this.scrollHandler) {
+        this.scrollHandler = new ConnectedOverlayScrollHandler(this.target, () => {
+          if (this.overlayVisible) {
+            this.hide();
+          }
+        });
+      }
+      this.scrollHandler.bindScrollListener();
+    }
+  }
+  unbindScrollListener() {
+    if (this.scrollHandler) {
+      this.scrollHandler.unbindScrollListener();
+    }
+  }
+  onContainerDestroy() {
+    if (!this.cd.destroyed) {
+      this.target = null;
+    }
+    this.unbindDocumentClickListener();
+    this.unbindDocumentResizeListener();
+    this.unbindScrollListener();
+  }
+  ngOnDestroy() {
+    if (this.scrollHandler) {
+      this.scrollHandler.destroy();
+      this.scrollHandler = null;
+    }
+    if (this.container && this.autoZIndex) {
+      zindexutils.clear(this.container);
+    }
+    if (!this.cd.destroyed) {
+      this.target = null;
+    }
+    this.destroyCallback = null;
+    if (this.container) {
+      this.restoreAppend();
+      this.onContainerDestroy();
+    }
+    if (this.overlaySubscription) {
+      this.overlaySubscription.unsubscribe();
+    }
+    super.ngOnDestroy();
+  }
+  static \u0275fac = /* @__PURE__ */ (() => {
+    let \u0275Popover_BaseFactory;
+    return function Popover_Factory(__ngFactoryType__) {
+      return (\u0275Popover_BaseFactory || (\u0275Popover_BaseFactory = \u0275\u0275getInheritedFactory(_Popover)))(__ngFactoryType__ || _Popover);
+    };
+  })();
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({
+    type: _Popover,
+    selectors: [["p-popover"]],
+    contentQueries: function Popover_ContentQueries(rf, ctx, dirIndex) {
+      if (rf & 1) {
+        \u0275\u0275contentQuery(dirIndex, _c025, 4);
+        \u0275\u0275contentQuery(dirIndex, PrimeTemplate, 4);
+      }
+      if (rf & 2) {
+        let _t;
+        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.contentTemplate = _t.first);
+        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.templates = _t);
+      }
+    },
+    hostBindings: function Popover_HostBindings(rf, ctx) {
+      if (rf & 1) {
+        \u0275\u0275listener("keydown.escape", function Popover_keydown_escape_HostBindingHandler($event) {
+          return ctx.onEscapeKeydown($event);
+        }, false, \u0275\u0275resolveDocument);
+      }
+    },
+    inputs: {
+      ariaLabel: "ariaLabel",
+      ariaLabelledBy: "ariaLabelledBy",
+      dismissable: [2, "dismissable", "dismissable", booleanAttribute],
+      style: "style",
+      styleClass: "styleClass",
+      appendTo: "appendTo",
+      autoZIndex: [2, "autoZIndex", "autoZIndex", booleanAttribute],
+      ariaCloseLabel: "ariaCloseLabel",
+      baseZIndex: [2, "baseZIndex", "baseZIndex", numberAttribute],
+      focusOnShow: [2, "focusOnShow", "focusOnShow", booleanAttribute],
+      showTransitionOptions: "showTransitionOptions",
+      hideTransitionOptions: "hideTransitionOptions"
+    },
+    outputs: {
+      onShow: "onShow",
+      onHide: "onHide"
+    },
+    features: [\u0275\u0275ProvidersFeature([PopoverStyle]), \u0275\u0275InheritDefinitionFeature],
+    ngContentSelectors: _c138,
+    decls: 1,
+    vars: 1,
+    consts: [["role", "dialog", 3, "ngClass", "ngStyle", "class", "click", 4, "ngIf"], ["role", "dialog", 3, "click", "ngClass", "ngStyle"], [1, "p-popover-content", 3, "click", "mousedown"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"]],
+    template: function Popover_Template(rf, ctx) {
+      if (rf & 1) {
+        \u0275\u0275projectionDef();
+        \u0275\u0275template(0, Popover_div_0_Template, 4, 18, "div", 0);
+      }
+      if (rf & 2) {
+        \u0275\u0275property("ngIf", ctx.render);
+      }
+    },
+    dependencies: [CommonModule, NgClass, NgIf, NgTemplateOutlet, NgStyle, SharedModule],
+    encapsulation: 2,
+    data: {
+      animation: [trigger("animation", [state("void", style({
+        transform: "scaleY(0.8)",
+        opacity: 0
+      })), state("close", style({
+        opacity: 0
+      })), state("open", style({
+        transform: "translateY(0)",
+        opacity: 1
+      })), transition("void => open", animate("{{showTransitionParams}}")), transition("open => close", animate("{{hideTransitionParams}}"))])]
+    },
+    changeDetection: 0
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(Popover, [{
+    type: Component,
+    args: [{
+      selector: "p-popover",
+      standalone: true,
+      imports: [CommonModule, SharedModule],
+      template: `
+        <div
+            *ngIf="render"
+            [ngClass]="'p-popover p-component'"
+            [ngStyle]="style"
+            [class]="styleClass"
+            (click)="onOverlayClick($event)"
+            [@animation]="{
+                value: overlayVisible ? 'open' : 'close',
+                params: { showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions }
+            }"
+            (@animation.start)="onAnimationStart($event)"
+            (@animation.done)="onAnimationEnd($event)"
+            role="dialog"
+            [attr.aria-modal]="overlayVisible"
+            [attr.aria-label]="ariaLabel"
+            [attr.aria-labelledBy]="ariaLabelledBy"
+        >
+            <div class="p-popover-content" (click)="onContentClick($event)" (mousedown)="onContentClick($event)">
+                <ng-content></ng-content>
+                <ng-template *ngTemplateOutlet="contentTemplate || _contentTemplate; context: { closeCallback: onCloseClick.bind(this) }"></ng-template>
+            </div>
+        </div>
+    `,
+      animations: [trigger("animation", [state("void", style({
+        transform: "scaleY(0.8)",
+        opacity: 0
+      })), state("close", style({
+        opacity: 0
+      })), state("open", style({
+        transform: "translateY(0)",
+        opacity: 1
+      })), transition("void => open", animate("{{showTransitionParams}}")), transition("open => close", animate("{{hideTransitionParams}}"))])],
+      changeDetection: ChangeDetectionStrategy.OnPush,
+      encapsulation: ViewEncapsulation.None,
+      providers: [PopoverStyle]
+    }]
+  }], null, {
+    ariaLabel: [{
+      type: Input
+    }],
+    ariaLabelledBy: [{
+      type: Input
+    }],
+    dismissable: [{
+      type: Input,
+      args: [{
+        transform: booleanAttribute
+      }]
+    }],
+    style: [{
+      type: Input
+    }],
+    styleClass: [{
+      type: Input
+    }],
+    appendTo: [{
+      type: Input
+    }],
+    autoZIndex: [{
+      type: Input,
+      args: [{
+        transform: booleanAttribute
+      }]
+    }],
+    ariaCloseLabel: [{
+      type: Input
+    }],
+    baseZIndex: [{
+      type: Input,
+      args: [{
+        transform: numberAttribute
+      }]
+    }],
+    focusOnShow: [{
+      type: Input,
+      args: [{
+        transform: booleanAttribute
+      }]
+    }],
+    showTransitionOptions: [{
+      type: Input
+    }],
+    hideTransitionOptions: [{
+      type: Input
+    }],
+    onShow: [{
+      type: Output
+    }],
+    onHide: [{
+      type: Output
+    }],
+    contentTemplate: [{
+      type: ContentChild,
+      args: ["content", {
+        descendants: false
+      }]
+    }],
+    templates: [{
+      type: ContentChildren,
+      args: [PrimeTemplate]
+    }],
+    onEscapeKeydown: [{
+      type: HostListener,
+      args: ["document:keydown.escape", ["$event"]]
+    }]
+  });
+})();
+var PopoverModule = class _PopoverModule {
+  static \u0275fac = function PopoverModule_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _PopoverModule)();
+  };
+  static \u0275mod = /* @__PURE__ */ \u0275\u0275defineNgModule({
+    type: _PopoverModule,
+    imports: [Popover, SharedModule],
+    exports: [Popover, SharedModule]
+  });
+  static \u0275inj = /* @__PURE__ */ \u0275\u0275defineInjector({
+    imports: [Popover, SharedModule, SharedModule]
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(PopoverModule, [{
+    type: NgModule,
+    args: [{
+      imports: [Popover, SharedModule],
+      exports: [Popover, SharedModule]
+    }]
+  }], null, null);
+})();
+
 // node_modules/primeng/fesm2022/primeng-panel.mjs
 var _c026 = ["header"];
-var _c138 = ["icons"];
+var _c139 = ["icons"];
 var _c220 = ["content"];
 var _c317 = ["footer"];
 var _c415 = ["headericons"];
@@ -48515,11 +48476,11 @@ var _c1113 = (a0) => ({
   height: "*",
   opacity: "1"
 });
-var _c1211 = (a0) => ({
+var _c1210 = (a0) => ({
   value: "visible",
   params: a0
 });
-var _c139 = (a0, a1, a2) => ({
+var _c1310 = (a0, a1, a2) => ({
   "p-panel-icons-start": a0,
   "p-panel-icons-end": a1,
   "p-panel-icons-center": a2
@@ -48686,7 +48647,7 @@ function Panel_div_1_Template(rf, ctx) {
     \u0275\u0275advance(2);
     \u0275\u0275property("ngTemplateOutlet", ctx_r2.headerTemplate || ctx_r2._headerTemplate);
     \u0275\u0275advance();
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction3(6, _c139, ctx_r2.iconPos === "start", ctx_r2.iconPos === "end", ctx_r2.iconPos === "center"));
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction3(6, _c1310, ctx_r2.iconPos === "start", ctx_r2.iconPos === "end", ctx_r2.iconPos === "center"));
     \u0275\u0275advance();
     \u0275\u0275property("ngTemplateOutlet", ctx_r2.iconTemplate || ctx_r2._iconTemplate);
     \u0275\u0275advance();
@@ -49049,7 +49010,7 @@ var Panel = class _Panel extends BaseComponent {
       if (rf & 1) {
         \u0275\u0275contentQuery(dirIndex, Footer, 5);
         \u0275\u0275contentQuery(dirIndex, _c026, 4);
-        \u0275\u0275contentQuery(dirIndex, _c138, 4);
+        \u0275\u0275contentQuery(dirIndex, _c139, 4);
         \u0275\u0275contentQuery(dirIndex, _c220, 4);
         \u0275\u0275contentQuery(dirIndex, _c317, 4);
         \u0275\u0275contentQuery(dirIndex, _c415, 4);
@@ -49124,7 +49085,7 @@ var Panel = class _Panel extends BaseComponent {
         \u0275\u0275advance();
         \u0275\u0275property("ngIf", ctx.showHeader);
         \u0275\u0275advance();
-        \u0275\u0275property("id", ctx.id + "_content")("@panelContent", ctx.collapsed ? \u0275\u0275pureFunction1(19, _c1010, \u0275\u0275pureFunction1(17, _c910, ctx.animating ? ctx.transitionOptions : "0ms")) : \u0275\u0275pureFunction1(23, _c1211, \u0275\u0275pureFunction1(21, _c1113, ctx.animating ? ctx.transitionOptions : "0ms")));
+        \u0275\u0275property("id", ctx.id + "_content")("@panelContent", ctx.collapsed ? \u0275\u0275pureFunction1(19, _c1010, \u0275\u0275pureFunction1(17, _c910, ctx.animating ? ctx.transitionOptions : "0ms")) : \u0275\u0275pureFunction1(23, _c1210, \u0275\u0275pureFunction1(21, _c1113, ctx.animating ? ctx.transitionOptions : "0ms")));
         \u0275\u0275attribute("aria-labelledby", ctx.id + "_header")("aria-hidden", ctx.collapsed)("tabindex", ctx.collapsed ? "-1" : void 0);
         \u0275\u0275advance(4);
         \u0275\u0275property("ngTemplateOutlet", ctx.contentTemplate || ctx._contentTemplate);
@@ -53294,6 +53255,9 @@ var ExportComponent = class _ExportComponent {
         const html = this.buildCdtsPage(LINK_DETOUR_JS, {});
         zip.file(`${repo}/source/scripts/external-link-detour.js`, html);
       }
+      const pageCountEN = projectPaths.filter((p) => p.startsWith("en/") || p === "en.html").length;
+      const pageCountFR = projectPaths.filter((p) => p.startsWith("fr/") || p === "fr.html").length;
+      this.usageService.trackExport(this.projectData().id, this.projectData().org ?? "DEFAULT", this.projectData().storageType, this.projectData().repoType, `${repo}`, this.selectedExportTarget, pageCountEN, pageCountFR);
       const blob = yield zip.generateAsync({ type: "blob" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
@@ -53427,7 +53391,7 @@ var ExportComponent = class _ExportComponent {
       this.projectState.setExportDate();
       const pageCountEN = exportPages.filter((p) => p.path.startsWith("en/") || p.path === "en.html").length;
       const pageCountFR = exportPages.filter((p) => p.path.startsWith("fr/") || p.path === "fr.html").length;
-      this.usageService.trackExport(this.projectData().id, this.projectData().org ?? "DEFAULT", this.projectData().storageType, `${owner}/${repo}`, this.selectedExportTarget, pageCountEN, pageCountFR);
+      this.usageService.trackExport(this.projectData().id, this.projectData().org ?? "DEFAULT", this.projectData().storageType, this.projectData().repoType, `${owner}/${repo}`, this.selectedExportTarget, pageCountEN, pageCountFR);
       setTimeout(() => this.exportProgress.set(null), 5e3);
       this.compareFiles();
     });
@@ -55279,7 +55243,7 @@ var IaDiagramComponent = class _IaDiagramComponent {
       \u0275\u0275property("model", ctx.items)("popup", true);
       \u0275\u0275advance(2);
       \u0275\u0275styleMap(\u0275\u0275pureFunction0(26, _c149));
-      \u0275\u0275property("header", ctx.selectedNode == null ? null : ctx.selectedNode.data == null ? null : ctx.selectedNode.data.prototype == null ? null : ctx.selectedNode.data.prototype[ctx.selectedLanguage()].h1)("modal", true)("maximizable", true);
+      \u0275\u0275property("header", ctx.selectedNode.data == null ? null : ctx.selectedNode.data.prototype == null ? null : ctx.selectedNode.data.prototype[ctx.selectedLanguage()].h1)("modal", true)("maximizable", true);
       \u0275\u0275twoWayProperty("visible", ctx.editNode);
       \u0275\u0275advance();
       \u0275\u0275conditional(ctx.selectedNode ? 24 : -1);
@@ -55348,7 +55312,7 @@ var IaDiagramComponent = class _IaDiagramComponent {
 <!--Context Menu-->\r
 <p-menu #menu [model]="items" [popup]="true" />\r
 \r
-<p-dialog [header]="selectedNode?.data?.prototype?.[selectedLanguage()].h1" [modal]="true" [maximizable]="true" [(visible)]="editNode" styleClass="w-10" [style]="{ height: '90vh' }">\r
+<p-dialog [header]="selectedNode.data?.prototype?.[selectedLanguage()].h1" [modal]="true" [maximizable]="true" [(visible)]="editNode" styleClass="w-10" [style]="{ height: '90vh' }">\r
     @if(selectedNode) {\r
     <aida-edit-node [node]="selectedNode" [isOpen]="editNode" (dialogClose)="editNode = false" />\r
     }\r
@@ -55445,7 +55409,7 @@ var HelpComponent = class _HelpComponent {
   static \u0275fac = function HelpComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _HelpComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _HelpComponent, selectors: [["aida-help"]], decls: 629, vars: 37, consts: [["id", "wb-cont"], [1, "my-0"], [1, "mt-0", "mb-5"], ["fragment", "about", 3, "routerLink"], ["fragment", "start", 3, "routerLink"], ["fragment", "inventory", 3, "routerLink"], ["fragment", "add-existing", 3, "routerLink"], ["fragment", "add-new", 3, "routerLink"], ["fragment", "view-ia", 3, "routerLink"], ["fragment", "change-ia", 3, "routerLink"], ["fragment", "export-csv", 3, "routerLink"], ["fragment", "signin", 3, "routerLink"], ["fragment", "cloud", 3, "routerLink"], ["fragment", "collab", 3, "routerLink"], ["fragment", "github", 3, "routerLink"], ["fragment", "generate-metadata", 3, "routerLink"], ["fragment", "documentation", 3, "routerLink"], ["fragment", "data", 3, "routerLink"], ["fragment", "jekyll", 3, "routerLink"], ["fragment", "release", 3, "routerLink"], [1, "flex", "flex-column", "gap-3", "my-3"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min"], ["id", "about"], [1, "flex", "flex-row", "gap-8"], ["href", "mailto:AIPIA-PIAAI@cra-arc.gc.ca?subject=Interested%20in%20contributing%20to%20AIDA&body=Hi%2C%0A%0AI'd%20like%20to%20get%20involved%20with%20AIDA%20as%20a%20%5Bdeveloper%20%2F%20researcher%20%2F%20tester%5D.%20Here's%20a%20bit%20about%20my%20background%20and%20what%20I'd%20like%20to%20help%20with%3A%0A%0A%5BYour%20message%20here%5D%0A%0A%E2%80%94%20%5BYour%20name%5D"], ["id", "start"], ["id", "inventory"], ["id", "add-existing"], ["id", "add-new"], ["id", "view-ia"], ["id", "change-ia"], ["id", "export-csv"], ["id", "signin"], ["id", "cloud"], ["id", "collab"], ["id", "github"], ["id", "generate-metadata"], ["id", "documentation"], ["id", "data"], [1, "mb-1"], [1, "mt-1"], [1, "custom"], ["id", "jekyll"], ["id", "release"], ["id", "0-5-7"], ["id", "0-5-6"], ["id", "0-5-5"], ["id", "0-5-4"], ["id", "0-5-3"], ["id", "0-5-2"], ["id", "0-5-1"], ["id", "0-5-0"], ["id", "0-4-0"]], template: function HelpComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _HelpComponent, selectors: [["aida-help"]], decls: 644, vars: 37, consts: [["id", "wb-cont"], [1, "my-0"], [1, "mt-0", "mb-5"], ["fragment", "about", 3, "routerLink"], ["fragment", "start", 3, "routerLink"], ["fragment", "inventory", 3, "routerLink"], ["fragment", "add-existing", 3, "routerLink"], ["fragment", "add-new", 3, "routerLink"], ["fragment", "view-ia", 3, "routerLink"], ["fragment", "change-ia", 3, "routerLink"], ["fragment", "export-csv", 3, "routerLink"], ["fragment", "signin", 3, "routerLink"], ["fragment", "cloud", 3, "routerLink"], ["fragment", "collab", 3, "routerLink"], ["fragment", "github", 3, "routerLink"], ["fragment", "generate-metadata", 3, "routerLink"], ["fragment", "documentation", 3, "routerLink"], ["fragment", "data", 3, "routerLink"], ["fragment", "jekyll", 3, "routerLink"], ["fragment", "release", 3, "routerLink"], [1, "flex", "flex-column", "gap-3", "my-3"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min"], ["id", "about"], [1, "flex", "flex-row", "gap-8"], ["href", "mailto:AIPIA-PIAAI@cra-arc.gc.ca?subject=Interested%20in%20contributing%20to%20AIDA&body=Hi%2C%0A%0AI'd%20like%20to%20get%20involved%20with%20AIDA%20as%20a%20%5Bdeveloper%20%2F%20researcher%20%2F%20tester%5D.%20Here's%20a%20bit%20about%20my%20background%20and%20what%20I'd%20like%20to%20help%20with%3A%0A%0A%5BYour%20message%20here%5D%0A%0A%E2%80%94%20%5BYour%20name%5D"], ["id", "start"], ["id", "inventory"], ["id", "add-existing"], ["id", "add-new"], ["id", "view-ia"], ["id", "change-ia"], ["id", "export-csv"], ["id", "signin"], ["id", "cloud"], ["id", "collab"], ["id", "github"], ["id", "generate-metadata"], ["id", "documentation"], ["id", "data"], [1, "mb-1"], [1, "mt-1"], [1, "custom"], ["id", "jekyll"], ["id", "release"], ["id", "0-5-7"], ["id", "0-5-6"], ["id", "0-5-5"], ["id", "0-5-4"], ["id", "0-5-3"], ["id", "0-5-2"], ["id", "0-5-1"], ["id", "0-5-0"], ["id", "0-4-0"]], template: function HelpComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "h1", 0);
       \u0275\u0275text(1);
@@ -55944,7 +55908,7 @@ var HelpComponent = class _HelpComponent {
       \u0275\u0275text(417, "Release notes");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(418, "h3", 44);
-      \u0275\u0275text(419, "Release 0.5.8 (June 26, 2026)");
+      \u0275\u0275text(419, "Release 0.5.8 (July 16, 2026)");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(420, "h4");
       \u0275\u0275text(421, "Data structure");
@@ -55953,277 +55917,298 @@ var HelpComponent = class _HelpComponent {
       \u0275\u0275text(424, 'Reorganized data into "baseline", "live", and "prototype" subsections for better tracking and quick comparisons');
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(425, "li");
-      \u0275\u0275text(426, "IA diagram can now toggle between English and French labels");
+      \u0275\u0275text(426, `Users can refresh the "live" data from Canada.ca or the "prototype" data from GitHub ("baseline" doesn't refresh, so changes can be tracked from start of project or from current live state)`);
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(427, "li");
-      \u0275\u0275text(428, 'IA diagram "changes" view will show the live page title crossed out above the prototype title if they are different');
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(429, "li");
-      \u0275\u0275text(430, 'IA diagram can open a popup to edit the "prototype" data');
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(431, "li");
-      \u0275\u0275text(432, `Users can refresh the "live" data from Canada.ca or the "prototype" data from GitHub ("baseline" doesn't refresh, so changes can be tracked from start of project or from current live state)`);
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(433, "li");
-      \u0275\u0275text(434, "Old saved files will be patched to the new structure automatically");
+      \u0275\u0275text(428, "Old saved files will be patched to the new structure automatically");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(435, "h4");
-      \u0275\u0275text(436, "Other improvements");
+      \u0275\u0275elementStart(429, "h4");
+      \u0275\u0275text(430, "IA diagram improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(437, "ul")(438, "li");
-      \u0275\u0275text(439, "Exported index pages now open the correct repo link, even if you fork, move, or rename the repo");
+      \u0275\u0275elementStart(431, "ul")(432, "li");
+      \u0275\u0275text(433, "Added drag & drop function for page moves");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(434, "li");
+      \u0275\u0275text(435, "Added menu option to reorder sibling pages");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(436, "li");
+      \u0275\u0275text(437, "Added menu option and button to find child pages for a specific page");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(438, "li");
+      \u0275\u0275text(439, "Added menu option to open a popup for editing page data");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(440, "li");
-      \u0275\u0275text(441, 'Add a "New tab GitHub" bookmarklet to open the other version in a new tab (same as the "Toggle GitHub" bookmarklet but opens in a new tab instead of the same tab)');
-      \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(442, "h3", 44);
-      \u0275\u0275text(443, "Release 0.5.8 (June 15, 2026)");
+      \u0275\u0275text(441, "Added toggle for English and French page labels");
       \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(442, "li");
+      \u0275\u0275text(443, 'The "changes" view will now show the live page title crossed out above the prototype title if they are different');
+      \u0275\u0275elementEnd()();
       \u0275\u0275elementStart(444, "h4");
-      \u0275\u0275text(445, "Content inventory");
+      \u0275\u0275text(445, "Other improvements");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(446, "ul")(447, "li");
-      \u0275\u0275text(448, "Add notes group with 'issues' and 'solutions' for user to document whatever they wish");
+      \u0275\u0275text(448, "Content inventory is now separated by English and French instead of primary and opposite language");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(449, "li");
+      \u0275\u0275text(450, "Content inventory now includes a menu to any version of a page, vanity urls, chatbot indicator, reading grade level, link count, and phone numbers");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(451, "li");
+      \u0275\u0275text(452, "Added an option to export pages to a zip file instead of GitHub");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(453, "li");
+      \u0275\u0275text(454, "Exported index pages now open the correct repo link, even if you fork, move, or rename the repo");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(455, "li");
+      \u0275\u0275text(456, 'Added a "New tab GitHub" bookmarklet to open the other version in a new tab (same as the "Toggle GitHub" bookmarklet but opens in a new tab instead of the same tab)');
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(449, "h3", 44);
-      \u0275\u0275text(450, "Release 0.5.7 (June 12, 2026)");
+      \u0275\u0275elementStart(457, "h3", 44);
+      \u0275\u0275text(458, "Release 0.5.8 (June 15, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(451, "h4");
-      \u0275\u0275text(452, "New IA diagram features");
+      \u0275\u0275elementStart(459, "h4");
+      \u0275\u0275text(460, "Content inventory");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(453, "ul")(454, "li");
-      \u0275\u0275text(455, "Add options to hide or unhide specific pages or all child pages");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(456, "li");
-      \u0275\u0275text(457, "Add option to view any page as the root page so users can focus on specific sections of the IA");
+      \u0275\u0275elementStart(461, "ul")(462, "li");
+      \u0275\u0275text(463, "Add notes group with 'issues' and 'solutions' for user to document whatever they wish");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(458, "h4");
-      \u0275\u0275text(459, "Other improvements");
+      \u0275\u0275elementStart(464, "h3", 44);
+      \u0275\u0275text(465, "Release 0.5.7 (June 12, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(460, "ul")(461, "li");
-      \u0275\u0275text(462, 'Separate "Find pages" options with tabs');
+      \u0275\u0275elementStart(466, "h4");
+      \u0275\u0275text(467, "New IA diagram features");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(463, "li");
-      \u0275\u0275text(464, "Add monitoring dashboard");
+      \u0275\u0275elementStart(468, "ul")(469, "li");
+      \u0275\u0275text(470, "Add options to hide or unhide specific pages or all child pages");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(465, "li");
-      \u0275\u0275text(466, "Update project bookmarklet to load index page instead of repo");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(467, "li");
-      \u0275\u0275text(468, "Add more padding between items in page move table");
+      \u0275\u0275elementStart(471, "li");
+      \u0275\u0275text(472, "Add option to view any page as the root page so users can focus on specific sections of the IA");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(469, "h3", 45);
-      \u0275\u0275text(470, "Release 0.5.6 (June 4, 2026)");
+      \u0275\u0275elementStart(473, "h4");
+      \u0275\u0275text(474, "Other improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(471, "h4");
-      \u0275\u0275text(472, "Content inventory improvement");
+      \u0275\u0275elementStart(475, "ul")(476, "li");
+      \u0275\u0275text(477, 'Separate "Find pages" options with tabs');
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(473, "ul")(474, "li");
-      \u0275\u0275text(475, "Make more cells editable");
+      \u0275\u0275elementStart(478, "li");
+      \u0275\u0275text(479, "Add monitoring dashboard");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(480, "li");
+      \u0275\u0275text(481, "Update project bookmarklet to load index page instead of repo");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(482, "li");
+      \u0275\u0275text(483, "Add more padding between items in page move table");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(476, "h3", 46);
-      \u0275\u0275text(477, "Release 0.5.5 (April 15, 2026)");
+      \u0275\u0275elementStart(484, "h3", 45);
+      \u0275\u0275text(485, "Release 0.5.6 (June 4, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(478, "h4");
-      \u0275\u0275text(479, "Feature improvements");
+      \u0275\u0275elementStart(486, "h4");
+      \u0275\u0275text(487, "Content inventory improvement");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(480, "ul")(481, "li");
-      \u0275\u0275text(482, "Strip /content/canadasite from links so we don't mislabel pages as IA orphans");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(483, "li");
-      \u0275\u0275text(484, 'Update find child pages function to use checkboxes so user can select which to copy to the "Add pages" input');
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(485, "li");
-      \u0275\u0275text(486, "Prevent fetching cached json data (last modified dates and content owners will be more accurate now)");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(487, "li");
-      \u0275\u0275text(488, "Maintain cnt-wdth-lmtd when exporting pages to GitHub");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(489, "li");
-      \u0275\u0275text(490, `Fix bug on "Page move" view so navigating away while editing doesn't lock a page from future edits`);
+      \u0275\u0275elementStart(488, "ul")(489, "li");
+      \u0275\u0275text(490, "Make more cells editable");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(491, "h3", 47);
-      \u0275\u0275text(492, "Release 0.5.4 (April 10, 2026)");
+      \u0275\u0275elementStart(491, "h3", 46);
+      \u0275\u0275text(492, "Release 0.5.5 (April 15, 2026)");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(493, "h4");
-      \u0275\u0275text(494, "New find child pages feature");
+      \u0275\u0275text(494, "Feature improvements");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(495, "ul")(496, "li");
-      \u0275\u0275text(497, 'Add find child pages functionality to the "Find pages" component');
+      \u0275\u0275text(497, "Strip /content/canadasite from links so we don't mislabel pages as IA orphans");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(498, "li");
-      \u0275\u0275text(499, "This function crawls your in-scope pages for potential child pages. It can also find IA orphans if they are linked from other in-scope pages");
+      \u0275\u0275text(499, 'Update find child pages function to use checkboxes so user can select which to copy to the "Add pages" input');
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(500, "li");
+      \u0275\u0275text(501, "Prevent fetching cached json data (last modified dates and content owners will be more accurate now)");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(502, "li");
+      \u0275\u0275text(503, "Maintain cnt-wdth-lmtd when exporting pages to GitHub");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(504, "li");
+      \u0275\u0275text(505, `Fix bug on "Page move" view so navigating away while editing doesn't lock a page from future edits`);
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(500, "h4");
-      \u0275\u0275text(501, "Content inventory improvement");
+      \u0275\u0275elementStart(506, "h3", 47);
+      \u0275\u0275text(507, "Release 0.5.4 (April 10, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(502, "ul")(503, "li");
-      \u0275\u0275text(504, "Add sort function to table");
+      \u0275\u0275elementStart(508, "h4");
+      \u0275\u0275text(509, "New find child pages feature");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(505, "li");
-      \u0275\u0275text(506, "Add pagination for projects with more than 50 pages");
+      \u0275\u0275elementStart(510, "ul")(511, "li");
+      \u0275\u0275text(512, 'Add find child pages functionality to the "Find pages" component');
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(507, "li");
-      \u0275\u0275text(508, "Improve status filters");
+      \u0275\u0275elementStart(513, "li");
+      \u0275\u0275text(514, "This function crawls your in-scope pages for potential child pages. It can also find IA orphans if they are linked from other in-scope pages");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(509, "h4");
-      \u0275\u0275text(510, "IA diagram improvement");
+      \u0275\u0275elementStart(515, "h4");
+      \u0275\u0275text(516, "Content inventory improvement");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(511, "ul")(512, "li");
-      \u0275\u0275text(513, "Add toggle to view baseline or final version");
+      \u0275\u0275elementStart(517, "ul")(518, "li");
+      \u0275\u0275text(519, "Add sort function to table");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(520, "li");
+      \u0275\u0275text(521, "Add pagination for projects with more than 50 pages");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(522, "li");
+      \u0275\u0275text(523, "Improve status filters");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(514, "h3", 48);
-      \u0275\u0275text(515, "Release 0.5.3 (March 31, 2026)");
+      \u0275\u0275elementStart(524, "h4");
+      \u0275\u0275text(525, "IA diagram improvement");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(516, "h4");
-      \u0275\u0275text(517, "GitHub export improvements");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(518, "ul")(519, "li");
-      \u0275\u0275text(520, "Add option to export English, French or both languages for prototyping");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(521, "li");
-      \u0275\u0275text(522, 'All pages get robots: "noindex, nofollow" from _config.yml, individual pages may have it listed as well if the live page has it');
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(523, "li");
-      \u0275\u0275text(524, "Copy everything from core-prototype/_includes instead of specific files");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(525, "li");
-      \u0275\u0275text(526, "Add 2s delay before enabling GitHub Pages (preview)");
+      \u0275\u0275elementStart(526, "ul")(527, "li");
+      \u0275\u0275text(528, "Add toggle to view baseline or final version");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(527, "h4");
-      \u0275\u0275text(528, "UPD integration");
+      \u0275\u0275elementStart(529, "h3", 48);
+      \u0275\u0275text(530, "Release 0.5.3 (March 31, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(529, "ul")(530, "li");
-      \u0275\u0275text(531, "Content inventory table now links directly to the UPD data for each page (opens UPD in new tab)");
+      \u0275\u0275elementStart(531, "h4");
+      \u0275\u0275text(532, "GitHub export improvements");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(533, "ul")(534, "li");
+      \u0275\u0275text(535, "Add option to export English, French or both languages for prototyping");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(536, "li");
+      \u0275\u0275text(537, 'All pages get robots: "noindex, nofollow" from _config.yml, individual pages may have it listed as well if the live page has it');
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(538, "li");
+      \u0275\u0275text(539, "Copy everything from core-prototype/_includes instead of specific files");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(540, "li");
+      \u0275\u0275text(541, "Add 2s delay before enabling GitHub Pages (preview)");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(532, "h4");
-      \u0275\u0275text(533, "Update bookmarklets");
+      \u0275\u0275elementStart(542, "h4");
+      \u0275\u0275text(543, "UPD integration");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(534, "ul")(535, "li");
-      \u0275\u0275text(536, 'Update "Toggle [repo name] and "Toggle github" to work with new cra-test-arc.canada.ca subdomain');
+      \u0275\u0275elementStart(544, "ul")(545, "li");
+      \u0275\u0275text(546, "Content inventory table now links directly to the UPD data for each page (opens UPD in new tab)");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(537, "h4");
-      \u0275\u0275text(538, "Update template detection");
+      \u0275\u0275elementStart(547, "h4");
+      \u0275\u0275text(548, "Update bookmarklets");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(539, "ul")(540, "li");
-      \u0275\u0275text(541, 'Add "mwsdoormat-links-container" to topic page template detection logic');
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(542, "li");
-      \u0275\u0275text(543, "Add additional double H1 detection for <p> elements");
+      \u0275\u0275elementStart(549, "ul")(550, "li");
+      \u0275\u0275text(551, 'Update "Toggle [repo name] and "Toggle github" to work with new cra-test-arc.canada.ca subdomain');
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(544, "h3", 49);
-      \u0275\u0275text(545, "Release 0.5.2 (March 27, 2026)");
+      \u0275\u0275elementStart(552, "h4");
+      \u0275\u0275text(553, "Update template detection");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(546, "h4");
-      \u0275\u0275text(547, "Add pages improvements");
+      \u0275\u0275elementStart(554, "ul")(555, "li");
+      \u0275\u0275text(556, 'Add "mwsdoormat-links-container" to topic page template detection logic');
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(548, "ul")(549, "li");
-      \u0275\u0275text(550, "Added input validation to enforce single-language page entry");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(551, "li");
-      \u0275\u0275text(552, "Automatic URL formatting and normalization");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(553, "li");
-      \u0275\u0275text(554, "Removed list of urls undergoing validation (we still show urls with problems and valid or skipped urls)");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(555, "li");
-      \u0275\u0275text(556, 'Added "View pages" section to the Edit/New project view');
+      \u0275\u0275elementStart(557, "li");
+      \u0275\u0275text(558, "Add additional double H1 detection for <p> elements");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(557, "h4");
-      \u0275\u0275text(558, "Github export improvements");
+      \u0275\u0275elementStart(559, "h3", 49);
+      \u0275\u0275text(560, "Release 0.5.2 (March 27, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(559, "ul")(560, "li");
-      \u0275\u0275text(561, "Improved GitHub index.html to support bilingual sitemap generation with paired English/French URLs");
+      \u0275\u0275elementStart(561, "h4");
+      \u0275\u0275text(562, "Add pages improvements");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(563, "ul")(564, "li");
+      \u0275\u0275text(565, "Added input validation to enforce single-language page entry");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(566, "li");
+      \u0275\u0275text(567, "Automatic URL formatting and normalization");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(568, "li");
+      \u0275\u0275text(569, "Removed list of urls undergoing validation (we still show urls with problems and valid or skipped urls)");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(570, "li");
+      \u0275\u0275text(571, 'Added "View pages" section to the Edit/New project view');
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(562, "h3", 50);
-      \u0275\u0275text(563, "Release 0.5.1 (March 26, 2026)");
+      \u0275\u0275elementStart(572, "h4");
+      \u0275\u0275text(573, "Github export improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(564, "h4");
-      \u0275\u0275text(565, "New bookmarklet");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(566, "ul")(567, "li");
-      \u0275\u0275text(568, 'Added project-specific "Toggle [repo name]" bookmarklet to toggle between GitHub preview, edit mode, and Canada.ca.');
+      \u0275\u0275elementStart(574, "ul")(575, "li");
+      \u0275\u0275text(576, "Improved GitHub index.html to support bilingual sitemap generation with paired English/French URLs");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(569, "h3", 51);
-      \u0275\u0275text(570, "Release 0.5.0 (March 25, 2026)");
+      \u0275\u0275elementStart(577, "h3", 50);
+      \u0275\u0275text(578, "Release 0.5.1 (March 26, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(571, "h4");
-      \u0275\u0275text(572, "AI-powered metadata generation");
+      \u0275\u0275elementStart(579, "h4");
+      \u0275\u0275text(580, "New bookmarklet");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(573, "ul")(574, "li");
-      \u0275\u0275text(575, "Generate metadata automatically for selected pages using AI assistance");
+      \u0275\u0275elementStart(581, "ul")(582, "li");
+      \u0275\u0275text(583, 'Added project-specific "Toggle [repo name]" bookmarklet to toggle between GitHub preview, edit mode, and Canada.ca.');
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(576, "h4");
-      \u0275\u0275text(577, "Content inventory improvements");
+      \u0275\u0275elementStart(584, "h3", 51);
+      \u0275\u0275text(585, "Release 0.5.0 (March 25, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(578, "ul")(579, "li");
-      \u0275\u0275text(580, "Expanded data collection: word count, noindex status, last modified/published dates");
+      \u0275\u0275elementStart(586, "h4");
+      \u0275\u0275text(587, "AI-powered metadata generation");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(581, "li");
-      \u0275\u0275text(582, "Expanded metadata collection to both languages");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(583, "li");
-      \u0275\u0275text(584, "Secondary toolbar for bulk actions on selected pages");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(585, "li");
-      \u0275\u0275text(586, "Improved page status filtering");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(587, "li");
-      \u0275\u0275text(588, "Added option to refresh the collected page data");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(589, "li");
-      \u0275\u0275text(590, "Reorganized IA orphan detection into dedicated problem category");
+      \u0275\u0275elementStart(588, "ul")(589, "li");
+      \u0275\u0275text(590, "Generate metadata automatically for selected pages using AI assistance");
       \u0275\u0275elementEnd()();
       \u0275\u0275elementStart(591, "h4");
-      \u0275\u0275text(592, "Switch project improvements");
+      \u0275\u0275text(592, "Content inventory improvements");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(593, "ul")(594, "li");
-      \u0275\u0275text(595, "Fixed cloud project upload with GitHub Personal Access Tokens");
+      \u0275\u0275text(595, "Expanded data collection: word count, noindex status, last modified/published dates");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(596, "li");
-      \u0275\u0275text(597, "Filters on switch project view are now linked to the project files");
+      \u0275\u0275text(597, "Expanded metadata collection to both languages");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(598, "li");
+      \u0275\u0275text(599, "Secondary toolbar for bulk actions on selected pages");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(600, "li");
+      \u0275\u0275text(601, "Improved page status filtering");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(602, "li");
+      \u0275\u0275text(603, "Added option to refresh the collected page data");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(604, "li");
+      \u0275\u0275text(605, "Reorganized IA orphan detection into dedicated problem category");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(598, "h4");
-      \u0275\u0275text(599, "GitHub export improvements");
+      \u0275\u0275elementStart(606, "h4");
+      \u0275\u0275text(607, "Switch project improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(600, "ul")(601, "li");
-      \u0275\u0275text(602, "Added an index.html page to generate a list of files in your repo and robots.txt");
+      \u0275\u0275elementStart(608, "ul")(609, "li");
+      \u0275\u0275text(610, "Fixed cloud project upload with GitHub Personal Access Tokens");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(603, "li");
-      \u0275\u0275text(604, "Breadcrumbs now reflect any changes you've made in AIDA instead of the live page");
+      \u0275\u0275elementStart(611, "li");
+      \u0275\u0275text(612, "Filters on switch project view are now linked to the project files");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(605, "h4");
-      \u0275\u0275text(606, "New toolbox view");
+      \u0275\u0275elementStart(613, "h4");
+      \u0275\u0275text(614, "GitHub export improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(607, "ul")(608, "li");
-      \u0275\u0275text(609, 'Added bookmarklets, "Open in AIDA", "Toggle GitHub", and "Check links"');
+      \u0275\u0275elementStart(615, "ul")(616, "li");
+      \u0275\u0275text(617, "Added an index.html page to generate a list of files in your repo and robots.txt");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(610, "li");
-      \u0275\u0275text(611, "Note: this view will eventually have some standalone tools that aren't linked to project data");
+      \u0275\u0275elementStart(618, "li");
+      \u0275\u0275text(619, "Breadcrumbs now reflect any changes you've made in AIDA instead of the live page");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(612, "h3", 52);
-      \u0275\u0275text(613, "Release 0.4.0 (February 25, 2026)");
+      \u0275\u0275elementStart(620, "h4");
+      \u0275\u0275text(621, "New toolbox view");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(614, "h4");
-      \u0275\u0275text(615, "Initial release - core project management");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(616, "ul")(617, "li");
-      \u0275\u0275text(618, "Project dashboard view with high level stats and design phase tracking (discover, assess, design, approve)");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(619, "li");
-      \u0275\u0275text(620, "Edit/New project view where you can name your project, associate it with a GitHub repo, add collaborators, add pages, or find pages from the task inventory");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(621, "li");
-      \u0275\u0275text(622, "Switch project view where you can switch between your projects, view any cloud project, or mark projects for deletion (they are stored for 30 days before final deletion)");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(623, "li");
-      \u0275\u0275text(624, "Manage inventory view where you can see all the data collected for your pages, add brand new pages, or change the IA structure");
+      \u0275\u0275elementStart(622, "ul")(623, "li");
+      \u0275\u0275text(624, 'Added bookmarklets, "Open in AIDA", "Toggle GitHub", and "Check links"');
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(625, "li");
-      \u0275\u0275text(626, "IA diagram view where you can see the page hierarchy");
+      \u0275\u0275text(626, "Note: this view will eventually have some standalone tools that aren't linked to project data");
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(627, "h3", 52);
+      \u0275\u0275text(628, "Release 0.4.0 (February 25, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(627, "li");
-      \u0275\u0275text(628, "Export to GitHub view where you can export your pages in Jekyll format. The file comparison table can detect if you've made changes in GitHub after the export and will automatically skip those files on future exports (can be overriden by the user).");
+      \u0275\u0275elementStart(629, "h4");
+      \u0275\u0275text(630, "Initial release - core project management");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(631, "ul")(632, "li");
+      \u0275\u0275text(633, "Project dashboard view with high level stats and design phase tracking (discover, assess, design, approve)");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(634, "li");
+      \u0275\u0275text(635, "Edit/New project view where you can name your project, associate it with a GitHub repo, add collaborators, add pages, or find pages from the task inventory");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(636, "li");
+      \u0275\u0275text(637, "Switch project view where you can switch between your projects, view any cloud project, or mark projects for deletion (they are stored for 30 days before final deletion)");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(638, "li");
+      \u0275\u0275text(639, "Manage inventory view where you can see all the data collected for your pages, add brand new pages, or change the IA structure");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(640, "li");
+      \u0275\u0275text(641, "IA diagram view where you can see the page hierarchy");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(642, "li");
+      \u0275\u0275text(643, "Export to GitHub view where you can export your pages in Jekyll format. The file comparison table can detect if you've made changes in GitHub after the export and will automatically skip those files on future exports (can be overriden by the user).");
       \u0275\u0275elementEnd()()()();
     }
     if (rf & 2) {
@@ -56443,20 +56428,29 @@ var HelpComponent = class _HelpComponent {
 \r
     <section class="surface-card border-round-lg shadow-2 p-4 w-full min-w-min">\r
         <h2 id="release">Release notes</h2>\r
-        <h3 id="0-5-7">Release 0.5.8 (June 26, 2026)</h3>\r
+        <h3 id="0-5-7">Release 0.5.8 (July 16, 2026)</h3>\r
         <h4>Data structure</h4>\r
         <ul>\r
             <li>Reorganized data into "baseline", "live", and "prototype" subsections for better tracking and quick comparisons</li>\r
-            <li>IA diagram can now toggle between English and French labels</li>\r
-            <li>IA diagram "changes" view will show the live page title crossed out above the prototype title if they are different</li>\r
-            <li>IA diagram can open a popup to edit the "prototype" data</li>\r
             <li>Users can refresh the "live" data from Canada.ca or the "prototype" data from GitHub ("baseline" doesn't refresh, so changes can be tracked from start of project or from current live state)</li>\r
             <li>Old saved files will be patched to the new structure automatically</li>\r
         </ul>\r
+        <h4>IA diagram improvements</h4>\r
+        <ul>\r
+            <li>Added drag & drop function for page moves</li>\r
+            <li>Added menu option to reorder sibling pages</li>\r
+            <li>Added menu option and button to find child pages for a specific page</li>\r
+            <li>Added menu option to open a popup for editing page data</li>\r
+            <li>Added toggle for English and French page labels</li>\r
+            <li>The "changes" view will now show the live page title crossed out above the prototype title if they are different</li>\r
+        </ul>\r
         <h4>Other improvements</h4>\r
         <ul>\r
+            <li>Content inventory is now separated by English and French instead of primary and opposite language</li>\r
+            <li>Content inventory now includes a menu to any version of a page, vanity urls, chatbot indicator, reading grade level, link count, and phone numbers</li>\r
+            <li>Added an option to export pages to a zip file instead of GitHub</li>\r
             <li>Exported index pages now open the correct repo link, even if you fork, move, or rename the repo</li>\r
-            <li>Add a "New tab GitHub" bookmarklet to open the other version in a new tab (same as the "Toggle GitHub" bookmarklet but opens in a new tab instead of the same tab)</li>\r
+            <li>Added a "New tab GitHub" bookmarklet to open the other version in a new tab (same as the "Toggle GitHub" bookmarklet but opens in a new tab instead of the same tab)</li>\r
         </ul>\r
         <h3 id="0-5-7">Release 0.5.8 (June 15, 2026)</h3>\r
         <h4>Content inventory</h4>\r
@@ -57082,17 +57076,17 @@ var routes = [
   },
   {
     path: "dev",
-    loadComponent: () => import("./chunk-4AYPCGMU.js").then((m) => m.DevToolsComponent),
+    loadComponent: () => import("./chunk-FN3C6RNV.js").then((m) => m.DevToolsComponent),
     title: "dev._title"
   },
   {
     path: "dev/monitoring",
-    loadComponent: () => import("./chunk-KGVUD34P.js").then((m) => m.UsageMonitoringComponent),
+    loadComponent: () => import("./chunk-RPF3CPXW.js").then((m) => m.UsageMonitoringComponent),
     title: "dev.usage._title"
   },
   {
     path: "dev/color-generator",
-    loadComponent: () => import("./chunk-JN55YIN2.js").then((m) => m.ColorGeneratorComponent),
+    loadComponent: () => import("./chunk-UQDAZ5GW.js").then((m) => m.ColorGeneratorComponent),
     title: "dev.colors._title"
   },
   {
@@ -57102,7 +57096,7 @@ var routes = [
   },
   {
     path: "dev/prompt-editor",
-    loadComponent: () => import("./chunk-AGBRQFYH.js").then((m) => m.PromptEditorComponent),
+    loadComponent: () => import("./chunk-JU425EX2.js").then((m) => m.PromptEditorComponent),
     title: "dev.prompts._title"
   },
   {
@@ -58553,57 +58547,51 @@ var SignInButtonComponent = class _SignInButtonComponent {
       yield this.exportGitHubService.validatePAT();
     });
   }
-  markForTranslation() {
-    marker("common.new");
-    marker("common.search");
-    marker("common.signout");
-    marker("settings._nav");
-    marker("common.projects");
-    marker("common.profile");
+  get items() {
+    return [
+      {
+        label: this.translate.instant("common.projects"),
+        items: [
+          {
+            label: this.translate.instant("common.new"),
+            icon: "pi pi-plus",
+            command: () => {
+              this.projectStorageService.clearActiveProject();
+              this.projectState.resetProject();
+              this.router.navigate(["/new-project"]);
+            }
+          },
+          {
+            label: this.translate.instant("common.search"),
+            icon: "pi pi-search",
+            command: () => {
+              this.router.navigate(["/switch-project"]);
+            }
+          }
+        ]
+      },
+      {
+        label: this.translate.instant("common.profile"),
+        items: [
+          {
+            label: this.translate.instant("settings._nav"),
+            icon: "pi pi-cog",
+            command: () => {
+              this.showSettings = true;
+            }
+          },
+          {
+            label: this.translate.instant("common.signout"),
+            icon: "pi pi-sign-out",
+            command: () => {
+              this.authService.logout();
+              this.exportGitHubService.clearPAT();
+            }
+          }
+        ]
+      }
+    ];
   }
-  items = [
-    {
-      label: "common.projects",
-      items: [
-        {
-          label: "common.new",
-          icon: "pi pi-plus",
-          command: () => {
-            this.projectStorageService.clearActiveProject();
-            this.projectState.resetProject();
-            this.router.navigate(["/new-project"]);
-          }
-        },
-        {
-          label: "common.search",
-          icon: "pi pi-search",
-          command: () => {
-            this.router.navigate(["/switch-project"]);
-          }
-        }
-      ]
-    },
-    {
-      label: "common.profile",
-      items: [
-        {
-          label: "settings._nav",
-          icon: "pi pi-cog",
-          command: () => {
-            this.showSettings = true;
-          }
-        },
-        {
-          label: "common.signout",
-          icon: "pi pi-sign-out",
-          command: () => {
-            this.authService.logout();
-            this.exportGitHubService.clearPAT();
-          }
-        }
-      ]
-    }
-  ];
   // Signal to track if API Gateway is accessible
   isApiGatewayAccessible = signal(true);
   // Check if API gateway is available so we can surface the preferred sign-in method
@@ -58780,7 +58768,7 @@ var SignInButtonComponent = class _SignInButtonComponent {
   }], null, null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SignInButtonComponent, { className: "SignInButtonComponent", filePath: "src/app/components/sign-in/sign-in-button/sign-in-button.component.ts", lineNumber: 37 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SignInButtonComponent, { className: "SignInButtonComponent", filePath: "src/app/components/sign-in/sign-in-button/sign-in-button.component.ts", lineNumber: 36 });
 })();
 
 // src/app/template/header.component.ts
@@ -59312,7 +59300,7 @@ var SidebarComponent = class _SidebarComponent {
       \u0275\u0275advance(2);
       \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(55, _c419))("routerLinkActive", \u0275\u0275pureFunction0(56, _c229));
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(46, 42, "github._nav"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(46, 42, "exportPages._nav"));
       \u0275\u0275advance(2);
       \u0275\u0275conditional(ctx.sandbox ? 47 : -1);
       \u0275\u0275advance(2);
@@ -59395,7 +59383,7 @@ var SidebarComponent = class _SidebarComponent {
           <a [routerLink]="['/export-pages']" [routerLinkActive]="['bg-primary-500', 'text-primary-50']"\r
              class="flex align-items-center gap-3 py-1 px-2 m-1 border-round no-underline hover:bg-primary-600">\r
             <span class="material-icons-outlined text-2xl">drive_folder_upload</span>\r
-            <span class="hidden md:inline text-md">{{ 'github._nav' | translate }}</span>\r
+            <span class="hidden md:inline text-md">{{ 'exportPages._nav' | translate }}</span>\r
           </a>\r
           @if(sandbox){\r
           <a [routerLink]="['/compare']" [routerLinkActive]="['bg-primary-500', 'text-primary-50']"\r

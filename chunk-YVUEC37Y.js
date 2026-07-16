@@ -1,5 +1,8 @@
 import {
   Diff,
+  FILE_HEADERS_ONLY,
+  INCLUDE_HEADERS,
+  OMIT_HEADERS,
   applyPatch,
   applyPatches,
   arrayDiff,
@@ -28,10 +31,13 @@ import {
   structuredPatch,
   wordDiff,
   wordsWithSpaceDiff
-} from "./chunk-VLG55BFN.js";
+} from "./chunk-EYFEDUKZ.js";
 import "./chunk-KBUIKKCC.js";
 export {
   Diff,
+  FILE_HEADERS_ONLY,
+  INCLUDE_HEADERS,
+  OMIT_HEADERS,
   applyPatch,
   applyPatches,
   arrayDiff,
@@ -61,4 +67,4 @@ export {
   wordDiff,
   wordsWithSpaceDiff
 };
-//# sourceMappingURL=chunk-H4XEQYRX.js.map
+//# sourceMappingURL=chunk-YVUEC37Y.js.map

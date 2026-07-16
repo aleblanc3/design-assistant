@@ -319,7 +319,22 @@ function hasOnlyWinLineEndings(string) {
 function hasOnlyUnixLineEndings(string) {
   return !string.includes("\r\n") && string.includes("\n");
 }
-function trailingWs(string) {
+function segment(string, segmenter) {
+  const parts = [];
+  for (const segmentObj of Array.from(segmenter.segment(string))) {
+    const segment2 = segmentObj.segment;
+    if (parts.length && /\s/.test(parts[parts.length - 1]) && /\s/.test(segment2)) {
+      parts[parts.length - 1] += segment2;
+    } else {
+      parts.push(segment2);
+    }
+  }
+  return parts;
+}
+function trailingWs(string, segmenter) {
+  if (segmenter) {
+    return leadingAndTrailingWs(string, segmenter)[1];
+  }
   let i;
   for (i = string.length - 1; i >= 0; i--) {
     if (!string[i].match(/\s/)) {
@@ -328,13 +343,30 @@ function trailingWs(string) {
   }
   return string.substring(i + 1);
 }
-function leadingWs(string) {
+function leadingWs(string, segmenter) {
+  if (segmenter) {
+    return leadingAndTrailingWs(string, segmenter)[0];
+  }
   const match = string.match(/^\s*/);
   return match ? match[0] : "";
 }
+function leadingAndTrailingWs(string, segmenter) {
+  if (!segmenter) {
+    return [leadingWs(string), trailingWs(string)];
+  }
+  if (segmenter.resolvedOptions().granularity != "word") {
+    throw new Error('The segmenter passed must have a granularity of "word"');
+  }
+  const segments = segment(string, segmenter);
+  const firstSeg = segments[0];
+  const lastSeg = segments[segments.length - 1];
+  const head = /\s/.test(firstSeg) ? firstSeg : "";
+  const tail = /\s/.test(lastSeg) ? lastSeg : "";
+  return [head, tail];
+}
 
 // node_modules/diff/libesm/diff/word.js
-var extendedWordChars = "a-zA-Z0-9_\\u{C0}-\\u{FF}\\u{D8}-\\u{F6}\\u{F8}-\\u{2C6}\\u{2C8}-\\u{2D7}\\u{2DE}-\\u{2FF}\\u{1E00}-\\u{1EFF}";
+var extendedWordChars = "a-zA-Z0-9_\\u{AD}\\u{C0}-\\u{D6}\\u{D8}-\\u{F6}\\u{F8}-\\u{2C6}\\u{2C8}-\\u{2D7}\\u{2DE}-\\u{2FF}\\u{1E00}-\\u{1EFF}";
 var tokenizeIncludingWhitespace = new RegExp(`[${extendedWordChars}]+|\\s+|[^${extendedWordChars}]`, "ug");
 var WordDiff = class extends Diff {
   equals(left, right, options) {
@@ -351,7 +383,7 @@ var WordDiff = class extends Diff {
       if (segmenter.resolvedOptions().granularity != "word") {
         throw new Error('The segmenter passed must have a granularity of "word"');
       }
-      parts = Array.from(segmenter.segment(value), (segment) => segment.segment);
+      parts = segment(value, segmenter);
     } else {
       parts = value.match(tokenizeIncludingWhitespace) || [];
     }
@@ -400,7 +432,7 @@ var WordDiff = class extends Diff {
         deletion = change;
       } else {
         if (insertion || deletion) {
-          dedupeWhitespaceInChangeObjects(lastKeep, deletion, insertion, change);
+          dedupeWhitespaceInChangeObjects(lastKeep, deletion, insertion, change, options.intlSegmenter);
         }
         lastKeep = change;
         insertion = null;
@@ -408,7 +440,7 @@ var WordDiff = class extends Diff {
       }
     });
     if (insertion || deletion) {
-      dedupeWhitespaceInChangeObjects(lastKeep, deletion, insertion, null);
+      dedupeWhitespaceInChangeObjects(lastKeep, deletion, insertion, null, options.intlSegmenter);
     }
     return changes;
   }
@@ -420,12 +452,10 @@ function diffWords(oldStr, newStr, options) {
   }
   return wordDiff.diff(oldStr, newStr, options);
 }
-function dedupeWhitespaceInChangeObjects(startKeep, deletion, insertion, endKeep) {
+function dedupeWhitespaceInChangeObjects(startKeep, deletion, insertion, endKeep, segmenter) {
   if (deletion && insertion) {
-    const oldWsPrefix = leadingWs(deletion.value);
-    const oldWsSuffix = trailingWs(deletion.value);
-    const newWsPrefix = leadingWs(insertion.value);
-    const newWsSuffix = trailingWs(insertion.value);
+    const [oldWsPrefix, oldWsSuffix] = leadingAndTrailingWs(deletion.value, segmenter);
+    const [newWsPrefix, newWsSuffix] = leadingAndTrailingWs(insertion.value, segmenter);
     if (startKeep) {
       const commonWsPrefix = longestCommonPrefix(oldWsPrefix, newWsPrefix);
       startKeep.value = replaceSuffix(startKeep.value, newWsPrefix, commonWsPrefix);
@@ -440,15 +470,15 @@ function dedupeWhitespaceInChangeObjects(startKeep, deletion, insertion, endKeep
     }
   } else if (insertion) {
     if (startKeep) {
-      const ws = leadingWs(insertion.value);
+      const ws = leadingWs(insertion.value, segmenter);
       insertion.value = insertion.value.substring(ws.length);
     }
     if (endKeep) {
-      const ws = leadingWs(endKeep.value);
+      const ws = leadingWs(endKeep.value, segmenter);
       endKeep.value = endKeep.value.substring(ws.length);
     }
   } else if (startKeep && endKeep) {
-    const newWsFull = leadingWs(endKeep.value), delWsStart = leadingWs(deletion.value), delWsEnd = trailingWs(deletion.value);
+    const newWsFull = leadingWs(endKeep.value, segmenter), [delWsStart, delWsEnd] = leadingAndTrailingWs(deletion.value, segmenter);
     const newWsStart = longestCommonPrefix(newWsFull, delWsStart);
     deletion.value = removePrefix(deletion.value, newWsStart);
     const newWsEnd = longestCommonSuffix(removePrefix(newWsFull, newWsStart), delWsEnd);
@@ -456,13 +486,13 @@ function dedupeWhitespaceInChangeObjects(startKeep, deletion, insertion, endKeep
     endKeep.value = replacePrefix(endKeep.value, newWsFull, newWsEnd);
     startKeep.value = replaceSuffix(startKeep.value, newWsFull, newWsFull.slice(0, newWsFull.length - newWsEnd.length));
   } else if (endKeep) {
-    const endKeepWsPrefix = leadingWs(endKeep.value);
-    const deletionWsSuffix = trailingWs(deletion.value);
+    const endKeepWsPrefix = leadingWs(endKeep.value, segmenter);
+    const deletionWsSuffix = trailingWs(deletion.value, segmenter);
     const overlap = maximumOverlap(deletionWsSuffix, endKeepWsPrefix);
     deletion.value = removeSuffix(deletion.value, overlap);
   } else if (startKeep) {
-    const startKeepWsSuffix = trailingWs(startKeep.value);
-    const deletionWsPrefix = leadingWs(deletion.value);
+    const startKeepWsSuffix = trailingWs(startKeep.value, segmenter);
+    const deletionWsPrefix = leadingWs(deletion.value, segmenter);
     const overlap = maximumOverlap(startKeepWsSuffix, deletionWsPrefix);
     deletion.value = removePrefix(deletion.value, overlap);
   }
@@ -733,9 +763,9 @@ function parsePatch(uniDiff) {
       if (/^(---|\+\+\+|@@)\s/.test(line)) {
         break;
       }
-      const header = /^(?:Index:|diff(?: -r \w+)+)\s+(.+?)\s*$/.exec(line);
-      if (header) {
-        index.index = header[1];
+      const headerMatch = /^(?:Index:|diff(?: -r \w+)+)\s+/.exec(line);
+      if (headerMatch) {
+        index.index = line.substring(headerMatch[0].length).trim();
       }
       i++;
     }
@@ -756,14 +786,14 @@ function parsePatch(uniDiff) {
     }
   }
   function parseFileHeader(index) {
-    const fileHeader = /^(---|\+\+\+)\s+(.*)\r?$/.exec(diffstr[i]);
-    if (fileHeader) {
-      const data = fileHeader[2].split("	", 2), header = (data[1] || "").trim();
+    const fileHeaderMatch = /^(---|\+\+\+)\s+/.exec(diffstr[i]);
+    if (fileHeaderMatch) {
+      const prefix = fileHeaderMatch[1], data = diffstr[i].substring(3).trim().split("	", 2), header = (data[1] || "").trim();
       let fileName = data[0].replace(/\\\\/g, "\\");
-      if (/^".*"$/.test(fileName)) {
+      if (fileName.startsWith('"') && fileName.endsWith('"')) {
         fileName = fileName.substr(1, fileName.length - 2);
       }
-      if (fileHeader[1] === "---") {
+      if (prefix === "---") {
         index.oldFileName = fileName;
         index.oldHeader = header;
       } else {
@@ -1058,6 +1088,21 @@ function reversePatch(structuredPatch2) {
 }
 
 // node_modules/diff/libesm/patch/create.js
+var INCLUDE_HEADERS = {
+  includeIndex: true,
+  includeUnderline: true,
+  includeFileHeaders: true
+};
+var FILE_HEADERS_ONLY = {
+  includeIndex: false,
+  includeUnderline: false,
+  includeFileHeaders: true
+};
+var OMIT_HEADERS = {
+  includeIndex: false,
+  includeUnderline: false,
+  includeFileHeaders: false
+};
 function structuredPatch(oldFileName, newFileName, oldStr, newStr, oldHeader, newHeader, options) {
   let optionsObj;
   if (!options) {
@@ -1173,17 +1218,27 @@ function structuredPatch(oldFileName, newFileName, oldStr, newStr, oldHeader, ne
     };
   }
 }
-function formatPatch(patch) {
+function formatPatch(patch, headerOptions) {
+  if (!headerOptions) {
+    headerOptions = INCLUDE_HEADERS;
+  }
   if (Array.isArray(patch)) {
-    return patch.map(formatPatch).join("\n");
+    if (patch.length > 1 && !headerOptions.includeFileHeaders) {
+      throw new Error("Cannot omit file headers on a multi-file patch. (The result would be unparseable; how would a tool trying to apply the patch know which changes are to which file?)");
+    }
+    return patch.map((p) => formatPatch(p, headerOptions)).join("\n");
   }
   const ret = [];
-  if (patch.oldFileName == patch.newFileName) {
+  if (headerOptions.includeIndex && patch.oldFileName == patch.newFileName) {
     ret.push("Index: " + patch.oldFileName);
   }
-  ret.push("===================================================================");
-  ret.push("--- " + patch.oldFileName + (typeof patch.oldHeader === "undefined" ? "" : "	" + patch.oldHeader));
-  ret.push("+++ " + patch.newFileName + (typeof patch.newHeader === "undefined" ? "" : "	" + patch.newHeader));
+  if (headerOptions.includeUnderline) {
+    ret.push("===================================================================");
+  }
+  if (headerOptions.includeFileHeaders) {
+    ret.push("--- " + patch.oldFileName + (typeof patch.oldHeader === "undefined" ? "" : "	" + patch.oldHeader));
+    ret.push("+++ " + patch.newFileName + (typeof patch.newHeader === "undefined" ? "" : "	" + patch.newHeader));
+  }
   for (let i = 0; i < patch.hunks.length; i++) {
     const hunk = patch.hunks[i];
     if (hunk.oldLines === 0) {
@@ -1210,7 +1265,7 @@ function createTwoFilesPatch(oldFileName, newFileName, oldStr, newStr, oldHeader
     if (!patchObj) {
       return;
     }
-    return formatPatch(patchObj);
+    return formatPatch(patchObj, options === null || options === void 0 ? void 0 : options.headerOptions);
   } else {
     const {
       callback
@@ -1220,7 +1275,7 @@ function createTwoFilesPatch(oldFileName, newFileName, oldStr, newStr, oldHeader
         if (!patchObj) {
           callback(void 0);
         } else {
-          callback(formatPatch(patchObj));
+          callback(formatPatch(patchObj, options.headerOptions));
         }
       }
     }));
@@ -1310,6 +1365,9 @@ export {
   applyPatch,
   applyPatches,
   reversePatch,
+  INCLUDE_HEADERS,
+  FILE_HEADERS_ONLY,
+  OMIT_HEADERS,
   structuredPatch,
   formatPatch,
   createTwoFilesPatch,
@@ -1317,4 +1375,4 @@ export {
   convertChangesToDMP,
   convertChangesToXML
 };
-//# sourceMappingURL=chunk-VLG55BFN.js.map
+//# sourceMappingURL=chunk-EYFEDUKZ.js.map

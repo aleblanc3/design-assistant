@@ -3,7 +3,7 @@ import {
   FetchService,
   PageTemplate,
   ProjectPhase
-} from "./chunk-LWD65AXW.js";
+} from "./chunk-A67ORX53.js";
 import {
   environment
 } from "./chunk-MYYNWJMU.js";
@@ -1121,7 +1121,7 @@ var ProjectStorageService = class _ProjectStorageService {
       email: old.metadata?.email,
       lastPublished: old.metadata?.lastPublished instanceof Date ? old.metadata.lastPublished.toISOString() : old.metadata?.lastPublished,
       lastModified: old.metadata?.lastModified instanceof Date ? old.metadata.lastModified.toISOString() : old.metadata?.lastModified,
-      parentPath: this.fetchService.generatePath(old.originalParent),
+      parentPath: old.originalParent ? this.fetchService.generatePath(old.originalParent) : void 0,
       wordCount: old.metadata?.wordCount ?? -1,
       linkCount: -1,
       fleschKincaid: -1,
@@ -1149,7 +1149,7 @@ var ProjectStorageService = class _ProjectStorageService {
       email: old.metadata?.email,
       lastPublished: old.metadata?.lastPublished instanceof Date ? old.metadata.lastPublished.toISOString() : old.metadata?.lastPublished,
       lastModified: old.metadata?.lastModified instanceof Date ? old.metadata.lastModified.toISOString() : old.metadata?.lastModified,
-      parentPath: this.fetchService.generatePath(old.originalParent),
+      parentPath: old.originalParent ? this.fetchService.generatePath(old.originalParent) : void 0,
       wordCount: old.metadata?.wordCount ?? -1,
       linkCount: -1,
       fleschKincaid: -1,
@@ -1174,10 +1174,11 @@ var ProjectStorageService = class _ProjectStorageService {
         visits: { en: old.metadata?.visits ?? -1, fr: old.metadata?.visits ?? -1 },
         vanities: { en: [], fr: [] },
         live: { en: enData, fr: frData },
-        baseline: { en: githubEnData, fr: githubFrData },
-        prototype: { en: githubEnData, fr: githubFrData },
+        baseline: { en: __spreadValues({}, githubEnData), fr: __spreadValues({}, githubFrData) },
+        prototype: { en: __spreadValues({}, githubEnData), fr: __spreadValues({}, githubFrData) },
         metadataReview: old.metadataReview,
         notes: { issue: old.notes?.problem, solution: old.notes?.solution },
+        repoType: "github",
         isContainer: old.status?.isContainer ?? false,
         isCrawled: old.status?.isCrawled ?? false
       },
@@ -1756,7 +1757,7 @@ var UsageService = class _UsageService {
       }
     });
   }
-  trackExport(projectId, orgId, storageType, repo, exportTarget, pageCountEN, pageCountFR) {
+  trackExport(projectId, orgId, storageType, repoType, repo, exportTarget, pageCountEN, pageCountFR) {
     return __async(this, null, function* () {
       try {
         yield firstValueFrom(this.http.post(this.apiUrl, {
@@ -1764,6 +1765,7 @@ var UsageService = class _UsageService {
           projectId,
           orgId,
           storageType,
+          repoType,
           userId: this.settingsService.userId(),
           repo,
           exportTarget,
@@ -2341,7 +2343,7 @@ var ProjectStateService = class _ProjectStateService {
       { field: "isArchived", label: this.translate.instant("inventory.header.archiveStatus"), type: "boolean", group: "status", visibleByDefault: true, dataSection: ["prototype", "lang", "isArchived"] },
       { field: "noindex", label: this.translate.instant("inventory.header.noindex"), type: "boolean", group: "status", visibleByDefault: true, dataSection: ["prototype", "lang", "noindex"] },
       //Actions
-      { field: "actions", label: this.translate.instant("inventory.header.actions"), type: "array", group: "actions", visibleByDefault: false, dataSection: ["actions"] },
+      { field: "actions", label: this.translate.instant("inventory.header.actions"), type: "array", group: "actions", visibleByDefault: false, dataSection: [] },
       //Notes
       { field: "issue", label: this.translate.instant("inventory.header.issue"), type: "textArea", group: "notes", visibleByDefault: false, dataSection: ["notes", "issue"] },
       { field: "solution", label: this.translate.instant("inventory.header.solution"), type: "textArea", group: "notes", visibleByDefault: false, dataSection: ["notes", "solution"] },
@@ -2350,10 +2352,10 @@ var ProjectStateService = class _ProjectStateService {
       //ADD 404's!!!
       //Data
       { field: "template", label: this.translate.instant("inventory.header.template"), type: "template", group: "pageData", visibleByDefault: true, dataSection: ["prototype", "lang", "template"] },
-      { field: "linksToPortal", label: this.translate.instant("inventory.header.linksToPortal"), type: "boolean", group: "pageData", visibleByDefault: false, dataSection: ["live", "lang", "linksToPortal"] },
-      { field: "hasChatbot", label: this.translate.instant("inventory.header.hasChatbot"), type: "boolean", group: "pageData", visibleByDefault: false, dataSection: ["live", "lang", "hasChatbot"] },
-      { field: "task", label: this.translate.instant("inventory.header.task"), type: "array", group: "pageData", visibleByDefault: false, dataSection: ["task", "lang"] },
-      { field: "visits", label: this.translate.instant("inventory.header.visits"), type: "number", group: "pageData", visibleByDefault: true, dataSection: ["visits", "lang"] },
+      { field: "linksToPortal", label: this.translate.instant("inventory.header.linksToPortal"), type: "boolean", group: "pageData", visibleByDefault: false, dataSection: [] },
+      { field: "hasChatbot", label: this.translate.instant("inventory.header.hasChatbot"), type: "boolean", group: "pageData", visibleByDefault: false, dataSection: [] },
+      { field: "task", label: this.translate.instant("inventory.header.task"), type: "array", group: "pageData", visibleByDefault: false, dataSection: [] },
+      { field: "visits", label: this.translate.instant("inventory.header.visits"), type: "number", group: "pageData", visibleByDefault: true, dataSection: [] },
       { field: "updLink", label: this.translate.instant("inventory.header.updLink"), type: "upd", group: "pageData", visibleByDefault: true, dataSection: [] },
       { field: "fleschKincaid", label: this.translate.instant("common.readability.fleschKincaid"), type: "number", group: "pageData", visibleByDefault: true, dataSection: [] },
       { field: "gunningFog", label: this.translate.instant("common.readability.gunningFog"), type: "number", group: "pageData", visibleByDefault: false, dataSection: [] },
@@ -3537,12 +3539,12 @@ var AddUrlsService = class _AddUrlsService {
         template: jsonDataFR?.isFreestyle ? PageTemplate.Freestyle : pageDataFR?.template ?? PageTemplate.Content,
         fleschKincaid: pageDataFR?.fleschKincaid ?? -1,
         gunningFog: pageDataFR?.gunningFog ?? -1,
-        phoneNumbers: pageDataEN?.phoneNumbers ?? [],
+        phoneNumbers: pageDataFR?.phoneNumbers ?? [],
         // Data from problem assistant
         problem: void 0
       };
-      const githubEnData = __spreadProps(__spreadValues({}, enData), { is404: true });
-      const githubFrData = __spreadProps(__spreadValues({}, frData), { is404: true });
+      const githubEnData = __spreadProps(__spreadValues({}, enData), { phoneNumbers: [...enData.phoneNumbers], is404: true });
+      const githubFrData = __spreadProps(__spreadValues({}, frData), { phoneNumbers: [...frData.phoneNumbers], is404: true });
       const status = {
         inScope,
         isNew: false,
@@ -3571,16 +3573,16 @@ var AddUrlsService = class _AddUrlsService {
           },
           status,
           baseline: {
-            en: githubEnData,
-            fr: githubFrData
+            en: __spreadValues({}, githubEnData),
+            fr: __spreadValues({}, githubFrData)
           },
           live: {
             en: enData,
             fr: frData
           },
           prototype: {
-            en: githubEnData,
-            fr: githubFrData
+            en: __spreadValues({}, githubEnData),
+            fr: __spreadValues({}, githubFrData)
           },
           metadataReview: void 0,
           notes: void 0,
@@ -3687,4 +3689,4 @@ export {
   TreeNodeStyleService,
   AddUrlsService
 };
-//# sourceMappingURL=chunk-32ZIU6QX.js.map
+//# sourceMappingURL=chunk-KUKADQOZ.js.map

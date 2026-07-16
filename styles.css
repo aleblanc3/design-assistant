@@ -21102,9 +21102,9 @@ code.custom {
   font-size: 10px;
 }
 .d2h-icon {
+  fill: currentColor;
   margin-right: 10px;
   vertical-align: middle;
-  fill: currentColor;
 }
 .d2h-deleted {
   color: #c33;

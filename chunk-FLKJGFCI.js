@@ -215,8 +215,6 @@ var UserSettingsComponent = class _UserSettingsComponent {
     { label: "settings.theme.custom", value: "custom" }
   ];
   markForTranslation() {
-    marker("common.language.english");
-    marker("common.language.french");
     marker("settings.theme.light");
     marker("settings.theme.dark");
     marker("settings.theme.default");
@@ -671,4 +669,4 @@ export {
   InputGroupAddonModule,
   UserSettingsComponent
 };
-//# sourceMappingURL=chunk-IFWVAK66.js.map
+//# sourceMappingURL=chunk-FLKJGFCI.js.map

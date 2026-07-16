@@ -52,7 +52,7 @@ import {
 } from "./chunk-FXRV6GSO.js";
 import {
   ExportGitHubService
-} from "./chunk-LWD65AXW.js";
+} from "./chunk-A67ORX53.js";
 import "./chunk-MYYNWJMU.js";
 import {
   IftaLabel,
@@ -979,8 +979,8 @@ ${updatedPrompts}
   updateDiff() {
     return __async(this, null, function* () {
       const [{ createPatch }, { Diff2HtmlUI }] = yield Promise.all([
-        import("./chunk-H4XEQYRX.js"),
-        import("./chunk-UQR76GWX.js")
+        import("./chunk-YVUEC37Y.js"),
+        import("./chunk-PDL2AK6Z.js")
       ]);
       const tab = this.tabs[this.selectedTab];
       const updatedContent = this.rebuildPromptFile(tab.tool, tab.prompts);
@@ -1389,4 +1389,4 @@ ${updatedPrompts}
 export {
   PromptEditorComponent
 };
-//# sourceMappingURL=chunk-AGBRQFYH.js.map
+//# sourceMappingURL=chunk-JU425EX2.js.map
