@@ -426,13 +426,13 @@ export class AddUrlsService {
             template: jsonDataFR?.isFreestyle ? PageTemplate.Freestyle : pageDataFR?.template ?? PageTemplate.Content,
             fleschKincaid: pageDataFR?.fleschKincaid ?? -1,
             gunningFog: pageDataFR?.gunningFog ?? -1,
-            phoneNumbers: pageDataEN?.phoneNumbers ?? [],
+            phoneNumbers: pageDataFR?.phoneNumbers ?? [],
             // Data from problem assistant
             problem: undefined,
         };
 
-        const githubEnData: LangData = { ...enData, is404: true };
-        const githubFrData: LangData = { ...frData, is404: true };
+        const githubEnData: LangData = { ...enData, phoneNumbers: [...enData.phoneNumbers], is404: true };
+        const githubFrData: LangData = { ...frData, phoneNumbers: [...frData.phoneNumbers], is404: true };
 
         const status: PageActions = {
             inScope: inScope,
@@ -463,16 +463,16 @@ export class AddUrlsService {
                 },
                 status: status,
                 baseline: {
-                    en: githubEnData,
-                    fr: githubFrData,
+                    en: { ...githubEnData },
+                    fr: { ...githubFrData },
                 },
                 live: {
                     en: enData,
                     fr: frData,
                 },
                 prototype: {
-                    en: githubEnData,
-                    fr: githubFrData,
+                    en: { ...githubEnData },
+                    fr: { ...githubFrData },
                 },
                 metadataReview: undefined,
                 notes: undefined,
