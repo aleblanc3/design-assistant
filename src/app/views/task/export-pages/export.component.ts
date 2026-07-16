@@ -98,7 +98,7 @@ export class ExportComponent implements OnInit {
 
   filesTable = signal<FileStatus[]>([]);
   exportMessage = signal<ExportMessage | null>(null);
-  repoType = signal<'local' | 'github' | null>(null);
+  repoType = signal<'local' | 'github'>(this.projectData().repoType);
 
   markForTranslation() {
     marker('exportPages.settings.description.prototype');
@@ -197,7 +197,7 @@ export class ExportComponent implements OnInit {
 
   // Populate files table (and compare project files with GitHub or UT)
   async compareFiles() {
-    if (!this.repoType()) return;
+    if (!this.repoType()) this.projectData().repoType ? this.repoType.set(this.projectData().repoType) : this.repoType.set("github");
 
     const lang = this.selectedExportLanguage;
     const scope = this.selectedExportTarget === 'prototype' ? 'inScope' : 'all';
