@@ -1239,6 +1239,20 @@ export class ProjectStateService {
         this.setModifiedDate();
     }
 
+    public refreshAll(nodes: TreeNode[], version: 'live' | 'prototype' | 'baseline', onlyNeverChecked = false) {
+        for (const node of nodes) {
+            const needsRefresh = onlyNeverChecked
+                ? (!node.data?.[version]?.en?.lastChecked || !node.data?.[version]?.fr?.lastChecked)
+                : true;
+            if (needsRefresh) {
+                this.refreshNode(node, version);
+            }
+            if (node.children?.length) {
+                this.refreshAll(node.children, version, onlyNeverChecked);
+            }
+        }
+    }
+
     public getPath(url: string, live = true): string {
         try {
             let pathName = new URL(url).pathname;
