@@ -47,7 +47,7 @@
 <!--Context Menu-->
 <p-menu #menu [model]="items" [popup]="true" />
 
-<p-dialog [header]="selectedNode?.data?.prototype?.[selectedLanguage()].h1" [modal]="true" [maximizable]="true" [(visible)]="editNode" styleClass="w-10" [style]="{ height: '90vh' }">
+<p-dialog [header]="selectedNode.data.prototype?.[selectedLanguage()].h1" [modal]="true" [maximizable]="true" [(visible)]="editNode" styleClass="w-10" [style]="{ height: '90vh' }">
     @if(selectedNode) {
     <aida-edit-node [node]="selectedNode" [isOpen]="editNode" (dialogClose)="editNode = false" />
     }
