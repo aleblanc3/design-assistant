@@ -573,6 +573,7 @@ export class ProjectStorageService {
                 prototype: { en: githubEnData, fr: githubFrData },
                 metadataReview: old.metadataReview,
                 notes: { issue: old.notes?.problem, solution: old.notes?.solution },
+                repoType: 'github',
                 isContainer: old.status?.isContainer ?? false,
                 isCrawled: old.status?.isCrawled ?? false,
             },
