@@ -106,6 +106,8 @@ export class AppComponent implements OnInit {
       if (project) {
         this.projectState.setProject(project); // Update the project state
         console.log(`Project loaded successfully: ${active.key}`)
+        //Refresh live data if missing properties
+        this.projectState.refreshAll(project.projectData, "live", true);
       } else {
         console.error(`Failed to load project: ${active.key}`); // Show error message
         this.projectStorageService.clearActiveProject();
