@@ -522,7 +522,11 @@ export class ExportComponent implements OnInit {
       const html = this.buildCdtsPage(LINK_DETOUR_JS, {});
       zip.file(`${repo}/source/scripts/external-link-detour.js`, html);
     }
-
+    //Track exports
+    const pageCountEN = projectPaths.filter(p => p.startsWith('en/') || p === 'en.html').length;
+    const pageCountFR = projectPaths.filter(p => p.startsWith('fr/') || p === 'fr.html').length;
+    this.usageService.trackExport(this.projectData().id, this.projectData().org ?? 'DEFAULT', this.projectData().storageType, this.projectData().repoType, `${repo}`, this.selectedExportTarget, pageCountEN, pageCountFR);
+    //Download zip file
     const blob = await zip.generateAsync({ type: 'blob' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -692,7 +696,7 @@ export class ExportComponent implements OnInit {
     this.projectState.setExportDate();
     const pageCountEN = exportPages.filter(p => p.path.startsWith('en/') || p.path === 'en.html').length;
     const pageCountFR = exportPages.filter(p => p.path.startsWith('fr/') || p.path === 'fr.html').length;
-    this.usageService.trackExport(this.projectData().id, this.projectData().org ?? 'DEFAULT', this.projectData().storageType, `${owner}/${repo}`, this.selectedExportTarget, pageCountEN, pageCountFR);
+    this.usageService.trackExport(this.projectData().id, this.projectData().org ?? 'DEFAULT', this.projectData().storageType, this.projectData().repoType, `${owner}/${repo}`, this.selectedExportTarget, pageCountEN, pageCountFR);
     setTimeout(() => this.exportProgress.set(null), 5000);
     this.compareFiles();
   }

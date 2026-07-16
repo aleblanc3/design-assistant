@@ -41,13 +41,21 @@ interface UsageStats {
     enUrls: number;
     frUrls: number;
 
-    exportCount: number;
-    enPageCount: number;
-    frPageCount: number;
+    exportCountGit: number;
+    enPageCountGit: number;
+    frPageCountGit: number;
 
-    uniqueRepos: number;
-    prototypeRepos: number;
-    baselineRepos: number;
+    uniqueReposGit: number;
+    prototypeReposGit: number;
+    baselineReposGit: number;
+
+    exportCountLocal: number;
+    enPageCountLocal: number;
+    frPageCountLocal: number;
+
+    uniqueReposLocal: number;
+    prototypeReposLocal: number;
+    baselineReposLocal: number;
 
     uniqueOrgCount: number;
 }
