@@ -41,7 +41,7 @@ export class SetupRepoComponent implements OnInit {
 
   //Local or GitHub content repository
   get projectRepo(): 'local' | 'github' {
-    return this.projectData.repoType;
+    return this.projectData.repoType ?? 'github';
   }
   set projectRepo(value: 'local' | 'github') {
     this.projectState.setRepoType(value);
