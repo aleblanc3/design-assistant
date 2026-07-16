@@ -679,8 +679,6 @@ export class ProjectStateService {
 
         const langColumns = order.flat();
 
-        console.log(langColumns)
-
         return [
             ...langColumns,
             //Status
@@ -1086,12 +1084,14 @@ export class ProjectStateService {
         return breadcrumbs;
     }
 
-    public async refreshNode(node: TreeNode, version: 'live' | 'prototype' | 'baseline') {
+    public async refreshNode(node: TreeNode, version: 'live' | 'prototype' | 'baseline', fetchLive = false) {
+        const source = fetchLive ? 'live' : version;
         const data = node.data as TreeNodeData;
         const { owner, repo, branch } = this.project().github;
         // URLs to fetch content from
-        const enUrl = this.fetchService.generateUrl(data.path.en, version, owner, repo)
-        const frUrl = this.fetchService.generateUrl(data.path.fr, version, owner, repo)
+        const enUrl = this.fetchService.generateUrl(data.path.en, source, owner, repo)
+        const frUrl = this.fetchService.generateUrl(data.path.fr, source, owner, repo)
+        console.log(`Refreshing ${enUrl}`)
         // Live URLs for json, airtable & UPD lookups
         const liveEnUrl = this.fetchService.generateUrl(data.path.en, "live")
         const liveFrUrl = this.fetchService.generateUrl(data.path.fr, "live")
@@ -1103,7 +1103,7 @@ export class ProjectStateService {
         // Fetch EN
         if (enUrl) {
             try {
-                const doc = await this.fetchService.fetchContent(enUrl, "both", 3, "none");
+                const doc = await this.fetchService.fetchContent(enUrl, "both", 2, "none");
                 const pageData = await this.fetchService.extractPageMetadata(doc, enUrl);
 
                 const jsonData = await (async () => {
@@ -1111,14 +1111,14 @@ export class ProjectStateService {
                     catch { return undefined; }
                 })();
 
-                const parentUrl = pageData.parentPath ? this.fetchService.generateUrl(pageData.parentPath, version, owner, repo) : undefined;
+                const parentUrl = pageData.parentPath ? this.fetchService.generateUrl(pageData.parentPath, source, owner, repo) : undefined;
                 const parentDoc = await (async () => {
-                    try { return parentUrl ? await this.fetchService.fetchContent(parentUrl, "both", 3, "none") : undefined; }
+                    try { return parentUrl ? await this.fetchService.fetchContent(parentUrl, "both", 2, "none") : undefined; }
                     catch { return undefined; }
                 })();
                 const parentLinks = parentDoc && liveEnUrl ? this.fetchService.getLinks(parentDoc, liveEnUrl) : undefined;
 
-                const lastModified = version !== 'live' ? await this.exportGitHubService.getLastModified(enUrl, owner, repo, branch, this.exportGitHubService.token() ?? undefined) : undefined
+                const lastModified = source !== 'live' ? await this.exportGitHubService.getLastModified(enUrl, owner, repo, branch, this.exportGitHubService.token() ?? undefined) : undefined
 
                 const updated: Partial<LangData> = {
                     h1: pageData.h1,
@@ -1144,7 +1144,7 @@ export class ProjectStateService {
                     template: jsonData?.isFreestyle ? PageTemplate.Freestyle : pageData.template,
                     fleschKincaid: pageData.fleschKincaid,
                     gunningFog: pageData.gunningFog,
-                    ...(version === 'live' && jsonData ? {
+                    ...(source === 'live' && jsonData ? {
                         //jrc:content.json
                         owner: jsonData?.owner,
                         email: jsonData?.email,
@@ -1158,14 +1158,14 @@ export class ProjectStateService {
                 data[version]!.en = { ...data[version]!.en, ...updated };
 
             } catch {
-                data[version]!.en = { ...data[version]!.en, is404: true };
+                data[version]!.en = { ...data[version]!.en, lastChecked: new Date().toISOString(), is404: true };
             }
         }
 
         // Fetch FR
         if (frUrl) {
             try {
-                const doc = await this.fetchService.fetchContent(frUrl, "both", 3, "none");
+                const doc = await this.fetchService.fetchContent(frUrl, "both", 2, "none");
                 const pageData = await this.fetchService.extractPageMetadata(doc, frUrl);
 
                 const jsonData = await (async () => {
@@ -1173,14 +1173,14 @@ export class ProjectStateService {
                     catch { return undefined; }
                 })();
 
-                const parentUrl = pageData.parentPath ? this.fetchService.generateUrl(pageData.parentPath, version, owner, repo) : undefined
+                const parentUrl = pageData.parentPath ? this.fetchService.generateUrl(pageData.parentPath, source, owner, repo) : undefined
                 const parentDoc = await (async () => {
-                    try { return parentUrl ? await this.fetchService.fetchContent(parentUrl, "both", 3, "none") : undefined; }
+                    try { return parentUrl ? await this.fetchService.fetchContent(parentUrl, "both", 2, "none") : undefined; }
                     catch { return undefined; }
                 })();
                 const parentLinks = parentDoc && liveFrUrl ? this.fetchService.getLinks(parentDoc, liveFrUrl) : undefined;
 
-                const lastModified = version !== 'live' ? await this.exportGitHubService.getLastModified(frUrl, owner, repo, branch, this.exportGitHubService.token() ?? undefined) : undefined
+                const lastModified = source !== 'live' ? await this.exportGitHubService.getLastModified(frUrl, owner, repo, branch, this.exportGitHubService.token() ?? undefined) : undefined
 
                 const updated: Partial<LangData> = {
                     h1: pageData.h1,
@@ -1206,7 +1206,7 @@ export class ProjectStateService {
                     template: jsonData?.isFreestyle ? PageTemplate.Freestyle : pageData.template,
                     fleschKincaid: pageData.fleschKincaid,
                     gunningFog: pageData.gunningFog,
-                    ...(version === 'live' && jsonData ? {
+                    ...(source === 'live' && jsonData ? {
                         //jrc:content.json
                         owner: jsonData?.owner,
                         email: jsonData?.email,
@@ -1220,7 +1220,7 @@ export class ProjectStateService {
                 data[version]!.fr = { ...data[version]!.fr, ...updated };
 
             } catch {
-                data[version]!.fr = { ...data[version]!.fr, is404: true };
+                data[version]!.fr = { ...data[version]!.fr, lastChecked: new Date().toISOString(), is404: true };
             }
         }
         // Other data sources
@@ -1239,16 +1239,16 @@ export class ProjectStateService {
         this.setModifiedDate();
     }
 
-    public refreshAll(nodes: TreeNode[], version: 'live' | 'prototype' | 'baseline', onlyNeverChecked = false) {
+    public async refreshAll(nodes: TreeNode[], version: 'live' | 'prototype' | 'baseline', onlyNeverChecked = false, fetchLive = false) {
         for (const node of nodes) {
             const needsRefresh = onlyNeverChecked
                 ? (!node.data?.[version]?.en?.lastChecked || !node.data?.[version]?.fr?.lastChecked)
                 : true;
             if (needsRefresh) {
-                this.refreshNode(node, version);
+                await this.refreshNode(node, version, fetchLive);
             }
             if (node.children?.length) {
-                this.refreshAll(node.children, version, onlyNeverChecked);
+                await this.refreshAll(node.children, version, onlyNeverChecked, fetchLive);
             }
         }
     }
