@@ -283,9 +283,9 @@ export class InventoryComponent implements OnInit {
             isNew: 'pi pi-plus text-blue-500',
             isMoved: 'pi pi-arrow-right text-orange-500',
             isROT: 'pi pi-trash text-red-500',
-            isArchived: 'pi pi-exclamation-triangle text-orange-500',
+            isArchived: 'pi pi-book text-orange-500',
             noindex: 'pi pi-android text-orange-500',
-            isOrphan: 'pi pi-times text-red-500',
+            isOrphan: 'pi pi-exclamation-circle text-red-500',
             linksToPortal: 'pi pi-external-link text-blue-500',
             hasChatbot: 'pi pi-comments text-blue-500',
         };
