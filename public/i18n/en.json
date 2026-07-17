@@ -650,6 +650,8 @@
 	"standalone._title": "Standalone tools",
 	"standalone.bookmarklet._title": "Bookmarklets",
 	"standalone.bookmarklet.description": "Drag and drop a bookmarklet to your bookmarks bar. Click a bookmarklet on any page to perform quick actions and automations.",
+	"standalone.bookmarklet.nightMode._title": "Toggle night mode",
+	"standalone.bookmarklet.nightMode.description": "Use this bookmarklet to activate night mode on a Canada.ca page. It inverts the colours, which some people find easier on the eyes or helpful for light sensitivity. A second click will dim the page even more.",
 	"standalone.bookmarklet1._title": "Open in AIDA",
 	"standalone.bookmarklet1.description": "Use this bookmarklet to add a page to AIDA while navigating Canada.ca.",
 	"standalone.bookmarklet2._title": "Toggle GitHub",

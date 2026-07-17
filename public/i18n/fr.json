@@ -650,6 +650,8 @@
 	"standalone._title": "Outils autonomes",
 	"standalone.bookmarklet._title": "Signets d'action",
 	"standalone.bookmarklet.description": "Glissez-déposez un signet d'action dans votre barre de favoris. Cliquez sur un signet d'action sur n'importe quelle page pour effectuer des actions rapides et des automatisations.",
+	"standalone.bookmarklet.nightMode._title": "",
+	"standalone.bookmarklet.nightMode.description": "",
 	"standalone.bookmarklet1._title": "Ouvrir dans AIDA",
 	"standalone.bookmarklet1.description": "Glissez-déposez ce minisignet dans votre barre de signets. Vous pouvez l'utiliser pour ajouter une page à AIDA en naviguant sur Canada.ca.",
 	"standalone.bookmarklet2._title": "Basculer GitHub",
