@@ -110,6 +110,7 @@
               ]
             },
             "development": {
+              "index": "src/index.dev.html",
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
@@ -121,6 +122,7 @@
               ]
             },
             "sandbox": {
+              "index": "src/index.dev.html",
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
