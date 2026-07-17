@@ -237,6 +237,14 @@
                             }
                         </div>
                         }
+                        <!-- Tag fields -->
+                        @if(col.type === 'tags'){
+                        <div class="flex flex-wrap gap-1">
+                            @for(item of node[col.field]; track item.key){
+                            <p-tag [severity]="item.severity" class="white-space-nowrap" [value]="item.key | translate" />
+                            }
+                        </div>
+                        }
                         <!-- Long text fields (metadata, may need to refactor when we add the notes column) -->
                         @if(col.type === 'longText'){
                         <div class="flex align-items-start gap-2">

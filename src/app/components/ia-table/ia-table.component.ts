@@ -205,37 +205,13 @@ export class IaTableComponent implements OnInit {
         if ((dropNode.data.isContainer || dropNode.parent?.data?.isContainer) && dragNode.data.isContainer) return;
         event.accept?.(); // accept the drop       
 
-        // Save initial move status so we can compare and trigger a project save
-        const moveStatus = dragNode.data.status.isMoved
-
         //Get target element
         const targetEl = event.originalEvent?.target as HTMLElement;
-        const tag = targetEl.tagName.toLowerCase(); // will be <a> or <div> if dropped on a node or <li> if dropped between nodes
-        const droppedOnNode: boolean = tag !== 'li'
+        const droppedOnNode = targetEl.tagName.toLowerCase() !== 'li'; // tag will be <a> or <div> if dropped on a node or <li> if dropped between nodes
+        const effectiveNewParent = droppedOnNode ? dropNode : dropNode.parent;
 
-        //Check for changes to IA structure
-        const dragParentUrl = dragNode.data.baseline[primaryLang].parentPath; //parentUrl is the original parent before any changes
-
-        const dropUrl = dropNode.data.path[primaryLang]
-        const dropParentUrl = dropNode.parent?.data?.path[primaryLang] ?? '';
-        const dropGrandparentUrl = dropNode.parent?.data?.baseline[primaryLang].parentPath ?? '';
-
-        const droppedOnParent = droppedOnNode && dragParentUrl === dropUrl;
-        const reorderedSiblings = !droppedOnNode && dragParentUrl === dropParentUrl;
-
-        //Check if dropping sibling onto a container
-        const droppedOnContainerSibling = dropNode.data.isContainer && droppedOnNode && dragParentUrl === dropParentUrl;
-        const droppedBetweenContainerSibling = dropNode.parent?.data?.isContainer && !droppedOnNode && dragParentUrl === dropGrandparentUrl;
-
-        //Set isMoved status when not reordering siblings, moving siblings into a template container, or moving containers or new pages
-        if (!(droppedOnParent || reorderedSiblings || droppedOnContainerSibling || droppedBetweenContainerSibling || dragNode.data.isContainer || dragNode.data.status.isNew)) {
-            dragNode.data.status.isMoved = true;
-        }
-        else { dragNode.data.status.isMoved = false; }
-
-        //Update project if move status has changed
-        if (moveStatus !== dragNode.data.status.isMoved) {
-            this.projectState.setModifiedDate();
+        if (!dragNode.data.isContainer && !dragNode.data.status.isNew) {
+            this.projectState.applyMoveResult(dragNode, effectiveNewParent);
         }
 
         //Cleanup hover effect if hovering on parent but dropping between parent and top child      

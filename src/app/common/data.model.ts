@@ -278,7 +278,7 @@ export interface FlattenedTreeNode {
     isArchived: boolean;
     noindex: boolean;
     //Actions
-    actions: string[];
+    actions: TreeNodeAction[];
     //Problems
     isOrphan: boolean;
     //Notes
@@ -324,11 +324,16 @@ export type ColumnGroups = typeof COLUMN_GROUPS[number];
 export interface TableColumn {
     field: keyof FlattenedTreeNode;
     label: string;
-    type: 'text' | 'longText' | 'textArea' | 'array' | 'url' | 'boolean' | 'number' | 'archive' | 'noindex' | 'date' | 'aiText' | 'upd' | 'template';
+    type: 'text' | 'longText' | 'textArea' | 'array' | 'tags' | 'url' | 'boolean' | 'number' | 'archive' | 'noindex' | 'date' | 'aiText' | 'upd' | 'template';
     frozen?: boolean;
     group: ColumnGroups;
     visibleByDefault: boolean;
     dataSection: string[]; //reference to how the data is nested in the TreeNode, only need to fill out for user-editable data
+}
+
+export interface TreeNodeAction {
+    key: string;      // translation key, e.g. 'actions.newPage.createLive'
+    severity: 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast';
 }
 
 export interface ColumnGroup {

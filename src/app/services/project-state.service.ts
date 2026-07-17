@@ -1,9 +1,10 @@
 import { Injectable, signal, computed, inject, effect } from '@angular/core';
-import { Project, ProjectPhase, GitHubRepo, GitHubUser, ProjectTreeNodeData, TreeNodeData, FlattenedTreeNode, TableColumn, MetadataReview, PageTemplate, LangData } from '../common/data.model';
+import { Project, ProjectPhase, GitHubRepo, GitHubUser, ProjectTreeNodeData, TreeNodeData, FlattenedTreeNode, TreeNodeAction, TableColumn, MetadataReview, PageTemplate, LangData } from '../common/data.model';
 import { TreeNode } from 'primeng/api';
 import { environment } from '../../environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { version as appVersion } from '../../../package.json'
+import { marker } from '@colsen1991/ngx-translate-extract-marker';
 
 import { ProjectStorageService } from '../services/storage/project-storage.service';
 import { CollaboratorService } from './collaborator.service';
@@ -606,7 +607,7 @@ export class ProjectStateService {
                     isArchived: data.prototype?.en.isArchived ?? data.prototype?.fr.isArchived ?? false,
                     noindex: data.prototype?.en.noindex ?? data.prototype?.fr.noindex ?? false,
                     //Actions
-                    actions: [],
+                    actions: this.computeActions(data),
                     //Problems
                     isOrphan: data.live?.en.isOrphan ?? data.live?.fr.isOrphan ?? false,
                     //Notes
@@ -689,7 +690,7 @@ export class ProjectStateService {
             { field: 'isArchived', label: this.translate.instant('inventory.header.archiveStatus'), type: 'boolean', group: 'status', visibleByDefault: true, dataSection: ['prototype', 'lang', 'isArchived'] },
             { field: 'noindex', label: this.translate.instant('inventory.header.noindex'), type: 'boolean', group: 'status', visibleByDefault: true, dataSection: ['prototype', 'lang', 'noindex'] },
             //Actions
-            { field: 'actions', label: this.translate.instant('inventory.header.actions'), type: 'array', group: 'actions', visibleByDefault: false, dataSection: [] },
+            { field: 'actions', label: this.translate.instant('inventory.header.actions'), type: 'tags', group: 'actions', visibleByDefault: false, dataSection: [] },
             //Notes
             { field: 'issue', label: this.translate.instant('inventory.header.issue'), type: 'textArea', group: 'notes', visibleByDefault: false, dataSection: ['notes', 'issue'] },
             { field: 'solution', label: this.translate.instant('inventory.header.solution'), type: 'textArea', group: 'notes', visibleByDefault: false, dataSection: ['notes', 'solution'] },
@@ -729,6 +730,40 @@ export class ProjectStateService {
             { field: 'aiGeneratedAt', label: this.translate.instant('inventory.header.ai.date'), type: 'date', group: 'metadata', visibleByDefault: false, dataSection: [] },
         ];
     });
+
+
+    private computeActions(data: TreeNodeData): TreeNodeAction[] {
+        const actions: TreeNodeAction[] = []
+        const isNew = data.status.isNew;
+        const isROT = data.status.isROT;
+        const is404Proto = data.prototype?.en.is404;
+        const is404Live = data.live?.en.is404;
+
+        const isMoved = data.status.isMoved;
+        const parentProto = data.prototype?.en.parentPath;
+        const parentLive = data.live?.en.parentPath;
+
+        console.log(isMoved)
+        console.log(parentProto);
+        console.log(parentLive);
+
+        if (isROT && !is404Live) {
+            actions.push({ key: marker('actions.isROT.unpublish'), severity: 'danger' });
+        }
+        else if (isNew) {
+            if (!is404Live) {
+                actions.push({ key: marker('actions.isNew.monitor'), severity: 'secondary' });
+            } else if (is404Proto) {
+                actions.push({ key: marker('actions.isNew.createProto'), severity: 'info' });
+            } else if (!is404Proto) {
+                actions.push({ key: marker('actions.isNew.createLive'), severity: 'info' });
+            }
+        }
+        else if (isMoved && parentProto !== parentLive) {
+            actions.push({ key: marker('actions.isMoved.movePage'), severity: 'warn' });
+        }
+        return actions;
+    }
 
     exportTreeAsCsv() {
         const tree = this.project().projectData;
@@ -1388,16 +1423,8 @@ export class ProjectStateService {
         newParent.children.push(node);
         node.parent = newParent;
 
-        // Update prototype parentUrls
-        node.data.prototype.en.parentPath = newParent.data?.path.en ?? '';
-        node.data.prototype.fr.parentPath = newParent.data?.path.fr ?? '';
-
-        // Compare normalized prototype parentUrls to baseline parentUrls
-        const enMoved = this.getPath(node.data.prototype.en.parentPath) !== this.getPath(node.data.baseline.en.parentPath ?? '');
-        const frMoved = this.getPath(node.data.prototype.fr.parentPath) !== this.getPath(node.data.baseline.fr.parentPath ?? '');
-        node.data.status.isMoved = enMoved || frMoved;
-
-        this.setProjectTree(tree);
+        this.applyMoveResult(node, newParent);
+        //this.setProjectTree(tree);
         return 'success';
     }
 
@@ -1408,6 +1435,32 @@ export class ProjectStateService {
             current = current.parent;
         }
         return false;
+    }
+
+    public applyMoveResult(node: TreeNode, newParent: TreeNode | undefined): void {
+        const previousMoveStatus = node.data.status.isMoved;
+        const pathParent = this.resolveNonContainerParent(newParent);
+
+        // Update prototype parentUrls
+        node.data.prototype.en.parentPath = pathParent?.data?.path.en ?? '';
+        node.data.prototype.fr.parentPath = pathParent?.data?.path.fr ?? '';
+
+        // Compare normalized prototype parentUrls to baseline parentUrls
+        const enMoved = this.getPath(node.data.prototype.en.parentPath) !== this.getPath(node.data.baseline.en.parentPath ?? '');
+        const frMoved = this.getPath(node.data.prototype.fr.parentPath) !== this.getPath(node.data.baseline.fr.parentPath ?? '');
+        node.data.status.isMoved = enMoved || frMoved;
+
+        if (previousMoveStatus !== node.data.status.isMoved) {
+            this.setModifiedDate();
+        }
+    }
+
+    private resolveNonContainerParent(node: TreeNode | undefined): TreeNode | undefined {
+        let current = node;
+        while (current?.data?.isContainer) {
+            current = current.parent;
+        }
+        return current;
     }
 
     // Reorder a node among its siblings
@@ -1585,4 +1638,5 @@ export class ProjectStateService {
             }
         }
     }
+
 }
