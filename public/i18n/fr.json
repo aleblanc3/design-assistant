@@ -446,7 +446,7 @@
 	"inventory.columnGroups.owner": "Propriétaire du contenu",
 	"inventory.columnGroups.pageData": "Données",
 	"inventory.columnGroups.problems": "Problèmes",
-	"inventory.columnGroups.status": "État",
+	"inventory.columnGroups.status": "Statut proposé",
 	"inventory.columnVis.defaultView": "Vue par défaut",
 	"inventory.columnVis.label": "Paramètres de colonne",
 	"inventory.columnVis.metadataView": "Vue des métadonnées",
