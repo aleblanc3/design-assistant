@@ -45,7 +45,7 @@ import {
   FindPagesComponent,
   InputNumber,
   InputNumberModule
-} from "./chunk-HAVDAT5M.js";
+} from "./chunk-D4ER4SFO.js";
 import {
   Tag,
   TagModule
@@ -87,7 +87,7 @@ import {
 } from "./chunk-27HYBFZ6.js";
 import {
   AddUrlsComponent
-} from "./chunk-4FQO7SSX.js";
+} from "./chunk-JFJVEPC4.js";
 import {
   Message,
   MessageModule,
@@ -105,7 +105,7 @@ import {
   TreeNodeStyleService,
   UsageService,
   version
-} from "./chunk-KUKADQOZ.js";
+} from "./chunk-ZLBPKAWO.js";
 import {
   COLUMN_GROUPS,
   ExportGitHubService,
@@ -115,7 +115,7 @@ import {
   PageTemplate,
   PhaseStatus,
   ProjectPhase
-} from "./chunk-A67ORX53.js";
+} from "./chunk-CBWDJ7F7.js";
 import {
   environment
 } from "./chunk-MYYNWJMU.js";
@@ -31612,6 +31612,8 @@ var SwitchProjectComponent = class _SwitchProjectComponent {
         const project = yield this.projectStorageService.loadProject(this.loadingKey, storageType);
         if (project) {
           this.projectState.setProject(project);
+          yield this.projectState.refreshAll(project.projectData, "live", true);
+          yield this.projectState.refreshAll(project.projectData, "baseline", true, true);
         } else {
           console.error("Failed to load project");
         }
@@ -33462,7 +33464,7 @@ var SetupRepoComponent = class _SetupRepoComponent {
   mode = "default";
   //Local or GitHub content repository
   get projectRepo() {
-    return this.projectData.repoType;
+    return this.projectData.repoType ?? "github";
   }
   set projectRepo(value) {
     this.projectState.setRepoType(value);
@@ -41581,25 +41583,11 @@ var IaTableComponent = class _IaTableComponent {
     if ((dropNode.data.isContainer || dropNode.parent?.data?.isContainer) && dragNode.data.isContainer)
       return;
     event2.accept?.();
-    const moveStatus = dragNode.data.status.isMoved;
     const targetEl = event2.originalEvent?.target;
-    const tag = targetEl.tagName.toLowerCase();
-    const droppedOnNode = tag !== "li";
-    const dragParentUrl = dragNode.data.baseline[primaryLang].parentPath;
-    const dropUrl = dropNode.data.path[primaryLang];
-    const dropParentUrl = dropNode.parent?.data?.path[primaryLang] ?? "";
-    const dropGrandparentUrl = dropNode.parent?.data?.baseline[primaryLang].parentPath ?? "";
-    const droppedOnParent = droppedOnNode && dragParentUrl === dropUrl;
-    const reorderedSiblings = !droppedOnNode && dragParentUrl === dropParentUrl;
-    const droppedOnContainerSibling = dropNode.data.isContainer && droppedOnNode && dragParentUrl === dropParentUrl;
-    const droppedBetweenContainerSibling = dropNode.parent?.data?.isContainer && !droppedOnNode && dragParentUrl === dropGrandparentUrl;
-    if (!(droppedOnParent || reorderedSiblings || droppedOnContainerSibling || droppedBetweenContainerSibling || dragNode.data.isContainer || dragNode.data.status.isNew)) {
-      dragNode.data.status.isMoved = true;
-    } else {
-      dragNode.data.status.isMoved = false;
-    }
-    if (moveStatus !== dragNode.data.status.isMoved) {
-      this.projectState.setModifiedDate();
+    const droppedOnNode = targetEl.tagName.toLowerCase() !== "li";
+    const effectiveNewParent = droppedOnNode ? dropNode : dropNode.parent;
+    if (!dragNode.data.isContainer && !dragNode.data.status.isNew) {
+      this.projectState.applyMoveResult(dragNode, effectiveNewParent);
     }
     document.querySelectorAll(".p-tree-node-dragover").forEach((el) => {
       el.classList.remove("p-tree-node-dragover");
@@ -41811,13 +41799,14 @@ function isKnownNumber(number) {
 // src/app/views/task/manage-inventory/inventory.component.ts
 var _c022 = ["dt"];
 var _c131 = ["menuContext"];
-var InventoryComponent_Defer_42_DepsFn = () => [import("./chunk-GUBZ2A7R.js").then((m) => m.AddUrlsComponent), import("./chunk-ZSXIX6LZ.js").then((m) => m.FindPagesComponent)];
+var InventoryComponent_Defer_42_DepsFn = () => [import("./chunk-P5Y5P6XF.js").then((m) => m.AddUrlsComponent), import("./chunk-C62RVVL3.js").then((m) => m.FindPagesComponent)];
 var _c216 = () => ({ height: "90vh" });
 var _c314 = (a0) => [25, 50, 100, a0];
 var _c413 = (a0) => ({ column: a0 });
 var _c513 = (a0, a1, a2) => ({ "border-right-1": a0, "surface-border": a1, "hasMenu": a2 });
 var _forTrack05 = ($index, $item) => $item.value;
 var _forTrack12 = ($index, $item) => $item.field;
+var _forTrack2 = ($index, $item) => $item.key;
 function InventoryComponent_Conditional_37_ng_template_7_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 40)(1, "span", 41);
@@ -42141,7 +42130,7 @@ function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_2_Con
 function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_2_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
     const _r18 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-iftalabel", 69)(1, "p-select", 70);
+    \u0275\u0275elementStart(0, "p-iftalabel", 70)(1, "p-select", 71);
     \u0275\u0275twoWayListener("ngModelChange", function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_2_Conditional_0_Template_p_select_ngModelChange_1_listener($event) {
       \u0275\u0275restoreView(_r18);
       const col_r17 = \u0275\u0275nextContext(2).$implicit;
@@ -42158,7 +42147,7 @@ function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_2_Con
     });
     \u0275\u0275template(2, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_2_Conditional_0_ng_template_2_Template, 1, 1, "ng-template", null, 5, \u0275\u0275templateRefExtractor)(4, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_2_Conditional_0_ng_template_4_Template, 1, 1, "ng-template", null, 2, \u0275\u0275templateRefExtractor);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(6, "label", 71);
+    \u0275\u0275elementStart(6, "label", 72);
     \u0275\u0275text(7);
     \u0275\u0275elementEnd()();
   }
@@ -42186,7 +42175,7 @@ function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_2_Con
 }
 function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_2_Conditional_0_Template, 8, 4, "p-iftalabel", 69)(1, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_2_Conditional_1_Template, 2, 3);
+    \u0275\u0275template(0, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_2_Conditional_0_Template, 8, 4, "p-iftalabel", 70)(1, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_2_Conditional_1_Template, 2, 3);
   }
   if (rf & 2) {
     const col_r17 = \u0275\u0275nextContext().$implicit;
@@ -42213,7 +42202,7 @@ function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_3_For
 function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_3_Conditional_4_Template(rf, ctx) {
   if (rf & 1) {
     const _r22 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 75);
+    \u0275\u0275elementStart(0, "p-button", 76);
     \u0275\u0275pipe(1, "translate");
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275listener("click", function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_3_Conditional_4_Template_p_button_click_0_listener() {
@@ -42234,10 +42223,10 @@ function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_3_Con
 }
 function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_3_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 64)(1, "ul", 72);
-    \u0275\u0275repeaterCreate(2, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_3_For_3_Template, 2, 3, "li", 73, \u0275\u0275repeaterTrackByIdentity);
+    \u0275\u0275elementStart(0, "div", 64)(1, "ul", 73);
+    \u0275\u0275repeaterCreate(2, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_3_For_3_Template, 2, 3, "li", 74, \u0275\u0275repeaterTrackByIdentity);
     \u0275\u0275elementEnd();
-    \u0275\u0275template(4, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_3_Conditional_4_Template, 3, 6, "p-button", 74);
+    \u0275\u0275template(4, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_3_Conditional_4_Template, 3, 6, "p-button", 75);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -42255,14 +42244,37 @@ function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_3_Tem
     \u0275\u0275conditional(!ctx_r2.expandAll[col_r17.field] && node_r14[col_r17.field].length > 1 ? 4 : -1);
   }
 }
-function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_4_Conditional_5_Template(rf, ctx) {
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_4_For_2_Template(rf, ctx) {
   if (rf & 1) {
-    const _r25 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 75);
+    \u0275\u0275element(0, "p-tag", 77);
+    \u0275\u0275pipe(1, "translate");
+  }
+  if (rf & 2) {
+    const item_r25 = ctx.$implicit;
+    \u0275\u0275property("severity", item_r25.severity)("value", \u0275\u0275pipeBind1(1, 2, item_r25.key));
+  }
+}
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_4_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 65);
+    \u0275\u0275repeaterCreate(1, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_4_For_2_Template, 2, 4, "p-tag", 77, _forTrack2);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const col_r17 = \u0275\u0275nextContext().$implicit;
+    const node_r14 = \u0275\u0275nextContext().$implicit;
+    \u0275\u0275advance();
+    \u0275\u0275repeater(node_r14[col_r17.field]);
+  }
+}
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_5_Conditional_5_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r26 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p-button", 76);
     \u0275\u0275pipe(1, "translate");
     \u0275\u0275pipe(2, "translate");
-    \u0275\u0275listener("click", function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_4_Conditional_5_Template_p_button_click_0_listener() {
-      \u0275\u0275restoreView(_r25);
+    \u0275\u0275listener("click", function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_5_Conditional_5_Template_p_button_click_0_listener() {
+      \u0275\u0275restoreView(_r26);
       const col_r17 = \u0275\u0275nextContext(2).$implicit;
       const rowIndex_r23 = \u0275\u0275nextContext().rowIndex;
       const ctx_r2 = \u0275\u0275nextContext(2);
@@ -42277,14 +42289,14 @@ function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_4_Con
     \u0275\u0275property("icon", ctx_r2.isCellExpanded("metadata", rowIndex_r23, col_r17.field) ? "pi pi-chevron-up" : "pi pi-chevron-down")("pTooltip", ctx_r2.isCellExpanded("metadata", rowIndex_r23, col_r17.field) ? \u0275\u0275pipeBind1(1, 2, "common.collapse") : \u0275\u0275pipeBind1(2, 4, "common.expand"));
   }
 }
-function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_4_Template(rf, ctx) {
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_5_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 65)(1, "div")(2, "p-tag", 76);
+    \u0275\u0275elementStart(0, "div", 66)(1, "div")(2, "p-tag", 78);
     \u0275\u0275text(3);
     \u0275\u0275elementEnd();
     \u0275\u0275text(4);
     \u0275\u0275elementEnd();
-    \u0275\u0275template(5, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_4_Conditional_5_Template, 3, 6, "p-button", 74);
+    \u0275\u0275template(5, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_5_Conditional_5_Template, 3, 6, "p-button", 75);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -42305,26 +42317,26 @@ function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_4_Tem
     \u0275\u0275conditional(!ctx_r2.expandAll["metadata"] ? 5 : -1);
   }
 }
-function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_5_Conditional_1_Template(rf, ctx) {
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
-    const _r26 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-iftalabel")(1, "textarea", 77);
-    \u0275\u0275twoWayListener("ngModelChange", function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_5_Conditional_1_Template_textarea_ngModelChange_1_listener($event) {
-      \u0275\u0275restoreView(_r26);
+    const _r27 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p-iftalabel")(1, "textarea", 79);
+    \u0275\u0275twoWayListener("ngModelChange", function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_1_Template_textarea_ngModelChange_1_listener($event) {
+      \u0275\u0275restoreView(_r27);
       const col_r17 = \u0275\u0275nextContext(2).$implicit;
       const node_r14 = \u0275\u0275nextContext().$implicit;
       \u0275\u0275twoWayBindingSet(node_r14[col_r17.field], $event) || (node_r14[col_r17.field] = $event);
       return \u0275\u0275resetView($event);
     });
-    \u0275\u0275listener("change", function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_5_Conditional_1_Template_textarea_change_1_listener() {
-      \u0275\u0275restoreView(_r26);
+    \u0275\u0275listener("change", function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_1_Template_textarea_change_1_listener() {
+      \u0275\u0275restoreView(_r27);
       const col_r17 = \u0275\u0275nextContext(2).$implicit;
       const node_r14 = \u0275\u0275nextContext().$implicit;
       const ctx_r2 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r2.saveCell(node_r14[col_r17.field]));
     });
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(2, "label", 78);
+    \u0275\u0275elementStart(2, "label", 80);
     \u0275\u0275text(3);
     \u0275\u0275elementEnd()();
   }
@@ -42337,14 +42349,14 @@ function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_5_Con
     \u0275\u0275textInterpolate(col_r17.label);
   }
 }
-function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_5_Conditional_2_Conditional_2_Template(rf, ctx) {
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_2_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    const _r27 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 75);
+    const _r28 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p-button", 76);
     \u0275\u0275pipe(1, "translate");
     \u0275\u0275pipe(2, "translate");
-    \u0275\u0275listener("click", function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_5_Conditional_2_Conditional_2_Template_p_button_click_0_listener() {
-      \u0275\u0275restoreView(_r27);
+    \u0275\u0275listener("click", function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_2_Conditional_2_Template_p_button_click_0_listener() {
+      \u0275\u0275restoreView(_r28);
       const col_r17 = \u0275\u0275nextContext(3).$implicit;
       const rowIndex_r23 = \u0275\u0275nextContext().rowIndex;
       const ctx_r2 = \u0275\u0275nextContext(2);
@@ -42359,12 +42371,12 @@ function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_5_Con
     \u0275\u0275property("icon", ctx_r2.isCellExpanded("notes", rowIndex_r23, col_r17.field) ? "pi pi-chevron-up" : "pi pi-chevron-down")("pTooltip", ctx_r2.isCellExpanded("notes", rowIndex_r23, col_r17.field) ? \u0275\u0275pipeBind1(1, 2, "common.collapse") : \u0275\u0275pipeBind1(2, 4, "common.expand"));
   }
 }
-function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_5_Conditional_2_Template(rf, ctx) {
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div");
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
-    \u0275\u0275template(2, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_5_Conditional_2_Conditional_2_Template, 3, 6, "p-button", 74);
+    \u0275\u0275template(2, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_2_Conditional_2_Template, 3, 6, "p-button", 75);
   }
   if (rf & 2) {
     const col_r17 = \u0275\u0275nextContext(2).$implicit;
@@ -42379,10 +42391,10 @@ function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_5_Con
     \u0275\u0275conditional(!ctx_r2.expandAll["notes"] && node_r14[col_r17.field].length > 10 ? 2 : -1);
   }
 }
-function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_5_Template(rf, ctx) {
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 65);
-    \u0275\u0275template(1, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_5_Conditional_1_Template, 4, 2, "p-iftalabel")(2, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_5_Conditional_2_Template, 3, 4);
+    \u0275\u0275elementStart(0, "div", 66);
+    \u0275\u0275template(1, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_1_Template, 4, 2, "p-iftalabel")(2, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_2_Template, 3, 4);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -42393,10 +42405,10 @@ function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_5_Tem
     \u0275\u0275conditional(ctx_r2.isEditingCell(node_r14, col_r17) ? 1 : 2);
   }
 }
-function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_0_Conditional_0_Template(rf, ctx) {
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_7_Conditional_0_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 53);
-    \u0275\u0275element(1, "p-tag", 80);
+    \u0275\u0275element(1, "p-tag", 82);
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275elementEnd();
   }
@@ -42405,64 +42417,64 @@ function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Con
     \u0275\u0275property("value", \u0275\u0275pipeBind1(2, 1, "common.rejected"));
   }
 }
-function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_0_Conditional_1_Conditional_1_Template(rf, ctx) {
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_7_Conditional_0_Conditional_1_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
-    const _r28 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 81)(1, "div", 82);
-    \u0275\u0275element(2, "p-tag", 83);
+    const _r29 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 83)(1, "div", 84);
+    \u0275\u0275element(2, "p-tag", 85);
     \u0275\u0275pipe(3, "translate");
-    \u0275\u0275element(4, "p-tag", 84);
+    \u0275\u0275element(4, "p-tag", 86);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(5, "p-iftalabel")(6, "textarea", 85);
-    \u0275\u0275twoWayListener("ngModelChange", function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_0_Conditional_1_Conditional_1_Template_textarea_ngModelChange_6_listener($event) {
-      \u0275\u0275restoreView(_r28);
-      const field_r29 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(field_r29.edited, $event) || (field_r29.edited = $event);
+    \u0275\u0275elementStart(5, "p-iftalabel")(6, "textarea", 87);
+    \u0275\u0275twoWayListener("ngModelChange", function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_7_Conditional_0_Conditional_1_Conditional_1_Template_textarea_ngModelChange_6_listener($event) {
+      \u0275\u0275restoreView(_r29);
+      const field_r30 = \u0275\u0275nextContext(2);
+      \u0275\u0275twoWayBindingSet(field_r30.edited, $event) || (field_r30.edited = $event);
       return \u0275\u0275resetView($event);
     });
-    \u0275\u0275listener("change", function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_0_Conditional_1_Conditional_1_Template_textarea_change_6_listener() {
-      \u0275\u0275restoreView(_r28);
+    \u0275\u0275listener("change", function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_7_Conditional_0_Conditional_1_Conditional_1_Template_textarea_change_6_listener() {
+      \u0275\u0275restoreView(_r29);
       const col_r17 = \u0275\u0275nextContext(4).$implicit;
       const node_r14 = \u0275\u0275nextContext().$implicit;
       const ctx_r2 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r2.compareMetadata(node_r14, col_r17));
-    })("paste", function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_0_Conditional_1_Conditional_1_Template_textarea_paste_6_listener() {
-      \u0275\u0275restoreView(_r28);
+    })("paste", function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_7_Conditional_0_Conditional_1_Conditional_1_Template_textarea_paste_6_listener() {
+      \u0275\u0275restoreView(_r29);
       const col_r17 = \u0275\u0275nextContext(4).$implicit;
       const node_r14 = \u0275\u0275nextContext().$implicit;
       const ctx_r2 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r2.onPasteMetadata(node_r14, col_r17));
-    })("blur", function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_0_Conditional_1_Conditional_1_Template_textarea_blur_6_listener() {
-      \u0275\u0275restoreView(_r28);
+    })("blur", function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_7_Conditional_0_Conditional_1_Conditional_1_Template_textarea_blur_6_listener() {
+      \u0275\u0275restoreView(_r29);
       const ctx_r2 = \u0275\u0275nextContext(7);
       return \u0275\u0275resetView(ctx_r2.onBlurMetadata());
     });
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(7, "label", 86);
+    \u0275\u0275elementStart(7, "label", 88);
     \u0275\u0275text(8);
     \u0275\u0275elementEnd()()();
   }
   if (rf & 2) {
-    const field_r29 = \u0275\u0275nextContext(2);
+    const field_r30 = \u0275\u0275nextContext(2);
     const col_r17 = \u0275\u0275nextContext(2).$implicit;
     \u0275\u0275advance(2);
     \u0275\u0275property("value", \u0275\u0275pipeBind1(3, 5, "common.editing"));
     \u0275\u0275advance(2);
-    \u0275\u0275property("value", field_r29.edited.length)("severity", field_r29.edited.length >= 10 && field_r29.edited.length <= 160 ? "success" : "danger");
+    \u0275\u0275property("value", field_r30.edited.length)("severity", field_r30.edited.length >= 10 && field_r30.edited.length <= 160 ? "success" : "danger");
     \u0275\u0275advance(2);
-    \u0275\u0275twoWayProperty("ngModel", field_r29.edited);
+    \u0275\u0275twoWayProperty("ngModel", field_r30.edited);
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate(col_r17.label);
   }
 }
-function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_0_Conditional_1_Conditional_2_Conditional_9_Template(rf, ctx) {
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_7_Conditional_0_Conditional_1_Conditional_2_Conditional_9_Template(rf, ctx) {
   if (rf & 1) {
-    const _r30 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 90);
+    const _r31 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p-button", 92);
     \u0275\u0275pipe(1, "translate");
     \u0275\u0275pipe(2, "translate");
-    \u0275\u0275listener("click", function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_0_Conditional_1_Conditional_2_Conditional_9_Template_p_button_click_0_listener() {
-      \u0275\u0275restoreView(_r30);
+    \u0275\u0275listener("click", function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_7_Conditional_0_Conditional_1_Conditional_2_Conditional_9_Template_p_button_click_0_listener() {
+      \u0275\u0275restoreView(_r31);
       const col_r17 = \u0275\u0275nextContext(5).$implicit;
       const rowIndex_r23 = \u0275\u0275nextContext().rowIndex;
       const ctx_r2 = \u0275\u0275nextContext(2);
@@ -42477,42 +42489,42 @@ function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Con
     \u0275\u0275property("icon", ctx_r2.isCellExpanded("metadata", rowIndex_r23, col_r17.field) ? "pi pi-chevron-up" : "pi pi-chevron-down")("pTooltip", ctx_r2.isCellExpanded("metadata", rowIndex_r23, col_r17.field) ? \u0275\u0275pipeBind1(1, 2, "common.collapse") : \u0275\u0275pipeBind1(2, 4, "common.expand"));
   }
 }
-function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_0_Conditional_1_Conditional_2_Template(rf, ctx) {
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_7_Conditional_0_Conditional_1_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 81)(1, "div", 82);
-    \u0275\u0275element(2, "p-tag", 87);
+    \u0275\u0275elementStart(0, "div", 83)(1, "div", 84);
+    \u0275\u0275element(2, "p-tag", 89);
     \u0275\u0275pipe(3, "translate");
     \u0275\u0275pipe(4, "translate");
-    \u0275\u0275element(5, "p-tag", 84);
+    \u0275\u0275element(5, "p-tag", 86);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(6, "div");
     \u0275\u0275text(7);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(8, "div", 88);
-    \u0275\u0275template(9, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_0_Conditional_1_Conditional_2_Conditional_9_Template, 3, 6, "p-button", 89);
+    \u0275\u0275elementStart(8, "div", 90);
+    \u0275\u0275template(9, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_7_Conditional_0_Conditional_1_Conditional_2_Conditional_9_Template, 3, 6, "p-button", 91);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const field_r29 = \u0275\u0275nextContext(2);
+    const field_r30 = \u0275\u0275nextContext(2);
     const col_r17 = \u0275\u0275nextContext(2).$implicit;
     const rowIndex_r23 = \u0275\u0275nextContext().rowIndex;
     const ctx_r2 = \u0275\u0275nextContext(2);
     \u0275\u0275advance(2);
-    \u0275\u0275property("value", field_r29.status.slice(0, 8) === "approved" ? \u0275\u0275pipeBind1(3, 8, "common.approved") : \u0275\u0275pipeBind1(4, 10, "common." + field_r29.status))("severity", field_r29.status === "edited" ? "primary" : field_r29.status.slice(0, 8) === "approved" ? "success" : "secondary");
+    \u0275\u0275property("value", field_r30.status.slice(0, 8) === "approved" ? \u0275\u0275pipeBind1(3, 8, "common.approved") : \u0275\u0275pipeBind1(4, 10, "common." + field_r30.status))("severity", field_r30.status === "edited" ? "primary" : field_r30.status.slice(0, 8) === "approved" ? "success" : "secondary");
     \u0275\u0275advance(3);
-    \u0275\u0275property("value", field_r29.status === "edited" ? field_r29.edited.length : field_r29.ai.length)("severity", field_r29.status === "edited" ? field_r29.edited.length >= 10 && field_r29.edited.length <= 160 ? "success" : "danger" : field_r29.ai.length >= 10 && field_r29.ai.length <= 160 ? "success" : "danger");
+    \u0275\u0275property("value", field_r30.status === "edited" ? field_r30.edited.length : field_r30.ai.length)("severity", field_r30.status === "edited" ? field_r30.edited.length >= 10 && field_r30.edited.length <= 160 ? "success" : "danger" : field_r30.ai.length >= 10 && field_r30.ai.length <= 160 ? "success" : "danger");
     \u0275\u0275advance();
     \u0275\u0275classProp("line-clamp-3", !ctx_r2.isCellExpanded("metadata", rowIndex_r23, col_r17.field));
     \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", field_r29.status === "edited" ? field_r29.edited : field_r29.status === "approvedEdits" ? field_r29.edited : field_r29.ai, " ");
+    \u0275\u0275textInterpolate1(" ", field_r30.status === "edited" ? field_r30.edited : field_r30.status === "approvedEdits" ? field_r30.edited : field_r30.ai, " ");
     \u0275\u0275advance(2);
     \u0275\u0275conditional(!ctx_r2.expandAll["metadata"] ? 9 : -1);
   }
 }
-function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_0_Conditional_1_Template(rf, ctx) {
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_7_Conditional_0_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 65);
-    \u0275\u0275template(1, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_0_Conditional_1_Conditional_1_Template, 9, 7, "div", 81)(2, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_0_Conditional_1_Conditional_2_Template, 10, 12);
+    \u0275\u0275elementStart(0, "div", 66);
+    \u0275\u0275template(1, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_7_Conditional_0_Conditional_1_Conditional_1_Template, 9, 7, "div", 83)(2, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_7_Conditional_0_Conditional_1_Conditional_2_Template, 10, 12);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -42523,27 +42535,27 @@ function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Con
     \u0275\u0275conditional(ctx_r2.isEditingCell(node_r14, col_r17, true) ? 1 : 2);
   }
 }
-function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_0_Template(rf, ctx) {
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_7_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_0_Conditional_0_Template, 3, 3, "div", 53)(1, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_0_Conditional_1_Template, 3, 1, "div", 65);
+    \u0275\u0275template(0, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_7_Conditional_0_Conditional_0_Template, 3, 3, "div", 53)(1, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_7_Conditional_0_Conditional_1_Template, 3, 1, "div", 66);
   }
   if (rf & 2) {
-    const field_r29 = ctx;
-    \u0275\u0275conditional(field_r29.status === "rejected" || field_r29.status === "noChange" ? 0 : 1);
+    const field_r30 = ctx;
+    \u0275\u0275conditional(field_r30.status === "rejected" || field_r30.status === "noChange" ? 0 : 1);
   }
 }
-function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_1_Template(rf, ctx) {
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_7_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "i", 79);
+    \u0275\u0275element(0, "i", 81);
     \u0275\u0275pipe(1, "translate");
   }
   if (rf & 2) {
     \u0275\u0275property("pTooltip", \u0275\u0275pipeBind1(1, 1, "inventory.tooltip.ai.metadata"));
   }
 }
-function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Template(rf, ctx) {
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_7_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_0_Template, 2, 1)(1, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Conditional_1_Template, 2, 3, "i", 79);
+    \u0275\u0275template(0, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_7_Conditional_0_Template, 2, 1)(1, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_7_Conditional_1_Template, 2, 3, "i", 81);
   }
   if (rf & 2) {
     let tmp_21_0;
@@ -42552,9 +42564,9 @@ function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Tem
     \u0275\u0275conditional((tmp_21_0 = node_r14[col_r17.field]) ? 0 : 1, tmp_21_0);
   }
 }
-function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_7_Template(rf, ctx) {
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_8_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 66);
+    \u0275\u0275elementStart(0, "span", 67);
     \u0275\u0275text(1);
     \u0275\u0275pipe(2, "date");
     \u0275\u0275elementEnd();
@@ -42566,16 +42578,16 @@ function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_7_Tem
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(2, 1, node_r14[col_r17.field], "yyyy-MM-dd"));
   }
 }
-function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_8_Template(rf, ctx) {
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_9_Template(rf, ctx) {
   if (rf & 1) {
-    const _r31 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 67)(1, "span", 91);
+    const _r32 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 68)(1, "span", 93);
     \u0275\u0275text(2);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "p-button", 92);
+    \u0275\u0275elementStart(3, "p-button", 94);
     \u0275\u0275pipe(4, "translate");
-    \u0275\u0275listener("onClick", function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_8_Template_p_button_onClick_3_listener($event) {
-      \u0275\u0275restoreView(_r31);
+    \u0275\u0275listener("onClick", function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_9_Template_p_button_onClick_3_listener($event) {
+      \u0275\u0275restoreView(_r32);
       const col_r17 = \u0275\u0275nextContext().$implicit;
       const node_r14 = \u0275\u0275nextContext().$implicit;
       const ctx_r2 = \u0275\u0275nextContext(2);
@@ -42596,9 +42608,9 @@ function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_8_Tem
     \u0275\u0275property("pTooltip", \u0275\u0275pipeBind1(4, 3, "common.openNewTab"));
   }
 }
-function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_9_Template(rf, ctx) {
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_10_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "i", 93);
+    \u0275\u0275element(0, "i", 95);
     \u0275\u0275pipe(1, "translate");
   }
   if (rf & 2) {
@@ -42609,12 +42621,12 @@ function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_9_Tem
     \u0275\u0275property("pTooltip", \u0275\u0275pipeBind1(1, 3, ctx_r2.getBooleanTooltip(node_r14[col_r17.field], col_r17.field)));
   }
 }
-function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_10_Conditional_0_Template(rf, ctx) {
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_11_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "i", 94);
+    \u0275\u0275element(0, "i", 96);
   }
 }
-function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_10_Conditional_1_Template(rf, ctx) {
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_11_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275text(0);
     \u0275\u0275pipe(1, "number");
@@ -42626,9 +42638,9 @@ function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_10_Co
     \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind3(1, 1, node_r14[col_r17.field], "1.0-0", ctx_r2.translate.currentLang === "en" ? "en-CA" : "fr-CA"), " ");
   }
 }
-function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_10_Template(rf, ctx) {
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_11_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_10_Conditional_0_Template, 1, 0, "i", 94)(1, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_10_Conditional_1_Template, 2, 5);
+    \u0275\u0275template(0, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_11_Conditional_0_Template, 1, 0, "i", 96)(1, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_11_Conditional_1_Template, 2, 5);
   }
   if (rf & 2) {
     const col_r17 = \u0275\u0275nextContext().$implicit;
@@ -42636,41 +42648,41 @@ function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_10_Te
     \u0275\u0275conditional(node_r14[col_r17.field] === -1 ? 0 : 1);
   }
 }
-function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_11_Conditional_0_ng_template_2_Template(rf, ctx) {
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_12_Conditional_0_ng_template_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "img", 98);
+    \u0275\u0275element(0, "img", 100);
   }
 }
-function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_11_Conditional_0_Template(rf, ctx) {
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_12_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
-    const _r32 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 96);
+    const _r33 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p-button", 98);
     \u0275\u0275pipe(1, "translate");
-    \u0275\u0275listener("onClick", function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_11_Conditional_0_Template_p_button_onClick_0_listener() {
-      \u0275\u0275restoreView(_r32);
+    \u0275\u0275listener("onClick", function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_12_Conditional_0_Template_p_button_onClick_0_listener() {
+      \u0275\u0275restoreView(_r33);
       const node_r14 = \u0275\u0275nextContext(3).$implicit;
       const ctx_r2 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r2.openInUPD(node_r14));
     });
-    \u0275\u0275template(2, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_11_Conditional_0_ng_template_2_Template, 1, 0, "ng-template", 97);
+    \u0275\u0275template(2, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_12_Conditional_0_ng_template_2_Template, 1, 0, "ng-template", 99);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
     \u0275\u0275property("pTooltip", \u0275\u0275pipeBind1(1, 1, "inventory.openInUPD"));
   }
 }
-function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_11_Conditional_1_Template(rf, ctx) {
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_12_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "i", 79);
+    \u0275\u0275element(0, "i", 81);
     \u0275\u0275pipe(1, "translate");
   }
   if (rf & 2) {
     \u0275\u0275property("pTooltip", \u0275\u0275pipeBind1(1, 1, "inventory.notInUPD"));
   }
 }
-function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_11_Template(rf, ctx) {
+function InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_12_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_11_Conditional_0_Template, 3, 3, "p-button", 95)(1, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_11_Conditional_1_Template, 2, 3, "i", 79);
+    \u0275\u0275template(0, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_12_Conditional_0_Template, 3, 3, "p-button", 97)(1, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_12_Conditional_1_Template, 2, 3, "i", 81);
   }
   if (rf & 2) {
     const node_r14 = \u0275\u0275nextContext(2).$implicit;
@@ -42701,14 +42713,14 @@ function InventoryComponent_Conditional_39_ng_template_3_For_9_Template(rf, ctx)
       const ctx_r2 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r2.onLeftClick(node_r14, col_r17));
     });
-    \u0275\u0275template(1, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_1_Template, 2, 1)(2, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_2_Template, 2, 1)(3, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_3_Template, 5, 4, "div", 64)(4, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_4_Template, 6, 6, "div", 65)(5, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_5_Template, 3, 1, "div", 65)(6, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Template, 2, 1)(7, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_7_Template, 3, 4, "span", 66)(8, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_8_Template, 5, 5, "div", 67)(9, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_9_Template, 2, 5, "i", 68)(10, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_10_Template, 2, 1)(11, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_11_Template, 2, 1);
+    \u0275\u0275template(1, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_1_Template, 2, 1)(2, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_2_Template, 2, 1)(3, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_3_Template, 5, 4, "div", 64)(4, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_4_Template, 3, 0, "div", 65)(5, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_5_Template, 6, 6, "div", 66)(6, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_6_Template, 3, 1, "div", 66)(7, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_7_Template, 2, 1)(8, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_8_Template, 3, 4, "span", 67)(9, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_9_Template, 5, 5, "div", 68)(10, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_10_Template, 2, 5, "i", 69)(11, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_11_Template, 2, 1)(12, InventoryComponent_Conditional_39_ng_template_3_For_9_Conditional_12_Template, 2, 1);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
     const col_r17 = ctx.$implicit;
     const node_r14 = \u0275\u0275nextContext().$implicit;
     const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction3(13, _c513, ctx_r2.isLastInGroup(col_r17.field), ctx_r2.isLastInGroup(col_r17.field), ctx_r2.hasContextMenu(col_r17.group, col_r17.type)))("pEditableColumn", node_r14.field);
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction3(14, _c513, ctx_r2.isLastInGroup(col_r17.field), ctx_r2.isLastInGroup(col_r17.field), ctx_r2.hasContextMenu(col_r17.group, col_r17.type)))("pEditableColumn", node_r14.field);
     \u0275\u0275advance();
     \u0275\u0275conditional(col_r17.type === "text" ? 1 : -1);
     \u0275\u0275advance();
@@ -42716,21 +42728,23 @@ function InventoryComponent_Conditional_39_ng_template_3_For_9_Template(rf, ctx)
     \u0275\u0275advance();
     \u0275\u0275conditional(col_r17.type === "array" ? 3 : -1);
     \u0275\u0275advance();
-    \u0275\u0275conditional(col_r17.type === "longText" ? 4 : -1);
+    \u0275\u0275conditional(col_r17.type === "tags" ? 4 : -1);
     \u0275\u0275advance();
-    \u0275\u0275conditional(col_r17.type === "textArea" ? 5 : -1);
+    \u0275\u0275conditional(col_r17.type === "longText" ? 5 : -1);
     \u0275\u0275advance();
-    \u0275\u0275conditional(col_r17.type === "aiText" ? 6 : -1);
+    \u0275\u0275conditional(col_r17.type === "textArea" ? 6 : -1);
     \u0275\u0275advance();
-    \u0275\u0275conditional(col_r17.type === "date" ? 7 : -1);
+    \u0275\u0275conditional(col_r17.type === "aiText" ? 7 : -1);
     \u0275\u0275advance();
-    \u0275\u0275conditional(col_r17.type === "url" ? 8 : -1);
+    \u0275\u0275conditional(col_r17.type === "date" ? 8 : -1);
     \u0275\u0275advance();
-    \u0275\u0275conditional(col_r17.type === "boolean" ? 9 : -1);
+    \u0275\u0275conditional(col_r17.type === "url" ? 9 : -1);
     \u0275\u0275advance();
-    \u0275\u0275conditional(col_r17.type === "number" ? 10 : -1);
+    \u0275\u0275conditional(col_r17.type === "boolean" ? 10 : -1);
     \u0275\u0275advance();
-    \u0275\u0275conditional(col_r17.type === "upd" ? 11 : -1);
+    \u0275\u0275conditional(col_r17.type === "number" ? 11 : -1);
+    \u0275\u0275advance();
+    \u0275\u0275conditional(col_r17.type === "upd" ? 12 : -1);
   }
 }
 function InventoryComponent_Conditional_39_ng_template_3_Template(rf, ctx) {
@@ -42747,7 +42761,7 @@ function InventoryComponent_Conditional_39_ng_template_3_Template(rf, ctx) {
     });
     \u0275\u0275elementEnd()()();
     \u0275\u0275repeaterCreate(6, InventoryComponent_Conditional_39_ng_template_3_For_7_Template, 2, 3, "td", 48, _forTrack12);
-    \u0275\u0275repeaterCreate(8, InventoryComponent_Conditional_39_ng_template_3_For_9_Template, 12, 17, "td", 62, _forTrack12);
+    \u0275\u0275repeaterCreate(8, InventoryComponent_Conditional_39_ng_template_3_For_9_Template, 13, 18, "td", 62, _forTrack12);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -42767,7 +42781,7 @@ function InventoryComponent_Conditional_39_ng_template_3_Template(rf, ctx) {
 }
 function InventoryComponent_Conditional_39_ng_template_4_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "tr")(1, "td", 99);
+    \u0275\u0275elementStart(0, "tr")(1, "td", 101);
     \u0275\u0275text(2);
     \u0275\u0275pipe(3, "translate");
     \u0275\u0275elementEnd()();
@@ -42812,10 +42826,10 @@ function InventoryComponent_Conditional_40_Template(rf, ctx) {
 }
 function InventoryComponent_Defer_41_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 100)(1, "div", 101);
+    \u0275\u0275elementStart(0, "div", 102)(1, "div", 103);
     \u0275\u0275element(2, "aida-add-urls");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "div", 101);
+    \u0275\u0275elementStart(3, "div", 103);
     \u0275\u0275element(4, "aida-find-pages");
     \u0275\u0275elementEnd()();
   }
@@ -42828,15 +42842,15 @@ function InventoryComponent_ng_template_46_Template(rf, ctx) {
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const item_r33 = ctx.$implicit;
-    \u0275\u0275classMap(item_r33.styleClass);
+    const item_r34 = ctx.$implicit;
+    \u0275\u0275classMap(item_r34.styleClass);
     \u0275\u0275advance();
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 3, item_r33.label));
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 3, item_r34.label));
   }
 }
 function InventoryComponent_ng_template_48_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "a", 102);
+    \u0275\u0275elementStart(0, "a", 104);
     \u0275\u0275element(1, "i");
     \u0275\u0275elementStart(2, "span");
     \u0275\u0275text(3);
@@ -42844,19 +42858,19 @@ function InventoryComponent_ng_template_48_Template(rf, ctx) {
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
-    const item_r34 = ctx.$implicit;
+    const item_r35 = ctx.$implicit;
     \u0275\u0275advance();
-    \u0275\u0275classMap(item_r34.icon);
+    \u0275\u0275classMap(item_r35.icon);
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 3, item_r34.label));
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 3, item_r35.label));
   }
 }
 function InventoryComponent_Conditional_53_Template(rf, ctx) {
   if (rf & 1) {
-    const _r35 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "aida-edit-node", 103);
+    const _r36 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "aida-edit-node", 105);
     \u0275\u0275listener("dialogClose", function InventoryComponent_Conditional_53_Template_aida_edit_node_dialogClose_0_listener() {
-      \u0275\u0275restoreView(_r35);
+      \u0275\u0275restoreView(_r36);
       const ctx_r2 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r2.editNode = false);
     });
@@ -43067,9 +43081,9 @@ var InventoryComponent = class _InventoryComponent {
       isNew: "pi pi-plus text-blue-500",
       isMoved: "pi pi-arrow-right text-orange-500",
       isROT: "pi pi-trash text-red-500",
-      isArchived: "pi pi-exclamation-triangle text-orange-500",
+      isArchived: "pi pi-book text-orange-500",
       noindex: "pi pi-android text-orange-500",
-      isOrphan: "pi pi-times text-red-500",
+      isOrphan: "pi pi-exclamation-circle text-red-500",
       linksToPortal: "pi pi-external-link text-blue-500",
       hasChatbot: "pi pi-comments text-blue-500"
     };
@@ -43905,7 +43919,7 @@ var InventoryComponent = class _InventoryComponent {
       \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.dt = _t.first);
       \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.menuContext = _t.first);
     }
-  }, decls: 55, vars: 45, consts: [["menu", ""], ["submenuheader", ""], ["item", ""], ["menuContext", ""], ["dt", ""], ["selectedItem", ""], [1, "flex", "flex-row", "flex-wrap", "justify-content-between", "sticky-horizontal"], ["id", "wb-cont"], [1, "mt-0", "lg:mt-5", "mb-2", "flex", "flex-row", "lg:flex-column", "gap-2"], ["icon", "pi pi-sitemap", "outlined", "", "size", "small", "styleClass", "secondary-outline w-full min-w-max", 3, "click", "label"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "mb-3", "w-full"], [1, "flex", "flex-column", "lg:flex-row", "justify-content-between", "align-items-start", "sticky-horizontal"], [1, "flex", "flex-column"], [1, "text-2xl", "my-1"], [1, "sticky-toolbar"], [1, "flex", "flex-row", "justify-content-between", "gap-2", "h-6rem", "surface-card"], ["for", "views'", 1, "mb-1", "font-semibold", "block"], ["role", "radiogroup", "id", "views"], [1, "field-radiobutton"], ["name", "view", "value", "table", "inputId", "viewTable", 3, "ngModelChange", "ngModel"], ["for", "viewTable"], ["name", "view", "value", "tree", "inputId", "viewTree", 3, "ngModelChange", "ngModel"], ["for", "viewTree"], [1, "h-3rm", "mb-2"], ["dataKey", "enPath", "selectionMode", "multiple", "size", "small", "stripedRows", "", 3, "value", "selection", "scrollable", "customSort", "paginator", "rows", "rowsPerPageOptions"], [3, "model", "popup"], [3, "model"], ["styleClass", "w-10", 3, "visibleChange", "header", "modal", "maximizable", "visible"], [3, "node", "isOpen"], ["key", "inventory"], [1, "hidden", "lg:flex", "flex-column", "text-color-secondary", "hover:text-primary", "max-w-max"], [1, "text-xs", "my-1"], [1, "flex", "flex-row", "align-content-center", "gap-2"], ["inputId", "groups", "optionLabel", "label", "optionValue", "value", "placeholder", "Show/hide groups", 1, "w-13rem", 3, "ngModelChange", "onChange", "options", "ngModel", "showHeader", "maxSelectedLabels"], ["pTemplate", "header"], ["for", "columns"], ["inputId", "columns", "optionLabel", "label", "optionValue", "value", "optionGroupLabel", "label", "optionGroupChildren", "items", "placeholder", "Show/hide columns", 1, "w-13rem", "capitalize", 3, "ngModelChange", "onChange", "options", "ngModel", "group", "showHeader", "maxSelectedLabels"], [1, "flex", "flex-column", "h-full", "gap-1"], ["severity", "primary", "outlined", "", "size", "small", "styleClass", "h-full w-full secondary-outline p-1", 1, "h-full", 3, "onClick", "label"], ["severity", "secondary", "icon", "pi pi-cog", "label", "Column settings", 1, "flex", "lg:hidden"], [1, "px-3", "pt-2"], [1, "font-semibold"], [1, "flex", "flex-row", "align-items-center", "gap-2", "surface-card"], ["icon", "pi pi-chevron-down", "iconPos", "right", "severity", "primary", "outlined", "", "styleClass", "secondary-outline", 3, "onClick", "label"], ["icon", "pi pi-chevron-down", "iconPos", "right", "severity", "secondary", "outlined", "", "styleClass", "secondary-outline", 3, "onClick", "label"], ["dataKey", "enPath", "selectionMode", "multiple", "size", "small", "stripedRows", "", 3, "selectionChange", "sortFunction", "value", "selection", "scrollable", "customSort", "paginator", "rows", "rowsPerPageOptions"], ["pTemplate", "body"], ["pTemplate", "emptymessage"], [3, "class"], [1, "sticky-rc", "surface-card"], [3, "pSortableColumn", "class"], [3, "class", "pSortableColumn"], [3, "pSortableColumn"], [1, "flex", "align-items-center", "gap-2"], [3, "field"], ["styleClass", "font-bold", "iconPos", "right", "text", "", "rounded", "", "tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "label", "icon", "severity", "pTooltip"], ["styleClass", "font-bold", "iconPos", "right", "text", "", "rounded", "", "tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "onClick", "label", "icon", "severity", "pTooltip"], [3, "pSelectableRow", "pSelectableRowIndex"], [1, "w-4rem", "surface-card", "sticky-c"], [1, "flex", "flex-row", "justify-content-center", "align-content-center", "align-items-center"], ["size", "large", 3, "value"], ["icon", "pi pi-pen-to-square", "rounded", "", "text", "", "tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "onClick", "pTooltip"], ["pEditableColumnField", "template", 3, "ngClass", "pEditableColumn"], ["pEditableColumnField", "template", 3, "contextmenu", "touchstart", "touchend", "click", "ngClass", "pEditableColumn"], [1, "flex", "align-items-start"], [1, "flex", "align-items-start", "gap-2"], [1, "white-space-nowrap"], [1, "flex", "flex-row", "justify-content-between", "align-items-center", "gap-2", "white-space-nowrap"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 1, "flex", "justify-content-center", "p-2", 3, "class", "pTooltip"], [1, "w-10rem"], ["inputId", "template", "optionLabel", "label", "optionValue", "value", "filterBy", "label", "styleClass", "w-full", 3, "ngModelChange", "onChange", "ngModel", "options", "filter"], ["for", "template"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 1, "m-0", "pl-0", "min-w-max", 2, "list-style-position", "inside", 3, "pTooltip"], [3, "text-red-500"], ["text", "", "rounded", "", "size", "small", "styleClass", "-mt-1", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "icon", "pTooltip"], ["text", "", "rounded", "", "size", "small", "styleClass", "-mt-1", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "click", "icon", "pTooltip"], ["pTooltip", "character count", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "severity"], ["id", "note", "autoResize", "true", "rows", "3", "pTextarea", "", "fluid", "", 1, "min-w-max", 3, "ngModelChange", "change", "ngModel"], ["for", "note"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 1, "pi", "pi-minus", "text-gray-400", "flex", "justify-content-center", "p-2", 3, "pTooltip"], ["severity", "danger", 3, "value"], [1, "flex", "flex-column", "gap-2"], [1, "flex", "flex-row", "gap-2"], ["severity", "primary", 1, "capitalize", 3, "value"], ["pTooltip", "character count", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 1, "mx-1", 3, "value", "severity"], ["id", "metadata", "autoResize", "true", "rows", "3", "pTextarea", "", "fluid", "", 1, "min-w-max", 3, "ngModelChange", "change", "paste", "blur", "ngModel"], ["for", "metadata"], [1, "capitalize", 3, "value", "severity"], [1, "flex", "flex-column", "gap-1", "-mt-1"], ["text", "", "rounded", "", "size", "small", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "icon", "pTooltip"], ["text", "", "rounded", "", "size", "small", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "click", "icon", "pTooltip"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "pTooltip"], ["icon", "pi pi-external-link", "rounded", "", "outlined", "", "size", "small", "styleClass", "secondary-outline", "tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "onClick", "pTooltip"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 1, "flex", "justify-content-center", "p-2", 3, "pTooltip"], [1, "pi", "pi-minus", "text-gray-400"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", "rounded", "", "outlined", "", "severity", "info", "size", "small", "styleClass", "secondary-outline", "icon", "pi pi-external-link", "iconPos", "top", 1, "flex", "justify-content-center", 3, "pTooltip"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", "rounded", "", "outlined", "", "severity", "info", "size", "small", "styleClass", "secondary-outline", "icon", "pi pi-external-link", "iconPos", "top", 1, "flex", "justify-content-center", 3, "onClick", "pTooltip"], ["pTemplate", "icon"], ["src", "images/upd-icon.svg", "width", "24", "height", "24", "alt", ""], [1, "text-center", "p-4"], [1, "flex", "md:flex-row", "flex-column", "gap-3", "sticky-horizontal"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "lg:mb-3", "lg:w-6", "min-w-min"], [1, "p-menu-item-link"], [3, "dialogClose", "node", "isOpen"]], template: function InventoryComponent_Template(rf, ctx) {
+  }, decls: 55, vars: 45, consts: [["menu", ""], ["submenuheader", ""], ["item", ""], ["menuContext", ""], ["dt", ""], ["selectedItem", ""], [1, "flex", "flex-row", "flex-wrap", "justify-content-between", "sticky-horizontal"], ["id", "wb-cont"], [1, "mt-0", "lg:mt-5", "mb-2", "flex", "flex-row", "lg:flex-column", "gap-2"], ["icon", "pi pi-sitemap", "outlined", "", "size", "small", "styleClass", "secondary-outline w-full min-w-max", 3, "click", "label"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "mb-3", "w-full"], [1, "flex", "flex-column", "lg:flex-row", "justify-content-between", "align-items-start", "sticky-horizontal"], [1, "flex", "flex-column"], [1, "text-2xl", "my-1"], [1, "sticky-toolbar"], [1, "flex", "flex-row", "justify-content-between", "gap-2", "h-6rem", "surface-card"], ["for", "views'", 1, "mb-1", "font-semibold", "block"], ["role", "radiogroup", "id", "views"], [1, "field-radiobutton"], ["name", "view", "value", "table", "inputId", "viewTable", 3, "ngModelChange", "ngModel"], ["for", "viewTable"], ["name", "view", "value", "tree", "inputId", "viewTree", 3, "ngModelChange", "ngModel"], ["for", "viewTree"], [1, "h-3rm", "mb-2"], ["dataKey", "enPath", "selectionMode", "multiple", "size", "small", "stripedRows", "", 3, "value", "selection", "scrollable", "customSort", "paginator", "rows", "rowsPerPageOptions"], [3, "model", "popup"], [3, "model"], ["styleClass", "w-10", 3, "visibleChange", "header", "modal", "maximizable", "visible"], [3, "node", "isOpen"], ["key", "inventory"], [1, "hidden", "lg:flex", "flex-column", "text-color-secondary", "hover:text-primary", "max-w-max"], [1, "text-xs", "my-1"], [1, "flex", "flex-row", "align-content-center", "gap-2"], ["inputId", "groups", "optionLabel", "label", "optionValue", "value", "placeholder", "Show/hide groups", 1, "w-13rem", 3, "ngModelChange", "onChange", "options", "ngModel", "showHeader", "maxSelectedLabels"], ["pTemplate", "header"], ["for", "columns"], ["inputId", "columns", "optionLabel", "label", "optionValue", "value", "optionGroupLabel", "label", "optionGroupChildren", "items", "placeholder", "Show/hide columns", 1, "w-13rem", "capitalize", 3, "ngModelChange", "onChange", "options", "ngModel", "group", "showHeader", "maxSelectedLabels"], [1, "flex", "flex-column", "h-full", "gap-1"], ["severity", "primary", "outlined", "", "size", "small", "styleClass", "h-full w-full secondary-outline p-1", 1, "h-full", 3, "onClick", "label"], ["severity", "secondary", "icon", "pi pi-cog", "label", "Column settings", 1, "flex", "lg:hidden"], [1, "px-3", "pt-2"], [1, "font-semibold"], [1, "flex", "flex-row", "align-items-center", "gap-2", "surface-card"], ["icon", "pi pi-chevron-down", "iconPos", "right", "severity", "primary", "outlined", "", "styleClass", "secondary-outline", 3, "onClick", "label"], ["icon", "pi pi-chevron-down", "iconPos", "right", "severity", "secondary", "outlined", "", "styleClass", "secondary-outline", 3, "onClick", "label"], ["dataKey", "enPath", "selectionMode", "multiple", "size", "small", "stripedRows", "", 3, "selectionChange", "sortFunction", "value", "selection", "scrollable", "customSort", "paginator", "rows", "rowsPerPageOptions"], ["pTemplate", "body"], ["pTemplate", "emptymessage"], [3, "class"], [1, "sticky-rc", "surface-card"], [3, "pSortableColumn", "class"], [3, "class", "pSortableColumn"], [3, "pSortableColumn"], [1, "flex", "align-items-center", "gap-2"], [3, "field"], ["styleClass", "font-bold", "iconPos", "right", "text", "", "rounded", "", "tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "label", "icon", "severity", "pTooltip"], ["styleClass", "font-bold", "iconPos", "right", "text", "", "rounded", "", "tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "onClick", "label", "icon", "severity", "pTooltip"], [3, "pSelectableRow", "pSelectableRowIndex"], [1, "w-4rem", "surface-card", "sticky-c"], [1, "flex", "flex-row", "justify-content-center", "align-content-center", "align-items-center"], ["size", "large", 3, "value"], ["icon", "pi pi-pen-to-square", "rounded", "", "text", "", "tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "onClick", "pTooltip"], ["pEditableColumnField", "template", 3, "ngClass", "pEditableColumn"], ["pEditableColumnField", "template", 3, "contextmenu", "touchstart", "touchend", "click", "ngClass", "pEditableColumn"], [1, "flex", "align-items-start"], [1, "flex", "flex-wrap", "gap-1"], [1, "flex", "align-items-start", "gap-2"], [1, "white-space-nowrap"], [1, "flex", "flex-row", "justify-content-between", "align-items-center", "gap-2", "white-space-nowrap"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 1, "flex", "justify-content-center", "p-2", 3, "class", "pTooltip"], [1, "w-10rem"], ["inputId", "template", "optionLabel", "label", "optionValue", "value", "filterBy", "label", "styleClass", "w-full", 3, "ngModelChange", "onChange", "ngModel", "options", "filter"], ["for", "template"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 1, "m-0", "pl-0", "min-w-max", 2, "list-style-position", "inside", 3, "pTooltip"], [3, "text-red-500"], ["text", "", "rounded", "", "size", "small", "styleClass", "-mt-1", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "icon", "pTooltip"], ["text", "", "rounded", "", "size", "small", "styleClass", "-mt-1", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "click", "icon", "pTooltip"], [1, "white-space-nowrap", 3, "severity", "value"], ["pTooltip", "character count", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "severity"], ["id", "note", "autoResize", "true", "rows", "3", "pTextarea", "", "fluid", "", 1, "min-w-max", 3, "ngModelChange", "change", "ngModel"], ["for", "note"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 1, "pi", "pi-minus", "text-gray-400", "flex", "justify-content-center", "p-2", 3, "pTooltip"], ["severity", "danger", 3, "value"], [1, "flex", "flex-column", "gap-2"], [1, "flex", "flex-row", "gap-2"], ["severity", "primary", 1, "capitalize", 3, "value"], ["pTooltip", "character count", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 1, "mx-1", 3, "value", "severity"], ["id", "metadata", "autoResize", "true", "rows", "3", "pTextarea", "", "fluid", "", 1, "min-w-max", 3, "ngModelChange", "change", "paste", "blur", "ngModel"], ["for", "metadata"], [1, "capitalize", 3, "value", "severity"], [1, "flex", "flex-column", "gap-1", "-mt-1"], ["text", "", "rounded", "", "size", "small", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "icon", "pTooltip"], ["text", "", "rounded", "", "size", "small", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "click", "icon", "pTooltip"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "pTooltip"], ["icon", "pi pi-external-link", "rounded", "", "outlined", "", "size", "small", "styleClass", "secondary-outline", "tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 3, "onClick", "pTooltip"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", 1, "flex", "justify-content-center", "p-2", 3, "pTooltip"], [1, "pi", "pi-minus", "text-gray-400"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", "rounded", "", "outlined", "", "severity", "info", "size", "small", "styleClass", "secondary-outline", "icon", "pi pi-external-link", "iconPos", "top", 1, "flex", "justify-content-center", 3, "pTooltip"], ["tooltipPosition", "top", "appendTo", "body", "showDelay", "300", "hideDelay", "0", "rounded", "", "outlined", "", "severity", "info", "size", "small", "styleClass", "secondary-outline", "icon", "pi pi-external-link", "iconPos", "top", 1, "flex", "justify-content-center", 3, "onClick", "pTooltip"], ["pTemplate", "icon"], ["src", "images/upd-icon.svg", "width", "24", "height", "24", "alt", ""], [1, "text-center", "p-4"], [1, "flex", "md:flex-row", "flex-column", "gap-3", "sticky-horizontal"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "lg:mb-3", "lg:w-6", "min-w-min"], [1, "p-menu-item-link"], [3, "dialogClose", "node", "isOpen"]], template: function InventoryComponent_Template(rf, ctx) {
     if (rf & 1) {
       const _r1 = \u0275\u0275getCurrentView();
       \u0275\u0275elementStart(0, "div")(1, "div", 6)(2, "div")(3, "h1", 7);
@@ -44024,7 +44038,7 @@ var InventoryComponent = class _InventoryComponent {
   }, dependencies: [CommonModule, NgClass, DecimalPipe, DatePipe, FormsModule, DefaultValueAccessor, NgControlStatus, NgModel, TranslateModule, TranslatePipe, TableModule, Table, PrimeTemplate, SortableColumn, SelectableRow, EditableColumn, SortIcon, TableCheckbox, TableHeaderCheckbox, TooltipModule, Tooltip, TagModule, Tag, ButtonModule, Button, RadioButtonModule, RadioButton, IftaLabelModule, IftaLabel, MultiSelectModule, MultiSelect, SelectModule, Select, TextareaModule, Textarea, MenuModule, Menu, ContextMenuModule, ContextMenu, ConfirmDialogModule, ConfirmDialog, DialogModule, Dialog, ExportProjectComponent, IaTableComponent, EditNodeComponent], styles: ["\n\n.sticky-toolbar[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  top: 0;\n  z-index: 20;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n  padding-right: 0rem;\n  box-sizing: border-box;\n}\n.sticky-toolbar-table[_ngcontent-%COMP%] {\n  width: calc(100vw - var(--nav-width) - 2rem);\n}\n@media screen and (min-width: 768px) {\n  .sticky-toolbar[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n    padding-right: 5rem;\n  }\n  .sticky-toolbar-table[_ngcontent-%COMP%] {\n    width: calc(100vw - var(--nav-width) - 7rem - 5rem);\n  }\n}\n  .p-datatable-table-container {\n  overflow: visible !important;\n}\n.sticky-h[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width) + 2rem);\n  z-index: 11;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-h[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 9rem);\n  }\n}\n.sticky-c[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  z-index: 11;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-c[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n  }\n}\n.sticky-r[_ngcontent-%COMP%] {\n  position: sticky;\n  top: 9rem;\n  z-index: 12;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n  .p-datatable .p-datatable-thead {\n  z-index: 13 !important;\n}\n.sticky-rh[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width) + 2rem);\n  top: 9rem;\n  z-index: 14;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-rh[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 9rem);\n  }\n}\n.sticky-rc[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  top: 9rem;\n  z-index: 14;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-rc[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n  }\n}\n.sticky-horizontal[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  z-index: 10;\n  width: calc(100vw - var(--nav-width) - 2rem);\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n  padding-right: 0rem;\n  box-sizing: border-box;\n}\n@media screen and (min-width: 768px) {\n  .sticky-horizontal[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n    width: calc(100vw - var(--nav-width) - 7rem - 3.5rem);\n    padding-right: 5rem;\n  }\n}\n.hasMenu[_ngcontent-%COMP%]:hover {\n  background-color: var(--p-primary-100) !important;\n}\nhtml.dark-mode[_ngcontent-%COMP%]   .hasMenu[_ngcontent-%COMP%]:hover {\n  background-color: var(--p-primary-500) !important;\n}\n/*# sourceMappingURL=inventory.component.css.map */"] });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(InventoryComponent, () => [import("./chunk-GUBZ2A7R.js").then((m) => m.AddUrlsComponent), import("./chunk-ZSXIX6LZ.js").then((m) => m.FindPagesComponent)], (AddUrlsComponent2, FindPagesComponent2) => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(InventoryComponent, () => [import("./chunk-P5Y5P6XF.js").then((m) => m.AddUrlsComponent), import("./chunk-C62RVVL3.js").then((m) => m.FindPagesComponent)], (AddUrlsComponent2, FindPagesComponent2) => {
     setClassMetadata(InventoryComponent, [{
       type: Component,
       args: [{ selector: "aida-inventory", imports: [
@@ -44285,6 +44299,14 @@ var InventoryComponent = class _InventoryComponent {
                                       (click)="toggleCell(col.field, rowIndex, col.field)"\r
                                       [pTooltip]="isCellExpanded(col.field,rowIndex, col.field) ? ('common.collapse' | translate) : ('common.expand' | translate)"\r
                                       appendTo="body" showDelay="300" hideDelay="0" />\r
+                            }\r
+                        </div>\r
+                        }\r
+                        <!-- Tag fields -->\r
+                        @if(col.type === 'tags'){\r
+                        <div class="flex flex-wrap gap-1">\r
+                            @for(item of node[col.field]; track item.key){\r
+                            <p-tag [severity]="item.severity" class="white-space-nowrap" [value]="item.key | translate" />\r
                             }\r
                         </div>\r
                         }\r
@@ -52900,7 +52922,7 @@ var ExportComponent = class _ExportComponent {
   projectData = this.projectState.getProject;
   filesTable = signal([]);
   exportMessage = signal(null);
-  repoType = signal(null);
+  repoType = signal(this.projectData().repoType);
   markForTranslation() {
     marker("exportPages.settings.description.prototype");
     marker("exportPages.settings.description.baseline");
@@ -52991,7 +53013,7 @@ var ExportComponent = class _ExportComponent {
   compareFiles() {
     return __async(this, null, function* () {
       if (!this.repoType())
-        return;
+        this.projectData().repoType ? this.repoType.set(this.projectData().repoType) : this.repoType.set("github");
       const lang = this.selectedExportLanguage;
       const scope = this.selectedExportTarget === "prototype" ? "inScope" : "all";
       const enPages = this.projectState.getAllPages("en", this.selectedExportTarget, scope).map((p) => p.path);
@@ -55409,7 +55431,7 @@ var HelpComponent = class _HelpComponent {
   static \u0275fac = function HelpComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _HelpComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _HelpComponent, selectors: [["aida-help"]], decls: 644, vars: 37, consts: [["id", "wb-cont"], [1, "my-0"], [1, "mt-0", "mb-5"], ["fragment", "about", 3, "routerLink"], ["fragment", "start", 3, "routerLink"], ["fragment", "inventory", 3, "routerLink"], ["fragment", "add-existing", 3, "routerLink"], ["fragment", "add-new", 3, "routerLink"], ["fragment", "view-ia", 3, "routerLink"], ["fragment", "change-ia", 3, "routerLink"], ["fragment", "export-csv", 3, "routerLink"], ["fragment", "signin", 3, "routerLink"], ["fragment", "cloud", 3, "routerLink"], ["fragment", "collab", 3, "routerLink"], ["fragment", "github", 3, "routerLink"], ["fragment", "generate-metadata", 3, "routerLink"], ["fragment", "documentation", 3, "routerLink"], ["fragment", "data", 3, "routerLink"], ["fragment", "jekyll", 3, "routerLink"], ["fragment", "release", 3, "routerLink"], [1, "flex", "flex-column", "gap-3", "my-3"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min"], ["id", "about"], [1, "flex", "flex-row", "gap-8"], ["href", "mailto:AIPIA-PIAAI@cra-arc.gc.ca?subject=Interested%20in%20contributing%20to%20AIDA&body=Hi%2C%0A%0AI'd%20like%20to%20get%20involved%20with%20AIDA%20as%20a%20%5Bdeveloper%20%2F%20researcher%20%2F%20tester%5D.%20Here's%20a%20bit%20about%20my%20background%20and%20what%20I'd%20like%20to%20help%20with%3A%0A%0A%5BYour%20message%20here%5D%0A%0A%E2%80%94%20%5BYour%20name%5D"], ["id", "start"], ["id", "inventory"], ["id", "add-existing"], ["id", "add-new"], ["id", "view-ia"], ["id", "change-ia"], ["id", "export-csv"], ["id", "signin"], ["id", "cloud"], ["id", "collab"], ["id", "github"], ["id", "generate-metadata"], ["id", "documentation"], ["id", "data"], [1, "mb-1"], [1, "mt-1"], [1, "custom"], ["id", "jekyll"], ["id", "release"], ["id", "0-5-7"], ["id", "0-5-6"], ["id", "0-5-5"], ["id", "0-5-4"], ["id", "0-5-3"], ["id", "0-5-2"], ["id", "0-5-1"], ["id", "0-5-0"], ["id", "0-4-0"]], template: function HelpComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _HelpComponent, selectors: [["aida-help"]], decls: 648, vars: 37, consts: [["id", "wb-cont"], [1, "my-0"], [1, "mt-0", "mb-5"], ["fragment", "about", 3, "routerLink"], ["fragment", "start", 3, "routerLink"], ["fragment", "inventory", 3, "routerLink"], ["fragment", "add-existing", 3, "routerLink"], ["fragment", "add-new", 3, "routerLink"], ["fragment", "view-ia", 3, "routerLink"], ["fragment", "change-ia", 3, "routerLink"], ["fragment", "export-csv", 3, "routerLink"], ["fragment", "signin", 3, "routerLink"], ["fragment", "cloud", 3, "routerLink"], ["fragment", "collab", 3, "routerLink"], ["fragment", "github", 3, "routerLink"], ["fragment", "generate-metadata", 3, "routerLink"], ["fragment", "documentation", 3, "routerLink"], ["fragment", "data", 3, "routerLink"], ["fragment", "jekyll", 3, "routerLink"], ["fragment", "release", 3, "routerLink"], [1, "flex", "flex-column", "gap-3", "my-3"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min"], ["id", "about"], [1, "flex", "flex-row", "gap-8"], ["href", "mailto:AIPIA-PIAAI@cra-arc.gc.ca?subject=Interested%20in%20contributing%20to%20AIDA&body=Hi%2C%0A%0AI'd%20like%20to%20get%20involved%20with%20AIDA%20as%20a%20%5Bdeveloper%20%2F%20researcher%20%2F%20tester%5D.%20Here's%20a%20bit%20about%20my%20background%20and%20what%20I'd%20like%20to%20help%20with%3A%0A%0A%5BYour%20message%20here%5D%0A%0A%E2%80%94%20%5BYour%20name%5D"], ["id", "start"], ["id", "inventory"], ["id", "add-existing"], ["id", "add-new"], ["id", "view-ia"], ["id", "change-ia"], ["id", "export-csv"], ["id", "signin"], ["id", "cloud"], ["id", "collab"], ["id", "github"], ["id", "generate-metadata"], ["id", "documentation"], ["id", "data"], [1, "mb-1"], [1, "mt-1"], [1, "custom"], ["id", "jekyll"], ["id", "release"], ["id", "0-5-9"], ["id", "0-5-8"], ["id", "0-5-7"], ["id", "0-5-6"], ["id", "0-5-5"], ["id", "0-5-4"], ["id", "0-5-3"], ["id", "0-5-2"], ["id", "0-5-1"], ["id", "0-5-0"], ["id", "0-4-0"]], template: function HelpComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "h1", 0);
       \u0275\u0275text(1);
@@ -55908,7 +55930,7 @@ var HelpComponent = class _HelpComponent {
       \u0275\u0275text(417, "Release notes");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(418, "h3", 44);
-      \u0275\u0275text(419, "Release 0.5.8 (July 16, 2026)");
+      \u0275\u0275text(419, "Release 0.5.9 (July 17, 2026)");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(420, "h4");
       \u0275\u0275text(421, "Data structure");
@@ -55921,294 +55943,300 @@ var HelpComponent = class _HelpComponent {
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(427, "li");
       \u0275\u0275text(428, "Old saved files will be patched to the new structure automatically");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(429, "li");
+      \u0275\u0275text(430, "The new structure is used to calculate what actions are needed (Create new page, unpublish from Canada.ca etc.)");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(429, "h4");
-      \u0275\u0275text(430, "IA diagram improvements");
+      \u0275\u0275elementStart(431, "h4");
+      \u0275\u0275text(432, "IA diagram improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(431, "ul")(432, "li");
-      \u0275\u0275text(433, "Added drag & drop function for page moves");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(434, "li");
-      \u0275\u0275text(435, "Added menu option to reorder sibling pages");
+      \u0275\u0275elementStart(433, "ul")(434, "li");
+      \u0275\u0275text(435, "Added drag & drop function for page moves");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(436, "li");
-      \u0275\u0275text(437, "Added menu option and button to find child pages for a specific page");
+      \u0275\u0275text(437, "Added menu option to reorder sibling pages");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(438, "li");
-      \u0275\u0275text(439, "Added menu option to open a popup for editing page data");
+      \u0275\u0275text(439, "Added menu option and button to find child pages for a specific page");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(440, "li");
-      \u0275\u0275text(441, "Added toggle for English and French page labels");
+      \u0275\u0275text(441, "Added menu option to open a popup for editing page data");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(442, "li");
-      \u0275\u0275text(443, 'The "changes" view will now show the live page title crossed out above the prototype title if they are different');
+      \u0275\u0275text(443, "Added toggle for English and French page labels");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(444, "li");
+      \u0275\u0275text(445, 'The "changes" view will now show the live page title crossed out above the prototype title if they are different');
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(444, "h4");
-      \u0275\u0275text(445, "Other improvements");
+      \u0275\u0275elementStart(446, "h4");
+      \u0275\u0275text(447, "Other improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(446, "ul")(447, "li");
-      \u0275\u0275text(448, "Content inventory is now separated by English and French instead of primary and opposite language");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(449, "li");
-      \u0275\u0275text(450, "Content inventory now includes a menu to any version of a page, vanity urls, chatbot indicator, reading grade level, link count, and phone numbers");
+      \u0275\u0275elementStart(448, "ul")(449, "li");
+      \u0275\u0275text(450, "Content inventory is now separated by English and French instead of primary and opposite language");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(451, "li");
-      \u0275\u0275text(452, "Added an option to export pages to a zip file instead of GitHub");
+      \u0275\u0275text(452, "Content inventory now includes a menu to any version of a page, vanity urls, chatbot indicator, reading grade level, link count, and phone numbers");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(453, "li");
-      \u0275\u0275text(454, "Exported index pages now open the correct repo link, even if you fork, move, or rename the repo");
+      \u0275\u0275text(454, "Added an option to export pages to a zip file instead of GitHub");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(455, "li");
-      \u0275\u0275text(456, 'Added a "New tab GitHub" bookmarklet to open the other version in a new tab (same as the "Toggle GitHub" bookmarklet but opens in a new tab instead of the same tab)');
+      \u0275\u0275text(456, "Exported index pages now open the correct repo link, even if you fork, move, or rename the repo");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(457, "li");
+      \u0275\u0275text(458, 'Added a "New tab GitHub" bookmarklet to open the other version in a new tab (same as the "Toggle GitHub" bookmarklet but opens in a new tab instead of the same tab)');
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(459, "li");
+      \u0275\u0275text(460, 'Added a "Toggle night mode" bookmarklet so users can darken Canada.ca pages if preferred for reading');
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(457, "h3", 44);
-      \u0275\u0275text(458, "Release 0.5.8 (June 15, 2026)");
+      \u0275\u0275elementStart(461, "h3", 45);
+      \u0275\u0275text(462, "Release 0.5.8 (June 15, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(459, "h4");
-      \u0275\u0275text(460, "Content inventory");
+      \u0275\u0275elementStart(463, "h4");
+      \u0275\u0275text(464, "Content inventory");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(461, "ul")(462, "li");
-      \u0275\u0275text(463, "Add notes group with 'issues' and 'solutions' for user to document whatever they wish");
+      \u0275\u0275elementStart(465, "ul")(466, "li");
+      \u0275\u0275text(467, "Add notes group with 'issues' and 'solutions' for user to document whatever they wish");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(464, "h3", 44);
-      \u0275\u0275text(465, "Release 0.5.7 (June 12, 2026)");
+      \u0275\u0275elementStart(468, "h3", 46);
+      \u0275\u0275text(469, "Release 0.5.7 (June 12, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(466, "h4");
-      \u0275\u0275text(467, "New IA diagram features");
+      \u0275\u0275elementStart(470, "h4");
+      \u0275\u0275text(471, "New IA diagram features");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(468, "ul")(469, "li");
-      \u0275\u0275text(470, "Add options to hide or unhide specific pages or all child pages");
+      \u0275\u0275elementStart(472, "ul")(473, "li");
+      \u0275\u0275text(474, "Add options to hide or unhide specific pages or all child pages");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(471, "li");
-      \u0275\u0275text(472, "Add option to view any page as the root page so users can focus on specific sections of the IA");
+      \u0275\u0275elementStart(475, "li");
+      \u0275\u0275text(476, "Add option to view any page as the root page so users can focus on specific sections of the IA");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(473, "h4");
-      \u0275\u0275text(474, "Other improvements");
+      \u0275\u0275elementStart(477, "h4");
+      \u0275\u0275text(478, "Other improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(475, "ul")(476, "li");
-      \u0275\u0275text(477, 'Separate "Find pages" options with tabs');
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(478, "li");
-      \u0275\u0275text(479, "Add monitoring dashboard");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(480, "li");
-      \u0275\u0275text(481, "Update project bookmarklet to load index page instead of repo");
+      \u0275\u0275elementStart(479, "ul")(480, "li");
+      \u0275\u0275text(481, 'Separate "Find pages" options with tabs');
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(482, "li");
-      \u0275\u0275text(483, "Add more padding between items in page move table");
+      \u0275\u0275text(483, "Add monitoring dashboard");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(484, "li");
+      \u0275\u0275text(485, "Update project bookmarklet to load index page instead of repo");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(486, "li");
+      \u0275\u0275text(487, "Add more padding between items in page move table");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(484, "h3", 45);
-      \u0275\u0275text(485, "Release 0.5.6 (June 4, 2026)");
+      \u0275\u0275elementStart(488, "h3", 47);
+      \u0275\u0275text(489, "Release 0.5.6 (June 4, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(486, "h4");
-      \u0275\u0275text(487, "Content inventory improvement");
+      \u0275\u0275elementStart(490, "h4");
+      \u0275\u0275text(491, "Content inventory improvement");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(488, "ul")(489, "li");
-      \u0275\u0275text(490, "Make more cells editable");
+      \u0275\u0275elementStart(492, "ul")(493, "li");
+      \u0275\u0275text(494, "Make more cells editable");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(491, "h3", 46);
-      \u0275\u0275text(492, "Release 0.5.5 (April 15, 2026)");
+      \u0275\u0275elementStart(495, "h3", 48);
+      \u0275\u0275text(496, "Release 0.5.5 (April 15, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(493, "h4");
-      \u0275\u0275text(494, "Feature improvements");
+      \u0275\u0275elementStart(497, "h4");
+      \u0275\u0275text(498, "Feature improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(495, "ul")(496, "li");
-      \u0275\u0275text(497, "Strip /content/canadasite from links so we don't mislabel pages as IA orphans");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(498, "li");
-      \u0275\u0275text(499, 'Update find child pages function to use checkboxes so user can select which to copy to the "Add pages" input');
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(500, "li");
-      \u0275\u0275text(501, "Prevent fetching cached json data (last modified dates and content owners will be more accurate now)");
+      \u0275\u0275elementStart(499, "ul")(500, "li");
+      \u0275\u0275text(501, "Strip /content/canadasite from links so we don't mislabel pages as IA orphans");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(502, "li");
-      \u0275\u0275text(503, "Maintain cnt-wdth-lmtd when exporting pages to GitHub");
+      \u0275\u0275text(503, 'Update find child pages function to use checkboxes so user can select which to copy to the "Add pages" input');
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(504, "li");
-      \u0275\u0275text(505, `Fix bug on "Page move" view so navigating away while editing doesn't lock a page from future edits`);
+      \u0275\u0275text(505, "Prevent fetching cached json data (last modified dates and content owners will be more accurate now)");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(506, "li");
+      \u0275\u0275text(507, "Maintain cnt-wdth-lmtd when exporting pages to GitHub");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(508, "li");
+      \u0275\u0275text(509, `Fix bug on "Page move" view so navigating away while editing doesn't lock a page from future edits`);
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(506, "h3", 47);
-      \u0275\u0275text(507, "Release 0.5.4 (April 10, 2026)");
+      \u0275\u0275elementStart(510, "h3", 49);
+      \u0275\u0275text(511, "Release 0.5.4 (April 10, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(508, "h4");
-      \u0275\u0275text(509, "New find child pages feature");
+      \u0275\u0275elementStart(512, "h4");
+      \u0275\u0275text(513, "New find child pages feature");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(510, "ul")(511, "li");
-      \u0275\u0275text(512, 'Add find child pages functionality to the "Find pages" component');
+      \u0275\u0275elementStart(514, "ul")(515, "li");
+      \u0275\u0275text(516, 'Add find child pages functionality to the "Find pages" component');
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(513, "li");
-      \u0275\u0275text(514, "This function crawls your in-scope pages for potential child pages. It can also find IA orphans if they are linked from other in-scope pages");
+      \u0275\u0275elementStart(517, "li");
+      \u0275\u0275text(518, "This function crawls your in-scope pages for potential child pages. It can also find IA orphans if they are linked from other in-scope pages");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(515, "h4");
-      \u0275\u0275text(516, "Content inventory improvement");
+      \u0275\u0275elementStart(519, "h4");
+      \u0275\u0275text(520, "Content inventory improvement");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(517, "ul")(518, "li");
-      \u0275\u0275text(519, "Add sort function to table");
+      \u0275\u0275elementStart(521, "ul")(522, "li");
+      \u0275\u0275text(523, "Add sort function to table");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(520, "li");
-      \u0275\u0275text(521, "Add pagination for projects with more than 50 pages");
+      \u0275\u0275elementStart(524, "li");
+      \u0275\u0275text(525, "Add pagination for projects with more than 50 pages");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(522, "li");
-      \u0275\u0275text(523, "Improve status filters");
+      \u0275\u0275elementStart(526, "li");
+      \u0275\u0275text(527, "Improve status filters");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(524, "h4");
-      \u0275\u0275text(525, "IA diagram improvement");
+      \u0275\u0275elementStart(528, "h4");
+      \u0275\u0275text(529, "IA diagram improvement");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(526, "ul")(527, "li");
-      \u0275\u0275text(528, "Add toggle to view baseline or final version");
+      \u0275\u0275elementStart(530, "ul")(531, "li");
+      \u0275\u0275text(532, "Add toggle to view baseline or final version");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(529, "h3", 48);
-      \u0275\u0275text(530, "Release 0.5.3 (March 31, 2026)");
+      \u0275\u0275elementStart(533, "h3", 50);
+      \u0275\u0275text(534, "Release 0.5.3 (March 31, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(531, "h4");
-      \u0275\u0275text(532, "GitHub export improvements");
+      \u0275\u0275elementStart(535, "h4");
+      \u0275\u0275text(536, "GitHub export improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(533, "ul")(534, "li");
-      \u0275\u0275text(535, "Add option to export English, French or both languages for prototyping");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(536, "li");
-      \u0275\u0275text(537, 'All pages get robots: "noindex, nofollow" from _config.yml, individual pages may have it listed as well if the live page has it');
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(538, "li");
-      \u0275\u0275text(539, "Copy everything from core-prototype/_includes instead of specific files");
+      \u0275\u0275elementStart(537, "ul")(538, "li");
+      \u0275\u0275text(539, "Add option to export English, French or both languages for prototyping");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(540, "li");
-      \u0275\u0275text(541, "Add 2s delay before enabling GitHub Pages (preview)");
+      \u0275\u0275text(541, 'All pages get robots: "noindex, nofollow" from _config.yml, individual pages may have it listed as well if the live page has it');
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(542, "li");
+      \u0275\u0275text(543, "Copy everything from core-prototype/_includes instead of specific files");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(544, "li");
+      \u0275\u0275text(545, "Add 2s delay before enabling GitHub Pages (preview)");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(542, "h4");
-      \u0275\u0275text(543, "UPD integration");
+      \u0275\u0275elementStart(546, "h4");
+      \u0275\u0275text(547, "UPD integration");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(544, "ul")(545, "li");
-      \u0275\u0275text(546, "Content inventory table now links directly to the UPD data for each page (opens UPD in new tab)");
+      \u0275\u0275elementStart(548, "ul")(549, "li");
+      \u0275\u0275text(550, "Content inventory table now links directly to the UPD data for each page (opens UPD in new tab)");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(547, "h4");
-      \u0275\u0275text(548, "Update bookmarklets");
+      \u0275\u0275elementStart(551, "h4");
+      \u0275\u0275text(552, "Update bookmarklets");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(549, "ul")(550, "li");
-      \u0275\u0275text(551, 'Update "Toggle [repo name] and "Toggle github" to work with new cra-test-arc.canada.ca subdomain');
+      \u0275\u0275elementStart(553, "ul")(554, "li");
+      \u0275\u0275text(555, 'Update "Toggle [repo name] and "Toggle github" to work with new cra-test-arc.canada.ca subdomain');
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(552, "h4");
-      \u0275\u0275text(553, "Update template detection");
+      \u0275\u0275elementStart(556, "h4");
+      \u0275\u0275text(557, "Update template detection");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(554, "ul")(555, "li");
-      \u0275\u0275text(556, 'Add "mwsdoormat-links-container" to topic page template detection logic');
+      \u0275\u0275elementStart(558, "ul")(559, "li");
+      \u0275\u0275text(560, 'Add "mwsdoormat-links-container" to topic page template detection logic');
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(557, "li");
-      \u0275\u0275text(558, "Add additional double H1 detection for <p> elements");
+      \u0275\u0275elementStart(561, "li");
+      \u0275\u0275text(562, "Add additional double H1 detection for <p> elements");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(559, "h3", 49);
-      \u0275\u0275text(560, "Release 0.5.2 (March 27, 2026)");
+      \u0275\u0275elementStart(563, "h3", 51);
+      \u0275\u0275text(564, "Release 0.5.2 (March 27, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(561, "h4");
-      \u0275\u0275text(562, "Add pages improvements");
+      \u0275\u0275elementStart(565, "h4");
+      \u0275\u0275text(566, "Add pages improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(563, "ul")(564, "li");
-      \u0275\u0275text(565, "Added input validation to enforce single-language page entry");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(566, "li");
-      \u0275\u0275text(567, "Automatic URL formatting and normalization");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(568, "li");
-      \u0275\u0275text(569, "Removed list of urls undergoing validation (we still show urls with problems and valid or skipped urls)");
+      \u0275\u0275elementStart(567, "ul")(568, "li");
+      \u0275\u0275text(569, "Added input validation to enforce single-language page entry");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(570, "li");
-      \u0275\u0275text(571, 'Added "View pages" section to the Edit/New project view');
+      \u0275\u0275text(571, "Automatic URL formatting and normalization");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(572, "li");
+      \u0275\u0275text(573, "Removed list of urls undergoing validation (we still show urls with problems and valid or skipped urls)");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(574, "li");
+      \u0275\u0275text(575, 'Added "View pages" section to the Edit/New project view');
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(572, "h4");
-      \u0275\u0275text(573, "Github export improvements");
+      \u0275\u0275elementStart(576, "h4");
+      \u0275\u0275text(577, "Github export improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(574, "ul")(575, "li");
-      \u0275\u0275text(576, "Improved GitHub index.html to support bilingual sitemap generation with paired English/French URLs");
+      \u0275\u0275elementStart(578, "ul")(579, "li");
+      \u0275\u0275text(580, "Improved GitHub index.html to support bilingual sitemap generation with paired English/French URLs");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(577, "h3", 50);
-      \u0275\u0275text(578, "Release 0.5.1 (March 26, 2026)");
+      \u0275\u0275elementStart(581, "h3", 52);
+      \u0275\u0275text(582, "Release 0.5.1 (March 26, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(579, "h4");
-      \u0275\u0275text(580, "New bookmarklet");
+      \u0275\u0275elementStart(583, "h4");
+      \u0275\u0275text(584, "New bookmarklet");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(581, "ul")(582, "li");
-      \u0275\u0275text(583, 'Added project-specific "Toggle [repo name]" bookmarklet to toggle between GitHub preview, edit mode, and Canada.ca.');
+      \u0275\u0275elementStart(585, "ul")(586, "li");
+      \u0275\u0275text(587, 'Added project-specific "Toggle [repo name]" bookmarklet to toggle between GitHub preview, edit mode, and Canada.ca.');
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(584, "h3", 51);
-      \u0275\u0275text(585, "Release 0.5.0 (March 25, 2026)");
+      \u0275\u0275elementStart(588, "h3", 53);
+      \u0275\u0275text(589, "Release 0.5.0 (March 25, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(586, "h4");
-      \u0275\u0275text(587, "AI-powered metadata generation");
+      \u0275\u0275elementStart(590, "h4");
+      \u0275\u0275text(591, "AI-powered metadata generation");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(588, "ul")(589, "li");
-      \u0275\u0275text(590, "Generate metadata automatically for selected pages using AI assistance");
+      \u0275\u0275elementStart(592, "ul")(593, "li");
+      \u0275\u0275text(594, "Generate metadata automatically for selected pages using AI assistance");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(591, "h4");
-      \u0275\u0275text(592, "Content inventory improvements");
+      \u0275\u0275elementStart(595, "h4");
+      \u0275\u0275text(596, "Content inventory improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(593, "ul")(594, "li");
-      \u0275\u0275text(595, "Expanded data collection: word count, noindex status, last modified/published dates");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(596, "li");
-      \u0275\u0275text(597, "Expanded metadata collection to both languages");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(598, "li");
-      \u0275\u0275text(599, "Secondary toolbar for bulk actions on selected pages");
+      \u0275\u0275elementStart(597, "ul")(598, "li");
+      \u0275\u0275text(599, "Expanded data collection: word count, noindex status, last modified/published dates");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(600, "li");
-      \u0275\u0275text(601, "Improved page status filtering");
+      \u0275\u0275text(601, "Expanded metadata collection to both languages");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(602, "li");
-      \u0275\u0275text(603, "Added option to refresh the collected page data");
+      \u0275\u0275text(603, "Secondary toolbar for bulk actions on selected pages");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(604, "li");
-      \u0275\u0275text(605, "Reorganized IA orphan detection into dedicated problem category");
+      \u0275\u0275text(605, "Improved page status filtering");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(606, "li");
+      \u0275\u0275text(607, "Added option to refresh the collected page data");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(608, "li");
+      \u0275\u0275text(609, "Reorganized IA orphan detection into dedicated problem category");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(606, "h4");
-      \u0275\u0275text(607, "Switch project improvements");
+      \u0275\u0275elementStart(610, "h4");
+      \u0275\u0275text(611, "Switch project improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(608, "ul")(609, "li");
-      \u0275\u0275text(610, "Fixed cloud project upload with GitHub Personal Access Tokens");
+      \u0275\u0275elementStart(612, "ul")(613, "li");
+      \u0275\u0275text(614, "Fixed cloud project upload with GitHub Personal Access Tokens");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(611, "li");
-      \u0275\u0275text(612, "Filters on switch project view are now linked to the project files");
+      \u0275\u0275elementStart(615, "li");
+      \u0275\u0275text(616, "Filters on switch project view are now linked to the project files");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(613, "h4");
-      \u0275\u0275text(614, "GitHub export improvements");
+      \u0275\u0275elementStart(617, "h4");
+      \u0275\u0275text(618, "GitHub export improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(615, "ul")(616, "li");
-      \u0275\u0275text(617, "Added an index.html page to generate a list of files in your repo and robots.txt");
+      \u0275\u0275elementStart(619, "ul")(620, "li");
+      \u0275\u0275text(621, "Added an index.html page to generate a list of files in your repo and robots.txt");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(618, "li");
-      \u0275\u0275text(619, "Breadcrumbs now reflect any changes you've made in AIDA instead of the live page");
+      \u0275\u0275elementStart(622, "li");
+      \u0275\u0275text(623, "Breadcrumbs now reflect any changes you've made in AIDA instead of the live page");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(620, "h4");
-      \u0275\u0275text(621, "New toolbox view");
+      \u0275\u0275elementStart(624, "h4");
+      \u0275\u0275text(625, "New toolbox view");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(622, "ul")(623, "li");
-      \u0275\u0275text(624, 'Added bookmarklets, "Open in AIDA", "Toggle GitHub", and "Check links"');
+      \u0275\u0275elementStart(626, "ul")(627, "li");
+      \u0275\u0275text(628, 'Added bookmarklets, "Open in AIDA", "Toggle GitHub", and "Check links"');
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(625, "li");
-      \u0275\u0275text(626, "Note: this view will eventually have some standalone tools that aren't linked to project data");
+      \u0275\u0275elementStart(629, "li");
+      \u0275\u0275text(630, "Note: this view will eventually have some standalone tools that aren't linked to project data");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(627, "h3", 52);
-      \u0275\u0275text(628, "Release 0.4.0 (February 25, 2026)");
+      \u0275\u0275elementStart(631, "h3", 54);
+      \u0275\u0275text(632, "Release 0.4.0 (February 25, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(629, "h4");
-      \u0275\u0275text(630, "Initial release - core project management");
+      \u0275\u0275elementStart(633, "h4");
+      \u0275\u0275text(634, "Initial release - core project management");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(631, "ul")(632, "li");
-      \u0275\u0275text(633, "Project dashboard view with high level stats and design phase tracking (discover, assess, design, approve)");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(634, "li");
-      \u0275\u0275text(635, "Edit/New project view where you can name your project, associate it with a GitHub repo, add collaborators, add pages, or find pages from the task inventory");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(636, "li");
-      \u0275\u0275text(637, "Switch project view where you can switch between your projects, view any cloud project, or mark projects for deletion (they are stored for 30 days before final deletion)");
+      \u0275\u0275elementStart(635, "ul")(636, "li");
+      \u0275\u0275text(637, "Project dashboard view with high level stats and design phase tracking (discover, assess, design, approve)");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(638, "li");
-      \u0275\u0275text(639, "Manage inventory view where you can see all the data collected for your pages, add brand new pages, or change the IA structure");
+      \u0275\u0275text(639, "Edit/New project view where you can name your project, associate it with a GitHub repo, add collaborators, add pages, or find pages from the task inventory");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(640, "li");
-      \u0275\u0275text(641, "IA diagram view where you can see the page hierarchy");
+      \u0275\u0275text(641, "Switch project view where you can switch between your projects, view any cloud project, or mark projects for deletion (they are stored for 30 days before final deletion)");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(642, "li");
-      \u0275\u0275text(643, "Export to GitHub view where you can export your pages in Jekyll format. The file comparison table can detect if you've made changes in GitHub after the export and will automatically skip those files on future exports (can be overriden by the user).");
+      \u0275\u0275text(643, "Manage inventory view where you can see all the data collected for your pages, add brand new pages, or change the IA structure");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(644, "li");
+      \u0275\u0275text(645, "IA diagram view where you can see the page hierarchy");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(646, "li");
+      \u0275\u0275text(647, "Export to GitHub view where you can export your pages in Jekyll format. The file comparison table can detect if you've made changes in GitHub after the export and will automatically skip those files on future exports (can be overriden by the user).");
       \u0275\u0275elementEnd()()()();
     }
     if (rf & 2) {
@@ -56428,12 +56456,13 @@ var HelpComponent = class _HelpComponent {
 \r
     <section class="surface-card border-round-lg shadow-2 p-4 w-full min-w-min">\r
         <h2 id="release">Release notes</h2>\r
-        <h3 id="0-5-7">Release 0.5.8 (July 16, 2026)</h3>\r
+        <h3 id="0-5-9">Release 0.5.9 (July 17, 2026)</h3>\r
         <h4>Data structure</h4>\r
         <ul>\r
             <li>Reorganized data into "baseline", "live", and "prototype" subsections for better tracking and quick comparisons</li>\r
             <li>Users can refresh the "live" data from Canada.ca or the "prototype" data from GitHub ("baseline" doesn't refresh, so changes can be tracked from start of project or from current live state)</li>\r
             <li>Old saved files will be patched to the new structure automatically</li>\r
+            <li>The new structure is used to calculate what actions are needed (Create new page, unpublish from Canada.ca etc.)</li>\r
         </ul>\r
         <h4>IA diagram improvements</h4>\r
         <ul>\r
@@ -56451,8 +56480,9 @@ var HelpComponent = class _HelpComponent {
             <li>Added an option to export pages to a zip file instead of GitHub</li>\r
             <li>Exported index pages now open the correct repo link, even if you fork, move, or rename the repo</li>\r
             <li>Added a "New tab GitHub" bookmarklet to open the other version in a new tab (same as the "Toggle GitHub" bookmarklet but opens in a new tab instead of the same tab)</li>\r
+            <li>Added a "Toggle night mode" bookmarklet so users can darken Canada.ca pages if preferred for reading</li>\r
         </ul>\r
-        <h3 id="0-5-7">Release 0.5.8 (June 15, 2026)</h3>\r
+        <h3 id="0-5-8">Release 0.5.8 (June 15, 2026)</h3>\r
         <h4>Content inventory</h4>\r
         <ul>\r
             <li>Add notes group with 'issues' and 'solutions' for user to document whatever they wish</li>\r
@@ -56591,9 +56621,9 @@ var HelpComponent = class _HelpComponent {
 })();
 
 // src/app/views/standalone/standalone.component.ts
-function StandaloneComponent_Conditional_84_Template(rf, ctx) {
+function StandaloneComponent_Conditional_96_Template(rf, ctx) {
 }
-function StandaloneComponent_Conditional_85_Template(rf, ctx) {
+function StandaloneComponent_Conditional_97_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275element(0, "aida-dev-tools");
   }
@@ -56610,12 +56640,13 @@ var StandaloneComponent = class _StandaloneComponent {
   githubToggleBookmarklet = this.sanitizer.bypassSecurityTrustUrl(`javascript:(function(){if(window.location.href.indexOf("github.com")>-1){var m=window.location.toString().match(/^https:\\/\\/github.com\\/(.*?)\\/(.*?)\\/(blob|tree|edit)\\/.*?\\/(.*?)(\\/)?(\\.\\w+)?$/);if(m){var u=m[1]==="gc-proto"?"https://test.canada.ca/"+m[2]+"/"+m[4]+m[6]:m[1]==="cra-proto"?"https://cra-test-arc.canada.ca/"+m[2]+"/"+m[4]+m[6]:"https://"+m[1]+".github.io/"+m[2]+"/"+m[4]+m[6];window.location=u;}}else{var i="index.html";if(window.location.href.indexOf(".html")>-1){i="";}window.location=window.location.toString().replace(/^https:\\/\\/(.*?).github.io\\/(.*?)\\/(.*?)(\\/)?(\\.\\w+)?$/,"https://github.com/$1/$2/tree/main/$3$5/"+i).replace(/^https:\\/\\/test.canada.ca\\/(.*?)\\/(.*?)(\\/)?(\\.\\w+)?$/,"https://github.com/gc-proto/$1/tree/master/$2$4/"+i).replace(/^https:\\/\\/cra-test-arc.canada.ca\\/(.*?)\\/(.*?)(\\/)?(\\.\\w+)?$/,"https://github.com/cra-proto/$1/tree/main/$2$4/"+i);}})();`);
   githubNewTabBookmarklet = this.sanitizer.bypassSecurityTrustUrl(`javascript:(function(){if(window.location.href.indexOf("github.com")>-1){var m=window.location.toString().match(/^https:\\/\\/github.com\\/(.*?)\\/(.*?)\\/(blob|tree|edit)\\/.*?\\/(.*?)(\\/)?(\\.\\w+)?$/);if(m){var u=m[1]==="gc-proto"?"https://test.canada.ca/"+m[2]+"/"+m[4]+m[6]:m[1]==="cra-proto"?"https://cra-test-arc.canada.ca/"+m[2]+"/"+m[4]+m[6]:"https://"+m[1]+".github.io/"+m[2]+"/"+m[4]+m[6];window.open(u,'_blank');}}else{var i="index.html";if(window.location.href.indexOf(".html")>-1){i="";}window.open(window.location.toString().replace(/^https:\\/\\/(.*?).github.io\\/(.*?)\\/(.*?)(\\/)?(\\.\\w+)?$/,"https://github.com/$1/$2/blob/main/$3$5/"+i).replace(/^https:\\/\\/test.canada.ca\\/(.*?)\\/(.*?)(\\/)?(\\.\\w+)?$/,"https://github.com/gc-proto/$1/blob/master/$2$4/"+i).replace(/^https:\\/\\/cra-test-arc.canada.ca\\/(.*?)\\/(.*?)(\\/)?(\\.\\w+)?$/,"https://github.com/cra-proto/$1/blob/main/$2$4/"+i),'_blank');}})();`);
   linkCheckerBookmarklet = this.sanitizer.bypassSecurityTrustUrl(`javascript:(function(){if(document.getElementById('link-check-summary')){document.getElementById('link-check-summary').remove(); document.getElementById('link-check-results').remove(); document.querySelectorAll('a[data-link-checked]').forEach(a=>{if(a.title!==undefined){a.innerHTML=a.title; a.title='';}; a.style.backgroundColor=''; a.style.padding=''; a.style.display=''; a.removeAttribute('data-link-checked');}); return;} var index,child,link,href,count,lang,pattern; var statusChecks=[],totalLinks=0,unknownCount=0,errorCount=0; var broken=[],redirects=[],preview=[],canadasite=[],empty=[],utm=[],wrongLang=[],unknown=[]; lang=$("html").attr("lang"); const oppLang=(lang=="en")?"fr":"en"; pattern="canada.ca/|preview.adobecqms.net/|canadasite|null link|utm|/"+oppLang+"/|lang="+oppLang; const summary=document.createElement("div"); summary.id="link-check-summary"; summary.style.cssText="background:#f0f0f0;border:2px solid #333;padding:10px;margin-bottom:10px;font-weight:bold;"; const summaryInner=document.createElement("div"); summaryInner.className="container"; summary.appendChild(summaryInner); document.body.prepend(summary); const resultsContainer=document.createElement("div"); resultsContainer.id="link-check-results"; resultsContainer.className="container"; document.body.prepend(resultsContainer); async function checkLink(href,linkElem,isRetry=false){if(!href||href.startsWith('#')||href.startsWith('javascript:')||href.startsWith('mailto:')||href.startsWith('tel:'))return null; let fullUrl=href.startsWith('http')?href:new URL(href,window.location.href).href; let isSameOrigin=new URL(fullUrl).origin===window.location.origin; try{let resp=await fetch(fullUrl,{method:'HEAD',mode:'no-cors',cache:'no-cache',redirect:'manual'}); if(resp.type==='opaqueredirect'){if(isSameOrigin&&!isRetry){await new Promise(resolve=>setTimeout(resolve,500)); return checkLink(href,linkElem,true)}; return 302}; if(resp.type==='opaque'&&!isSameOrigin){unknownCount++; return'unknown'}; if(resp.url&&resp.url.includes('/errors/404.html')){if(isSameOrigin&&!isRetry){await new Promise(resolve=>setTimeout(resolve,500)); return checkLink(href,linkElem,true)}; return 404}; return resp.status}catch(e){if(isSameOrigin&&!isRetry){await new Promise(resolve=>setTimeout(resolve,500)); return checkLink(href,linkElem,true)}; if(!isSameOrigin){unknownCount++}; return isSameOrigin?404:'unknown'}}; function markLink(link,originalHref,color){link.setAttribute('data-link-checked','true'); link.title+=link.innerHTML; while(child=link.firstChild){link.removeChild(child)}; link.appendChild(document.createTextNode(originalHref)); link.style.backgroundColor=color; link.style.padding='2px 6px'; link.style.display='inline-block';}; function displayResults(){let html=''; if(errorCount>0||unknownCount>0){html+='<div class="alert alert-danger mt-4"><h2 class="h3">Link problems found</h2><p>The problems are listed below and highlighted in the content.</p><ul>'; if(broken.length>0&&!broken.some(url=>url.includes('Error'))){html+='<li><span style="background:red;padding:2px 6px;">Red highlight</span> - 404\\'s (broken links)</li>'}; if(broken.some(url=>url.includes('Error'))||redirects.length>0){html+='<li><span style="background:orange;padding:2px 6px;">Orange highlight</span> - Redirects or HTTP errors (50X\\'s, 403\\'s, etc.)</li>'}; if(preview.length>0||canadasite.length>0||empty.length>0||utm.length>0||wrongLang.length>0){html+='<li><span style="background:yellow;padding:2px 6px;">Yellow highlight</span> - pattern issues (hard-coded preview links, wrong language links, duplicate canadasite, empty links, or utm codes)</li>'}; if(unknown.length>0){html+='<li><span style="background:cyan;padding:2px 6px;">Cyan highlight</span> - external links (unable to verify)</li>'}; html+='</ul><p class="text-muted mt-2"><strong>Note: </strong>Intermittent server issues can result in false positives that can be ignored.</p></div>'}; if(broken.length>0){html+='<h3>Broken links:</h3><ul>'; broken.forEach(url=>html+='<li>'+url+'</li>'); html+='</ul>'}; if(redirects.length>0){html+='<h3>Redirects:</h3><ul>'; redirects.forEach(url=>html+='<li>'+url+'</li>'); html+='</ul>'}; if(preview.length>0){html+='<h3>Hard-coded preview links:</h3><ul>'; preview.forEach(url=>html+='<li>'+url+'</li>'); html+='</ul>'}; if(canadasite.length>0){html+='<h3>Duplicate canadasite links:</h3><ul>'; canadasite.forEach(url=>html+='<li>'+url+'</li>'); html+='</ul>'}; if(empty.length>0){html+='<h3>Empty links:</h3><ul>'; empty.forEach(url=>html+='<li>'+url+'</li>'); html+='</ul>'}; if(utm.length>0){html+='<h3>UTM codes to remove:</h3><ul>'; utm.forEach(url=>html+='<li>'+url+'</li>'); html+='</ul>'}; if(wrongLang.length>0){html+='<h3>Wrong language:</h3><ul>'; wrongLang.forEach(url=>html+='<li>'+url+'</li>'); html+='</ul>'}; if(unknown.length>0){html+='<h3>External links (unable to verify):</h3><ul>'; unknown.forEach(url=>html+='<li>'+url+'</li>'); html+='</ul>'}; if(errorCount==0&&unknownCount==0){html='<div class="alert alert-success mt-4"><h2 class="h3">No problems found</h2><p>No broken links, hard-coded preview links, wrong language links, duplicate canadasite, empty links, or utm codes were detected on this page.</p></div>'}; resultsContainer.innerHTML=html}; var allLinks=[]; for(index=0;link=document.body.querySelector("#wb-bc")?.querySelectorAll("a")[index];++index){allLinks.push(link)}; for(index=0;link=document.body.querySelector("main")?.querySelectorAll("a")[index];++index){allLinks.push(link)}; totalLinks=allLinks.length; allLinks.forEach(link=>{href=link.getAttribute("href"); if(!href||href=="null link"){empty.push("null link"); markLink(link,"null link",'yellow'); errorCount++}else if(href.match(/preview.adobecqms.net/)){preview.push(href); markLink(link,href,'yellow'); errorCount++}else if(href.match(/canadasite/)){canadasite.push(href); markLink(link,href,'yellow'); errorCount++}else if(href.match(/utm/)){utm.push(href); markLink(link,href,'yellow'); errorCount++}else if((lang=="en"&&href.match(/\\/fr\\/|lang=fr/))||(lang=="fr"&&href.match(/\\/en\\/|lang=en/))){wrongLang.push(href); markLink(link,href,'yellow'); errorCount++}else{let originalUrl=href; statusChecks.push(checkLink(href,link).then(status=>{if(status===404){broken.push(originalUrl); markLink(link,originalUrl,'red'); errorCount++}else if(status>=300&&status<400){redirects.push(originalUrl+' (Redirect '+status+')'); markLink(link,originalUrl,'orange'); errorCount++}else if(status>=400&&status<600){broken.push(originalUrl+' (Error '+status+')'); markLink(link,originalUrl,'orange'); errorCount++}else if(status==='unknown'){unknown.push(originalUrl); markLink(link,originalUrl,'cyan')}}))}});Promise.all(statusChecks).then(()=>{let cleanCount=totalLinks-errorCount-unknownCount; summaryInner.innerHTML="Checked "+totalLinks+" links: "+errorCount+" problems, "+unknownCount+" unknown, "+cleanCount+" ok"; displayResults();});})()`);
+  nightModeBookmarklet = this.sanitizer.bypassSecurityTrustUrl(`javascript:(function(){var invId='night-mode-invert';var maskId='night-mode-mask';var html=document.documentElement;var levels=[0,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1];var overlay=document.getElementById(maskId);var current=overlay?parseFloat(overlay.dataset.level):(html.classList.contains(invId)?0:-1);var idx=levels.indexOf(current);var next=idx===-1?0:idx+1;if(next>=levels.length){html.classList.remove(invId);var s=document.getElementById(invId+'-style');if(s)s.remove();if(overlay)overlay.remove();}else{if(!html.classList.contains(invId)){html.classList.add(invId);var style=document.createElement('style');style.id=invId+'-style';style.textContent='html.'+invId+'{filter:invert(1) hue-rotate(180deg);background:#fff;}html.'+invId+' img,html.'+invId+' video,html.'+invId+' iframe,html.'+invId+' svg,html.'+invId+' picture,html.'+invId+' canvas,html.'+invId+' [style*="background-image"]{filter:invert(1) hue-rotate(180deg);}html.'+invId+' #wb-info .gc-contextual,html.'+invId+' #wb-info .gc-main-footer{filter:invert(1) hue-rotate(180deg);}html.'+invId+' #wb-info .gc-contextual img,html.'+invId+' #wb-info .gc-contextual svg,html.'+invId+' #wb-info .gc-main-footer img,html.'+invId+' #wb-info .gc-main-footer svg{filter:none;}';document.head.appendChild(style);}var lvl=levels[next];if(lvl===0){if(overlay)overlay.remove();}else{if(!overlay){overlay=document.createElement('div');overlay.id=maskId;overlay.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background-color:black;pointer-events:none;z-index:2147483647;filter:invert(1) hue-rotate(180deg);';document.body.appendChild(overlay);}overlay.dataset.level=lvl;overlay.style.opacity=lvl;}}})();`);
   // For group-specific tools
   myToolbox = this.settingsService.toolbox;
   static \u0275fac = function StandaloneComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _StandaloneComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _StandaloneComponent, selectors: [["aida-standalone"]], decls: 86, vars: 72, consts: [["id", "wb-cont"], [3, "innerHTML"], [1, "grid", "py-2", "px-4", "lg:px-6"], [1, "col-12", "md:col-6", "lg:col-4"], [1, "text-xl", "font-semibold", 3, "click", "href"], [1, "text-color-secondary", "mt-2"], ["routerLink", "/standalone/tool-3", 1, "text-xl", "font-semibold"]], template: function StandaloneComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _StandaloneComponent, selectors: [["aida-standalone"]], decls: 98, vars: 82, consts: [["id", "wb-cont"], [3, "innerHTML"], [1, "grid", "py-2", "px-4", "lg:px-6"], [1, "col-12", "md:col-6", "lg:col-4"], [1, "text-xl", "font-semibold", 3, "click", "href"], [1, "text-color-secondary", "mt-2"], ["routerLink", "/standalone/tool-3", 1, "text-xl", "font-semibold"]], template: function StandaloneComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "h1", 0);
       \u0275\u0275text(1);
@@ -56698,93 +56729,118 @@ var StandaloneComponent = class _StandaloneComponent {
       \u0275\u0275pipe(58, "translate");
       \u0275\u0275elementEnd();
       \u0275\u0275text(59, "2026-03-23 ");
-      \u0275\u0275elementEnd()()();
-      \u0275\u0275elementStart(60, "h2");
-      \u0275\u0275text(61, "Tools");
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(60, "div", 3)(61, "a", 4);
+      \u0275\u0275listener("click", function StandaloneComponent_Template_a_click_61_listener($event) {
+        return $event.preventDefault();
+      });
+      \u0275\u0275text(62);
+      \u0275\u0275pipe(63, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(62, "div", 2)(63, "div", 3)(64, "a", 6);
+      \u0275\u0275elementStart(64, "p", 5);
       \u0275\u0275text(65);
       \u0275\u0275pipe(66, "translate");
+      \u0275\u0275element(67, "br");
+      \u0275\u0275elementStart(68, "strong");
+      \u0275\u0275text(69);
+      \u0275\u0275pipe(70, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(67, "p", 5);
-      \u0275\u0275text(68);
-      \u0275\u0275pipe(69, "translate");
-      \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(70, "div", 3)(71, "a", 6);
-      \u0275\u0275text(72);
-      \u0275\u0275pipe(73, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(74, "p", 5);
-      \u0275\u0275text(75);
-      \u0275\u0275pipe(76, "translate");
-      \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(77, "div", 3)(78, "a", 6);
-      \u0275\u0275text(79);
-      \u0275\u0275pipe(80, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(81, "p", 5);
-      \u0275\u0275text(82);
-      \u0275\u0275pipe(83, "translate");
+      \u0275\u0275text(71, "2026-07-17 ");
       \u0275\u0275elementEnd()()();
-      \u0275\u0275template(84, StandaloneComponent_Conditional_84_Template, 0, 0)(85, StandaloneComponent_Conditional_85_Template, 1, 0, "aida-dev-tools");
+      \u0275\u0275elementStart(72, "h2");
+      \u0275\u0275text(73, "Tools");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(74, "div", 2)(75, "div", 3)(76, "a", 6);
+      \u0275\u0275text(77);
+      \u0275\u0275pipe(78, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(79, "p", 5);
+      \u0275\u0275text(80);
+      \u0275\u0275pipe(81, "translate");
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(82, "div", 3)(83, "a", 6);
+      \u0275\u0275text(84);
+      \u0275\u0275pipe(85, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(86, "p", 5);
+      \u0275\u0275text(87);
+      \u0275\u0275pipe(88, "translate");
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(89, "div", 3)(90, "a", 6);
+      \u0275\u0275text(91);
+      \u0275\u0275pipe(92, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(93, "p", 5);
+      \u0275\u0275text(94);
+      \u0275\u0275pipe(95, "translate");
+      \u0275\u0275elementEnd()()();
+      \u0275\u0275template(96, StandaloneComponent_Conditional_96_Template, 0, 0)(97, StandaloneComponent_Conditional_97_Template, 1, 0, "aida-dev-tools");
     }
     if (rf & 2) {
       \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 28, "standalone._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 32, "standalone._title"));
       \u0275\u0275advance(2);
-      \u0275\u0275property("innerHTML", \u0275\u0275pipeBind1(4, 30, "standalone.description"), \u0275\u0275sanitizeHtml);
+      \u0275\u0275property("innerHTML", \u0275\u0275pipeBind1(4, 34, "standalone.description"), \u0275\u0275sanitizeHtml);
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(7, 32, "standalone.bookmarklet._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(7, 36, "standalone.bookmarklet._title"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(10, 34, "standalone.bookmarklet.description"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(10, 38, "standalone.bookmarklet.description"));
       \u0275\u0275advance(4);
       \u0275\u0275property("href", ctx.aidaBookmarklet, \u0275\u0275sanitizeUrl);
       \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(15, 36, "standalone.bookmarklet1._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(15, 40, "standalone.bookmarklet1._title"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(18, 38, "standalone.bookmarklet1.description"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(18, 42, "standalone.bookmarklet1.description"));
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate1("", \u0275\u0275pipeBind1(22, 40, "common.modified"), ": ");
+      \u0275\u0275textInterpolate1("", \u0275\u0275pipeBind1(22, 44, "common.modified"), ": ");
       \u0275\u0275advance(4);
       \u0275\u0275property("href", ctx.githubToggleBookmarklet, \u0275\u0275sanitizeUrl);
       \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(27, 42, "standalone.bookmarklet2._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(27, 46, "standalone.bookmarklet2._title"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(30, 44, "standalone.bookmarklet2.description"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(30, 48, "standalone.bookmarklet2.description"));
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate1("", \u0275\u0275pipeBind1(34, 46, "common.modified"), ": ");
+      \u0275\u0275textInterpolate1("", \u0275\u0275pipeBind1(34, 50, "common.modified"), ": ");
       \u0275\u0275advance(4);
       \u0275\u0275property("href", ctx.githubNewTabBookmarklet, \u0275\u0275sanitizeUrl);
       \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(39, 48, "standalone.bookmarklet4._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(39, 52, "standalone.bookmarklet4._title"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(42, 50, "standalone.bookmarklet4.description"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(42, 54, "standalone.bookmarklet4.description"));
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate1("", \u0275\u0275pipeBind1(46, 52, "common.modified"), ": ");
+      \u0275\u0275textInterpolate1("", \u0275\u0275pipeBind1(46, 56, "common.modified"), ": ");
       \u0275\u0275advance(4);
       \u0275\u0275property("href", ctx.linkCheckerBookmarklet, \u0275\u0275sanitizeUrl);
       \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(51, 54, "standalone.bookmarklet3._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(51, 58, "standalone.bookmarklet3._title"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(54, 56, "standalone.bookmarklet3.description"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(54, 60, "standalone.bookmarklet3.description"));
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate1("", \u0275\u0275pipeBind1(58, 58, "common.modified"), ": ");
-      \u0275\u0275advance(8);
-      \u0275\u0275textInterpolate1("", \u0275\u0275pipeBind1(66, 60, "standalone.tool._title"), " 1");
-      \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(69, 62, "standalone.tool.description"));
+      \u0275\u0275textInterpolate1("", \u0275\u0275pipeBind1(58, 62, "common.modified"), ": ");
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate1("", \u0275\u0275pipeBind1(73, 64, "standalone.tool._title"), " 2");
-      \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(76, 66, "standalone.tool.description"));
-      \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate1("", \u0275\u0275pipeBind1(80, 68, "standalone.tool._title"), " 3");
-      \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(83, 70, "standalone.tool.description"));
-      \u0275\u0275advance(2);
-      \u0275\u0275conditional(ctx.myToolbox() === "CRA" || ctx.myToolbox() === "ADMIN" ? 84 : -1);
+      \u0275\u0275property("href", ctx.nightModeBookmarklet, \u0275\u0275sanitizeUrl);
       \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.myToolbox() === "DEV" || ctx.myToolbox() === "ADMIN" ? 85 : -1);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(63, 64, "standalone.bookmarklet.nightMode._title"));
+      \u0275\u0275advance(3);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(66, 66, "standalone.bookmarklet.nightMode.description"));
+      \u0275\u0275advance(4);
+      \u0275\u0275textInterpolate1("", \u0275\u0275pipeBind1(70, 68, "common.modified"), ": ");
+      \u0275\u0275advance(8);
+      \u0275\u0275textInterpolate1("", \u0275\u0275pipeBind1(78, 70, "standalone.tool._title"), " 1");
+      \u0275\u0275advance(3);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(81, 72, "standalone.tool.description"));
+      \u0275\u0275advance(4);
+      \u0275\u0275textInterpolate1("", \u0275\u0275pipeBind1(85, 74, "standalone.tool._title"), " 2");
+      \u0275\u0275advance(3);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(88, 76, "standalone.tool.description"));
+      \u0275\u0275advance(4);
+      \u0275\u0275textInterpolate1("", \u0275\u0275pipeBind1(92, 78, "standalone.tool._title"), " 3");
+      \u0275\u0275advance(3);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(95, 80, "standalone.tool.description"));
+      \u0275\u0275advance(2);
+      \u0275\u0275conditional(ctx.myToolbox() === "CRA" || ctx.myToolbox() === "ADMIN" ? 96 : -1);
+      \u0275\u0275advance();
+      \u0275\u0275conditional(ctx.myToolbox() === "DEV" || ctx.myToolbox() === "ADMIN" ? 97 : -1);
     }
   }, dependencies: [TranslateModule, TranslatePipe, RouterLink, DevToolsComponent], encapsulation: 2 });
 };
@@ -56826,6 +56882,12 @@ var StandaloneComponent = class _StandaloneComponent {
         <a [href]="linkCheckerBookmarklet" class="text-xl font-semibold" (click)="$event.preventDefault()">{{'standalone.bookmarklet3._title' | translate}}</a>\r
         <p class="text-color-secondary mt-2">{{'standalone.bookmarklet3.description' | translate}}<br>\r
             <strong>{{'common.modified'|translate}}: </strong>2026-03-23\r
+        </p>\r
+    </div>\r
+    <div class="col-12 md:col-6 lg:col-4">\r
+        <a [href]="nightModeBookmarklet" class="text-xl font-semibold" (click)="$event.preventDefault()">{{'standalone.bookmarklet.nightMode._title' | translate}}</a>\r
+        <p class="text-color-secondary mt-2">{{'standalone.bookmarklet.nightMode.description' | translate}}<br>\r
+            <strong>{{'common.modified'|translate}}: </strong>2026-07-17\r
         </p>\r
     </div>\r
 </div>\r
@@ -57096,7 +57158,7 @@ var routes = [
   },
   {
     path: "dev/prompt-editor",
-    loadComponent: () => import("./chunk-JU425EX2.js").then((m) => m.PromptEditorComponent),
+    loadComponent: () => import("./chunk-USVYO7AO.js").then((m) => m.PromptEditorComponent),
     title: "dev.prompts._title"
   },
   {
@@ -59558,6 +59620,8 @@ var AppComponent = class _AppComponent {
         if (project) {
           this.projectState.setProject(project);
           console.log(`Project loaded successfully: ${active.key}`);
+          yield this.projectState.refreshAll(project.projectData, "live", true);
+          yield this.projectState.refreshAll(project.projectData, "baseline", true, true);
         } else {
           console.error(`Failed to load project: ${active.key}`);
           this.projectStorageService.clearActiveProject();

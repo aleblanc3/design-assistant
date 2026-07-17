@@ -3,10 +3,13 @@ import {
   FetchService,
   PageTemplate,
   ProjectPhase
-} from "./chunk-A67ORX53.js";
+} from "./chunk-CBWDJ7F7.js";
 import {
   environment
 } from "./chunk-MYYNWJMU.js";
+import {
+  marker
+} from "./chunk-NHG2MSCL.js";
 import {
   UserSettingsService
 } from "./chunk-EKIRHXEG.js";
@@ -514,7 +517,7 @@ var ProgressBarModule = class _ProgressBarModule {
 })();
 
 // package.json
-var version = "0.5.8";
+var version = "0.5.9";
 
 // src/app/services/storage/cloud-storage.service.ts
 var CloudStorageService = class _CloudStorageService {
@@ -1461,7 +1464,7 @@ var AirtableService = class _AirtableService {
   refreshData() {
     return __async(this, null, function* () {
       this.clearCache();
-      return this.fetchTasks(true);
+      return yield this.fetchTasks(true);
     });
   }
   /**
@@ -1583,7 +1586,7 @@ var UpdService = class _UpdService {
   refreshData() {
     return __async(this, null, function* () {
       this.clearCache();
-      return this.fetchData(true);
+      return yield this.fetchData(true);
     });
   }
   /**
@@ -2268,7 +2271,7 @@ var ProjectStateService = class _ProjectStateService {
           isArchived: data.prototype?.en.isArchived ?? data.prototype?.fr.isArchived ?? false,
           noindex: data.prototype?.en.noindex ?? data.prototype?.fr.noindex ?? false,
           //Actions
-          actions: [],
+          actions: this.computeActions(data),
           //Problems
           isOrphan: data.live?.en.isOrphan ?? data.live?.fr.isOrphan ?? false,
           //Notes
@@ -2332,7 +2335,6 @@ var ProjectStateService = class _ProjectStateService {
     ];
     const order = lang === "fr" ? [frData, enData] : [enData, frData];
     const langColumns = order.flat();
-    console.log(langColumns);
     return [
       ...langColumns,
       //Status
@@ -2343,7 +2345,7 @@ var ProjectStateService = class _ProjectStateService {
       { field: "isArchived", label: this.translate.instant("inventory.header.archiveStatus"), type: "boolean", group: "status", visibleByDefault: true, dataSection: ["prototype", "lang", "isArchived"] },
       { field: "noindex", label: this.translate.instant("inventory.header.noindex"), type: "boolean", group: "status", visibleByDefault: true, dataSection: ["prototype", "lang", "noindex"] },
       //Actions
-      { field: "actions", label: this.translate.instant("inventory.header.actions"), type: "array", group: "actions", visibleByDefault: false, dataSection: [] },
+      { field: "actions", label: this.translate.instant("inventory.header.actions"), type: "tags", group: "actions", visibleByDefault: false, dataSection: [] },
       //Notes
       { field: "issue", label: this.translate.instant("inventory.header.issue"), type: "textArea", group: "notes", visibleByDefault: false, dataSection: ["notes", "issue"] },
       { field: "solution", label: this.translate.instant("inventory.header.solution"), type: "textArea", group: "notes", visibleByDefault: false, dataSection: ["notes", "solution"] },
@@ -2383,6 +2385,33 @@ var ProjectStateService = class _ProjectStateService {
       { field: "aiGeneratedAt", label: this.translate.instant("inventory.header.ai.date"), type: "date", group: "metadata", visibleByDefault: false, dataSection: [] }
     ];
   });
+  computeActions(data) {
+    const actions = [];
+    const isNew = data.status.isNew;
+    const isROT = data.status.isROT;
+    const is404Proto = data.prototype?.en.is404;
+    const is404Live = data.live?.en.is404;
+    const isMoved = data.status.isMoved;
+    const parentProto = data.prototype?.en.parentPath;
+    const parentLive = data.live?.en.parentPath;
+    console.log(isMoved);
+    console.log(parentProto);
+    console.log(parentLive);
+    if (isROT && !is404Live) {
+      actions.push({ key: marker("actions.isROT.unpublish"), severity: "danger" });
+    } else if (isNew) {
+      if (!is404Live) {
+        actions.push({ key: marker("actions.isNew.monitor"), severity: "secondary" });
+      } else if (is404Proto) {
+        actions.push({ key: marker("actions.isNew.createProto"), severity: "info" });
+      } else if (!is404Proto) {
+        actions.push({ key: marker("actions.isNew.createLive"), severity: "info" });
+      }
+    } else if (isMoved && parentProto !== parentLive) {
+      actions.push({ key: marker("actions.isMoved.movePage"), severity: "warn" });
+    }
+    return actions;
+  }
   exportTreeAsCsv() {
     const tree = this.project().projectData;
     const rows = [];
@@ -2695,12 +2724,14 @@ var ProjectStateService = class _ProjectStateService {
     findAndBuildChain(this.project().projectData, path);
     return breadcrumbs;
   }
-  refreshNode(node, version2) {
+  refreshNode(node, version2, fetchLive = false) {
     return __async(this, null, function* () {
+      const source = fetchLive ? "live" : version2;
       const data = node.data;
       const { owner, repo, branch } = this.project().github;
-      const enUrl = this.fetchService.generateUrl(data.path.en, version2, owner, repo);
-      const frUrl = this.fetchService.generateUrl(data.path.fr, version2, owner, repo);
+      const enUrl = this.fetchService.generateUrl(data.path.en, source, owner, repo);
+      const frUrl = this.fetchService.generateUrl(data.path.fr, source, owner, repo);
+      console.log(`Refreshing ${enUrl}`);
       const liveEnUrl = this.fetchService.generateUrl(data.path.en, "live");
       const liveFrUrl = this.fetchService.generateUrl(data.path.fr, "live");
       yield this.updService.fetchData();
@@ -2708,7 +2739,7 @@ var ProjectStateService = class _ProjectStateService {
       yield this.vanityService.fetchData();
       if (enUrl) {
         try {
-          const doc = yield this.fetchService.fetchContent(enUrl, "both", 3, "none");
+          const doc = yield this.fetchService.fetchContent(enUrl, "both", 2, "none");
           const pageData = yield this.fetchService.extractPageMetadata(doc, enUrl);
           const jsonData = yield (() => __async(this, null, function* () {
             try {
@@ -2717,16 +2748,16 @@ var ProjectStateService = class _ProjectStateService {
               return void 0;
             }
           }))();
-          const parentUrl = pageData.parentPath ? this.fetchService.generateUrl(pageData.parentPath, version2, owner, repo) : void 0;
+          const parentUrl = pageData.parentPath ? this.fetchService.generateUrl(pageData.parentPath, source, owner, repo) : void 0;
           const parentDoc = yield (() => __async(this, null, function* () {
             try {
-              return parentUrl ? yield this.fetchService.fetchContent(parentUrl, "both", 3, "none") : void 0;
+              return parentUrl ? yield this.fetchService.fetchContent(parentUrl, "both", 2, "none") : void 0;
             } catch {
               return void 0;
             }
           }))();
           const parentLinks = parentDoc && liveEnUrl ? this.fetchService.getLinks(parentDoc, liveEnUrl) : void 0;
-          const lastModified = version2 !== "live" ? yield this.exportGitHubService.getLastModified(enUrl, owner, repo, branch, this.exportGitHubService.token() ?? void 0) : void 0;
+          const lastModified = source !== "live" ? yield this.exportGitHubService.getLastModified(enUrl, owner, repo, branch, this.exportGitHubService.token() ?? void 0) : void 0;
           const updated = __spreadValues(__spreadProps(__spreadValues({
             h1: pageData.h1,
             doubleH1: pageData.doubleH1,
@@ -2751,7 +2782,7 @@ var ProjectStateService = class _ProjectStateService {
             template: jsonData?.isFreestyle ? PageTemplate.Freestyle : pageData.template,
             fleschKincaid: pageData.fleschKincaid,
             gunningFog: pageData.gunningFog
-          }), version2 === "live" && jsonData ? {
+          }), source === "live" && jsonData ? {
             //jrc:content.json
             owner: jsonData?.owner,
             email: jsonData?.email,
@@ -2762,12 +2793,12 @@ var ProjectStateService = class _ProjectStateService {
           });
           data[version2].en = __spreadValues(__spreadValues({}, data[version2].en), updated);
         } catch {
-          data[version2].en = __spreadProps(__spreadValues({}, data[version2].en), { is404: true });
+          data[version2].en = __spreadProps(__spreadValues({}, data[version2].en), { lastChecked: (/* @__PURE__ */ new Date()).toISOString(), is404: true });
         }
       }
       if (frUrl) {
         try {
-          const doc = yield this.fetchService.fetchContent(frUrl, "both", 3, "none");
+          const doc = yield this.fetchService.fetchContent(frUrl, "both", 2, "none");
           const pageData = yield this.fetchService.extractPageMetadata(doc, frUrl);
           const jsonData = yield (() => __async(this, null, function* () {
             try {
@@ -2776,16 +2807,16 @@ var ProjectStateService = class _ProjectStateService {
               return void 0;
             }
           }))();
-          const parentUrl = pageData.parentPath ? this.fetchService.generateUrl(pageData.parentPath, version2, owner, repo) : void 0;
+          const parentUrl = pageData.parentPath ? this.fetchService.generateUrl(pageData.parentPath, source, owner, repo) : void 0;
           const parentDoc = yield (() => __async(this, null, function* () {
             try {
-              return parentUrl ? yield this.fetchService.fetchContent(parentUrl, "both", 3, "none") : void 0;
+              return parentUrl ? yield this.fetchService.fetchContent(parentUrl, "both", 2, "none") : void 0;
             } catch {
               return void 0;
             }
           }))();
           const parentLinks = parentDoc && liveFrUrl ? this.fetchService.getLinks(parentDoc, liveFrUrl) : void 0;
-          const lastModified = version2 !== "live" ? yield this.exportGitHubService.getLastModified(frUrl, owner, repo, branch, this.exportGitHubService.token() ?? void 0) : void 0;
+          const lastModified = source !== "live" ? yield this.exportGitHubService.getLastModified(frUrl, owner, repo, branch, this.exportGitHubService.token() ?? void 0) : void 0;
           const updated = __spreadValues(__spreadProps(__spreadValues({
             h1: pageData.h1,
             doubleH1: pageData.doubleH1,
@@ -2810,7 +2841,7 @@ var ProjectStateService = class _ProjectStateService {
             template: jsonData?.isFreestyle ? PageTemplate.Freestyle : pageData.template,
             fleschKincaid: pageData.fleschKincaid,
             gunningFog: pageData.gunningFog
-          }), version2 === "live" && jsonData ? {
+          }), source === "live" && jsonData ? {
             //jrc:content.json
             owner: jsonData?.owner,
             email: jsonData?.email,
@@ -2821,7 +2852,7 @@ var ProjectStateService = class _ProjectStateService {
           });
           data[version2].fr = __spreadValues(__spreadValues({}, data[version2].fr), updated);
         } catch {
-          data[version2].fr = __spreadProps(__spreadValues({}, data[version2].fr), { is404: true });
+          data[version2].fr = __spreadProps(__spreadValues({}, data[version2].fr), { lastChecked: (/* @__PURE__ */ new Date()).toISOString(), is404: true });
         }
       }
       data.visits = {
@@ -2837,6 +2868,19 @@ var ProjectStateService = class _ProjectStateService {
         fr: this.vanityService.findVanitiesByDestination(liveFrUrl ?? "")
       };
       this.setModifiedDate();
+    });
+  }
+  refreshAll(nodes, version2, onlyNeverChecked = false, fetchLive = false) {
+    return __async(this, null, function* () {
+      for (const node of nodes) {
+        const needsRefresh = onlyNeverChecked ? !node.data?.[version2]?.en?.lastChecked || !node.data?.[version2]?.fr?.lastChecked : true;
+        if (needsRefresh) {
+          yield this.refreshNode(node, version2, fetchLive);
+        }
+        if (node.children?.length) {
+          yield this.refreshAll(node.children, version2, onlyNeverChecked, fetchLive);
+        }
+      }
     });
   }
   getPath(url, live = true) {
@@ -2957,12 +3001,7 @@ var ProjectStateService = class _ProjectStateService {
     newParent.children = newParent.children ?? [];
     newParent.children.push(node);
     node.parent = newParent;
-    node.data.prototype.en.parentPath = newParent.data?.path.en ?? "";
-    node.data.prototype.fr.parentPath = newParent.data?.path.fr ?? "";
-    const enMoved = this.getPath(node.data.prototype.en.parentPath) !== this.getPath(node.data.baseline.en.parentPath ?? "");
-    const frMoved = this.getPath(node.data.prototype.fr.parentPath) !== this.getPath(node.data.baseline.fr.parentPath ?? "");
-    node.data.status.isMoved = enMoved || frMoved;
-    this.setProjectTree(tree);
+    this.applyMoveResult(node, newParent);
     return "success";
   }
   isAncestor(node, potentialAncestor) {
@@ -2973,6 +3012,25 @@ var ProjectStateService = class _ProjectStateService {
       current = current.parent;
     }
     return false;
+  }
+  applyMoveResult(node, newParent) {
+    const previousMoveStatus = node.data.status.isMoved;
+    const pathParent = this.resolveNonContainerParent(newParent);
+    node.data.prototype.en.parentPath = pathParent?.data?.path.en ?? "";
+    node.data.prototype.fr.parentPath = pathParent?.data?.path.fr ?? "";
+    const enMoved = this.getPath(node.data.prototype.en.parentPath) !== this.getPath(node.data.baseline.en.parentPath ?? "");
+    const frMoved = this.getPath(node.data.prototype.fr.parentPath) !== this.getPath(node.data.baseline.fr.parentPath ?? "");
+    node.data.status.isMoved = enMoved || frMoved;
+    if (previousMoveStatus !== node.data.status.isMoved) {
+      this.setModifiedDate();
+    }
+  }
+  resolveNonContainerParent(node) {
+    let current = node;
+    while (current?.data?.isContainer) {
+      current = current.parent;
+    }
+    return current;
   }
   // Reorder a node among its siblings
   reorderNode(node, direction) {
@@ -3403,6 +3461,7 @@ var AddUrlsService = class _AddUrlsService {
       const urls = this.urlState().urlsToAdd;
       yield this.updService.fetchData();
       yield this.airtableService.fetchTasks();
+      yield this.vanityService.fetchData();
       this.setPreviousProjectData(this.projectState.getProjectTree());
       for (const url of urls) {
         try {
@@ -3689,4 +3748,4 @@ export {
   TreeNodeStyleService,
   AddUrlsService
 };
-//# sourceMappingURL=chunk-KUKADQOZ.js.map
+//# sourceMappingURL=chunk-ZLBPKAWO.js.map
