@@ -562,8 +562,7 @@ export class ExportComponent implements OnInit {
 
         // Check if skipped or new
         const fileRow = this.filesTable().find(f => f.path === path);
-        const isSkipped = fileRow?.status === ExportStatus.SkipNew ||
-          fileRow?.status === ExportStatus.SkipOverwrite;
+        const isSkipped = !fileRow || fileRow?.status === ExportStatus.SkipNew || fileRow?.status === ExportStatus.SkipOverwrite;
         const isNew = node?.data?.status?.isNew === true;
 
         // Set content

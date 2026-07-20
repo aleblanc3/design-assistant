@@ -309,25 +309,6 @@ export class ProjectStateService {
         return search(this.project().projectData);
     }
 
-    // Get all URLs in tree (for duplicate checking)
-    getAllUrls(mode: 'all' | 'inScope' = 'all', lang: 'en' | 'fr' = 'en'): Set<string> {
-        const urls = new Set<string>();
-        const traverse = (nodes: TreeNode<TreeNodeData>[]) => {
-            for (const node of nodes) {
-                const path = lang === 'fr' ? node.data?.path.fr ?? '' : node.data?.path.en ?? '';
-                const url = this.fetchService.generateUrl(path, "live")
-                if (mode === 'inScope' && url && node.data?.status.inScope) {
-                    urls.add(url);
-                } else if (mode === 'all' && url) {
-                    urls.add(url);
-                }
-                if (node.children?.length) traverse(node.children);
-            }
-        };
-        traverse(this.project().projectData);
-        return urls;
-    }
-
     // TODO: refactor getAllUrls and getAllPages to use new data structure
     getAllPages(lang: 'en' | 'fr', version: 'prototype' | 'live' | 'baseline' = 'prototype', scope: 'all' | 'inScope' = 'all'): { label: string; path: string; url: string }[] {
         const pages: { label: string; path: string; url: string }[] = [];
