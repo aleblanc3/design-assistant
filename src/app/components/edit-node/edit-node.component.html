@@ -14,7 +14,7 @@
             <label for="refresh" class="text-xs font-semibold">{{ 'common.data' | translate }}</label>
             <div id="refresh" class="flex gap-2 align-items-center">
                 <p-button [label]="'common.refresh' | translate" icon="pi pi-refresh" severity="primary" outlined size="small" styleClass="secondary-outline"
-                          (onClick)=" refresh()" [disabled]="selectedVersion() === 'baseline' && !editsEnabled()" [loading]="refreshing()" />
+                          (onClick)=" refresh()" [disabled]="selectedVersion() === 'baseline' && !editsEnabled()" [loading]="projectState.refreshing()[selectedVersion()]" />
                 <span class="text-sm text-color-secondary white-space-nowrap">
                     {{ daysSinceRefresh() !== null
                     ? ('editNode.lastRefreshed' | translate: { days: daysSinceRefresh() })

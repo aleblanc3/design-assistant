@@ -529,12 +529,13 @@ export class InventoryComponent implements OnInit {
 
     // 1. Refresh (prototype or live data)
     async refreshData(version: 'live' | 'prototype') {
-        console.log(this.selectedNodes);
         if (!this.selectedNodes.length) return;
+        this.projectState.refreshing.update(r => ({ ...r, [version]: true }));
         for (const node of this.selectedNodes) {
             const treeNode = this.projectState.findNodeByPath(this.projectState.getProjectTree(), node.enPath, "en");
-            if (treeNode) this.projectState.refreshNode(treeNode, version)
+            if (treeNode) await this.projectState.refreshNode(treeNode, version)
         }
+        this.projectState.refreshing.update(r => ({ ...r, [version]: false }));
     }
 
     // 2. AI metadata generation
@@ -731,16 +732,20 @@ export class InventoryComponent implements OnInit {
                         styleClass: 'text-primary-500',
                         items: [
                             {
-                                label: this.translate.instant('inventory.menu.refresh.prototype', { pageCount: numPages }),
-                                icon: 'pi pi-refresh',
+                                label: this.projectState.refreshing().prototype
+                                    ? this.translate.instant('inventory.menu.refreshing.prototype', { pageCount: numPages })
+                                    : this.translate.instant('inventory.menu.refresh.prototype', { pageCount: numPages }),
+                                icon: this.projectState.refreshing().prototype ? 'pi pi-spin pi-spinner' : 'pi pi-refresh',
                                 disabled: numPages === 0,
                                 command: () => {
                                     this.refreshData('prototype')
                                 }
                             },
                             {
-                                label: this.translate.instant('inventory.menu.refresh.live', { pageCount: numPages }),
-                                icon: 'pi pi-refresh',
+                                label: this.projectState.refreshing().live
+                                    ? this.translate.instant('inventory.menu.refreshing.live', { pageCount: numPages })
+                                    : this.translate.instant('inventory.menu.refresh.live', { pageCount: numPages }),
+                                icon: this.projectState.refreshing().live ? 'pi pi-spin pi-spinner' : 'pi pi-refresh',
                                 disabled: numPages === 0,
                                 command: () => {
                                     this.refreshData('live')
