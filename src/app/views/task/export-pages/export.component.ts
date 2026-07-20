@@ -128,9 +128,7 @@ export class ExportComponent implements OnInit {
         this.repoType.set(repoType);
       }
       //Update table when owner or repo changes
-      if (owner && repo || repoType === 'local') {
-        untracked(() => this.compareFiles());
-      }
+      untracked(() => this.compareFiles());
     });
   }
 
@@ -148,7 +146,7 @@ export class ExportComponent implements OnInit {
 
   // Initialize table and connection status
   async ngOnInit() {
-    await this.compareFiles();
+    //await this.compareFiles();
   }
 
   // Template visiblity controls
@@ -196,7 +194,9 @@ export class ExportComponent implements OnInit {
   jekyllSkipFiles = ["_config.yml", "README.md", "robots.txt"];
 
   // Populate files table (and compare project files with GitHub or UT)
+  private compareFilesRequestId = 0;
   async compareFiles() {
+    const requestId = ++this.compareFilesRequestId
     if (!this.repoType()) this.projectData().repoType ? this.repoType.set(this.projectData().repoType) : this.repoType.set("github");
 
     const lang = this.selectedExportLanguage;
@@ -212,10 +212,8 @@ export class ExportComponent implements OnInit {
 
     // Local mode
     if (this.repoType() === 'local') {
-      this.filesTable.set(projectPaths.map(path => ({
-        path,
-        status: ExportStatus.ExportNew
-      })));
+      if (requestId !== this.compareFilesRequestId) return;
+      this.filesTable.set(projectPaths.map(path => ({ path, status: ExportStatus.ExportNew })));
       return;
     }
 
@@ -225,7 +223,9 @@ export class ExportComponent implements OnInit {
     const branch = this.gitHubData().branch;
     const token = this.exportGitHubService.token();
 
-    const githubPages: Map<string, string> = await this.exportGitHubService.getRepoTree(owner, repo, branch, token);
+    const githubPages: Map<string, string> = (owner && this.gitHubData().repo)
+      ? await this.exportGitHubService.getRepoTree(owner, repo, branch, token)
+      : new Map();
 
     // Only show GitHub files in AIDA if they match these patterns 
     const langs = lang === 'both' ? ['en', 'fr'] : [lang];
@@ -306,7 +306,7 @@ export class ExportComponent implements OnInit {
 
       table.push({ path, status });
     }
-
+    if (requestId !== this.compareFilesRequestId) return; // guard against multiple runs
     this.filesTable.set(table);
   }
 
