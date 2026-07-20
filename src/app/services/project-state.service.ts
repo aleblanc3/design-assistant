@@ -1617,8 +1617,9 @@ export class ProjectStateService {
     }
 
     private applyCollapsedState(nodes: TreeNode[], collapsedUrls: Set<string>): void {
+        const lang = this.detectPrimaryLanguage();
         for (const node of nodes) {
-            if (collapsedUrls.has(node.data?.url)) {
+            if (collapsedUrls.has(node.data?.path[lang])) {
                 node.data.collapsedChildren = node.children ?? [];
                 node.children = [];
             } else if (node.children?.length) {
@@ -1634,7 +1635,7 @@ export class ProjectStateService {
             if (hiddenUrls.has(node.data?.path[lang])) {
                 if (node.parent) {
                     node.parent.data.hiddenChildrenUrls = node.parent.data.hiddenChildrenUrls ?? [];
-                    node.parent.data.hiddenChildrenUrls.push(node.data.url);
+                    node.parent.data.hiddenChildrenUrls.push(node.data.path[lang]);
                 }
                 nodes.splice(i, 1);
             } else if (node.children?.length) {
