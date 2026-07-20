@@ -17,6 +17,7 @@
 	"actions.isROT.unpublish": "Dépublier la page dans AEM",
 	"addPages._": "------------------------------ADD PAGES------------------------------",
 	"addPages._title": "Ajouter des pages",
+	"addPages._title2": "Ajout de pages en cours<span class=\"loading-dots\"></span>",
 	"addPages.adding": "Ajout de pages en cours",
 	"addPages.description": "Ajoutez des URL Canada.ca à votre projet. Les pages seront validées et organisées selon la structure du fil d'Ariane.",
 	"addPages.duplicatesSkipped": "{{count}} URL en double sera ignorée.",

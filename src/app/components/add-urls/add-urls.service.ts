@@ -536,6 +536,28 @@ export class AddUrlsService {
         )
     );
 
+    // Append URLs to input (for the various find pages components)
+    appendUrlsToInput(newUrls: string[]): void {
+        const lang = this.projectState.detectPrimaryLanguage();
+        const currentRawUrls = this.urlState().rawUrls;
+        const additionalRawUrls = newUrls.join('\n');
+
+        const updatedRawUrls = currentRawUrls
+            ? `${currentRawUrls}\n${additionalRawUrls}`
+            : additionalRawUrls;
+
+        const { parsedUrls } = this.parseUrls(
+            updatedRawUrls,
+            new Set(this.projectState.getAllPages(lang, "live", "inScope").map(u => u.url)),
+            lang
+        );
+
+        this.setUrlState({
+            rawUrls: updatedRawUrls,
+            urlsToValidate: parsedUrls
+        });
+    }
+
     // Add child pages
     async addChildren(node: TreeNode, lang: 'en' | 'fr'): Promise<void> {
         const parentLink = this.fetchService.generateUrl(node.data?.path[lang], "live");

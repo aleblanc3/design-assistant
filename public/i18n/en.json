@@ -17,6 +17,7 @@
 	"actions.isROT.unpublish": "Unpublish page in AEM",
 	"addPages._": "------------------------------ADD PAGES------------------------------",
 	"addPages._title": "Add pages",
+	"addPages._title.active": "Adding pages<span class=\"loading-dots\"></span>",
 	"addPages.adding": "Adding pages",
 	"addPages.description": "Add Canada.ca URLs to your project. Pages will be validated and organized by their breadcrumb structure.",
 	"addPages.duplicatesSkipped": "{{count}} duplicate url will be skipped.",

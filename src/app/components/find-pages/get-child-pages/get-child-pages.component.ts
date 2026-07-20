@@ -65,20 +65,9 @@ export class GetChildPagesComponent {
 
     // Add to project
     addUrlsToProject() {
-        const selectedUrls = this.childUrls()
-            .filter(item => item.selected)
-            .map(item => item.url)
-
-        // Add to "Add urls" input for user to review
-        const lang = this.projectState.detectPrimaryLanguage();
-        const rawUrls = selectedUrls.join('\n')
-        const { parsedUrls } = this.addUrlsService.parseUrls(rawUrls, new Set(this.projectState.getAllPages(lang, "live", "inScope").map(u => u.url)), lang)
-
-        this.addUrlsService.setUrlState({
-            rawUrls: rawUrls,
-            urlsToValidate: parsedUrls
-        })
-
+        const selectedUrls = this.childUrls().filter(item => item.selected).map(item => item.url)
+        this.addUrlsService.appendUrlsToInput(selectedUrls);
+        // Clear selection after adding
         this.childUrls.set([]);
     }
 }
