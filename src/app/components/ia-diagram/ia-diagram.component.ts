@@ -158,7 +158,7 @@ export class IaDiagramComponent {
         label: this.translate.instant(`iaDiagram.menu.findChildren`),
         icon: "pi pi-search",
         disabled: node.data.isCrawled,
-        command: () => { this.addUrlsService.addChildren(node, this.primaryLang); console.log("test"); }
+        command: () => { this.addUrlsService.addChildren(node, this.primaryLang); }
       })
     }
     // Action: Add child page or delete node
@@ -178,11 +178,11 @@ export class IaDiagramComponent {
     }
 
     // View: Full or custom tree
-    if (this.projectTree()[0].data.url !== node.data.url) {
+    if (this.projectTree()[0].data.path[this.primaryLang] !== node.data.path[this.primaryLang]) {
       this.items[1].items!.push({
         label: this.translate.instant(`iaDiagram.menu.viewAsRoot`),
         icon: "pi pi-window-minimize",
-        command: () => this.selectedTree.set(node.data.url)
+        command: () => this.selectedTree.set(node.data.path[this.primaryLang])
       });
     }
     if (this.selectedTree() !== "full") {
@@ -197,7 +197,7 @@ export class IaDiagramComponent {
       this.items[1].items!.push({
         label: this.translate.instant(`iaDiagram.menu.hideChildren`),
         icon: "pi pi-eye-slash",
-        command: () => this.collapsedNodes.update(set => new Set([...set, node.data.url]))
+        command: () => this.collapsedNodes.update(set => new Set([...set, node.data.path[this.primaryLang]]))
       });
     }
     if (!node.children?.length && (node.data.collapsedChildren?.length || node.data.hiddenChildrenUrls?.length)) {
@@ -207,7 +207,7 @@ export class IaDiagramComponent {
         command: () => {
           this.collapsedNodes.update(set => {
             const next = new Set(set);
-            next.delete(node.data.url); // in case children were collapsed
+            next.delete(node.data.path[this.primaryLang]); // in case children were collapsed
             return next;
           });
           this.hiddenNodes.update(set => {
@@ -223,7 +223,7 @@ export class IaDiagramComponent {
       this.items[1].items!.push({
         label: this.translate.instant(`iaDiagram.menu.hideNode`),
         icon: "pi pi-eye-slash",
-        command: () => this.hiddenNodes.update(set => new Set([...set, node.data.url]))
+        command: () => this.hiddenNodes.update(set => new Set([...set, node.data.path[this.primaryLang]]))
       });
     }
     if (node.children?.length && node.data.hiddenChildrenUrls?.length) {
