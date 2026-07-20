@@ -80,6 +80,13 @@ export class ProjectStateService {
     private readonly AUTO_SAVE_DELAY = 10000; // 30 seconds
     private readonly MAX_UNSAVED_DURATION = 5 * 60 * 1000 // 5 minutes
 
+    // Loading states
+    readonly refreshing = signal<{ prototype: boolean; live: boolean; baseline: boolean }>({
+        prototype: false,
+        live: false,
+        baseline: false,
+    });
+
     constructor() {
         // Autosave after a delay if there are changes
         effect(() => {

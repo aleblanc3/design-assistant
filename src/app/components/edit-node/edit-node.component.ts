@@ -42,7 +42,6 @@ export class EditNodeComponent {
 
     originalData = signal<TreeNodeData | null>(null);
     hasChanges = signal(false);
-    refreshing = signal(false);
     moveError = signal(false);
     pathEN = signal<string>('');
     pathFR = signal<string>('');
@@ -86,10 +85,10 @@ export class EditNodeComponent {
         this.urlEditsEnabled.set(true);
     }
     async refresh() {
-        this.refreshing.set(true);
         const version = this.selectedVersion();
+        this.projectState.refreshing.update(r => ({ ...r, [version]: true }));
         await this.projectState.refreshNode(this.node(), version);
-        this.refreshing.set(false);
+        this.projectState.refreshing.update(r => ({ ...r, [version]: false }));
         this.hasChanges.set(true);
     }
     syncData(node: TreeNode, field: 'template' | 'owner' | 'email' | 'isArchived' | 'noindex', direction: "ENtoFR" | "FRtoEN") {
