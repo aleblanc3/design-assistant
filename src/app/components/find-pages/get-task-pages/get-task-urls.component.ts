@@ -160,28 +160,8 @@ export class GetTaskUrlsComponent implements OnInit {
   }
 
   addUrlsToProject() {
-    const selectedUrls = this.taskUrls()
-      .filter(item => item.selected)
-      .map(item => item.url)
-      .join('\n');
-
-    // Get existing rawUrls
-    const currentRawUrls = this.addUrlsService.urlState().rawUrls
-
-    // Append new URLs
-    const updatedRawUrls = currentRawUrls
-      ? `${currentRawUrls}\n${selectedUrls}`
-      : selectedUrls;
-
-    // Add to "Add urls" input for user to review
-    const lang = this.projectState.detectPrimaryLanguage()
-    const { parsedUrls } = this.addUrlsService.parseUrls(updatedRawUrls, new Set(this.projectState.getAllPages(lang, "live", "inScope").map(u => u.url)), lang)
-
-    this.addUrlsService.setUrlState({
-      rawUrls: updatedRawUrls,
-      urlsToValidate: parsedUrls
-    })
-
+    const selectedUrls = this.taskUrls().filter(item => item.selected).map(item => item.url)
+    this.addUrlsService.appendUrlsToInput(selectedUrls);
     // Clear selection after adding
     this.selectedTaskIds.set([]);
     this.selectedTasks.set([]);

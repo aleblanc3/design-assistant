@@ -271,7 +271,7 @@ export class AddUrlsService {
         await this.updService.fetchData();
         await this.airtableService.fetchTasks();
         await this.vanityService.fetchData();
-        this.setPreviousProjectData(this.projectState.getProjectTree());
+        this.setPreviousProjectData(this.projectState.cloneTree(this.projectState.getProjectTree()));
 
         for (const url of urls) {
             try {
@@ -535,6 +535,28 @@ export class AddUrlsService {
             u.status === 'bad' || u.status === 'blocked' || u.status === 'redirect'
         )
     );
+
+    // Append URLs to input (for the various find pages components)
+    appendUrlsToInput(newUrls: string[]): void {
+        const lang = this.projectState.detectPrimaryLanguage();
+        const currentRawUrls = this.urlState().rawUrls;
+        const additionalRawUrls = newUrls.join('\n');
+
+        const updatedRawUrls = currentRawUrls
+            ? `${currentRawUrls}\n${additionalRawUrls}`
+            : additionalRawUrls;
+
+        const { parsedUrls } = this.parseUrls(
+            updatedRawUrls,
+            new Set(this.projectState.getAllPages(lang, "live", "inScope").map(u => u.url)),
+            lang
+        );
+
+        this.setUrlState({
+            rawUrls: updatedRawUrls,
+            urlsToValidate: parsedUrls
+        });
+    }
 
     // Add child pages
     async addChildren(node: TreeNode, lang: 'en' | 'fr'): Promise<void> {
