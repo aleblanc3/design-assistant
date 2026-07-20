@@ -743,9 +743,9 @@ export class ProjectStateService {
         const parentProto = data.prototype?.en.parentPath;
         const parentLive = data.live?.en.parentPath;
 
-        console.log(isMoved)
-        console.log(parentProto);
-        console.log(parentLive);
+        //console.log(isMoved)
+        //console.log(parentProto);
+        //console.log(parentLive);
 
         if (isROT && !is404Live) {
             actions.push({ key: marker('actions.isROT.unpublish'), severity: 'danger' });
@@ -964,7 +964,7 @@ export class ProjectStateService {
                 continue;
             }
 
-            console.log('Node to delete:', nodeToDelete);
+            //console.log('Node to delete:', nodeToDelete);
 
 
             // Root-level (don't delete the root!!!)
@@ -1486,11 +1486,17 @@ export class ProjectStateService {
         return node.parent.children ?? [];
     }
 
+    // Clone so we don't edit the working copy if the IA tree
+    cloneTree(nodes: TreeNode[]): TreeNode[] {
+        const clonedTree = structuredClone(nodes);
+        this.projectStorageService.rebuildParents(clonedTree, undefined);
+        return clonedTree
+    }
+
     // Restore moved pages to their original position and remove new pages
     getBaselineTree(nodes: TreeNode[], mode: 'full' | 'custom' = 'full'): TreeNode[] {
         // Clone so we don't edit the working copy if the IA tree
-        const clonedTree = structuredClone(nodes);
-        this.projectStorageService.rebuildParents(clonedTree, undefined);
+        const clonedTree = this.cloneTree(nodes);
         const lang = this.detectPrimaryLanguage();
 
         // Restore root node if it was moved
@@ -1533,8 +1539,7 @@ export class ProjectStateService {
     // Remove ROT pages
     getFinalTree(nodes: TreeNode[]): TreeNode[] {
         // Clone so we don't edit the working copy if the IA tree
-        const clonedTree = structuredClone(nodes);
-        this.projectStorageService.rebuildParents(clonedTree, undefined);
+        const clonedTree = this.cloneTree(nodes);
         // Remove ROT
         this.removeROTPages(clonedTree);
         return clonedTree;
@@ -1542,8 +1547,7 @@ export class ProjectStateService {
 
     // Remove collapsed or hidden pages
     getDisplayTree(nodes: TreeNode[], collapsedUrls: Set<string>, hiddenUrls: Set<string>): TreeNode[] {
-        const clonedTree = structuredClone(nodes);
-        this.projectStorageService.rebuildParents(clonedTree, undefined);
+        const clonedTree = this.cloneTree(nodes);
         if (hiddenUrls.size > 0) this.applyHiddenState(clonedTree, hiddenUrls);
         if (collapsedUrls.size > 0) this.applyCollapsedState(clonedTree, collapsedUrls);
         return clonedTree;

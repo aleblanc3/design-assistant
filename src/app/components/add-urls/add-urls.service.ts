@@ -271,7 +271,7 @@ export class AddUrlsService {
         await this.updService.fetchData();
         await this.airtableService.fetchTasks();
         await this.vanityService.fetchData();
-        this.setPreviousProjectData(this.projectState.getProjectTree());
+        this.setPreviousProjectData(this.projectState.cloneTree(this.projectState.getProjectTree()));
 
         for (const url of urls) {
             try {
