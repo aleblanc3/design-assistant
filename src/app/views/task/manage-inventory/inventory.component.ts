@@ -1187,8 +1187,8 @@ export class InventoryComponent implements OnInit {
         marker('inventory.tooltip.boolean.isROT.false');
         marker('inventory.tooltip.boolean.linksToPortal.true');
         marker('inventory.tooltip.boolean.linksToPortal.false');
-        marker('inventory.tooltip.boolean.archive.true');
-        marker('inventory.tooltip.boolean.archive.false');
+        marker('inventory.tooltip.boolean.isArchived.true');
+        marker('inventory.tooltip.boolean.isArchived.false');
         marker('inventory.tooltip.boolean.noindex.true');
         marker('inventory.tooltip.boolean.noindex.false');
         //Booleans
