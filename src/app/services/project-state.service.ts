@@ -244,6 +244,14 @@ export class ProjectStateService {
         }));
     }
 
+    setDownloadDate(): void {
+        this.project.update(p => ({
+            ...p,
+            lastModified: new Date(),
+            lastDownloaded: new Date()
+        }));
+    }
+
     setModifiedDate(): void {
         this.project.update(p => ({
             ...p,
@@ -322,6 +330,35 @@ export class ProjectStateService {
                 }
                 else if (scope === 'all' && path && h1 && url) {
                     pages.push({ label: h1, path: path, url: url });
+                }
+                if (node.children?.length) traverse(node.children);
+            }
+        };
+        traverse(this.project().projectData);
+        return pages;
+    }
+
+    getPairedPages(version: 'prototype' | 'live' | 'baseline' = 'prototype', scope: 'all' | 'inScope' = 'all'): { en: { label: string; path: string; url: string }, fr: { label: string; path: string; url: string } }[] {
+        const pages: { en: { label: string; path: string; url: string }, fr: { label: string; path: string; url: string } }[] = [];
+        const traverse = (nodes: TreeNode<TreeNodeData>[]) => {
+            for (const node of nodes) {
+                const enPath = node.data?.path?.en ?? '';
+                const enH1 = node.data?.[version]?.en?.h1;
+                const enUrl = this.fetchService.generateUrl(enPath, version, this.project().github.owner, this.project().github.repo)
+                const frPath = node.data?.path?.fr ?? '';
+                const frH1 = node.data?.[version]?.fr?.h1;
+                const frUrl = this.fetchService.generateUrl(frPath, version, this.project().github.owner, this.project().github.repo)
+                if (scope === 'inScope' && node.data?.status?.inScope && enPath && enH1 && enUrl && frPath && frH1 && frUrl) {
+                    pages.push({
+                        en: { label: enH1, path: enPath, url: enUrl },
+                        fr: { label: frH1, path: frPath, url: frUrl }
+                    });
+                }
+                else if (scope === 'all' && enPath && enH1 && enUrl && frPath && frH1 && frUrl) {
+                    pages.push({
+                        en: { label: enH1, path: enPath, url: enUrl },
+                        fr: { label: frH1, path: frPath, url: frUrl }
+                    });
                 }
                 if (node.children?.length) traverse(node.children);
             }
