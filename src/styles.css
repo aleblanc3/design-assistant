@@ -438,3 +438,16 @@ code.custom {
 .-translate-x-50 {
   transform: translateX(-50%)
 }
+
+/*Make selected togglebuttons stand out more*/
+.p-togglebutton.p-togglebutton-checked {
+  border-width: 1px !important;
+  border-color: var(--p-primary-color) !important;
+  background: var(--p-primary-50) !important;
+}
+
+html.dark-mode .p-togglebutton.p-togglebutton-checked {
+  border-width: 1px !important;
+  border-color: var(--p-primary-color) !important;
+  background: var(--p-primary-800) !important;
+}

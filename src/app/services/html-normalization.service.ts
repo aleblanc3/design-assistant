@@ -17,6 +17,19 @@ export interface htmlProcessingResult {
 export class HtmlNormalizationService {
     private fetchService = inject(FetchService);
 
+    // Cache prettier after initial load
+    private prettierModulesPromise: Promise<{ prettier: any; parserHtml: any }> | null = null;
+
+    private getPrettierModules() {
+        if (!this.prettierModulesPromise) {
+            this.prettierModulesPromise = Promise.all([
+                import('prettier/standalone'),
+                import('prettier/plugins/html'),
+            ]).then(([{ default: prettier }, parserHtml]) => ({ prettier, parserHtml }));
+        }
+        return this.prettierModulesPromise;
+    }
+
     // Format HTML with prettier
     public async formatHtml(html: string): Promise<string> {
         if (!navigator.languages?.length) {
@@ -24,10 +37,11 @@ export class HtmlNormalizationService {
         }
 
         try {
-            const [{ default: prettier }, parserHtml] = await Promise.all([
-                import('prettier/standalone'),
-                import('prettier/plugins/html'),
-            ]);
+            //const [{ default: prettier }, parserHtml] = await Promise.all([
+            //    import('prettier/standalone'),
+            //    import('prettier/plugins/html'),
+            //]);
+            const { prettier, parserHtml } = await this.getPrettierModules();
 
             return prettier.format(html, {
                 parser: 'html',
@@ -43,7 +57,7 @@ export class HtmlNormalizationService {
                 endOfLine: "crlf",
                 jsxSingleQuote: false,
                 objectWrap: "collapse",
-                ProseWrap: "never",
+                proseWrap: "never",
                 quoteProps: "consistent",
                 singleAttributePerLine: false,
                 singleQuote: false,

@@ -80,6 +80,7 @@
 	"collaborators.message.hasCollab": "Connectez-vous en tant que collaborateur pour modifier.",
 	"collaborators.message.notCollab": "Vous n'êtes pas collaborateur sur ce projet.",
 	"collaborators.plusMore": "Plus {{number}}",
+	"collaborators.project": "Collaborateurs du projet :",
 	"collaborators.remove": "Retirer {{name}}",
 	"common._": "------------------------------COMMON TEXT------------------------------",
 	"common.accept": "Accepter",

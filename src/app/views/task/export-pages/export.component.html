@@ -231,6 +231,7 @@
               [loading]="exportProgress()" />
     }
     @else{
+    <!--TODO: Add a warning to prevent export of repo with same name as existing repo on UT -->
     <p-button styleClass="my-3" icon="pi pi-file-export" [label]="'exportPages.export.button.zip' | translate" severity="primary"
               (onClick)="exportToFile()"
               [disabled]="projectFileCount() === 0 || !gitHubData().repo"
