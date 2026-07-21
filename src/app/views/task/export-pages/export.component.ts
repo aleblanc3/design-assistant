@@ -31,7 +31,7 @@ import { SetupRepoComponent } from '../../../components/setup-repo/setup-repo.co
 import { SignInBannerComponent } from '../../../components/sign-in/sign-in-banner/sign-in-banner.component';
 import { BookmarkletComponent } from '../../../components/bookmarklet/bookmarklet.component';
 
-import { CDTS_TEMPLATE_ENG, CDTS_TEMPLATE_FRA, EXIT_PAGE_TEMPLATE_ENG, EXIT_PAGE_TEMPLATE_FRA, LINK_DETOUR_JS } from '../../../common/cdts.template';
+import { CDTS_TEMPLATE_ENG, CDTS_TEMPLATE_FRA, EXIT_PAGE_TEMPLATE_ENG, EXIT_PAGE_TEMPLATE_FRA, INDEX_PAGE_TEMPLATE_ENG, INDEX_PAGE_TEMPLATE_FRA, LINK_DETOUR_JS } from '../../../common/cdts.template';
 import { environment } from '../../../../environments/environment';
 
 enum ExportStatus {
@@ -188,7 +188,7 @@ export class ExportComponent implements OnInit {
   }
 
   //CDTS template files
-  cdtsFiles = ['source/data/exclude-redirect-links.json', 'source/exit-intent-e.html', 'source/exit-intent-f.html']
+  cdtsFiles = ['source/data/exclude-redirect-links.json', 'source/scripts/external-link-detour.js', 'source/exit-intent-e.html', 'source/exit-intent-f.html', 'index.html']
   //Jekyll template files
   jekyllUpdateFiles = ["404.html", "_includes/*", "index.html", "source/data/exclude-redirect-links.json", "source/exit-intent-e.html", "source/exit-intent-f.html"];
   jekyllSkipFiles = ["_config.yml", "README.md", "robots.txt"];
@@ -205,15 +205,13 @@ export class ExportComponent implements OnInit {
     const enPages = this.projectState.getAllPages("en", this.selectedExportTarget, scope).map(p => p.path);
     const frPages = this.projectState.getAllPages("fr", this.selectedExportTarget, scope).map(p => p.path);
 
-    const projectPaths = [
-      ...(lang === 'en' ? enPages : lang === 'fr' ? frPages : [...enPages, ...frPages]),
-      ...this.cdtsFiles
-    ];
+    const projectPaths = [...(lang === 'en' ? enPages : lang === 'fr' ? frPages : [...enPages, ...frPages])];
 
     // Local mode
     if (this.repoType() === 'local') {
       if (requestId !== this.compareFilesRequestId) return;
-      this.filesTable.set(projectPaths.map(path => ({ path, status: ExportStatus.ExportNew })));
+      const localPaths = [...projectPaths, ...this.cdtsFiles];
+      this.filesTable.set(localPaths.map(path => ({ path, status: ExportStatus.ExportNew })));
       return;
     }
 
@@ -439,6 +437,7 @@ export class ExportComponent implements OnInit {
     const repo = this.selectedExportTarget === 'prototype' ? this.gitHubData().repo : `${this.gitHubData().repo}-baseline`;
     const scope = this.selectedExportTarget === 'prototype' ? "inScope" : "all"
     const date = new Date().toISOString().split('T')[0];
+    const aidaLang = this.translate.currentLang.startsWith('fr') ? 'fr' : 'en';
 
     const projectPaths = this.projectTable().filter(item => item.status === ExportStatus.ExportNew || item.status === ExportStatus.ExportOverwrite).map(item => item.path);
     const templatePaths = this.templateTable().filter(item => item.status === ExportStatus.ExportNew || item.status === ExportStatus.ExportOverwrite).map(item => item.path);
@@ -496,6 +495,7 @@ export class ExportComponent implements OnInit {
     //Redirect files
     for (const path of templatePaths) {
       if (path === this.cdtsFiles[0]) {
+        //Collect page paths for redirects
         let allPagePaths;
         if (this.selectedExportLanguage === "both") {
           const enPages = this.projectState.getAllPages("en", "live", scope).map(page => page.path)
@@ -511,17 +511,29 @@ export class ExportComponent implements OnInit {
         const redirectsJson = JSON.stringify(redirects, null, 2);
         zip.file(`${repo}/${path}`, redirectsJson)
       }
-      else {
-        const html = this.buildCdtsPage(path === this.cdtsFiles[1] ? EXIT_PAGE_TEMPLATE_ENG : EXIT_PAGE_TEMPLATE_FRA, {
+      else if (path === this.cdtsFiles[1]) {
+        const html = this.buildCdtsPage(LINK_DETOUR_JS, {});
+        zip.file(`${repo}/${path}`, html);
+      }
+      else if (path === this.cdtsFiles[2] || path === this.cdtsFiles[3]) {
+        const html = this.buildCdtsPage(path === this.cdtsFiles[2] ? EXIT_PAGE_TEMPLATE_ENG : EXIT_PAGE_TEMPLATE_FRA, {
           MODIFIED: date,
           REPO: repo
         });
         zip.file(`${repo}/${path}`, html);
       }
-      //TODO: Check if this is needed for UT or not. Might be able to link directly to file.
-      const html = this.buildCdtsPage(LINK_DETOUR_JS, {});
-      zip.file(`${repo}/source/scripts/external-link-detour.js`, html);
+      else if (path === this.cdtsFiles[4]) {
+        const html = this.buildCdtsPage(aidaLang === 'en' ? INDEX_PAGE_TEMPLATE_ENG : INDEX_PAGE_TEMPLATE_FRA, {
+          MODIFIED: date,
+          CONTENT: projectPaths ? this.buildCdtsIndex(new Set(projectPaths), scope) : ''
+        });
+        console.log(await this.htmlNormalizationService.formatHtml(html))
+        zip.file(`${repo}/${path}`, await this.htmlNormalizationService.formatHtml(html));
+      }
+      else console.warn("Unhandled template file")
     }
+    //Update date
+    this.projectState.setDownloadDate();
     //Track exports
     const pageCountEN = projectPaths.filter(p => p.startsWith('en/') || p === 'en.html').length;
     const pageCountFR = projectPaths.filter(p => p.startsWith('fr/') || p === 'fr.html').length;
@@ -540,6 +552,63 @@ export class ExportComponent implements OnInit {
       (html, [key, value]) => html.replaceAll(`{{${key}}}`, value),
       template
     );
+  }
+
+  //Create index page for CDTS template
+  buildCdtsIndex(paths: Set<string>, scope: 'all' | 'inScope' = 'inScope') {
+    //Include GitHub link if previously exported
+    const showGithubLink = !!this.projectState.getProject().lastExported && !!this.gitHubData().owner && !!this.gitHubData().repo;
+    const githubLinkHtml = showGithubLink
+      ? `<div class="mrgn-tp-md">
+            <div class="row">
+                <ul class="toc lst-spcd col-md-12">
+                    <li class="col-md-4 col-sm-6"><a class="list-group-item active" data-exit="false" href="https://github.com/${this.gitHubData().owner}/${this.gitHubData().repo}">${this.translate.instant('project.github._title')}</a></li>
+                </ul>
+            </div>
+         </div>\n`
+      : '';
+    //Include GitHub usernames if available
+    const collaboratorNames = !!this.projectData().collaborators?.length;
+    const collaboratorHtml = collaboratorNames
+      ? `<p class="mrgn-bttm-0">${this.translate.instant('collaborators.project')}</p>
+         <ul class="colcount-sm-4">${this.projectData().collaborators.map(collab => ` <li> ${collab.login}</li>`).join('')}</ul>\n`
+      : '';
+    if (this.selectedExportLanguage === 'both') {
+      const exportedPairs = this.projectState.getPairedPages(this.selectedExportTarget, scope).filter(pair => paths.has(pair.en.path) || paths.has(pair.fr.path));
+      //Table rows
+      const rows = exportedPairs.map(pair => {
+        const enCell = paths.has(pair.en.path)
+          ? `<a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${pair.en.path}">${pair.en.label ?? pair.en.path}</a>`
+          : `<i class="fa fa-minus"></i>`;
+        const frCell = paths.has(pair.fr.path ?? pair.fr.path)
+          ? `<a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${pair.fr.path}">${pair.fr.label}</a>`
+          : `<i class="fa fa-minus"></i>`;
+        return `
+        <tr>
+            <td>${enCell}</td>
+            <td>${frCell}</td>
+        </tr>`;
+      }).join('');
+      //Table
+      return `${githubLinkHtml}${collaboratorHtml}
+      <table class="table table-striped">
+          <thead>
+              <tr>
+                  <th>English</th>
+                  <th>Français</th>
+              </tr>
+          </thead>
+          <tbody>${rows}
+          </tbody>
+      </table>`;
+    } else {
+      console.log(paths);
+      const exportedPages = this.projectState.getAllPages(this.selectedExportLanguage, this.selectedExportTarget, scope).filter(page => paths.has(page.path));
+      //List items
+      const items = exportedPages.map(page => `<li><a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${page.path}">${page.label ?? page.path}</a></li>`).join('');
+      //List
+      return `${githubLinkHtml}${collaboratorHtml}<ul>${items}</ul>`;
+    }
   }
 
   /*_________________________________________*/
