@@ -261,6 +261,9 @@ export class IaDiagramComponent implements OnInit {
         label: node.data.navChildrenVisible ? this.translate.instant(`iaDiagram.menu.hideNavChildren`) : this.translate.instant(`iaDiagram.menu.showNavChildren`),
         icon: node.data.navChildrenVisible ? "pi pi-eye-slash" : "pi pi-eye",
         command: async () => {
+          const projectNode = this.projectState.findNodeByPath(this.projectTree(), node.data.path[this.primaryLang], this.primaryLang);
+          if (!projectNode) { console.warn(`Missing source node: "${node.data.path[this.primaryLang]}"`); return; }
+          projectNode.data.navChildrenVisible = !projectNode.data.navChildrenVisible;
           const path = node.data.path[this.primaryLang];
           const type = this.projectState.getProject().repoType;
           const version = type === "github" && this.hasGitHub()
