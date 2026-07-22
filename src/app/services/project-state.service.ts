@@ -1326,7 +1326,7 @@ export class ProjectStateService {
     }
 
     //TODO: automate whatever we can!
-    public createNode(parent: TreeNode) {
+    public createNode(parent: TreeNode): TreeNode {
         const date = Date.now().toString();
         const parentPathEN = parent.data?.path.en ?? '';
         const parentPathFR = parent.data?.path.fr ?? '';
@@ -1410,6 +1410,7 @@ export class ProjectStateService {
         parent.children = parent.children ?? [];
         parent.children.push(node);
         this.setProjectTree([...this.getProjectTree()]);
+        return node;
     }
 
     // Get first URL from project to determine primary language
@@ -1432,7 +1433,7 @@ export class ProjectStateService {
             return 'circular';
         }
 
-        const tree = [...this.getProjectTree()];
+        //const tree = [...this.getProjectTree()];
 
         // Remove from current parent
         if (node.parent) {
@@ -1571,8 +1572,9 @@ export class ProjectStateService {
     }
 
     // Remove collapsed or hidden pages
-    getDisplayTree(nodes: TreeNode[], collapsedUrls: Set<string>, hiddenUrls: Set<string>): TreeNode[] {
+    getDisplayTree(nodes: TreeNode[], collapsedUrls: Set<string>, hiddenUrls: Set<string>, navUrls: Map<string, string[]>): TreeNode[] {
         const clonedTree = this.cloneTree(nodes);
+        if (navUrls.size > 0) this.applyNavState(clonedTree, navUrls);
         if (hiddenUrls.size > 0) this.applyHiddenState(clonedTree, hiddenUrls);
         if (collapsedUrls.size > 0) this.applyCollapsedState(clonedTree, collapsedUrls);
         return clonedTree;
@@ -1667,6 +1669,52 @@ export class ProjectStateService {
                 this.applyHiddenState(node.children, hiddenUrls);
             }
         }
+    }
+
+    private applyNavState(nodes: TreeNode[], navUrls: Map<string, string[]>): void {
+        const lang = nodes[0]?.data.lang;
+        for (const node of nodes) {
+            node.data.navChildrenVisible = node.data.navChildrenVisible ? !node.data.navChildrenVisible : true;
+            const path = node.data?.path[lang];
+            if (navUrls.has(path)) {
+                const linkedPaths = navUrls.get(path)!;
+                const rescueNodes = linkedPaths
+                    .map(linkedPath => this.findNodeByPath(nodes, linkedPath, lang))
+                    .filter((match): match is TreeNode => !!match)
+                    .map(match => this.duplicateNode(match, node));
+                node.children = [...(node.children ?? []), ...rescueNodes];
+            }
+            if (node.children?.length) {
+                this.applyNavState(node.children, navUrls);
+            }
+        }
+    }
+
+    private duplicateNode(node: TreeNode, newParent: TreeNode): TreeNode {
+        const clone = structuredClone(node); // doesn't share references with original node
+        clone.children = []; // leaves children behind
+        clone.parent = newParent; // sets parent reference
+        const prefixLangData = (langData: LangData, prefix: string) => ({
+            ...langData,
+            h1: `${prefix}${langData.h1}`
+        });
+        clone.data = {
+            ...clone.data,
+            live: {
+                en: prefixLangData(clone.data.live.en, 'Rescue: '),
+                fr: prefixLangData(clone.data.live.fr, 'Sauvetage : ')
+            },
+            baseline: {
+                en: prefixLangData(clone.data.baseline.en, 'Rescue: '),
+                fr: prefixLangData(clone.data.baseline.fr, 'Sauvetage : ')
+            },
+            prototype: {
+                en: prefixLangData(clone.data.prototype.en, 'Rescue: '),
+                fr: prefixLangData(clone.data.prototype.fr, 'Sauvetage : ')
+            },
+            isNavChild: true, // not editable, different colour
+        };
+        return clone;
     }
 
 }

@@ -1,4 +1,4 @@
-import { Component, inject, computed, signal, ViewChild } from '@angular/core';
+import { Component, inject, computed, signal, ViewChild, OnInit } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 
@@ -17,6 +17,7 @@ import { IaDiagramService } from './ia-diagram.service';
 import { TreeNodeStyleService } from '../../services/treenode-style.service';
 import { EditNodeComponent } from '../edit-node/edit-node.component';
 import { AddUrlsService } from '../add-urls/add-urls.service';
+import { FetchService } from '../../services/fetch.service';
 
 @Component({
   selector: 'aida-ia-diagram',
@@ -26,14 +27,31 @@ import { AddUrlsService } from '../add-urls/add-urls.service';
   templateUrl: './ia-diagram.component.html',
   styleUrl: './ia-diagram.component.css'
 })
-export class IaDiagramComponent {
+export class IaDiagramComponent implements OnInit {
   private projectState = inject(ProjectStateService);
   private translate = inject(TranslateService);
   public iaDiagram = inject(IaDiagramService);
   private treeNodeStyleService = inject(TreeNodeStyleService);
   public addUrlsService = inject(AddUrlsService);
+  private fetchService = inject(FetchService);
 
   primaryLang = this.projectState.detectPrimaryLanguage();
+
+  //Signals
+  projectData = this.projectState.getProject;
+  hasGitHub = signal<boolean>(false);
+  hasLocal = signal<boolean>(false);
+
+  async ngOnInit() {
+    if (this.projectData().lastExported) {
+      const url = this.fetchService.generateUrl("index.html", "prototype", this.projectData().github.owner, this.projectData().github.repo);
+      this.hasGitHub.set((await this.fetchService.fetchStatus(url, "proto", 2)).ok);
+    }
+    if (this.projectData().lastDownloaded) {
+      const url = this.fetchService.generateUrl("index.html", "ut", this.projectData().github.owner, this.projectData().github.repo);
+      this.hasLocal.set((await this.fetchService.fetchStatus(url, "proto", 2)).ok);
+    }
+  }
 
   projectTree = computed(() => {
     let tree = this.projectState.getProject().projectData;
@@ -49,8 +67,8 @@ export class IaDiagramComponent {
       tree = this.projectState.getFinalTree(tree);
     }
     //Adjustments for collapsed nodes
-    if (this.collapsedNodes().size > 0 || this.hiddenNodes().size > 0) {
-      tree = this.projectState.getDisplayTree(tree, this.collapsedNodes(), this.hiddenNodes());
+    if (this.collapsedNodes().size > 0 || this.hiddenNodes().size > 0 || this.navNodes().size > 0) {
+      tree = this.projectState.getDisplayTree(tree, this.collapsedNodes(), this.hiddenNodes(), this.navNodes());
     }
     this.treeNodeStyleService.updateNodeStyles(tree);
     return tree;
@@ -116,6 +134,7 @@ export class IaDiagramComponent {
           {
             label: this.translate.instant(`common.editNode`),
             icon: "pi pi-pen-to-square",
+            disabled: node.data.isNavChild,
             command: () => { this.selectedNode = node; this.editNode = true }
           },
         ],
@@ -153,21 +172,20 @@ export class IaDiagramComponent {
       this.items[0].items!.push({ separator: true });
     }
     // Action: Find child pages
-    if (this.selectedView() === 'changes' && !node.data.isCrawled) {
+    if (this.selectedView() === 'changes' && !node.data.isCrawled && !node.data.isNavChild) {
       this.items[0].items!.push({
         label: this.translate.instant(`iaDiagram.menu.findChildren`),
         icon: "pi pi-search",
-        disabled: node.data.isCrawled,
         command: () => { this.addUrlsService.addChildren(node, this.primaryLang); }
       })
     }
     // Action: Add child page or delete node
-    if (this.selectedView() === 'changes') {
+    if (this.selectedView() === 'changes' && !node.data.isNavChild) {
       this.items[0].items!.push(
         {
           label: this.translate.instant(`iaDiagram.menu.createChild`),
           icon: "pi pi-file-plus text-green-500",
-          command: () => { this.projectState.createNode(node) }
+          command: () => { this.selectedNode = this.projectState.createNode(node); this.editNode = true }
         },
         {
           label: this.translate.instant(`iaDiagram.menu.deleteNode`),
@@ -178,7 +196,7 @@ export class IaDiagramComponent {
     }
 
     // View: Full or custom tree
-    if (this.projectTree()[0].data.path[this.primaryLang] !== node.data.path[this.primaryLang]) {
+    if (this.projectTree()[0].data.path[this.primaryLang] !== node.data.path[this.primaryLang] && !node.data.isNavChild) {
       this.items[1].items!.push({
         label: this.translate.instant(`iaDiagram.menu.viewAsRoot`),
         icon: "pi pi-window-minimize",
@@ -237,6 +255,29 @@ export class IaDiagramComponent {
         })
       });
     }
+    //Show nav children
+    if (!node.data.isNavChild) {
+      this.items[1].items!.push({
+        label: node.data.navChildrenVisible ? this.translate.instant(`iaDiagram.menu.hideNavChildren`) : this.translate.instant(`iaDiagram.menu.showNavChildren`),
+        icon: node.data.navChildrenVisible ? "pi pi-eye-slash" : "pi pi-eye",
+        command: async () => {
+          const path = node.data.path[this.primaryLang];
+          const type = this.projectState.getProject().repoType;
+          const version = type === "github" && this.hasGitHub()
+            ? "prototype"
+            : type === "local" && this.hasLocal()
+              ? "ut"
+              : "live"
+          const url = this.fetchService.generateUrl(path, version, this.projectData().github.owner, this.projectData().github.repo);
+          const linkedPaths = await this.fetchService.getPaths(url);
+          const projectPaths = new Set(this.projectState.getAllPages(this.primaryLang).map(p => p.path));
+          const directChildPaths = new Set((node.children ?? []).map(child => child.data.path[this.primaryLang]));
+          const filteredPaths = linkedPaths.filter(p => projectPaths.has(p) && !directChildPaths.has(p) && p !== path);
+          console.log(filteredPaths)
+          this.navNodes.update(map => new Map(map).set(path, filteredPaths));
+        }
+      })
+    }
     // View: Fallback if no menu options available
     if (this.items[1].items!.length === 0) {
       this.items[1].items!.push({
@@ -251,6 +292,7 @@ export class IaDiagramComponent {
   // Show/hide pages or children
   collapsedNodes = signal<Set<string>>(new Set());
   hiddenNodes = signal<Set<string>>(new Set());
+  navNodes = signal<Map<string, string[]>>(new Map());
 
   // Drag & drop
   dragNode = signal<TreeNode | null>(null);

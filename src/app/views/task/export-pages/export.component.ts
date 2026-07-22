@@ -99,8 +99,8 @@ export class ExportComponent implements OnInit {
   filesTable = signal<FileStatus[]>([]);
   exportMessage = signal<ExportMessage | null>(null);
   repoType = signal<'local' | 'github'>(this.projectData().repoType);
-  hasGitHub = signal<Boolean>(false);
-  hasLocal = signal<Boolean>(false);
+  hasGitHub = signal<boolean>(false);
+  hasLocal = signal<boolean>(false);
 
   markForTranslation() {
     marker('exportPages.settings.description.prototype');
@@ -122,8 +122,8 @@ export class ExportComponent implements OnInit {
     // Watch for changes to repo settings and run compareFiles()
     effect(async () => {
       void this.exportGitHubService.token(); // track signal
-      const owner = this.projectData().github.owner;
-      const repo = this.projectData().github.repo;
+      void this.projectData().github.owner; // track signal
+      void this.projectData().github.repo; // track signal
       const repoType = this.projectData().repoType;
       //Update repoType signal
       if (repoType) {
@@ -223,7 +223,9 @@ export class ExportComponent implements OnInit {
   private compareFilesRequestId = 0;
   async compareFiles() {
     const requestId = ++this.compareFilesRequestId
-    if (!this.repoType()) this.projectData().repoType ? this.repoType.set(this.projectData().repoType) : this.repoType.set("github");
+    if (!this.repoType()) {
+      this.repoType.set(this.projectData().repoType ?? "github");
+    }
 
     const lang = this.selectedExportLanguage;
     const scope = this.selectedExportVersion === 'prototype' ? 'inScope' : 'all';
