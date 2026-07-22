@@ -1674,7 +1674,6 @@ export class ProjectStateService {
     private applyNavState(nodes: TreeNode[], navUrls: Map<string, string[]>): void {
         const lang = nodes[0]?.data.lang;
         for (const node of nodes) {
-            node.data.navChildrenVisible = node.data.navChildrenVisible ? !node.data.navChildrenVisible : true;
             const path = node.data?.path[lang];
             if (navUrls.has(path)) {
                 const linkedPaths = navUrls.get(path)!;
