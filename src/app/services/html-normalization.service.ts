@@ -37,10 +37,6 @@ export class HtmlNormalizationService {
         }
 
         try {
-            //const [{ default: prettier }, parserHtml] = await Promise.all([
-            //    import('prettier/standalone'),
-            //    import('prettier/plugins/html'),
-            //]);
             const { prettier, parserHtml } = await this.getPrettierModules();
 
             return prettier.format(html, {
