@@ -498,6 +498,19 @@ export class FetchService {
     return [...new Set(links)];
   }
 
+  //Fetch same-domain paths
+  public async getPaths(url: string): Promise<string[]> {
+    try {
+      const doc = await this.fetchContent(url, "both", 2);
+      const links = this.getLinks(doc, url);
+      return [...new Set(links.map(link => this.generatePath(link)))];
+    } catch (error) {
+      console.warn(`Failed to fetch links for "${url}"`, error);
+      return [];
+    }
+  }
+
+
   //Get preview content
   public fetchPreview(targetUrl: string): Promise<string> {
     return new Promise((resolve, reject) => {
