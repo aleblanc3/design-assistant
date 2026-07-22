@@ -256,6 +256,7 @@ export class InventoryComponent implements OnInit {
         const visibleInGroup = group.items
             .filter((item: SelectItem) => {
                 const col = this.allColumns().find(c => c.field === item.value);
+                // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
                 return col?.frozen || this.selectedColumnFields.includes(item.value);
             })
             .map((item: SelectItem) => item.value);
