@@ -3,7 +3,7 @@ import {
   FetchService,
   PageTemplate,
   ProjectPhase
-} from "./chunk-CBWDJ7F7.js";
+} from "./chunk-7BR2DQG6.js";
 import {
   environment
 } from "./chunk-MYYNWJMU.js";
@@ -517,7 +517,7 @@ var ProgressBarModule = class _ProgressBarModule {
 })();
 
 // package.json
-var version = "0.5.9";
+var version = "0.5.10";
 
 // src/app/services/storage/cloud-storage.service.ts
 var CloudStorageService = class _CloudStorageService {
@@ -948,6 +948,13 @@ var ProjectStorageService = class _ProjectStorageService {
           console.error("Failed to load project");
           return null;
         }
+        project = __spreadProps(__spreadValues({}, project), {
+          created: new Date(project.created),
+          lastModified: new Date(project.lastModified),
+          lastSaved: new Date(project.lastSaved),
+          lastExported: project.lastExported ? new Date(project.lastExported) : null,
+          lastDownloaded: project.lastDownloaded ? new Date(project.lastDownloaded) : null
+        });
         this.rebuildParents(project.projectData, void 0);
         this.setActiveProject(key, storageType);
         return project;
@@ -1839,6 +1846,12 @@ var ProjectStateService = class _ProjectStateService {
   // 30 seconds
   MAX_UNSAVED_DURATION = 5 * 60 * 1e3;
   // 5 minutes
+  // Loading states
+  refreshing = signal({
+    prototype: false,
+    live: false,
+    baseline: false
+  });
   constructor() {
     effect(() => {
       const currentProject = this.project();
@@ -1955,6 +1968,12 @@ var ProjectStateService = class _ProjectStateService {
       lastExported: /* @__PURE__ */ new Date()
     }));
   }
+  setDownloadDate() {
+    this.project.update((p) => __spreadProps(__spreadValues({}, p), {
+      lastModified: /* @__PURE__ */ new Date(),
+      lastDownloaded: /* @__PURE__ */ new Date()
+    }));
+  }
   setModifiedDate() {
     this.project.update((p) => __spreadProps(__spreadValues({}, p), {
       lastModified: /* @__PURE__ */ new Date()
@@ -2020,25 +2039,6 @@ var ProjectStateService = class _ProjectStateService {
     };
     return search(this.project().projectData);
   }
-  // Get all URLs in tree (for duplicate checking)
-  getAllUrls(mode = "all", lang = "en") {
-    const urls = /* @__PURE__ */ new Set();
-    const traverse = (nodes) => {
-      for (const node of nodes) {
-        const path = lang === "fr" ? node.data?.path.fr ?? "" : node.data?.path.en ?? "";
-        const url = this.fetchService.generateUrl(path, "live");
-        if (mode === "inScope" && url && node.data?.status.inScope) {
-          urls.add(url);
-        } else if (mode === "all" && url) {
-          urls.add(url);
-        }
-        if (node.children?.length)
-          traverse(node.children);
-      }
-    };
-    traverse(this.project().projectData);
-    return urls;
-  }
   // TODO: refactor getAllUrls and getAllPages to use new data structure
   getAllPages(lang, version2 = "prototype", scope = "all") {
     const pages = [];
@@ -2051,6 +2051,34 @@ var ProjectStateService = class _ProjectStateService {
           pages.push({ label: h1, path, url });
         } else if (scope === "all" && path && h1 && url) {
           pages.push({ label: h1, path, url });
+        }
+        if (node.children?.length)
+          traverse(node.children);
+      }
+    };
+    traverse(this.project().projectData);
+    return pages;
+  }
+  getPairedPages(version2 = "prototype", scope = "all") {
+    const pages = [];
+    const traverse = (nodes) => {
+      for (const node of nodes) {
+        const enPath = node.data?.path?.en ?? "";
+        const enH1 = node.data?.[version2]?.en?.h1;
+        const enUrl = this.fetchService.generateUrl(enPath, version2, this.project().github.owner, this.project().github.repo);
+        const frPath = node.data?.path?.fr ?? "";
+        const frH1 = node.data?.[version2]?.fr?.h1;
+        const frUrl = this.fetchService.generateUrl(frPath, version2, this.project().github.owner, this.project().github.repo);
+        if (scope === "inScope" && node.data?.status?.inScope && enPath && enH1 && enUrl && frPath && frH1 && frUrl) {
+          pages.push({
+            en: { label: enH1, path: enPath, url: enUrl },
+            fr: { label: frH1, path: frPath, url: frUrl }
+          });
+        } else if (scope === "all" && enPath && enH1 && enUrl && frPath && frH1 && frUrl) {
+          pages.push({
+            en: { label: enH1, path: enPath, url: enUrl },
+            fr: { label: frH1, path: frPath, url: frUrl }
+          });
         }
         if (node.children?.length)
           traverse(node.children);
@@ -2394,9 +2422,6 @@ var ProjectStateService = class _ProjectStateService {
     const isMoved = data.status.isMoved;
     const parentProto = data.prototype?.en.parentPath;
     const parentLive = data.live?.en.parentPath;
-    console.log(isMoved);
-    console.log(parentProto);
-    console.log(parentLive);
     if (isROT && !is404Live) {
       actions.push({ key: marker("actions.isROT.unpublish"), severity: "danger" });
     } else if (isNew) {
@@ -2601,7 +2626,6 @@ var ProjectStateService = class _ProjectStateService {
         console.warn(`Node not found for URL: ${path}`);
         continue;
       }
-      console.log("Node to delete:", nodeToDelete);
       const rootIndex = this.project().projectData.findIndex((n) => n === nodeToDelete);
       if (rootIndex > -1) {
         if (!canDeleteRoot) {
@@ -2971,6 +2995,7 @@ var ProjectStateService = class _ProjectStateService {
     parent.children = parent.children ?? [];
     parent.children.push(node);
     this.setProjectTree([...this.getProjectTree()]);
+    return node;
   }
   // Get first URL from project to determine primary language
   detectPrimaryLanguage() {
@@ -2989,14 +3014,13 @@ var ProjectStateService = class _ProjectStateService {
     if (node === newParent || this.isAncestor(newParent, node)) {
       return "circular";
     }
-    const tree = [...this.getProjectTree()];
     if (node.parent) {
       node.parent.children = node.parent.children?.filter((c) => c !== node) ?? [];
     } else {
-      const tree2 = this.getProjectTree();
-      const index = tree2.indexOf(node);
+      const tree = this.getProjectTree();
+      const index = tree.indexOf(node);
       if (index > -1)
-        tree2.splice(index, 1);
+        tree.splice(index, 1);
     }
     newParent.children = newParent.children ?? [];
     newParent.children.push(node);
@@ -3053,10 +3077,15 @@ var ProjectStateService = class _ProjectStateService {
       return [];
     return node.parent.children ?? [];
   }
-  // Restore moved pages to their original position and remove new pages
-  getBaselineTree(nodes, mode = "full") {
+  // Clone so we don't edit the working copy if the IA tree
+  cloneTree(nodes) {
     const clonedTree = structuredClone(nodes);
     this.projectStorageService.rebuildParents(clonedTree, void 0);
+    return clonedTree;
+  }
+  // Restore moved pages to their original position and remove new pages
+  getBaselineTree(nodes, mode = "full") {
+    const clonedTree = this.cloneTree(nodes);
     const lang = this.detectPrimaryLanguage();
     if (mode === "full") {
       const root = this.findNodeWhere(clonedTree, (n) => n.data?.baseline?.[lang]?.parentPath == null);
@@ -3087,15 +3116,15 @@ var ProjectStateService = class _ProjectStateService {
   }
   // Remove ROT pages
   getFinalTree(nodes) {
-    const clonedTree = structuredClone(nodes);
-    this.projectStorageService.rebuildParents(clonedTree, void 0);
+    const clonedTree = this.cloneTree(nodes);
     this.removeROTPages(clonedTree);
     return clonedTree;
   }
   // Remove collapsed or hidden pages
-  getDisplayTree(nodes, collapsedUrls, hiddenUrls) {
-    const clonedTree = structuredClone(nodes);
-    this.projectStorageService.rebuildParents(clonedTree, void 0);
+  getDisplayTree(nodes, collapsedUrls, hiddenUrls, navUrls) {
+    const clonedTree = this.cloneTree(nodes);
+    if (navUrls.size > 0)
+      this.applyNavState(clonedTree, navUrls);
     if (hiddenUrls.size > 0)
       this.applyHiddenState(clonedTree, hiddenUrls);
     if (collapsedUrls.size > 0)
@@ -3158,8 +3187,9 @@ var ProjectStateService = class _ProjectStateService {
     return null;
   }
   applyCollapsedState(nodes, collapsedUrls) {
+    const lang = this.detectPrimaryLanguage();
     for (const node of nodes) {
-      if (collapsedUrls.has(node.data?.url)) {
+      if (collapsedUrls.has(node.data?.path[lang])) {
         node.data.collapsedChildren = node.children ?? [];
         node.children = [];
       } else if (node.children?.length) {
@@ -3174,13 +3204,53 @@ var ProjectStateService = class _ProjectStateService {
       if (hiddenUrls.has(node.data?.path[lang])) {
         if (node.parent) {
           node.parent.data.hiddenChildrenUrls = node.parent.data.hiddenChildrenUrls ?? [];
-          node.parent.data.hiddenChildrenUrls.push(node.data.url);
+          node.parent.data.hiddenChildrenUrls.push(node.data.path[lang]);
         }
         nodes.splice(i, 1);
       } else if (node.children?.length) {
         this.applyHiddenState(node.children, hiddenUrls);
       }
     }
+  }
+  applyNavState(nodes, navUrls) {
+    const lang = nodes[0]?.data.lang;
+    for (const node of nodes) {
+      node.data.navChildrenVisible = node.data.navChildrenVisible ? !node.data.navChildrenVisible : true;
+      const path = node.data?.path[lang];
+      if (navUrls.has(path)) {
+        const linkedPaths = navUrls.get(path);
+        const rescueNodes = linkedPaths.map((linkedPath) => this.findNodeByPath(nodes, linkedPath, lang)).filter((match) => !!match).map((match) => this.duplicateNode(match, node));
+        node.children = [...node.children ?? [], ...rescueNodes];
+      }
+      if (node.children?.length) {
+        this.applyNavState(node.children, navUrls);
+      }
+    }
+  }
+  duplicateNode(node, newParent) {
+    const clone = structuredClone(node);
+    clone.children = [];
+    clone.parent = newParent;
+    const prefixLangData = (langData, prefix) => __spreadProps(__spreadValues({}, langData), {
+      h1: `${prefix}${langData.h1}`
+    });
+    clone.data = __spreadProps(__spreadValues({}, clone.data), {
+      live: {
+        en: prefixLangData(clone.data.live.en, "Rescue: "),
+        fr: prefixLangData(clone.data.live.fr, "Sauvetage : ")
+      },
+      baseline: {
+        en: prefixLangData(clone.data.baseline.en, "Rescue: "),
+        fr: prefixLangData(clone.data.baseline.fr, "Sauvetage : ")
+      },
+      prototype: {
+        en: prefixLangData(clone.data.prototype.en, "Rescue: "),
+        fr: prefixLangData(clone.data.prototype.fr, "Sauvetage : ")
+      },
+      isNavChild: true
+      // not editable, different colour
+    });
+    return clone;
   }
   static \u0275fac = function ProjectStateService_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _ProjectStateService)();
@@ -3204,8 +3274,10 @@ var TreeNodeStyleService = class _TreeNodeStyleService {
     for (const node of nodes) {
       const borderStyle = "border-2 border-primary border-round shadow-2";
       let bgStyle;
-      if (!node.data?.status.inScope || node.data?.status.isContainer) {
+      if (!node.data?.status.inScope || node.data?.isContainer) {
         bgStyle = this.contextStyles["template"];
+      } else if (node.data?.isNavChild) {
+        bgStyle = this.contextStyles["navChild"];
       } else if (node.data?.status.isNew && applyStatusColors) {
         bgStyle = this.contextStyles["new"];
       } else if (node.data?.status.isROT && applyStatusColors) {
@@ -3257,12 +3329,14 @@ var TreeNodeStyleService = class _TreeNodeStyleService {
     new: "bg-green-200 hover:bg-green-300 border-dashed text-black",
     rot: "bg-red-200 hover:bg-red-300 border-dashed text-black",
     move: "bg-yellow-200 hover:bg-yellow-300 border-dashed text-black",
+    navChild: "bg-blue-200 hover:bg-blue-300 border-dashed text-black",
     template: "surface-200 hover:surface-300 text-black"
   };
   contextStylesDark = {
     new: "bg-green-700 hover:bg-green-600 border-dashed text-white",
     rot: "bg-red-700 hover:bg-red-600 border-dashed text-white",
     move: "bg-yellow-700 hover:bg-yellow-600 border-dashed text-black",
+    navChild: "bg-blue-700 hover:bg-blue-600 border-dashed text-white",
     template: "surface-200 hover:surface-300 text-white"
   };
   static \u0275fac = function TreeNodeStyleService_Factory(__ngFactoryType__) {
@@ -3462,7 +3536,7 @@ var AddUrlsService = class _AddUrlsService {
       yield this.updService.fetchData();
       yield this.airtableService.fetchTasks();
       yield this.vanityService.fetchData();
-      this.setPreviousProjectData(this.projectState.getProjectTree());
+      this.setPreviousProjectData(this.projectState.cloneTree(this.projectState.getProjectTree()));
       for (const url of urls) {
         try {
           yield this.addUrl(url.href, true, parent);
@@ -3692,6 +3766,19 @@ var AddUrlsService = class _AddUrlsService {
   }
   // Invalid urls component
   urlsForReview = computed(() => this.urlState().urlsToValidate.filter((u) => u.status === "bad" || u.status === "blocked" || u.status === "redirect"));
+  // Append URLs to input (for the various find pages components)
+  appendUrlsToInput(newUrls) {
+    const lang = this.projectState.detectPrimaryLanguage();
+    const currentRawUrls = this.urlState().rawUrls;
+    const additionalRawUrls = newUrls.join("\n");
+    const updatedRawUrls = currentRawUrls ? `${currentRawUrls}
+${additionalRawUrls}` : additionalRawUrls;
+    const { parsedUrls } = this.parseUrls(updatedRawUrls, new Set(this.projectState.getAllPages(lang, "live", "inScope").map((u) => u.url)), lang);
+    this.setUrlState({
+      rawUrls: updatedRawUrls,
+      urlsToValidate: parsedUrls
+    });
+  }
   // Add child pages
   addChildren(node, lang) {
     return __async(this, null, function* () {
@@ -3748,4 +3835,4 @@ export {
   TreeNodeStyleService,
   AddUrlsService
 };
-//# sourceMappingURL=chunk-ZLBPKAWO.js.map
+//# sourceMappingURL=chunk-ZVABFQGY.js.map

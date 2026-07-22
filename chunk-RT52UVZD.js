@@ -9,7 +9,7 @@ import {
   ProgressBar,
   ProgressBarModule,
   ProjectStateService
-} from "./chunk-ZLBPKAWO.js";
+} from "./chunk-ZVABFQGY.js";
 import {
   IftaLabel,
   IftaLabelModule
@@ -45,6 +45,7 @@ import {
   ɵɵproperty,
   ɵɵresetView,
   ɵɵrestoreView,
+  ɵɵsanitizeHtml,
   ɵɵtemplate,
   ɵɵtemplateRefExtractor,
   ɵɵtext,
@@ -256,12 +257,11 @@ var AddUrlsComponent = class _AddUrlsComponent {
   static \u0275fac = function AddUrlsComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _AddUrlsComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AddUrlsComponent, selectors: [["aida-add-urls"]], decls: 21, vars: 22, consts: [["content", ""], [1, "text-2xl", "my-1"], [1, "text-color-secondary"], ["id", "urls", "autoResize", "true", "rows", "5", "pTextarea", "", "fluid", "", 3, "ngModelChange", "change", "paste", "ngModel"], ["for", "urls"], ["severity", "error", "size", "small", "variant", "simple", "styleClass", "mb-2", 3, "text"], [1, "flex", "flex-row", "align-items-center", "gap-2"], ["icon", "pi pi-check-square", 1, "min-w-max", 3, "onClick", "label", "loading", "disabled"], ["icon", "pi pi-undo", "severity", "secondary", 3, "label", "loading"], ["styleClass", "h-2rem centered-label mt-1 transition-duration-100", 3, "value"], ["aria-live", "polite", "role", "status", 1, "sr-only"], [1, "flex", "flex-row", "align-items-center", "m-0", "p-0", "text-primary", "arrow-bounce"], [1, "material-icons", "text-5xl"], [1, "font-bold", "text-lg", "m-0"], ["icon", "pi pi-undo", "severity", "secondary", 3, "onClick", "label", "loading"], [1, "flex", "flex-row", "gap-6"], [1, "text-white"]], template: function AddUrlsComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AddUrlsComponent, selectors: [["aida-add-urls"]], decls: 21, vars: 24, consts: [["content", ""], [1, "text-2xl", "my-1", 3, "innerHTML"], [1, "text-color-secondary"], ["id", "urls", "autoResize", "true", "rows", "5", "pTextarea", "", "fluid", "", 3, "ngModelChange", "change", "paste", "ngModel"], ["for", "urls"], ["severity", "error", "size", "small", "variant", "simple", "styleClass", "mb-2", 3, "text"], [1, "flex", "flex-row", "align-items-center", "gap-2"], ["icon", "pi pi-check-square", 1, "min-w-max", 3, "onClick", "label", "loading", "disabled"], ["icon", "pi pi-undo", "severity", "secondary", 3, "label", "loading"], ["styleClass", "h-2rem centered-label mt-1 transition-duration-100", 3, "value"], ["aria-live", "polite", "role", "status", 1, "sr-only"], [1, "flex", "flex-row", "align-items-center", "m-0", "p-0", "text-primary", "arrow-bounce"], [1, "material-icons", "text-5xl"], [1, "font-bold", "text-lg", "m-0"], ["icon", "pi pi-undo", "severity", "secondary", 3, "onClick", "label", "loading"], [1, "flex", "flex-row", "gap-6"], [1, "text-white"]], template: function AddUrlsComponent_Template(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275elementStart(0, "h2", 1);
-      \u0275\u0275text(1);
+      \u0275\u0275element(0, "h2", 1);
+      \u0275\u0275pipe(1, "translate");
       \u0275\u0275pipe(2, "translate");
-      \u0275\u0275elementEnd();
       \u0275\u0275elementStart(3, "p", 2);
       \u0275\u0275text(4);
       \u0275\u0275pipe(5, "translate");
@@ -295,14 +295,13 @@ var AddUrlsComponent = class _AddUrlsComponent {
     if (rf & 2) {
       let tmp_12_0;
       let tmp_13_0;
-      \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 14, "addPages._title"));
-      \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(5, 16, "addPages.description"));
+      \u0275\u0275property("innerHTML", ctx.addUrlsService.urlState().isValidating || ctx.addUrlsService.urlState().isAdding ? \u0275\u0275pipeBind1(1, 14, "addPages._title.active") : \u0275\u0275pipeBind1(2, 16, "addPages._title"), \u0275\u0275sanitizeHtml);
+      \u0275\u0275advance(4);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(5, 18, "addPages.description"));
       \u0275\u0275advance(3);
       \u0275\u0275twoWayProperty("ngModel", ctx.addUrlsService.urlState().rawUrls);
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(10, 18, "addPages.inputLabel"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(10, 20, "addPages.inputLabel"));
       \u0275\u0275advance(2);
       \u0275\u0275conditional(ctx.duplicatesSkipped.length > 0 ? 11 : -1);
       \u0275\u0275advance();
@@ -310,7 +309,7 @@ var AddUrlsComponent = class _AddUrlsComponent {
       \u0275\u0275advance();
       \u0275\u0275conditional(ctx.oppositeLangSkipped.length > 0 ? 13 : -1);
       \u0275\u0275advance(2);
-      \u0275\u0275property("label", \u0275\u0275pipeBind1(16, 20, "addPages.validateButton"))("loading", ctx.addUrlsService.urlState().isValidating || ctx.addUrlsService.urlState().isAdding)("disabled", !ctx.addUrlsService.urlState().rawUrls.trim());
+      \u0275\u0275property("label", \u0275\u0275pipeBind1(16, 22, "addPages.validateButton"))("loading", ctx.addUrlsService.urlState().isValidating || ctx.addUrlsService.urlState().isAdding)("disabled", !ctx.addUrlsService.urlState().rawUrls.trim());
       \u0275\u0275advance(2);
       \u0275\u0275conditional(ctx.highlightAddPages ? 17 : -1);
       \u0275\u0275advance();
@@ -334,7 +333,7 @@ var AddUrlsComponent = class _AddUrlsComponent {
       MessageModule,
       ButtonModule,
       ProgressBarModule
-    ], template: `<h2 class="text-2xl my-1">{{"addPages._title" | translate}}</h2>\r
+    ], template: `<h2 class="text-2xl my-1" [innerHTML]="(addUrlsService.urlState().isValidating || addUrlsService.urlState().isAdding) ? ('addPages._title.active' | translate) : ('addPages._title' | translate)"></h2>\r
 <p class="text-color-secondary">{{"addPages.description" | translate}}</p>\r
 <p-iftalabel>\r
     <textarea id="urls" autoResize="true" rows="5" pTextarea [(ngModel)]="addUrlsService.urlState().rawUrls" (change)="parseUrls()" (paste)="onPasteUrls()" fluid></textarea>\r
@@ -404,4 +403,4 @@ var AddUrlsComponent = class _AddUrlsComponent {
 export {
   AddUrlsComponent
 };
-//# sourceMappingURL=chunk-JFJVEPC4.js.map
+//# sourceMappingURL=chunk-RT52UVZD.js.map

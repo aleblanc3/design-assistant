@@ -45,7 +45,7 @@ import {
   FindPagesComponent,
   InputNumber,
   InputNumberModule
-} from "./chunk-D4ER4SFO.js";
+} from "./chunk-2QXQZWFU.js";
 import {
   Tag,
   TagModule
@@ -87,7 +87,7 @@ import {
 } from "./chunk-27HYBFZ6.js";
 import {
   AddUrlsComponent
-} from "./chunk-JFJVEPC4.js";
+} from "./chunk-RT52UVZD.js";
 import {
   Message,
   MessageModule,
@@ -105,7 +105,7 @@ import {
   TreeNodeStyleService,
   UsageService,
   version
-} from "./chunk-ZLBPKAWO.js";
+} from "./chunk-ZVABFQGY.js";
 import {
   COLUMN_GROUPS,
   ExportGitHubService,
@@ -115,7 +115,7 @@ import {
   PageTemplate,
   PhaseStatus,
   ProjectPhase
-} from "./chunk-CBWDJ7F7.js";
+} from "./chunk-7BR2DQG6.js";
 import {
   environment
 } from "./chunk-MYYNWJMU.js";
@@ -40644,7 +40644,6 @@ var EditNodeComponent = class _EditNodeComponent {
   dialogClose = output();
   originalData = signal(null);
   hasChanges = signal(false);
-  refreshing = signal(false);
   moveError = signal(false);
   pathEN = signal("");
   pathFR = signal("");
@@ -40685,10 +40684,10 @@ var EditNodeComponent = class _EditNodeComponent {
   }
   refresh() {
     return __async(this, null, function* () {
-      this.refreshing.set(true);
       const version2 = this.selectedVersion();
+      this.projectState.refreshing.update((r) => __spreadProps(__spreadValues({}, r), { [version2]: true }));
       yield this.projectState.refreshNode(this.node(), version2);
-      this.refreshing.set(false);
+      this.projectState.refreshing.update((r) => __spreadProps(__spreadValues({}, r), { [version2]: false }));
       this.hasChanges.set(true);
     });
   }
@@ -40852,7 +40851,7 @@ var EditNodeComponent = class _EditNodeComponent {
       \u0275\u0275advance(3);
       \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(15, 18, "common.data"));
       \u0275\u0275advance(3);
-      \u0275\u0275property("label", \u0275\u0275pipeBind1(18, 20, "common.refresh"))("disabled", ctx.selectedVersion() === "baseline" && !ctx.editsEnabled())("loading", ctx.refreshing());
+      \u0275\u0275property("label", \u0275\u0275pipeBind1(18, 20, "common.refresh"))("disabled", ctx.selectedVersion() === "baseline" && !ctx.editsEnabled())("loading", ctx.projectState.refreshing()[ctx.selectedVersion()]);
       \u0275\u0275advance(3);
       \u0275\u0275textInterpolate1(" ", ctx.daysSinceRefresh() !== null ? \u0275\u0275pipeBind2(21, 22, "editNode.lastRefreshed", \u0275\u0275pureFunction1(27, _c020, ctx.daysSinceRefresh())) : \u0275\u0275pipeBind1(22, 25, "editNode.neverRefreshed"), " ");
       \u0275\u0275advance(3);
@@ -40899,7 +40898,7 @@ var EditNodeComponent = class _EditNodeComponent {
             <label for="refresh" class="text-xs font-semibold">{{ 'common.data' | translate }}</label>\r
             <div id="refresh" class="flex gap-2 align-items-center">\r
                 <p-button [label]="'common.refresh' | translate" icon="pi pi-refresh" severity="primary" outlined size="small" styleClass="secondary-outline"\r
-                          (onClick)=" refresh()" [disabled]="selectedVersion() === 'baseline' && !editsEnabled()" [loading]="refreshing()" />\r
+                          (onClick)=" refresh()" [disabled]="selectedVersion() === 'baseline' && !editsEnabled()" [loading]="projectState.refreshing()[selectedVersion()]" />\r
                 <span class="text-sm text-color-secondary white-space-nowrap">\r
                     {{ daysSinceRefresh() !== null\r
                     ? ('editNode.lastRefreshed' | translate: { days: daysSinceRefresh() })\r
@@ -41514,7 +41513,8 @@ var IaTableComponent = class _IaTableComponent {
       label: this.translate.instant(`iaDiagram.menu.createChild`),
       icon: "pi pi-file-plus text-green-500",
       command: () => {
-        this.projectState.createNode(this.selectedNode);
+        this.selectedNode = this.projectState.createNode(this.selectedNode);
+        this.editNode = true;
       }
     }, {
       label: this.translate.instant(`iaDiagram.menu.deleteNode`),
@@ -41579,7 +41579,6 @@ var IaTableComponent = class _IaTableComponent {
     const dropNode = event2.dropNode;
     if (!dragNode || !dropNode)
       return;
-    const primaryLang = this.projectState.detectPrimaryLanguage();
     if ((dropNode.data.isContainer || dropNode.parent?.data?.isContainer) && dragNode.data.isContainer)
       return;
     event2.accept?.();
@@ -41799,7 +41798,7 @@ function isKnownNumber(number) {
 // src/app/views/task/manage-inventory/inventory.component.ts
 var _c022 = ["dt"];
 var _c131 = ["menuContext"];
-var InventoryComponent_Defer_42_DepsFn = () => [import("./chunk-P5Y5P6XF.js").then((m) => m.AddUrlsComponent), import("./chunk-C62RVVL3.js").then((m) => m.FindPagesComponent)];
+var InventoryComponent_Defer_42_DepsFn = () => [import("./chunk-4KY45CXQ.js").then((m) => m.AddUrlsComponent), import("./chunk-CKFKYTLI.js").then((m) => m.FindPagesComponent)];
 var _c216 = () => ({ height: "90vh" });
 var _c314 = (a0) => [25, 50, 100, a0];
 var _c413 = (a0) => ({ column: a0 });
@@ -43282,14 +43281,15 @@ var InventoryComponent = class _InventoryComponent {
   // 1. Refresh (prototype or live data)
   refreshData(version2) {
     return __async(this, null, function* () {
-      console.log(this.selectedNodes);
       if (!this.selectedNodes.length)
         return;
+      this.projectState.refreshing.update((r) => __spreadProps(__spreadValues({}, r), { [version2]: true }));
       for (const node of this.selectedNodes) {
         const treeNode = this.projectState.findNodeByPath(this.projectState.getProjectTree(), node.enPath, "en");
         if (treeNode)
-          this.projectState.refreshNode(treeNode, version2);
+          yield this.projectState.refreshNode(treeNode, version2);
       }
+      this.projectState.refreshing.update((r) => __spreadProps(__spreadValues({}, r), { [version2]: false }));
     });
   }
   // 2. AI metadata generation
@@ -43466,16 +43466,16 @@ var InventoryComponent = class _InventoryComponent {
             styleClass: "text-primary-500",
             items: [
               {
-                label: this.translate.instant("inventory.menu.refresh.prototype", { pageCount: numPages }),
-                icon: "pi pi-refresh",
+                label: this.projectState.refreshing().prototype ? this.translate.instant("inventory.menu.refreshing.prototype", { pageCount: numPages }) : this.translate.instant("inventory.menu.refresh.prototype", { pageCount: numPages }),
+                icon: this.projectState.refreshing().prototype ? "pi pi-spin pi-spinner" : "pi pi-refresh",
                 disabled: numPages === 0,
                 command: () => {
                   this.refreshData("prototype");
                 }
               },
               {
-                label: this.translate.instant("inventory.menu.refresh.live", { pageCount: numPages }),
-                icon: "pi pi-refresh",
+                label: this.projectState.refreshing().live ? this.translate.instant("inventory.menu.refreshing.live", { pageCount: numPages }) : this.translate.instant("inventory.menu.refresh.live", { pageCount: numPages }),
+                icon: this.projectState.refreshing().live ? "pi pi-spin pi-spinner" : "pi pi-refresh",
                 disabled: numPages === 0,
                 command: () => {
                   this.refreshData("live");
@@ -43885,8 +43885,8 @@ var InventoryComponent = class _InventoryComponent {
     marker("inventory.tooltip.boolean.isROT.false");
     marker("inventory.tooltip.boolean.linksToPortal.true");
     marker("inventory.tooltip.boolean.linksToPortal.false");
-    marker("inventory.tooltip.boolean.archive.true");
-    marker("inventory.tooltip.boolean.archive.false");
+    marker("inventory.tooltip.boolean.isArchived.true");
+    marker("inventory.tooltip.boolean.isArchived.false");
     marker("inventory.tooltip.boolean.noindex.true");
     marker("inventory.tooltip.boolean.noindex.false");
     marker("inventory.contextMenu.inScope.true");
@@ -44038,7 +44038,7 @@ var InventoryComponent = class _InventoryComponent {
   }, dependencies: [CommonModule, NgClass, DecimalPipe, DatePipe, FormsModule, DefaultValueAccessor, NgControlStatus, NgModel, TranslateModule, TranslatePipe, TableModule, Table, PrimeTemplate, SortableColumn, SelectableRow, EditableColumn, SortIcon, TableCheckbox, TableHeaderCheckbox, TooltipModule, Tooltip, TagModule, Tag, ButtonModule, Button, RadioButtonModule, RadioButton, IftaLabelModule, IftaLabel, MultiSelectModule, MultiSelect, SelectModule, Select, TextareaModule, Textarea, MenuModule, Menu, ContextMenuModule, ContextMenu, ConfirmDialogModule, ConfirmDialog, DialogModule, Dialog, ExportProjectComponent, IaTableComponent, EditNodeComponent], styles: ["\n\n.sticky-toolbar[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  top: 0;\n  z-index: 20;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n  padding-right: 0rem;\n  box-sizing: border-box;\n}\n.sticky-toolbar-table[_ngcontent-%COMP%] {\n  width: calc(100vw - var(--nav-width) - 2rem);\n}\n@media screen and (min-width: 768px) {\n  .sticky-toolbar[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n    padding-right: 5rem;\n  }\n  .sticky-toolbar-table[_ngcontent-%COMP%] {\n    width: calc(100vw - var(--nav-width) - 7rem - 5rem);\n  }\n}\n  .p-datatable-table-container {\n  overflow: visible !important;\n}\n.sticky-h[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width) + 2rem);\n  z-index: 11;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-h[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 9rem);\n  }\n}\n.sticky-c[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  z-index: 11;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-c[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n  }\n}\n.sticky-r[_ngcontent-%COMP%] {\n  position: sticky;\n  top: 9rem;\n  z-index: 12;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n  .p-datatable .p-datatable-thead {\n  z-index: 13 !important;\n}\n.sticky-rh[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width) + 2rem);\n  top: 9rem;\n  z-index: 14;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-rh[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 9rem);\n  }\n}\n.sticky-rc[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  top: 9rem;\n  z-index: 14;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-rc[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n  }\n}\n.sticky-horizontal[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  z-index: 10;\n  width: calc(100vw - var(--nav-width) - 2rem);\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n  padding-right: 0rem;\n  box-sizing: border-box;\n}\n@media screen and (min-width: 768px) {\n  .sticky-horizontal[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n    width: calc(100vw - var(--nav-width) - 7rem - 3.5rem);\n    padding-right: 5rem;\n  }\n}\n.hasMenu[_ngcontent-%COMP%]:hover {\n  background-color: var(--p-primary-100) !important;\n}\nhtml.dark-mode[_ngcontent-%COMP%]   .hasMenu[_ngcontent-%COMP%]:hover {\n  background-color: var(--p-primary-500) !important;\n}\n/*# sourceMappingURL=inventory.component.css.map */"] });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(InventoryComponent, () => [import("./chunk-P5Y5P6XF.js").then((m) => m.AddUrlsComponent), import("./chunk-C62RVVL3.js").then((m) => m.FindPagesComponent)], (AddUrlsComponent2, FindPagesComponent2) => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(InventoryComponent, () => [import("./chunk-4KY45CXQ.js").then((m) => m.AddUrlsComponent), import("./chunk-CKFKYTLI.js").then((m) => m.FindPagesComponent)], (AddUrlsComponent2, FindPagesComponent2) => {
     setClassMetadata(InventoryComponent, [{
       type: Component,
       args: [{ selector: "aida-inventory", imports: [
@@ -44584,6 +44584,16 @@ var CompareService = class _CompareService {
 // src/app/services/html-normalization.service.ts
 var HtmlNormalizationService = class _HtmlNormalizationService {
   fetchService = inject(FetchService);
+  // Cache prettier after initial load
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  prettierModulesPromise = null;
+  getPrettierModules() {
+    this.prettierModulesPromise ??= Promise.all([
+      import("./chunk-CH3NT4TS.js"),
+      import("./chunk-5OYHKORP.js")
+    ]).then(([{ default: prettier }, parserHtml]) => ({ prettier, parserHtml }));
+    return this.prettierModulesPromise;
+  }
   // Format HTML with prettier
   formatHtml(html) {
     return __async(this, null, function* () {
@@ -44591,10 +44601,7 @@ var HtmlNormalizationService = class _HtmlNormalizationService {
         Object.assign(navigator, { languages: ["en"] });
       }
       try {
-        const [{ default: prettier }, parserHtml] = yield Promise.all([
-          import("./chunk-CH3NT4TS.js"),
-          import("./chunk-5OYHKORP.js")
-        ]);
+        const { prettier, parserHtml } = yield this.getPrettierModules();
         return prettier.format(html, {
           parser: "html",
           plugins: [parserHtml],
@@ -44609,7 +44616,7 @@ var HtmlNormalizationService = class _HtmlNormalizationService {
           endOfLine: "crlf",
           jsxSingleQuote: false,
           objectWrap: "collapse",
-          ProseWrap: "never",
+          proseWrap: "never",
           quoteProps: "consistent",
           singleAttributePerLine: false,
           singleQuote: false,
@@ -51851,7 +51858,7 @@ var CDTS_TEMPLATE_ENG = `<!DOCTYPE html>
                             </div>
                         </div>
                         <dl id="wb-dtmd">
-                            <dt>Date modified:</dt>
+                            <dt>Date modified:&#160</dt>
                             <dd><time property="dateModified">{{MODIFIED}}</time></dd>
                         </dl>
                     </section>
@@ -51996,7 +52003,7 @@ var CDTS_TEMPLATE_FRA = `<!DOCTYPE html>
                             </div>
                         </div>
                         <dl id="wb-dtmd">
-                            <dt>Date de modification :</dt>
+                            <dt>Date de modification&#160:&#160</dt>
                             <dd><time property="dateModified">{{MODIFIED}}</time></dd>
                         </dl>
                     </section>
@@ -52170,243 +52177,184 @@ var EXIT_PAGE_TEMPLATE_FRA = `<!DOCTYPE html>
 <script src="https://cra-test-arc.canada.ca/core-prototype/source/scripts/exit-page.js"><\/script>
 </body>
 </html>`;
-var LINK_DETOUR_JS = `/*
-* GitHub only script
-*
-* Replaces all external links with a link to exit intent page or replaces links with designated replace link found in JSON file
-*
-*/
+var INDEX_PAGE_TEMPLATE_ENG = `<!DOCTYPE html>
+<html class="no-js" lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<title>Repository sitemap</title>
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<meta name="dcterms.language" content="eng">
+<meta name="robots" content="noindex, nofollow">
+<link rel="shortcut icon" href="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v5_0_4/wet-boew/assets/favicon.ico" >
+<link rel="stylesheet" href="https://www.canada.ca/etc/designs/canada/wet-boew/css/theme.min.css">
+<link rel="stylesheet" href="https://cra-test-arc.canada.ca/core-prototype/source/css/testing-banner.css">
+</head>
+<body vocab="http://schema.org/" typeof="WebPage">
+<nav><ul id="wb-tphp">
+    <li class="wb-slc"><a class="wb-sl" href="#wb-cont">Skip to main content</a></li>
+</ul></nav>
+<header>
+    <div id="wb-bnr" class="container"><div class="row">
+        <div class="brand col-xs-9 col-sm-5 col-md-4" property="publisher" typeof="GovernmentOrganization">
+            <a href="https://www.canada.ca/en.html" property="url">
+                <img src="https://www.canada.ca/etc/designs/canada/wet-boew/assets/sig-blk-en.svg" alt="Government of Canada" property="logo">
+            </a>
+        </div>
+    </div></div>
+</header>
+<main class="container" property="mainContentOfPage" resource="#wb-main" typeof="WebPageElement">
+    <h1 property="name" id="wb-cont">Repository sitemap</h1>
+    
+    {{CONTENT}}
 
+    <section class="pagedetails">
+        <h2 class="wb-inv">Page details</h2>
+        <dl id="wb-dtmd"><dt>Date modified:&#160;</dt><dd><time property="dateModified">{{MODIFIED}}</time></dd></dl>
+    </section>
+</main>
+<footer id="wb-info">
+    <div class="gc-sub-footer"><div class="container d-flex align-items-center">
+        <nav><ul>
+            <li><a href="https://www.canada.ca/en/transparency/terms.html">Terms and conditions</a></li>
+            <li><a href="https://www.canada.ca/en/revenue-agency/corporate/privacy-notice.html">Privacy</a></li>
+        </ul></nav>
+        <div class="wtrmrk align-self-end">
+            <img src="https://www.canada.ca/etc/designs/canada/wet-boew/assets/wmms-blk.svg" alt="Symbol of the Government of Canada">
+        </div>
+    </div></div>
+</footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha384-rY/jv8mMhqDabXSo+UCggqKtdmBfd3qC2/KvyTDNQ6PcUJXaxK1tMepoQda4g5vB" crossorigin="anonymous"><\/script>
+<script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/wet-boew.min.js"><\/script>
+<script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/theme.min.js"><\/script>
+</body>
+</html>`;
+var INDEX_PAGE_TEMPLATE_FRA = `<!DOCTYPE html>
+<html class="no-js" lang="fr" dir="ltr">
+<head>
+<meta charset="utf-8">
+<title>Plan du site du r\xE9pertoire</title>
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<meta name="dcterms.language" content="fra">
+<meta name="robots" content="noindex, nofollow">
+<link rel="shortcut icon" href="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v5_0_4/wet-boew/assets/favicon.ico">
+<link rel="stylesheet" href="https://www.canada.ca/etc/designs/canada/wet-boew/css/theme.min.css">
+<link rel="stylesheet" href="https://cra-test-arc.canada.ca/core-prototype/source/css/testing-banner.css">
+</head>
+<body vocab="http://schema.org/" typeof="WebPage">
+<nav><ul id="wb-tphp">
+    <li class="wb-slc"><a class="wb-sl" href="#wb-cont">Passer au contenu principal</a></li>
+</ul></nav>
+<header>
+    <div id="wb-bnr" class="container"><div class="row">
+        <div class="brand col-xs-9 col-sm-5 col-md-4" property="publisher" typeof="GovernmentOrganization">
+            <a href="https://www.canada.ca/fr.html" property="url">
+                <img src="https://www.canada.ca/etc/designs/canada/wet-boew/assets/sig-blk-fr.svg" alt="Gouvernement du Canada" property="logo">
+            </a>
+        </div>
+    </div></div>
+</header>
+<main class="container" property="mainContentOfPage" resource="#wb-main" typeof="WebPageElement">
+    <h1 property="name" id="wb-cont">Plan du site du r\xE9pertoire</h1>
+    
+    {{CONTENT}}
+
+    <section class="pagedetails">
+        <h2 class="wb-inv">D\xE9tails de la page</h2>
+        <dl id="wb-dtmd"><dt>Date de modification&#160;:&#160;</dt><dd><time property="dateModified">{{MODIFIED}}</time></dd></dl>
+    </section>
+</main>
+<footer id="wb-info">
+    <div class="gc-sub-footer"><div class="container d-flex align-items-center">
+        <nav><ul>
+            <li><a href="https://www.canada.ca/fr/transparence/avis.html">Avis</a></li>
+            <li><a href="https://www.canada.ca/fr/agence-revenu/organisation/avis-confidentialite.html">Confidentialit\xE9</a></li>
+        </ul></nav>
+        <div class="wtrmrk align-self-end">
+            <img src="https://www.canada.ca/etc/designs/canada/wet-boew/assets/wmms-blk.svg" alt="Symbole du gouvernement du Canada">
+        </div>
+    </div></div>
+</footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha384-rY/jv8mMhqDabXSo+UCggqKtdmBfd3qC2/KvyTDNQ6PcUJXaxK1tMepoQda4g5vB" crossorigin="anonymous"><\/script>
+<script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/wet-boew.min.js"><\/script>
+<script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/theme.min.js"><\/script>
+</body>
+</html>`;
+var LINK_DETOUR_JS = `
 "use strict";
 
-//  exitPage.value = "exit-intent-e.html", 
-//  exitPage.dataset.exitByUrl = "false", 
-//  exitPage.dataset.modLinkFile = "data/exclude-redirect-links.json", 
-//  relExternalLnk.value = "false", 
-//  relExternalLnk.dataset.origin = "https://www.canada.ca", 
+(function () {
+  var exitPage = document.getElementById("exitpage");
+  var relExternalLnk = document.getElementById("relextlnk");
+  var redirectMap = [];
 
-let exitPage = document.getElementById("exitpage");
-let relExternalLnk = document.getElementById("relextlnk");
-let inlineStyleText1, inlineStyleText2, 
-    visitedLinkStyle = document.createElement("style"), 
-    linkExcludes = [], 
-    adjustLinks = function adjustLinks(elm, hrefSelector, actionSelector, formActionSelector, destStartPath) {
-        let linkExcludeIndex = function linkExcludeIndex(testURI) {
-                return linkExcludes.findIndex(function findlink(linkArr) {
-                    if ("origin" in linkArr) {
-                        return linkArr.origin.toLowerCase() === testURI.toLowerCase();
-                    }
-                }, testURI);
-            }, 
-            adjustHref = function adjustHref(el, destStartPath) {
-                let adjustedURI = el, 
-                    replaceChar = ["?", "#", "&"];
+  if (!exitPage) return;
 
-                if (destStartPath !== "") {
-                    adjustedURI = new URL(adjustedURI, destStartPath).href;
-                }
-                replaceChar.forEach(function entityReplace(arrEl) {
-                    adjustedURI = adjustedURI.replace(arrEl, encodeURIComponent(arrEl));
-                }, adjustedURI);
-                return adjustedURI;
-            }, 
-            updateFormSubmit = function updateFormSubmit(formEl, formAttr, exitPageURI) {
-                let hiddenInEl;
+  function findRedirect(originUrl) {
+    return redirectMap.find(function (entry) {
+      return entry.origin && entry.origin.toLowerCase() === originUrl.toLowerCase();
+    });
+  }
 
-                hiddenInEl = document.createElement("input");
-                hiddenInEl.value = adjustHref(formEl[formAttr], destStartPath);
-                hiddenInEl.name = "uri";
-                hiddenInEl.type = "hidden";
-                formEl.append(hiddenInEl);
-                formEl[formAttr] = exitPageURI;
-            };
+  // protocol + hostname + pathname only (no query/hash), for matching against the JSON file
+  function originOf(rawUrl) {
+    var a = document.createElement("a");
+    a.href = rawUrl;
+    return a.protocol + "//" + a.hostname + a.pathname;
+  }
 
-        if (exitPage !== null) {
-            if (hrefSelector !== "") {
-                elm.querySelectorAll(hrefSelector).forEach(function updateExitHref(hrefElm) {
-                    const maxURILength = 2048;
-                    let urlObj, queryHash, 
-                        pagetitle = encodeURIComponent(hrefElm.innerText), 
-                        exitPageURI = exitPage.value, 
-                        destURI = adjustHref(hrefElm.href, destStartPath), 
-                        currentURI = hrefElm.protocol + "//" + hrefElm.hostname + hrefElm.pathname, 
-                        lnkExclIdx = linkExcludeIndex(currentURI);
+  function updateLink(el, attr) {
+    var raw = el.getAttribute(attr);
+    if (!raw || el.dataset.exit === "false" || el.classList.contains("wb-exitscript")) return;
 
-                    if (lnkExclIdx === -1) {
-                        if ("exitByUrl" in exitPage.dataset && exitPage.dataset.exitByUrl.toLowerCase() === "true") {
-                            urlObj = { "url": exitPageURI };
-                            hrefElm.dataset.wbExitscript = JSON.stringify(urlObj);
-                            hrefElm.classList.add("wb-exitscript");
-                        } else {
-                            if (pagetitle === "") {
-                                pagetitle = encodeURIComponent(hrefElm.textContent);
-                            }
-                            switch (true) {
-                                case (destURI.length > 0 && exitPageURI.length + destURI.length + 5 <= maxURILength):
-                                    if (destURI.length > 0) {
-                                        exitPageURI = exitPageURI + "?uri=" + destURI;
-                                    }
-                                // falls through
-                                case (pagetitle.length > 0 && exitPageURI + pagetitle.length + 11 <= maxURILength):
-                                    if (pagetitle.length > 0) {
-                                        exitPageURI = exitPageURI + "&pagetitle=" + pagetitle;
-                                    }
-                            }
-                            hrefElm.href = exitPageURI;
-                        }
-                    } else if ("destination" in linkExcludes[lnkExclIdx] === true) {
-                        queryHash = hrefElm.href.substring(linkExcludes[lnkExclIdx].origin.length);
-                        if ("exitByUrl" in exitPage.dataset && exitPage.dataset.exitByUrl.toLowerCase() === "true") {
-                            urlObj = { "url": linkExcludes[lnkExclIdx].destination + queryHash };
-                            hrefElm.dataset.wbExitscript = JSON.stringify(urlObj);
-                            hrefElm.classList.add("wb-exitscript");
-                        } else {
-                            hrefElm.href = linkExcludes[lnkExclIdx].destination + queryHash;
-                        }
-                    }
-                });
-                if ("exitByUrl" in exitPage.dataset && exitPage.dataset.exitByUrl.toLowerCase() === "true") {
-                    $(".wb-exitscript").trigger("wb-init.wb-exitscript");
-                }
-            }
+    var isAbsolute = /^https?:\\/\\//i.test(raw);
+    var relativeEnabled = relExternalLnk && relExternalLnk.value.toLowerCase() === "true";
+    var isRootRelative = raw.charAt(0) === "/";
 
-            if (actionSelector !== "") {
-                elm.querySelectorAll(actionSelector).forEach(function updateExitAction(actionElm) {
-                    let queryHash, 
-                        exitPageURI = exitPage.value, 
-                        currentURI = actionElm.protocol + "//" + actionElm.hostname + actionElm.pathname, 
-                        lnkExclIdx = linkExcludeIndex(currentURI);
+    if (!isAbsolute && !(isRootRelative && relativeEnabled)) return; // leave internal prototype links alone
 
-                    actionElm.method = "GET";
-                    if (lnkExclIdx === -1) {
-                        updateFormSubmit(actionElm, "action", exitPageURI);
-                    } else if ("destination" in linkExcludes[lnkExclIdx] === true) {
-                        queryHash = actionElm.href.substring(linkExcludes[lnkExclIdx].origin.length);
-                        updateFormSubmit(actionElm, "action", linkExcludes[lnkExclIdx].destination + queryHash);
-                    }
-                });
-            }
+    var lookupUrl = isRootRelative && relExternalLnk.dataset.origin
+      ? originOf(relExternalLnk.dataset.origin + raw)
+      : originOf(raw);
 
-            if (formActionSelector !== "") {
-                elm.querySelectorAll(formActionSelector).forEach(function updateExitForm(formActionElm) {
-                    let queryHash, 
-                        exitPageURI = exitPage.value, 
-                        currentURI = formActionElm.protocol + "//" + formActionElm.hostname + formActionElm.pathname, 
-                        lnkExclIdx = linkExcludeIndex(currentURI);
+    var match = findRedirect(lookupUrl);
+    var destination;
 
-                    if (lnkExclIdx === -1) {
-                        updateFormSubmit(formActionElm, "formaction", exitPageURI);
-                    } else if ("destination" in linkExcludes[lnkExclIdx] === true) {
-                        queryHash = formActionElm.href.substring(linkExcludes[lnkExclIdx].origin.length);
-                        updateFormSubmit(formActionElm, "formaction", linkExcludes[lnkExclIdx].destination + queryHash);
-                    }
-                });
-            }
-        }
-    }, 
-    getDomain = function (url) {
-        let pattern = new RegExp("^(https?://[^/]+/[^/]*/?)"), 
-            domains = pattern.exec(url);
-
-        if (domains !== null) {
-            return domains[0];
-        }
-        return "";
-    }, 
-    rootDomain = getDomain(window.location.origin + window.location.pathname), 
-    defaultadjustLinks = function defaultadjustLinks(elm, isAjaxed, relExternalLnk) {
-        adjustLinks(elm, "a[href^='http']:not([href^='" + rootDomain + "'], [data-exit='false'], .wb-exitscript), area[href^='http']:not([href^='" + rootDomain + "'], [data-exit='false'], .wb-exitscript)", "form[action^='http']:not([action^='" + rootDomain + "'], [data-exit='false'], .wb-exitscript)", "input[formaction^='http']:not([formaction^='" + rootDomain + "'], [data-exit='false'], .wb-exitscript), button[formaction^='http']:not([formaction^='" + rootDomain + "'], [formaction^='/'], [data-exit='false'], .wb-exitscript)", "");
-        if ((relExternalLnk && relExternalLnk.dataset.origin !== "") && (relExternalLnk.value.toLowerCase() === "true" || isAjaxed === true)) {
-            adjustLinks(elm, "a[href^='/']:not([data-exit='false'], .wb-exitscript), area[href^='/']:not([data-exit='false'], .wb-exitscript)", "form[action^='/']:not([data-exit='false'], .wb-exitscript)", "input[formaction^='/']:not([data-exit='false'], .wb-exitscript), button[formaction^='/']:not([data-exit='false'], .wb-exitscript)", relExternalLnk.dataset.origin);
-        }
-    };
-
-//document.addEventListener("readystatechange", function(event) {
-//    if (event.target.readyState === "complete") {
-
-        //load link exclude JSON file
-        if ("modLinkFile" in exitPage.dataset && exitPage.dataset.modLinkFile !== "") {
-            $.getJSON(exitPage.dataset.modLinkFile, function (data) {
-                linkExcludes = data;
-            }).always(function() {
-                document.addEventListener("wet-boew-ready", function() {
-                    defaultadjustLinks(this, false, relExternalLnk);
-                });
-            });
-        } else {
-            document.addEventListener("wet-boew-ready", function() {
-                defaultadjustLinks(this, false, relExternalLnk);
-        });
+    if (match && match.destination) {
+      var queryHash = raw.substring(match.origin.length);
+      destination = match.destination + queryHash;
+    } else {
+      destination = exitPage.value + "?uri=" + encodeURIComponent(
+        isRootRelative ? relExternalLnk.dataset.origin + raw : raw
+      );
     }
 
-        //Remove visited link highlighting from links to exit page
-        if (exitPage !== null) {
-            inlineStyleText1 = "Not to be copied to Canada.ca";
-            inlineStyleText2 = "CSS for GitHub specific elements";
-            if (document.documentElement.lang === "fr") {
-                inlineStyleText1 = "Ne pas copier sur Canada.ca";
-                inlineStyleText2 = "CSS pour les \xE9l\xE9ments sp\xE9cifiques \xE0 GitHub";
-            }
-            visitedLinkStyle.innerHTML = "/*
-*** " + inlineStyleText1 + " ***
+    el.setAttribute(attr, destination);
+  }
 
-" + inlineStyleText2 + "
-*//
+  function processLinks(root) {
+    root.querySelectorAll("a[href], area[href]").forEach(function (el) { updateLink(el, "href"); });
+    root.querySelectorAll("form[action]").forEach(function (el) { updateLink(el, "action"); });
+    root.querySelectorAll("[formaction]").forEach(function (el) { updateLink(el, "formaction"); });
+  }
 
- a[href*='" + exitPage.value + "']:visited { color:inherit; }
-.btn-primary[href*='" + exitPage.value + "']:visited, .btn-success[href*='" + exitPage.value + "']:visited, .btn-info[href*='" + exitPage.value + "']:visited, .btn-danger[href*='" + exitPage.value + "']:visited { color: #ffffff; }
-.btn-default[href*='" + exitPage.value + "']:visited { color: #335075; }
-.btn-warning[href*='" + exitPage.value + "']:visited { color: #000000; }
-";
-            document.head.insertAdjacentHTML("beforeend", visitedLinkStyle);
-        }
+  function init() {
+    processLinks(document);
 
-//    }
-//});
+    // Re-process links inserted by AJAX content replacement (site-banner, includes, etc.)
+    $(document).on("wb-contentupdated", "[data-ajax-after], [data-ajax-append], [data-ajax-before], [data-ajax-prepend], [data-ajax-replace]", function () {
+      processLinks(this);
+    });
+  }
 
-// changes all external site links and forms to go to destination link
-document.addEventListener("wet-boew-ready", function() {
-    defaultadjustLinks(this, false, relExternalLnk);
-});
-
-// changes all GCM Menu external site links and forms to go to destination link
-//document.addEventListener("readystatechange", function(event) {
-//    if (event.target.readyState === "complete") {
-        $(".gcweb-menu").on("wb-ready.gcweb-menu", function () {
-            adjustLinks(this, ".gcweb-menu a[href^='http']:not([href^='" + rootDomain + "'], [data-exit='false'], .wb-exitscript), .gcweb-menu area[href^='http']:not([href^='" + rootDomain + "'], [data-exit='false'], .wb-exitscript)", ".gcweb-menu form[action^='http']:not([action^='" + rootDomain + "'], [data-exit='false'], .wb-exitscript)", ".gcweb-menu input[formaction^='http']:not([formaction^='" + rootDomain + "'], [data-exit='false'], .wb-exitscript), .gcweb-menu button[formaction^='http']:not([formaction^='" + rootDomain + "'], [data-exit='false'], .wb-exitscript)", "");
-            if (relExternalLnk && relExternalLnk.value.toLowerCase() === "true" && relExternalLnk.dataset.origin !== "") {
-                adjustLinks(this, ".gcweb-menu a[href^='/']:not([data-exit='false'], .wb-exitscript), .gcweb-menu area[href^='/']:not([data-exit='false'], .wb-exitscript)", ".gcweb-menu form[action^='/']:not([data-exit='false'], .wb-exitscript)", ".gcweb-menu input[formaction^='/']:not([data-exit='false'], .wb-exitscript), .gcweb-menu button[formaction^='/']:not([data-exit='false'], .wb-exitscript)", relExternalLnk.dataset.origin);
-            }
-        });
-//    }
-//});
-
-// changes all AJAXed external site links and forms to go to destination link
-//document.addEventListener("readystatechange", function(event) {
-//    if (event.target.readyState === "complete") {
-        $("[data-ajax-after], [data-ajax-append], [data-ajax-before], [data-ajax-prepend], [data-ajax-replace]").on("wb-contentupdated", function () {
-            if (relExternalLnk && relExternalLnk.dataset.origin !== "") {
-                this.querySelectorAll("[icon^='/'], [poster^='/'], [src^='/'], [srcset^='/'], [data^='/']").forEach(function updateAjaxLinks(ajaxElm) {
-                    let elm = ajaxElm, 
-                        attrType = ["data", "icon", "poster", "src", "srcset"];
-
-                    attrType.forEach(function checkAttr(attrItem) {
-                        let attrValue;
-
-                        if (elm.hasAttribute(attrItem) === true) {
-                            attrValue = elm.getAttribute(attrItem);
-                            if (attrValue.startsWith("/") === true) {
-                                elm.setAttribute(attrItem, relExternalLnk.dataset.origin + attrValue);
-                                return;
-                            }
-                        }
-                    }, elm)
-                });
-            }
-            defaultadjustLinks(this, true, relExternalLnk);
-        });
-//    }
-//});`;
+  if (exitPage.dataset.modLinkFile) {
+    $.getJSON(exitPage.dataset.modLinkFile).done(function (data) {
+      redirectMap = data || [];
+    }).always(init);
+  } else {
+    init();
+  }
+})();
+`;
 
 // src/app/views/task/export-pages/export.component.ts
 var _c031 = ["settingsOverlay"];
@@ -52414,8 +52362,8 @@ var _c147 = (a0) => ({ count: a0 });
 var _c225 = (a0, a1) => ({ New: a0, Updated: a1 });
 function ExportComponent_Conditional_4_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p-message", 4)(1, "div", 32);
-    \u0275\u0275element(2, "i", 33);
+    \u0275\u0275elementStart(0, "p-message", 4)(1, "div", 31);
+    \u0275\u0275element(2, "i", 32);
     \u0275\u0275elementStart(3, "span");
     \u0275\u0275text(4);
     \u0275\u0275pipe(5, "translate");
@@ -52428,11 +52376,11 @@ function ExportComponent_Conditional_4_Template(rf, ctx) {
 }
 function ExportComponent_Conditional_17_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div")(1, "label", 34);
+    \u0275\u0275elementStart(0, "div")(1, "label", 33);
     \u0275\u0275text(2);
     \u0275\u0275pipe(3, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(4, "p", 35);
+    \u0275\u0275elementStart(4, "p", 34);
     \u0275\u0275text(5);
     \u0275\u0275elementEnd()();
   }
@@ -52446,11 +52394,11 @@ function ExportComponent_Conditional_17_Template(rf, ctx) {
 }
 function ExportComponent_Conditional_24_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div")(1, "label", 36);
+    \u0275\u0275elementStart(0, "div")(1, "label", 35);
     \u0275\u0275text(2);
     \u0275\u0275pipe(3, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(4, "p", 37);
+    \u0275\u0275elementStart(4, "p", 36);
     \u0275\u0275text(5);
     \u0275\u0275elementEnd()();
   }
@@ -52465,19 +52413,44 @@ function ExportComponent_Conditional_24_Template(rf, ctx) {
 function ExportComponent_Conditional_31_Template(rf, ctx) {
   if (rf & 1) {
     const _r2 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 16)(1, "label", 38);
+    \u0275\u0275elementStart(0, "div", 16)(1, "label", 37);
     \u0275\u0275text(2);
     \u0275\u0275pipe(3, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(4, "p-selectButton", 39);
+    \u0275\u0275elementStart(4, "p-selectButton", 38);
     \u0275\u0275twoWayListener("ngModelChange", function ExportComponent_Conditional_31_Template_p_selectButton_ngModelChange_4_listener($event) {
       \u0275\u0275restoreView(_r2);
       const ctx_r0 = \u0275\u0275nextContext();
-      \u0275\u0275twoWayBindingSet(ctx_r0.selectedExportTarget, $event) || (ctx_r0.selectedExportTarget = $event);
+      \u0275\u0275twoWayBindingSet(ctx_r0.selectedExportSource, $event) || (ctx_r0.selectedExportSource = $event);
       return \u0275\u0275resetView($event);
     });
-    \u0275\u0275listener("onChange", function ExportComponent_Conditional_31_Template_p_selectButton_onChange_4_listener() {
-      \u0275\u0275restoreView(_r2);
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 3, "exportPages.settings.exportSource"));
+    \u0275\u0275advance(2);
+    \u0275\u0275property("options", ctx_r0.exportSourceOptions);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r0.selectedExportSource);
+  }
+}
+function ExportComponent_Conditional_32_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r3 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 16)(1, "label", 39);
+    \u0275\u0275text(2);
+    \u0275\u0275pipe(3, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(4, "p-selectButton", 40);
+    \u0275\u0275twoWayListener("ngModelChange", function ExportComponent_Conditional_32_Template_p_selectButton_ngModelChange_4_listener($event) {
+      \u0275\u0275restoreView(_r3);
+      const ctx_r0 = \u0275\u0275nextContext();
+      \u0275\u0275twoWayBindingSet(ctx_r0.selectedExportVersion, $event) || (ctx_r0.selectedExportVersion = $event);
+      return \u0275\u0275resetView($event);
+    });
+    \u0275\u0275listener("onChange", function ExportComponent_Conditional_32_Template_p_selectButton_onChange_4_listener() {
+      \u0275\u0275restoreView(_r3);
       const ctx_r0 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r0.compareFiles());
     });
@@ -52488,40 +52461,40 @@ function ExportComponent_Conditional_31_Template(rf, ctx) {
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 3, "exportPages.settings.exportVersion"));
     \u0275\u0275advance(2);
-    \u0275\u0275property("options", ctx_r0.exportTargetOptions);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r0.selectedExportTarget);
+    \u0275\u0275property("options", ctx_r0.exportVersionOptions);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r0.selectedExportVersion);
   }
 }
-function ExportComponent_Conditional_33_Conditional_5_ng_template_5_Template(rf, ctx) {
+function ExportComponent_Conditional_34_Conditional_5_ng_template_5_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275text(0);
     \u0275\u0275pipe(1, "translate");
   }
   if (rf & 2) {
-    const item_r6 = ctx.$implicit;
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(1, 1, item_r6.label), " ");
+    const item_r7 = ctx.$implicit;
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(1, 1, item_r7.label), " ");
   }
 }
-function ExportComponent_Conditional_33_Conditional_5_Template(rf, ctx) {
+function ExportComponent_Conditional_34_Conditional_5_Template(rf, ctx) {
   if (rf & 1) {
-    const _r5 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 43)(1, "label", 44);
+    const _r6 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 44)(1, "label", 45);
     \u0275\u0275text(2);
     \u0275\u0275pipe(3, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(4, "p-selectButton", 45);
-    \u0275\u0275twoWayListener("ngModelChange", function ExportComponent_Conditional_33_Conditional_5_Template_p_selectButton_ngModelChange_4_listener($event) {
-      \u0275\u0275restoreView(_r5);
+    \u0275\u0275elementStart(4, "p-selectButton", 46);
+    \u0275\u0275twoWayListener("ngModelChange", function ExportComponent_Conditional_34_Conditional_5_Template_p_selectButton_ngModelChange_4_listener($event) {
+      \u0275\u0275restoreView(_r6);
       const ctx_r0 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r0.selectedExportTarget, $event) || (ctx_r0.selectedExportTarget = $event);
+      \u0275\u0275twoWayBindingSet(ctx_r0.selectedExportVersion, $event) || (ctx_r0.selectedExportVersion = $event);
       return \u0275\u0275resetView($event);
     });
-    \u0275\u0275listener("onChange", function ExportComponent_Conditional_33_Conditional_5_Template_p_selectButton_onChange_4_listener() {
-      \u0275\u0275restoreView(_r5);
+    \u0275\u0275listener("onChange", function ExportComponent_Conditional_34_Conditional_5_Template_p_selectButton_onChange_4_listener() {
+      \u0275\u0275restoreView(_r6);
       const ctx_r0 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r0.compareFiles());
     });
-    \u0275\u0275template(5, ExportComponent_Conditional_33_Conditional_5_ng_template_5_Template, 2, 3, "ng-template", null, 1, \u0275\u0275templateRefExtractor);
+    \u0275\u0275template(5, ExportComponent_Conditional_34_Conditional_5_ng_template_5_Template, 2, 3, "ng-template", null, 1, \u0275\u0275templateRefExtractor);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
@@ -52529,24 +52502,24 @@ function ExportComponent_Conditional_33_Conditional_5_Template(rf, ctx) {
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 3, "exportPages.settings.exportVersion"));
     \u0275\u0275advance(2);
-    \u0275\u0275property("options", ctx_r0.exportTargetOptions);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r0.selectedExportTarget);
+    \u0275\u0275property("options", ctx_r0.exportVersionOptions);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r0.selectedExportVersion);
   }
 }
-function ExportComponent_Conditional_33_Template(rf, ctx) {
+function ExportComponent_Conditional_34_Template(rf, ctx) {
   if (rf & 1) {
-    const _r3 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 40);
+    const _r4 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p-button", 41);
     \u0275\u0275pipe(1, "translate");
-    \u0275\u0275listener("click", function ExportComponent_Conditional_33_Template_p_button_click_0_listener($event) {
-      \u0275\u0275restoreView(_r3);
-      const settingsOverlay_r4 = \u0275\u0275reference(3);
-      return \u0275\u0275resetView(settingsOverlay_r4.toggle($event));
+    \u0275\u0275listener("click", function ExportComponent_Conditional_34_Template_p_button_click_0_listener($event) {
+      \u0275\u0275restoreView(_r4);
+      const settingsOverlay_r5 = \u0275\u0275reference(3);
+      return \u0275\u0275resetView(settingsOverlay_r5.toggle($event));
     });
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(2, "p-popover", 41, 0);
-    \u0275\u0275element(4, "aida-setup-repo", 42);
-    \u0275\u0275template(5, ExportComponent_Conditional_33_Conditional_5_Template, 7, 5, "div", 43);
+    \u0275\u0275elementStart(2, "p-popover", 42, 0);
+    \u0275\u0275element(4, "aida-setup-repo", 43);
+    \u0275\u0275template(5, ExportComponent_Conditional_34_Conditional_5_Template, 7, 5, "div", 44);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -52556,13 +52529,13 @@ function ExportComponent_Conditional_33_Template(rf, ctx) {
     \u0275\u0275conditional(ctx_r0.projectData().github.hasBaselineRepo ? 5 : -1);
   }
 }
-function ExportComponent_Conditional_34_Template(rf, ctx) {
+function ExportComponent_Conditional_35_Template(rf, ctx) {
   if (rf & 1) {
-    const _r7 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 46);
+    const _r8 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p-button", 47);
     \u0275\u0275pipe(1, "translate");
-    \u0275\u0275listener("onClick", function ExportComponent_Conditional_34_Template_p_button_onClick_0_listener() {
-      \u0275\u0275restoreView(_r7);
+    \u0275\u0275listener("onClick", function ExportComponent_Conditional_35_Template_p_button_onClick_0_listener() {
+      \u0275\u0275restoreView(_r8);
       const ctx_r0 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r0.openRepo());
     });
@@ -52572,27 +52545,27 @@ function ExportComponent_Conditional_34_Template(rf, ctx) {
     \u0275\u0275property("label", \u0275\u0275pipeBind1(1, 1, "exportPages.github.openRepo"));
   }
 }
-function ExportComponent_Conditional_35_Template(rf, ctx) {
+function ExportComponent_Conditional_36_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275element(0, "aida-sign-in-banner");
   }
 }
-function ExportComponent_Conditional_36_Conditional_2_Template(rf, ctx) {
+function ExportComponent_Conditional_37_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    const _r8 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 43)(1, "label", 44);
+    const _r9 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 44)(1, "label", 45);
     \u0275\u0275text(2);
     \u0275\u0275pipe(3, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(4, "p-selectButton", 45);
-    \u0275\u0275twoWayListener("ngModelChange", function ExportComponent_Conditional_36_Conditional_2_Template_p_selectButton_ngModelChange_4_listener($event) {
-      \u0275\u0275restoreView(_r8);
+    \u0275\u0275elementStart(4, "p-selectButton", 46);
+    \u0275\u0275twoWayListener("ngModelChange", function ExportComponent_Conditional_37_Conditional_2_Template_p_selectButton_ngModelChange_4_listener($event) {
+      \u0275\u0275restoreView(_r9);
       const ctx_r0 = \u0275\u0275nextContext(2);
-      \u0275\u0275twoWayBindingSet(ctx_r0.selectedExportTarget, $event) || (ctx_r0.selectedExportTarget = $event);
+      \u0275\u0275twoWayBindingSet(ctx_r0.selectedExportVersion, $event) || (ctx_r0.selectedExportVersion = $event);
       return \u0275\u0275resetView($event);
     });
-    \u0275\u0275listener("onChange", function ExportComponent_Conditional_36_Conditional_2_Template_p_selectButton_onChange_4_listener() {
-      \u0275\u0275restoreView(_r8);
+    \u0275\u0275listener("onChange", function ExportComponent_Conditional_37_Conditional_2_Template_p_selectButton_onChange_4_listener() {
+      \u0275\u0275restoreView(_r9);
       const ctx_r0 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r0.compareFiles());
     });
@@ -52603,15 +52576,15 @@ function ExportComponent_Conditional_36_Conditional_2_Template(rf, ctx) {
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 3, "exportPages.settings.exportVersion"));
     \u0275\u0275advance(2);
-    \u0275\u0275property("options", ctx_r0.exportTargetOptions);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r0.selectedExportTarget);
+    \u0275\u0275property("options", ctx_r0.exportVersionOptions);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r0.selectedExportVersion);
   }
 }
-function ExportComponent_Conditional_36_Template(rf, ctx) {
+function ExportComponent_Conditional_37_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 21);
     \u0275\u0275element(1, "aida-setup-repo");
-    \u0275\u0275template(2, ExportComponent_Conditional_36_Conditional_2_Template, 5, 5, "div", 43);
+    \u0275\u0275template(2, ExportComponent_Conditional_37_Conditional_2_Template, 5, 5, "div", 44);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -52620,7 +52593,7 @@ function ExportComponent_Conditional_36_Template(rf, ctx) {
     \u0275\u0275conditional(ctx_r0.projectData().github.hasBaselineRepo ? 2 : -1);
   }
 }
-function ExportComponent_Conditional_37_Conditional_10_Template(rf, ctx) {
+function ExportComponent_Conditional_38_Conditional_10_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275text(0);
     \u0275\u0275pipe(1, "date");
@@ -52631,7 +52604,7 @@ function ExportComponent_Conditional_37_Conditional_10_Template(rf, ctx) {
     \u0275\u0275textInterpolate2(" ", \u0275\u0275pipeBind2(1, 2, ctx_r0.projectData().lastExported, "mediumDate"), ", ", \u0275\u0275pipeBind2(2, 5, ctx_r0.projectData().lastExported, "shortTime"), " ");
   }
 }
-function ExportComponent_Conditional_37_Conditional_11_Template(rf, ctx) {
+function ExportComponent_Conditional_38_Conditional_11_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275text(0);
     \u0275\u0275pipe(1, "date");
@@ -52642,7 +52615,7 @@ function ExportComponent_Conditional_37_Conditional_11_Template(rf, ctx) {
     \u0275\u0275textInterpolate2(" ", \u0275\u0275pipeBind2(1, 2, ctx_r0.projectData().lastDownloaded, "mediumDate"), ", ", \u0275\u0275pipeBind2(2, 5, ctx_r0.projectData().lastDownloaded, "shortTime"), " ");
   }
 }
-function ExportComponent_Conditional_37_Conditional_12_Template(rf, ctx) {
+function ExportComponent_Conditional_38_Conditional_12_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275text(0);
     \u0275\u0275pipe(1, "translate");
@@ -52651,33 +52624,33 @@ function ExportComponent_Conditional_37_Conditional_12_Template(rf, ctx) {
     \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(1, 1, "common.never"), " ");
   }
 }
-function ExportComponent_Conditional_37_Template(rf, ctx) {
+function ExportComponent_Conditional_38_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 21)(1, "h2", 9);
     \u0275\u0275text(2);
     \u0275\u0275pipe(3, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(4, "div", 47)(5, "div", 48);
+    \u0275\u0275elementStart(4, "div", 48)(5, "div", 49);
     \u0275\u0275text(6);
     \u0275\u0275pipe(7, "translate");
     \u0275\u0275pipe(8, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(9, "div", 49);
-    \u0275\u0275template(10, ExportComponent_Conditional_37_Conditional_10_Template, 3, 8)(11, ExportComponent_Conditional_37_Conditional_11_Template, 3, 8)(12, ExportComponent_Conditional_37_Conditional_12_Template, 2, 3);
+    \u0275\u0275elementStart(9, "div", 50);
+    \u0275\u0275template(10, ExportComponent_Conditional_38_Conditional_10_Template, 3, 8)(11, ExportComponent_Conditional_38_Conditional_11_Template, 3, 8)(12, ExportComponent_Conditional_38_Conditional_12_Template, 2, 3);
     \u0275\u0275elementEnd()();
     \u0275\u0275element(13, "p-divider");
-    \u0275\u0275elementStart(14, "div", 50)(15, "div", 51)(16, "div")(17, "div", 52);
+    \u0275\u0275elementStart(14, "div", 51)(15, "div", 52)(16, "div")(17, "div", 53);
     \u0275\u0275text(18);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(19, "div", 53);
+    \u0275\u0275elementStart(19, "div", 54);
     \u0275\u0275text(20);
     \u0275\u0275pipe(21, "translate");
     \u0275\u0275pipe(22, "translate");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(23, "div")(24, "div", 52);
+    \u0275\u0275elementStart(23, "div")(24, "div", 53);
     \u0275\u0275text(25);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(26, "div", 53);
+    \u0275\u0275elementStart(26, "div", 54);
     \u0275\u0275text(27);
     \u0275\u0275pipe(28, "translate");
     \u0275\u0275elementEnd()()()()();
@@ -52694,33 +52667,33 @@ function ExportComponent_Conditional_37_Template(rf, ctx) {
     \u0275\u0275advance(8);
     \u0275\u0275textInterpolate1(" ", ctx_r0.projectFileCount(), " ");
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate1(" ", ctx_r0.selectedExportTarget === "prototype" ? \u0275\u0275pipeBind1(21, 13, "exportPages.data.inScope") : \u0275\u0275pipeBind1(22, 15, "exportPages.data.baseline"), " ");
+    \u0275\u0275textInterpolate1(" ", ctx_r0.selectedExportVersion === "prototype" ? \u0275\u0275pipeBind1(21, 13, "exportPages.data.inScope") : \u0275\u0275pipeBind1(22, 15, "exportPages.data.baseline"), " ");
     \u0275\u0275advance(5);
     \u0275\u0275textInterpolate1(" ", ctx_r0.templateFileCount(), " ");
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(28, 17, "exportPages.data.jekyll"), " ");
   }
 }
-function ExportComponent_ng_template_47_Template(rf, ctx) {
+function ExportComponent_ng_template_48_Template(rf, ctx) {
   if (rf & 1) {
-    const _r9 = \u0275\u0275getCurrentView();
+    const _r10 = \u0275\u0275getCurrentView();
     \u0275\u0275elementStart(0, "tr")(1, "th");
     \u0275\u0275text(2);
     \u0275\u0275pipe(3, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(4, "th")(5, "span", 54);
+    \u0275\u0275elementStart(4, "th")(5, "span", 55);
     \u0275\u0275text(6);
     \u0275\u0275pipe(7, "translate");
-    \u0275\u0275elementStart(8, "p-button", 55);
-    \u0275\u0275listener("onClick", function ExportComponent_ng_template_47_Template_p_button_onClick_8_listener() {
-      \u0275\u0275restoreView(_r9);
+    \u0275\u0275elementStart(8, "p-button", 56);
+    \u0275\u0275listener("onClick", function ExportComponent_ng_template_48_Template_p_button_onClick_8_listener() {
+      \u0275\u0275restoreView(_r10);
       const ctx_r0 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r0.setAll("skip", "project"));
     });
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(9, "p-button", 56);
-    \u0275\u0275listener("onClick", function ExportComponent_ng_template_47_Template_p_button_onClick_9_listener() {
-      \u0275\u0275restoreView(_r9);
+    \u0275\u0275elementStart(9, "p-button", 57);
+    \u0275\u0275listener("onClick", function ExportComponent_ng_template_48_Template_p_button_onClick_9_listener() {
+      \u0275\u0275restoreView(_r10);
       const ctx_r0 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r0.setAll("export", "project"));
     });
@@ -52733,51 +52706,51 @@ function ExportComponent_ng_template_47_Template(rf, ctx) {
     \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(7, 4, "common.status"), " ");
   }
 }
-function ExportComponent_ng_template_48_Template(rf, ctx) {
+function ExportComponent_ng_template_49_Template(rf, ctx) {
   if (rf & 1) {
-    const _r10 = \u0275\u0275getCurrentView();
+    const _r11 = \u0275\u0275getCurrentView();
     \u0275\u0275elementStart(0, "tr")(1, "td");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "td")(4, "p-chip", 57);
+    \u0275\u0275elementStart(3, "td")(4, "p-chip", 58);
     \u0275\u0275pipe(5, "translate");
-    \u0275\u0275listener("click", function ExportComponent_ng_template_48_Template_p_chip_click_4_listener() {
-      const file_r11 = \u0275\u0275restoreView(_r10).$implicit;
+    \u0275\u0275listener("click", function ExportComponent_ng_template_49_Template_p_chip_click_4_listener() {
+      const file_r12 = \u0275\u0275restoreView(_r11).$implicit;
       const ctx_r0 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(file_r11.status === ctx_r0.ExportStatus.AddToProject || file_r11.status === ctx_r0.ExportStatus.OppLanguage ? ctx_r0.addToProject(file_r11) : ctx_r0.toggleUpdate(file_r11));
+      return \u0275\u0275resetView(file_r12.status === ctx_r0.ExportStatus.AddToProject || file_r12.status === ctx_r0.ExportStatus.OppLanguage ? ctx_r0.addToProject(file_r12) : ctx_r0.toggleUpdate(file_r12));
     });
     \u0275\u0275elementEnd()()();
   }
   if (rf & 2) {
-    const file_r11 = ctx.$implicit;
+    const file_r12 = ctx.$implicit;
     const ctx_r0 = \u0275\u0275nextContext();
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(file_r11.path);
+    \u0275\u0275textInterpolate(file_r12.path);
     \u0275\u0275advance(2);
-    \u0275\u0275classMap("cursor-pointer font-bold center-chip w-10rem p-1 " + ctx_r0.getBgAndText(file_r11.status));
-    \u0275\u0275property("label", \u0275\u0275pipeBind1(5, 5, file_r11.status))("icon", ctx_r0.getIcon(file_r11.status));
+    \u0275\u0275classMap("cursor-pointer font-bold center-chip w-10rem p-1 " + ctx_r0.getBgAndText(file_r12.status));
+    \u0275\u0275property("label", \u0275\u0275pipeBind1(5, 5, file_r12.status))("icon", ctx_r0.getIcon(file_r12.status));
   }
 }
-function ExportComponent_ng_template_52_Template(rf, ctx) {
+function ExportComponent_ng_template_53_Template(rf, ctx) {
   if (rf & 1) {
-    const _r12 = \u0275\u0275getCurrentView();
+    const _r13 = \u0275\u0275getCurrentView();
     \u0275\u0275elementStart(0, "tr")(1, "th");
     \u0275\u0275text(2);
     \u0275\u0275pipe(3, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(4, "th")(5, "span", 54);
+    \u0275\u0275elementStart(4, "th")(5, "span", 55);
     \u0275\u0275text(6);
     \u0275\u0275pipe(7, "translate");
-    \u0275\u0275elementStart(8, "p-button", 55);
-    \u0275\u0275listener("onClick", function ExportComponent_ng_template_52_Template_p_button_onClick_8_listener() {
-      \u0275\u0275restoreView(_r12);
+    \u0275\u0275elementStart(8, "p-button", 56);
+    \u0275\u0275listener("onClick", function ExportComponent_ng_template_53_Template_p_button_onClick_8_listener() {
+      \u0275\u0275restoreView(_r13);
       const ctx_r0 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r0.setAll("skip", "template"));
     });
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(9, "p-button", 56);
-    \u0275\u0275listener("onClick", function ExportComponent_ng_template_52_Template_p_button_onClick_9_listener() {
-      \u0275\u0275restoreView(_r12);
+    \u0275\u0275elementStart(9, "p-button", 57);
+    \u0275\u0275listener("onClick", function ExportComponent_ng_template_53_Template_p_button_onClick_9_listener() {
+      \u0275\u0275restoreView(_r13);
       const ctx_r0 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r0.setAll("export", "template"));
     });
@@ -52790,46 +52763,29 @@ function ExportComponent_ng_template_52_Template(rf, ctx) {
     \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(7, 4, "common.status"), " ");
   }
 }
-function ExportComponent_ng_template_53_Template(rf, ctx) {
+function ExportComponent_ng_template_54_Template(rf, ctx) {
   if (rf & 1) {
-    const _r13 = \u0275\u0275getCurrentView();
+    const _r14 = \u0275\u0275getCurrentView();
     \u0275\u0275elementStart(0, "tr")(1, "td");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "td")(4, "p-chip", 57);
+    \u0275\u0275elementStart(3, "td")(4, "p-chip", 58);
     \u0275\u0275pipe(5, "translate");
-    \u0275\u0275listener("click", function ExportComponent_ng_template_53_Template_p_chip_click_4_listener() {
-      const file_r14 = \u0275\u0275restoreView(_r13).$implicit;
+    \u0275\u0275listener("click", function ExportComponent_ng_template_54_Template_p_chip_click_4_listener() {
+      const file_r15 = \u0275\u0275restoreView(_r14).$implicit;
       const ctx_r0 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(file_r14.status !== ctx_r0.ExportStatus.AddToProject && ctx_r0.toggleUpdate(file_r14));
+      return \u0275\u0275resetView(file_r15.status !== ctx_r0.ExportStatus.AddToProject && ctx_r0.toggleUpdate(file_r15));
     });
     \u0275\u0275elementEnd()()();
   }
   if (rf & 2) {
-    const file_r14 = ctx.$implicit;
+    const file_r15 = ctx.$implicit;
     const ctx_r0 = \u0275\u0275nextContext();
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(file_r14.path);
+    \u0275\u0275textInterpolate(file_r15.path);
     \u0275\u0275advance(2);
-    \u0275\u0275classMap("cursor-pointer font-bold center-chip w-9rem p-1 " + ctx_r0.getBgAndText(file_r14.status));
-    \u0275\u0275property("label", \u0275\u0275pipeBind1(5, 5, file_r14.status))("icon", ctx_r0.getIcon(file_r14.status));
-  }
-}
-function ExportComponent_Conditional_54_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r15 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 58);
-    \u0275\u0275pipe(1, "translate");
-    \u0275\u0275listener("onClick", function ExportComponent_Conditional_54_Template_p_button_onClick_0_listener() {
-      \u0275\u0275restoreView(_r15);
-      const ctx_r0 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r0.exportProjectToGitHub());
-    });
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275property("label", \u0275\u0275pipeBind1(1, 3, "exportPages.export.button.github"))("disabled", ctx_r0.projectFileCount() === 0 || !ctx_r0.exportGitHubService.token() || !ctx_r0.gitHubData().repo)("loading", ctx_r0.exportProgress());
+    \u0275\u0275classMap("cursor-pointer font-bold center-chip w-9rem p-1 " + ctx_r0.getBgAndText(file_r15.status));
+    \u0275\u0275property("label", \u0275\u0275pipeBind1(5, 5, file_r15.status))("icon", ctx_r0.getIcon(file_r15.status));
   }
 }
 function ExportComponent_Conditional_55_Template(rf, ctx) {
@@ -52840,18 +52796,52 @@ function ExportComponent_Conditional_55_Template(rf, ctx) {
     \u0275\u0275listener("onClick", function ExportComponent_Conditional_55_Template_p_button_onClick_0_listener() {
       \u0275\u0275restoreView(_r16);
       const ctx_r0 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r0.exportProjectToGitHub());
+    });
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275property("label", \u0275\u0275pipeBind1(1, 3, "exportPages.export.button.github"))("disabled", ctx_r0.projectFileCount() === 0 || !ctx_r0.exportGitHubService.token() || !ctx_r0.gitHubData().repo)("loading", ctx_r0.exportProgress());
+  }
+}
+function ExportComponent_Conditional_56_Conditional_0_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "p-message", 60)(1, "div", 31);
+    \u0275\u0275element(2, "i", 32);
+    \u0275\u0275elementStart(3, "span");
+    \u0275\u0275text(4);
+    \u0275\u0275pipe(5, "translate");
+    \u0275\u0275elementEnd()()();
+  }
+  if (rf & 2) {
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(5, 1, "exportPages.local.warningMessage"));
+  }
+}
+function ExportComponent_Conditional_56_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r17 = \u0275\u0275getCurrentView();
+    \u0275\u0275template(0, ExportComponent_Conditional_56_Conditional_0_Template, 6, 3, "p-message", 60);
+    \u0275\u0275elementStart(1, "p-button", 61);
+    \u0275\u0275pipe(2, "translate");
+    \u0275\u0275listener("onClick", function ExportComponent_Conditional_56_Template_p_button_onClick_1_listener() {
+      \u0275\u0275restoreView(_r17);
+      const ctx_r0 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r0.exportToFile());
     });
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
     const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275property("label", \u0275\u0275pipeBind1(1, 3, "exportPages.export.button.zip"))("disabled", ctx_r0.projectFileCount() === 0 || !ctx_r0.gitHubData().repo)("loading", ctx_r0.exportProgress());
+    \u0275\u0275conditional(!ctx_r0.hasLocal() ? 0 : -1);
+    \u0275\u0275advance();
+    \u0275\u0275property("label", \u0275\u0275pipeBind1(2, 4, "exportPages.export.button.zip"))("disabled", ctx_r0.projectFileCount() === 0 || !ctx_r0.gitHubData().repo)("loading", ctx_r0.exportProgress());
   }
 }
-function ExportComponent_Conditional_56_Template(rf, ctx) {
+function ExportComponent_Conditional_57_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 29);
+    \u0275\u0275elementStart(0, "span", 28);
     \u0275\u0275text(1);
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275elementEnd();
@@ -52862,36 +52852,36 @@ function ExportComponent_Conditional_56_Template(rf, ctx) {
     \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind2(2, 1, "exportPages.export.count", \u0275\u0275pureFunction2(4, _c225, ctx_r0.newCount(), ctx_r0.updatedCount())), " ");
   }
 }
-function ExportComponent_Conditional_57_ng_template_1_Template(rf, ctx) {
+function ExportComponent_Conditional_58_ng_template_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "span", 60);
+    \u0275\u0275element(0, "span", 62);
     \u0275\u0275pipe(1, "translate");
   }
   if (rf & 2) {
-    const progress_r17 = \u0275\u0275nextContext();
-    \u0275\u0275property("innerHTML", \u0275\u0275pipeBind1(1, 1, progress_r17.step), \u0275\u0275sanitizeHtml);
+    const progress_r18 = \u0275\u0275nextContext();
+    \u0275\u0275property("innerHTML", \u0275\u0275pipeBind1(1, 1, progress_r18.step), \u0275\u0275sanitizeHtml);
   }
 }
-function ExportComponent_Conditional_57_Template(rf, ctx) {
+function ExportComponent_Conditional_58_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p-progressbar", 30);
-    \u0275\u0275template(1, ExportComponent_Conditional_57_ng_template_1_Template, 2, 3, "ng-template", null, 2, \u0275\u0275templateRefExtractor);
+    \u0275\u0275elementStart(0, "p-progressbar", 29);
+    \u0275\u0275template(1, ExportComponent_Conditional_58_ng_template_1_Template, 2, 3, "ng-template", null, 2, \u0275\u0275templateRefExtractor);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
     \u0275\u0275property("value", ctx.progress);
   }
 }
-function ExportComponent_Conditional_58_Template(rf, ctx) {
+function ExportComponent_Conditional_59_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "p-message", 31);
+    \u0275\u0275element(0, "p-message", 30);
   }
   if (rf & 2) {
     const ctx_r0 = \u0275\u0275nextContext();
     \u0275\u0275property("severity", ctx_r0.exportMessage().severity)("text", ctx_r0.exportMessage().text);
   }
 }
-function ExportComponent_Conditional_59_Template(rf, ctx) {
+function ExportComponent_Conditional_60_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 22);
     \u0275\u0275element(1, "aida-bookmarklet");
@@ -52923,6 +52913,8 @@ var ExportComponent = class _ExportComponent {
   filesTable = signal([]);
   exportMessage = signal(null);
   repoType = signal(this.projectData().repoType);
+  hasGitHub = signal(false);
+  hasLocal = signal(false);
   markForTranslation() {
     marker("exportPages.settings.description.prototype");
     marker("exportPages.settings.description.baseline");
@@ -52941,15 +52933,13 @@ var ExportComponent = class _ExportComponent {
   constructor() {
     effect(() => __async(this, null, function* () {
       void this.exportGitHubService.token();
-      const owner = this.projectData().github.owner;
-      const repo = this.projectData().github.repo;
+      void this.projectData().github.owner;
+      void this.projectData().github.repo;
       const repoType = this.projectData().repoType;
       if (repoType) {
         this.repoType.set(repoType);
       }
-      if (owner && repo || repoType === "local") {
-        untracked(() => this.compareFiles());
-      }
+      untracked(() => this.compareFiles());
     }));
   }
   // Computed signals
@@ -52963,7 +52953,16 @@ var ExportComponent = class _ExportComponent {
   // Initialize table and connection status
   ngOnInit() {
     return __async(this, null, function* () {
-      yield this.compareFiles();
+      if (this.projectData().lastExported) {
+        const version2 = this.selectedExportVersion === "prototype" ? "prototype" : "baseline";
+        const url = this.fetchService.generateUrl("index.html", version2, this.projectData().github.owner, this.projectData().github.repo);
+        this.hasGitHub.set((yield this.fetchService.fetchStatus(url, "proto", 2)).ok);
+      }
+      if (this.projectData().lastDownloaded) {
+        const version2 = this.selectedExportVersion === "prototype" ? "ut" : "ut-base";
+        const url = this.fetchService.generateUrl("index.html", version2, this.projectData().github.owner, this.projectData().github.repo);
+        this.hasLocal.set((yield this.fetchService.fetchStatus(url, "proto", 2)).ok);
+      }
     });
   }
   // Template visiblity controls
@@ -52986,18 +52985,30 @@ var ExportComponent = class _ExportComponent {
       return [frLabel, enLabel, bothLabel];
     }
   }
-  // Export target options
-  selectedExportTarget = "prototype";
-  get exportTargetOptions() {
+  // Export version options
+  selectedExportVersion = "prototype";
+  get exportVersionOptions() {
     return [
       { label: this.translate.instant("common.version.prototype"), value: "prototype" },
       { label: this.translate.instant("common.version.baseline"), value: "baseline" }
     ];
   }
+  // Export source options
+  selectedExportSource = "live";
+  get exportSourceOptions() {
+    const options = [{ label: this.translate.instant("common.version.canada"), value: "live" }];
+    if (this.hasGitHub()) {
+      options.push({ label: this.translate.instant("common.version.prototype.github"), value: "github" });
+    }
+    if (this.hasLocal()) {
+      options.push({ label: this.translate.instant("common.version.prototype.local"), value: "local" });
+    }
+    return options;
+  }
   // Open targeted GitHub repo
   openRepo() {
     let modifier = "";
-    if (this.selectedExportTarget === "baseline") {
+    if (this.selectedExportVersion === "baseline") {
       modifier = "-baseline";
     }
     ;
@@ -53005,35 +53016,35 @@ var ExportComponent = class _ExportComponent {
     window.open(url, "_blank");
   }
   //CDTS template files
-  cdtsFiles = ["source/data/exclude-redirect-links.json", "source/exit-intent-e.html", "source/exit-intent-f.html"];
+  cdtsFiles = ["source/data/exclude-redirect-links.json", "source/scripts/external-link-detour.js", "source/exit-intent-e.html", "source/exit-intent-f.html", "index.html"];
   //Jekyll template files
   jekyllUpdateFiles = ["404.html", "_includes/*", "index.html", "source/data/exclude-redirect-links.json", "source/exit-intent-e.html", "source/exit-intent-f.html"];
   jekyllSkipFiles = ["_config.yml", "README.md", "robots.txt"];
   // Populate files table (and compare project files with GitHub or UT)
+  compareFilesRequestId = 0;
   compareFiles() {
     return __async(this, null, function* () {
-      if (!this.repoType())
-        this.projectData().repoType ? this.repoType.set(this.projectData().repoType) : this.repoType.set("github");
+      const requestId = ++this.compareFilesRequestId;
+      if (!this.repoType()) {
+        this.repoType.set(this.projectData().repoType ?? "github");
+      }
       const lang = this.selectedExportLanguage;
-      const scope = this.selectedExportTarget === "prototype" ? "inScope" : "all";
-      const enPages = this.projectState.getAllPages("en", this.selectedExportTarget, scope).map((p) => p.path);
-      const frPages = this.projectState.getAllPages("fr", this.selectedExportTarget, scope).map((p) => p.path);
-      const projectPaths = [
-        ...lang === "en" ? enPages : lang === "fr" ? frPages : [...enPages, ...frPages],
-        ...this.cdtsFiles
-      ];
+      const scope = this.selectedExportVersion === "prototype" ? "inScope" : "all";
+      const enPages = this.projectState.getAllPages("en", this.selectedExportVersion, scope).map((p) => p.path);
+      const frPages = this.projectState.getAllPages("fr", this.selectedExportVersion, scope).map((p) => p.path);
+      const projectPaths = [...lang === "en" ? enPages : lang === "fr" ? frPages : [...enPages, ...frPages]];
       if (this.repoType() === "local") {
-        this.filesTable.set(projectPaths.map((path) => ({
-          path,
-          status: ExportStatus.ExportNew
-        })));
+        if (requestId !== this.compareFilesRequestId)
+          return;
+        const localPaths = [...projectPaths, ...this.cdtsFiles];
+        this.filesTable.set(localPaths.map((path) => ({ path, status: ExportStatus.ExportNew })));
         return;
       }
       const owner = this.gitHubData().owner;
-      const repo = this.selectedExportTarget === "prototype" ? this.gitHubData().repo : `${this.gitHubData().repo}-baseline`;
+      const repo = this.selectedExportVersion === "prototype" ? this.gitHubData().repo : `${this.gitHubData().repo}-baseline`;
       const branch = this.gitHubData().branch;
       const token = this.exportGitHubService.token();
-      const githubPages = yield this.exportGitHubService.getRepoTree(owner, repo, branch, token);
+      const githubPages = owner && this.gitHubData().repo ? yield this.exportGitHubService.getRepoTree(owner, repo, branch, token) : /* @__PURE__ */ new Map();
       const langs = lang === "both" ? ["en", "fr"] : [lang];
       const langPatterns = langs.flatMap((lang2) => [new RegExp(`^${lang2}\\/.*`), new RegExp(`^${lang2}\\.html`)]);
       const githubFilePatterns = [
@@ -53082,7 +53093,7 @@ var ExportComponent = class _ExportComponent {
           else if (isAlwaysSkipFile)
             status = ExportStatus.SkipOverwrite;
           else {
-            const storedSha = pathLang ? node?.data?.[this.selectedExportTarget][pathLang].githubSha : null;
+            const storedSha = pathLang ? node?.data?.[this.selectedExportVersion][pathLang].githubSha : null;
             const githubSha = filteredGithubPages.get(path);
             status = storedSha && storedSha === githubSha ? ExportStatus.ExportOverwrite : ExportStatus.SkipOverwrite;
           }
@@ -53092,6 +53103,8 @@ var ExportComponent = class _ExportComponent {
           status = ExportStatus.AddToProject;
         table.push({ path, status });
       }
+      if (requestId !== this.compareFilesRequestId)
+        return;
       this.filesTable.set(table);
     });
   }
@@ -53207,13 +53220,15 @@ var ExportComponent = class _ExportComponent {
     return __async(this, null, function* () {
       const JSZip = (yield import("./chunk-SOT2YPTI.js")).default;
       const zip = new JSZip();
-      const repo = this.selectedExportTarget === "prototype" ? this.gitHubData().repo : `${this.gitHubData().repo}-baseline`;
-      const scope = this.selectedExportTarget === "prototype" ? "inScope" : "all";
+      const repo = this.selectedExportVersion === "prototype" ? this.gitHubData().repo : `${this.gitHubData().repo}-baseline`;
+      const scope = this.selectedExportVersion === "prototype" ? "inScope" : "all";
+      const source = this.selectedExportSource === "live" ? "live" : this.selectedExportSource === "local" ? this.selectedExportVersion === "prototype" ? "ut" : "ut-base" : this.selectedExportVersion === "prototype" ? "prototype" : "baseline";
       const date = (/* @__PURE__ */ new Date()).toISOString().split("T")[0];
+      const aidaLang = this.translate.currentLang.startsWith("fr") ? "fr" : "en";
       const projectPaths = this.projectTable().filter((item) => item.status === ExportStatus.ExportNew || item.status === ExportStatus.ExportOverwrite).map((item) => item.path);
       const templatePaths = this.templateTable().filter((item) => item.status === ExportStatus.ExportNew || item.status === ExportStatus.ExportOverwrite).map((item) => item.path);
       for (const path of projectPaths) {
-        const url = this.fetchService.generateUrl(path, "live");
+        const url = this.fetchService.generateUrl(path, source);
         const lang = this.fetchService.getLang(url);
         if (!lang)
           continue;
@@ -53231,8 +53246,24 @@ var ExportComponent = class _ExportComponent {
         const header = doubleH1 ? `<p class="lead mrgn-tp-md mrgn-bttm-0 text-muted">${doubleH1}</p>
 <h1 property="name" id="wb-cont" dir="ltr" class="mrgn-tp-0">${h1}</h1>` : `<h1 property="name" id="wb-cont" dir="ltr">${h1}</h1>`;
         const depth = "../".repeat(path.split("/").length - 1);
-        const doc = yield this.fetchService.fetchContent(url, "both");
-        const { content, styles, scripts } = yield this.htmlNormalizationService.cleanContentForCdts(doc);
+        const isNewPage = node?.data.status.isNew ?? false;
+        let content = "";
+        let styles = "";
+        let scripts = "";
+        try {
+          const retries = isNewPage ? 1 : 2;
+          const doc = yield this.fetchService.fetchContent(url, "both", retries);
+          if (!doc) {
+            throw new Error(`No document returned for ${url}`);
+          }
+          ({ content, styles, scripts } = yield this.htmlNormalizationService.cleanContentForCdts(doc));
+        } catch (error) {
+          if (isNewPage) {
+            console.warn(`New page "${path}" is 404. Creating blank template.`, error);
+          } else {
+            console.error(`Existing page "${path}" is unexpectedly 404. Creating blank template instead.`, error);
+          }
+        }
         const html = this.buildCdtsPage(lang === "fr" ? CDTS_TEMPLATE_FRA : CDTS_TEMPLATE_ENG, {
           TITLE: title ?? "",
           DESCRIPTION: description ?? "",
@@ -53267,19 +53298,29 @@ var ExportComponent = class _ExportComponent {
           }));
           const redirectsJson = JSON.stringify(redirects, null, 2);
           zip.file(`${repo}/${path}`, redirectsJson);
-        } else {
-          const html2 = this.buildCdtsPage(path === this.cdtsFiles[1] ? EXIT_PAGE_TEMPLATE_ENG : EXIT_PAGE_TEMPLATE_FRA, {
+        } else if (path === this.cdtsFiles[1]) {
+          const html = this.buildCdtsPage(LINK_DETOUR_JS, {});
+          zip.file(`${repo}/${path}`, html);
+        } else if (path === this.cdtsFiles[2] || path === this.cdtsFiles[3]) {
+          const html = this.buildCdtsPage(path === this.cdtsFiles[2] ? EXIT_PAGE_TEMPLATE_ENG : EXIT_PAGE_TEMPLATE_FRA, {
             MODIFIED: date,
             REPO: repo
           });
-          zip.file(`${repo}/${path}`, html2);
-        }
-        const html = this.buildCdtsPage(LINK_DETOUR_JS, {});
-        zip.file(`${repo}/source/scripts/external-link-detour.js`, html);
+          zip.file(`${repo}/${path}`, html);
+        } else if (path === this.cdtsFiles[4]) {
+          const html = this.buildCdtsPage(aidaLang === "en" ? INDEX_PAGE_TEMPLATE_ENG : INDEX_PAGE_TEMPLATE_FRA, {
+            MODIFIED: date,
+            CONTENT: projectPaths ? this.buildCdtsIndex(new Set(projectPaths), scope) : ""
+          });
+          console.log(yield this.htmlNormalizationService.formatHtml(html));
+          zip.file(`${repo}/${path}`, yield this.htmlNormalizationService.formatHtml(html));
+        } else
+          console.warn("Unhandled template file");
       }
+      this.projectState.setDownloadDate();
       const pageCountEN = projectPaths.filter((p) => p.startsWith("en/") || p === "en.html").length;
       const pageCountFR = projectPaths.filter((p) => p.startsWith("fr/") || p === "fr.html").length;
-      this.usageService.trackExport(this.projectData().id, this.projectData().org ?? "DEFAULT", this.projectData().storageType, this.projectData().repoType, `${repo}`, this.selectedExportTarget, pageCountEN, pageCountFR);
+      this.usageService.trackExport(this.projectData().id, this.projectData().org ?? "DEFAULT", this.projectData().storageType, this.projectData().repoType, `${repo}`, this.selectedExportVersion, pageCountEN, pageCountFR);
       const blob = yield zip.generateAsync({ type: "blob" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
@@ -53291,6 +53332,50 @@ var ExportComponent = class _ExportComponent {
   buildCdtsPage(template, vars) {
     return Object.entries(vars).reduce((html, [key, value]) => html.replaceAll(`{{${key}}}`, value), template);
   }
+  //Create index page for CDTS template
+  buildCdtsIndex(paths, scope = "inScope") {
+    const showGithubLink = !!this.projectState.getProject().lastExported && !!this.gitHubData().owner && !!this.gitHubData().repo;
+    const githubLinkHtml = showGithubLink ? `<div class="mrgn-tp-md">
+            <div class="row">
+                <ul class="toc lst-spcd col-md-12">
+                    <li class="col-md-4 col-sm-6"><a class="list-group-item active" data-exit="false" href="https://github.com/${this.gitHubData().owner}/${this.gitHubData().repo}">${this.translate.instant("project.github._title")}</a></li>
+                </ul>
+            </div>
+         </div>
+` : "";
+    const collaboratorNames = !!this.projectData().collaborators?.length;
+    const collaboratorHtml = collaboratorNames ? `<p class="mrgn-bttm-0">${this.translate.instant("collaborators.project")}</p>
+         <ul class="colcount-sm-4">${this.projectData().collaborators.map((collab) => ` <li> ${collab.login}</li>`).join("")}</ul>
+` : "";
+    if (this.selectedExportLanguage === "both") {
+      const exportedPairs = this.projectState.getPairedPages(this.selectedExportVersion, scope).filter((pair) => paths.has(pair.en.path) || paths.has(pair.fr.path));
+      const rows = exportedPairs.map((pair) => {
+        const enCell = paths.has(pair.en.path) ? `<a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${pair.en.path}">${pair.en.label ?? pair.en.path}</a>` : `<i class="fa fa-minus"></i>`;
+        const frCell = paths.has(pair.fr.path ?? pair.fr.path) ? `<a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${pair.fr.path}">${pair.fr.label}</a>` : `<i class="fa fa-minus"></i>`;
+        return `
+        <tr>
+            <td>${enCell}</td>
+            <td>${frCell}</td>
+        </tr>`;
+      }).join("");
+      return `${githubLinkHtml}${collaboratorHtml}
+      <table class="table table-striped">
+          <thead>
+              <tr>
+                  <th>English</th>
+                  <th>Fran\xE7ais</th>
+              </tr>
+          </thead>
+          <tbody>${rows}
+          </tbody>
+      </table>`;
+    } else {
+      console.log(paths);
+      const exportedPages = this.projectState.getAllPages(this.selectedExportLanguage, this.selectedExportVersion, scope).filter((page) => paths.has(page.path));
+      const items = exportedPages.map((page) => `<li><a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${page.path}">${page.label ?? page.path}</a></li>`).join("");
+      return `${githubLinkHtml}${collaboratorHtml}<ul>${items}</ul>`;
+    }
+  }
   /*_________________________________________*/
   /****** GITHUB SPECIFIC FUNCTIONS *********/
   //Get in-scope URLs and page content (used by export fxn)
@@ -53299,12 +53384,12 @@ var ExportComponent = class _ExportComponent {
       const pages = [];
       const path = node.data?.path[lang];
       const url = this.fetchService.generateUrl(path, "live");
-      const repo = this.selectedExportTarget === "prototype" ? this.gitHubData().repo : `${this.gitHubData().repo}-baseline`;
+      const repo = this.selectedExportVersion === "prototype" ? this.gitHubData().repo : `${this.gitHubData().repo}-baseline`;
       if (path && repo) {
         try {
           const filename = path.split("/").pop() || "index.html";
           const fileRow = this.filesTable().find((f) => f.path === path);
-          const isSkipped = fileRow?.status === ExportStatus.SkipNew || fileRow?.status === ExportStatus.SkipOverwrite;
+          const isSkipped = !fileRow || fileRow?.status === ExportStatus.SkipNew || fileRow?.status === ExportStatus.SkipOverwrite;
           const isNew = node?.data?.status?.isNew === true;
           if (!isSkipped) {
             if (isNew) {
@@ -53313,7 +53398,7 @@ var ExportComponent = class _ExportComponent {
               pages.push({ url, path, filename, content });
             } else {
               const doc = yield this.fetchService.fetchContent(url, "prod");
-              const breadcrumbs = this.selectedExportTarget === "prototype" ? this.projectState.getBreadcrumbChain(node.data.path[lang], lang).slice(1) : void 0;
+              const breadcrumbs = this.selectedExportVersion === "prototype" ? this.projectState.getBreadcrumbChain(node.data.path[lang], lang).slice(1) : void 0;
               const content = yield this.exportGitHubService.formatDocumentAsJekyll(doc, url, this.gitHubData().owner, repo, breadcrumbs);
               pages.push({ url, path, filename, content });
             }
@@ -53335,14 +53420,14 @@ var ExportComponent = class _ExportComponent {
   exportProjectToGitHub() {
     return __async(this, null, function* () {
       const owner = this.gitHubData().owner;
-      const repo = this.selectedExportTarget === "prototype" ? this.gitHubData().repo : `${this.gitHubData().repo}-baseline`;
+      const repo = this.selectedExportVersion === "prototype" ? this.gitHubData().repo : `${this.gitHubData().repo}-baseline`;
       const branch = this.gitHubData().branch;
       const token = this.exportGitHubService.token();
       const projectName = this.projectData().projectName;
-      const scope = this.selectedExportTarget === "prototype" ? "inScope" : "all";
+      const scope = this.selectedExportVersion === "prototype" ? "inScope" : "all";
       this.exportProgress.set({ step: "exportPages.export.progress.gatherPages", progress: 5 });
       let nodes = this.projectState.getProjectTree();
-      if (this.selectedExportTarget === "baseline") {
+      if (this.selectedExportVersion === "baseline") {
         nodes = this.projectState.getBaselineTree(nodes, "full");
       }
       let exportPages = [];
@@ -53382,7 +53467,7 @@ var ExportComponent = class _ExportComponent {
           const result = yield this.exportGitHubService.exportToGitHub(owner, repo, branch, page.path, page.filename, page.content, token, existingFiles, true);
           if (result?.content?.sha) {
             const pathLang = page.path.startsWith("en/") || page.path.endsWith("en.html") ? "en" : "fr";
-            this.projectState.setPageSha(page.path, result.content.sha, this.selectedExportTarget, pathLang);
+            this.projectState.setPageSha(page.path, result.content.sha, this.selectedExportVersion, pathLang);
           }
         } catch (error) {
           console.error(`Error exporting ${page.path}:`, error);
@@ -53413,7 +53498,7 @@ var ExportComponent = class _ExportComponent {
       this.projectState.setExportDate();
       const pageCountEN = exportPages.filter((p) => p.path.startsWith("en/") || p.path === "en.html").length;
       const pageCountFR = exportPages.filter((p) => p.path.startsWith("fr/") || p.path === "fr.html").length;
-      this.usageService.trackExport(this.projectData().id, this.projectData().org ?? "DEFAULT", this.projectData().storageType, this.projectData().repoType, `${owner}/${repo}`, this.selectedExportTarget, pageCountEN, pageCountFR);
+      this.usageService.trackExport(this.projectData().id, this.projectData().org ?? "DEFAULT", this.projectData().storageType, this.projectData().repoType, `${owner}/${repo}`, this.selectedExportVersion, pageCountEN, pageCountFR);
       setTimeout(() => this.exportProgress.set(null), 5e3);
       this.compareFiles();
     });
@@ -53429,7 +53514,7 @@ var ExportComponent = class _ExportComponent {
       let _t;
       \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.settingsOverlay = _t.first);
     }
-  }, decls: 60, vars: 52, consts: [["settingsOverlay", ""], ["item", ""], ["content", ""], ["id", "wb-cont"], ["severity", "info", "styleClass", "mb-2 sticky top-0 z-2"], [1, "flex", "lg:flex-row", "flex-column", "gap-3", "min-w-min"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "lg:mb-3", "lg:w-8", "w-full", "min-w-min"], [1, "flex", "flex-column", "lg:flex-row", "justify-content-between", "align-items-start"], [1, "flex", "flex-column"], [1, "text-2xl", "my-1"], [1, "my-1"], [1, "flex", "flex-column", "xl:flex-row", "gap-2", "xl:gap-5"], [1, "flex", "flex-row", "gap-5"], ["for", "repo", 1, "text-xs", "font-semibold"], ["id", "repo", 1, "text-color-secondary", "text-sm", "my-0"], [1, "flex", "flex-row", "flex-wrap", "row-gap-2", "column-gap-5"], [1, "flex", "flex-column", "hover:text-primary"], ["for", "export-language", 1, "text-xs", "font-semibold", "xl:my-1"], ["id", "export-language", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "size", "small", "styleClass", "secondary-outline text-primary max-h-3rem", 3, "ngModelChange", "onChange", "options", "ngModel"], [1, "mt-3", "lg:mt-0", "flex", "flex-row", "lg:flex-column", "gap-2"], ["icon", "pi pi-external-link", "outlined", "", "size", "small", "styleClass", "secondary-outline w-full", 3, "label"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "lg:mb-3", "lg:w-4", "w-full", "min-w-min"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "my-3", "lg:mt-0", "min-w-min"], ["size", "small", 3, "value"], ["pTemplate", "header", "stripedRows", ""], ["pTemplate", "body"], ["styleClass", "mt-4", 3, "header", "toggleable", "collapsed"], ["styleClass", "my-3", "icon", "pi pi-github", "severity", "primary", 3, "label", "disabled", "loading"], ["styleClass", "my-3", "icon", "pi pi-file-export", "severity", "primary", 3, "label", "disabled", "loading"], [1, "text-color-secondary"], ["styleClass", "h-2rem centered-label", 3, "value"], ["styleClass", "mt-2", 3, "severity", "text"], [1, "flex", "align-items-center", "gap-2"], [1, "pi", "pi-info-circle", "font-bold"], ["for", "owner", 1, "text-xs", "font-semibold"], ["id", "owner", 1, "text-color-secondary", "text-sm", "my-0"], ["for", "branch", 1, "text-xs", "font-semibold"], ["id", "branch", 1, "text-color-secondary", "text-sm", "my-0"], ["for", "export-type", 1, "text-xs", "font-semibold", "xl:my-1"], ["id", "export-type", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "size", "small", "styleClass", "secondary-outline text-primary max-h-3rem", 3, "ngModelChange", "onChange", "options", "ngModel"], ["icon", "pi pi-cog", "outlined", "", "size", "small", "styleClass", "secondary-outline w-full", 3, "click", "label"], ["styleClass", "w-full lg:w-30rem"], ["mode", "baseline"], [1, "flex", "flex-column", "align-items-stretch", "mt-3"], ["for", "export-type", 1, "text-sm", "font-semibold"], ["id", "export-type", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "styleClass", "secondary-outline max-h-3rem", 3, "ngModelChange", "onChange", "options", "ngModel"], ["icon", "pi pi-external-link", "outlined", "", "size", "small", "styleClass", "secondary-outline w-full", 3, "onClick", "label"], [1, "p-3", "mb-3", "text-center"], [1, "text-600", "text-sm", "opacity-90"], [1, "text-primary", "text-xl", "font-semibold"], [1, "text-center"], [1, "flex", "flex-row", "justify-content-around"], [1, "text-5xl", "font-bold", "text-primary", "mb-1"], [1, "text-600", "text-sm"], [1, "flex", "flex-row", "align-items-center", "gap-2"], ["icon", "pi pi-angle-double-right", "pTooltip", "Skip all", "tooltipPosition", "top", "size", "small", "severity", "secondary", 3, "onClick"], ["icon", "pi pi-sync", "pTooltip", "Update all", "tooltipPosition", "top", "size", "small", "severity", "primary", 3, "onClick"], [3, "click", "label", "icon"], ["styleClass", "my-3", "icon", "pi pi-github", "severity", "primary", 3, "onClick", "label", "disabled", "loading"], ["styleClass", "my-3", "icon", "pi pi-file-export", "severity", "primary", 3, "onClick", "label", "disabled", "loading"], [1, "text-white", 3, "innerHTML"]], template: function ExportComponent_Template(rf, ctx) {
+  }, decls: 61, vars: 53, consts: [["settingsOverlay", ""], ["item", ""], ["content", ""], ["id", "wb-cont"], ["severity", "info", "styleClass", "mb-2 sticky top-0 z-2"], [1, "flex", "lg:flex-row", "flex-column", "gap-3", "min-w-min"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "lg:mb-3", "lg:w-8", "w-full", "min-w-min"], [1, "flex", "flex-column", "lg:flex-row", "justify-content-between", "align-items-start"], [1, "flex", "flex-column"], [1, "text-2xl", "my-1"], [1, "my-1"], [1, "flex", "flex-column", "xl:flex-row", "gap-2", "xl:gap-5"], [1, "flex", "flex-row", "gap-5"], ["for", "repo", 1, "text-xs", "font-semibold"], ["id", "repo", 1, "text-color-secondary", "text-sm", "my-0"], [1, "flex", "flex-row", "flex-wrap", "row-gap-2", "column-gap-5"], [1, "flex", "flex-column", "hover:text-primary"], ["for", "export-language", 1, "text-xs", "font-semibold", "xl:my-1"], ["id", "export-language", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "size", "small", "styleClass", "secondary-outline text-primary max-h-3rem", 3, "ngModelChange", "onChange", "options", "ngModel"], [1, "mt-3", "lg:mt-0", "flex", "flex-row", "lg:flex-column", "gap-2"], ["icon", "pi pi-external-link", "outlined", "", "size", "small", "styleClass", "secondary-outline w-full", 3, "label"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "lg:mb-3", "lg:w-4", "w-full", "min-w-min"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "my-3", "lg:mt-0", "min-w-min"], ["size", "small", 3, "value"], ["pTemplate", "header", "stripedRows", ""], ["pTemplate", "body"], ["styleClass", "mt-4", 3, "header", "toggleable", "collapsed"], ["styleClass", "my-3", "icon", "pi pi-github", "severity", "primary", 3, "label", "disabled", "loading"], [1, "text-color-secondary"], ["styleClass", "h-2rem centered-label", 3, "value"], ["styleClass", "mt-2", 3, "severity", "text"], [1, "flex", "align-items-center", "gap-2"], [1, "pi", "pi-info-circle", "font-bold"], ["for", "owner", 1, "text-xs", "font-semibold"], ["id", "owner", 1, "text-color-secondary", "text-sm", "my-0"], ["for", "branch", 1, "text-xs", "font-semibold"], ["id", "branch", 1, "text-color-secondary", "text-sm", "my-0"], ["for", "export-source", 1, "text-xs", "font-semibold", "xl:my-1"], ["id", "export-source", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "size", "small", "styleClass", "secondary-outline text-primary max-h-3rem", 3, "ngModelChange", "options", "ngModel"], ["for", "export-type", 1, "text-xs", "font-semibold", "xl:my-1"], ["id", "export-type", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "size", "small", "styleClass", "secondary-outline text-primary max-h-3rem", 3, "ngModelChange", "onChange", "options", "ngModel"], ["icon", "pi pi-cog", "outlined", "", "size", "small", "styleClass", "secondary-outline w-full", 3, "click", "label"], ["styleClass", "w-full lg:w-30rem"], ["mode", "baseline"], [1, "flex", "flex-column", "align-items-stretch", "mt-3"], ["for", "export-type", 1, "text-sm", "font-semibold"], ["id", "export-type", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "styleClass", "secondary-outline max-h-3rem", 3, "ngModelChange", "onChange", "options", "ngModel"], ["icon", "pi pi-external-link", "outlined", "", "size", "small", "styleClass", "secondary-outline w-full", 3, "onClick", "label"], [1, "p-3", "mb-3", "text-center"], [1, "text-600", "text-sm", "opacity-90"], [1, "text-primary", "text-xl", "font-semibold"], [1, "text-center"], [1, "flex", "flex-row", "justify-content-around"], [1, "text-5xl", "font-bold", "text-primary", "mb-1"], [1, "text-600", "text-sm"], [1, "flex", "flex-row", "align-items-center", "gap-2"], ["icon", "pi pi-angle-double-right", "pTooltip", "Skip all", "tooltipPosition", "top", "size", "small", "severity", "secondary", 3, "onClick"], ["icon", "pi pi-sync", "pTooltip", "Update all", "tooltipPosition", "top", "size", "small", "severity", "primary", 3, "onClick"], [3, "click", "label", "icon"], ["styleClass", "my-3", "icon", "pi pi-github", "severity", "primary", 3, "onClick", "label", "disabled", "loading"], ["severity", "info", "styleClass", "mt-3"], ["styleClass", "my-3", "icon", "pi pi-file-export", "severity", "primary", 3, "onClick", "label", "disabled", "loading"], [1, "text-white", 3, "innerHTML"]], template: function ExportComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "h1", 3);
       \u0275\u0275text(1);
@@ -53469,89 +53554,91 @@ var ExportComponent = class _ExportComponent {
         return ctx.compareFiles();
       });
       \u0275\u0275elementEnd()();
-      \u0275\u0275template(31, ExportComponent_Conditional_31_Template, 5, 5, "div", 16);
+      \u0275\u0275template(31, ExportComponent_Conditional_31_Template, 5, 5, "div", 16)(32, ExportComponent_Conditional_32_Template, 5, 5, "div", 16);
       \u0275\u0275elementEnd()()();
-      \u0275\u0275elementStart(32, "div", 19);
-      \u0275\u0275template(33, ExportComponent_Conditional_33_Template, 6, 4)(34, ExportComponent_Conditional_34_Template, 2, 3, "p-button", 20);
+      \u0275\u0275elementStart(33, "div", 19);
+      \u0275\u0275template(34, ExportComponent_Conditional_34_Template, 6, 4)(35, ExportComponent_Conditional_35_Template, 2, 3, "p-button", 20);
       \u0275\u0275elementEnd()();
-      \u0275\u0275template(35, ExportComponent_Conditional_35_Template, 1, 0, "aida-sign-in-banner");
+      \u0275\u0275template(36, ExportComponent_Conditional_36_Template, 1, 0, "aida-sign-in-banner");
       \u0275\u0275elementEnd();
-      \u0275\u0275template(36, ExportComponent_Conditional_36_Template, 3, 1, "div", 21)(37, ExportComponent_Conditional_37_Template, 29, 19, "div", 21);
+      \u0275\u0275template(37, ExportComponent_Conditional_37_Template, 3, 1, "div", 21)(38, ExportComponent_Conditional_38_Template, 29, 19, "div", 21);
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(38, "div", 22)(39, "h2", 9);
-      \u0275\u0275text(40);
-      \u0275\u0275pipe(41, "translate");
+      \u0275\u0275elementStart(39, "div", 22)(40, "h2", 9);
+      \u0275\u0275text(41);
+      \u0275\u0275pipe(42, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(42, "p", 10);
-      \u0275\u0275text(43);
-      \u0275\u0275pipe(44, "translate");
+      \u0275\u0275elementStart(43, "p", 10);
+      \u0275\u0275text(44);
       \u0275\u0275pipe(45, "translate");
+      \u0275\u0275pipe(46, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(46, "p-table", 23);
-      \u0275\u0275template(47, ExportComponent_ng_template_47_Template, 10, 6, "ng-template", 24)(48, ExportComponent_ng_template_48_Template, 6, 7, "ng-template", 25);
+      \u0275\u0275elementStart(47, "p-table", 23);
+      \u0275\u0275template(48, ExportComponent_ng_template_48_Template, 10, 6, "ng-template", 24)(49, ExportComponent_ng_template_49_Template, 6, 7, "ng-template", 25);
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(49, "p-panel", 26);
-      \u0275\u0275pipe(50, "translate");
-      \u0275\u0275elementStart(51, "p-table", 23);
-      \u0275\u0275template(52, ExportComponent_ng_template_52_Template, 10, 6, "ng-template", 24)(53, ExportComponent_ng_template_53_Template, 6, 7, "ng-template", 25);
+      \u0275\u0275elementStart(50, "p-panel", 26);
+      \u0275\u0275pipe(51, "translate");
+      \u0275\u0275elementStart(52, "p-table", 23);
+      \u0275\u0275template(53, ExportComponent_ng_template_53_Template, 10, 6, "ng-template", 24)(54, ExportComponent_ng_template_54_Template, 6, 7, "ng-template", 25);
       \u0275\u0275elementEnd()();
-      \u0275\u0275template(54, ExportComponent_Conditional_54_Template, 2, 5, "p-button", 27)(55, ExportComponent_Conditional_55_Template, 2, 5, "p-button", 28)(56, ExportComponent_Conditional_56_Template, 3, 7, "span", 29)(57, ExportComponent_Conditional_57_Template, 3, 1, "p-progressbar", 30)(58, ExportComponent_Conditional_58_Template, 1, 2, "p-message", 31);
+      \u0275\u0275template(55, ExportComponent_Conditional_55_Template, 2, 5, "p-button", 27)(56, ExportComponent_Conditional_56_Template, 3, 6)(57, ExportComponent_Conditional_57_Template, 3, 7, "span", 28)(58, ExportComponent_Conditional_58_Template, 3, 1, "p-progressbar", 29)(59, ExportComponent_Conditional_59_Template, 1, 2, "p-message", 30);
       \u0275\u0275elementEnd();
-      \u0275\u0275template(59, ExportComponent_Conditional_59_Template, 2, 0, "div", 22);
+      \u0275\u0275template(60, ExportComponent_Conditional_60_Template, 2, 0, "div", 22);
     }
     if (rf & 2) {
-      let tmp_25_0;
+      let tmp_26_0;
       \u0275\u0275advance();
-      \u0275\u0275textInterpolate(ctx.repoType() === "github" ? \u0275\u0275pipeBind1(2, 29, "exportPages.github._title") : \u0275\u0275pipeBind1(3, 31, "exportPages.zip._title"));
+      \u0275\u0275textInterpolate(ctx.repoType() === "github" ? \u0275\u0275pipeBind1(2, 30, "exportPages.github._title") : \u0275\u0275pipeBind1(3, 32, "exportPages.zip._title"));
       \u0275\u0275advance(3);
       \u0275\u0275conditional(!ctx.exportGitHubService.token() && !ctx.authService.isAuthenticated() && ctx.repoType() === "github" ? 4 : -1);
       \u0275\u0275advance(6);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(11, 33, "exportPages.settings._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(11, 34, "exportPages.settings._title"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(14, 35, "exportPages.settings.description." + ctx.selectedExportTarget));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(14, 36, "exportPages.settings.description." + ctx.selectedExportVersion));
       \u0275\u0275advance(4);
       \u0275\u0275conditional(ctx.repoType() === "github" ? 17 : -1);
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(21, 37, "project.github.label.repo"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(21, 38, "project.github.label.repo"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate2("", ctx.projectData().github.repo, "", ctx.selectedExportTarget === "baseline" ? "-baseline" : "", "");
+      \u0275\u0275textInterpolate2("", ctx.projectData().github.repo, "", ctx.selectedExportVersion === "baseline" ? "-baseline" : "", "");
       \u0275\u0275advance();
       \u0275\u0275conditional(ctx.repoType() === "github" ? 24 : -1);
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(29, 39, "exportPages.settings.exportLanguage"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(29, 40, "exportPages.settings.exportLanguage"));
       \u0275\u0275advance(2);
       \u0275\u0275property("options", ctx.exportLanguageOptions);
       \u0275\u0275twoWayProperty("ngModel", ctx.selectedExportLanguage);
       \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.projectData().github.hasBaselineRepo ? 31 : -1);
-      \u0275\u0275advance(2);
-      \u0275\u0275conditional(ctx.hasRepoConfig() ? 33 : -1);
+      \u0275\u0275conditional(ctx.exportSourceOptions.length > 1 ? 31 : -1);
       \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.repoType() === "github" ? 34 : -1);
+      \u0275\u0275conditional(ctx.projectData().github.hasBaselineRepo ? 32 : -1);
+      \u0275\u0275advance(2);
+      \u0275\u0275conditional(ctx.hasRepoConfig() ? 34 : -1);
       \u0275\u0275advance();
       \u0275\u0275conditional(ctx.repoType() === "github" ? 35 : -1);
       \u0275\u0275advance();
-      \u0275\u0275conditional(!ctx.hasRepoConfig() ? 36 : 37);
+      \u0275\u0275conditional(ctx.repoType() === "github" ? 36 : -1);
+      \u0275\u0275advance();
+      \u0275\u0275conditional(!ctx.hasRepoConfig() ? 37 : 38);
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(41, 41, "exportPages.export._title"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(42, 42, "exportPages.export._title"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(ctx.repoType() === "github" ? \u0275\u0275pipeBind1(44, 43, "exportPages.export.github.description") : \u0275\u0275pipeBind1(45, 45, "exportPages.export.zip.description"));
+      \u0275\u0275textInterpolate(ctx.repoType() === "github" ? \u0275\u0275pipeBind1(45, 44, "exportPages.export.github.description") : \u0275\u0275pipeBind1(46, 46, "exportPages.export.zip.description"));
       \u0275\u0275advance(3);
       \u0275\u0275property("value", ctx.projectTable());
       \u0275\u0275advance(3);
-      \u0275\u0275property("header", \u0275\u0275pipeBind2(50, 47, "exportPages.export.templateFiles", \u0275\u0275pureFunction1(50, _c147, ctx.templateFileCount())))("toggleable", true)("collapsed", true);
+      \u0275\u0275property("header", \u0275\u0275pipeBind2(51, 48, "exportPages.export.templateFiles", \u0275\u0275pureFunction1(51, _c147, ctx.templateFileCount())))("toggleable", true)("collapsed", true);
       \u0275\u0275advance(2);
       \u0275\u0275property("value", ctx.templateTable());
       \u0275\u0275advance(3);
-      \u0275\u0275conditional(ctx.repoType() === "github" ? 54 : 55);
+      \u0275\u0275conditional(ctx.repoType() === "github" ? 55 : 56);
       \u0275\u0275advance(2);
-      \u0275\u0275conditional(ctx.filesTable().length ? 56 : -1);
+      \u0275\u0275conditional(ctx.filesTable().length ? 57 : -1);
       \u0275\u0275advance();
-      \u0275\u0275conditional((tmp_25_0 = ctx.exportProgress()) ? 57 : -1, tmp_25_0);
+      \u0275\u0275conditional((tmp_26_0 = ctx.exportProgress()) ? 58 : -1, tmp_26_0);
       \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.exportMessage() ? 58 : -1);
+      \u0275\u0275conditional(ctx.exportMessage() ? 59 : -1);
       \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.hasRepoConfig() && ctx.repoType() === "github" ? 59 : -1);
+      \u0275\u0275conditional(ctx.hasRepoConfig() && ctx.repoType() === "github" ? 60 : -1);
     }
   }, dependencies: [CommonModule, DatePipe, FormsModule, NgControlStatus, NgModel, TranslateModule, TranslatePipe, MessageModule, Message, PrimeTemplate, ButtonModule, Button, TooltipModule, Tooltip, PopoverModule, Popover, SelectButtonModule, SelectButton, DividerModule, Divider, TableModule, Table, ChipModule, Chip, PanelModule, Panel, ProgressBarModule, ProgressBar, SetupRepoComponent, SignInBannerComponent, BookmarkletComponent], encapsulation: 2 });
 };
@@ -53593,7 +53680,7 @@ var ExportComponent = class _ExportComponent {
         <div class="flex flex-column lg:flex-row justify-content-between align-items-start">\r
             <div class="flex flex-column">\r
                 <h2 class="text-2xl my-1">{{ 'exportPages.settings._title' | translate }}</h2>\r
-                <p class="my-1">{{ 'exportPages.settings.description.' + selectedExportTarget | translate }}</p>\r
+                <p class="my-1">{{ 'exportPages.settings.description.' + selectedExportVersion | translate }}</p>\r
                 <div class="flex flex-column xl:flex-row gap-2 xl:gap-5">\r
                     <!-- Repository Info Row -->\r
                     <div class="flex flex-row gap-5">\r
@@ -53605,7 +53692,7 @@ var ExportComponent = class _ExportComponent {
                         }\r
                         <div>\r
                             <label for="repo" class="text-xs font-semibold">{{ 'project.github.label.repo' | translate }}</label>\r
-                            <p id="repo" class="text-color-secondary text-sm my-0">{{ projectData().github.repo }}{{(selectedExportTarget === 'baseline')?'-baseline':''}}</p>\r
+                            <p id="repo" class="text-color-secondary text-sm my-0">{{ projectData().github.repo }}{{(selectedExportVersion === 'baseline')?'-baseline':''}}</p>\r
                         </div>\r
                         @if(repoType() === 'github'){\r
                         <div>\r
@@ -53621,12 +53708,20 @@ var ExportComponent = class _ExportComponent {
                             <p-selectButton id="export-language" allowEmpty="false" optionLabel="label" optionValue="value" size="small" styleClass="secondary-outline text-primary max-h-3rem"\r
                                             [options]="exportLanguageOptions" [(ngModel)]="selectedExportLanguage" (onChange)="compareFiles()" />\r
                         </div>\r
+                        <!--Choose export source-->\r
+                        @if(exportSourceOptions.length > 1){\r
+                        <div class="flex flex-column hover:text-primary">\r
+                            <label for="export-source" class="text-xs font-semibold xl:my-1">{{ 'exportPages.settings.exportSource' | translate }}</label>\r
+                            <p-selectButton id="export-source" allowEmpty="false" optionLabel="label" optionValue="value" size="small" styleClass="secondary-outline text-primary max-h-3rem"\r
+                                            [options]="exportSourceOptions" [(ngModel)]="selectedExportSource" />\r
+                        </div>\r
+                        }\r
                         <!--Choose export type-->\r
                         @if (projectData().github.hasBaselineRepo) {\r
                         <div class="flex flex-column hover:text-primary">\r
                             <label for="export-type" class="text-xs font-semibold xl:my-1">{{ 'exportPages.settings.exportVersion' | translate }}</label>\r
                             <p-selectButton id="export-type" allowEmpty="false" optionLabel="label" optionValue="value" size="small" styleClass="secondary-outline text-primary max-h-3rem"\r
-                                            [options]="exportTargetOptions" [(ngModel)]="selectedExportTarget" (onChange)="compareFiles()" />\r
+                                            [options]="exportVersionOptions" [(ngModel)]="selectedExportVersion" (onChange)="compareFiles()" />\r
                         </div>\r
                         }\r
                     </div>\r
@@ -53647,8 +53742,8 @@ var ExportComponent = class _ExportComponent {
                     <div class="flex flex-column align-items-stretch mt-3">\r
                         <label for="export-type" class="text-sm font-semibold">{{ 'exportPages.settings.exportVersion' | translate }}</label>\r
                         <p-selectButton id="export-type"\r
-                                        [options]="exportTargetOptions"\r
-                                        [(ngModel)]="selectedExportTarget"\r
+                                        [options]="exportVersionOptions"\r
+                                        [(ngModel)]="selectedExportVersion"\r
                                         (onChange)="compareFiles()"\r
                                         allowEmpty="false"\r
                                         optionLabel="label"\r
@@ -53686,8 +53781,8 @@ var ExportComponent = class _ExportComponent {
         <div class="flex flex-column align-items-stretch mt-3">\r
             <label for="export-type" class="text-sm font-semibold">{{ 'exportPages.settings.exportVersion' | translate }}</label>\r
             <p-selectButton id="export-type"\r
-                            [options]="exportTargetOptions"\r
-                            [(ngModel)]="selectedExportTarget"\r
+                            [options]="exportVersionOptions"\r
+                            [(ngModel)]="selectedExportVersion"\r
                             (onChange)="compareFiles()"\r
                             allowEmpty="false"\r
                             optionLabel="label"\r
@@ -53724,7 +53819,7 @@ var ExportComponent = class _ExportComponent {
                         {{ projectFileCount() }}\r
                     </div>\r
                     <div class="text-600 text-sm">\r
-                        {{ selectedExportTarget === 'prototype' ? ('exportPages.data.inScope' | translate) : ('exportPages.data.baseline' | translate) }}\r
+                        {{ selectedExportVersion === 'prototype' ? ('exportPages.data.inScope' | translate) : ('exportPages.data.baseline' | translate) }}\r
                     </div>\r
                 </div>\r
                 <div>\r
@@ -53808,6 +53903,14 @@ var ExportComponent = class _ExportComponent {
               [loading]="exportProgress()" />\r
     }\r
     @else{\r
+    @if (!hasLocal()){\r
+    <p-message severity="info" styleClass="mt-3">\r
+        <div class="flex align-items-center gap-2">\r
+            <i class="pi pi-info-circle font-bold"></i>\r
+            <span>{{'exportPages.local.warningMessage' | translate}}</span>\r
+        </div>\r
+    </p-message>\r
+    }\r
     <p-button styleClass="my-3" icon="pi pi-file-export" [label]="'exportPages.export.button.zip' | translate" severity="primary"\r
               (onClick)="exportToFile()"\r
               [disabled]="projectFileCount() === 0 || !gitHubData().repo"\r
@@ -54897,9 +55000,12 @@ function IaDiagramComponent_ng_template_20_Template(rf, ctx) {
       const ctx_r3 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r3.onDrop());
     });
-    \u0275\u0275elementStart(3, "p", 19);
-    \u0275\u0275element(4, "a", 20);
-    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(3, "p", 19)(4, "a", 20);
+    \u0275\u0275listener("click", function IaDiagramComponent_ng_template_20_Template_a_click_4_listener($event) {
+      \u0275\u0275restoreView(_r2);
+      return \u0275\u0275resetView($event.preventDefault());
+    });
+    \u0275\u0275elementEnd()();
     \u0275\u0275template(5, IaDiagramComponent_ng_template_20_Conditional_5_Template, 2, 6, "i", 21)(6, IaDiagramComponent_ng_template_20_Conditional_6_Template, 1, 1, "p-button", 22);
     \u0275\u0275elementEnd();
   }
@@ -54909,11 +55015,11 @@ function IaDiagramComponent_ng_template_20_Template(rf, ctx) {
     \u0275\u0275conditional((ctx_r3.selectedLanguage() === "en" ? node_r3.data.live.en.isOrphan : node_r3.data.live.fr.isOrphan) ? 0 : -1);
     \u0275\u0275advance(4);
     \u0275\u0275classProp("cursor-move", ctx_r3.selectedView() === "changes");
-    \u0275\u0275property("href", ctx_r3.selectedLanguage() === "en" ? node_r3.data.live.en.url : node_r3.data.live.fr.url, \u0275\u0275sanitizeUrl)("innerHTML", ctx_r3.getH1Display(node_r3), \u0275\u0275sanitizeHtml);
+    \u0275\u0275property("href", ctx_r3.selectedLanguage() === "en" ? `https://www.canada.ca/${node_r3.data.path.en}` : `https://www.canada.ca/${node_r3.data.path.fr}`, \u0275\u0275sanitizeUrl)("innerHTML", ctx_r3.getH1Display(node_r3), \u0275\u0275sanitizeHtml);
     \u0275\u0275advance();
     \u0275\u0275conditional((node_r3.data.collapsedChildren == null ? null : node_r3.data.collapsedChildren.length) || (node_r3.data.hiddenChildrenUrls == null ? null : node_r3.data.hiddenChildrenUrls.length) ? 5 : -1);
     \u0275\u0275advance();
-    \u0275\u0275conditional(!node_r3.data.isCrawled && !node_r3.data.status.isNew && ctx_r3.selectedView() === "changes" ? 6 : -1);
+    \u0275\u0275conditional(!node_r3.data.isCrawled && !node_r3.data.isNavChild && !node_r3.data.status.isNew && ctx_r3.selectedView() === "changes" ? 6 : -1);
   }
 }
 function IaDiagramComponent_Conditional_24_Template(rf, ctx) {
@@ -54938,7 +55044,24 @@ var IaDiagramComponent = class _IaDiagramComponent {
   iaDiagram = inject(IaDiagramService);
   treeNodeStyleService = inject(TreeNodeStyleService);
   addUrlsService = inject(AddUrlsService);
+  fetchService = inject(FetchService);
   primaryLang = this.projectState.detectPrimaryLanguage();
+  //Signals
+  projectData = this.projectState.getProject;
+  hasGitHub = signal(false);
+  hasLocal = signal(false);
+  ngOnInit() {
+    return __async(this, null, function* () {
+      if (this.projectData().lastExported) {
+        const url = this.fetchService.generateUrl("index.html", "prototype", this.projectData().github.owner, this.projectData().github.repo);
+        this.hasGitHub.set((yield this.fetchService.fetchStatus(url, "proto", 2)).ok);
+      }
+      if (this.projectData().lastDownloaded) {
+        const url = this.fetchService.generateUrl("index.html", "ut", this.projectData().github.owner, this.projectData().github.repo);
+        this.hasLocal.set((yield this.fetchService.fetchStatus(url, "proto", 2)).ok);
+      }
+    });
+  }
   projectTree = computed(() => {
     let tree = this.projectState.getProject().projectData;
     if (this.selectedTree() !== "full") {
@@ -54953,8 +55076,8 @@ var IaDiagramComponent = class _IaDiagramComponent {
     } else if (this.selectedView() === "final") {
       tree = this.projectState.getFinalTree(tree);
     }
-    if (this.collapsedNodes().size > 0 || this.hiddenNodes().size > 0) {
-      tree = this.projectState.getDisplayTree(tree, this.collapsedNodes(), this.hiddenNodes());
+    if (this.collapsedNodes().size > 0 || this.hiddenNodes().size > 0 || this.navNodes().size > 0) {
+      tree = this.projectState.getDisplayTree(tree, this.collapsedNodes(), this.hiddenNodes(), this.navNodes());
     }
     this.treeNodeStyleService.updateNodeStyles(tree);
     return tree;
@@ -55013,6 +55136,7 @@ var IaDiagramComponent = class _IaDiagramComponent {
           {
             label: this.translate.instant(`common.editNode`),
             icon: "pi pi-pen-to-square",
+            disabled: node.data.isNavChild,
             command: () => {
               this.selectedNode = node;
               this.editNode = true;
@@ -55049,23 +55173,22 @@ var IaDiagramComponent = class _IaDiagramComponent {
     if (this.selectedView() === "changes" && (canMoveRight || canMoveLeft)) {
       this.items[0].items.push({ separator: true });
     }
-    if (this.selectedView() === "changes" && !node.data.isCrawled) {
+    if (this.selectedView() === "changes" && !node.data.isCrawled && !node.data.isNavChild) {
       this.items[0].items.push({
         label: this.translate.instant(`iaDiagram.menu.findChildren`),
         icon: "pi pi-search",
-        disabled: node.data.isCrawled,
         command: () => {
           this.addUrlsService.addChildren(node, this.primaryLang);
-          console.log("test");
         }
       });
     }
-    if (this.selectedView() === "changes") {
+    if (this.selectedView() === "changes" && !node.data.isNavChild) {
       this.items[0].items.push({
         label: this.translate.instant(`iaDiagram.menu.createChild`),
         icon: "pi pi-file-plus text-green-500",
         command: () => {
-          this.projectState.createNode(node);
+          this.selectedNode = this.projectState.createNode(node);
+          this.editNode = true;
         }
       }, {
         label: this.translate.instant(`iaDiagram.menu.deleteNode`),
@@ -55075,11 +55198,11 @@ var IaDiagramComponent = class _IaDiagramComponent {
         }
       });
     }
-    if (this.projectTree()[0].data.url !== node.data.url) {
+    if (this.projectTree()[0].data.path[this.primaryLang] !== node.data.path[this.primaryLang] && !node.data.isNavChild) {
       this.items[1].items.push({
         label: this.translate.instant(`iaDiagram.menu.viewAsRoot`),
         icon: "pi pi-window-minimize",
-        command: () => this.selectedTree.set(node.data.url)
+        command: () => this.selectedTree.set(node.data.path[this.primaryLang])
       });
     }
     if (this.selectedTree() !== "full") {
@@ -55093,7 +55216,7 @@ var IaDiagramComponent = class _IaDiagramComponent {
       this.items[1].items.push({
         label: this.translate.instant(`iaDiagram.menu.hideChildren`),
         icon: "pi pi-eye-slash",
-        command: () => this.collapsedNodes.update((set) => /* @__PURE__ */ new Set([...set, node.data.url]))
+        command: () => this.collapsedNodes.update((set) => /* @__PURE__ */ new Set([...set, node.data.path[this.primaryLang]]))
       });
     }
     if (!node.children?.length && (node.data.collapsedChildren?.length || node.data.hiddenChildrenUrls?.length)) {
@@ -55103,7 +55226,7 @@ var IaDiagramComponent = class _IaDiagramComponent {
         command: () => {
           this.collapsedNodes.update((set) => {
             const next = new Set(set);
-            next.delete(node.data.url);
+            next.delete(node.data.path[this.primaryLang]);
             return next;
           });
           this.hiddenNodes.update((set) => {
@@ -55118,7 +55241,7 @@ var IaDiagramComponent = class _IaDiagramComponent {
       this.items[1].items.push({
         label: this.translate.instant(`iaDiagram.menu.hideNode`),
         icon: "pi pi-eye-slash",
-        command: () => this.hiddenNodes.update((set) => /* @__PURE__ */ new Set([...set, node.data.url]))
+        command: () => this.hiddenNodes.update((set) => /* @__PURE__ */ new Set([...set, node.data.path[this.primaryLang]]))
       });
     }
     if (node.children?.length && node.data.hiddenChildrenUrls?.length) {
@@ -55129,6 +55252,24 @@ var IaDiagramComponent = class _IaDiagramComponent {
           const next = new Set(set);
           node.data.hiddenChildrenUrls.forEach((url) => next.delete(url));
           return next;
+        })
+      });
+    }
+    if (!node.data.isNavChild) {
+      this.items[1].items.push({
+        label: node.data.navChildrenVisible ? this.translate.instant(`iaDiagram.menu.hideNavChildren`) : this.translate.instant(`iaDiagram.menu.showNavChildren`),
+        icon: node.data.navChildrenVisible ? "pi pi-eye-slash" : "pi pi-eye",
+        command: () => __async(this, null, function* () {
+          const path = node.data.path[this.primaryLang];
+          const type = this.projectState.getProject().repoType;
+          const version2 = type === "github" && this.hasGitHub() ? "prototype" : type === "local" && this.hasLocal() ? "ut" : "live";
+          const url = this.fetchService.generateUrl(path, version2, this.projectData().github.owner, this.projectData().github.repo);
+          const linkedPaths = yield this.fetchService.getPaths(url);
+          const projectPaths = new Set(this.projectState.getAllPages(this.primaryLang).map((p) => p.path));
+          const directChildPaths = new Set((node.children ?? []).map((child) => child.data.path[this.primaryLang]));
+          const filteredPaths = linkedPaths.filter((p) => projectPaths.has(p) && !directChildPaths.has(p) && p !== path);
+          console.log(filteredPaths);
+          this.navNodes.update((map) => new Map(map).set(path, filteredPaths));
         })
       });
     }
@@ -55143,6 +55284,7 @@ var IaDiagramComponent = class _IaDiagramComponent {
   // Show/hide pages or children
   collapsedNodes = signal(/* @__PURE__ */ new Set());
   hiddenNodes = signal(/* @__PURE__ */ new Set());
+  navNodes = signal(/* @__PURE__ */ new Map());
   // Drag & drop
   dragNode = signal(null);
   dropTarget = signal(null);
@@ -55191,7 +55333,7 @@ var IaDiagramComponent = class _IaDiagramComponent {
       let _t;
       \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.menu = _t.first);
     }
-  }, decls: 25, vars: 27, consts: [["menu", ""], [1, "fullscreen-overlay", "surface-card"], [1, "flex", "flex-row", "justify-content-between", "align-items-center", "pl-2", "mx-3", "border-bottom-1", "border-200"], [1, "mb-2"], ["icon", "pi pi-times", "text", "", "rounded", "", 3, "onClick"], [1, "overflow-auto"], [1, "flex", "flex-row", "absolute"], [1, "flex", "flex-column", "hover:text-primary", "z-1", "ml-4"], ["for", "view", 1, "text-xs", "font-semibold", "xl:my-1"], ["id", "view", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "size", "small", "styleClass", "secondary-outline text-primary max-h-3rem", 3, "ngModelChange", "onChange", "options", "ngModel"], ["id", "view", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "size", "small", "styleClass", "secondary-outline text-primary max-h-3rem", 3, "ngModelChange", "options", "ngModel"], [3, "value"], ["pTemplate", "default"], [3, "model", "popup"], ["styleClass", "w-10", 3, "visibleChange", "header", "modal", "maximizable", "visible"], [3, "node", "isOpen"], [1, "-mt-6", "mb-6"], ["icon", "pi pi-ellipsis-h", "size", "small", "text", "", 1, "absolute", "top-0", "right-0", "-mt-1", "-mr-1", 3, "click"], [1, "h-full", 3, "dragstart", "dragover", "dragleave", "drop"], [1, "pb-2"], ["target", "_blank", 3, "href", "innerHTML"], ["tooltipPosition", "top", "tooltipStyleClass", "z-200", 1, "pi", "pi-eye-slash", "text-sm", "text-color-secondary", "opacity-70", "absolute", "bottom-0", "right-0", "mb-1", "mr-2", 3, "pTooltip"], ["icon", "pi pi-plus-circle", "rounded", "", "size", "small", "text", "", 1, "absolute", "left-50", "-translate-x-50", "bottom-0", "-mb-1", 3, "loading"], ["tooltipPosition", "top", "tooltipStyleClass", "z-200", 1, "pi", "pi-times", "text-red-500", 3, "pTooltip"], ["icon", "pi pi-plus-circle", "rounded", "", "size", "small", "text", "", 1, "absolute", "left-50", "-translate-x-50", "bottom-0", "-mb-1", 3, "click", "loading"], [3, "dialogClose", "node", "isOpen"]], template: function IaDiagramComponent_Template(rf, ctx) {
+  }, decls: 25, vars: 27, consts: [["menu", ""], [1, "fullscreen-overlay", "surface-card"], [1, "flex", "flex-row", "justify-content-between", "align-items-center", "pl-2", "mx-3", "border-bottom-1", "border-200"], [1, "mb-2"], ["icon", "pi pi-times", "text", "", "rounded", "", 3, "onClick"], [1, "overflow-auto"], [1, "flex", "flex-row", "absolute"], [1, "flex", "flex-column", "hover:text-primary", "z-1", "ml-4"], ["for", "view", 1, "text-xs", "font-semibold", "xl:my-1"], ["id", "view", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "size", "small", "styleClass", "secondary-outline text-primary max-h-3rem", 3, "ngModelChange", "onChange", "options", "ngModel"], ["id", "view", "allowEmpty", "false", "optionLabel", "label", "optionValue", "value", "size", "small", "styleClass", "secondary-outline text-primary max-h-3rem", 3, "ngModelChange", "options", "ngModel"], [3, "value"], ["pTemplate", "default"], [3, "model", "popup"], ["styleClass", "w-10", 3, "visibleChange", "header", "modal", "maximizable", "visible"], [3, "node", "isOpen"], [1, "-mt-6", "mb-6"], ["icon", "pi pi-ellipsis-h", "size", "small", "text", "", 1, "absolute", "top-0", "right-0", "-mt-1", "-mr-1", 3, "click"], [1, "h-full", 3, "dragstart", "dragover", "dragleave", "drop"], [1, "pb-2"], ["target", "_blank", 3, "click", "href", "innerHTML"], ["tooltipPosition", "top", "tooltipStyleClass", "z-200", 1, "pi", "pi-eye-slash", "text-sm", "text-color-secondary", "opacity-70", "absolute", "bottom-0", "right-0", "mb-1", "mr-2", 3, "pTooltip"], ["icon", "pi pi-plus-circle", "rounded", "", "size", "small", "text", "", 1, "absolute", "left-50", "-translate-x-50", "bottom-0", "-mb-1", 3, "loading"], ["tooltipPosition", "top", "tooltipStyleClass", "z-200", 1, "pi", "pi-times", "text-red-500", 3, "pTooltip"], ["icon", "pi pi-plus-circle", "rounded", "", "size", "small", "text", "", 1, "absolute", "left-50", "-translate-x-50", "bottom-0", "-mb-1", 3, "click", "loading"], [3, "dialogClose", "node", "isOpen"]], template: function IaDiagramComponent_Template(rf, ctx) {
     if (rf & 1) {
       const _r1 = \u0275\u0275getCurrentView();
       \u0275\u0275elementStart(0, "div", 1)(1, "div", 2)(2, "h1", 3);
@@ -55317,12 +55459,12 @@ var IaDiagramComponent = class _IaDiagramComponent {
                 <!--PAGE-->\r
                 <p-button (click)="onMenuClick($event, node)" icon="pi pi-ellipsis-h" size="small" text class="absolute top-0 right-0 -mt-1 -mr-1" />\r
                 <div class="h-full" (dragstart)="onDragStart(node)" (dragover)="onDragOver($event, node)" (dragleave)="onDragLeave(node)" (drop)="onDrop()">\r
-                    <p class="pb-2"><a [class.cursor-move]="selectedView()==='changes'" [href]="selectedLanguage() === 'en' ? node.data.live.en.url : node.data.live.fr.url" target="_blank" [innerHTML]="getH1Display(node)"></a></p>\r
+                    <p class="pb-2"><a [class.cursor-move]="selectedView()==='changes'" [href]="selectedLanguage() === 'en' ? \`https://www.canada.ca/\${node.data.path.en}\` : \`https://www.canada.ca/\${node.data.path.fr}\`" target="_blank" [innerHTML]="getH1Display(node)" (click)="$event.preventDefault()"></a></p>\r
                     @if(node.data.collapsedChildren?.length || node.data.hiddenChildrenUrls?.length){\r
                     <i class="pi pi-eye-slash text-sm text-color-secondary opacity-70 absolute bottom-0 right-0 mb-1 mr-2"\r
                        [pTooltip]="'iaDiagram.tooltip.hiddenPages' | translate: {number: node.data.collapsedChildren?.length + node.data.hiddenChildrenUrls?.length}" tooltipPosition="top" tooltipStyleClass="z-200"></i>\r
                     }\r
-                    @if(!node.data.isCrawled && !node.data.status.isNew && selectedView() === 'changes'){\r
+                    @if(!node.data.isCrawled && !node.data.isNavChild && !node.data.status.isNew && selectedView() === 'changes'){\r
                     <p-button icon="pi pi-plus-circle" rounded size="small" text class="absolute left-50 -translate-x-50 bottom-0 -mb-1"\r
                               (click)="addUrlsService.addChildren(node,primaryLang)" [loading]="addUrlsService.urlState().isAdding" />\r
                     }\r
@@ -55345,7 +55487,7 @@ var IaDiagramComponent = class _IaDiagramComponent {
   }] });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(IaDiagramComponent, { className: "IaDiagramComponent", filePath: "src/app/components/ia-diagram/ia-diagram.component.ts", lineNumber: 29 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(IaDiagramComponent, { className: "IaDiagramComponent", filePath: "src/app/components/ia-diagram/ia-diagram.component.ts", lineNumber: 30 });
 })();
 
 // src/app/views/static/404/not-found.component.ts
@@ -55431,7 +55573,7 @@ var HelpComponent = class _HelpComponent {
   static \u0275fac = function HelpComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _HelpComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _HelpComponent, selectors: [["aida-help"]], decls: 648, vars: 37, consts: [["id", "wb-cont"], [1, "my-0"], [1, "mt-0", "mb-5"], ["fragment", "about", 3, "routerLink"], ["fragment", "start", 3, "routerLink"], ["fragment", "inventory", 3, "routerLink"], ["fragment", "add-existing", 3, "routerLink"], ["fragment", "add-new", 3, "routerLink"], ["fragment", "view-ia", 3, "routerLink"], ["fragment", "change-ia", 3, "routerLink"], ["fragment", "export-csv", 3, "routerLink"], ["fragment", "signin", 3, "routerLink"], ["fragment", "cloud", 3, "routerLink"], ["fragment", "collab", 3, "routerLink"], ["fragment", "github", 3, "routerLink"], ["fragment", "generate-metadata", 3, "routerLink"], ["fragment", "documentation", 3, "routerLink"], ["fragment", "data", 3, "routerLink"], ["fragment", "jekyll", 3, "routerLink"], ["fragment", "release", 3, "routerLink"], [1, "flex", "flex-column", "gap-3", "my-3"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min"], ["id", "about"], [1, "flex", "flex-row", "gap-8"], ["href", "mailto:AIPIA-PIAAI@cra-arc.gc.ca?subject=Interested%20in%20contributing%20to%20AIDA&body=Hi%2C%0A%0AI'd%20like%20to%20get%20involved%20with%20AIDA%20as%20a%20%5Bdeveloper%20%2F%20researcher%20%2F%20tester%5D.%20Here's%20a%20bit%20about%20my%20background%20and%20what%20I'd%20like%20to%20help%20with%3A%0A%0A%5BYour%20message%20here%5D%0A%0A%E2%80%94%20%5BYour%20name%5D"], ["id", "start"], ["id", "inventory"], ["id", "add-existing"], ["id", "add-new"], ["id", "view-ia"], ["id", "change-ia"], ["id", "export-csv"], ["id", "signin"], ["id", "cloud"], ["id", "collab"], ["id", "github"], ["id", "generate-metadata"], ["id", "documentation"], ["id", "data"], [1, "mb-1"], [1, "mt-1"], [1, "custom"], ["id", "jekyll"], ["id", "release"], ["id", "0-5-9"], ["id", "0-5-8"], ["id", "0-5-7"], ["id", "0-5-6"], ["id", "0-5-5"], ["id", "0-5-4"], ["id", "0-5-3"], ["id", "0-5-2"], ["id", "0-5-1"], ["id", "0-5-0"], ["id", "0-4-0"]], template: function HelpComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _HelpComponent, selectors: [["aida-help"]], decls: 676, vars: 37, consts: [["id", "wb-cont"], [1, "my-0"], [1, "mt-0", "mb-5"], ["fragment", "about", 3, "routerLink"], ["fragment", "start", 3, "routerLink"], ["fragment", "inventory", 3, "routerLink"], ["fragment", "add-existing", 3, "routerLink"], ["fragment", "add-new", 3, "routerLink"], ["fragment", "view-ia", 3, "routerLink"], ["fragment", "change-ia", 3, "routerLink"], ["fragment", "export-csv", 3, "routerLink"], ["fragment", "signin", 3, "routerLink"], ["fragment", "cloud", 3, "routerLink"], ["fragment", "collab", 3, "routerLink"], ["fragment", "github", 3, "routerLink"], ["fragment", "generate-metadata", 3, "routerLink"], ["fragment", "documentation", 3, "routerLink"], ["fragment", "data", 3, "routerLink"], ["fragment", "jekyll", 3, "routerLink"], ["fragment", "release", 3, "routerLink"], [1, "flex", "flex-column", "gap-3", "my-3"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min"], ["id", "about"], [1, "flex", "flex-row", "gap-8"], ["href", "mailto:AIPIA-PIAAI@cra-arc.gc.ca?subject=Interested%20in%20contributing%20to%20AIDA&body=Hi%2C%0A%0AI'd%20like%20to%20get%20involved%20with%20AIDA%20as%20a%20%5Bdeveloper%20%2F%20researcher%20%2F%20tester%5D.%20Here's%20a%20bit%20about%20my%20background%20and%20what%20I'd%20like%20to%20help%20with%3A%0A%0A%5BYour%20message%20here%5D%0A%0A%E2%80%94%20%5BYour%20name%5D"], ["id", "start"], ["id", "inventory"], ["id", "add-existing"], ["id", "add-new"], ["id", "view-ia"], ["id", "change-ia"], ["id", "export-csv"], ["id", "signin"], ["id", "cloud"], ["id", "collab"], ["id", "github"], ["id", "generate-metadata"], ["id", "documentation"], ["id", "data"], [1, "mb-1"], [1, "mt-1"], [1, "custom"], ["id", "jekyll"], ["id", "release"], ["id", "0-5-10"], ["id", "0-5-9"], ["id", "0-5-8"], ["id", "0-5-7"], ["id", "0-5-6"], ["id", "0-5-5"], ["id", "0-5-4"], ["id", "0-5-3"], ["id", "0-5-2"], ["id", "0-5-1"], ["id", "0-5-0"], ["id", "0-4-0"]], template: function HelpComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "h1", 0);
       \u0275\u0275text(1);
@@ -55930,313 +56072,352 @@ var HelpComponent = class _HelpComponent {
       \u0275\u0275text(417, "Release notes");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(418, "h3", 44);
-      \u0275\u0275text(419, "Release 0.5.9 (July 17, 2026)");
+      \u0275\u0275text(419, "Release 0.5.10 (July 23, 2026)");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(420, "h4");
-      \u0275\u0275text(421, "Data structure");
+      \u0275\u0275text(421, "Export improvements");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(422, "ul")(423, "li");
-      \u0275\u0275text(424, 'Reorganized data into "baseline", "live", and "prototype" subsections for better tracking and quick comparisons');
+      \u0275\u0275text(424, "Add index page to local exports");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(425, "li");
-      \u0275\u0275text(426, `Users can refresh the "live" data from Canada.ca or the "prototype" data from GitHub ("baseline" doesn't refresh, so changes can be tracked from start of project or from current live state)`);
+      \u0275\u0275text(426, "Apply prettier after local html is built");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(427, "li");
-      \u0275\u0275text(428, "Old saved files will be patched to the new structure automatically");
+      \u0275\u0275text(428, "Add handling for new pages");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(429, "li");
-      \u0275\u0275text(430, "The new structure is used to calculate what actions are needed (Create new page, unpublish from Canada.ca etc.)");
+      \u0275\u0275text(430, "Add option to choose which source to use for export (Canada.ca, GitHub, Local)");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(431, "li");
+      \u0275\u0275text(432, "Add warning if a local project already exists at chosen location");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(431, "h4");
-      \u0275\u0275text(432, "IA diagram improvements");
+      \u0275\u0275elementStart(433, "h4");
+      \u0275\u0275text(434, "Other improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(433, "ul")(434, "li");
-      \u0275\u0275text(435, "Added drag & drop function for page moves");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(436, "li");
-      \u0275\u0275text(437, "Added menu option to reorder sibling pages");
+      \u0275\u0275elementStart(435, "ul")(436, "li");
+      \u0275\u0275text(437, "Add option to show navigational children to IA diagram");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(438, "li");
-      \u0275\u0275text(439, "Added menu option and button to find child pages for a specific page");
+      \u0275\u0275text(439, "Fix issue with links in IA diagram");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(440, "li");
-      \u0275\u0275text(441, "Added menu option to open a popup for editing page data");
+      \u0275\u0275text(441, "Fix issue with dates on project load");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(442, "li");
-      \u0275\u0275text(443, "Added toggle for English and French page labels");
+      \u0275\u0275text(443, "When creating new page, pop up the node editor right away");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(444, "li");
-      \u0275\u0275text(445, 'The "changes" view will now show the live page title crossed out above the prototype title if they are different');
+      \u0275\u0275text(445, "Add primary border and background to toggle buttons so active state stands out more");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(446, "h4");
-      \u0275\u0275text(447, "Other improvements");
+      \u0275\u0275elementStart(446, "h3", 45);
+      \u0275\u0275text(447, "Release 0.5.9 (July 20, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(448, "ul")(449, "li");
-      \u0275\u0275text(450, "Content inventory is now separated by English and French instead of primary and opposite language");
+      \u0275\u0275elementStart(448, "h4");
+      \u0275\u0275text(449, "Data structure");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(451, "li");
-      \u0275\u0275text(452, "Content inventory now includes a menu to any version of a page, vanity urls, chatbot indicator, reading grade level, link count, and phone numbers");
+      \u0275\u0275elementStart(450, "ul")(451, "li");
+      \u0275\u0275text(452, 'Reorganized data into "baseline", "live", and "prototype" subsections for better tracking and quick comparisons');
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(453, "li");
-      \u0275\u0275text(454, "Added an option to export pages to a zip file instead of GitHub");
+      \u0275\u0275text(454, `Users can refresh the "live" data from Canada.ca or the "prototype" data from GitHub ("baseline" doesn't refresh, so changes can be tracked from start of project or from current live state)`);
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(455, "li");
-      \u0275\u0275text(456, "Exported index pages now open the correct repo link, even if you fork, move, or rename the repo");
+      \u0275\u0275text(456, "Old saved files will be patched to the new structure automatically");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(457, "li");
-      \u0275\u0275text(458, 'Added a "New tab GitHub" bookmarklet to open the other version in a new tab (same as the "Toggle GitHub" bookmarklet but opens in a new tab instead of the same tab)');
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(459, "li");
-      \u0275\u0275text(460, 'Added a "Toggle night mode" bookmarklet so users can darken Canada.ca pages if preferred for reading');
+      \u0275\u0275text(458, "The new structure is used to calculate what actions are needed (Create new page, unpublish from Canada.ca etc.)");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(461, "h3", 45);
-      \u0275\u0275text(462, "Release 0.5.8 (June 15, 2026)");
+      \u0275\u0275elementStart(459, "h4");
+      \u0275\u0275text(460, "IA diagram improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(463, "h4");
-      \u0275\u0275text(464, "Content inventory");
+      \u0275\u0275elementStart(461, "ul")(462, "li");
+      \u0275\u0275text(463, "Added drag & drop function for page moves");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(465, "ul")(466, "li");
-      \u0275\u0275text(467, "Add notes group with 'issues' and 'solutions' for user to document whatever they wish");
+      \u0275\u0275elementStart(464, "li");
+      \u0275\u0275text(465, "Added menu option to reorder sibling pages");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(466, "li");
+      \u0275\u0275text(467, "Added menu option and button to find child pages for a specific page");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(468, "li");
+      \u0275\u0275text(469, "Added menu option to open a popup for editing page data");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(470, "li");
+      \u0275\u0275text(471, "Added toggle for English and French page labels");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(472, "li");
+      \u0275\u0275text(473, 'The "changes" view will now show the live page title crossed out above the prototype title if they are different');
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(468, "h3", 46);
-      \u0275\u0275text(469, "Release 0.5.7 (June 12, 2026)");
+      \u0275\u0275elementStart(474, "h4");
+      \u0275\u0275text(475, "Other improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(470, "h4");
-      \u0275\u0275text(471, "New IA diagram features");
+      \u0275\u0275elementStart(476, "ul")(477, "li");
+      \u0275\u0275text(478, "Content inventory is now separated by English and French instead of primary and opposite language");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(472, "ul")(473, "li");
-      \u0275\u0275text(474, "Add options to hide or unhide specific pages or all child pages");
+      \u0275\u0275elementStart(479, "li");
+      \u0275\u0275text(480, "Content inventory now includes a menu to any version of a page, vanity urls, chatbot indicator, reading grade level, link count, and phone numbers");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(475, "li");
-      \u0275\u0275text(476, "Add option to view any page as the root page so users can focus on specific sections of the IA");
+      \u0275\u0275elementStart(481, "li");
+      \u0275\u0275text(482, "Added an option to export pages to a zip file instead of GitHub");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(483, "li");
+      \u0275\u0275text(484, "Exported index pages now open the correct repo link, even if you fork, move, or rename the repo");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(485, "li");
+      \u0275\u0275text(486, 'Added a "New tab GitHub" bookmarklet to open the other version in a new tab (same as the "Toggle GitHub" bookmarklet but opens in a new tab instead of the same tab)');
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(487, "li");
+      \u0275\u0275text(488, 'Added a "Toggle night mode" bookmarklet so users can darken Canada.ca pages if preferred for reading');
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(477, "h4");
-      \u0275\u0275text(478, "Other improvements");
+      \u0275\u0275elementStart(489, "h3", 46);
+      \u0275\u0275text(490, "Release 0.5.8 (June 15, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(479, "ul")(480, "li");
-      \u0275\u0275text(481, 'Separate "Find pages" options with tabs');
+      \u0275\u0275elementStart(491, "h4");
+      \u0275\u0275text(492, "Content inventory");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(482, "li");
-      \u0275\u0275text(483, "Add monitoring dashboard");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(484, "li");
-      \u0275\u0275text(485, "Update project bookmarklet to load index page instead of repo");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(486, "li");
-      \u0275\u0275text(487, "Add more padding between items in page move table");
+      \u0275\u0275elementStart(493, "ul")(494, "li");
+      \u0275\u0275text(495, "Add notes group with 'issues' and 'solutions' for user to document whatever they wish");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(488, "h3", 47);
-      \u0275\u0275text(489, "Release 0.5.6 (June 4, 2026)");
+      \u0275\u0275elementStart(496, "h3", 47);
+      \u0275\u0275text(497, "Release 0.5.7 (June 12, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(490, "h4");
-      \u0275\u0275text(491, "Content inventory improvement");
+      \u0275\u0275elementStart(498, "h4");
+      \u0275\u0275text(499, "New IA diagram features");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(492, "ul")(493, "li");
-      \u0275\u0275text(494, "Make more cells editable");
+      \u0275\u0275elementStart(500, "ul")(501, "li");
+      \u0275\u0275text(502, "Add options to hide or unhide specific pages or all child pages");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(503, "li");
+      \u0275\u0275text(504, "Add option to view any page as the root page so users can focus on specific sections of the IA");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(495, "h3", 48);
-      \u0275\u0275text(496, "Release 0.5.5 (April 15, 2026)");
+      \u0275\u0275elementStart(505, "h4");
+      \u0275\u0275text(506, "Other improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(497, "h4");
-      \u0275\u0275text(498, "Feature improvements");
+      \u0275\u0275elementStart(507, "ul")(508, "li");
+      \u0275\u0275text(509, 'Separate "Find pages" options with tabs');
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(499, "ul")(500, "li");
-      \u0275\u0275text(501, "Strip /content/canadasite from links so we don't mislabel pages as IA orphans");
+      \u0275\u0275elementStart(510, "li");
+      \u0275\u0275text(511, "Add monitoring dashboard");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(502, "li");
-      \u0275\u0275text(503, 'Update find child pages function to use checkboxes so user can select which to copy to the "Add pages" input');
+      \u0275\u0275elementStart(512, "li");
+      \u0275\u0275text(513, "Update project bookmarklet to load index page instead of repo");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(504, "li");
-      \u0275\u0275text(505, "Prevent fetching cached json data (last modified dates and content owners will be more accurate now)");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(506, "li");
-      \u0275\u0275text(507, "Maintain cnt-wdth-lmtd when exporting pages to GitHub");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(508, "li");
-      \u0275\u0275text(509, `Fix bug on "Page move" view so navigating away while editing doesn't lock a page from future edits`);
+      \u0275\u0275elementStart(514, "li");
+      \u0275\u0275text(515, "Add more padding between items in page move table");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(510, "h3", 49);
-      \u0275\u0275text(511, "Release 0.5.4 (April 10, 2026)");
+      \u0275\u0275elementStart(516, "h3", 48);
+      \u0275\u0275text(517, "Release 0.5.6 (June 4, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(512, "h4");
-      \u0275\u0275text(513, "New find child pages feature");
+      \u0275\u0275elementStart(518, "h4");
+      \u0275\u0275text(519, "Content inventory improvement");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(514, "ul")(515, "li");
-      \u0275\u0275text(516, 'Add find child pages functionality to the "Find pages" component');
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(517, "li");
-      \u0275\u0275text(518, "This function crawls your in-scope pages for potential child pages. It can also find IA orphans if they are linked from other in-scope pages");
+      \u0275\u0275elementStart(520, "ul")(521, "li");
+      \u0275\u0275text(522, "Make more cells editable");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(519, "h4");
-      \u0275\u0275text(520, "Content inventory improvement");
+      \u0275\u0275elementStart(523, "h3", 49);
+      \u0275\u0275text(524, "Release 0.5.5 (April 15, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(521, "ul")(522, "li");
-      \u0275\u0275text(523, "Add sort function to table");
+      \u0275\u0275elementStart(525, "h4");
+      \u0275\u0275text(526, "Feature improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(524, "li");
-      \u0275\u0275text(525, "Add pagination for projects with more than 50 pages");
+      \u0275\u0275elementStart(527, "ul")(528, "li");
+      \u0275\u0275text(529, "Strip /content/canadasite from links so we don't mislabel pages as IA orphans");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(526, "li");
-      \u0275\u0275text(527, "Improve status filters");
+      \u0275\u0275elementStart(530, "li");
+      \u0275\u0275text(531, 'Update find child pages function to use checkboxes so user can select which to copy to the "Add pages" input');
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(532, "li");
+      \u0275\u0275text(533, "Prevent fetching cached json data (last modified dates and content owners will be more accurate now)");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(534, "li");
+      \u0275\u0275text(535, "Maintain cnt-wdth-lmtd when exporting pages to GitHub");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(536, "li");
+      \u0275\u0275text(537, `Fix bug on "Page move" view so navigating away while editing doesn't lock a page from future edits`);
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(528, "h4");
-      \u0275\u0275text(529, "IA diagram improvement");
+      \u0275\u0275elementStart(538, "h3", 50);
+      \u0275\u0275text(539, "Release 0.5.4 (April 10, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(530, "ul")(531, "li");
-      \u0275\u0275text(532, "Add toggle to view baseline or final version");
+      \u0275\u0275elementStart(540, "h4");
+      \u0275\u0275text(541, "New find child pages feature");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(542, "ul")(543, "li");
+      \u0275\u0275text(544, 'Add find child pages functionality to the "Find pages" component');
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(545, "li");
+      \u0275\u0275text(546, "This function crawls your in-scope pages for potential child pages. It can also find IA orphans if they are linked from other in-scope pages");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(533, "h3", 50);
-      \u0275\u0275text(534, "Release 0.5.3 (March 31, 2026)");
+      \u0275\u0275elementStart(547, "h4");
+      \u0275\u0275text(548, "Content inventory improvement");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(535, "h4");
-      \u0275\u0275text(536, "GitHub export improvements");
+      \u0275\u0275elementStart(549, "ul")(550, "li");
+      \u0275\u0275text(551, "Add sort function to table");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(537, "ul")(538, "li");
-      \u0275\u0275text(539, "Add option to export English, French or both languages for prototyping");
+      \u0275\u0275elementStart(552, "li");
+      \u0275\u0275text(553, "Add pagination for projects with more than 50 pages");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(540, "li");
-      \u0275\u0275text(541, 'All pages get robots: "noindex, nofollow" from _config.yml, individual pages may have it listed as well if the live page has it');
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(542, "li");
-      \u0275\u0275text(543, "Copy everything from core-prototype/_includes instead of specific files");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(544, "li");
-      \u0275\u0275text(545, "Add 2s delay before enabling GitHub Pages (preview)");
-      \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(546, "h4");
-      \u0275\u0275text(547, "UPD integration");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(548, "ul")(549, "li");
-      \u0275\u0275text(550, "Content inventory table now links directly to the UPD data for each page (opens UPD in new tab)");
-      \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(551, "h4");
-      \u0275\u0275text(552, "Update bookmarklets");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(553, "ul")(554, "li");
-      \u0275\u0275text(555, 'Update "Toggle [repo name] and "Toggle github" to work with new cra-test-arc.canada.ca subdomain');
+      \u0275\u0275elementStart(554, "li");
+      \u0275\u0275text(555, "Improve status filters");
       \u0275\u0275elementEnd()();
       \u0275\u0275elementStart(556, "h4");
-      \u0275\u0275text(557, "Update template detection");
+      \u0275\u0275text(557, "IA diagram improvement");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(558, "ul")(559, "li");
-      \u0275\u0275text(560, 'Add "mwsdoormat-links-container" to topic page template detection logic');
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(561, "li");
-      \u0275\u0275text(562, "Add additional double H1 detection for <p> elements");
+      \u0275\u0275text(560, "Add toggle to view baseline or final version");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(563, "h3", 51);
-      \u0275\u0275text(564, "Release 0.5.2 (March 27, 2026)");
+      \u0275\u0275elementStart(561, "h3", 51);
+      \u0275\u0275text(562, "Release 0.5.3 (March 31, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(565, "h4");
-      \u0275\u0275text(566, "Add pages improvements");
+      \u0275\u0275elementStart(563, "h4");
+      \u0275\u0275text(564, "GitHub export improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(567, "ul")(568, "li");
-      \u0275\u0275text(569, "Added input validation to enforce single-language page entry");
+      \u0275\u0275elementStart(565, "ul")(566, "li");
+      \u0275\u0275text(567, "Add option to export English, French or both languages for prototyping");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(568, "li");
+      \u0275\u0275text(569, 'All pages get robots: "noindex, nofollow" from _config.yml, individual pages may have it listed as well if the live page has it');
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(570, "li");
-      \u0275\u0275text(571, "Automatic URL formatting and normalization");
+      \u0275\u0275text(571, "Copy everything from core-prototype/_includes instead of specific files");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(572, "li");
-      \u0275\u0275text(573, "Removed list of urls undergoing validation (we still show urls with problems and valid or skipped urls)");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(574, "li");
-      \u0275\u0275text(575, 'Added "View pages" section to the Edit/New project view');
+      \u0275\u0275text(573, "Add 2s delay before enabling GitHub Pages (preview)");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(576, "h4");
-      \u0275\u0275text(577, "Github export improvements");
+      \u0275\u0275elementStart(574, "h4");
+      \u0275\u0275text(575, "UPD integration");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(578, "ul")(579, "li");
-      \u0275\u0275text(580, "Improved GitHub index.html to support bilingual sitemap generation with paired English/French URLs");
+      \u0275\u0275elementStart(576, "ul")(577, "li");
+      \u0275\u0275text(578, "Content inventory table now links directly to the UPD data for each page (opens UPD in new tab)");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(581, "h3", 52);
-      \u0275\u0275text(582, "Release 0.5.1 (March 26, 2026)");
+      \u0275\u0275elementStart(579, "h4");
+      \u0275\u0275text(580, "Update bookmarklets");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(583, "h4");
-      \u0275\u0275text(584, "New bookmarklet");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(585, "ul")(586, "li");
-      \u0275\u0275text(587, 'Added project-specific "Toggle [repo name]" bookmarklet to toggle between GitHub preview, edit mode, and Canada.ca.');
+      \u0275\u0275elementStart(581, "ul")(582, "li");
+      \u0275\u0275text(583, 'Update "Toggle [repo name] and "Toggle github" to work with new cra-test-arc.canada.ca subdomain');
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(588, "h3", 53);
-      \u0275\u0275text(589, "Release 0.5.0 (March 25, 2026)");
+      \u0275\u0275elementStart(584, "h4");
+      \u0275\u0275text(585, "Update template detection");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(590, "h4");
-      \u0275\u0275text(591, "AI-powered metadata generation");
+      \u0275\u0275elementStart(586, "ul")(587, "li");
+      \u0275\u0275text(588, 'Add "mwsdoormat-links-container" to topic page template detection logic');
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(592, "ul")(593, "li");
-      \u0275\u0275text(594, "Generate metadata automatically for selected pages using AI assistance");
+      \u0275\u0275elementStart(589, "li");
+      \u0275\u0275text(590, "Add additional double H1 detection for <p> elements");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(595, "h4");
-      \u0275\u0275text(596, "Content inventory improvements");
+      \u0275\u0275elementStart(591, "h3", 52);
+      \u0275\u0275text(592, "Release 0.5.2 (March 27, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(597, "ul")(598, "li");
-      \u0275\u0275text(599, "Expanded data collection: word count, noindex status, last modified/published dates");
+      \u0275\u0275elementStart(593, "h4");
+      \u0275\u0275text(594, "Add pages improvements");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(595, "ul")(596, "li");
+      \u0275\u0275text(597, "Added input validation to enforce single-language page entry");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(598, "li");
+      \u0275\u0275text(599, "Automatic URL formatting and normalization");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(600, "li");
-      \u0275\u0275text(601, "Expanded metadata collection to both languages");
+      \u0275\u0275text(601, "Removed list of urls undergoing validation (we still show urls with problems and valid or skipped urls)");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(602, "li");
-      \u0275\u0275text(603, "Secondary toolbar for bulk actions on selected pages");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(604, "li");
-      \u0275\u0275text(605, "Improved page status filtering");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(606, "li");
-      \u0275\u0275text(607, "Added option to refresh the collected page data");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(608, "li");
-      \u0275\u0275text(609, "Reorganized IA orphan detection into dedicated problem category");
+      \u0275\u0275text(603, 'Added "View pages" section to the Edit/New project view');
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(610, "h4");
-      \u0275\u0275text(611, "Switch project improvements");
+      \u0275\u0275elementStart(604, "h4");
+      \u0275\u0275text(605, "Github export improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(612, "ul")(613, "li");
-      \u0275\u0275text(614, "Fixed cloud project upload with GitHub Personal Access Tokens");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(615, "li");
-      \u0275\u0275text(616, "Filters on switch project view are now linked to the project files");
+      \u0275\u0275elementStart(606, "ul")(607, "li");
+      \u0275\u0275text(608, "Improved GitHub index.html to support bilingual sitemap generation with paired English/French URLs");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(617, "h4");
-      \u0275\u0275text(618, "GitHub export improvements");
+      \u0275\u0275elementStart(609, "h3", 53);
+      \u0275\u0275text(610, "Release 0.5.1 (March 26, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(619, "ul")(620, "li");
-      \u0275\u0275text(621, "Added an index.html page to generate a list of files in your repo and robots.txt");
+      \u0275\u0275elementStart(611, "h4");
+      \u0275\u0275text(612, "New bookmarklet");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(622, "li");
-      \u0275\u0275text(623, "Breadcrumbs now reflect any changes you've made in AIDA instead of the live page");
+      \u0275\u0275elementStart(613, "ul")(614, "li");
+      \u0275\u0275text(615, 'Added project-specific "Toggle [repo name]" bookmarklet to toggle between GitHub preview, edit mode, and Canada.ca.');
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(624, "h4");
-      \u0275\u0275text(625, "New toolbox view");
+      \u0275\u0275elementStart(616, "h3", 54);
+      \u0275\u0275text(617, "Release 0.5.0 (March 25, 2026)");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(626, "ul")(627, "li");
-      \u0275\u0275text(628, 'Added bookmarklets, "Open in AIDA", "Toggle GitHub", and "Check links"');
+      \u0275\u0275elementStart(618, "h4");
+      \u0275\u0275text(619, "AI-powered metadata generation");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(629, "li");
-      \u0275\u0275text(630, "Note: this view will eventually have some standalone tools that aren't linked to project data");
+      \u0275\u0275elementStart(620, "ul")(621, "li");
+      \u0275\u0275text(622, "Generate metadata automatically for selected pages using AI assistance");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(631, "h3", 54);
-      \u0275\u0275text(632, "Release 0.4.0 (February 25, 2026)");
+      \u0275\u0275elementStart(623, "h4");
+      \u0275\u0275text(624, "Content inventory improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(633, "h4");
-      \u0275\u0275text(634, "Initial release - core project management");
+      \u0275\u0275elementStart(625, "ul")(626, "li");
+      \u0275\u0275text(627, "Expanded data collection: word count, noindex status, last modified/published dates");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(635, "ul")(636, "li");
-      \u0275\u0275text(637, "Project dashboard view with high level stats and design phase tracking (discover, assess, design, approve)");
+      \u0275\u0275elementStart(628, "li");
+      \u0275\u0275text(629, "Expanded metadata collection to both languages");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(638, "li");
-      \u0275\u0275text(639, "Edit/New project view where you can name your project, associate it with a GitHub repo, add collaborators, add pages, or find pages from the task inventory");
+      \u0275\u0275elementStart(630, "li");
+      \u0275\u0275text(631, "Secondary toolbar for bulk actions on selected pages");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(640, "li");
-      \u0275\u0275text(641, "Switch project view where you can switch between your projects, view any cloud project, or mark projects for deletion (they are stored for 30 days before final deletion)");
+      \u0275\u0275elementStart(632, "li");
+      \u0275\u0275text(633, "Improved page status filtering");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(642, "li");
-      \u0275\u0275text(643, "Manage inventory view where you can see all the data collected for your pages, add brand new pages, or change the IA structure");
+      \u0275\u0275elementStart(634, "li");
+      \u0275\u0275text(635, "Added option to refresh the collected page data");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(644, "li");
-      \u0275\u0275text(645, "IA diagram view where you can see the page hierarchy");
+      \u0275\u0275elementStart(636, "li");
+      \u0275\u0275text(637, "Reorganized IA orphan detection into dedicated problem category");
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(638, "h4");
+      \u0275\u0275text(639, "Switch project improvements");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(646, "li");
-      \u0275\u0275text(647, "Export to GitHub view where you can export your pages in Jekyll format. The file comparison table can detect if you've made changes in GitHub after the export and will automatically skip those files on future exports (can be overriden by the user).");
+      \u0275\u0275elementStart(640, "ul")(641, "li");
+      \u0275\u0275text(642, "Fixed cloud project upload with GitHub Personal Access Tokens");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(643, "li");
+      \u0275\u0275text(644, "Filters on switch project view are now linked to the project files");
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(645, "h4");
+      \u0275\u0275text(646, "GitHub export improvements");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(647, "ul")(648, "li");
+      \u0275\u0275text(649, "Added an index.html page to generate a list of files in your repo and robots.txt");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(650, "li");
+      \u0275\u0275text(651, "Breadcrumbs now reflect any changes you've made in AIDA instead of the live page");
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(652, "h4");
+      \u0275\u0275text(653, "New toolbox view");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(654, "ul")(655, "li");
+      \u0275\u0275text(656, 'Added bookmarklets, "Open in AIDA", "Toggle GitHub", and "Check links"');
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(657, "li");
+      \u0275\u0275text(658, "Note: this view will eventually have some standalone tools that aren't linked to project data");
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(659, "h3", 55);
+      \u0275\u0275text(660, "Release 0.4.0 (February 25, 2026)");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(661, "h4");
+      \u0275\u0275text(662, "Initial release - core project management");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(663, "ul")(664, "li");
+      \u0275\u0275text(665, "Project dashboard view with high level stats and design phase tracking (discover, assess, design, approve)");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(666, "li");
+      \u0275\u0275text(667, "Edit/New project view where you can name your project, associate it with a GitHub repo, add collaborators, add pages, or find pages from the task inventory");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(668, "li");
+      \u0275\u0275text(669, "Switch project view where you can switch between your projects, view any cloud project, or mark projects for deletion (they are stored for 30 days before final deletion)");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(670, "li");
+      \u0275\u0275text(671, "Manage inventory view where you can see all the data collected for your pages, add brand new pages, or change the IA structure");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(672, "li");
+      \u0275\u0275text(673, "IA diagram view where you can see the page hierarchy");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(674, "li");
+      \u0275\u0275text(675, "Export to GitHub view where you can export your pages in Jekyll format. The file comparison table can detect if you've made changes in GitHub after the export and will automatically skip those files on future exports (can be overriden by the user).");
       \u0275\u0275elementEnd()()()();
     }
     if (rf & 2) {
@@ -56456,7 +56637,24 @@ var HelpComponent = class _HelpComponent {
 \r
     <section class="surface-card border-round-lg shadow-2 p-4 w-full min-w-min">\r
         <h2 id="release">Release notes</h2>\r
-        <h3 id="0-5-9">Release 0.5.9 (July 17, 2026)</h3>\r
+        <h3 id="0-5-10">Release 0.5.10 (July 23, 2026)</h3>\r
+        <h4>Export improvements</h4>\r
+        <ul>\r
+            <li>Add index page to local exports</li>\r
+            <li>Apply prettier after local html is built</li>\r
+            <li>Add handling for new pages</li>\r
+            <li>Add option to choose which source to use for export (Canada.ca, GitHub, Local)</li>\r
+            <li>Add warning if a local project already exists at chosen location</li>\r
+        </ul>\r
+        <h4>Other improvements</h4>\r
+        <ul>\r
+            <li>Add option to show navigational children to IA diagram</li>\r
+            <li>Fix issue with links in IA diagram</li>\r
+            <li>Fix issue with dates on project load</li>\r
+            <li>When creating new page, pop up the node editor right away</li>\r
+            <li>Add primary border and background to toggle buttons so active state stands out more</li>\r
+        </ul>\r
+        <h3 id="0-5-9">Release 0.5.9 (July 20, 2026)</h3>\r
         <h4>Data structure</h4>\r
         <ul>\r
             <li>Reorganized data into "baseline", "live", and "prototype" subsections for better tracking and quick comparisons</li>\r
@@ -57158,7 +57356,7 @@ var routes = [
   },
   {
     path: "dev/prompt-editor",
-    loadComponent: () => import("./chunk-USVYO7AO.js").then((m) => m.PromptEditorComponent),
+    loadComponent: () => import("./chunk-E3VKDBOO.js").then((m) => m.PromptEditorComponent),
     title: "dev.prompts._title"
   },
   {

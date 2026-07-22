@@ -1315,6 +1315,19 @@ var FetchService = class _FetchService {
     }).filter((href) => !!href).filter((href) => new URL(href).origin === baseDomain);
     return [...new Set(links)];
   }
+  //Fetch same-domain paths
+  getPaths(url) {
+    return __async(this, null, function* () {
+      try {
+        const doc = yield this.fetchContent(url, "both", 2);
+        const links = this.getLinks(doc, url);
+        return [...new Set(links.map((link) => this.generatePath(link)))];
+      } catch (error) {
+        console.warn(`Failed to fetch links for "${url}"`, error);
+        return [];
+      }
+    });
+  }
   //Get preview content
   fetchPreview(targetUrl) {
     return new Promise((resolve, reject) => {
@@ -2679,4 +2692,4 @@ export {
   GitHubAuthService,
   ExportGitHubService
 };
-//# sourceMappingURL=chunk-CBWDJ7F7.js.map
+//# sourceMappingURL=chunk-7BR2DQG6.js.map

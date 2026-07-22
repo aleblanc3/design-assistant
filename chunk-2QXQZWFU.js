@@ -32,10 +32,10 @@ import {
   ProgressBar,
   ProgressBarModule,
   ProjectStateService
-} from "./chunk-ZLBPKAWO.js";
+} from "./chunk-ZVABFQGY.js";
 import {
   FetchService
-} from "./chunk-CBWDJ7F7.js";
+} from "./chunk-7BR2DQG6.js";
 import {
   IftaLabel,
   IftaLabelModule
@@ -3671,16 +3671,8 @@ var GetTaskUrlsComponent = class _GetTaskUrlsComponent {
     this.taskUrls.set(uniqueUrls.map((url) => ({ url, selected: true })));
   }
   addUrlsToProject() {
-    const selectedUrls = this.taskUrls().filter((item) => item.selected).map((item) => item.url).join("\n");
-    const currentRawUrls = this.addUrlsService.urlState().rawUrls;
-    const updatedRawUrls = currentRawUrls ? `${currentRawUrls}
-${selectedUrls}` : selectedUrls;
-    const lang = this.projectState.detectPrimaryLanguage();
-    const { parsedUrls } = this.addUrlsService.parseUrls(updatedRawUrls, new Set(this.projectState.getAllPages(lang, "live", "inScope").map((u) => u.url)), lang);
-    this.addUrlsService.setUrlState({
-      rawUrls: updatedRawUrls,
-      urlsToValidate: parsedUrls
-    });
+    const selectedUrls = this.taskUrls().filter((item) => item.selected).map((item) => item.url);
+    this.addUrlsService.appendUrlsToInput(selectedUrls);
     this.selectedTaskIds.set([]);
     this.selectedTasks.set([]);
     this.taskUrls.set([]);
@@ -6445,13 +6437,7 @@ var GetChildPagesComponent = class _GetChildPagesComponent {
   // Add to project
   addUrlsToProject() {
     const selectedUrls = this.childUrls().filter((item) => item.selected).map((item) => item.url);
-    const lang = this.projectState.detectPrimaryLanguage();
-    const rawUrls = selectedUrls.join("\n");
-    const { parsedUrls } = this.addUrlsService.parseUrls(rawUrls, new Set(this.projectState.getAllPages(lang, "live", "inScope").map((u) => u.url)), lang);
-    this.addUrlsService.setUrlState({
-      rawUrls,
-      urlsToValidate: parsedUrls
-    });
+    this.addUrlsService.appendUrlsToInput(selectedUrls);
     this.childUrls.set([]);
   }
   static \u0275fac = function GetChildPagesComponent_Factory(__ngFactoryType__) {
@@ -6634,4 +6620,4 @@ export {
   InputNumberModule,
   FindPagesComponent
 };
-//# sourceMappingURL=chunk-D4ER4SFO.js.map
+//# sourceMappingURL=chunk-2QXQZWFU.js.map
