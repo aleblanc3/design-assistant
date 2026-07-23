@@ -257,14 +257,23 @@ export class IaDiagramComponent implements OnInit {
     }
     //Show nav children
     if (!node.data.isNavChild) {
+      const path = node.data.path[this.primaryLang];
+      const navChildrenVisible = this.navNodes().has(path);
+
       this.items[1].items!.push({
-        label: node.data.navChildrenVisible ? this.translate.instant(`iaDiagram.menu.hideNavChildren`) : this.translate.instant(`iaDiagram.menu.showNavChildren`),
-        icon: node.data.navChildrenVisible ? "pi pi-eye-slash" : "pi pi-eye",
+        label: navChildrenVisible ? this.translate.instant(`iaDiagram.menu.hideNavChildren`) : this.translate.instant(`iaDiagram.menu.showNavChildren`),
+        icon: navChildrenVisible ? "pi pi-eye-slash" : "pi pi-eye",
         command: async () => {
-          const projectNode = this.projectState.findNodeByPath(this.projectTree(), node.data.path[this.primaryLang], this.primaryLang);
-          if (!projectNode) { console.warn(`Missing source node: "${node.data.path[this.primaryLang]}"`); return; }
-          projectNode.data.navChildrenVisible = !projectNode.data.navChildrenVisible;
-          const path = node.data.path[this.primaryLang];
+          //Toggle off
+          if (this.navNodes().has(path)) {
+            this.navNodes.update(map => {
+              const next = new Map(map);
+              next.delete(path);
+              return next;
+            });
+            return;
+          }
+          //Toggle on
           const type = this.projectState.getProject().repoType;
           const version = type === "github" && this.hasGitHub()
             ? "prototype"
