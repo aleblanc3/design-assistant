@@ -69,7 +69,7 @@ export class FetchService {
     //"gc-proto.github.io", //CORS error but redirects to test.canada.ca which works
     "canada-preview.adobecqms.net",
     "aleblanc3.github.io",
-    "http://cra-ut.isvcs.net"
+    "cra-ut.isvcs.net"
   ]);
   private getAllowedHosts(mode: "prod" | "proto" | "both"): Set<string> {
     const allowed = new Set<string>();
