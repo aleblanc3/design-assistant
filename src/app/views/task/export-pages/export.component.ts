@@ -81,7 +81,7 @@ interface ExportMessage {
   styles: ``
 })
 export class ExportComponent implements OnInit {
-  private projectState = inject(ProjectStateService);
+  public projectState = inject(ProjectStateService);
   public authService = inject(GitHubAuthService);
   public exportGitHubService = inject(ExportGitHubService);
   private fetchService = inject(FetchService);
@@ -99,8 +99,7 @@ export class ExportComponent implements OnInit {
   filesTable = signal<FileStatus[]>([]);
   exportMessage = signal<ExportMessage | null>(null);
   repoType = signal<'local' | 'github'>(this.projectData().repoType);
-  hasGitHub = signal<boolean>(false);
-  hasLocal = signal<boolean>(false);
+
 
   markForTranslation() {
     marker('exportPages.settings.description.prototype');
@@ -152,12 +151,7 @@ export class ExportComponent implements OnInit {
     if (this.projectData().lastExported) {
       const version = this.selectedExportVersion === 'prototype' ? 'prototype' : 'baseline'
       const url = this.fetchService.generateUrl("index.html", version, this.projectData().github.owner, this.projectData().github.repo);
-      this.hasGitHub.set((await this.fetchService.fetchStatus(url, "proto", 2)).ok);
-    }
-    if (this.projectData().lastDownloaded) {
-      const version = this.selectedExportVersion === 'prototype' ? 'ut' : 'ut-base'
-      const url = this.fetchService.generateUrl("index.html", version, this.projectData().github.owner, this.projectData().github.repo);
-      this.hasLocal.set(await this.fetchService.fetchStatusViaIFrame(url));
+      this.projectState.hasGitHub.set((await this.fetchService.fetchStatus(url, "proto", 2)).ok);
     }
   }
 
@@ -196,10 +190,10 @@ export class ExportComponent implements OnInit {
 
   get exportSourceOptions() {
     const options = [{ label: this.translate.instant('common.version.canada'), value: 'live' }];
-    if (this.hasGitHub()) {
+    if (this.projectState.hasGitHub()) {
       options.push({ label: this.translate.instant('common.version.prototype.github'), value: 'github' })
     }
-    if (this.hasLocal()) {
+    if (this.projectState.hasLocal()) {
       options.push({ label: this.translate.instant('common.version.prototype.local'), value: 'local' })
     }
     return options;

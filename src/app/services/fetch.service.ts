@@ -514,7 +514,16 @@ export class FetchService {
   }
 
 
-  //Get preview content
+  /**
+   * Fetches page content from a different origin (UT, AEM preview etc.) by relaying
+   * the request through a same-origin proxy page. Only use if {@link fetchContent} is unsuccessful. 
+   *
+   * This function must be triggered by the user or the popup may be blocked resulting in 
+   * inconsistent behaviour for different users.
+   *
+   * @param targetUrl The full URL to fetch. Must be on an allowed origin or this will throw. (see {@link generateQuery} for allowed origins)
+   * @returns a string with the HTML content. For just a status check, use {@link fetchStatusViaProxy} instead.
+   */
   public fetchViaProxy(targetUrl: string): Promise<string> {
     return new Promise((resolve, reject) => {
 
@@ -554,6 +563,16 @@ export class FetchService {
     });
   }
 
+  /**
+   * Fetches page status from a different origin (UT, AEM preview etc.) by relaying
+   * the request through a same-origin proxy page. Only use if {@link fetchStatus} is unsuccessful. 
+   *
+   * This function must be triggered by the user or the popup may be blocked resulting in 
+   * inconsistent behaviour for different users.
+   *
+   * @param targetUrl The full URL to fetch. Must be on an allowed origin or this will throw. (see {@link generateQuery} for allowed origins)
+   * @returns true if the page exists. For a content fetch, use {@link fetchViaProxy} instead.
+   */
   fetchStatusViaProxy(targetUrl: string): Promise<boolean> {
     return new Promise((resolve) => {
 
@@ -561,7 +580,7 @@ export class FetchService {
       let fetchOrigin: string;
       try {
         ({ fetchQuery, fetchOrigin } = this.generateQuery(targetUrl, true));
-      } catch (error) { resolve(false); return; }
+      } catch { resolve(false); return; }
 
       const popup = window.open(fetchQuery, '_blank', 'width=1,height=1,left=9999,top=9999');
 
@@ -590,41 +609,16 @@ export class FetchService {
     });
   }
 
-  fetchStatusViaIFrame(targetUrl: string): Promise<boolean> {
-    return new Promise((resolve) => {
-      let fetchQuery: string;
-      let fetchOrigin: string;
-      try {
-        ({ fetchQuery, fetchOrigin } = this.generateQuery(targetUrl, true));
-      } catch (error) { resolve(false); return; }
-
-      const iframe = document.createElement('iframe');
-      iframe.style.display = 'none';
-      iframe.src = fetchQuery;
-
-      const cleanup = () => {
-        window.removeEventListener('message', handler);
-        clearTimeout(timeout);
-        iframe.remove();
-      };
-
-      const handler = (event: MessageEvent) => {
-        if (event.origin !== fetchOrigin) return;
-        cleanup();
-        resolve(event.data.success || false);
-      };
-
-      window.addEventListener('message', handler);
-
-      const timeout = setTimeout(() => {
-        cleanup();
-        resolve(false);
-      }, 5000);
-
-      document.body.appendChild(iframe);
-    });
-  }
-
+  /**
+   * Generates the url query string needed for {@link fetchViaProxy} and {@link fetchStatusViaProxy}
+   *
+   * If you want to enable a new origin, add the origin and the same-origin proxy page with proxy.js to the paths records.
+   *
+   * @param targetUrl The full URL for the query.
+   * @param statusCheck False by default. Set it to true to add an optional parameter to limit the fetch to page status and no content.
+   * @returns fetchQuery (The proxy page with your target url as the query) and fetchOrigin (the origin we are fetching from)
+   * @throws Throws if targetUrl is not an allowed origin (see paths variable)
+   */
   private generateQuery(targetUrl: string, statusCheck = false): { fetchQuery: string; fetchOrigin: string } {
     const targetOrigin = new URL(targetUrl).origin;
     const paths: Record<string, string> = {
