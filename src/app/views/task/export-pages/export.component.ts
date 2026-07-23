@@ -614,7 +614,7 @@ export class ExportComponent implements OnInit {
       ? `<div class="mrgn-tp-md">
             <div class="row">
                 <ul class="toc lst-spcd col-md-12">
-                    <li class="col-md-4 col-sm-6"><a class="list-group-item active" data-exit="false" href="https://github.com/${this.gitHubData().owner}/${this.gitHubData().repo}">${this.translate.instant('project.github._title')}</a></li>
+                    <li class="col-md-4 col-sm-6"><a class="list-group-item active" href="https://github.com/${this.gitHubData().owner}/${this.gitHubData().repo}" target="_blank">${this.translate.instant('project.github._title')}</a></li>
                 </ul>
             </div>
          </div>\n`
@@ -625,15 +625,16 @@ export class ExportComponent implements OnInit {
       ? `<p class="mrgn-bttm-0">${this.translate.instant('collaborators.project')}</p>
          <ul class="colcount-sm-4">${this.projectData().collaborators.map(collab => ` <li> ${collab.login}</li>`).join('')}</ul>\n`
       : '';
+    const exporterHtml = `<p class="gc-byline">${this.translate.instant('exportPages.exportedBy')} {{EXPORTED_BY}}</p>`
     if (this.selectedExportLanguage === 'both') {
       const exportedPairs = this.projectState.getPairedPages(this.selectedExportVersion, scope).filter(pair => paths.has(pair.en.path) || paths.has(pair.fr.path));
       //Table rows
       const rows = exportedPairs.map(pair => {
         const enCell = paths.has(pair.en.path)
-          ? `<a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${pair.en.path}">${pair.en.label ?? pair.en.path}</a>`
+          ? `<a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${pair.en.path}" target="_blank">${pair.en.label ?? pair.en.path}</a>`
           : `<i class="fa fa-minus"></i>`;
         const frCell = paths.has(pair.fr.path ?? pair.fr.path)
-          ? `<a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${pair.fr.path}">${pair.fr.label}</a>`
+          ? `<a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${pair.fr.path}" target="_blank">${pair.fr.label}</a>`
           : `<i class="fa fa-minus"></i>`;
         return `
         <tr>
@@ -657,9 +658,9 @@ export class ExportComponent implements OnInit {
       console.log(paths);
       const exportedPages = this.projectState.getAllPages(this.selectedExportLanguage, this.selectedExportVersion, scope).filter(page => paths.has(page.path));
       //List items
-      const items = exportedPages.map(page => `<li><a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${page.path}">${page.label ?? page.path}</a></li>`).join('');
+      const items = exportedPages.map(page => `<li><a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${page.path}" target="_blank">${page.label ?? page.path}</a></li>`).join('');
       //List
-      return `${githubLinkHtml}${collaboratorHtml}<ul>${items}</ul>`;
+      return `${exporterHtml}${githubLinkHtml}${collaboratorHtml}<ul>${items}</ul>`;
     }
   }
 
