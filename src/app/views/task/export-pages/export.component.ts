@@ -643,7 +643,7 @@ export class ExportComponent implements OnInit {
         </tr>`;
       }).join('');
       //Table
-      return `${githubLinkHtml}${collaboratorHtml}
+      return `${exporterHtml}${githubLinkHtml}${collaboratorHtml}
       <table class="table table-striped">
           <thead>
               <tr>
@@ -660,7 +660,8 @@ export class ExportComponent implements OnInit {
       //List items
       const items = exportedPages.map(page => `<li><a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${page.path}" target="_blank">${page.label ?? page.path}</a></li>`).join('');
       //List
-      return `${exporterHtml}${githubLinkHtml}${collaboratorHtml}<ul>${items}</ul>`;
+      const langKey = this.selectedExportLanguage === 'en' ? 'common.language.english' : 'common.language.french'
+      return `${exporterHtml}${githubLinkHtml}${collaboratorHtml}<p class="mrgn-bttm-0">${this.translate.instant(langKey)}</p><ul>${items}</ul>`;
     }
   }
 
