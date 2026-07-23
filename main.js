@@ -45,7 +45,7 @@ import {
   FindPagesComponent,
   InputNumber,
   InputNumberModule
-} from "./chunk-O52YXDMY.js";
+} from "./chunk-5H3PKW5U.js";
 import {
   Tag,
   TagModule
@@ -87,7 +87,7 @@ import {
 } from "./chunk-27HYBFZ6.js";
 import {
   AddUrlsComponent
-} from "./chunk-YX2FWVYK.js";
+} from "./chunk-EQBCPJRD.js";
 import {
   Message,
   MessageModule,
@@ -105,7 +105,7 @@ import {
   TreeNodeStyleService,
   UsageService,
   version
-} from "./chunk-VQOKC7Q3.js";
+} from "./chunk-F6P2GXQV.js";
 import {
   COLUMN_GROUPS,
   ExportGitHubService,
@@ -115,7 +115,7 @@ import {
   PageTemplate,
   PhaseStatus,
   ProjectPhase
-} from "./chunk-T7NOQHWP.js";
+} from "./chunk-VNVQO4CG.js";
 import {
   environment
 } from "./chunk-MYYNWJMU.js";
@@ -41798,7 +41798,7 @@ function isKnownNumber(number) {
 // src/app/views/task/manage-inventory/inventory.component.ts
 var _c022 = ["dt"];
 var _c131 = ["menuContext"];
-var InventoryComponent_Defer_42_DepsFn = () => [import("./chunk-JE5NXSC4.js").then((m) => m.AddUrlsComponent), import("./chunk-MHIAEWGO.js").then((m) => m.FindPagesComponent)];
+var InventoryComponent_Defer_42_DepsFn = () => [import("./chunk-34LPXNE5.js").then((m) => m.AddUrlsComponent), import("./chunk-ETIDLLQL.js").then((m) => m.FindPagesComponent)];
 var _c216 = () => ({ height: "90vh" });
 var _c314 = (a0) => [25, 50, 100, a0];
 var _c413 = (a0) => ({ column: a0 });
@@ -44038,7 +44038,7 @@ var InventoryComponent = class _InventoryComponent {
   }, dependencies: [CommonModule, NgClass, DecimalPipe, DatePipe, FormsModule, DefaultValueAccessor, NgControlStatus, NgModel, TranslateModule, TranslatePipe, TableModule, Table, PrimeTemplate, SortableColumn, SelectableRow, EditableColumn, SortIcon, TableCheckbox, TableHeaderCheckbox, TooltipModule, Tooltip, TagModule, Tag, ButtonModule, Button, RadioButtonModule, RadioButton, IftaLabelModule, IftaLabel, MultiSelectModule, MultiSelect, SelectModule, Select, TextareaModule, Textarea, MenuModule, Menu, ContextMenuModule, ContextMenu, ConfirmDialogModule, ConfirmDialog, DialogModule, Dialog, ExportProjectComponent, IaTableComponent, EditNodeComponent], styles: ["\n\n.sticky-toolbar[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  top: 0;\n  z-index: 20;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n  padding-right: 0rem;\n  box-sizing: border-box;\n}\n.sticky-toolbar-table[_ngcontent-%COMP%] {\n  width: calc(100vw - var(--nav-width) - 2rem);\n}\n@media screen and (min-width: 768px) {\n  .sticky-toolbar[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n    padding-right: 5rem;\n  }\n  .sticky-toolbar-table[_ngcontent-%COMP%] {\n    width: calc(100vw - var(--nav-width) - 7rem - 5rem);\n  }\n}\n  .p-datatable-table-container {\n  overflow: visible !important;\n}\n.sticky-h[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width) + 2rem);\n  z-index: 11;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-h[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 9rem);\n  }\n}\n.sticky-c[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  z-index: 11;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-c[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n  }\n}\n.sticky-r[_ngcontent-%COMP%] {\n  position: sticky;\n  top: 9rem;\n  z-index: 12;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n  .p-datatable .p-datatable-thead {\n  z-index: 13 !important;\n}\n.sticky-rh[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width) + 2rem);\n  top: 9rem;\n  z-index: 14;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-rh[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 9rem);\n  }\n}\n.sticky-rc[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  top: 9rem;\n  z-index: 14;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-rc[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n  }\n}\n.sticky-horizontal[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  z-index: 10;\n  width: calc(100vw - var(--nav-width) - 2rem);\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n  padding-right: 0rem;\n  box-sizing: border-box;\n}\n@media screen and (min-width: 768px) {\n  .sticky-horizontal[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n    width: calc(100vw - var(--nav-width) - 7rem - 3.5rem);\n    padding-right: 5rem;\n  }\n}\n.hasMenu[_ngcontent-%COMP%]:hover {\n  background-color: var(--p-primary-100) !important;\n}\nhtml.dark-mode[_ngcontent-%COMP%]   .hasMenu[_ngcontent-%COMP%]:hover {\n  background-color: var(--p-primary-500) !important;\n}\n/*# sourceMappingURL=inventory.component.css.map */"] });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(InventoryComponent, () => [import("./chunk-JE5NXSC4.js").then((m) => m.AddUrlsComponent), import("./chunk-MHIAEWGO.js").then((m) => m.FindPagesComponent)], (AddUrlsComponent2, FindPagesComponent2) => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(InventoryComponent, () => [import("./chunk-34LPXNE5.js").then((m) => m.AddUrlsComponent), import("./chunk-ETIDLLQL.js").then((m) => m.FindPagesComponent)], (AddUrlsComponent2, FindPagesComponent2) => {
     setClassMetadata(InventoryComponent, [{
       type: Component,
       args: [{ selector: "aida-inventory", imports: [
@@ -52834,7 +52834,7 @@ function ExportComponent_Conditional_56_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275conditional(ctx_r0.hasLocal() ? 0 : -1);
+    \u0275\u0275conditional(ctx_r0.projectState.hasLocal() ? 0 : -1);
     \u0275\u0275advance();
     \u0275\u0275property("label", \u0275\u0275pipeBind1(2, 4, "exportPages.export.button.zip"))("disabled", ctx_r0.projectFileCount() === 0 || !ctx_r0.gitHubData().repo)("loading", ctx_r0.exportProgress());
   }
@@ -52913,8 +52913,6 @@ var ExportComponent = class _ExportComponent {
   filesTable = signal([]);
   exportMessage = signal(null);
   repoType = signal(this.projectData().repoType);
-  hasGitHub = signal(false);
-  hasLocal = signal(false);
   markForTranslation() {
     marker("exportPages.settings.description.prototype");
     marker("exportPages.settings.description.baseline");
@@ -52956,12 +52954,7 @@ var ExportComponent = class _ExportComponent {
       if (this.projectData().lastExported) {
         const version2 = this.selectedExportVersion === "prototype" ? "prototype" : "baseline";
         const url = this.fetchService.generateUrl("index.html", version2, this.projectData().github.owner, this.projectData().github.repo);
-        this.hasGitHub.set((yield this.fetchService.fetchStatus(url, "proto", 2)).ok);
-      }
-      if (this.projectData().lastDownloaded) {
-        const version2 = this.selectedExportVersion === "prototype" ? "ut" : "ut-base";
-        const url = this.fetchService.generateUrl("index.html", version2, this.projectData().github.owner, this.projectData().github.repo);
-        this.hasLocal.set(yield this.fetchService.fetchStatusViaIFrame(url));
+        this.projectState.hasGitHub.set((yield this.fetchService.fetchStatus(url, "proto", 2)).ok);
       }
     });
   }
@@ -52997,10 +52990,10 @@ var ExportComponent = class _ExportComponent {
   selectedExportSource = "live";
   get exportSourceOptions() {
     const options = [{ label: this.translate.instant("common.version.canada"), value: "live" }];
-    if (this.hasGitHub()) {
+    if (this.projectState.hasGitHub()) {
       options.push({ label: this.translate.instant("common.version.prototype.github"), value: "github" });
     }
-    if (this.hasLocal()) {
+    if (this.projectState.hasLocal()) {
       options.push({ label: this.translate.instant("common.version.prototype.local"), value: "local" });
     }
     return options;
@@ -53905,7 +53898,7 @@ var ExportComponent = class _ExportComponent {
               [loading]="exportProgress()" />\r
     }\r
     @else{\r
-    @if (hasLocal()){\r
+    @if (projectState.hasLocal()){\r
     <p-message severity="info" styleClass="mt-3">\r
         <div class="flex align-items-center gap-2">\r
             <i class="pi pi-info-circle font-bold"></i>\r
@@ -57369,7 +57362,7 @@ var routes = [
   },
   {
     path: "dev/prompt-editor",
-    loadComponent: () => import("./chunk-7IUNULA4.js").then((m) => m.PromptEditorComponent),
+    loadComponent: () => import("./chunk-DFHRFIRR.js").then((m) => m.PromptEditorComponent),
     title: "dev.prompts._title"
   },
   {
@@ -59392,7 +59385,7 @@ function SidebarComponent_Conditional_19_Template(rf, ctx) {
 }
 function SidebarComponent_Conditional_47_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "a", 11)(1, "span", 18);
+    \u0275\u0275elementStart(0, "a", 11)(1, "span", 19);
     \u0275\u0275text(2, "library_books");
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(3, "span", 13);
@@ -59427,6 +59420,7 @@ var SidebarComponent = class _SidebarComponent {
   sandbox = environment.sandbox;
   mailtoService = inject(MailtoService);
   projectState = inject(ProjectStateService);
+  fetchService = inject(FetchService);
   get projectLoaded() {
     const name = this.projectState.getProject().projectName;
     return !!name;
@@ -59444,10 +59438,33 @@ var SidebarComponent = class _SidebarComponent {
       this.toggleSection(section);
     }
   }
+  checkInProgress = false;
+  checkLocalStatus() {
+    if (this.checkInProgress)
+      return;
+    if (this.projectState.hasLocal() !== null)
+      return;
+    const owner = this.projectState.getProject().github.owner;
+    const repo = this.projectState.getProject().github.repo;
+    if (!owner || !repo)
+      return;
+    this.checkInProgress = true;
+    const url = this.fetchService.generateUrl("index.html", "ut", owner, repo);
+    const checks = [
+      this.fetchService.fetchStatusViaProxy(url).then((result) => this.projectState.hasLocal.set(result))
+    ];
+    if (this.projectState.getProject().github.hasBaselineRepo) {
+      const urlBL = this.fetchService.generateUrl("index.html", "ut-base", owner, repo);
+      checks.push(this.fetchService.fetchStatusViaProxy(urlBL).then((result) => this.projectState.hasLocalBL.set(result)));
+    }
+    Promise.all(checks).finally(() => {
+      this.checkInProgress = false;
+    });
+  }
   static \u0275fac = function SidebarComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SidebarComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SidebarComponent, selectors: [["aida-sidebar"]], decls: 68, vars: 61, consts: [["id", "nav-bar", 1, "l-navbar", "p-3"], [1, "flex", "flex-column", "justify-content-between", "h-full"], [1, "mb-4"], [1, "flex", "align-items-center", "gap-2", "p-0", "no-underline", 3, "routerLink"], [1, "material-icons", "text-5xl", "text-primary-300"], [1, "hidden", "md:inline", "text-lg", "font-semibold", "px-0"], [1, "mb-0", "md:mb-4"], ["tabindex", "0", "role", "button", "aria-controls", "project", 1, "hidden", "md:flex", "justify-content-between", "align-items-center", "text-lg", "text-primary-200", "hover:text-primary-400", "hover:font-bold", "cursor-pointer", 3, "click", "keydown"], ["id", "menu-project"], [1, "material-icons"], ["id", "project", "role", "region", "aria-labelledby", "menu-project"], [1, "flex", "align-items-center", "gap-3", "py-1", "px-2", "m-1", "border-round", "no-underline", "hover:bg-primary-600", 3, "routerLink", "routerLinkActive"], [1, "material-icons", "text-2xl"], [1, "hidden", "md:inline", "text-md"], [1, "border-primary-300", "md:hidden"], ["tabindex", "0", "role", "button", "aria-controls", "tasks", 1, "hidden", "md:flex", "justify-content-between", "align-items-center", "text-lg", "text-primary-200", "hover:text-primary-400", "hover:font-bold", "cursor-pointer", 3, "click", "keydown"], ["id", "menu-tasks"], ["id", "tasks", "role", "region", "aria-labelledby", "menu-tasks"], [1, "material-icons-outlined", "text-2xl"], ["tabindex", "0", 1, "flex", "align-items-center", "gap-3", "py-1", "px-2", "m-1", "border-round", "no-underline", "hover:bg-primary-600", 3, "click", "keydown.enter"]], template: function SidebarComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SidebarComponent, selectors: [["aida-sidebar"]], decls: 68, vars: 61, consts: [["id", "nav-bar", 1, "l-navbar", "p-3"], [1, "flex", "flex-column", "justify-content-between", "h-full"], [1, "mb-4"], [1, "flex", "align-items-center", "gap-2", "p-0", "no-underline", 3, "routerLink"], [1, "material-icons", "text-5xl", "text-primary-300"], [1, "hidden", "md:inline", "text-lg", "font-semibold", "px-0"], [1, "mb-0", "md:mb-4"], ["tabindex", "0", "role", "button", "aria-controls", "project", 1, "hidden", "md:flex", "justify-content-between", "align-items-center", "text-lg", "text-primary-200", "hover:text-primary-400", "hover:font-bold", "cursor-pointer", 3, "click", "keydown"], ["id", "menu-project"], [1, "material-icons"], ["id", "project", "role", "region", "aria-labelledby", "menu-project"], [1, "flex", "align-items-center", "gap-3", "py-1", "px-2", "m-1", "border-round", "no-underline", "hover:bg-primary-600", 3, "routerLink", "routerLinkActive"], [1, "material-icons", "text-2xl"], [1, "hidden", "md:inline", "text-md"], [1, "border-primary-300", "md:hidden"], ["tabindex", "0", "role", "button", "aria-controls", "tasks", 1, "hidden", "md:flex", "justify-content-between", "align-items-center", "text-lg", "text-primary-200", "hover:text-primary-400", "hover:font-bold", "cursor-pointer", 3, "click", "keydown"], ["id", "menu-tasks"], ["id", "tasks", "role", "region", "aria-labelledby", "menu-tasks"], [1, "flex", "align-items-center", "gap-3", "py-1", "px-2", "m-1", "border-round", "no-underline", "hover:bg-primary-600", 3, "click", "routerLink", "routerLinkActive"], [1, "material-icons-outlined", "text-2xl"], ["tabindex", "0", 1, "flex", "align-items-center", "gap-3", "py-1", "px-2", "m-1", "border-round", "no-underline", "hover:bg-primary-600", 3, "click", "keydown.enter"]], template: function SidebarComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "div", 0)(1, "nav", 1)(2, "div")(3, "div", 2)(4, "a", 3)(5, "span", 4);
       \u0275\u0275text(6);
@@ -59499,7 +59516,11 @@ var SidebarComponent = class _SidebarComponent {
       \u0275\u0275text(39);
       \u0275\u0275pipe(40, "translate");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(41, "a", 11)(42, "span", 18);
+      \u0275\u0275elementStart(41, "a", 18);
+      \u0275\u0275listener("click", function SidebarComponent_Template_a_click_41_listener() {
+        return ctx.checkLocalStatus();
+      });
+      \u0275\u0275elementStart(42, "span", 19);
       \u0275\u0275text(43, "drive_folder_upload");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(44, "span", 13);
@@ -59523,7 +59544,7 @@ var SidebarComponent = class _SidebarComponent {
       \u0275\u0275text(60);
       \u0275\u0275pipe(61, "translate");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(62, "a", 19);
+      \u0275\u0275elementStart(62, "a", 20);
       \u0275\u0275listener("click", function SidebarComponent_Template_a_click_62_listener() {
         return ctx.mailtoService.openMailto(ctx.mailtoService.generateFeedbackMailto());
       })("keydown.enter", function SidebarComponent_Template_a_keydown_enter_62_listener() {
@@ -59653,7 +59674,7 @@ var SidebarComponent = class _SidebarComponent {
             <span class="material-icons text-2xl">checklist_rtl</span>\r
             <span class="hidden md:inline text-md">{{ 'inventory._nav' | translate }}</span>\r
           </a>\r
-          <a [routerLink]="['/export-pages']" [routerLinkActive]="['bg-primary-500', 'text-primary-50']"\r
+          <a [routerLink]="['/export-pages']" [routerLinkActive]="['bg-primary-500', 'text-primary-50']" (click)="checkLocalStatus()"\r
              class="flex align-items-center gap-3 py-1 px-2 m-1 border-round no-underline hover:bg-primary-600">\r
             <span class="material-icons-outlined text-2xl">drive_folder_upload</span>\r
             <span class="hidden md:inline text-md">{{ 'exportPages._nav' | translate }}</span>\r
@@ -59708,7 +59729,7 @@ var SidebarComponent = class _SidebarComponent {
   }], null, null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SidebarComponent, { className: "SidebarComponent", filePath: "src/app/template/sidebar.component.ts", lineNumber: 15 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SidebarComponent, { className: "SidebarComponent", filePath: "src/app/template/sidebar.component.ts", lineNumber: 16 });
 })();
 
 // src/app/template/footer.component.ts

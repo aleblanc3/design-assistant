@@ -335,7 +335,7 @@ var require_normalize_strings = __commonJS({
       } else {
         global.normalize = factory(global, global.document);
       }
-    })(typeof window !== "undefined" ? window : exports, function(window2, document2) {
+    })(typeof window !== "undefined" ? window : exports, function(window2, document) {
       var charmap = require_charmap();
       var regex = null;
       var current_charmap;
@@ -1332,7 +1332,16 @@ var FetchService = class _FetchService {
       }
     });
   }
-  //Get preview content
+  /**
+   * Fetches page content from a different origin (UT, AEM preview etc.) by relaying
+   * the request through a same-origin proxy page. Only use if {@link fetchContent} is unsuccessful.
+   *
+   * This function must be triggered by the user or the popup may be blocked resulting in
+   * inconsistent behaviour for different users.
+   *
+   * @param targetUrl The full URL to fetch. Must be on an allowed origin or this will throw. (see {@link generateQuery} for allowed origins)
+   * @returns a string with the HTML content. For just a status check, use {@link fetchStatusViaProxy} instead.
+   */
   fetchViaProxy(targetUrl) {
     return new Promise((resolve, reject) => {
       let fetchQuery;
@@ -1368,13 +1377,23 @@ var FetchService = class _FetchService {
       }, 1e4);
     });
   }
+  /**
+   * Fetches page status from a different origin (UT, AEM preview etc.) by relaying
+   * the request through a same-origin proxy page. Only use if {@link fetchStatus} is unsuccessful.
+   *
+   * This function must be triggered by the user or the popup may be blocked resulting in
+   * inconsistent behaviour for different users.
+   *
+   * @param targetUrl The full URL to fetch. Must be on an allowed origin or this will throw. (see {@link generateQuery} for allowed origins)
+   * @returns true if the page exists. For a content fetch, use {@link fetchViaProxy} instead.
+   */
   fetchStatusViaProxy(targetUrl) {
     return new Promise((resolve) => {
       let fetchQuery;
       let fetchOrigin;
       try {
         ({ fetchQuery, fetchOrigin } = this.generateQuery(targetUrl, true));
-      } catch (error) {
+      } catch {
         resolve(false);
         return;
       }
@@ -1399,38 +1418,16 @@ var FetchService = class _FetchService {
       }, 5e3);
     });
   }
-  fetchStatusViaIFrame(targetUrl) {
-    return new Promise((resolve) => {
-      let fetchQuery;
-      let fetchOrigin;
-      try {
-        ({ fetchQuery, fetchOrigin } = this.generateQuery(targetUrl, true));
-      } catch (error) {
-        resolve(false);
-        return;
-      }
-      const iframe = document.createElement("iframe");
-      iframe.style.display = "none";
-      iframe.src = fetchQuery;
-      const cleanup = () => {
-        window.removeEventListener("message", handler);
-        clearTimeout(timeout);
-        iframe.remove();
-      };
-      const handler = (event) => {
-        if (event.origin !== fetchOrigin)
-          return;
-        cleanup();
-        resolve(event.data.success || false);
-      };
-      window.addEventListener("message", handler);
-      const timeout = setTimeout(() => {
-        cleanup();
-        resolve(false);
-      }, 5e3);
-      document.body.appendChild(iframe);
-    });
-  }
+  /**
+   * Generates the url query string needed for {@link fetchViaProxy} and {@link fetchStatusViaProxy}
+   *
+   * If you want to enable a new origin, add the origin and the same-origin proxy page with proxy.js to the paths records.
+   *
+   * @param targetUrl The full URL for the query.
+   * @param statusCheck False by default. Set it to true to add an optional parameter to limit the fetch to page status and no content.
+   * @returns fetchQuery (The proxy page with your target url as the query) and fetchOrigin (the origin we are fetching from)
+   * @throws Throws if targetUrl is not an allowed origin (see paths variable)
+   */
   generateQuery(targetUrl, statusCheck = false) {
     const targetOrigin = new URL(targetUrl).origin;
     const paths = {
@@ -2757,4 +2754,4 @@ export {
   GitHubAuthService,
   ExportGitHubService
 };
-//# sourceMappingURL=chunk-T7NOQHWP.js.map
+//# sourceMappingURL=chunk-VNVQO4CG.js.map

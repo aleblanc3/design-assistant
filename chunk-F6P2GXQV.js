@@ -3,7 +3,7 @@ import {
   FetchService,
   PageTemplate,
   ProjectPhase
-} from "./chunk-T7NOQHWP.js";
+} from "./chunk-VNVQO4CG.js";
 import {
   environment
 } from "./chunk-MYYNWJMU.js";
@@ -1852,6 +1852,11 @@ var ProjectStateService = class _ProjectStateService {
     live: false,
     baseline: false
   });
+  // Track availability of local and github versions
+  hasGitHub = signal(false);
+  hasGitHubBL = signal(false);
+  hasLocal = signal(null);
+  hasLocalBL = signal(null);
   constructor() {
     effect(() => {
       const currentProject = this.project();
@@ -3835,4 +3840,4 @@ export {
   TreeNodeStyleService,
   AddUrlsService
 };
-//# sourceMappingURL=chunk-VQOKC7Q3.js.map
+//# sourceMappingURL=chunk-F6P2GXQV.js.map
