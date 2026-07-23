@@ -87,6 +87,12 @@ export class ProjectStateService {
         baseline: false,
     });
 
+    // Track availability of local and github versions
+    hasGitHub = signal<boolean>(false);
+    hasGitHubBL = signal<boolean>(false);
+    hasLocal = signal<boolean | null>(null);
+    hasLocalBL = signal<boolean | null>(null);
+
     constructor() {
         // Autosave after a delay if there are changes
         effect(() => {
