@@ -67,8 +67,8 @@ export class FetchService {
     "cra-test-arc.canada.ca",
     "test.canada.ca",
     //"gc-proto.github.io", //CORS error but redirects to test.canada.ca which works
-    "canada-preview.adobecqms.net",
     "aleblanc3.github.io",
+    "canada-preview.adobecqms.net",
     "cra-ut.isvcs.net"
   ]);
   private getAllowedHosts(mode: "prod" | "proto" | "both"): Set<string> {
@@ -515,12 +515,16 @@ export class FetchService {
 
 
   //Get preview content
-  public fetchPreview(targetUrl: string): Promise<string> {
+  public fetchViaProxy(targetUrl: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      const previewUrl = `https://canada-preview.adobecqms.net/en/revenue-agency/web-services-test/amber/test.html?fetch=${encodeURIComponent(targetUrl)}`;
-      //const previewUrl = `https://aleblanc3.github.io/test/test.html?fetch=${encodeURIComponent(targetUrl)}`;
 
-      const popup = window.open(previewUrl, '_blank', 'width=1,height=1,left=9999,top=9999');
+      let fetchQuery: string;
+      let fetchOrigin: string;
+      try {
+        ({ fetchQuery, fetchOrigin } = this.generateQuery(targetUrl, false));
+      } catch (error) { reject(error); return; }
+
+      const popup = window.open(fetchQuery, '_blank', 'width=1,height=1,left=9999,top=9999');
       if (!popup) {
         reject(new Error('Popup blocked. Please allow popups for this site.'));
         return;
@@ -528,8 +532,7 @@ export class FetchService {
       //Listen for response
       const handler = (event: MessageEvent) => {
         // Verify origin
-        if (event.origin !== 'https://canada-preview.adobecqms.net') return;
-        //if (event.origin !== 'https://aleblanc3.github.io') return;
+        if (event.origin !== fetchOrigin) return;
         // Cleanup
         window.removeEventListener('message', handler);
         clearTimeout(timeout);
@@ -551,10 +554,16 @@ export class FetchService {
     });
   }
 
-  fetchPreviewStatus(targetUrl: string): Promise<boolean> {
+  fetchStatusViaProxy(targetUrl: string): Promise<boolean> {
     return new Promise((resolve) => {
-      const previewUrl = `https://canada-preview.adobecqms.net/en/revenue-agency/web-services-test/amber/test.html?fetch=${encodeURIComponent(targetUrl)}&check=true`;
-      const popup = window.open(previewUrl, '_blank', 'width=1,height=1,left=9999,top=9999');
+
+      let fetchQuery: string;
+      let fetchOrigin: string;
+      try {
+        ({ fetchQuery, fetchOrigin } = this.generateQuery(targetUrl, true));
+      } catch (error) { resolve(false); return; }
+
+      const popup = window.open(fetchQuery, '_blank', 'width=1,height=1,left=9999,top=9999');
 
       if (!popup) {
         resolve(false);
@@ -562,7 +571,7 @@ export class FetchService {
       }
 
       const handler = (event: MessageEvent) => {
-        if (event.origin !== 'https://canada-preview.adobecqms.net') return;
+        if (event.origin !== fetchOrigin) return;
 
         window.removeEventListener('message', handler);
         clearTimeout(timeout);
@@ -579,6 +588,22 @@ export class FetchService {
         resolve(false);
       }, 5000);
     });
+  }
+
+  private generateQuery(targetUrl: string, statusCheck = false): { fetchQuery: string; fetchOrigin: string } {
+    const targetOrigin = new URL(targetUrl).origin;
+    const paths: Record<string, string> = {
+      "https://canada-preview.adobecqms.net": "https://canada-preview.adobecqms.net/en/revenue-agency/web-services-test/amber/test.html?fetch=",
+      "http://cra-ut.isvcs.net": "http://cra-ut.isvcs.net/test/aida/_Tools/fetch.html?fetch=",
+    };
+    const fetchUrl = paths[targetOrigin];
+    if (!fetchUrl) {
+      throw new Error(`Unhandled target URL: ${targetUrl}`);
+    }
+    return {
+      fetchQuery: `${fetchUrl}${encodeURIComponent(targetUrl)}&check=${statusCheck}`,
+      fetchOrigin: targetOrigin,
+    }
   }
 
   // Generate other URLs from Canada.ca URL

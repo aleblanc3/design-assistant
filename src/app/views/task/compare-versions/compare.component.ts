@@ -96,7 +96,7 @@ export class CompareComponent {
     if (cached) { validVersions.push(version); return; }
     try {
       let result;
-      if (version === 'preview') { result = await this.fetchService.fetchPreviewStatus(url) }
+      if (version === 'preview') { result = await this.fetchService.fetchStatusViaProxy(url) }
       else { result = (await this.fetchService.fetchStatus(url, 'both')).ok }
       this.compareService.setCachedStatus(url, result);
       if (result) validVersions.push(version);
@@ -194,7 +194,7 @@ export class CompareComponent {
       // Get HTML from preview (if selected)
       let previewContent;
       if (version === 'preview') {
-        previewContent = await this.fetchService.fetchPreview(url);
+        previewContent = await this.fetchService.fetchViaProxy(url);
       }
       // Set HTML processing result
       return {
