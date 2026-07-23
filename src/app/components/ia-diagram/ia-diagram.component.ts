@@ -125,6 +125,8 @@ export class IaDiagramComponent implements OnInit {
 
   onMenuClick(event: MouseEvent, node: TreeNode) {
     if (!node.data.path[this.primaryLang]) return;
+    const projectNode = this.projectState.findNodeByPath(this.projectData().projectData, node.data.path[this.primaryLang], this.primaryLang)
+    if (!projectNode) return;
 
     event.preventDefault();
     this.items = [
@@ -134,8 +136,7 @@ export class IaDiagramComponent implements OnInit {
           {
             label: this.translate.instant(`common.editNode`),
             icon: "pi pi-pen-to-square",
-            disabled: node.data.isNavChild,
-            command: () => { this.selectedNode = node; this.editNode = true }
+            command: () => { this.selectedNode = projectNode; this.editNode = true }
           },
         ],
       },
@@ -147,8 +148,8 @@ export class IaDiagramComponent implements OnInit {
     // Action: Reorder siblings
     const siblings = this.projectState.getSiblings(node);
     const index = siblings.indexOf(node);
-    const canMoveLeft = index > 0;
-    const canMoveRight = index < siblings.length - 1;
+    const canMoveLeft = (index > 0 && !node.data.isNavChild);
+    const canMoveRight = (index < siblings.length - 1 && !node.data.isNavChild);
     if (this.selectedView() === 'changes' && (canMoveRight || canMoveLeft)) {
       this.items[0].items!.push({ separator: true });
     }
