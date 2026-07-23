@@ -349,6 +349,7 @@
 	"exportPages.export.status.skipOverwrite": "Ignorer",
 	"exportPages.export.templateFiles": "Fichiers gabarits ({{count}})",
 	"exportPages.export.zip.description": "Les pages seront exportées dans un fichier zip en format SGDC. Les redirections pour les pages incluses sont configurées automatiquement, vous n'avez donc pas besoin de mettre à jour les liens dans votre dossier manuellement. Si vous créez de nouvelles pages directement dans le dossier, n'oubliez pas de les répertorier dans votre fichier /source/data/exclude-redirect-links.json.",
+	"exportPages.exportedBy": "Exporté par :",
 	"exportPages.github._title": "Exporter les pages vers GitHub",
 	"exportPages.github.openRepo": "Ouvrir dans GitHub",
 	"exportPages.github.warningMessage": "Connectez-vous à l'aide de GitHub ou entrez votre jeton GitHub pour exporter votre contenu",
