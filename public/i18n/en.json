@@ -349,6 +349,7 @@
 	"exportPages.export.status.skipOverwrite": "Skip",
 	"exportPages.export.templateFiles": "Template files ({{count}})",
 	"exportPages.export.zip.description": "The pages will be exported to zip file in CDTS format. Redirects for the included pages are automatically set up, so you don't need to update links in your repo manually. If you create new pages directly in the folder, remember to list them in your /source/data/exclude-redirect-links.json file.",
+	"exportPages.exportedBy": "Exported by:",
 	"exportPages.github._title": "Export pages to GitHub",
 	"exportPages.github.openRepo": "Open in GitHub",
 	"exportPages.github.warningMessage": "Sign in with GitHub or enter your GitHub token to export your content",
