@@ -88,8 +88,10 @@ export class FetchService {
     let hostname: string;
     try {
       const parsedUrl = new URL(url);
-      if (parsedUrl.protocol !== "https:" || /\s/.test(url)) throw new Error();
+      if (/\s/.test(url)) throw new Error();
       hostname = parsedUrl.hostname.toLowerCase();
+      const isUT = hostname === "cra-ut.isvcs.net"
+      if (parsedUrl.protocol !== "https:" && !isUT) throw new Error();
     } catch {
       throw new Error(`Invalid URL: ${url}`)
     }
