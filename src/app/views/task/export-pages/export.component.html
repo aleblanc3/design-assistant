@@ -239,7 +239,7 @@
               [loading]="exportProgress()" />
     }
     @else{
-    @if (hasLocal()){
+    @if (projectState.hasLocal()){
     <p-message severity="info" styleClass="mt-3">
         <div class="flex align-items-center gap-2">
             <i class="pi pi-info-circle font-bold"></i>
