@@ -590,6 +590,41 @@ export class FetchService {
     });
   }
 
+  fetchStatusViaIFrame(targetUrl: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      let fetchQuery: string;
+      let fetchOrigin: string;
+      try {
+        ({ fetchQuery, fetchOrigin } = this.generateQuery(targetUrl, true));
+      } catch (error) { resolve(false); return; }
+
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = fetchQuery;
+
+      const cleanup = () => {
+        window.removeEventListener('message', handler);
+        clearTimeout(timeout);
+        iframe.remove();
+      };
+
+      const handler = (event: MessageEvent) => {
+        if (event.origin !== fetchOrigin) return;
+        cleanup();
+        resolve(event.data.success || false);
+      };
+
+      window.addEventListener('message', handler);
+
+      const timeout = setTimeout(() => {
+        cleanup();
+        resolve(false);
+      }, 5000);
+
+      document.body.appendChild(iframe);
+    });
+  }
+
   private generateQuery(targetUrl: string, statusCheck = false): { fetchQuery: string; fetchOrigin: string } {
     const targetOrigin = new URL(targetUrl).origin;
     const paths: Record<string, string> = {
