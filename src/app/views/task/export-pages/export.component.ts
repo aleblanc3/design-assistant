@@ -157,7 +157,7 @@ export class ExportComponent implements OnInit {
     if (this.projectData().lastDownloaded) {
       const version = this.selectedExportVersion === 'prototype' ? 'ut' : 'ut-base'
       const url = this.fetchService.generateUrl("index.html", version, this.projectData().github.owner, this.projectData().github.repo);
-      this.hasLocal.set(await this.fetchService.fetchStatusViaProxy(url));
+      this.hasLocal.set(await this.fetchService.fetchStatusViaIFrame(url));
     }
   }
 
