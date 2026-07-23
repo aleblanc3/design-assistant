@@ -45,7 +45,7 @@ import {
   FindPagesComponent,
   InputNumber,
   InputNumberModule
-} from "./chunk-2QXQZWFU.js";
+} from "./chunk-O52YXDMY.js";
 import {
   Tag,
   TagModule
@@ -87,7 +87,7 @@ import {
 } from "./chunk-27HYBFZ6.js";
 import {
   AddUrlsComponent
-} from "./chunk-RT52UVZD.js";
+} from "./chunk-YX2FWVYK.js";
 import {
   Message,
   MessageModule,
@@ -105,7 +105,7 @@ import {
   TreeNodeStyleService,
   UsageService,
   version
-} from "./chunk-ZVABFQGY.js";
+} from "./chunk-VQOKC7Q3.js";
 import {
   COLUMN_GROUPS,
   ExportGitHubService,
@@ -115,7 +115,7 @@ import {
   PageTemplate,
   PhaseStatus,
   ProjectPhase
-} from "./chunk-7BR2DQG6.js";
+} from "./chunk-T7NOQHWP.js";
 import {
   environment
 } from "./chunk-MYYNWJMU.js";
@@ -41798,7 +41798,7 @@ function isKnownNumber(number) {
 // src/app/views/task/manage-inventory/inventory.component.ts
 var _c022 = ["dt"];
 var _c131 = ["menuContext"];
-var InventoryComponent_Defer_42_DepsFn = () => [import("./chunk-4KY45CXQ.js").then((m) => m.AddUrlsComponent), import("./chunk-CKFKYTLI.js").then((m) => m.FindPagesComponent)];
+var InventoryComponent_Defer_42_DepsFn = () => [import("./chunk-JE5NXSC4.js").then((m) => m.AddUrlsComponent), import("./chunk-MHIAEWGO.js").then((m) => m.FindPagesComponent)];
 var _c216 = () => ({ height: "90vh" });
 var _c314 = (a0) => [25, 50, 100, a0];
 var _c413 = (a0) => ({ column: a0 });
@@ -44038,7 +44038,7 @@ var InventoryComponent = class _InventoryComponent {
   }, dependencies: [CommonModule, NgClass, DecimalPipe, DatePipe, FormsModule, DefaultValueAccessor, NgControlStatus, NgModel, TranslateModule, TranslatePipe, TableModule, Table, PrimeTemplate, SortableColumn, SelectableRow, EditableColumn, SortIcon, TableCheckbox, TableHeaderCheckbox, TooltipModule, Tooltip, TagModule, Tag, ButtonModule, Button, RadioButtonModule, RadioButton, IftaLabelModule, IftaLabel, MultiSelectModule, MultiSelect, SelectModule, Select, TextareaModule, Textarea, MenuModule, Menu, ContextMenuModule, ContextMenu, ConfirmDialogModule, ConfirmDialog, DialogModule, Dialog, ExportProjectComponent, IaTableComponent, EditNodeComponent], styles: ["\n\n.sticky-toolbar[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  top: 0;\n  z-index: 20;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n  padding-right: 0rem;\n  box-sizing: border-box;\n}\n.sticky-toolbar-table[_ngcontent-%COMP%] {\n  width: calc(100vw - var(--nav-width) - 2rem);\n}\n@media screen and (min-width: 768px) {\n  .sticky-toolbar[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n    padding-right: 5rem;\n  }\n  .sticky-toolbar-table[_ngcontent-%COMP%] {\n    width: calc(100vw - var(--nav-width) - 7rem - 5rem);\n  }\n}\n  .p-datatable-table-container {\n  overflow: visible !important;\n}\n.sticky-h[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width) + 2rem);\n  z-index: 11;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-h[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 9rem);\n  }\n}\n.sticky-c[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  z-index: 11;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-c[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n  }\n}\n.sticky-r[_ngcontent-%COMP%] {\n  position: sticky;\n  top: 9rem;\n  z-index: 12;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n  .p-datatable .p-datatable-thead {\n  z-index: 13 !important;\n}\n.sticky-rh[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width) + 2rem);\n  top: 9rem;\n  z-index: 14;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-rh[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 9rem);\n  }\n}\n.sticky-rc[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  top: 9rem;\n  z-index: 14;\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n}\n@media screen and (min-width: 768px) {\n  .sticky-rc[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n  }\n}\n.sticky-horizontal[_ngcontent-%COMP%] {\n  position: sticky;\n  left: calc(var(--nav-width));\n  z-index: 10;\n  width: calc(100vw - var(--nav-width) - 2rem);\n  margin-left: -1.5rem;\n  padding-left: 1.5rem;\n  padding-right: 0rem;\n  box-sizing: border-box;\n}\n@media screen and (min-width: 768px) {\n  .sticky-horizontal[_ngcontent-%COMP%] {\n    left: calc(var(--nav-width) + 7rem);\n    width: calc(100vw - var(--nav-width) - 7rem - 3.5rem);\n    padding-right: 5rem;\n  }\n}\n.hasMenu[_ngcontent-%COMP%]:hover {\n  background-color: var(--p-primary-100) !important;\n}\nhtml.dark-mode[_ngcontent-%COMP%]   .hasMenu[_ngcontent-%COMP%]:hover {\n  background-color: var(--p-primary-500) !important;\n}\n/*# sourceMappingURL=inventory.component.css.map */"] });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(InventoryComponent, () => [import("./chunk-4KY45CXQ.js").then((m) => m.AddUrlsComponent), import("./chunk-CKFKYTLI.js").then((m) => m.FindPagesComponent)], (AddUrlsComponent2, FindPagesComponent2) => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(InventoryComponent, () => [import("./chunk-JE5NXSC4.js").then((m) => m.AddUrlsComponent), import("./chunk-MHIAEWGO.js").then((m) => m.FindPagesComponent)], (AddUrlsComponent2, FindPagesComponent2) => {
     setClassMetadata(InventoryComponent, [{
       type: Component,
       args: [{ selector: "aida-inventory", imports: [
@@ -47319,7 +47319,7 @@ var CompareComponent = class _CompareComponent {
       try {
         let result;
         if (version2 === "preview") {
-          result = yield this.fetchService.fetchPreviewStatus(url);
+          result = yield this.fetchService.fetchStatusViaProxy(url);
         } else {
           result = (yield this.fetchService.fetchStatus(url, "both")).ok;
         }
@@ -47409,7 +47409,7 @@ var CompareComponent = class _CompareComponent {
         }
         let previewContent;
         if (version2 === "preview") {
-          previewContent = yield this.fetchService.fetchPreview(url);
+          previewContent = yield this.fetchService.fetchViaProxy(url);
         }
         return __spreadProps(__spreadValues({}, previewContent ? yield this.htmlNormalizationService.normalizeHTML(previewContent, "string") : yield this.htmlNormalizationService.normalizeHTML(url, "url")), {
           url,
@@ -52834,7 +52834,7 @@ function ExportComponent_Conditional_56_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275conditional(!ctx_r0.hasLocal() ? 0 : -1);
+    \u0275\u0275conditional(ctx_r0.hasLocal() ? 0 : -1);
     \u0275\u0275advance();
     \u0275\u0275property("label", \u0275\u0275pipeBind1(2, 4, "exportPages.export.button.zip"))("disabled", ctx_r0.projectFileCount() === 0 || !ctx_r0.gitHubData().repo)("loading", ctx_r0.exportProgress());
   }
@@ -52961,7 +52961,7 @@ var ExportComponent = class _ExportComponent {
       if (this.projectData().lastDownloaded) {
         const version2 = this.selectedExportVersion === "prototype" ? "ut" : "ut-base";
         const url = this.fetchService.generateUrl("index.html", version2, this.projectData().github.owner, this.projectData().github.repo);
-        this.hasLocal.set((yield this.fetchService.fetchStatus(url, "proto", 2)).ok);
+        this.hasLocal.set(yield this.fetchService.fetchStatusViaIFrame(url));
       }
     });
   }
@@ -53338,7 +53338,7 @@ var ExportComponent = class _ExportComponent {
     const githubLinkHtml = showGithubLink ? `<div class="mrgn-tp-md">
             <div class="row">
                 <ul class="toc lst-spcd col-md-12">
-                    <li class="col-md-4 col-sm-6"><a class="list-group-item active" data-exit="false" href="https://github.com/${this.gitHubData().owner}/${this.gitHubData().repo}">${this.translate.instant("project.github._title")}</a></li>
+                    <li class="col-md-4 col-sm-6"><a class="list-group-item active" href="https://github.com/${this.gitHubData().owner}/${this.gitHubData().repo}" target="_blank">${this.translate.instant("project.github._title")}</a></li>
                 </ul>
             </div>
          </div>
@@ -53347,18 +53347,19 @@ var ExportComponent = class _ExportComponent {
     const collaboratorHtml = collaboratorNames ? `<p class="mrgn-bttm-0">${this.translate.instant("collaborators.project")}</p>
          <ul class="colcount-sm-4">${this.projectData().collaborators.map((collab) => ` <li> ${collab.login}</li>`).join("")}</ul>
 ` : "";
+    const exporterHtml = `<p class="gc-byline">${this.translate.instant("exportPages.exportedBy")} {{EXPORTED_BY}}</p>`;
     if (this.selectedExportLanguage === "both") {
       const exportedPairs = this.projectState.getPairedPages(this.selectedExportVersion, scope).filter((pair) => paths.has(pair.en.path) || paths.has(pair.fr.path));
       const rows = exportedPairs.map((pair) => {
-        const enCell = paths.has(pair.en.path) ? `<a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${pair.en.path}">${pair.en.label ?? pair.en.path}</a>` : `<i class="fa fa-minus"></i>`;
-        const frCell = paths.has(pair.fr.path ?? pair.fr.path) ? `<a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${pair.fr.path}">${pair.fr.label}</a>` : `<i class="fa fa-minus"></i>`;
+        const enCell = paths.has(pair.en.path) ? `<a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${pair.en.path}" target="_blank">${pair.en.label ?? pair.en.path}</a>` : `<i class="fa fa-minus"></i>`;
+        const frCell = paths.has(pair.fr.path ?? pair.fr.path) ? `<a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${pair.fr.path}" target="_blank">${pair.fr.label}</a>` : `<i class="fa fa-minus"></i>`;
         return `
         <tr>
             <td>${enCell}</td>
             <td>${frCell}</td>
         </tr>`;
       }).join("");
-      return `${githubLinkHtml}${collaboratorHtml}
+      return `${exporterHtml}${githubLinkHtml}${collaboratorHtml}
       <table class="table table-striped">
           <thead>
               <tr>
@@ -53372,8 +53373,9 @@ var ExportComponent = class _ExportComponent {
     } else {
       console.log(paths);
       const exportedPages = this.projectState.getAllPages(this.selectedExportLanguage, this.selectedExportVersion, scope).filter((page) => paths.has(page.path));
-      const items = exportedPages.map((page) => `<li><a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${page.path}">${page.label ?? page.path}</a></li>`).join("");
-      return `${githubLinkHtml}${collaboratorHtml}<ul>${items}</ul>`;
+      const items = exportedPages.map((page) => `<li><a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${page.path}" target="_blank">${page.label ?? page.path}</a></li>`).join("");
+      const langKey = this.selectedExportLanguage === "en" ? "common.language.english" : "common.language.french";
+      return `${exporterHtml}${githubLinkHtml}${collaboratorHtml}<p class="mrgn-bttm-0">${this.translate.instant(langKey)}</p><ul>${items}</ul>`;
     }
   }
   /*_________________________________________*/
@@ -53903,7 +53905,7 @@ var ExportComponent = class _ExportComponent {
               [loading]="exportProgress()" />\r
     }\r
     @else{\r
-    @if (!hasLocal()){\r
+    @if (hasLocal()){\r
     <p-message severity="info" styleClass="mt-3">\r
         <div class="flex align-items-center gap-2">\r
             <i class="pi pi-info-circle font-bold"></i>\r
@@ -55128,6 +55130,9 @@ var IaDiagramComponent = class _IaDiagramComponent {
   onMenuClick(event2, node) {
     if (!node.data.path[this.primaryLang])
       return;
+    const projectNode = this.projectState.findNodeByPath(this.projectData().projectData, node.data.path[this.primaryLang], this.primaryLang);
+    if (!projectNode)
+      return;
     event2.preventDefault();
     this.items = [
       {
@@ -55136,9 +55141,8 @@ var IaDiagramComponent = class _IaDiagramComponent {
           {
             label: this.translate.instant(`common.editNode`),
             icon: "pi pi-pen-to-square",
-            disabled: node.data.isNavChild,
             command: () => {
-              this.selectedNode = node;
+              this.selectedNode = projectNode;
               this.editNode = true;
             }
           }
@@ -55151,8 +55155,8 @@ var IaDiagramComponent = class _IaDiagramComponent {
     ];
     const siblings = this.projectState.getSiblings(node);
     const index = siblings.indexOf(node);
-    const canMoveLeft = index > 0;
-    const canMoveRight = index < siblings.length - 1;
+    const canMoveLeft = index > 0 && !node.data.isNavChild;
+    const canMoveRight = index < siblings.length - 1 && !node.data.isNavChild;
     if (this.selectedView() === "changes" && (canMoveRight || canMoveLeft)) {
       this.items[0].items.push({ separator: true });
     }
@@ -55256,11 +55260,20 @@ var IaDiagramComponent = class _IaDiagramComponent {
       });
     }
     if (!node.data.isNavChild) {
+      const path = node.data.path[this.primaryLang];
+      const navChildrenVisible = this.navNodes().has(path);
       this.items[1].items.push({
-        label: node.data.navChildrenVisible ? this.translate.instant(`iaDiagram.menu.hideNavChildren`) : this.translate.instant(`iaDiagram.menu.showNavChildren`),
-        icon: node.data.navChildrenVisible ? "pi pi-eye-slash" : "pi pi-eye",
+        label: navChildrenVisible ? this.translate.instant(`iaDiagram.menu.hideNavChildren`) : this.translate.instant(`iaDiagram.menu.showNavChildren`),
+        icon: navChildrenVisible ? "pi pi-eye-slash" : "pi pi-eye",
         command: () => __async(this, null, function* () {
-          const path = node.data.path[this.primaryLang];
+          if (this.navNodes().has(path)) {
+            this.navNodes.update((map) => {
+              const next = new Map(map);
+              next.delete(path);
+              return next;
+            });
+            return;
+          }
           const type = this.projectState.getProject().repoType;
           const version2 = type === "github" && this.hasGitHub() ? "prototype" : type === "local" && this.hasLocal() ? "ut" : "live";
           const url = this.fetchService.generateUrl(path, version2, this.projectData().github.owner, this.projectData().github.repo);
@@ -57356,7 +57369,7 @@ var routes = [
   },
   {
     path: "dev/prompt-editor",
-    loadComponent: () => import("./chunk-E3VKDBOO.js").then((m) => m.PromptEditorComponent),
+    loadComponent: () => import("./chunk-7IUNULA4.js").then((m) => m.PromptEditorComponent),
     title: "dev.prompts._title"
   },
   {

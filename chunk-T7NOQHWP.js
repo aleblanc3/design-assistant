@@ -335,7 +335,7 @@ var require_normalize_strings = __commonJS({
       } else {
         global.normalize = factory(global, global.document);
       }
-    })(typeof window !== "undefined" ? window : exports, function(window2, document) {
+    })(typeof window !== "undefined" ? window : exports, function(window2, document2) {
       var charmap = require_charmap();
       var regex = null;
       var current_charmap;
@@ -959,8 +959,9 @@ var FetchService = class _FetchService {
     "cra-test-arc.canada.ca",
     "test.canada.ca",
     //"gc-proto.github.io", //CORS error but redirects to test.canada.ca which works
+    "aleblanc3.github.io",
     "canada-preview.adobecqms.net",
-    "aleblanc3.github.io"
+    "cra-ut.isvcs.net"
   ]);
   getAllowedHosts(mode) {
     const allowed = /* @__PURE__ */ new Set();
@@ -976,9 +977,12 @@ var FetchService = class _FetchService {
     let hostname;
     try {
       const parsedUrl = new URL(url);
-      if (parsedUrl.protocol !== "https:" || /\s/.test(url))
+      if (/\s/.test(url))
         throw new Error();
       hostname = parsedUrl.hostname.toLowerCase();
+      const isUT = hostname === "cra-ut.isvcs.net";
+      if (parsedUrl.protocol !== "https:" && !isUT)
+        throw new Error();
     } catch {
       throw new Error(`Invalid URL: ${url}`);
     }
@@ -1329,16 +1333,23 @@ var FetchService = class _FetchService {
     });
   }
   //Get preview content
-  fetchPreview(targetUrl) {
+  fetchViaProxy(targetUrl) {
     return new Promise((resolve, reject) => {
-      const previewUrl = `https://canada-preview.adobecqms.net/en/revenue-agency/web-services-test/amber/test.html?fetch=${encodeURIComponent(targetUrl)}`;
-      const popup = window.open(previewUrl, "_blank", "width=1,height=1,left=9999,top=9999");
+      let fetchQuery;
+      let fetchOrigin;
+      try {
+        ({ fetchQuery, fetchOrigin } = this.generateQuery(targetUrl, false));
+      } catch (error) {
+        reject(error);
+        return;
+      }
+      const popup = window.open(fetchQuery, "_blank", "width=1,height=1,left=9999,top=9999");
       if (!popup) {
         reject(new Error("Popup blocked. Please allow popups for this site."));
         return;
       }
       const handler = (event) => {
-        if (event.origin !== "https://canada-preview.adobecqms.net")
+        if (event.origin !== fetchOrigin)
           return;
         window.removeEventListener("message", handler);
         clearTimeout(timeout);
@@ -1357,16 +1368,23 @@ var FetchService = class _FetchService {
       }, 1e4);
     });
   }
-  fetchPreviewStatus(targetUrl) {
+  fetchStatusViaProxy(targetUrl) {
     return new Promise((resolve) => {
-      const previewUrl = `https://canada-preview.adobecqms.net/en/revenue-agency/web-services-test/amber/test.html?fetch=${encodeURIComponent(targetUrl)}&check=true`;
-      const popup = window.open(previewUrl, "_blank", "width=1,height=1,left=9999,top=9999");
+      let fetchQuery;
+      let fetchOrigin;
+      try {
+        ({ fetchQuery, fetchOrigin } = this.generateQuery(targetUrl, true));
+      } catch (error) {
+        resolve(false);
+        return;
+      }
+      const popup = window.open(fetchQuery, "_blank", "width=1,height=1,left=9999,top=9999");
       if (!popup) {
         resolve(false);
         return;
       }
       const handler = (event) => {
-        if (event.origin !== "https://canada-preview.adobecqms.net")
+        if (event.origin !== fetchOrigin)
           return;
         window.removeEventListener("message", handler);
         clearTimeout(timeout);
@@ -1380,6 +1398,53 @@ var FetchService = class _FetchService {
         resolve(false);
       }, 5e3);
     });
+  }
+  fetchStatusViaIFrame(targetUrl) {
+    return new Promise((resolve) => {
+      let fetchQuery;
+      let fetchOrigin;
+      try {
+        ({ fetchQuery, fetchOrigin } = this.generateQuery(targetUrl, true));
+      } catch (error) {
+        resolve(false);
+        return;
+      }
+      const iframe = document.createElement("iframe");
+      iframe.style.display = "none";
+      iframe.src = fetchQuery;
+      const cleanup = () => {
+        window.removeEventListener("message", handler);
+        clearTimeout(timeout);
+        iframe.remove();
+      };
+      const handler = (event) => {
+        if (event.origin !== fetchOrigin)
+          return;
+        cleanup();
+        resolve(event.data.success || false);
+      };
+      window.addEventListener("message", handler);
+      const timeout = setTimeout(() => {
+        cleanup();
+        resolve(false);
+      }, 5e3);
+      document.body.appendChild(iframe);
+    });
+  }
+  generateQuery(targetUrl, statusCheck = false) {
+    const targetOrigin = new URL(targetUrl).origin;
+    const paths = {
+      "https://canada-preview.adobecqms.net": "https://canada-preview.adobecqms.net/en/revenue-agency/web-services-test/amber/test.html?fetch=",
+      "http://cra-ut.isvcs.net": "http://cra-ut.isvcs.net/test/aida/_Tools/fetch.html?fetch="
+    };
+    const fetchUrl = paths[targetOrigin];
+    if (!fetchUrl) {
+      throw new Error(`Unhandled target URL: ${targetUrl}`);
+    }
+    return {
+      fetchQuery: `${fetchUrl}${encodeURIComponent(targetUrl)}&check=${statusCheck}`,
+      fetchOrigin: targetOrigin
+    };
   }
   // Generate other URLs from Canada.ca URL
   generateOtherUrl(productionUrl, type = "prototype", owner, repo) {
@@ -2692,4 +2757,4 @@ export {
   GitHubAuthService,
   ExportGitHubService
 };
-//# sourceMappingURL=chunk-7BR2DQG6.js.map
+//# sourceMappingURL=chunk-T7NOQHWP.js.map

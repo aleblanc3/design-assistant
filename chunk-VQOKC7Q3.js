@@ -3,7 +3,7 @@ import {
   FetchService,
   PageTemplate,
   ProjectPhase
-} from "./chunk-7BR2DQG6.js";
+} from "./chunk-T7NOQHWP.js";
 import {
   environment
 } from "./chunk-MYYNWJMU.js";
@@ -3214,12 +3214,12 @@ var ProjectStateService = class _ProjectStateService {
   }
   applyNavState(nodes, navUrls) {
     const lang = nodes[0]?.data.lang;
+    const root = this.project().projectData;
     for (const node of nodes) {
-      node.data.navChildrenVisible = node.data.navChildrenVisible ? !node.data.navChildrenVisible : true;
       const path = node.data?.path[lang];
       if (navUrls.has(path)) {
         const linkedPaths = navUrls.get(path);
-        const rescueNodes = linkedPaths.map((linkedPath) => this.findNodeByPath(nodes, linkedPath, lang)).filter((match) => !!match).map((match) => this.duplicateNode(match, node));
+        const rescueNodes = linkedPaths.map((linkedPath) => this.findNodeByPath(root, linkedPath, lang)).filter((match) => !!match).map((match) => this.duplicateNode(match, node));
         node.children = [...node.children ?? [], ...rescueNodes];
       }
       if (node.children?.length) {
@@ -3835,4 +3835,4 @@ export {
   TreeNodeStyleService,
   AddUrlsService
 };
-//# sourceMappingURL=chunk-ZVABFQGY.js.map
+//# sourceMappingURL=chunk-VQOKC7Q3.js.map

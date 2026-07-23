@@ -347,6 +347,7 @@
 	"exportPages.export.status.skipOverwrite": "",
 	"exportPages.export.templateFiles": "",
 	"exportPages.export.zip.description": "",
+	"exportPages.exportedBy": "",
 	"exportPages.github._title": "",
 	"exportPages.github.openRepo": "",
 	"exportPages.github.warningMessage": "",
