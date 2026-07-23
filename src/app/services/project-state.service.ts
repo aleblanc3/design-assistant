@@ -1673,12 +1673,13 @@ export class ProjectStateService {
 
     private applyNavState(nodes: TreeNode[], navUrls: Map<string, string[]>): void {
         const lang = nodes[0]?.data.lang;
+        const root = this.project().projectData;
         for (const node of nodes) {
             const path = node.data?.path[lang];
             if (navUrls.has(path)) {
                 const linkedPaths = navUrls.get(path)!;
                 const rescueNodes = linkedPaths
-                    .map(linkedPath => this.findNodeByPath(nodes, linkedPath, lang))
+                    .map(linkedPath => this.findNodeByPath(root, linkedPath, lang))
                     .filter((match): match is TreeNode => !!match)
                     .map(match => this.duplicateNode(match, node));
                 node.children = [...(node.children ?? []), ...rescueNodes];
