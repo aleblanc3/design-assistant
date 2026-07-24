@@ -518,24 +518,27 @@ export class ExportComponent implements OnInit {
         }
       }
 
-      const html = this.buildCdtsPage(lang === 'fr' ? CDTS_TEMPLATE_FRA : CDTS_TEMPLATE_ENG, {
-        TITLE: title ?? '',
-        DESCRIPTION: description ?? '',
-        KEYWORDS: keywords ?? '',
-        ROBOTS: robots,
-        ENGLISH: enUrl ?? '',
-        FRENCH: frUrl ?? '',
-        BREADCRUMBS: breadcrumbs,
-        HEADER: header ?? '',
-        CONTENT: content,
-        MODIFIED: date,
-        STYLES: styles,
-        SCRIPTS: scripts,
-        REPO: repo,
-        DEPTH: depth
-      });
-
-      zip.file(`${repo}/${path}`, html);
+      try {
+        const html = this.buildCdtsPage(lang === 'fr' ? CDTS_TEMPLATE_FRA : CDTS_TEMPLATE_ENG, {
+          TITLE: title ?? '',
+          DESCRIPTION: description ?? '',
+          KEYWORDS: keywords ?? '',
+          ROBOTS: robots,
+          ENGLISH: enUrl ?? '',
+          FRENCH: frUrl ?? '',
+          BREADCRUMBS: breadcrumbs,
+          HEADER: header ?? '',
+          CONTENT: content,
+          MODIFIED: date,
+          STYLES: styles,
+          SCRIPTS: scripts,
+          REPO: repo,
+          DEPTH: depth
+        });
+        zip.file(`${repo}/${path}`, html);
+      } catch (error) {
+        console.error(`Failed to zip page "${path}":`, error);
+      }
     }
 
     //Redirect files
@@ -571,9 +574,10 @@ export class ExportComponent implements OnInit {
       else if (path === this.cdtsFiles[4]) {
         const html = this.buildCdtsPage(aidaLang === 'en' ? INDEX_PAGE_TEMPLATE_ENG : INDEX_PAGE_TEMPLATE_FRA, {
           MODIFIED: date,
-          CONTENT: projectPaths ? this.buildCdtsIndex(new Set(projectPaths), scope) : ''
+          CONTENT: projectPaths ? this.buildCdtsIndex(new Set(projectPaths), scope) : '',
+          REPO: repo
         });
-        console.log(await this.htmlNormalizationService.formatHtml(html))
+        //console.log(await this.htmlNormalizationService.formatHtml(html))
         zip.file(`${repo}/${path}`, await this.htmlNormalizationService.formatHtml(html));
       }
       else console.warn("Unhandled template file")
@@ -590,12 +594,12 @@ export class ExportComponent implements OnInit {
     a.href = URL.createObjectURL(blob);
     a.download = `aida-html-export-${new Date().toISOString().split('T')[0]}.zip`;
     a.click();
-    URL.revokeObjectURL(a.href);
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   }
 
   buildCdtsPage(template: string, vars: Record<string, string>): string {
     return Object.entries(vars).reduce(
-      (html, [key, value]) => html.replaceAll(`{{${key}}}`, value),
+      (html, [key, value]) => html.replaceAll(`{{${key}}}`, () => value),
       template
     );
   }
@@ -617,38 +621,52 @@ export class ExportComponent implements OnInit {
     //Include GitHub usernames if available
     const collaboratorNames = !!this.projectData().collaborators?.length;
     const collaboratorHtml = collaboratorNames
-      ? `<p class="mrgn-bttm-0">${this.translate.instant('collaborators.project')}</p>
-         <ul class="colcount-sm-4">${this.projectData().collaborators.map(collab => ` <li> ${collab.login}</li>`).join('')}</ul>\n`
+      ? `<section class="gc-contributors">
+         <h2 class="h3">${this.translate.instant('collaborators.project')}</h2>
+         <ul>${this.projectData().collaborators.map(collab => ` <li> ${collab.login}</li>`).join('')}</ul>
+         </section>\n`
       : '';
-    //Exporter will be filled out via .ps1 extraction
+    //EXPORTED_BY will be filled out via .ps1 extraction tool
     const exporterHtml = `<p class="gc-byline">${this.translate.instant('exportPages.exportedBy')} {{EXPORTED_BY}}</p>`
     //Paired pages
     const exportedPairs = this.projectState.getPairedPages(this.selectedExportVersion, scope).filter(pair => paths.has(pair.en.path) || paths.has(pair.fr.path));
+    //Labels
     const viewCanada = this.translate.instant('common.viewOnCanada');
     const viewUPD = this.translate.instant('common.viewOnUPD');
     const viewAIDA = this.translate.instant('common.viewOnAIDA');
+    const ungroupedCaption = this.translate.instant('exportPages.ungroupedPages');
 
-    //Table rows
+    //Table status map
     const statusClassMap: Record<string, string> = {
       isBaseline: ' class="active"',
       isNew: ' class="success"',
       isROT: ' class="danger"',
       isMoved: ' class="warning"',
     };
-    const rows = exportedPairs.map(pair => {
+
+    //Table headers
+    const headers = this.selectedExportLanguage === 'en'
+      ? [this.translate.instant('common.language.englishPages')]
+      : this.selectedExportLanguage === 'fr'
+        ? [this.translate.instant('common.language.frenchPages')]
+        : [this.translate.instant('common.language.englishPages'), this.translate.instant('common.language.frenchPages')];
+    const headerHtml = headers.map(h => `<th>${h}</th>`).join('\n                  ');
+
+    //Row builder for a set of pairs
+    const buildRows = (pairsList: typeof exportedPairs) => pairsList.map(pair => {
       const rowStatus = statusClassMap[pair.status] ?? '';
       const enCell = paths.has(pair.en.path)
         ? `<a href="${this.fetchService.generateUrl(pair.en.path, "ut", this.gitHubData().owner, repo)}" target="_blank"
               data-versions='[
-                {"label": ${viewCanada}, "href":"${pair.en.url}"},
-                {"label": ${viewUPD}, "href":"${this.fetchService.generateUrl(pair.en.path, "upd")}"}
+                {"label": "${viewCanada}", "href":"${pair.en.url}"},
+                {"label": "${viewUPD}", "href":"${this.fetchService.generateUrl(pair.en.path, "upd")}"}
               ]'>${pair.en.label ?? pair.en.path}</a>`
         : `<i class="fa fa-minus"></i>`;
       const frCell = paths.has(pair.fr.path)
         ? `<a href="${this.fetchService.generateUrl(pair.fr.path, "ut", this.gitHubData().owner, repo)}" target="_blank"
               data-versions='[
-                {"label": ${viewCanada}, "href":"${pair.fr.url}"},
-                {"label": ${viewUPD}, "href":"${this.fetchService.generateUrl(pair.fr.path, "upd")}"}
+                {"label": "${viewCanada}", "href":"${pair.fr.url}"},
+                {"label": "${viewUPD}", "href":"${this.fetchService.generateUrl(pair.fr.path, "upd")}"}
               ]'>${pair.fr.label ?? pair.fr.path}</a>`
         : `<i class="fa fa-minus"></i>`;
       const cells = this.selectedExportLanguage === 'en'
@@ -662,25 +680,41 @@ export class ExportComponent implements OnInit {
         </tr>`;
     }).join('');
 
-    //Table headers
-    const headers = this.selectedExportLanguage === 'en'
-      ? [this.translate.instant('common.language.englishPages')]
-      : this.selectedExportLanguage === 'fr'
-        ? [this.translate.instant('common.language.frenchPages')]
-        : [this.translate.instant('common.language.englishPages'), this.translate.instant('common.language.frenchPages')];
-
-    //Full table
-    return `${exporterHtml}${githubLinkHtml}${collaboratorHtml}
+    //Table builder for a group
+    const buildTable = (caption: string, isVisibleCaption: boolean, pairsList: typeof exportedPairs) => `
       <table class="table table-hover">
-          <caption class="wb-inv">${scope === 'inScope' ? this.translate.instant('exportPages.data.inScope') : this.translate.instant('exportPages.data.baseline')}</caption>
+          <caption${isVisibleCaption ? '' : ' class="wb-inv"'}>${caption}</caption>
           <thead>
               <tr>
-                  ${headers.map(h => `<th>${h}</th>`).join('\n                  ')}
+                  ${headerHtml}
               </tr>
           </thead>
-          <tbody>${rows}
+          <tbody>${buildRows(pairsList)}
           </tbody>
       </table>`;
+
+    //Group pairs by section title, preserving traversal order; ungrouped pairs go last
+    const groupedPairs = new Map<string, typeof exportedPairs>();
+    const ungroupedPairs: typeof exportedPairs = [];
+    exportedPairs.forEach(pair => {
+      const groupKey = this.translate.currentLang?.startsWith('fr') ? pair.fr.group : pair.en.group;
+      if (groupKey) {
+        if (!groupedPairs.has(groupKey)) groupedPairs.set(groupKey, []);
+        groupedPairs.get(groupKey)!.push(pair);
+      } else {
+        ungroupedPairs.push(pair);
+      }
+    });
+
+    //Table HTML
+    const tablesHtml = [
+      ...Array.from(groupedPairs.entries()).map(([groupTitle, pairsList]) => buildTable(groupTitle, true, pairsList)),
+      ...(ungroupedPairs.length ? [buildTable(ungroupedCaption, true, ungroupedPairs)] : []),
+    ].join('\n');
+
+    //Content HTML
+    return `${exporterHtml}${githubLinkHtml}${tablesHtml}${collaboratorHtml}`;
+
   }
 
   /*_________________________________________*/

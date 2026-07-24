@@ -156,7 +156,8 @@ export class FetchService {
     url = this.validateHost(url, hostMode);
     const response = await this.fetchWithRetry(url, "GET", retries, delay, suppressErrors);
     const html = await response.text();
-    return new DOMParser().parseFromString(html, "text/html");
+    const doc = this.cleanupFetch(html);
+    return doc;
   }
 
   public async fetchContentAndStatus(
@@ -169,7 +170,7 @@ export class FetchService {
     url = this.validateHost(url, hostMode);
     const response = await this.fetchWithRetry(url, "GET", retries, delay, suppressErrors);
     const html = await response.text();
-    const doc = new DOMParser().parseFromString(html, "text/html");
+    const doc = this.cleanupFetch(html);
     const finalUrl = response.url || url;
     return { doc, finalUrl };
   }
@@ -733,6 +734,23 @@ export class FetchService {
     if (url.includes('/en/') || url.endsWith('en.html') || url.startsWith('en/')) return 'en';
     else if (url.includes('/fr/') || url.endsWith('fr.html') || url.startsWith('fr/')) return 'fr';
     else return null
+  }
+
+  /**
+    * Removes malformed data-rte elements from fetched content before it causes parsing errors
+    */
+  cleanupFetch(html: string): Document {
+    const clean = html
+      .replace(/<data-rte-class="[^"]*">/g, '')
+      .replace(/<\/data-rte-class="[^"]*">/g, '')
+    const doc = new DOMParser().parseFromString(clean, 'text/html');
+    doc.querySelectorAll('[data-rte-class]').forEach(el => {
+      while (el.firstChild) {
+        el.parentNode?.insertBefore(el.firstChild, el);
+      }
+      el.remove();
+    });
+    return doc;
   }
 
 }

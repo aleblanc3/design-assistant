@@ -364,6 +364,7 @@
 	"exportPages.settings.exportLanguage": "Export language",
 	"exportPages.settings.exportSource": "Export source",
 	"exportPages.settings.exportVersion": "Export version",
+	"exportPages.ungroupedPages": "Other pages",
 	"exportPages.zip._title": "Export pages to a zip file",
 	"feedback._": "------------------------------FEEDBACK------------------------------",
 	"feedback._nav": "Feedback",
