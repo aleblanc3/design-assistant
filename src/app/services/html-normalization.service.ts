@@ -38,7 +38,7 @@ export class HtmlNormalizationService {
         try {
             const { prettier, parserHtml } = await this.getPrettierModules();
 
-            return prettier.format(html, {
+            return await prettier.format(html, {
                 parser: 'html',
                 plugins: [parserHtml],
                 printWidth: Infinity,
@@ -564,4 +564,6 @@ export class HtmlNormalizationService {
             scripts
         };
     }
+
+
 }
