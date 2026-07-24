@@ -421,6 +421,34 @@ export const INDEX_PAGE_TEMPLATE_ENG = `<!DOCTYPE html>
 <link rel="shortcut icon" href="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v5_0_4/wet-boew/assets/favicon.ico" >
 <link rel="stylesheet" href="https://www.canada.ca/etc/designs/canada/wet-boew/css/theme.min.css">
 <link rel="stylesheet" href="https://cra-test-arc.canada.ca/core-prototype/source/css/testing-banner.css">
+<style>
+  .link-context-menu {
+    position: fixed;
+    z-index: 1000;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    min-width: 180px;
+    padding: 4px 0;
+    font-size: 14px;
+  }
+  .link-context-menu button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 6px 12px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font: inherit;
+  }
+  .link-context-menu button:hover,
+  .link-context-menu button:focus {
+    background: #f0f0f0;
+    outline: none;
+  }
+</style>
 </head>
 <body vocab="http://schema.org/" typeof="WebPage">
 <nav><ul id="wb-tphp">
@@ -439,6 +467,8 @@ export const INDEX_PAGE_TEMPLATE_ENG = `<!DOCTYPE html>
     <h1 property="name" id="wb-cont">Repository sitemap</h1>
     
     {{CONTENT}}
+
+    <div id="linkContextMenu" class="link-context-menu" hidden></div>
 
     <section class="pagedetails">
         <h2 class="wb-inv">Page details</h2>
@@ -459,6 +489,49 @@ export const INDEX_PAGE_TEMPLATE_ENG = `<!DOCTYPE html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha384-rY/jv8mMhqDabXSo+UCggqKtdmBfd3qC2/KvyTDNQ6PcUJXaxK1tMepoQda4g5vB" crossorigin="anonymous"></script>
 <script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/wet-boew.min.js"></script>
 <script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/theme.min.js"></script>
+<script>
+  (function () {
+    const menu = document.getElementById('linkContextMenu');
+
+    document.addEventListener('contextmenu', function (e) {
+      const link = e.target.closest('a[data-versions]');
+      if (!link) return;
+
+      e.preventDefault();
+
+      let versions;
+      try {
+        versions = JSON.parse(link.dataset.versions);
+      } catch (err) {
+        return;
+      }
+
+      menu.innerHTML = '';
+      versions.forEach(function (v) {
+        const btn = document.createElement('button');
+        btn.textContent = v.label;
+        btn.addEventListener('click', function () {
+          window.open(v.href, '_blank', 'noopener');
+          closeMenu();
+        });
+        menu.appendChild(btn);
+      });
+
+      menu.style.left = e.pageX + 'px';
+      menu.style.top = e.pageY + 'px';
+      menu.hidden = false;
+    });
+
+    document.addEventListener('click', closeMenu);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeMenu();
+    });
+
+    function closeMenu() {
+      menu.hidden = true;
+    }
+  })();
+</script>
 </body>
 </html>`;
 
@@ -473,6 +546,34 @@ export const INDEX_PAGE_TEMPLATE_FRA = `<!DOCTYPE html>
 <link rel="shortcut icon" href="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v5_0_4/wet-boew/assets/favicon.ico">
 <link rel="stylesheet" href="https://www.canada.ca/etc/designs/canada/wet-boew/css/theme.min.css">
 <link rel="stylesheet" href="https://cra-test-arc.canada.ca/core-prototype/source/css/testing-banner.css">
+<style>
+  .link-context-menu {
+    position: fixed;
+    z-index: 1000;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    min-width: 180px;
+    padding: 4px 0;
+    font-size: 14px;
+  }
+  .link-context-menu button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 6px 12px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font: inherit;
+  }
+  .link-context-menu button:hover,
+  .link-context-menu button:focus {
+    background: #f0f0f0;
+    outline: none;
+  }
+</style>
 </head>
 <body vocab="http://schema.org/" typeof="WebPage">
 <nav><ul id="wb-tphp">
@@ -491,6 +592,8 @@ export const INDEX_PAGE_TEMPLATE_FRA = `<!DOCTYPE html>
     <h1 property="name" id="wb-cont">Plan du site du répertoire</h1>
     
     {{CONTENT}}
+
+    <div id="linkContextMenu" class="link-context-menu" hidden></div>
 
     <section class="pagedetails">
         <h2 class="wb-inv">Détails de la page</h2>
@@ -511,6 +614,49 @@ export const INDEX_PAGE_TEMPLATE_FRA = `<!DOCTYPE html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha384-rY/jv8mMhqDabXSo+UCggqKtdmBfd3qC2/KvyTDNQ6PcUJXaxK1tMepoQda4g5vB" crossorigin="anonymous"></script>
 <script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/wet-boew.min.js"></script>
 <script src="https://www.canada.ca/etc/designs/canada/wet-boew/js/theme.min.js"></script>
+<script>
+  (function () {
+    const menu = document.getElementById('linkContextMenu');
+
+    document.addEventListener('contextmenu', function (e) {
+      const link = e.target.closest('a[data-versions]');
+      if (!link) return;
+
+      e.preventDefault();
+
+      let versions;
+      try {
+        versions = JSON.parse(link.dataset.versions);
+      } catch (err) {
+        return;
+      }
+
+      menu.innerHTML = '';
+      versions.forEach(function (v) {
+        const btn = document.createElement('button');
+        btn.textContent = v.label;
+        btn.addEventListener('click', function () {
+          window.open(v.href, '_blank', 'noopener');
+          closeMenu();
+        });
+        menu.appendChild(btn);
+      });
+
+      menu.style.left = e.pageX + 'px';
+      menu.style.top = e.pageY + 'px';
+      menu.hidden = false;
+    });
+
+    document.addEventListener('click', closeMenu);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeMenu();
+    });
+
+    function closeMenu() {
+      menu.hidden = true;
+    }
+  })();
+</script>
 </body>
 </html>`;
 

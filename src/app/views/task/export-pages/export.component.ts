@@ -620,43 +620,59 @@ export class ExportComponent implements OnInit {
          <ul class="colcount-sm-4">${this.projectData().collaborators.map(collab => ` <li> ${collab.login}</li>`).join('')}</ul>\n`
       : '';
     const exporterHtml = `<p class="gc-byline">${this.translate.instant('exportPages.exportedBy')} {{EXPORTED_BY}}</p>`
-    if (this.selectedExportLanguage === 'both') {
-      const exportedPairs = this.projectState.getPairedPages(this.selectedExportVersion, scope).filter(pair => paths.has(pair.en.path) || paths.has(pair.fr.path));
-      //Table rows
-      const rows = exportedPairs.map(pair => {
-        const enCell = paths.has(pair.en.path)
-          ? `<a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${pair.en.path}" target="_blank">${pair.en.label ?? pair.en.path}</a>`
-          : `<i class="fa fa-minus"></i>`;
-        const frCell = paths.has(pair.fr.path ?? pair.fr.path)
-          ? `<a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${pair.fr.path}" target="_blank">${pair.fr.label}</a>`
-          : `<i class="fa fa-minus"></i>`;
-        return `
+    const exportedPairs = this.projectState.getPairedPages(this.selectedExportVersion, scope).filter(pair => paths.has(pair.en.path) || paths.has(pair.fr.path));
+
+    //Table rows
+    const statusClassMap: Record<string, string> = {
+      isBaseline: ' class="active"',
+      isNew: ' class="success"',
+      isROT: ' class="danger"',
+      isMoved: ' class="warning"',
+    };
+    const rows = exportedPairs.map(pair => {
+      const rowStatus = statusClassMap[pair.status] ?? '';
+      const enCell = paths.has(pair.en.path)
+        ? `<a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${pair.en.path}" target="_blank"
+              data-versions='[
+                {"label":"Canada.ca", "href":"https://www.canada.ca/${pair.en.path}"}
+              ]'>${pair.en.label ?? pair.en.path}</a>`
+        : `<i class="fa fa-minus"></i>`;
+      const frCell = paths.has(pair.fr.path)
+        ? `<a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${pair.fr.path}" target="_blank"
+              data-versions='[
+                {"label":"Canada.ca", "href":"https://www.canada.ca/${pair.fr.path}"}
+              ]'>${pair.fr.label ?? pair.fr.path}</a>`
+        : `<i class="fa fa-minus"></i>`;
+      const cells = this.selectedExportLanguage === 'en'
+        ? [enCell]
+        : this.selectedExportLanguage === 'fr'
+          ? [frCell]
+          : [enCell, frCell];
+      return `
         <tr>
-            <td>${enCell}</td>
-            <td>${frCell}</td>
+            ${cells.map(cell => `<td${rowStatus}>${cell}</td>`).join('\n        ')}
         </tr>`;
-      }).join('');
-      //Table
-      return `${exporterHtml}${githubLinkHtml}${collaboratorHtml}
+    }).join('');
+
+    //Table headers
+    const headers = this.selectedExportLanguage === 'en'
+      ? [this.translate.instant('common.language.englishPages')]
+      : this.selectedExportLanguage === 'fr'
+        ? [this.translate.instant('common.language.frenchPages')]
+        : [this.translate.instant('common.language.englishPages'), this.translate.instant('common.language.frenchPages')];
+
+    //Full table
+    return `${exporterHtml}${githubLinkHtml}${collaboratorHtml}
       <table class="table table-striped">
+          <caption class="wb-inv">${scope === 'inScope' ? this.translate.instant('exportPages.data.inScope') : this.translate.instant('exportPages.data.baseline')}</caption>
           <thead>
               <tr>
-                  <th>English</th>
-                  <th>Français</th>
+                  ${headers.map(h => `<th>${h}</th>`).join('\n                  ')}
               </tr>
           </thead>
           <tbody>${rows}
           </tbody>
       </table>`;
-    } else {
-      console.log(paths);
-      const exportedPages = this.projectState.getAllPages(this.selectedExportLanguage, this.selectedExportVersion, scope).filter(page => paths.has(page.path));
-      //List items
-      const items = exportedPages.map(page => `<li><a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${page.path}" target="_blank">${page.label ?? page.path}</a></li>`).join('');
-      //List
-      const langKey = this.selectedExportLanguage === 'en' ? 'common.language.english' : 'common.language.french'
-      return `${exporterHtml}${githubLinkHtml}${collaboratorHtml}<p class="mrgn-bttm-0">${this.translate.instant(langKey)}</p><ul>${items}</ul>`;
-    }
   }
 
   /*_________________________________________*/
