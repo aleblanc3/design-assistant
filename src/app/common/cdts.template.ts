@@ -142,7 +142,7 @@ export const CDTS_TEMPLATE_ENG = `<!DOCTYPE html>
         <script src="{{DEPTH}}source/scripts/external-link-detour.js"></script>
         {{SCRIPTS}}
     </body>
-</html>`
+</html>`;
 
 export const CDTS_TEMPLATE_FRA = `<!DOCTYPE html>
 <html class="no-js" dir="ltr" lang="fr" xmlns="https://www.w3.org/1999/xhtml">
@@ -233,7 +233,7 @@ export const CDTS_TEMPLATE_FRA = `<!DOCTYPE html>
                             </div>
                         </div>
                         <dl id="wb-dtmd">
-                            <dt>Date de modification&#160:&#160</dt>
+                            <dt>Date de modification&#160;:&#160;</dt>
                             <dd><time property="dateModified">{{MODIFIED}}</time></dd>
                         </dl>
                     </section>
@@ -288,7 +288,7 @@ export const CDTS_TEMPLATE_FRA = `<!DOCTYPE html>
         <script src="{{DEPTH}}source/scripts/external-link-detour.js"></script>
         {{SCRIPTS}}
     </body>
-</html>`
+</html>`;
 
 export const EXIT_PAGE_TEMPLATE_ENG = `<!DOCTYPE html>
 <html class="no-js" lang="en" dir="ltr">
@@ -464,7 +464,7 @@ export const INDEX_PAGE_TEMPLATE_ENG = `<!DOCTYPE html>
     </div></div>
 </header>
 <main class="container" property="mainContentOfPage" resource="#wb-main" typeof="WebPageElement">
-    <h1 property="name" id="wb-cont">Repository sitemap</h1>
+    <h1 property="name" id="wb-cont">Repository sitemap ({{REPO}})</h1>
     
     {{CONTENT}}
 
@@ -517,15 +517,24 @@ export const INDEX_PAGE_TEMPLATE_ENG = `<!DOCTYPE html>
         menu.appendChild(btn);
       });
 
-      menu.style.left = e.pageX + 'px';
-      menu.style.top = e.pageY + 'px';
+      menu.style.left = e.clientX + 'px';
+      menu.style.top = e.clientY + 'px';
       menu.hidden = false;
+
+      const rect = menu.getBoundingClientRect();
+      if (rect.right > window.innerWidth) {
+        menu.style.left = (window.innerWidth - rect.width - 8) + 'px';
+      }
+      if (rect.bottom > window.innerHeight) {
+        menu.style.top = (window.innerHeight - rect.height - 8) + 'px';
+      }
     });
 
     document.addEventListener('click', closeMenu);
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') closeMenu();
     });
+    window.addEventListener('scroll', closeMenu, { passive: true });
 
     function closeMenu() {
       menu.hidden = true;
@@ -589,7 +598,7 @@ export const INDEX_PAGE_TEMPLATE_FRA = `<!DOCTYPE html>
     </div></div>
 </header>
 <main class="container" property="mainContentOfPage" resource="#wb-main" typeof="WebPageElement">
-    <h1 property="name" id="wb-cont">Plan du site du répertoire</h1>
+    <h1 property="name" id="wb-cont">Plan du site du répertoire ({{REPO}})</h1>
     
     {{CONTENT}}
 
@@ -642,15 +651,24 @@ export const INDEX_PAGE_TEMPLATE_FRA = `<!DOCTYPE html>
         menu.appendChild(btn);
       });
 
-      menu.style.left = e.pageX + 'px';
-      menu.style.top = e.pageY + 'px';
+      menu.style.left = e.clientX + 'px';
+      menu.style.top = e.clientY + 'px';
       menu.hidden = false;
+
+      const rect = menu.getBoundingClientRect();
+      if (rect.right > window.innerWidth) {
+        menu.style.left = (window.innerWidth - rect.width - 8) + 'px';
+      }
+      if (rect.bottom > window.innerHeight) {
+        menu.style.top = (window.innerHeight - rect.height - 8) + 'px';
+      }
     });
 
     document.addEventListener('click', closeMenu);
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') closeMenu();
     });
+    window.addEventListener('scroll', closeMenu, { passive: true });
 
     function closeMenu() {
       menu.hidden = true;
