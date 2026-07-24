@@ -344,8 +344,8 @@ export class ProjectStateService {
         return pages;
     }
 
-    getPairedPages(version: 'prototype' | 'live' | 'baseline' = 'prototype', scope: 'all' | 'inScope' = 'all'): { en: { label: string; path: string; url: string }, fr: { label: string; path: string; url: string } }[] {
-        const pages: { en: { label: string; path: string; url: string }, fr: { label: string; path: string; url: string } }[] = [];
+    getPairedPages(version: 'prototype' | 'live' | 'baseline' = 'prototype', scope: 'all' | 'inScope' = 'all'): { en: { label: string; path: string; url: string }, fr: { label: string; path: string; url: string }, status: string }[] {
+        const pages: { en: { label: string; path: string; url: string }, fr: { label: string; path: string; url: string }, status: string }[] = [];
         const traverse = (nodes: TreeNode<TreeNodeData>[]) => {
             for (const node of nodes) {
                 const enPath = node.data?.path?.en ?? '';
@@ -354,16 +354,19 @@ export class ProjectStateService {
                 const frPath = node.data?.path?.fr ?? '';
                 const frH1 = node.data?.[version]?.fr?.h1;
                 const frUrl = this.fetchService.generateUrl(frPath, version, this.project().github.owner, this.project().github.repo)
+                const status = !node.data?.status.inScope ? "isBaseline" : node.data?.status.isNew ? "isNew" : node.data?.status.isROT ? "isROT" : node.data?.status.isMoved ? "isMoved" : "";
                 if (scope === 'inScope' && node.data?.status?.inScope && enPath && enH1 && enUrl && frPath && frH1 && frUrl) {
                     pages.push({
                         en: { label: enH1, path: enPath, url: enUrl },
-                        fr: { label: frH1, path: frPath, url: frUrl }
+                        fr: { label: frH1, path: frPath, url: frUrl },
+                        status: status
                     });
                 }
                 else if (scope === 'all' && enPath && enH1 && enUrl && frPath && frH1 && frUrl) {
                     pages.push({
                         en: { label: enH1, path: enPath, url: enUrl },
-                        fr: { label: frH1, path: frPath, url: frUrl }
+                        fr: { label: frH1, path: frPath, url: frUrl },
+                        status: status
                     });
                 }
                 if (node.children?.length) traverse(node.children);
