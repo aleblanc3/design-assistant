@@ -604,11 +604,12 @@ export class ExportComponent implements OnInit {
   buildCdtsIndex(paths: Set<string>, scope: 'all' | 'inScope' = 'inScope') {
     //Include GitHub link if previously exported
     const showGithubLink = !!this.projectState.getProject().lastExported && !!this.gitHubData().owner && !!this.gitHubData().repo;
+    const repo = this.selectedExportVersion === "prototype" ? this.gitHubData().repo : `${this.gitHubData().repo}-baseline`
     const githubLinkHtml = showGithubLink
       ? `<div class="mrgn-tp-md">
             <div class="row">
                 <ul class="toc lst-spcd col-md-12">
-                    <li class="col-md-4 col-sm-6"><a class="list-group-item active" href="https://github.com/${this.gitHubData().owner}/${this.gitHubData().repo}" target="_blank">${this.translate.instant('project.github._title')}</a></li>
+                    <li class="col-md-4 col-sm-6"><a class="list-group-item active" href="https://github.com/${this.gitHubData().owner}/${repo}" target="_blank">${this.translate.instant('project.github._title')}</a></li>
                 </ul>
             </div>
          </div>\n`
@@ -619,8 +620,13 @@ export class ExportComponent implements OnInit {
       ? `<p class="mrgn-bttm-0">${this.translate.instant('collaborators.project')}</p>
          <ul class="colcount-sm-4">${this.projectData().collaborators.map(collab => ` <li> ${collab.login}</li>`).join('')}</ul>\n`
       : '';
+    //Exporter will be filled out via .ps1 extraction
     const exporterHtml = `<p class="gc-byline">${this.translate.instant('exportPages.exportedBy')} {{EXPORTED_BY}}</p>`
+    //Paired pages
     const exportedPairs = this.projectState.getPairedPages(this.selectedExportVersion, scope).filter(pair => paths.has(pair.en.path) || paths.has(pair.fr.path));
+    const viewCanada = this.translate.instant('common.viewOnCanada');
+    const viewUPD = this.translate.instant('common.viewOnUPD');
+    const viewAIDA = this.translate.instant('common.viewOnAIDA');
 
     //Table rows
     const statusClassMap: Record<string, string> = {
@@ -632,15 +638,17 @@ export class ExportComponent implements OnInit {
     const rows = exportedPairs.map(pair => {
       const rowStatus = statusClassMap[pair.status] ?? '';
       const enCell = paths.has(pair.en.path)
-        ? `<a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${pair.en.path}" target="_blank"
+        ? `<a href="${this.fetchService.generateUrl(pair.en.path, "ut", this.gitHubData().owner, repo)}" target="_blank"
               data-versions='[
-                {"label":"Canada.ca", "href":"https://www.canada.ca/${pair.en.path}"}
+                {"label": ${viewCanada}, "href":"${pair.en.url}"},
+                {"label": ${viewUPD}, "href":"${this.fetchService.generateUrl(pair.en.path, "upd")}"}
               ]'>${pair.en.label ?? pair.en.path}</a>`
         : `<i class="fa fa-minus"></i>`;
       const frCell = paths.has(pair.fr.path)
-        ? `<a href="http://cra-ut.isvcs.net/test/AIDA/${this.gitHubData().repo}/${pair.fr.path}" target="_blank"
+        ? `<a href="${this.fetchService.generateUrl(pair.fr.path, "ut", this.gitHubData().owner, repo)}" target="_blank"
               data-versions='[
-                {"label":"Canada.ca", "href":"https://www.canada.ca/${pair.fr.path}"}
+                {"label": ${viewCanada}, "href":"${pair.fr.url}"},
+                {"label": ${viewUPD}, "href":"${this.fetchService.generateUrl(pair.fr.path, "upd")}"}
               ]'>${pair.fr.label ?? pair.fr.path}</a>`
         : `<i class="fa fa-minus"></i>`;
       const cells = this.selectedExportLanguage === 'en'
@@ -663,7 +671,7 @@ export class ExportComponent implements OnInit {
 
     //Full table
     return `${exporterHtml}${githubLinkHtml}${collaboratorHtml}
-      <table class="table table-striped">
+      <table class="table table-hover">
           <caption class="wb-inv">${scope === 'inScope' ? this.translate.instant('exportPages.data.inScope') : this.translate.instant('exportPages.data.baseline')}</caption>
           <thead>
               <tr>

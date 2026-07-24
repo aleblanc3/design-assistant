@@ -350,10 +350,10 @@ export class ProjectStateService {
             for (const node of nodes) {
                 const enPath = node.data?.path?.en ?? '';
                 const enH1 = node.data?.[version]?.en?.h1;
-                const enUrl = this.fetchService.generateUrl(enPath, version, this.project().github.owner, this.project().github.repo)
+                const enUrl = this.fetchService.generateUrl(enPath, "live", this.project().github.owner, this.project().github.repo)
                 const frPath = node.data?.path?.fr ?? '';
                 const frH1 = node.data?.[version]?.fr?.h1;
-                const frUrl = this.fetchService.generateUrl(frPath, version, this.project().github.owner, this.project().github.repo)
+                const frUrl = this.fetchService.generateUrl(frPath, "live", this.project().github.owner, this.project().github.repo)
                 const status = !node.data?.status.inScope ? "isBaseline" : node.data?.status.isNew ? "isNew" : node.data?.status.isROT ? "isROT" : node.data?.status.isMoved ? "isMoved" : "";
                 if (scope === 'inScope' && node.data?.status?.inScope && enPath && enH1 && enUrl && frPath && frH1 && frUrl) {
                     pages.push({
