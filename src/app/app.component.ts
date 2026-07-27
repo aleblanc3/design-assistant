@@ -11,7 +11,7 @@ import { PrimeNG } from 'primeng/config';
 import { ProjectStorageService } from './services/storage/project-storage.service';
 import { ProjectStateService } from './services/project-state.service';
 import { ExportGitHubService } from './services/github/export-github.service';
-import { CollaboratorService } from './services/collaborator.service';
+import { CollaboratorService } from './services/github/collaborator.service';
 import { CloudStorageService } from './services/storage/cloud-storage.service';
 import { UserSettingsService } from './services/user-settings.service';
 import { UsageService } from './services/usage.service';

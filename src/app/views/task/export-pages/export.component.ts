@@ -33,6 +33,7 @@ import { BookmarkletComponent } from '../../../components/bookmarklet/bookmarkle
 
 import { CDTS_TEMPLATE_ENG, CDTS_TEMPLATE_FRA, EXIT_PAGE_TEMPLATE_ENG, EXIT_PAGE_TEMPLATE_FRA, INDEX_PAGE_TEMPLATE_ENG, INDEX_PAGE_TEMPLATE_FRA, LINK_DETOUR_JS } from '../../../common/cdts.template';
 import { environment } from '../../../../environments/environment';
+import { ProjectCacheService } from '../../../services/project-cache.service';
 
 enum ExportStatus {
   ExportNew = 'exportPages.export.status.addToGitHub', // Export - New page
@@ -88,9 +89,11 @@ export class ExportComponent implements OnInit {
   public translate = inject(TranslateService);
   private router = inject(Router)
   private usageService = inject(UsageService);
-  private htmlNormalizationService = inject(HtmlNormalizationService)
+  private htmlNormalizationService = inject(HtmlNormalizationService);
+  public projectCache = inject(ProjectCacheService);
 
   defaultOrg = environment.defaultOrg;
+  prod = environment.production
   readonly ExportStatus = ExportStatus;
 
   //Signals
@@ -150,8 +153,8 @@ export class ExportComponent implements OnInit {
     //await this.compareFiles();
     if (this.projectData().lastExported) {
       const version = this.selectedExportVersion === 'prototype' ? 'prototype' : 'baseline'
-      const url = this.fetchService.generateUrl("index.html", version, this.projectData().github.owner, this.projectData().github.repo);
-      this.projectState.hasGitHub.set((await this.fetchService.fetchStatus(url, "proto", 2)).ok);
+      const indexUrl = this.fetchService.generateUrl("index.html", version, this.projectData().github.owner, this.projectData().github.repo);
+      this.projectCache.hasGitHub.set((await this.fetchService.fetchStatus(indexUrl, "proto", 2)).ok);
     }
   }
 
@@ -190,10 +193,10 @@ export class ExportComponent implements OnInit {
 
   get exportSourceOptions() {
     const options = [{ label: this.translate.instant('common.version.canada'), value: 'live' }];
-    if (this.projectState.hasGitHub()) {
+    if (this.projectCache.hasGitHub()) {
       options.push({ label: this.translate.instant('common.version.prototype.github'), value: 'github' })
     }
-    if (this.projectState.hasLocal()) {
+    if (this.projectCache.hasLocal()) {
       options.push({ label: this.translate.instant('common.version.prototype.local'), value: 'local' })
     }
     return options;
@@ -478,7 +481,7 @@ export class ExportComponent implements OnInit {
       const h1 = node?.data.prototype[lang].h1;
       const doubleH1 = node?.data.prototype[lang].doubleH1;
 
-      //Medadata
+      //Metadata
       const title = doubleH1 ? `${h1}: ${doubleH1}` : h1
       const description = node?.data.prototype[lang].description;
       const keywords = node?.data.prototype[lang].keywords;

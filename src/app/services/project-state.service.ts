@@ -7,11 +7,11 @@ import { version as appVersion } from '../../../package.json'
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
 
 import { ProjectStorageService } from '../services/storage/project-storage.service';
-import { CollaboratorService } from './collaborator.service';
+import { CollaboratorService } from './github/collaborator.service';
 import { FetchService } from './fetch.service';
-import { AirtableService } from './airtable.service';
-import { UpdService } from './upd.service';
-import { VanityService } from './vanity.service';
+import { AirtableService } from './data-sources/airtable.service';
+import { UpdService } from './data-sources/upd.service';
+import { VanityService } from './data-sources/vanity.service';
 import { UsageService } from './usage.service';
 import { ExportGitHubService } from './github/export-github.service';
 
@@ -80,18 +80,12 @@ export class ProjectStateService {
     private readonly AUTO_SAVE_DELAY = 10000; // 30 seconds
     private readonly MAX_UNSAVED_DURATION = 5 * 60 * 1000 // 5 minutes
 
-    // Loading states
+    // Loading states for project versions
     readonly refreshing = signal<{ prototype: boolean; live: boolean; baseline: boolean }>({
         prototype: false,
         live: false,
         baseline: false,
     });
-
-    // Track availability of local and github versions
-    hasGitHub = signal<boolean>(false);
-    hasGitHubBL = signal<boolean>(false);
-    hasLocal = signal<boolean | null>(null);
-    hasLocalBL = signal<boolean | null>(null);
 
     constructor() {
         // Autosave after a delay if there are changes

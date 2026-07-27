@@ -37,7 +37,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { SetupProjectComponent } from '../../../components/setup-project/setup-project.component';
 import { AddCollaboratorsComponent } from '../../../components/add-collaborators/add-collaborators.component';
 import { GitHubAuthService } from '../../../services/github/github-auth.service';
-import { CollaboratorService } from '../../../services/collaborator.service';
+import { CollaboratorService } from '../../../services/github/collaborator.service';
 
 //Storage
 import { ProjectStateService } from '../../../services/project-state.service';
