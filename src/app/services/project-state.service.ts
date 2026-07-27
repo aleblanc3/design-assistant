@@ -7,11 +7,11 @@ import { version as appVersion } from '../../../package.json'
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
 
 import { ProjectStorageService } from '../services/storage/project-storage.service';
-import { CollaboratorService } from './collaborator.service';
+import { CollaboratorService } from './github/collaborator.service';
 import { FetchService } from './fetch.service';
-import { AirtableService } from './airtable.service';
-import { UpdService } from './upd.service';
-import { VanityService } from './vanity.service';
+import { AirtableService } from './data-sources/airtable.service';
+import { UpdService } from './data-sources/upd.service';
+import { VanityService } from './data-sources/vanity.service';
 import { UsageService } from './usage.service';
 import { ExportGitHubService } from './github/export-github.service';
 
