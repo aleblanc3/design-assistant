@@ -80,18 +80,12 @@ export class ProjectStateService {
     private readonly AUTO_SAVE_DELAY = 10000; // 30 seconds
     private readonly MAX_UNSAVED_DURATION = 5 * 60 * 1000 // 5 minutes
 
-    // Loading states
+    // Loading states for project versions
     readonly refreshing = signal<{ prototype: boolean; live: boolean; baseline: boolean }>({
         prototype: false,
         live: false,
         baseline: false,
     });
-
-    // Track availability of local and github versions
-    hasGitHub = signal<boolean>(false);
-    hasGitHubBL = signal<boolean>(false);
-    hasLocal = signal<boolean | null>(null);
-    hasLocalBL = signal<boolean | null>(null);
 
     constructor() {
         // Autosave after a delay if there are changes
