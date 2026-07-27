@@ -564,6 +564,10 @@ export class FetchService {
     });
   }
 
+  public stringToDoc(html: string): Document {
+    return new DOMParser().parseFromString(html, 'text/html');
+  }
+
   /**
    * Fetches page status from a different origin (UT, AEM preview etc.) by relaying
    * the request through a same-origin proxy page. Only use if {@link fetchStatus} is unsuccessful. 

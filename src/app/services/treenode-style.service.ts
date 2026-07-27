@@ -15,10 +15,12 @@ export class TreeNodeStyleService {
 
             // Status-based colors override depth colors
             let bgStyle: string;
-            if (!node.data?.status.inScope || node.data?.isContainer) {
-                bgStyle = this.contextStyles['template'];
-            } else if (node.data?.isNavChild) {
+            if (node.data?.status.inScope && node.data?.isNavChild) {
                 bgStyle = this.contextStyles['navChild'];
+            } else if (!node.data?.status.inScope && node.data?.isNavChild) {
+                bgStyle = this.contextStyles['navChildTemp'];
+            } else if (!node.data?.status.inScope || node.data?.isContainer) {
+                bgStyle = this.contextStyles['template'];
             } else if (node.data?.status.isNew && applyStatusColors) {
                 bgStyle = this.contextStyles['new'];
             } else if (node.data?.status.isROT && applyStatusColors) {
@@ -82,6 +84,7 @@ export class TreeNodeStyleService {
         rot: 'bg-red-200 hover:bg-red-300 border-dashed text-black',
         move: 'bg-yellow-200 hover:bg-yellow-300 border-dashed text-black',
         navChild: 'bg-blue-200 hover:bg-blue-300 border-dashed text-black',
+        navChildTemp: 'surface-200 hover:surface-300 border-dashed text-black',
         template: 'surface-200 hover:surface-300 text-black',
     };
 
@@ -90,6 +93,7 @@ export class TreeNodeStyleService {
         rot: 'bg-red-700 hover:bg-red-600 border-dashed text-white',
         move: 'bg-yellow-700 hover:bg-yellow-600 border-dashed text-black',
         navChild: 'bg-blue-700 hover:bg-blue-600 border-dashed text-white',
+        navChildTemp: 'surface-200 hover:surface-300 border-dashed text-white',
         template: 'surface-200 hover:surface-300 text-white',
     };
 }
