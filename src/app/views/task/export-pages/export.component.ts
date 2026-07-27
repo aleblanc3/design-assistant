@@ -93,6 +93,7 @@ export class ExportComponent implements OnInit {
   public projectCache = inject(ProjectCacheService);
 
   defaultOrg = environment.defaultOrg;
+  prod = environment.production
   readonly ExportStatus = ExportStatus;
 
   //Signals
@@ -480,7 +481,7 @@ export class ExportComponent implements OnInit {
       const h1 = node?.data.prototype[lang].h1;
       const doubleH1 = node?.data.prototype[lang].doubleH1;
 
-      //Medadata
+      //Metadata
       const title = doubleH1 ? `${h1}: ${doubleH1}` : h1
       const description = node?.data.prototype[lang].description;
       const keywords = node?.data.prototype[lang].keywords;
