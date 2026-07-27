@@ -473,7 +473,7 @@ export class ExportComponent implements OnInit {
     const templatePaths = this.templateTable().filter(item => item.status === ExportStatus.ExportNew || item.status === ExportStatus.ExportOverwrite).map(item => item.path);
 
     for (const path of projectPaths) {
-      const url = this.fetchService.generateUrl(path, source); //Source for fetching content
+      const url = this.fetchService.generateUrl(path, source, this.gitHubData().owner, repo); //Source for fetching content
       const lang = this.fetchService.getLang(url);
       if (!lang) continue;
       const node = this.projectState.findNodeByPath(this.projectState.getProjectTree(), path, lang)
