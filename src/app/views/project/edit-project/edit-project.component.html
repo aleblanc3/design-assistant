@@ -54,11 +54,38 @@
                           styleClass="secondary-outline w-full min-w-max"
                           (click)="showUrls = true" />
                 <p-drawer [header]="'common.urls' | translate" [(visible)]="showUrls" position="right" styleClass="w-6">
-                    <ul>
-                        @for(url of projectState.getAllPages(lang,'live','inScope'); track url.url){
-                        <li>{{url.url}}</li>
-                        }
-                    </ul>
+                    <div class="flex flex-row flex-wrap align-items-end gap-2">
+                        <div class="flex flex-column hover:text-primary">
+                            <label for="url-versions" class="text-xs font-semibold xl:my-1">{{ 'common.version' | translate }}</label>
+                            <p-selectButton id="url-versions" allowEmpty="false" optionLabel="label" optionValue="value" size="small" styleClass="secondary-outline text-primary max-h-3rem"
+                                            [options]="urlVersionOptions" [ngModel]="selectedUrlVersion()" (ngModelChange)="selectedUrlVersion.set($event)" />
+                        </div>
+                        <p-button icon="pi pi-copy" severity="primary" outlined styleClass="secondary-outline" size="small"
+                                  (onClick)="copyToClipboard('both')"
+                                  [label]="'common.copyUrls' | translate" />
+                    </div>
+                    <p-table [value]="pairedPagesForTable()">
+                        <ng-template #header>
+                            <tr>
+                                <th>{{'common.language.english' | translate}}
+                                    <p-button icon="pi pi-copy" severity="primary" text rounded
+                                              (onClick)="copyToClipboard('en')"
+                                              [pTooltip]="'common.copyEnglish' | translate" tooltipPosition="top" />
+                                </th>
+                                <th>{{'common.language.french' | translate}}
+                                    <p-button icon="pi pi-copy" severity="primary" text rounded
+                                              (onClick)="copyToClipboard('fr')"
+                                              [pTooltip]="'common.copyFrench' | translate" tooltipPosition="top" />
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template #body let-pair>
+                            <tr>
+                                <td>{{ pair.en.url }}</td>
+                                <td>{{ pair.fr.url }}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
                 </p-drawer>
                 <p-button
                           [label]="('common.view' | translate) + ' ' + ('iaDiagram._title' | translate)"
