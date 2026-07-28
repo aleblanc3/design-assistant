@@ -16,7 +16,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 //Services
 import { ProjectStateService } from '../../../services/project-state.service';
 import { CompareService, COMPARE_VERSIONS, CompareVersion } from './compare.service';
-import { FetchService } from '../../../services/fetch.service';
+import { FetchService, urlVersion } from '../../../services/fetch.service';
 import { HtmlNormalizationService, htmlProcessingResult } from '../../../services/html-normalization.service';
 
 //Components
@@ -72,19 +72,19 @@ export class CompareComponent {
   }
 
   // Get list of versions to check
-  private getVersionsToCheck(path: string): { url: string; version: string }[] {
+  private getVersionsToCheck(path: string): { url: string; version: urlVersion }[] {
     const project = this.projectState.getProject();
-    const versions = [{ url: this.fetchService.generateUrl(path, "live"), version: "live" }];
+    const versions: { url: string; version: urlVersion }[] = [{ url: this.fetchService.generateUrl(path, "live"), version: "live" }];
     if (this.compareService.includePreview()) {
       versions.push({ url: this.fetchService.generateUrl(path, "preview"), version: "preview" })
     }
     if (project.lastExported) {
-      versions.push({ url: this.fetchService.generateUrl(path, "prototype", project.github.owner, project.github.repo), version: "prototype" });
-      if (project.github.hasBaselineRepo) versions.push({ url: this.fetchService.generateUrl(path, "baseline", project.github.owner, project.github.repo), version: "baseline" });
+      versions.push({ url: this.fetchService.generateUrl(path, "protoGH", project.github.owner, project.github.repo), version: "protoGH" });
+      if (project.github.hasBaselineRepo) versions.push({ url: this.fetchService.generateUrl(path, "baseGH", project.github.owner, project.github.repo), version: "baseGH" });
     }
     if (project.lastDownloaded) {
-      versions.push({ url: this.fetchService.generateUrl(path, "ut"), version: "ut" });
-      if (project.github.hasBaselineRepo) versions.push({ url: this.fetchService.generateUrl(path, "ut-base"), version: "ut-base" });
+      versions.push({ url: this.fetchService.generateUrl(path, "protoUT", project.github.owner, project.github.repo), version: "protoUT" });
+      if (project.github.hasBaselineRepo) versions.push({ url: this.fetchService.generateUrl(path, "baseUT", project.github.owner, project.github.repo), version: "baseUT" });
     }
     return versions;
   }
