@@ -1,4 +1,4 @@
-import { Injectable, signal, computed, inject, effect } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 
 //Services
 import { ProjectStateService } from './project-state.service';
