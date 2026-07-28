@@ -53,6 +53,8 @@ export interface BreadcrumbNode {
   styleClass?: string;      // for the label (used to set color and/or bold)
 }
 
+export type urlVersion = 'live' | 'protoGH' | 'baseGH' | 'protoUT' | 'baseUT' | 'preview' | 'upd';
+
 @Injectable({ providedIn: 'root' })
 export class FetchService {
   private translate = inject(TranslateService);
@@ -79,10 +81,7 @@ export class FetchService {
   }
 
   //Validates URL and checks if it's in the specified allowed host list
-  private validateHost(
-    url: string,
-    hostMode: "prod" | "proto" | "both" | "none"
-  ): string {
+  private validateHost(url: string, hostMode: "prod" | "proto" | "both" | "none"): string {
     url = url.trim();
 
     let hostname: string;
@@ -92,6 +91,11 @@ export class FetchService {
       hostname = parsedUrl.hostname.toLowerCase();
       const isUT = hostname === "cra-ut.isvcs.net"
       if (parsedUrl.protocol !== "https:" && !isUT) throw new Error();
+      //Add nocache parameter to GitHub urls
+      if (hostname !== this.prodHost && !isUT) {
+        const separator = url.includes('?') ? '&' : '?';
+        url = url + `${separator}nocache=${Date.now()}`;
+      }
     } catch {
       throw new Error(`Invalid URL: ${url}`)
     }
@@ -102,6 +106,7 @@ export class FetchService {
         throw new Error(`Blocked host: ${hostname} blocked for url ${url}`);
       }
     }
+
 
     return url;
   }
@@ -188,7 +193,7 @@ export class FetchService {
   }
 
   public async fetchJSON(url: string, fields: string[]): Promise<Record<string, string>> {
-    const date = new Date().toDateString;
+    const date = new Date().toDateString();
     const jsonUrl = url.replace('.html', `/jcr:content.json?nocache=${date}`);
     const result: Record<string, string> = {};
 
@@ -640,29 +645,6 @@ export class FetchService {
     }
   }
 
-  // Generate other URLs from Canada.ca URL
-  generateOtherUrl(productionUrl: string, type: 'prototype' | 'baseline' | 'preview' = 'prototype', owner: string, repo: string): string {
-    if (!productionUrl || !owner || !repo) { return ''; }
-    const isCRAproto = owner === 'cra-proto';
-    const isGCproto = owner === 'gc-proto';
-    try {
-      const url = new URL(productionUrl);
-      const path = url.pathname; // e.g., /en/revenue-agency/services/tax/individuals.html
-      if (type === 'preview') {
-        return `https://canada-preview.adobecqms.net${path}`
-      } else {
-        const repoSuffix = type === 'baseline' ? `${repo}-baseline` : repo;
-        let prototypeUrl = `https://${owner}.github.io/${repoSuffix}${path}`;
-        if (isCRAproto) { prototypeUrl = `https://cra-test-arc.canada.ca/${repoSuffix}${path}` }
-        else if (isGCproto) { prototypeUrl = `https://test.canada.ca/${repoSuffix}${path}` }
-        return prototypeUrl;
-      }
-    } catch (error) {
-      console.error('Failed to generate prototype URL:', error);
-      return '';
-    }
-  }
-
   getReadability(doc: Document): { fleschKincaid: number, gunningFog: number } {
 
 
@@ -709,20 +691,21 @@ export class FetchService {
   }
 
   //Generate url for specific version
-  generateUrl(path: string, version: 'live' | 'prototype' | 'baseline' | 'preview' | 'ut' | 'ut-base' | 'upd' = 'live', owner?: string, repo?: string): string {
+
+  generateUrl(path: string, version: urlVersion = 'live', owner?: string, repo?: string): string {
     const repoDomain = owner === 'cra-proto' ? 'https://cra-test-arc.canada.ca' : owner === 'gc-proto' ? 'https://test.canada.ca' : `https://${owner}.github.io`
     switch (version) {
       case 'live':
         return `https://www.canada.ca/${path}`
-      case 'prototype':
+      case 'protoGH':
         return `${repoDomain}/${repo}/${path}`
-      case 'baseline':
+      case 'baseGH':
         return `${repoDomain}/${repo}-baseline/${path}`
       case 'preview':
         return `https://canada-preview.adobecqms.net/${path}`
-      case 'ut':
+      case 'protoUT':
         return `http://cra-ut.isvcs.net/test/aida/${repo}/${path}`
-      case 'ut-base':
+      case 'baseUT':
         return `http://cra-ut.isvcs.net/test/aida/${repo}-baseline/${path}`
       case 'upd': {
         const currentLang = this.translate.currentLang?.startsWith('fr') ? '&lang=FR' : '';

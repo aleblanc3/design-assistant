@@ -21,7 +21,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
 //Services
 import { ExportGitHubService } from '../../../services/github/export-github.service';
 import { ProjectStateService } from '../../../services/project-state.service';
-import { FetchService } from '../../../services/fetch.service';
+import { FetchService, urlVersion } from '../../../services/fetch.service';
 import { GitHubAuthService } from '../../../services/github/github-auth.service';
 import { UsageService } from '../../../services/usage.service';
 import { HtmlNormalizationService } from '../../../services/html-normalization.service';
@@ -152,7 +152,7 @@ export class ExportComponent implements OnInit {
   async ngOnInit() {
     //await this.compareFiles();
     if (this.projectData().lastExported) {
-      const version = this.selectedExportVersion === 'prototype' ? 'prototype' : 'baseline'
+      const version = this.selectedExportVersion === 'prototype' ? 'protoGH' : 'baseGH'
       const indexUrl = this.fetchService.generateUrl("index.html", version, this.projectData().github.owner, this.projectData().github.repo);
       this.projectCache.hasGitHub.set((await this.fetchService.fetchStatus(indexUrl, "proto", 2)).ok);
     }
@@ -202,6 +202,23 @@ export class ExportComponent implements OnInit {
     return options;
   }
 
+  //Export context based on user selections above
+  get exportContext() {
+    const source: urlVersion = this.selectedExportSource === 'live'
+      ? 'live'
+      : this.selectedExportSource === 'local'
+        ? (this.selectedExportVersion === 'prototype' ? 'protoUT' : 'baseUT')
+        : (this.selectedExportVersion === 'prototype' ? 'protoGH' : 'baseGH');
+
+    const repo = this.selectedExportVersion === 'prototype'
+      ? this.gitHubData().repo
+      : `${this.gitHubData().repo}-baseline`;
+
+    const scope: 'inScope' | 'all' = this.selectedExportVersion === 'prototype' ? 'inScope' : 'all';
+
+    return { source, repo, scope };
+  };
+
   // Open targeted GitHub repo
   openRepo() {
     let modifier = '';
@@ -225,10 +242,10 @@ export class ExportComponent implements OnInit {
     }
 
     const lang = this.selectedExportLanguage;
-    const scope = this.selectedExportVersion === 'prototype' ? 'inScope' : 'all';
+    const { source, repo, scope } = this.exportContext;
 
-    const enPages = this.projectState.getAllPages("en", this.selectedExportVersion, scope).map(p => p.path);
-    const frPages = this.projectState.getAllPages("fr", this.selectedExportVersion, scope).map(p => p.path);
+    const enPages = this.projectState.getAllPages("en", source, scope).map(p => p.path);
+    const frPages = this.projectState.getAllPages("fr", source, scope).map(p => p.path);
 
     const projectPaths = [...(lang === 'en' ? enPages : lang === 'fr' ? frPages : [...enPages, ...frPages])];
 
@@ -242,7 +259,6 @@ export class ExportComponent implements OnInit {
 
     // GitHub mode
     const owner = this.gitHubData().owner;
-    const repo = this.selectedExportVersion === 'prototype' ? this.gitHubData().repo : `${this.gitHubData().repo}-baseline`;
     const branch = this.gitHubData().branch;
     const token = this.exportGitHubService.token();
 
@@ -459,13 +475,7 @@ export class ExportComponent implements OnInit {
     const JSZip = (await import('jszip')).default;
     const zip = new JSZip();
 
-    const repo = this.selectedExportVersion === 'prototype' ? this.gitHubData().repo : `${this.gitHubData().repo}-baseline`;
-    const scope = this.selectedExportVersion === 'prototype' ? "inScope" : "all"
-    const source = this.selectedExportSource === 'live'
-      ? 'live'
-      : this.selectedExportSource === 'local'
-        ? (this.selectedExportVersion === 'prototype' ? 'ut' : 'ut-base')
-        : (this.selectedExportVersion === 'prototype' ? 'prototype' : 'baseline');
+    const { source, repo, scope } = this.exportContext;
     const date = new Date().toISOString().split('T')[0];
     const aidaLang = this.translate.currentLang.startsWith('fr') ? 'fr' : 'en';
 
@@ -579,7 +589,7 @@ export class ExportComponent implements OnInit {
       else if (path === this.cdtsFiles[4]) {
         const html = this.buildCdtsPage(aidaLang === 'en' ? INDEX_PAGE_TEMPLATE_ENG : INDEX_PAGE_TEMPLATE_FRA, {
           MODIFIED: date,
-          CONTENT: projectPaths ? this.buildCdtsIndex(new Set(projectPaths), scope) : '',
+          CONTENT: projectPaths ? this.buildCdtsIndex(new Set(projectPaths)) : '',
           REPO: repo
         });
         //console.log(await this.htmlNormalizationService.formatHtml(html))
@@ -610,10 +620,10 @@ export class ExportComponent implements OnInit {
   }
 
   //Create index page for CDTS template
-  buildCdtsIndex(paths: Set<string>, scope: 'all' | 'inScope' = 'inScope') {
+  buildCdtsIndex(paths: Set<string>) {
     //Include GitHub link if previously exported
     const showGithubLink = !!this.projectState.getProject().lastExported && !!this.gitHubData().owner && !!this.gitHubData().repo;
-    const repo = this.selectedExportVersion === "prototype" ? this.gitHubData().repo : `${this.gitHubData().repo}-baseline`
+    const { source, repo, scope } = this.exportContext;
     const githubLinkHtml = showGithubLink
       ? `<div class="mrgn-tp-md">
             <div class="row">
@@ -634,7 +644,7 @@ export class ExportComponent implements OnInit {
     //EXPORTED_BY will be filled out via .ps1 extraction tool
     const exporterHtml = `<p class="gc-byline">${this.translate.instant('exportPages.exportedBy')} {{EXPORTED_BY}}</p>`
     //Paired pages
-    const exportedPairs = this.projectState.getPairedPages(this.selectedExportVersion, scope).filter(pair => paths.has(pair.en.path) || paths.has(pair.fr.path));
+    const exportedPairs = this.projectState.getPairedPages("live", scope).filter(pair => paths.has(pair.en.path) || paths.has(pair.fr.path));
     //Labels
     const viewCanada = this.translate.instant('common.viewOnCanada');
     const viewUPD = this.translate.instant('common.viewOnUPD');
@@ -661,14 +671,14 @@ export class ExportComponent implements OnInit {
     const buildRows = (pairsList: typeof exportedPairs) => pairsList.map(pair => {
       const rowStatus = statusClassMap[pair.status] ?? '';
       const enCell = paths.has(pair.en.path)
-        ? `<a href="${this.fetchService.generateUrl(pair.en.path, "ut", this.gitHubData().owner, repo)}" target="_blank"
+        ? `<a href="${this.fetchService.generateUrl(pair.en.path, source, this.gitHubData().owner, repo)}" target="_blank"
               data-versions='[
                 {"label": "${viewCanada}", "href":"${pair.en.url}"},
                 {"label": "${viewUPD}", "href":"${this.fetchService.generateUrl(pair.en.path, "upd")}"}
               ]'>${pair.en.label ?? pair.en.path}</a>`
         : `<i class="fa fa-minus"></i>`;
       const frCell = paths.has(pair.fr.path)
-        ? `<a href="${this.fetchService.generateUrl(pair.fr.path, "ut", this.gitHubData().owner, repo)}" target="_blank"
+        ? `<a href="${this.fetchService.generateUrl(pair.fr.path, source, this.gitHubData().owner, repo)}" target="_blank"
               data-versions='[
                 {"label": "${viewCanada}", "href":"${pair.fr.url}"},
                 {"label": "${viewUPD}", "href":"${this.fetchService.generateUrl(pair.fr.path, "upd")}"}
@@ -726,14 +736,10 @@ export class ExportComponent implements OnInit {
   /****** GITHUB SPECIFIC FUNCTIONS *********/
 
   //Get in-scope URLs and page content (used by export fxn)
-  private async getUrlandContent(node: TreeNode, lang: 'en' | 'fr' = 'en'): Promise<PageData[]> {
+  private async getUrlandContent(node: TreeNode, lang: 'en' | 'fr' = 'en', owner: string, repo: string, source: urlVersion): Promise<PageData[]> {
     const pages: PageData[] = [];
     const path = node.data?.path[lang];
-    const url = this.fetchService.generateUrl(path, "live");
-
-    const repo = this.selectedExportVersion === 'prototype'
-      ? this.gitHubData().repo
-      : `${this.gitHubData().repo}-baseline`;
+    const url = this.fetchService.generateUrl(path, source, owner, repo);
 
     if (path && repo) {
       try {
@@ -753,11 +759,16 @@ export class ExportComponent implements OnInit {
             pages.push({ url, path, filename, content });
           }
           else {
-            const doc = await this.fetchService.fetchContent(url, "prod");
+            const doc = !source.endsWith('UT')
+              ? await this.fetchService.fetchContent(url, "both")
+              : this.fetchService.stringToDoc(await this.fetchService.fetchViaProxy(url));
             const breadcrumbs = this.selectedExportVersion === 'prototype'
               ? this.projectState.getBreadcrumbChain(node.data.path[lang], lang).slice(1)
               : undefined; //baseline uses live breadcrumb
             const content = await this.exportGitHubService.formatDocumentAsJekyll(doc, url, this.gitHubData().owner, repo, breadcrumbs);
+            //console.log(url);
+            //console.log(doc);
+            //console.log(content);
             pages.push({ url, path, filename, content });
           }
         }
@@ -768,7 +779,7 @@ export class ExportComponent implements OnInit {
     // recurse into children
     if (node?.children) {
       for (const child of node.children) {
-        const childPages = await this.getUrlandContent(child, lang);
+        const childPages = await this.getUrlandContent(child, lang, owner, repo, source);
         pages.push(...childPages);
       }
     }
@@ -777,14 +788,14 @@ export class ExportComponent implements OnInit {
 
   // Main export function (DO NOT REMOVE TIMEOUTS, THEY GIVE ENOUGH TIME FOR SHA TO UPDATE BETWEEN EXPORTS)
   async exportProjectToGitHub() {
+    const { source, repo, scope } = this.exportContext;
     const owner = this.gitHubData().owner;
-    const repo = this.selectedExportVersion === 'prototype'
-      ? this.gitHubData().repo
-      : `${this.gitHubData().repo}-baseline`;
     const branch = this.gitHubData().branch;
     const token = this.exportGitHubService.token();
     const projectName = this.projectData().projectName;
-    const scope = this.selectedExportVersion === "prototype" ? "inScope" : "all"
+    console.log(source)
+    console.log(repo)
+    console.log(scope)
 
     // Step 1: Gather all in-scope or baseline URLs and their content
     this.exportProgress.set({ step: 'exportPages.export.progress.gatherPages', progress: 5, });
@@ -795,12 +806,12 @@ export class ExportComponent implements OnInit {
 
     let exportPages: PageData[] = [];
     if (this.selectedExportLanguage === 'both') {
-      const enPages = await this.getUrlandContent(nodes[0], 'en');
-      const frPages = await this.getUrlandContent(nodes[0], 'fr');
+      const enPages = await this.getUrlandContent(nodes[0], 'en', owner, repo, source);
+      const frPages = await this.getUrlandContent(nodes[0], 'fr', owner, repo, source);
       exportPages = [...enPages, ...frPages];
     }
     else {
-      exportPages = await this.getUrlandContent(nodes[0], this.selectedExportLanguage);
+      exportPages = await this.getUrlandContent(nodes[0], this.selectedExportLanguage, owner, repo, source);
     }
 
     // Step 2: Check for templates files to include

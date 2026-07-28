@@ -1,4 +1,4 @@
-import { Injectable, signal, computed, inject, effect } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 
 //Services
 import { ProjectStateService } from './project-state.service';
@@ -43,12 +43,12 @@ export class ProjectCacheService {
         const repo = this.projectState.getProject().github.repo;
         if (!owner || !repo) return;
         this.localCheckInProgress = true;
-        const url = this.fetchService.generateUrl("index.html", "ut", owner, repo);
+        const url = this.fetchService.generateUrl("index.html", "protoUT", owner, repo);
         const checks: Promise<void>[] = [
             this.fetchService.fetchStatusViaProxy(url).then(result => this.hasLocal.set(result))
         ];
         if (this.projectState.getProject().github.hasBaselineRepo) {
-            const urlBL = this.fetchService.generateUrl("index.html", "ut-base", owner, repo);
+            const urlBL = this.fetchService.generateUrl("index.html", "baseUT", owner, repo);
             checks.push(
                 this.fetchService.fetchStatusViaProxy(urlBL).then(result => this.hasLocalBL.set(result))
             );

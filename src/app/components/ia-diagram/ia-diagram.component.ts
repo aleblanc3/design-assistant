@@ -44,11 +44,11 @@ export class IaDiagramComponent implements OnInit {
 
   async ngOnInit() {
     if (this.projectData().lastExported) {
-      const url = this.fetchService.generateUrl("index.html", "prototype", this.projectData().github.owner, this.projectData().github.repo);
+      const url = this.fetchService.generateUrl("index.html", "protoGH", this.projectData().github.owner, this.projectData().github.repo);
       this.hasGitHub.set((await this.fetchService.fetchStatus(url, "proto", 2)).ok);
     }
     if (this.projectData().lastDownloaded) {
-      const url = this.fetchService.generateUrl("index.html", "ut", this.projectData().github.owner, this.projectData().github.repo);
+      const url = this.fetchService.generateUrl("index.html", "protoUT", this.projectData().github.owner, this.projectData().github.repo);
       this.hasLocal.set((await this.fetchService.fetchStatus(url, "proto", 2)).ok);
     }
   }
@@ -277,9 +277,9 @@ export class IaDiagramComponent implements OnInit {
           //Toggle on
           const type = this.projectState.getProject().repoType;
           const version = type === "github" && this.hasGitHub()
-            ? "prototype"
+            ? "protoGH"
             : type === "local" && this.hasLocal()
-              ? "ut"
+              ? "protoUT"
               : "live"
           const url = this.fetchService.generateUrl(path, version, this.projectData().github.owner, this.projectData().github.repo);
           const linkedPaths = await this.fetchService.getPaths(url);

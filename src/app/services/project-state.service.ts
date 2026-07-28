@@ -8,7 +8,7 @@ import { marker } from '@colsen1991/ngx-translate-extract-marker';
 
 import { ProjectStorageService } from '../services/storage/project-storage.service';
 import { CollaboratorService } from './github/collaborator.service';
-import { FetchService } from './fetch.service';
+import { FetchService, urlVersion } from './fetch.service';
 import { AirtableService } from './data-sources/airtable.service';
 import { UpdService } from './data-sources/upd.service';
 import { VanityService } from './data-sources/vanity.service';
@@ -318,13 +318,14 @@ export class ProjectStateService {
     }
 
     // TODO: refactor getAllUrls and getAllPages to use new data structure
-    getAllPages(lang: 'en' | 'fr', version: 'prototype' | 'live' | 'baseline' = 'prototype', scope: 'all' | 'inScope' = 'all'): { label: string; path: string; url: string }[] {
+    getAllPages(lang: 'en' | 'fr', urlVersion: urlVersion = 'protoGH', scope: 'all' | 'inScope' = 'all'): { label: string; path: string; url: string }[] {
+        const version = urlVersion.startsWith('proto') ? 'prototype' : urlVersion.startsWith('base') ? 'baseline' : 'live'
         const pages: { label: string; path: string; url: string }[] = [];
         const traverse = (nodes: TreeNode<TreeNodeData>[]) => {
             for (const node of nodes) {
                 const path = node.data?.path?.[lang] ?? '';
                 const h1 = node.data?.[version]?.[lang]?.h1;
-                const url = this.fetchService.generateUrl(path, version, this.project().github.owner, this.project().github.repo)
+                const url = this.fetchService.generateUrl(path, urlVersion, this.project().github.owner, this.project().github.repo)
                 if (scope === 'inScope' && path && h1 && url && node.data?.status.inScope) {
                     pages.push({ label: h1, path: path, url: url });
                 }
@@ -338,7 +339,8 @@ export class ProjectStateService {
         return pages;
     }
 
-    getPairedPages(version: 'prototype' | 'live' | 'baseline' = 'prototype', scope: 'all' | 'inScope' = 'all'): { en: { label: string; path: string; url: string; group: string }, fr: { label: string; path: string; url: string; group: string }, status: string }[] {
+    getPairedPages(urlVersion: urlVersion = 'protoUT', scope: 'all' | 'inScope' = 'all'): { en: { label: string; path: string; url: string; group: string }, fr: { label: string; path: string; url: string; group: string }, status: string }[] {
+        const version = urlVersion.startsWith('proto') ? 'prototype' : urlVersion.startsWith('base') ? 'baseline' : 'live'
         const pages: { en: { label: string; path: string; url: string; group: string }, fr: { label: string; path: string; url: string; group: string }, status: string }[] = [];
         const traverse = (nodes: TreeNode<TreeNodeData>[]) => {
             for (const node of nodes) {
@@ -1149,8 +1151,10 @@ export class ProjectStateService {
         return breadcrumbs;
     }
 
-    public async refreshNode(node: TreeNode, version: 'live' | 'prototype' | 'baseline', fetchLive = false) {
-        const source = fetchLive ? 'live' : version;
+    public async refreshNode(node: TreeNode, urlVersion: urlVersion, fetchLive = false) {
+        const version = urlVersion.startsWith('proto') ? 'prototype' : urlVersion.startsWith('base') ? 'baseline' : 'live'
+        const source = fetchLive ? 'live' : urlVersion;
+        const sourceType = source.endsWith('UT') ? 'local' : source.endsWith('GH') ? 'github' : 'live'
         const data = node.data as TreeNodeData;
         const { owner, repo, branch } = this.project().github;
         // URLs to fetch content from
@@ -1168,7 +1172,9 @@ export class ProjectStateService {
         // Fetch EN
         if (enUrl) {
             try {
-                const doc = await this.fetchService.fetchContent(enUrl, "both", 2, "none");
+                const doc = sourceType !== 'local'
+                    ? await this.fetchService.fetchContent(enUrl, "both", 2, "none")
+                    : this.fetchService.stringToDoc(await this.fetchService.fetchViaProxy(enUrl));
                 const pageData = await this.fetchService.extractPageMetadata(doc, enUrl);
 
                 const jsonData = await (async () => {
@@ -1178,7 +1184,13 @@ export class ProjectStateService {
 
                 const parentUrl = pageData.parentPath ? this.fetchService.generateUrl(pageData.parentPath, source, owner, repo) : undefined;
                 const parentDoc = await (async () => {
-                    try { return parentUrl ? await this.fetchService.fetchContent(parentUrl, "both", 2, "none") : undefined; }
+                    try {
+                        return (parentUrl && sourceType !== 'local')
+                            ? await this.fetchService.fetchContent(parentUrl, "both", 2, "none")
+                            : (parentUrl && sourceType !== 'local')
+                                ? this.fetchService.stringToDoc(await this.fetchService.fetchViaProxy(parentUrl))
+                                : undefined;
+                    }
                     catch { return undefined; }
                 })();
                 const parentLinks = parentDoc && liveEnUrl ? this.fetchService.getLinks(parentDoc, liveEnUrl) : undefined;
@@ -1230,7 +1242,9 @@ export class ProjectStateService {
         // Fetch FR
         if (frUrl) {
             try {
-                const doc = await this.fetchService.fetchContent(frUrl, "both", 2, "none");
+                const doc = sourceType !== 'local'
+                    ? await this.fetchService.fetchContent(frUrl, "both", 2, "none")
+                    : this.fetchService.stringToDoc(await this.fetchService.fetchViaProxy(frUrl));
                 const pageData = await this.fetchService.extractPageMetadata(doc, frUrl);
 
                 const jsonData = await (async () => {
@@ -1240,7 +1254,13 @@ export class ProjectStateService {
 
                 const parentUrl = pageData.parentPath ? this.fetchService.generateUrl(pageData.parentPath, source, owner, repo) : undefined
                 const parentDoc = await (async () => {
-                    try { return parentUrl ? await this.fetchService.fetchContent(parentUrl, "both", 2, "none") : undefined; }
+                    try {
+                        return (parentUrl && sourceType !== 'local')
+                            ? await this.fetchService.fetchContent(parentUrl, "both", 2, "none")
+                            : (parentUrl && sourceType !== 'local')
+                                ? this.fetchService.stringToDoc(await this.fetchService.fetchViaProxy(parentUrl))
+                                : undefined;
+                    }
                     catch { return undefined; }
                 })();
                 const parentLinks = parentDoc && liveFrUrl ? this.fetchService.getLinks(parentDoc, liveFrUrl) : undefined;
@@ -1304,16 +1324,17 @@ export class ProjectStateService {
         this.setModifiedDate();
     }
 
-    public async refreshAll(nodes: TreeNode[], version: 'live' | 'prototype' | 'baseline', onlyNeverChecked = false, fetchLive = false) {
+    public async refreshAll(nodes: TreeNode[], urlVersion: urlVersion, onlyNeverChecked = false, fetchLive = false) {
+        const version = urlVersion.startsWith('proto') ? 'prototype' : urlVersion.startsWith('base') ? 'baseline' : 'live'
         for (const node of nodes) {
             const needsRefresh = onlyNeverChecked
                 ? (!node.data?.[version]?.en?.lastChecked || !node.data?.[version]?.fr?.lastChecked)
                 : true;
             if (needsRefresh) {
-                await this.refreshNode(node, version, fetchLive);
+                await this.refreshNode(node, urlVersion, fetchLive);
             }
             if (node.children?.length) {
-                await this.refreshAll(node.children, version, onlyNeverChecked, fetchLive);
+                await this.refreshAll(node.children, urlVersion, onlyNeverChecked, fetchLive);
             }
         }
     }

@@ -152,8 +152,8 @@ export class IaTableComponent implements OnInit {
         const github = this.projectState.getProject().github;
         const liveUrl = this.fetchService.generateUrl(path, "live");
         const previewUrl = this.fetchService.generateUrl(path, "preview");
-        const prototypeUrl = this.fetchService.generateUrl(path, "prototype", github.owner, github.repo);
-        const baselineUrl = this.fetchService.generateUrl(path, "baseline", github.owner, github.repo);
+        const prototypeUrl = this.fetchService.generateUrl(path, "protoGH", github.owner, github.repo);
+        const baselineUrl = this.fetchService.generateUrl(path, "baseGH", github.owner, github.repo);
         const updUrl = `https://cra-arc.alpha.canada.ca/en/pages?url=${liveUrl}${this.currentLang}`;
         if (!isContainer) {
             this.options.push(
