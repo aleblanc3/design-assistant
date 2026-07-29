@@ -335,9 +335,11 @@ export class ExportGitHubService {
 
     // Preserve custom scripts (except pageBottom() and duplicates)
     const seenScripts = new Set<string>();
+    const defVarPattern = /^\s*var\s+(defTop|defPreFooter|defFooter)\b/;
     const scripts = Array.from(doc.querySelectorAll("body script:not([src])"))
       .map(script => script.textContent ?? '')
       .filter(text => text.replace(/\s+/g, '') !== '_satellite.pageBottom();')
+      .filter(text => !defVarPattern.test(text))
       .filter(text => {
         const normalized = text.replace(/\s+/g, '');
         if (seenScripts.has(normalized)) return false;
@@ -354,6 +356,7 @@ export class ExportGitHubService {
 
       // Remove scripts
       mainEl.querySelectorAll("script").forEach(script => script.remove());
+      mainEl.querySelectorAll('div[id="def-preFooter"]').forEach(div => div.remove());
 
       // Flatten AEM mws wrappers
       mainEl.querySelectorAll('div[class^="mws"]').forEach(div => {

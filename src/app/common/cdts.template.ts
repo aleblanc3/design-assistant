@@ -7,12 +7,14 @@ export const CDTS_TEMPLATE_ENG = `<!DOCTYPE html>
         <title>{{TITLE}}</title>
         <meta content="width=device-width, initial-scale=1" name="viewport">
         <link rel="schema.dcterms" href="https://purl.org/dc/terms/">
+        <link rel="alternate" hreflang="fr" href="{{ALTLINK}}"/>
         <!-- Meta data -->
         <meta name="description" content="{{DESCRIPTION}}">
         <meta name="keywords" content="{{KEYWORDS}}">
         <meta name="author" content="Canada Revenue Agency">
         <meta name="dcterms.creator" content="Canada Revenue Agency">
         <meta name="robots" content="{{ROBOTS}}">
+        <meta name="dcterms.subject" content="{{SUBJECT}}">
         <meta name="dcterms.language" title="ISO639-2/T" content="eng">
         <meta name="dcterms.audience" content="general public">
         <meta name="dcterms.spatial" content="Canada">
@@ -153,12 +155,14 @@ export const CDTS_TEMPLATE_FRA = `<!DOCTYPE html>
         <title>{{TITLE}}</title>
         <meta content="width=device-width, initial-scale=1" name="viewport">
         <link rel="schema.dcterms" href="https://purl.org/dc/terms/">
+        <link rel="alternate" hreflang="en" href="{{ALTLINK}}"/>
         <!-- Meta data -->
         <meta name="description" content="{{DESCRIPTION}}">
         <meta name="keywords" content="{{KEYWORDS}}">
         <meta name="author" content="Agence du revenu du Canada">
         <meta name="dcterms.creator" content="Agence du revenu du Canada">
         <meta name="robots" content="{{ROBOTS}}">
+        <meta name="dcterms.subject" content="{{SUBJECT}}">
         <meta name="dcterms.language" title="ISO639-2/T" content="fra">
         <meta name="dcterms.audience" content="general public">
         <meta name="dcterms.spatial" content="Canada">
