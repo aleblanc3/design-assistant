@@ -2,7 +2,7 @@ import { Injectable, signal, inject } from '@angular/core';
 
 //Services
 import { ProjectStateService } from './project-state.service';
-import { FetchService } from './fetch.service';
+import { FetchService, urlVersion } from './fetch.service';
 
 /*
  * Use this service to cache temporary variables related to the active project
@@ -27,6 +27,23 @@ export class ProjectCacheService {
 
     private localCheckInProgress = false;
     private previewCheckInProgress = false;
+
+    // Track user choices on select buttons (for managing UI state)
+
+    /** Signal defaults to project language if 'both' is not a valid option */
+    public selectedLang = signal<'en' | 'fr' | 'both'>(this.projectState.detectPrimaryLanguage());
+
+    /** Signal can be used to display all project pages or just the inScope pages */
+    public selectedScope = signal<'inScope' | 'all'>('inScope');
+
+    /** Signal can be used to access specific versions stored in AIDA. Defaults to prototype. */
+    public selectedVersion = signal<'prototype' | 'live' | 'baseline'>('prototype');
+
+    /** Signal can be used to access specific versions stored outside of AIDA. Defaults to live. */
+    public selectedSource = signal<urlVersion>('live');
+
+    /** Signal for the IA diagram view. Defaults to changes. */
+    public selectedViewIA = signal<'baseline' | 'changes' | 'final'>('changes');
 
     /**
     * Checks if a local index page exists for the project so UI can be updated
