@@ -515,6 +515,8 @@ export class ExportComponent implements OnInit {
       let content = '';
       let styles = '';
       let scripts = '';
+      let subject = '';
+      let altLangPage = '';
 
       try {
         const retries = isNewPage ? 1 : 2;
@@ -525,6 +527,8 @@ export class ExportComponent implements OnInit {
           throw new Error(`No document returned for ${url}`);
         }
         ({ content, styles, scripts } = await this.htmlNormalizationService.cleanContentForCdts(doc));
+        subject = (doc.querySelector('meta[name="dcterms.subject"]') as HTMLMetaElement)?.content.trim() || "";
+        altLangPage = Array.from(doc.querySelectorAll<HTMLLinkElement>('link[rel="alternate"]')).find(link => link.getAttribute("hreflang") !== lang)?.href || "";
       } catch (error) {
         if (isNewPage) {
           console.warn(`New page "${path}" is 404. Creating blank template.`, error);
@@ -538,6 +542,8 @@ export class ExportComponent implements OnInit {
           TITLE: title ?? '',
           DESCRIPTION: description ?? '',
           KEYWORDS: keywords ?? '',
+          SUBJECT: subject ?? '',
+          ALTLINK: altLangPage ?? '',
           ROBOTS: robots,
           ENGLISH: enUrl ?? '',
           FRENCH: frUrl ?? '',
@@ -671,14 +677,14 @@ export class ExportComponent implements OnInit {
     const buildRows = (pairsList: typeof exportedPairs) => pairsList.map(pair => {
       const rowStatus = statusClassMap[pair.status] ?? '';
       const enCell = paths.has(pair.en.path)
-        ? `<a href="${this.fetchService.generateUrl(pair.en.path, source, this.gitHubData().owner, repo)}" target="_blank"
+        ? `<a href="${this.fetchService.generateUrl(pair.en.path, "protoUT", this.gitHubData().owner, repo)}" target="_blank"
               data-versions='[
                 {"label": "${viewCanada}", "href":"${pair.en.url}"},
                 {"label": "${viewUPD}", "href":"${this.fetchService.generateUrl(pair.en.path, "upd")}"}
               ]'>${pair.en.label ?? pair.en.path}</a>`
         : `<i class="fa fa-minus"></i>`;
       const frCell = paths.has(pair.fr.path)
-        ? `<a href="${this.fetchService.generateUrl(pair.fr.path, source, this.gitHubData().owner, repo)}" target="_blank"
+        ? `<a href="${this.fetchService.generateUrl(pair.fr.path, "protoUT", this.gitHubData().owner, repo)}" target="_blank"
               data-versions='[
                 {"label": "${viewCanada}", "href":"${pair.fr.url}"},
                 {"label": "${viewUPD}", "href":"${this.fetchService.generateUrl(pair.fr.path, "upd")}"}
