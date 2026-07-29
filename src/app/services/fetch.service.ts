@@ -92,7 +92,7 @@ export class FetchService {
       const isUT = hostname === "cra-ut.isvcs.net"
       if (parsedUrl.protocol !== "https:" && !isUT) throw new Error();
       //Add nocache parameter to GitHub urls
-      if (hostname !== this.prodHost && !isUT) {
+      if (hostname !== this.prodHost) {
         const separator = url.includes('?') ? '&' : '?';
         url = url + `${separator}nocache=${Date.now()}`;
       }
