@@ -55,15 +55,12 @@
                           (click)="showUrls = true" />
                 <p-drawer [header]="'common.urls' | translate" [(visible)]="showUrls" position="right" styleClass="w-6">
                     <div class="flex flex-row flex-wrap align-items-end gap-2">
-                        <div class="flex flex-column hover:text-primary">
-                            <label for="url-versions" class="text-xs font-semibold xl:my-1">{{ 'common.version' | translate }}</label>
-                            <p-selectButton id="url-versions" allowEmpty="false" optionLabel="label" optionValue="value" size="small" styleClass="secondary-outline text-primary max-h-3rem"
-                                            [options]="urlVersionOptions" [ngModel]="selectedUrlVersion()" (ngModelChange)="selectedUrlVersion.set($event)" />
-                        </div>
+                        <aida-project-settings [showLang]="true" [allowBoth]="true" [showScope]="true" [showSource]="true" />
                         <p-button icon="pi pi-copy" severity="primary" outlined styleClass="secondary-outline" size="small"
-                                  (onClick)="copyToClipboard('both')"
+                                  (onClick)="copyToClipboard(projectCache.selectedLang())"
                                   [label]="'common.copyUrls' | translate" />
                     </div>
+                    @if(projectCache.selectedLang() === 'both'){
                     <p-table [value]="pairedPagesForTable()">
                         <ng-template #header>
                             <tr>
@@ -86,6 +83,14 @@
                             </tr>
                         </ng-template>
                     </p-table>
+                    }
+                    @else {
+                    <ul>
+                        @for(url of singlePagesForList(); track url.url){
+                        <li>{{url.url}}</li>
+                        }
+                    </ul>
+                    }
                 </p-drawer>
                 <p-button
                           [label]="('common.view' | translate) + ' ' + ('iaDiagram._title' | translate)"

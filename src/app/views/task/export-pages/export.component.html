@@ -274,9 +274,9 @@
 
 </div>
 
-@if(hasRepoConfig() && repoType() === 'github'){
+@if(hasRepoConfig()){
 <!-- Bookmarklet-->
 <div class="surface-card border-round-lg shadow-2 p-4 my-3 lg:mt-0 min-w-min">
-    <aida-bookmarklet />
+    <aida-bookmarklet [mode]="repoType()" />
 </div>
 }

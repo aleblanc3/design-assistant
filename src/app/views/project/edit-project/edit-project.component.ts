@@ -1,4 +1,4 @@
-import { Component, inject, computed, signal } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -20,20 +20,23 @@ import { SetupRepoComponent } from '../../../components/setup-repo/setup-repo.co
 import { AddCollaboratorsComponent } from '../../../components/add-collaborators/add-collaborators.component';
 import { FindPagesComponent } from '../../../components/find-pages/find-pages.component';
 import { AddUrlsComponent } from '../../../components/add-urls/add-urls.component';
-import { urlVersion } from '../../../services/fetch.service';
+import { ProjectSettingsComponent } from "../../../components/project-settings/project-settings.component";
+import { ProjectCacheService } from '../../../services/project-cache.service';
 
 @Component({
   selector: 'aida-edit-project',
   imports: [
     CommonModule, FormsModule, TranslateModule, RouterLink,
     SetupProjectComponent, SetupRepoComponent, AddCollaboratorsComponent, FindPagesComponent, AddUrlsComponent,
-    DrawerModule, ButtonModule, MessageModule, SelectButtonModule, TableModule, TooltipModule
+    DrawerModule, ButtonModule, MessageModule, SelectButtonModule, TableModule, TooltipModule,
+    ProjectSettingsComponent
   ],
   templateUrl: './edit-project.component.html',
   styles: ``
 })
 export class EditProjectComponent {
   public projectState = inject(ProjectStateService);
+  public projectCache = inject(ProjectCacheService);
   private translate = inject(TranslateService);
   iaDiagram = inject(IaDiagramService);
 
@@ -48,8 +51,6 @@ export class EditProjectComponent {
     return !!repo;
   }
 
-  lang = this.projectState.detectPrimaryLanguage();
-
   //Todo: Collaborators management
   collaborators = this.projectState.getProject().collaborators;
 
@@ -59,28 +60,19 @@ export class EditProjectComponent {
   showIA = false;
   showBreadcrumb = false;
 
-  //URL version selector (for drawer)
-  // Export source options
-  selectedUrlVersion = signal<urlVersion>('live');
-
-  get urlVersionOptions() {
-    const options = [
-      { label: this.translate.instant('common.version.canada'), value: 'live' },
-      { label: this.translate.instant('common.version.prototype.github'), value: 'protoGH' },
-      { label: this.translate.instant('common.version.prototype.local'), value: 'protoUT' }];
-    if (this.projectState.getProject().github.hasBaselineRepo) {
-      options.push(
-        { label: this.translate.instant('common.version.baseline.github'), value: 'baseGH' },
-        { label: this.translate.instant('common.version.baseline.local'), value: 'baseUT' }
-      )
-    }
-    return options;
-  }
-
+  //URL drawer - Both languages
   pairedPagesForTable = computed(() =>
-    this.projectState.getPairedPages(this.selectedUrlVersion(), 'all')
+    this.projectState.getPairedPages(this.projectCache.selectedSource(), this.projectCache.selectedScope())
   );
 
+  //URL drawer - One language
+  singlePagesForList = computed(() => {
+    const selectedLang = this.projectCache.selectedLang();
+    const lang = selectedLang === 'both' ? this.projectState.detectPrimaryLanguage() : selectedLang;
+    return this.projectState.getAllPages(lang, this.projectCache.selectedSource(), this.projectCache.selectedScope());
+  });
+
+  //URL drawer - Copy
   async copyToClipboard(lang: 'en' | 'fr' | 'both'): Promise<void> {
     const pairs = this.pairedPagesForTable();
     let text;
