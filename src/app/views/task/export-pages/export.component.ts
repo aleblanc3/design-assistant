@@ -520,7 +520,7 @@ export class ExportComponent implements OnInit {
 
       try {
         const retries = isNewPage ? 1 : 2;
-        const doc = !source.startsWith("ut")
+        const doc = !source.endsWith("UT")
           ? await this.fetchService.fetchContent(url, "both", retries)
           : this.fetchService.stringToDoc(await this.fetchService.fetchViaProxy(url));
         if (!doc) {
