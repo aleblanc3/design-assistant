@@ -508,9 +508,9 @@ export class FetchService {
   }
 
   //Fetch same-domain paths
-  public async getPaths(url: string): Promise<string[]> {
+  public async getPaths(url: string, viaProxy = false): Promise<string[]> {
     try {
-      const doc = await this.fetchContent(url, "both", 2);
+      const doc = !viaProxy ? await this.fetchContent(url, "both", 2) : this.stringToDoc(await this.fetchViaProxy(url));
       const links = this.getLinks(doc, url);
       return [...new Set(links.map(link => this.generatePath(link)))];
     } catch (error) {

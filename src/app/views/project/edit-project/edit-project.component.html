@@ -54,7 +54,7 @@
                           styleClass="secondary-outline w-full min-w-max"
                           (click)="showUrls = true" />
                 <p-drawer [header]="'common.urls' | translate" [(visible)]="showUrls" position="right" styleClass="w-6">
-                    <aida-project-settings [showLang]="true" [allowBoth]="true" [showScope]="true" [showSource]="true" [includePreview]="true" [showDisplay]="true">
+                    <aida-project-settings [showLang]="true" [allowBoth]="true" [showScope]="true" [showSource]="true" [allowPreview]="true" [showDisplay]="true">
                         <p-button icon="pi pi-copy" severity="primary" outlined styleClass="secondary-outline white-space-nowrap" size="small"
                                   (onClick)="copyToClipboard(projectCache.selectedLang())"
                                   [label]="'common.copyUrls' | translate" />
