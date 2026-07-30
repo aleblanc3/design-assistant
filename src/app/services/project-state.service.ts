@@ -864,6 +864,8 @@ export class ProjectStateService {
             for (const node of nodes) {
                 const data = node.data;
                 if (!data) continue;
+                const yes = this.translate.instant('common.yes');
+                const no = this.translate.instant('common.no');
 
                 rows.push([
                     //English
@@ -877,19 +879,19 @@ export class ProjectStateService {
                     data.path?.fr ?? '',
                     JSON.stringify(data.vanity?.fr?.join('; ') ?? ''),
                     //Status
-                    data.status?.inScope ? '✓' : '✗',
-                    data.status?.isNew ? '✓' : '✗',
-                    data.status?.isMoved ? '✓' : '✗',
-                    data.status?.isROT ? '✓' : '✗',
-                    (data.prototype?.en?.isArchived || data.prototype?.fr?.isArchived) ? '✓' : '✗',
-                    (data.prototype?.en?.noindex || data.prototype?.fr?.noindex) ? '✓' : '✗',
+                    data.status?.inScope ? yes : no,
+                    data.status?.isNew ? yes : no,
+                    data.status?.isMoved ? yes : no,
+                    data.status?.isROT ? yes : no,
+                    (data.prototype?.en?.isArchived || data.prototype?.fr?.isArchived) ? yes : no,
+                    (data.prototype?.en?.noindex || data.prototype?.fr?.noindex) ? yes : no,
                     //Notes
                     JSON.stringify(data.notes?.issue ?? ''),
                     JSON.stringify(data.notes?.solution ?? ''),
                     //Data
-                    JSON.stringify(data.prototype?.[lang]?.template ?? ''),
-                    (data.prototype?.en?.linksToPortal || data.prototype?.fr?.linksToPortal) ? '✓' : '✗',
-                    (data.prototype?.en?.hasChatbot || data.prototype?.fr?.hasChatbot) ? '✓' : '✗',
+                    this.translate.instant(data.prototype?.[lang]?.template ?? ''),
+                    (data.prototype?.en?.linksToPortal || data.prototype?.fr?.linksToPortal) ? yes : no,
+                    (data.prototype?.en?.hasChatbot || data.prototype?.fr?.hasChatbot) ? yes : no,
                     JSON.stringify(data.task?.[lang]?.join('; ') ?? ''),
                     data.visits?.[lang] ?? -1,
                     Math.min(data.prototype?.[lang]?.fleschKincaid ?? -1, data.prototype?.[lang]?.gunningFog ?? -1),
@@ -922,7 +924,8 @@ export class ProjectStateService {
 
         walk(tree);
 
-        const blob = new Blob([rows.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+        const BOM = '\uFEFF';
+        const blob = new Blob([BOM + rows.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
 
         const proj = this.project();
