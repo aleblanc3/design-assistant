@@ -36,12 +36,23 @@
     </div>
     }
 
+    <!-- Niche use-cases ----------------------------------------------->
+
     <!--Choose IA view-->
     @if (showViewIA()) {
     <div class="flex flex-column hover:text-primary">
         <label for="viewIA" class="text-xs font-semibold xl:my-1">{{ 'common.view' | translate }}</label>
         <p-selectButton id="viewIA" allowEmpty="false" optionLabel="label" optionValue="value" size="small" styleClass="secondary-outline text-primary max-h-3rem"
                         [options]="viewIAOptions" [ngModel]="projectCache.selectedViewIA()" (ngModelChange)="projectCache.selectedViewIA.set($event)" />
+    </div>
+    }
+
+    <!--Choose display-->
+    @if (showDisplay()) {
+    <div class="flex flex-column hover:text-primary">
+        <label for="display" class="text-xs font-semibold xl:my-1">{{ 'common.display' | translate }}</label>
+        <p-selectButton id="display" allowEmpty="false" optionLabel="label" optionValue="value" size="small" styleClass="secondary-outline text-primary max-h-3rem"
+                        [options]="displayOptions" [ngModel]="projectCache.selectedDisplay()" (ngModelChange)="projectCache.selectedDisplay.set($event)" />
     </div>
     }
 

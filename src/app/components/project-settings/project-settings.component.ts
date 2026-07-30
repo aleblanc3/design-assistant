@@ -32,8 +32,11 @@ export class ProjectSettingsComponent {
     isPrototype = input(false);
 
     showSource = input(false);
+    includePreview = input(false);
 
     showViewIA = input(false);
+
+    showDisplay = input(false);
 
     constructor() {
         effect(() => {
@@ -103,6 +106,11 @@ export class ProjectSettingsComponent {
                 { label: this.translate.instant('common.source.baseUT'), value: 'baseUT' }
             );
         }
+        if (this.includePreview()) {
+            options.push(
+                { label: this.translate.instant('common.source.preview'), value: 'preview' }
+            );
+        }
         return options
     }
 
@@ -129,5 +137,12 @@ export class ProjectSettingsComponent {
         ]
     }
 
+    //Choose display (for IA diagram)
+    get displayOptions() {
+        return [
+            { label: this.translate.instant('common.display.url'), value: 'url' },
+            { label: this.translate.instant('common.display.title'), value: 'title' },
+        ]
+    }
 
 }
