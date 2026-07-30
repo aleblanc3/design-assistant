@@ -35,6 +35,8 @@ export class ProjectSettingsComponent {
 
     showViewIA = input(false);
 
+    showDisplay = input(false);
+
     constructor() {
         effect(() => {
             if (!this.allowBoth() && this.projectCache.selectedLang() === 'both') {
@@ -129,5 +131,12 @@ export class ProjectSettingsComponent {
         ]
     }
 
+    //Choose display (for IA diagram)
+    get displayOptions() {
+        return [
+            { label: this.translate.instant('common.display.url'), value: 'url' },
+            { label: this.translate.instant('common.display.title'), value: 'title' },
+        ]
+    }
 
 }

@@ -45,6 +45,9 @@ export class ProjectCacheService {
     /** Signal for the IA diagram view. Defaults to changes. */
     public selectedViewIA = signal<'baseline' | 'changes' | 'final'>('changes');
 
+    /** Signal for the view URLs drawer. Defaults to url. */
+    public selectedDisplay = signal<'url' | 'title'>('url');
+
     /**
     * Checks if a local index page exists for the project so UI can be updated
     ** Updates signals {@link hasLocal} and {@link hasLocalBL}
