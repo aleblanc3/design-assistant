@@ -629,7 +629,7 @@ export class ExportComponent implements OnInit {
   buildCdtsIndex(paths: Set<string>) {
     //Include GitHub link if previously exported
     const showGithubLink = !!this.projectState.getProject().lastExported && !!this.gitHubData().owner && !!this.gitHubData().repo;
-    const { source, repo, scope } = this.exportContext;
+    const { repo, scope } = this.exportContext;
     const githubLinkHtml = showGithubLink
       ? `<div class="mrgn-tp-md">
             <div class="row">
@@ -654,7 +654,7 @@ export class ExportComponent implements OnInit {
     //Labels
     const viewCanada = this.translate.instant('common.viewOnCanada');
     const viewUPD = this.translate.instant('common.viewOnUPD');
-    const viewAIDA = this.translate.instant('common.viewOnAIDA');
+    //const viewAIDA = this.translate.instant('common.viewOnAIDA');
     const ungroupedCaption = this.translate.instant('exportPages.ungroupedPages');
 
     //Table status map
