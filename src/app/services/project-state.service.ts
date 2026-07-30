@@ -808,79 +808,110 @@ export class ProjectStateService {
     exportTreeAsCsv() {
         const tree = this.project().projectData;
         const rows: string[] = [];
+        const lang = this.detectPrimaryLanguage();
 
         // Headers
         rows.push([
-            //Current language
-            'Page title (h1)',
-            'Section title (double h1)',
-            'URL',
-            //Opposite language
-            'Opposite language title',
-            'Opposite language URL',
-            //GitHub
-            'Prototype Url',
+            //English
+            this.translate.instant('inventory.header.enH1'),
+            this.translate.instant('inventory.header.enDoubleH1'),
+            this.translate.instant('inventory.header.enPath'),
+            this.translate.instant('inventory.header.enVanity'),
+            //French
+            this.translate.instant('inventory.header.frH1'),
+            this.translate.instant('inventory.header.frPath'),
+            this.translate.instant('inventory.header.frDoubleH1'),
+            this.translate.instant('inventory.header.frVanity'),
             //Status
-            'In Scope',
-            'Is Orphan',
-            'Is New',
-            'Is Moved',
-            'Is ROT',
-            'Portal link',
-            'Archived',
-            //Owner
-            'Owner',
-            'Email',
+            this.translate.instant('inventory.header.inScope'),
+            this.translate.instant('inventory.header.isNew'),
+            this.translate.instant('inventory.header.isMoved'),
+            this.translate.instant('inventory.header.isROT'),
+            this.translate.instant('inventory.header.archiveStatus'),
+            this.translate.instant('inventory.header.noindex'),
+            //Notes
+            this.translate.instant('inventory.header.issue'),
+            this.translate.instant('inventory.header.solution'),
             //Data
-            'Template',
-            'Task',
-            'Visits (last 52 weeks)',
+            this.translate.instant('inventory.header.template'),
+            this.translate.instant('inventory.header.linksToPortal'),
+            this.translate.instant('inventory.header.hasChatbot'),
+            this.translate.instant('inventory.header.task'),
+            this.translate.instant('inventory.header.visits'),
+            this.translate.instant('common.readability.gradeLevel'),
+            this.translate.instant('inventory.header.wordCount'),
+            this.translate.instant('inventory.header.linkCount'),
+            this.translate.instant('inventory.header.lastModified'),
+            this.translate.instant('inventory.header.lastPublished'),
+            //Owner
+            this.translate.instant('inventory.header.owner'),
+            this.translate.instant('inventory.header.email'),
             //Metadata
-            'Title',
-            'Description',
-            'Keywords',
+            this.translate.instant('inventory.header.titleEN'),
+            this.translate.instant('inventory.header.titleFR'),
+            this.translate.instant('inventory.header.descriptionEN'),
+            this.translate.instant('inventory.header.descriptionFR'),
+            this.translate.instant('inventory.header.keywordsEN'),
+            this.translate.instant('inventory.header.keywordsFR'),
             //Move info
-            'Original Parent URL',
+            this.translate.instant('inventory.header.originalParentEN'),
+            this.translate.instant('inventory.header.newParentEN'),
+            this.translate.instant('inventory.header.originalParentFR'),
+            this.translate.instant('inventory.header.newParentFR'),
         ].join(','));
 
-        const walk = (nodes: TreeNode<ProjectTreeNodeData>[]) => {
+        const walk = (nodes: TreeNode<TreeNodeData>[]) => {
             for (const node of nodes) {
                 const data = node.data;
                 if (!data) continue;
 
                 rows.push([
-                    //Current language
-                    data.h1 ?? '',
-                    data.doubleH1 ?? '',
-                    data.url ?? '',
-                    //Opposite language
-                    `"${data.metadata?.oppTitle ?? ''}"`,
-                    data.metadata?.oppUrl ?? '',
-                    //GitHub
-                    //this.generatePrototypeUrl(data.url),
+                    //English
+                    JSON.stringify(data.prototype?.en?.h1 ?? ''),
+                    JSON.stringify(data.prototype?.en?.doubleH1 ?? ''),
+                    data.path?.en ?? '',
+                    JSON.stringify(data.vanity?.en?.join('; ') ?? ''),
+                    //French
+                    JSON.stringify(data.prototype?.fr?.h1 ?? ''),
+                    JSON.stringify(data.prototype?.fr?.doubleH1 ?? ''),
+                    data.path?.fr ?? '',
+                    JSON.stringify(data.vanity?.fr?.join('; ') ?? ''),
                     //Status
-                    data.status.inScope ? 'Yes' : 'No',
-                    data.status.isOrphan ? 'Yes' : 'No',
-                    data.status.isNew ? 'Yes' : 'No',
-                    data.status.isMoved ? 'Yes' : 'No',
-                    data.status.isROT ? 'Yes' : 'No',
-                    data.status.linksToPortal ? 'Yes' : 'No',
-                    data.status.archiveStatus ?? '',
-                    //Problems
-                    //Owner
-                    data.metadata?.owner ?? '',
-                    data.metadata?.email ?? '',
+                    data.status?.inScope ? '✓' : '✗',
+                    data.status?.isNew ? '✓' : '✗',
+                    data.status?.isMoved ? '✓' : '✗',
+                    data.status?.isROT ? '✓' : '✗',
+                    (data.prototype?.en?.isArchived || data.prototype?.fr?.isArchived) ? '✓' : '✗',
+                    (data.prototype?.en?.noindex || data.prototype?.fr?.noindex) ? '✓' : '✗',
+                    //Notes
+                    JSON.stringify(data.notes?.issue ?? ''),
+                    JSON.stringify(data.notes?.solution ?? ''),
                     //Data
-                    data.metadata?.template ?? '',
-                    data.metadata?.task ?? '',
-                    data.metadata?.visits ?? '',
+                    JSON.stringify(data.prototype?.[lang]?.template ?? ''),
+                    (data.prototype?.en?.linksToPortal || data.prototype?.fr?.linksToPortal) ? '✓' : '✗',
+                    (data.prototype?.en?.hasChatbot || data.prototype?.fr?.hasChatbot) ? '✓' : '✗',
+                    JSON.stringify(data.task?.[lang]?.join('; ') ?? ''),
+                    data.visits?.[lang] ?? -1,
+                    Math.min(data.prototype?.[lang]?.fleschKincaid ?? -1, data.prototype?.[lang]?.gunningFog ?? -1),
+                    data.prototype?.[lang]?.wordCount ?? -1,
+                    data.prototype?.[lang]?.linkCount ?? -1,
+                    data.live?.[lang]?.lastModified ? new Date(data.live[lang].lastModified).toISOString().slice(0, 10) : '',
+                    data.live?.[lang]?.lastPublished ? new Date(data.live[lang].lastPublished).toISOString().slice(0, 10) : '',
+                    //Owner
+                    JSON.stringify(data.prototype?.[lang]?.owner ?? ''),
+                    JSON.stringify(data.prototype?.[lang]?.email ?? ''),
                     //Metadata
-                    data.metadata?.title ?? '',
-                    data.metadata?.description ?? '',
-                    data.metadata?.keywords ?? '',
+                    JSON.stringify(data.prototype?.en?.title ?? ''),
+                    JSON.stringify(data.prototype?.fr?.title ?? ''),
+                    JSON.stringify(data.prototype?.en?.description ?? ''),
+                    JSON.stringify(data.prototype?.fr?.description ?? ''),
+                    JSON.stringify(data.prototype?.en?.keywords ?? ''),
+                    JSON.stringify(data.prototype?.fr?.keywords ?? ''),
                     //Move info
-                    data.originalParent ?? '',
-
+                    (data.prototype?.en?.parentPath !== data.live?.en?.parentPath) ? data.live?.en?.parentPath ?? '' : '',
+                    (data.prototype?.en?.parentPath !== data.live?.en?.parentPath) ? data.prototype?.en?.parentPath ?? '' : '',
+                    (data.prototype?.fr?.parentPath !== data.live?.fr?.parentPath) ? data.live?.fr?.parentPath ?? '' : '',
+                    (data.prototype?.fr?.parentPath !== data.live?.fr?.parentPath) ? data.prototype?.fr?.parentPath ?? '' : '',
                 ].join(','));
 
                 if (node.children?.length) {
@@ -891,7 +922,7 @@ export class ProjectStateService {
 
         walk(tree);
 
-        const blob = new Blob([rows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+        const blob = new Blob([rows.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
 
         const proj = this.project();
@@ -907,9 +938,10 @@ export class ProjectStateService {
     //For tree testing in Optimal Workshop or similar tools
     exportAsTreeCsv() {
         const tree = this.project().projectData;
+        const lang = this.detectPrimaryLanguage();
 
         // Calculate max depth
-        const getMaxDepth = (nodes: TreeNode<ProjectTreeNodeData>[], depth = 0): number => {
+        const getMaxDepth = (nodes: TreeNode<TreeNodeData>[], depth = 0): number => {
             let maxDepth = depth;
             for (const node of nodes) {
                 if (node.children?.length) {
@@ -938,14 +970,14 @@ export class ProjectStateService {
         rows.push(headers.join(','));
 
         // Walk tree and build rows
-        const walk = (nodes: TreeNode<ProjectTreeNodeData>[], depth: number) => {
+        const walk = (nodes: TreeNode<TreeNodeData>[], depth: number) => {
             for (const node of nodes) {
                 const data = node.data;
                 if (!data) continue;
 
                 // Create a row with empty cells up to current depth
                 const row: string[] = new Array(maxDepth + 1).fill('');
-                row[depth] = `"${data.h1 ?? ''}"`;
+                row[depth] = `"${data.prototype?.[lang].h1 ?? ''}"`;
 
                 rows.push(row.join(','));
 
@@ -957,7 +989,7 @@ export class ProjectStateService {
 
         walk(tree, 0);
 
-        const blob = new Blob([rows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+        const blob = new Blob([rows.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
 
         const proj = this.project();
