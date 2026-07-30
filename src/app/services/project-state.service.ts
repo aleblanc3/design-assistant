@@ -71,6 +71,8 @@ export class ProjectStateService {
 
     getProject = computed(() => this.project());
 
+    getGitHub = computed(() => this.project().github);
+
     // Track save status
     private saveStatus = signal<SaveStatus>('saved');
     public getSaveStatus = computed(() => this.saveStatus());

@@ -32,7 +32,8 @@ export class ProjectSettingsComponent {
     isPrototype = input(false);
 
     showSource = input(false);
-    includePreview = input(false);
+    allowPreview = input(false);
+    onlyValid = input(false);
 
     showViewIA = input(false);
 
@@ -55,16 +56,30 @@ export class ProjectSettingsComponent {
                 this.projectCache.selectedVersion.set('prototype'); // fallback to prototype when it's the only option
             }
         });
+        effect(() => {
+            if (!this.allowPreview() && this.projectCache.selectedSource() === 'preview') {
+                this.projectCache.selectedSource.set('live'); // fallback to live if preview was selected and not available
+            }
+        });
+        effect(() => {
+            const validValues = this.sourceOptions.map(opt => opt.value);
+            if (!validValues.includes(this.projectCache.selectedSource())) {
+                this.projectCache.selectedSource.set('live');
+            }
+        });
     }
 
     //Choose language
     get languageOptions() {
+        const options: { label: string, value: string }[] = []
         const primaryLang = this.projectState.detectPrimaryLanguage();
         const enLabel = { label: this.translate.instant('common.language.english'), value: 'en' }
         const frLabel = { label: this.translate.instant('common.language.french'), value: 'fr' }
         const bothLabel = { label: this.translate.instant('common.both'), value: 'both' }
-        if (primaryLang === 'en') { return [enLabel, frLabel, bothLabel] }
-        else { return [frLabel, enLabel, bothLabel] }
+        if (primaryLang === 'en') { options.push(enLabel, frLabel) }
+        else { options.push(frLabel, enLabel) }
+        if (this.allowBoth()) { options.push(bothLabel) }
+        return options
     }
 
     //Choose scope
@@ -93,20 +108,22 @@ export class ProjectSettingsComponent {
 
     //Choose source (for external data storage)
     get sourceOptions() {
-        const options: { label: string, value: string }[] = []
-        //TODO: Adjust options based on cached availability
-        options.push(
-            { label: this.translate.instant('common.source.canada'), value: 'live' },
-            { label: this.translate.instant('common.source.protoGH'), value: 'protoGH' },
-            { label: this.translate.instant('common.source.protoUT'), value: 'protoUT' }
-        );
-        if (this.projectState.getProject().github.hasBaselineRepo) {
-            options.push(
-                { label: this.translate.instant('common.source.baseGH'), value: 'baseGH' },
-                { label: this.translate.instant('common.source.baseUT'), value: 'baseUT' }
-            );
+        const options = [{ label: this.translate.instant('common.source.canada'), value: 'live' }];
+        if (this.projectCache.hasGitHub() || !this.onlyValid()) {
+            options.push({ label: this.translate.instant('common.source.protoGH'), value: 'protoGH' })
         }
-        if (this.includePreview()) {
+        if (this.projectCache.hasLocal() || !this.onlyValid()) {
+            options.push({ label: this.translate.instant('common.source.protoUT'), value: 'protoUT' })
+        }
+        if (this.projectState.getProject().github.hasBaselineRepo) {
+            if (this.projectCache.hasGitHubBL() || !this.onlyValid()) {
+                options.push({ label: this.translate.instant('common.source.baseGH'), value: 'baseGH' })
+            }
+            if (this.projectCache.hasLocalBL() || !this.onlyValid()) {
+                options.push({ label: this.translate.instant('common.source.baseUT'), value: 'baseUT' })
+            }
+        }
+        if (this.allowPreview()) {
             options.push(
                 { label: this.translate.instant('common.source.preview'), value: 'preview' }
             );
