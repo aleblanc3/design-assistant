@@ -55,7 +55,7 @@
                           (click)="showUrls = true" />
                 <p-drawer [header]="'common.urls' | translate" [(visible)]="showUrls" position="right" styleClass="w-6">
                     <div class="flex flex-row flex-wrap align-items-end gap-2">
-                        <aida-project-settings [showLang]="true" [allowBoth]="true" [showScope]="true" [showSource]="true" [showDisplay]="true" />
+                        <aida-project-settings [showLang]="true" [allowBoth]="true" [showScope]="true" [showSource]="true" [includePreview]="true" [showDisplay]="true" />
                         <p-button icon="pi pi-copy" severity="primary" outlined styleClass="secondary-outline" size="small"
                                   (onClick)="copyToClipboard(projectCache.selectedLang())"
                                   [label]="'common.copyUrls' | translate" />

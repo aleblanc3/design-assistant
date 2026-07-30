@@ -32,6 +32,7 @@ export class ProjectSettingsComponent {
     isPrototype = input(false);
 
     showSource = input(false);
+    includePreview = input(false);
 
     showViewIA = input(false);
 
@@ -103,6 +104,11 @@ export class ProjectSettingsComponent {
             options.push(
                 { label: this.translate.instant('common.source.baseGH'), value: 'baseGH' },
                 { label: this.translate.instant('common.source.baseUT'), value: 'baseUT' }
+            );
+        }
+        if (this.includePreview()) {
+            options.push(
+                { label: this.translate.instant('common.source.preview'), value: 'preview' }
             );
         }
         return options

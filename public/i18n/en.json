@@ -155,6 +155,7 @@
 	"common.source.baseGH": "GitHub baseline",
 	"common.source.baseUT": "Local baseline",
 	"common.source.canada": "Canada.ca",
+	"common.source.preview": "AEM preview",
 	"common.source.protoGH": "GitHub prototype",
 	"common.source.protoUT": "Local prototype",
 	"common.status": "Status",
