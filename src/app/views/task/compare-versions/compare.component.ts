@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
 
 //Translation
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 //PrimeNG
 import { ButtonModule } from 'primeng/button';
@@ -28,7 +28,7 @@ import { CompareSourceComponent } from '../../../components/compare-source/compa
 @Component({
   selector: 'aida-compare-versions',
   imports: [
-    CommonModule, FormsModule, TranslateModule,
+    CommonModule, FormsModule, TranslatePipe,
     ButtonModule, TabsModule, IftaLabelModule, SelectModule, CheckboxModule,
     CompareRenderedComponent, CompareSourceComponent
   ],

@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
 
 //PrimeNG
@@ -11,7 +11,7 @@ import { marker } from '@colsen1991/ngx-translate-extract-marker';
 @Component({
     selector: 'aida-invalid-urls',
     imports: [
-        CommonModule, FormsModule, TranslateModule,
+        CommonModule, FormsModule, TranslatePipe,
     ],
     templateUrl: './invalid-urls.component.html',
     styles: ``

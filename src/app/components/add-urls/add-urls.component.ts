@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 //PrimeNG
 import { IftaLabelModule } from 'primeng/iftalabel';
@@ -17,7 +17,7 @@ import { AddUrlsService } from './add-urls.service';
 @Component({
     selector: 'aida-add-urls',
     imports: [
-        CommonModule, FormsModule, TranslateModule,
+        CommonModule, FormsModule, TranslatePipe,
         IftaLabelModule, TextareaModule, MessageModule, ButtonModule, ProgressBarModule
     ],
     templateUrl: './add-urls.component.html',
@@ -36,7 +36,7 @@ export class AddUrlsComponent implements OnInit {
     // Parse URLs from textarea
     parseUrls(): void {
         const rawUrls = this.addUrlsService.urlState().rawUrls;
-        const currentLang = this.translate.currentLang?.startsWith('fr') ? 'fr' : 'en';
+        const currentLang = this.translate.currentLang()?.startsWith('fr') ? 'fr' : 'en';
         const existingUrls = new Set(this.projectState.getAllPages(currentLang, "live", "all").map(u => u.url));
         const { parsedUrls, duplicates, invalidUrls, oppositeLangUrls } = this.addUrlsService.parseUrls(rawUrls, existingUrls, currentLang);
 

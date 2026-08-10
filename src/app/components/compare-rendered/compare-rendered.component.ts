@@ -4,7 +4,7 @@
 
 import { Component, inject, input, Output, EventEmitter, ViewChild, ElementRef, signal, effect, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule, LocationStrategy } from '@angular/common';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { FormsModule } from '@angular/forms';
 
@@ -39,7 +39,7 @@ export interface ViewOption<T = string> {
 
 @Component({
     selector: 'aida-compare-rendered',
-    imports: [TranslateModule, CommonModule, FormsModule,
+    imports: [TranslatePipe, CommonModule, FormsModule,
         ButtonModule, SplitButtonModule, RadioButtonModule, ToolbarModule, TooltipModule, ToggleButtonModule],
     templateUrl: './compare-rendered.component.html',
     styleUrl: './compare-rendered.component.css'
