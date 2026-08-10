@@ -41,7 +41,7 @@ export class ProjectStateService {
     private usageService = inject(UsageService);
     private exportGitHubService = inject(ExportGitHubService);
 
-    private currentLang = signal<string>(this.translate.currentLang ?? 'en');
+    private currentLang = signal<string>(this.translate.currentLang() ?? 'en');
 
     // Main project state
     private project = signal<Project>({
@@ -388,7 +388,7 @@ export class ProjectStateService {
     public templateOptions = computed(() =>
         Object.values(PageTemplate)
             .map(key => ({ value: key, label: this.translate.instant(key) }))
-            .sort((a, b) => a.label.localeCompare(b.label, this.translate.currentLang))
+            .sort((a, b) => a.label.localeCompare(b.label, this.translate.currentLang()))
     );
 
     // Merge new pages into existing tree

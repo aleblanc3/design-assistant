@@ -1,6 +1,6 @@
 import { Component, inject, input, effect } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule, TranslateService } from "@ngx-translate/core";
+import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 
 //PrimeNG
 import { SelectButtonModule } from 'primeng/selectbutton';
@@ -11,7 +11,7 @@ import { ProjectCacheService } from '../../services/project-cache.service';
 
 @Component({
     selector: 'aida-project-settings',
-    imports: [TranslateModule, FormsModule,
+    imports: [TranslatePipe, FormsModule,
         SelectButtonModule,
     ],
     templateUrl: './project-settings.component.html',

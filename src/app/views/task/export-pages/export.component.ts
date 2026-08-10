@@ -1,7 +1,7 @@
 import { Component, inject, signal, computed, effect, ViewChild, untracked, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { Router } from '@angular/router';
 
@@ -75,7 +75,7 @@ interface ExportMessage {
 
 @Component({
   selector: 'aida-export-github',
-  imports: [CommonModule, FormsModule, TranslateModule,
+  imports: [CommonModule, FormsModule, TranslatePipe,
     MessageModule, ButtonModule, TooltipModule, PopoverModule, SelectButtonModule, DividerModule,
     TableModule, ChipModule, PanelModule, ProgressBarModule,
     SetupRepoComponent, SignInBannerComponent, BookmarkletComponent, ProjectSettingsComponent],
@@ -433,7 +433,7 @@ export class ExportComponent implements OnInit {
 
     const { source, repo, scope } = this.exportContext;
     const date = new Date().toISOString().split('T')[0];
-    const aidaLang = this.translate.currentLang.startsWith('fr') ? 'fr' : 'en';
+    const aidaLang = this.translate.currentLang()?.startsWith('fr') ? 'fr' : 'en';
 
     const projectPaths = this.projectTable().filter(item => item.status === ExportStatus.ExportNew || item.status === ExportStatus.ExportOverwrite).map(item => item.path);
     const templatePaths = this.templateTable().filter(item => item.status === ExportStatus.ExportNew || item.status === ExportStatus.ExportOverwrite).map(item => item.path);
@@ -675,7 +675,7 @@ export class ExportComponent implements OnInit {
     const groupedPairs = new Map<string, typeof exportedPairs>();
     const ungroupedPairs: typeof exportedPairs = [];
     exportedPairs.forEach(pair => {
-      const groupKey = this.translate.currentLang?.startsWith('fr') ? pair.fr.group : pair.en.group;
+      const groupKey = this.translate.currentLang()?.startsWith('fr') ? pair.fr.group : pair.en.group;
       if (groupKey) {
         if (!groupedPairs.has(groupKey)) groupedPairs.set(groupKey, []);
         groupedPairs.get(groupKey)!.push(pair);

@@ -708,7 +708,7 @@ export class FetchService {
       case 'baseUT':
         return `http://cra-ut.isvcs.net/test/aida/${repo}-baseline/${path}`
       case 'upd': {
-        const currentLang = this.translate.currentLang?.startsWith('fr') ? '&lang=FR' : '';
+        const currentLang = this.translate.currentLang()?.startsWith('fr') ? '&lang=FR' : '';
         return `https://cra-arc.alpha.canada.ca/en/pages?url=https://www.canada.ca/${path}${currentLang}`
       }
       default:

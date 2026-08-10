@@ -1,5 +1,5 @@
 import { Component, inject, computed, signal, ViewChild, effect } from '@angular/core';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 
 // PrimeNG modules
@@ -23,7 +23,7 @@ import { ProjectSettingsComponent } from "../project-settings/project-settings.c
 
 @Component({
   selector: 'aida-ia-diagram',
-  imports: [TranslateModule, FormsModule,
+  imports: [TranslatePipe, FormsModule,
     OrganizationChartModule, ButtonModule, TooltipModule, SelectButtonModule,
     MenuModule, DialogModule, EditNodeComponent, ProjectSettingsComponent],
   templateUrl: './ia-diagram.component.html',
