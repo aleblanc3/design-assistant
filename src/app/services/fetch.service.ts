@@ -680,14 +680,14 @@ export class FetchService {
 
   //Get relative path
   generatePath(url: string): string {
-    const isLocal = url.includes('cra-ut.isvcs.net');
-    const isGithub = url.includes('cra-test-arc.canada.ca') || url.includes('test.canada.ca') || url.includes('github.io');
-    const slice = isLocal ? 4 : isGithub ? 2 : 1;
     try {
-      return (new URL(url).pathname).split('/').slice(slice).join('/');
-    } catch {
-      return url;
+      const { hostname, pathname } = new URL(url);
+      const isLocal = hostname === 'cra-ut.isvcs.net';
+      const isGithub = hostname === 'cra-test-arc.canada.ca' || hostname === 'test.canada.ca' || hostname.endsWith('.github.io');
+      const slice = isLocal ? 4 : isGithub ? 2 : 1;
+      return pathname.split('/').slice(slice).join('/');
     }
+    catch { return url; }
   }
 
   //Generate url for specific version

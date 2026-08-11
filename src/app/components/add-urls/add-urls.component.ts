@@ -9,16 +9,19 @@ import { TextareaModule } from 'primeng/textarea';
 import { MessageModule } from 'primeng/message';
 import { ButtonModule } from 'primeng/button';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { DialogModule } from 'primeng/dialog';
 
 //Custom
 import { ProjectStateService } from '../../services/project-state.service';
 import { AddUrlsService } from './add-urls.service';
+import { InvalidUrlsComponent } from './invalid-urls/invalid-urls.component';
 
 @Component({
     selector: 'aida-add-urls',
     imports: [
         CommonModule, FormsModule, TranslatePipe,
-        IftaLabelModule, TextareaModule, MessageModule, ButtonModule, ProgressBarModule
+        IftaLabelModule, TextareaModule, MessageModule, ButtonModule, ProgressBarModule, DialogModule,
+        InvalidUrlsComponent
     ],
     templateUrl: './add-urls.component.html',
     styles: ``
@@ -105,4 +108,6 @@ export class AddUrlsComponent implements OnInit {
             setTimeout(() => this.highlightAddPages = false, 3000);
         }
     }
+
+    viewInvalidUrls = false;
 }
