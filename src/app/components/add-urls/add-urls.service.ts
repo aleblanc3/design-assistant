@@ -75,7 +75,7 @@ export class AddUrlsService {
     public urlState = signal<UrlState>({
         rawUrls: '',
         urlsToValidate: [],
-        urlsToReview: dummyUrlsToReview,
+        urlsToReview: [],
         urlsToAdd: [],
         isValidating: false,
         isAdding: false,

@@ -114,4 +114,12 @@ export class InvalidUrlsComponent {
         this.selectedNode = this.projectState.findNodeByPath(this.projectState.getProjectTree(), path, lang) ?? {};
         this.editNode = true;
     }
+
+    async copyToClipboard(url: string): Promise<void> {
+        try {
+            await navigator.clipboard.writeText(url);
+        } catch (error) {
+            console.error('Failed to copy to clipboard:', error);
+        }
+    }
 }

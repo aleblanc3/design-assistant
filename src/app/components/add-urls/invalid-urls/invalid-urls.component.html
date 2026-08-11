@@ -80,17 +80,24 @@
     <div class="flex flex-column gap-2">
         @for(url of urlsRedirect(); track url.originalHref){
         <div class="border-1 border-round-lg surface-border">
-            <div class="flex align-items-center gap-2 p-2">
-                <i class="pi pi-directions text-2xl text-orange-500"></i>
-                <span class="text-sm text-600 font-semibold">{{'invalidUrls.redirect.subheading' | translate}}</span>
-            </div>
-            <div class="px-2 text-xs text-color-secondary">
-                <span class="font-semibold mx-1">{{'common.from' | translate}}</span>
-                <span>{{url.originalHref}}</span>
-            </div>
-            <div class="px-2 text-xs text-color-secondary">
-                <span class="font-semibold mx-1">{{'common.to' | translate}}</span>
-                <span>{{url.href}}</span>
+            <div class="flex flex-row justify-content-between gap-2">
+                <div>
+                    <div class="flex align-items-center gap-2 p-2">
+                        <i class="pi pi-directions text-2xl text-orange-500"></i>
+                        <span class="text-sm text-600 font-semibold">{{'invalidUrls.redirect.subheading' | translate}}</span>
+                    </div>
+                    <div class="px-2 text-xs text-color-secondary">
+                        <span class="font-semibold mx-1">{{'common.from' | translate}}</span>
+                        <span>{{url.originalHref}}</span>
+                    </div>
+                    <div class="px-2 text-xs text-color-secondary">
+                        <span class="font-semibold mx-1">{{'common.to' | translate}}</span>
+                        <span>{{url.href}}</span>
+                    </div>
+                </div>
+                <p-button icon="pi pi-copy" severity="primary" outlined styleClass="secondary-outline white-space-nowrap h-full" size="small"
+                          (onClick)="copyToClipboard(url.href)"
+                          [label]="'common.copyNewUrl' | translate" />
             </div>
         </div>
         }
