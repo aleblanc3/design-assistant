@@ -111,7 +111,7 @@ export class CompareComponent {
     const versionsToCheck = this.getVersionsToCheck(path);
     try {
       this.compareService.selectedPage.set(path);
-      if (!this.compareService.selectedPage) return;
+      if (!this.compareService.selectedPage()) return;
       // Clear current HTML (but not cache)
       this.compareService.originalHtml.set(undefined);
       this.compareService.modifiedHtml.set(undefined);

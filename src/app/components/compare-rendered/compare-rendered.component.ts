@@ -74,8 +74,8 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
             const shadowRoot = this.shadowDOM();
             const beforeContent = this.beforeContent();
             const afterContent = this.afterContent();
-            if (this.beforeContent && !this.afterContent) this.afterContent = this.beforeContent;
-            if (!this.beforeContent && this.afterContent) this.beforeContent = this.afterContent;
+            if (this.beforeContent() && !this.afterContent()) this.afterContent = this.beforeContent;
+            if (!this.beforeContent() && this.afterContent()) this.beforeContent = this.afterContent;
 
             if (beforeContent && afterContent && shadowRoot) {
                 await this.compareRenderedService.generateShadowDOMContent(
@@ -132,7 +132,7 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
 
     //Runs when component is destroyed
     ngOnDestroy(): void {
-        if (this.shadowDOM) {
+        if (this.shadowDOM()) {
             this.compareRenderedService.clearShadowDOM(this.shadowDOM()!);
             this.shadowDOM.set(null);
         }
