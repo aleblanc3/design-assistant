@@ -582,42 +582,35 @@ return this.uploadState.getUploadData(); // returns signal().value
     processDiffChange(mode: 'accept' | 'reject'): void {
         //Get diff container
         const shadowRoot = this.shadowDOM();
-        if (!shadowRoot) {
-            console.warn('Shadow root not found.');
-            return;
-        }
-        const diffContainer = shadowRoot.querySelector(
-            '.diff-content',
-        ) as HTMLElement;
-        if (!diffContainer) {
-            console.warn('Diff container not found');
-            return;
-        }
+        if (!shadowRoot) { console.warn('Shadow root not found.'); return; }
+
+        const diffContainer = shadowRoot.querySelector('.diff-content') as HTMLElement;
+        if (!diffContainer) { console.warn('Diff container not found'); return; }
 
         //HANDLE HIGHLIGHTED DIFF//
         //Get highlighted <ins> or <del> or <span>
         const highlightedEls = diffContainer.querySelectorAll<HTMLElement>(
             'ins.highlight, del.highlight, span.diff-group.highlight, span.updated-link.highlight',
         );
-        if (!highlightedEls.length) {
-            console.warn('highlighted elements not found');
-            return;
-        }
+        if (!highlightedEls.length) { console.warn('highlighted elements not found'); return; }
 
         const keepTag = mode === 'accept' ? 'ins' : 'del';
         const removeTag = mode === 'accept' ? 'del' : 'ins';
 
+        // Moves all child nodes before the element
+        const unwrap = (el: HTMLElement) => {
+            while (el.firstChild) {
+                el.parentNode?.insertBefore(el.firstChild, el);
+            }
+            el.remove();
+        };
+
         highlightedEls.forEach((highlighted) => {
             //Keep highlighted tag (accept mode keep tag = ins)
-            if (highlighted.tagName.toLowerCase() === keepTag) {
-                highlighted.insertAdjacentHTML('beforebegin', highlighted.innerHTML);
-                highlighted.remove();
-            }
+            if (highlighted.tagName.toLowerCase() === keepTag) { unwrap(highlighted); }
 
             //Remove highlighted tag (accept mode remove tag = del)
-            else if (highlighted.tagName.toLowerCase() === removeTag) {
-                highlighted.remove();
-            }
+            else if (highlighted.tagName.toLowerCase() === removeTag) { highlighted.remove(); }
 
             //Handle highlighted .diff-group or .updated-link (accept mode keep tag = ins)
             else if (highlighted.tagName.toLowerCase() === 'span') {
@@ -626,27 +619,19 @@ return this.uploadState.getUploadData(); // returns signal().value
                 //console.log(`Highlighted group: `,el);
                 //console.log(`Highlighted link: `,link);
                 //diff-group
-                if (el) {
-                    highlighted.insertAdjacentHTML('beforebegin', el.innerHTML);
-                    highlighted.remove();
-                }
+                if (el) { unwrap(el); highlighted.remove(); }
                 //updated-link
                 else if (link) {
-                    if (mode === 'accept') {
-                        highlighted.replaceWith(link);
-                    } else {
-                        const oldHref =
-                            highlighted.getAttribute('title')?.replace(/^Old URL:\s*/, '') ||
-                            '';
+                    if (mode === 'accept') { highlighted.replaceWith(link); }
+                    else {
+                        const oldHref = highlighted.getAttribute('title')?.replace(/^Old URL:\s*/, '') || '';
                         link.setAttribute('href', oldHref);
                         highlighted.replaceWith(link);
                     }
                 }
                 //neither found
                 else {
-                    console.log(
-                        `No <${keepTag}> or updated-link found. Leaving content as-is.`,
-                    );
+                    console.log(`No <${keepTag}> or updated-link found. Leaving content as-is.`,);
                     return;
                 }
             }
@@ -655,19 +640,11 @@ return this.uploadState.getUploadData(); // returns signal().value
         //HANDLE ALL OTHER CHANGES (OPPOSITE OF WHAT IS DONE WITH THE HIGHLIGHTED CHANGE)//
         //Keep and unwrap remaining elements of opposite tag (including inside diff-group)
         diffContainer
-            .querySelectorAll(`${removeTag}, span.diff-group`)
-            .forEach((el) => {
-                const parent = el.parentNode;
-                while (el.firstChild) {
-                    parent?.insertBefore(el.firstChild, el);
-                }
-                parent?.removeChild(el);
-            });
+            .querySelectorAll<HTMLElement>(`${removeTag}, span.diff-group`)
+            .forEach(unwrap);
 
         // Remove remaining elements of the keep tag
-        diffContainer.querySelectorAll(keepTag).forEach((el) => {
-            el.remove();
-        });
+        diffContainer.querySelectorAll(keepTag).forEach((el) => { el.remove(); });
 
         // Remove new/old link highlights
         diffContainer.querySelectorAll('span.updated-link').forEach((span) => {
@@ -676,18 +653,13 @@ return this.uploadState.getUploadData(); // returns signal().value
             if (mode === 'reject') {
                 span.replaceWith(link);
             } else {
-                const oldHref =
-                    span.getAttribute('title')?.replace(/^Old URL:\s*/, '') || '';
+                const oldHref = span.getAttribute('title')?.replace(/^Old URL:\s*/, '') || '';
                 link.setAttribute('href', oldHref);
                 span.replaceWith(link);
             }
         });
 
-        this.compareRenderedService.lastSelection = {
-            count: 1,
-            startId: null,
-            endId: null,
-        }; //reset selection
+        this.compareRenderedService.lastSelection = { count: 1, startId: null, endId: null }; //reset selection
 
         //Merge with modified HTML
         const updatedHtml = diffContainer.innerHTML;
