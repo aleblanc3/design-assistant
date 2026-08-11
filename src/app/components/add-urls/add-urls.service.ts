@@ -162,8 +162,8 @@ export class AddUrlsService {
                 url = 'https://www.' + url;
             }
         }
-        else if (url.startsWith('https://canada-preview.adobecqms.net')) {
-            url = url.replace('https://canada-preview.adobecqms.net', 'https://www.canada.ca');
+        else if (url.startsWith('https://canada-preview.adobecqms.net/')) {
+            url = url.replace('https://canada-preview.adobecqms.net/', 'https://www.canada.ca/');
         }
 
         // Fix extension
