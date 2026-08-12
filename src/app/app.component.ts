@@ -27,7 +27,7 @@ import { UsageService } from './services/usage.service';
     HeaderComponent, SidebarComponent, FooterComponent
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styles: ''
 })
 export class AppComponent implements OnInit {
   CustomTitle = inject(CustomTitleStrategy);
