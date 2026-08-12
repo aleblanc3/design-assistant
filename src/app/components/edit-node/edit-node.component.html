@@ -13,7 +13,7 @@
         <div class="flex flex-column hover:text-primary">
             <label for="refresh" class="text-xs font-semibold">{{ 'common.data' | translate }}</label>
             <div id="refresh" class="flex gap-2 align-items-center">
-                <p-button [label]="'common.refresh' | translate" icon="pi pi-refresh" severity="primary" outlined size="small" styleClass="secondary-outline"
+                <p-button [label]="'common.refresh' | translate" icon="pi pi-refresh" outlined size="small" styleClass="secondary-outline"
                           (onClick)=" refresh()" [disabled]="selectedVersion() === 'baseline' && !editsEnabled()" [loading]="projectState.refreshing()[selectedVersion()]" />
                 <span class="text-sm text-color-secondary white-space-nowrap">
                     {{ daysSinceRefresh() !== null
@@ -254,7 +254,7 @@
                             </span>
                         </div>
                         @if(node().data[selectedVersion()].en.is404){
-                        <p-tag [severity]="node().data[selectedVersion()].en.is404 === node().data[selectedVersion()].fr.is404 ? 'primary' : 'danger'" value="404" />
+                        <p-tag [severity]="node().data[selectedVersion()].en.is404 === node().data[selectedVersion()].fr.is404 ? undefined : 'danger'" value="404" />
                         }
                     </div>
 
@@ -455,7 +455,7 @@
                             </span>
                         </div>
                         @if(node().data[selectedVersion()].fr.is404){
-                        <p-tag [severity]="node().data[selectedVersion()].en.is404 === node().data[selectedVersion()].fr.is404 ? 'primary' : 'danger'" value="404" />
+                        <p-tag [severity]="node().data[selectedVersion()].en.is404 === node().data[selectedVersion()].fr.is404 ? undefined : 'danger'" value="404" />
                         }
                     </div>
                 </div>

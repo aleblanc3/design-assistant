@@ -29,7 +29,7 @@
             <p-autocomplete [(ngModel)]="gitHubRepo"
                             (input)="onRepoInput()" (onBlur)="onRepoBlur()" (onSelect)="onRepoSelect($event)"
                             [suggestions]="filteredRepos" (completeMethod)="filterRepos($event);"
-                            id="repo" [dropdown]=true pSize="small" maxlength="100" [pKeyFilter]="repoFilter" fluid />
+                            id="repo" [dropdown]=true pSize="small" [maxlength]=100 [pKeyFilter]="repoFilter" fluid />
             <label for="repo">{{'project.github.label.repo' | translate}}</label>
         </p-iftalabel>
         @if(projectRepo === 'github'){

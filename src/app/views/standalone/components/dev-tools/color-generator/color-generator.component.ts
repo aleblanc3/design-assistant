@@ -15,7 +15,7 @@ import { ColorPickerComponent } from './color-picker.component';
 import { CopyPresetComponent } from './copy-preset.component';
 
 import { UserSettingsService } from '../../../../../services/user-settings.service';
-import { updatePreset } from '@primeng/themes';
+import { updatePreset } from '@primeuix/themes';
 
 @Component({
   selector: 'aida-color-generator',

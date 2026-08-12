@@ -2,7 +2,7 @@ import { Injectable, signal, effect, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { updatePreset } from '@primeng/themes';
+import { updatePreset } from '@primeuix/themes';
 import MyPreset from '../common/theme-presets/preset';
 import DeutanPreset from '../common/theme-presets/preset-deutan';
 import ProtanPreset from '../common/theme-presets/preset-protan';

@@ -223,8 +223,8 @@ export class DesignPatternsComponent implements AfterViewInit, OnDestroy {
             label: 'Icon Buttons',
             code: `<div class="flex gap-2">
     <p-button icon="pi pi-trash" severity="danger" text rounded [pTooltip]="'dev.patterns.button.tooltip' | translate" tooltipPosition="top" />
-    <p-button icon="pi pi-share-alt" severity="primary" text rounded [pTooltip]="'dev.patterns.button.tooltip' | translate" tooltipPosition="top" />
-    <p-button icon="pi pi-sync" severity="primary" [pTooltip]="'dev.patterns.button.tooltip' | translate" tooltipPosition="top" />
+    <p-button icon="pi pi-share-alt" text rounded [pTooltip]="'dev.patterns.button.tooltip' | translate" tooltipPosition="top" />
+    <p-button icon="pi pi-sync" [pTooltip]="'dev.patterns.button.tooltip' | translate" tooltipPosition="top" />
 </div>`,
             description: 'dev.patterns.button.icon.desc',
             previewType: 'buttons',
