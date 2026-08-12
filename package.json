@@ -69,7 +69,7 @@
     "@colsen1991/ngx-translate-extract-marker": "^3.0.1",
     "@types/jasmine": "~5.1.0",
     "@types/prismjs": "^1.26.5",
-    "@vendure/ngx-translate-extract": "^9.4.0",
+    "@vendure/ngx-translate-extract": "^10.2.0",
     "angular-cli-ghpages": "^3.1.0",
     "angular-eslint": "20.2.0",
     "baseline-browser-mapping": "^2.9.7",
