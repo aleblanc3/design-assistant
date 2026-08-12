@@ -1,5 +1,5 @@
 import { Component, inject, computed, ViewChild, effect, OnInit } from '@angular/core';
-import { CommonModule, LocationStrategy } from '@angular/common';
+import { LocationStrategy } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -25,10 +25,9 @@ import { FetchService } from '../../services/fetch.service';
 
 @Component({
     selector: 'aida-ia-table',
-    imports: [FormsModule, CommonModule,
-        TreeModule, ContextMenuModule, DialogModule,
-        InputTextModule, InputGroupModule, InputGroupAddonModule,
-        ButtonModule, TooltipModule,
+    imports: [
+        FormsModule,
+        TreeModule, ContextMenuModule, DialogModule, InputTextModule, InputGroupModule, InputGroupAddonModule, ButtonModule, TooltipModule,
         EditNodeComponent
     ],
     providers: [TreeDragDropService],
@@ -45,7 +44,7 @@ export class IaTableComponent implements OnInit {
     private fetchService = inject(FetchService);
 
     projectTree = computed(() => this.projectState.getProject().projectData);
-    selectedNode: TreeNode = {};
+    selectedNode?: TreeNode;
 
     //For edit node popup
     editNode = false;

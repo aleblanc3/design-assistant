@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
@@ -22,9 +21,8 @@ import { updatePreset } from '@primeng/themes';
   selector: 'aida-color-generator',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, TranslatePipe, RouterLink,
-    BreadcrumbModule, ButtonModule, TagModule, BadgeModule, MessageModule,
-    DividerModule,
+    FormsModule, TranslatePipe, RouterLink,
+    BreadcrumbModule, ButtonModule, TagModule, BadgeModule, MessageModule, DividerModule,
     UserSettingsComponent, ColorPickerComponent, CopyPresetComponent
   ],
   templateUrl: './color-generator.component.html',
