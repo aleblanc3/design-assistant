@@ -233,9 +233,10 @@ export class CollaboratorService {
     }
 
     // Get collaborator emails (for requesting access)
-    getCollaboratorEmails(collabs: GitHubUser[]): (string | null)[] {
+    public getCollaboratorEmails(collabs: GitHubUser[]): string[] {
         return collabs
-            .filter(collab => collab.email && collab.email.trim() !== '')
-            .map(collab => collab.email) || [];
+            .filter((collab): collab is GitHubUser & { email: string } =>
+                !!collab.email && collab.email.trim() !== '')
+            .map(collab => collab.email);
     }
 }

@@ -1,4 +1,4 @@
-@if(mode==="list"){
+@if(mode()==="list"){
 <h2 class="text-2xl my-1">{{'collaborators._title' | translate}}</h2>
 @if(collaborators().length > 0){
 <ul class="list-unstyled">
@@ -29,7 +29,7 @@
                     [(ngModel)]="selectedCollaborators" optionLabel="login"
                     (onSelect)="onCollabSelect($event)" (onDropdownClick)="onDropdownClick()"
                     [pKeyFilter]="collabFilter" [maxlength]="39"
-                    [suggestions]="filteredCollaborators" (completeMethod)="filterCollaborators($event)"
+                    [suggestions]="filteredCollaborators()" (completeMethod)="filterCollaborators($event)"
                     id="collab" [dropdown]="true" [multiple]="true" size="small" fluid>
         <ng-template let-collab #item>
             <div class="flex flex-row gap-2 align-items-center">
@@ -67,7 +67,7 @@
 <p-message severity="info" icon="pi pi-info-circle font-bold" [text]="'collaborators.message.firstCollab' | translate" />
 }
 }
-@if(mode==="dashboard" || mode==="switch"){
+@if(mode()==="dashboard" || mode()==="switch"){
 @if(collaborators().length > 0){
 <div class="flex flex-row align-content-center">
     <p-avatar-group>
@@ -83,7 +83,7 @@
         <p-avatar shape="circle" [label]="'+'+(collaborators().length - maxVisibleCollaborators).toString()" [pTooltip]="'collaborators.plusMore' | translate: {number: collaborators().length - maxVisibleCollaborators}" tooltipPosition="top" />
         }
     </p-avatar-group>
-    @if(mode ==="dashboard"){
+    @if(mode() ==="dashboard"){
     @if(collaboratorService.canEditProject(projectData())){
     <p-button icon="pi pi-share-alt" text rounded size="small" [pTooltip]="'collaborators.addCollab' | translate" (onClick)="openShareDialog()" />
     }
@@ -96,7 +96,7 @@
                             [(ngModel)]="selectedCollaborators" optionLabel="login"
                             (onSelect)="onCollabSelect($event)" (onDropdownClick)="onDropdownClick()"
                             [pKeyFilter]="collabFilter" [maxlength]="39"
-                            [suggestions]="filteredCollaborators" (completeMethod)="filterCollaborators($event)"
+                            [suggestions]="filteredCollaborators()" (completeMethod)="filterCollaborators($event)"
                             id="collab" [dropdown]="true" [multiple]="true" size="small" fluid
                             [appendTo]="'body'">
                 <ng-template let-collab #item>

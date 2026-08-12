@@ -1,4 +1,4 @@
-import { Component, inject, computed, Input, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, computed, input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe, TranslateService } from "@ngx-translate/core";
@@ -30,25 +30,26 @@ export type CollaboratorMode = 'list' | 'dashboard' | 'switch';
         AutoCompleteModule, IftaLabelModule, KeyFilterModule
     ],
     templateUrl: './add-collaborators.component.html',
-    styles: ``
+    styles: ``,
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddCollaboratorsComponent implements OnInit {
-    private translate = inject(TranslateService);
-    private confirmationService = inject(ConfirmationService);
-    public collaboratorService = inject(CollaboratorService);
-    private projectState = inject(ProjectStateService);
-    public exportGitHubService = inject(ExportGitHubService);
+    private readonly translate = inject(TranslateService);
+    private readonly confirmationService = inject(ConfirmationService);
+    protected readonly collaboratorService = inject(CollaboratorService);
+    private readonly projectState = inject(ProjectStateService);
+    protected readonly exportGitHubService = inject(ExportGitHubService);
 
-    @Input() mode: CollaboratorMode = 'list';
-    @Input() collabs: GitHubUser[] | null = null;
+    public readonly mode = input<CollaboratorMode>('list');
+    public readonly collabs = input<GitHubUser[] | null>(null);
 
-    readonly maxVisibleCollaborators = 5;
+    protected readonly maxVisibleCollaborators = 5;
 
-    projectData = this.projectState.getProject;
-    collaborators = computed(() => this.collabs ?? this.projectData().collaborators);
+    protected readonly projectData = this.projectState.getProject;
+    protected readonly collaborators = computed(() => this.collabs() ?? this.projectData().collaborators);
 
     // Remove collaborator with confirmation for removing self
-    removeCollaborator(collab: GitHubUser) {
+    protected removeCollaborator(collab: GitHubUser) {
         const currentUser = this.exportGitHubService.user();
         if (currentUser && collab.id === currentUser.id) {
             this.confirmationService.confirm({
@@ -80,53 +81,52 @@ export class AddCollaboratorsComponent implements OnInit {
     }
 
     // Variables for autocomplete dropdown
-    private orgMembers: GitHubUser[] = [];
-    selectedCollaborators: GitHubUser[] | [] = [];
-    filteredCollaborators: GitHubUser[] = [];
-    collabFilter = /^[a-zA-Z0-9-]*$/;
+    private readonly orgMembers = signal<GitHubUser[]>([]);
+    protected selectedCollaborators: GitHubUser[] | [] = [];
+    protected readonly filteredCollaborators = signal<GitHubUser[]>([])
+    protected readonly collabFilter = /^[a-zA-Z0-9-]*$/;
 
     // Initialize dropdown with org members
     async ngOnInit() {
         const owner = this.projectData().github.owner;
         if (owner) {
-            //console.log('Fetching org members for: ', owner);
-            this.orgMembers = await this.collaboratorService.getOrgMembers(owner);
-            this.filteredCollaborators = [...this.orgMembers];
+            this.orgMembers.set(await this.collaboratorService.getOrgMembers(owner));
+            this.filteredCollaborators.set([...this.orgMembers()]);
         }
     }
 
     // Filter collaborators (show all if empty, else filter by startsWith and then includes, else try to fetch user)
-    async filterCollaborators(event: AutoCompleteCompleteEvent) {
+    protected async filterCollaborators(event: AutoCompleteCompleteEvent) {
         const query = event.query?.trim().toLowerCase().replace(/^-+|-+$/g, '').replace(/-{2,}/g, '-').substring(0, 39) || '';
 
         // If query is empty, return all org members
         if (query.length === 0) {
-            this.filteredCollaborators = this.orgMembers;
+            this.filteredCollaborators.set(this.orgMembers());
             return;
         }
 
         // Filter existing org members
         // Note: we're not filtering out existing collaborators since this form can be used to update their user info
-        const startsWith = this.orgMembers.filter(user =>
+        const startsWith = this.orgMembers().filter(user =>
             user.login.toLowerCase().startsWith(query)
         );
-        const includes = this.orgMembers.filter(user =>
+        const includes = this.orgMembers().filter(user =>
             user.login.toLowerCase().includes(query) &&
             !user.login.toLowerCase().startsWith(query)
         );
-        this.filteredCollaborators = Array.from(new Set([...startsWith, ...includes]));
+        this.filteredCollaborators.set(Array.from(new Set([...startsWith, ...includes])));
 
         // If no matches found, try to fetch the typed username as a GitHub user
-        if (this.filteredCollaborators.length === 0) {
+        if (this.filteredCollaborators().length === 0) {
             const userDetails = await this.collaboratorService.getUserDetails(query);
             if (userDetails) {
-                this.filteredCollaborators = [userDetails];
+                this.filteredCollaborators.set([userDetails]);
             }
         }
     }
 
     // Find and update user details when a collaborator is selected (name and email will be missing initially)
-    async onCollabSelect(event: AutoCompleteSelectEvent) {
+    protected async onCollabSelect(event: AutoCompleteSelectEvent) {
         const selected = event.value as GitHubUser;
         if (!selected.name && !selected.email) {
             const details = await this.collaboratorService.getUserDetails(selected.login);
@@ -140,12 +140,12 @@ export class AddCollaboratorsComponent implements OnInit {
         }
     }
 
-    onDropdownClick() {
-        this.filteredCollaborators = [...this.orgMembers];
+    protected onDropdownClick() {
+        this.filteredCollaborators.set([...this.orgMembers()]);
     }
 
     // Add selected collaborators to project
-    addSelectedCollaborators() {
+    protected addSelectedCollaborators() {
         if (this.selectedCollaborators.length === 0) return;
         const updatedProject = this.collaboratorService.addCollaborators(this.projectData(), this.selectedCollaborators);
         this.projectState.setProject(updatedProject);
@@ -153,21 +153,21 @@ export class AddCollaboratorsComponent implements OnInit {
     }
 
     // For share button (group mode)
-    showShareDialog = false;
-    openShareDialog() {
+    protected showShareDialog = false;
+    protected openShareDialog() {
         this.showShareDialog = true;
     }
-    closeShareDialog() {
+    protected closeShareDialog() {
         this.showShareDialog = false;
         this.selectedCollaborators = []; // Reset on close
     }
 
     // Request access button
-    getRequestAccessMailto(): string {
-        const emails = this.collaboratorService.getCollaboratorEmails(this.collaborators());
+    protected getRequestAccessMailto(): string {
+        const emails = this.collaboratorService.getCollaboratorEmails(this.collaborators())
+        if (emails.length === 0) return '';
         const name = this.projectData().projectName;
         const user = this.exportGitHubService.user();
-        if (emails.length === 0) return '';
 
         const subject = this.translate.instant('collaborators.email.requestAccess.subject', { name });
         const bodyEn = this.translate.instant('collaborators.email.requestAccess.bodyEN', { user, name });
@@ -177,7 +177,7 @@ export class AddCollaboratorsComponent implements OnInit {
         return `mailto:${emails.join(',')}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     }
 
-    openMailto(mailto: string): void {
+    protected openMailto(mailto: string): void {
         window.open(mailto, '_self');
     }
 
