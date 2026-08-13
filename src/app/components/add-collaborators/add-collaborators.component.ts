@@ -22,6 +22,11 @@ import { GitHubUser } from '../../common/data.model';
 
 export type CollaboratorMode = 'list' | 'dashboard' | 'switch';
 
+/**
+ * Reviewed: 2026-08-13 (ng21)
+ * 
+ * Handles adding, removing, and displaying GitHub collaborators in a list or as a group.
+ */
 @Component({
     selector: 'aida-add-collaborators',
     imports: [CommonModule, FormsModule, TranslatePipe,
@@ -36,11 +41,13 @@ export type CollaboratorMode = 'list' | 'dashboard' | 'switch';
 export class AddCollaboratorsComponent implements OnInit {
     private readonly translate = inject(TranslateService);
     private readonly confirmationService = inject(ConfirmationService);
-    protected readonly collaboratorService = inject(CollaboratorService);
     private readonly projectState = inject(ProjectStateService);
+    protected readonly collaboratorService = inject(CollaboratorService);
     protected readonly exportGitHubService = inject(ExportGitHubService);
 
+    /** Display modes: list, dashboard, or switch */
     public readonly mode = input<CollaboratorMode>('list');
+    /** Only used to display collaborators for non-active projects, leave undefined for the active project */
     public readonly collabs = input<GitHubUser[] | null>(null);
 
     protected readonly maxVisibleCollaborators = 5;
@@ -48,7 +55,7 @@ export class AddCollaboratorsComponent implements OnInit {
     protected readonly projectData = this.projectState.getProject;
     protected readonly collaborators = computed(() => this.collabs() ?? this.projectData().collaborators);
 
-    // Remove collaborator with confirmation for removing self
+    /**  Remove collaborator (with confirmation for removing self) */
     protected removeCollaborator(collab: GitHubUser) {
         const currentUser = this.exportGitHubService.user();
         if (currentUser && collab.id === currentUser.id) {
@@ -95,7 +102,13 @@ export class AddCollaboratorsComponent implements OnInit {
         }
     }
 
-    // Filter collaborators (show all if empty, else filter by startsWith and then includes, else try to fetch user)
+    /** Filter collaborators:
+     ** show all if empty
+     ** otherwise filter by startsWith and then includes
+     ** otherwise try to fetch user
+     *
+     * Note: existing collaborators are not filtered out. This form can be used to update their user info.
+     */
     protected async filterCollaborators(event: AutoCompleteCompleteEvent) {
         const query = event.query?.trim().toLowerCase().replace(/^-+|-+$/g, '').replace(/-{2,}/g, '-').substring(0, 39) || '';
 
@@ -106,7 +119,6 @@ export class AddCollaboratorsComponent implements OnInit {
         }
 
         // Filter existing org members
-        // Note: we're not filtering out existing collaborators since this form can be used to update their user info
         const startsWith = this.orgMembers().filter(user =>
             user.login.toLowerCase().startsWith(query)
         );
@@ -125,7 +137,7 @@ export class AddCollaboratorsComponent implements OnInit {
         }
     }
 
-    // Find and update user details when a collaborator is selected (name and email will be missing initially)
+    /**  Find and update user details when a collaborator is selected (name and email will be missing initially)*/
     protected async onCollabSelect(event: AutoCompleteSelectEvent) {
         const selected = event.value as GitHubUser;
         if (!selected.name && !selected.email) {
@@ -140,12 +152,13 @@ export class AddCollaboratorsComponent implements OnInit {
         }
     }
 
+    /** Reset the filter */
     protected onDropdownClick() {
         this.filteredCollaborators.set([...this.orgMembers()]);
     }
 
-    // Add selected collaborators to project
-    protected addSelectedCollaborators() {
+    /** Add selected collaborators to project */
+    protected readonly addSelectedCollaborators = () => {
         if (this.selectedCollaborators.length === 0) return;
         const updatedProject = this.collaboratorService.addCollaborators(this.projectData(), this.selectedCollaborators);
         this.projectState.setProject(updatedProject);
@@ -157,12 +170,18 @@ export class AddCollaboratorsComponent implements OnInit {
     protected openShareDialog() {
         this.showShareDialog = true;
     }
-    protected closeShareDialog() {
+    protected readonly closeShareDialog = () => {
         this.showShareDialog = false;
         this.selectedCollaborators = []; // Reset on close
     }
 
-    // Request access button
+    /** Add selected collaborators to project and close the share dialog */
+    protected readonly addAndCloseShareDialog = () => {
+        this.addSelectedCollaborators();
+        this.closeShareDialog();
+    }
+
+    /** Format request access email (returns an empty string if no emails available for existing collaborators) */
     protected getRequestAccessMailto(): string {
         const emails = this.collaboratorService.getCollaboratorEmails(this.collaborators())
         if (emails.length === 0) return '';
@@ -177,6 +196,7 @@ export class AddCollaboratorsComponent implements OnInit {
         return `mailto:${emails.join(',')}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     }
 
+    /** Open preformated mailto in users registered mail client */
     protected openMailto(mailto: string): void {
         window.open(mailto, '_self');
     }
