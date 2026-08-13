@@ -27,7 +27,14 @@
     "install:lambda:openrouter": "cd backend/functions/openrouter && npm install",
     "install:lambda:projects": "cd backend/functions/projects && npm install",
     "install:lambda:usage": "cd backend/functions/usage && npm install",
-    "postinstall": "npm run install:lambdas"
+    "postinstall": "npm run install:lambdas",
+    "review:check": "node scripts/check-reviewed.js",
+    "review:components": "node scripts/check-reviewed.js --dir=components",
+    "review:template": "node scripts/check-reviewed.js --dir=template",
+    "review:views": "node scripts/check-reviewed.js --dir=views",
+    "review:services": "node scripts/check-reviewed.js --dir=services",
+    "review:services-comp": "node scripts/check-reviewed.js --dir=component-services",
+    "review:stale": "node scripts/check-reviewed.js --older-than=90 --older-than-ng=21 --unreviewed"
   },
   "private": true,
   "dependencies": {
