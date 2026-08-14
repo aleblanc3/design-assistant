@@ -1,24 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslatePipe } from "@ngx-translate/core";
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
 
+/**
+ * Reviewed: 2026-08-13 (ng21)
+ * 
+ * Displays a random 404 message when users navigate to a broken link.
+ */
 @Component({
   selector: 'aida-not-found',
   imports: [TranslatePipe],
   template: `
   
-    <span [innerHTML]="random404Key | translate"></span>
+    <span [innerHTML]="random404Key | translate" (click)="onNotFoundClick($event)"></span>
   `,
   styles: ``
 })
 export class NotFoundComponent implements OnInit {
+  private readonly router = inject(Router);
 
-  random404Key = 'notFound.message.0';
+  protected random404Key = 'notFound.message.0';
 
   ngOnInit() {
     const randomIndex = Math.floor(Math.random() * 6);
     this.random404Key = `notFound.message.${randomIndex}`;
     console.log('Selected 404 message key:', this.random404Key);
+  }
+
+  /** Intercepts href click to prevent app reload */
+  protected onNotFoundClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (target.closest('a')) {
+      event.preventDefault();
+      this.router.navigateByUrl('/');
+    }
   }
 
   markForTranslation() {
