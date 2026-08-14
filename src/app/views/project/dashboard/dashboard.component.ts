@@ -1,15 +1,13 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from "@ngx-translate/core";
+import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { RouterLink } from '@angular/router';
 
 //PrimeNG modules
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
-import { AvatarModule } from 'primeng/avatar';
-import { AvatarGroupModule } from 'primeng/avatargroup';
-import { TooltipModule } from 'primeng/tooltip';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DividerModule } from 'primeng/divider';
@@ -23,11 +21,13 @@ import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'aida-dashboard',
-  imports: [CommonModule, FormsModule, TranslatePipe, RouterLink,
+  imports: [
+    CommonModule, FormsModule, TranslatePipe, RouterLink,
     ExportProjectComponent, AddCollaboratorsComponent,
-    ButtonModule, TagModule, AvatarModule, AvatarGroupModule, TooltipModule, ProgressBarModule, CheckboxModule, DividerModule],
+    ButtonModule, TagModule, ProgressBarModule, CheckboxModule, DividerModule],
   templateUrl: './dashboard.component.html',
-  styles: ``
+  styles: ``,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent {
   private projectState = inject(ProjectStateService);
@@ -111,6 +111,21 @@ export class DashboardComponent {
     }
   }
 
+  markForTranslation(){
+    marker('project.phase.discover.bullets');
+    marker('project.phase.discover.description');
+    marker('project.phase.discover.description2');
+    marker('project.phase.assess.bullets');
+    marker('project.phase.assess.description');
+    marker('project.phase.assess.description2');
+    marker('project.phase.design.bullets');
+    marker('project.phase.design.description');
+    marker('project.phase.design.description2');
+    marker('project.phase.approve.bullets');
+    marker('project.phase.approve.description');
+    marker('project.phase.approve.description2');
+  }
+
   //Mock data for now
   selectedItems: { key: string, value: string }[] = [];
 
@@ -121,7 +136,7 @@ export class DashboardComponent {
     { key: 'Approval', value: 'approve' },
   ];
 
-  assessmentStats = { issuesFound: 23 };
+  assessmentStats = { issuesFound: 24 };
   approvalProgress = 2;
   problemProgress = 15;
   pageProgress = 10;
