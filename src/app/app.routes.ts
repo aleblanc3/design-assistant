@@ -7,10 +7,16 @@ import { DashboardComponent } from './views/project/dashboard/dashboard.componen
 import { SwitchProjectComponent } from './views/project/switch-project/switch-project.component';
 import { EditProjectComponent } from './views/project/edit-project/edit-project.component';
 
+// Phase views (topic pages)
+import { DiscoverComponent } from './views/phase/discover/discover.component';
+import { AssessComponent } from './views/phase/assess/assess.component';
+import { DesignComponent } from './views/phase/design/design.component';
+import { ApproveComponent } from './views/phase/approve/approve.component';
+
 // Utility pages (Authentication, import redirect, 404)
 import { AuthCallbackComponent } from './components/sign-in/auth-callback/auth-callback.component';
 import { ImportPageComponent } from './views/project/import-page/import-page.component';
-import { NotFoundComponent } from './views/static/404/not-found.component';
+import { NotFoundComponent } from './views/utility/404/not-found.component';
 
 // Project Storage (for route guards)
 import { ProjectStorageService } from './services/storage/project-storage.service';
@@ -67,16 +73,26 @@ export const routes: Routes = [
         canActivate: [editProjectGuard],
         title: 'project._nav.edit',
     },
-    //UTILITY PATHS
+    //PHASE TOPIC PAGES
     {
-        path: 'import-page',
-        component: ImportPageComponent,
-        title: 'importPage._title',
+        path: 'discover',
+        component: DiscoverComponent,
+        title: 'phase.discover._nav',
     },
     {
-        path: 'auth/callback',
-        component: AuthCallbackComponent,
-        title: 'app._title',
+        path: 'assess',
+        component: AssessComponent,
+        title: 'phase.assess._nav',
+    },
+    {
+        path: 'design',
+        component: DesignComponent,
+        title: 'phase.design._nav',
+    },
+    {
+        path: 'approve',
+        component: ApproveComponent,
+        title: 'phase.approve._nav',
     },
     //TASK PATHS
     {
@@ -104,21 +120,33 @@ export const routes: Routes = [
         loadComponent: () => import('./views/task/compare-versions/compare.component').then(m => m.CompareComponent),
         title: 'Compare._title',
     },
-    //STATIC PAGES
-     {
-        path: 'standalone',
-        loadComponent: () => import('./views/toolbox/standalone.component').then(m => m.StandaloneComponent),
-        title: 'standalone._title',
+    //UTILITY PATHS
+    {
+        path: 'import-page',
+        component: ImportPageComponent,
+        title: 'importPage._title',
     },
     {
+        path: 'auth/callback',
+        component: AuthCallbackComponent,
+        title: 'app._title',
+    },
+    //HELP CONTENT
+    {
         path: 'help',
-        loadComponent: () => import('./views/static/help/help.component').then(m => m.HelpComponent),
+        loadComponent: () => import('./views/utility/help/help.component').then(m => m.HelpComponent),
         title: 'help._title',
     },
     {
         path: 'about-us',
-        loadComponent: () => import('./views/static/about-us/about.component').then(m => m.AboutComponent),
+        loadComponent: () => import('./views/utility/about-us/about.component').then(m => m.AboutComponent),
         title: 'about._title',
+    },
+    //TOOLBOX PAGES
+    {
+        path: 'standalone',
+        loadComponent: () => import('./views/toolbox/standalone.component').then(m => m.StandaloneComponent),
+        title: 'standalone._title',
     },
     //DEV PAGES
     {
