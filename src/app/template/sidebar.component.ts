@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -19,7 +19,8 @@ import { environment } from '../../environments/environment';
   standalone: true,
   imports: [CommonModule, RouterModule, TranslatePipe],
   templateUrl: './sidebar.component.html',
-  styles: ``
+  styles: ``,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidebarComponent {
   private projectState = inject(ProjectStateService);
