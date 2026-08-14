@@ -6,30 +6,17 @@ import { environment } from '../environments/environment';
 import { DashboardComponent } from './views/project/dashboard/dashboard.component';
 import { SwitchProjectComponent } from './views/project/switch-project/switch-project.component';
 import { EditProjectComponent } from './views/project/edit-project/edit-project.component';
-import { ImportPageComponent } from './views/project/import-page/import-page.component';
 
-// Task Views
-import { InventoryComponent } from './views/task/manage-inventory/inventory.component';
-import { CompareComponent } from './views/task/compare-versions/compare.component';
-import { ExportComponent } from './views/task/export-pages/export.component';
-
-import { IaDiagramComponent } from './components/ia-diagram/ia-diagram.component';
-
-// Static pages
-import { NotFoundComponent } from './views/static/404/not-found.component';
-import { AboutComponent } from './views/static/about-us/about.component';
-import { HelpComponent } from './views/static/help/help.component';
-
-// Standalone tools
-import { StandaloneComponent } from './views/standalone/standalone.component';
-
-// Authentication
+// Utility pages (Authentication, import redirect, 404)
 import { AuthCallbackComponent } from './components/sign-in/auth-callback/auth-callback.component';
+import { ImportPageComponent } from './views/project/import-page/import-page.component';
+import { NotFoundComponent } from './views/static/404/not-found.component';
 
 // Project Storage (for route guards)
 import { ProjectStorageService } from './services/storage/project-storage.service';
 import { ProjectStateService } from './services/project-state.service';
 
+// All other optional routes should be lazy loaded (for example: tasks, help content etc.)
 
 //Route guards
 export const landingGuard = () => {
@@ -53,6 +40,7 @@ export const editProjectGuard = () => {
 };
 
 export const routes: Routes = [
+    //PROJECT PATHS
     {
         path: '',
         canActivate: [landingGuard],
@@ -79,6 +67,7 @@ export const routes: Routes = [
         canActivate: [editProjectGuard],
         title: 'project._nav.edit',
     },
+    //UTILITY PATHS
     {
         path: 'import-page',
         component: ImportPageComponent,
@@ -89,84 +78,75 @@ export const routes: Routes = [
         component: AuthCallbackComponent,
         title: 'app._title',
     },
+    //TASK PATHS
     {
-        path: 'export-pages',
-        component: ExportComponent,
-        title: 'exportPages._nav',
+        path: 'add-pages',
+        loadComponent: () => import('./views/task/add-pages/add-pages.component').then(m => m.AddPagesComponent),
+        title: 'addPages._title',
     },
     {
         path: 'inventory',
-        component: InventoryComponent,
+        loadComponent: () => import('./views/task/manage-inventory/inventory.component').then(m => m.InventoryComponent),
         title: 'inventory._title',
     },
     {
         path: 'ia-diagram',
-        component: IaDiagramComponent,
+        loadComponent: () => import('./components/ia-diagram/ia-diagram.component').then(m => m.IaDiagramComponent),
         title: 'iaDiagram._title',
     },
     {
+        path: 'export-pages',
+        loadComponent: () => import('./views/task/export-pages/export.component').then(m => m.ExportComponent),
+        title: 'exportPages._nav',
+    },
+    {
         path: 'compare',
-        component: CompareComponent,
+        loadComponent: () => import('./views/task/compare-versions/compare.component').then(m => m.CompareComponent),
         title: 'Compare._title',
     },
-    /*{
-         path: 'page-assistant/compare',
-         title: 'title.page',
-         canActivate: [() => {
-             const uploadState = inject(UploadStateService);
-             const router = inject(Router);
- 
-             if (!uploadState.getUploadData()) {
-                 router.navigate(['/page-assistant']);
-                 return false;
-             }
- 
-             return true;
-         }],
-         loadComponent: () => import('./views/page-assistant/page-assistant.component')
-             .then(m => m.PageAssistantCompareComponent)
- 
-     },*/
+    //STATIC PAGES
+     {
+        path: 'standalone',
+        loadComponent: () => import('./views/toolbox/standalone.component').then(m => m.StandaloneComponent),
+        title: 'standalone._title',
+    },
     {
         path: 'help',
-        component: HelpComponent,
+        loadComponent: () => import('./views/static/help/help.component').then(m => m.HelpComponent),
         title: 'help._title',
     },
     {
         path: 'about-us',
-        component: AboutComponent,
+        loadComponent: () => import('./views/static/about-us/about.component').then(m => m.AboutComponent),
         title: 'about._title',
     },
-    {
-        path: 'standalone',
-        component: StandaloneComponent,
-        title: 'standalone._title',
-    },
+    //DEV PAGES
     {
         path: 'dev',
-        loadComponent: () => import('./views/standalone/components/dev-tools/dev-tools.component').then(m => m.DevToolsComponent),
+        loadComponent: () => import('./views/toolbox/dev-tools/dev-tools.component').then(m => m.DevToolsComponent),
         title: 'dev._title',
     },
     {
         path: 'dev/monitoring',
-        loadComponent: () => import('./views/standalone/components/dev-tools/usage-monitoring/usage-monitoring.component').then(m => m.UsageMonitoringComponent),
+        loadComponent: () => import('./views/toolbox/dev-tools/usage-monitoring/usage-monitoring.component').then(m => m.UsageMonitoringComponent),
         title: 'dev.usage._title',
     },
     {
         path: 'dev/color-generator',
-        loadComponent: () => import('./views/standalone/components/dev-tools/color-generator/color-generator.component').then(m => m.ColorGeneratorComponent),
+        loadComponent: () => import('./views/toolbox/dev-tools/color-generator/color-generator.component').then(m => m.ColorGeneratorComponent),
         title: 'dev.colors._title',
     },
     {
         path: 'dev/design-patterns',
-        loadComponent: () => import('./views/standalone/components/dev-tools/design-patterns/design-patterns.component').then(m => m.DesignPatternsComponent),
+        loadComponent: () => import('./views/toolbox/dev-tools/design-patterns/design-patterns.component').then(m => m.DesignPatternsComponent),
         title: 'dev.patterns._title',
     },
     {
         path: 'dev/prompt-editor',
-        loadComponent: () => import('./views/standalone/components/dev-tools/prompt-editor/prompt-editor.component').then(m => m.PromptEditorComponent),
+        loadComponent: () => import('./views/toolbox/dev-tools/prompt-editor/prompt-editor.component').then(m => m.PromptEditorComponent),
         title: 'dev.prompts._title',
     },
+    //404
     {
         path: '**',
         component: NotFoundComponent,
