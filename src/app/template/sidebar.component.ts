@@ -1,4 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -8,39 +9,56 @@ import { ProjectCacheService } from '../services/project-cache.service';
 import { MailtoService } from '../services/mailto.service';
 import { environment } from '../../environments/environment';
 
+/**
+ * Reviewed: 2026-08-13 (ng21)
+ * 
+ * Left side navigation links. Collapses in mobile view.
+ */
 @Component({
   selector: 'aida-sidebar',
   standalone: true,
-  imports: [RouterModule, TranslatePipe],
+  imports: [CommonModule, RouterModule, TranslatePipe],
   templateUrl: './sidebar.component.html',
-  styles: ``
+  styles: ``,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidebarComponent {
   private projectState = inject(ProjectStateService);
-  public projectCache = inject(ProjectCacheService);
-  public mailtoService = inject(MailtoService);
+  private projectCache = inject(ProjectCacheService);
+  private mailtoService = inject(MailtoService);
 
-  public production = environment.production;
-  public sandbox = environment.sandbox;
+  protected production = environment.production;
+  protected sandbox = environment.sandbox;
 
-  get projectLoaded(): boolean {
+  protected get projectLoaded(): boolean {
     const name = this.projectState.getProject().projectName;
     return !!name;
   }
 
   // Section toggle state
-  isExpanded = {
+  protected isExpanded = {
     project: true,
     tasks: false,
   };
 
-  toggleSection(section: keyof typeof this.isExpanded) {
+  protected toggleSection(section: keyof typeof this.isExpanded) {
     this.isExpanded[section] = !this.isExpanded[section];
   }
 
-  toggleOnEnter(event: KeyboardEvent, section: keyof typeof this.isExpanded) {
+  protected toggleOnEnter(event: KeyboardEvent, section: keyof typeof this.isExpanded) {
     if (event.key === 'Enter' || event.key === ' ') {
       this.toggleSection(section);
     }
+  }
+
+  protected readonly mailTo = () => {
+    this.mailtoService.openMailto(this.mailtoService.generateFeedbackMailto())
+  }
+  protected readonly checkStatus = () => {
+    this.projectCache.checkLocalStatus(); 
+    this.projectCache.checkPreviewStatus();
+  }
+  protected readonly checkLocalStatus = () => {
+    this.projectCache.checkLocalStatus(); 
   }
 }

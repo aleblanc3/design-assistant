@@ -19,8 +19,8 @@ import { IftaLabelModule } from 'primeng/iftalabel';
 import { SelectItem } from 'primeng/api';
 
 //Services
-import { environment } from '../../../../../../environments/environment';
-import { UserSettingsService } from '../../../../../services/user-settings.service';
+import { environment } from '../../../../../environments/environment';
+import { UserSettingsService } from '../../../../services/user-settings.service';
 
 //TODO: Add option to filter by user
 

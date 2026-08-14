@@ -3,7 +3,7 @@ import { TranslatePipe } from "@ngx-translate/core";
 import { RouterLink } from '@angular/router';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { UserSettingsService } from '../../services/user-settings.service';
-import { DevToolsComponent } from './components/dev-tools/dev-tools.component';
+import { DevToolsComponent } from '../toolbox/dev-tools/dev-tools.component';
 
 
 @Component({
