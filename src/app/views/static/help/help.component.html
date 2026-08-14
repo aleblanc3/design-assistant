@@ -5,7 +5,7 @@
 <ul class="mt-0 mb-5">
     <li><a [routerLink]="[]" fragment="about">About AIDA</a></li>
     <li><a [routerLink]="[]" fragment="start">Starting a project</a></li>
-    <li><a [routerLink]="[]" fragment="inventory">Manage your content inventory</a>
+    <!--li><a [routerLink]="[]" fragment="inventory">Manage your content inventory</a>
         <ul>
             <li><a [routerLink]="[]" fragment="add-existing">Add Canada.ca pages</a></li>
             <li><a [routerLink]="[]" fragment="add-new">Add new pages</a></li>
@@ -19,13 +19,14 @@
             <li><a [routerLink]="[]" fragment="cloud">Store your project in the cloud</a></li>
             <li><a [routerLink]="[]" fragment="collab">Add collaborators to your project</a></li>
             <li><a [routerLink]="[]" fragment="github">Export pages to GitHub for prototyping</a></li>
+            <li><a [routerLink]="[]" fragment="jekyll">How to adjust the Jekyll templates</a></li>
             <li><a [routerLink]="[]" fragment="generate-metadata">Generate metadata with AI</a></li>
         </ul>
-    </li>
+    </li-->
     <li><a [routerLink]="[]" fragment="documentation">Documentation</a>
         <ul>
             <li><a [routerLink]="[]" fragment="data">How AIDA collects its data</a></li>
-            <li><a [routerLink]="[]" fragment="jekyll">How to adjust the Jekyll templates</a></li>
+            
         </ul>
     </li>
     <li><a [routerLink]="[]" fragment="release">Release notes</a></li>
@@ -42,9 +43,10 @@
                 <h3>What it does now</h3>
                 <ul>
                     <li>Generate and manage your content inventory</li>
-                    <li>Visualize your information architecture</li>
                     <li>Update your metadata with AI assistance</li>
+                    <li>Visualize and make changes to your information architecture</li>                    
                     <li>Export your prototypes to GitHub for editing</li>
+                    <li>Compare your prototype with the live page or with AI-assisted edits</li>
                 </ul>
             </div>
             <div>
@@ -61,10 +63,21 @@
 
     <section class="surface-card border-round-lg shadow-2 p-4 w-full min-w-min">
         <h2 id="start">Starting a project</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+        <p>When you load AIDA for the first time, it's going to bring you to the "New project" page. There is <strong>no</strong> requirement to complete any steps on this page in any particular order. These options will resurface throughout the AIDA if you need to complete something before using one of the tools.</p>
+        <p>You will start out working in the "autosave" file. If you want to have multiple projects that you can switch between, go ahead and give your project a name in the "Set up project" box. When you name your project, AIDA will automatically fill out the GitHub repository name for you but feel free to override that with a name of your choosing.</p>
+        <p>The next thing you'll want to do is add some pages. You can copy and paste one or more Canada.ca URLs into the "Add pages" tool, or use the "Find pages" tool to copy all the URLs for whichever task you are interested in. You'll need to have at least one page in your inventory to make use of the other tools. After you've added at least one page, you can also use the "Find pages" tool to find any child pages to fill out your inventory.</p>
+        <p>Some of the other tools in AIDA include:</p>
+        <ul>
+            <li>a content inventory that pulls in all kinds of information about your pages from various sources</li>
+            <li>an IA diagram view where you can make changes to the IA</li>
+            <li>an export tool where you can download a copy of your pages or export them to GitHub for prototyping</li>
+            <li>a compare versions tool where you can compare any version of your pages to any other version (for example, your protoype with the live page)</li>
+            <!--li>a review problems tool where you can review all of the problems that AIDA has identified on your pages</li-->
+        </ul>
+        <p>Go ahead and look around. We'll add more detailed instructions for each of these tools in a future release.</p>
     </section>
 
-    <section class="surface-card border-round-lg shadow-2 p-4 w-full min-w-min">
+    <!--section class="surface-card border-round-lg shadow-2 p-4 w-full min-w-min">
         <h2 id="inventory">Manage your content inventory</h2>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.</p>
 
@@ -97,19 +110,29 @@
         <h3 id="github">Export pages to GitHub for prototyping</h3>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. At vero eos et accusamus et iusto odio dignissimos ducimus.</p>
 
+        <h3 id="jekyll">How to adjust the Jekyll templates</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut perspiciatis unde omnis iste natus error sit voluptatem.</p>
+
         <h3 id="generate-metadata">Generate metadata with AI</h3>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Temporibus autem quibusdam et aut officiis debitis aut rerum.</p>
-    </section>
+    </section-->
 
     <section class="surface-card border-round-lg shadow-2 p-4 w-full min-w-min">
         <h2 id="documentation">Documentation</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam libero tempore, cum soluta nobis est eligendi optio cumque.</p>
+        <p>Some of the information below is intended for AIDA contributors and may be a bit technical. You don't need to understand this part to use AIDA.</p>
 
         <h3 id="data">How AIDA collects its data</h3>
-        <p>When you add a Canada.ca page to your project, AIDA fetches information from the live English and French pages, the live content.json file, the task airtable, and from a static export of page visists from the UPD.</p>
+        <p>When you add a Canada.ca page to your project, AIDA fetches information from:</p>
+        <ul>
+            <li>the live English and French pages</li>
+            <li>the live content.json file</li>
+            <li>the task airtable</li>
+            <li>a static export of page visits from the UPD</li>
+            <li>a static export of vanity URLs from gcPedia</li>
+        </ul>
 
         <h4>Page templates</h4>
-        <p>AIDA detects page templates based on specific criteria and puts that information in the "Template" column of your content inventory table. This helps give you an overview of what kind of pages you're working with. Here's what AIDA looks for:</p>
+        <p>AIDA detects page templates based on specific criteria from the page itself and puts that information in the "Template" column of your content inventory table. This helps give you an overview of what kind of pages you're working with. Here's what AIDA looks for:</p>
         <p class="mb-1"><strong>Navigation templates:</strong></p>
         <ul class="mt-1">
             <li><strong>topic</strong> - has classes <code class="custom">most-requested-bullets</code> or <code class="custom">gc-srvinfo</code> or <code class="custom">mwsdoormat-links-container</code></li>
@@ -166,8 +189,6 @@
 
         <p>If AIDA tags a page incorrectly or if you think we're missing a template type, please let us know.</p>
 
-        <h3 id="jekyll">How to adjust the Jekyll templates</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut perspiciatis unde omnis iste natus error sit voluptatem.</p>
     </section>
 
     <section class="surface-card border-round-lg shadow-2 p-4 w-full min-w-min">
