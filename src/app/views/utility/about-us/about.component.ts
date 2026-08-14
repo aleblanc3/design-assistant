@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { TranslatePipe } from "@ngx-translate/core";
 
 @Component({
@@ -8,7 +8,8 @@ import { TranslatePipe } from "@ngx-translate/core";
     <h1 id="wb-cont">{{ 'about._title' | translate}}</h1>
     <div [innerHTML]="'about.content' | translate"></div>
   `,
-  styles: ``
+  styles: ``,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AboutComponent {
 

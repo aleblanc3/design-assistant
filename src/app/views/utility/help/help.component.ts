@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from "@ngx-translate/core";
 
@@ -6,7 +6,8 @@ import { TranslatePipe } from "@ngx-translate/core";
     selector: 'aida-help',
     imports: [RouterLink, TranslatePipe],
     templateUrl: 'help.component.html',
-    styles: ``
+    styles: ``,
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HelpComponent {
 

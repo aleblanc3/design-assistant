@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslatePipe } from "@ngx-translate/core";
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
@@ -13,9 +13,10 @@ import { marker } from '@colsen1991/ngx-translate-extract-marker';
   imports: [TranslatePipe],
   template: `
   
-    <span [innerHTML]="random404Key | translate" (click)="onNotFoundClick($event)"></span>
+    <span [innerHTML]="random404Key | translate" (click)="onNotFoundClick($event)" (keydown)="onNotFoundEnter($event)" tabindex="0" role="link"></span>
   `,
-  styles: ``
+  styles: ``,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NotFoundComponent implements OnInit {
   private readonly router = inject(Router);
@@ -29,11 +30,22 @@ export class NotFoundComponent implements OnInit {
   }
 
   /** Intercepts href click to prevent app reload */
-  protected onNotFoundClick(event: MouseEvent): void {
+  protected onNotFoundClick(event: MouseEvent | KeyboardEvent): void {
     const target = event.target as HTMLElement;
     if (target.closest('a')) {
       event.preventDefault();
       this.router.navigateByUrl('/');
+    }
+  }
+
+  /** Intercepts href enter to prevent app reload */
+   protected onNotFoundEnter(event: KeyboardEvent): void {
+    if (event.key === 'Enter' || event.key === ' ') {
+      const target = event.target as HTMLElement;
+      if (target.closest('a')) {
+        event.preventDefault();
+        this.router.navigateByUrl('/');
+      }
     }
   }
 
