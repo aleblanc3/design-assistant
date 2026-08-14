@@ -47,7 +47,7 @@
         <ng-container *ngTemplateOutlet="collabAvatar; context: { $implicit: collab, showName: false }" />
         }
         @if(collaborators().length > maxVisibleCollaborators){
-        <p-avatar shape="circle" [label]="'+'+(collaborators().length - maxVisibleCollaborators).toString()" [pTooltip]="'collaborators.plusMore' | translate: {number: collaborators().length - maxVisibleCollaborators}" tooltipPosition="top" />
+        <p-avatar shape="circle" [label]="'+'+(collaborators().length - maxVisibleCollaborators).toString()" [pTooltip]="'collaborators.plusMore' | translate: {number: collaborators().length - maxVisibleCollaborators}" tooltipPosition="top" class="mb-2" />
         }
     </p-avatar-group>
     @if(mode() ==="dashboard"){
