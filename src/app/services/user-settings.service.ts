@@ -2,7 +2,7 @@ import { Injectable, signal, effect, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { updatePreset } from '@primeuix/themes';
+import { PrimeNG } from 'primeng/config';
 import MyPreset from '../common/theme-presets/preset';
 import DeutanPreset from '../common/theme-presets/preset-deutan';
 import ProtanPreset from '../common/theme-presets/preset-protan';
@@ -13,6 +13,7 @@ export type ColorScheme = 'default' | 'deutan' | 'protan' | 'tritan' | 'custom';
 
 @Injectable({ providedIn: 'root' })
 export class UserSettingsService {
+  private readonly primeNGConfig = inject(PrimeNG);
   private translate = inject(TranslateService);
   private router = inject(Router);
   private title = inject(Title);
@@ -118,7 +119,15 @@ export class UserSettingsService {
       default:
         preset = MyPreset;
     }
-    updatePreset(preset);
+    this.primeNGConfig.theme.set({
+        preset: preset,
+        options: {
+            colorScheme: 'light',
+            theme: 'blue',
+            ripple: true,
+            darkModeSelector: '.dark-mode'
+        }
+    });
   }
 
   // UserId
