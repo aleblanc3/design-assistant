@@ -102,4 +102,7 @@ export class UserSettingsComponent {
 
     showVersionHelp = false
 
+    markForTranslation(){
+        marker('settings.versions.help');
+    }
 }

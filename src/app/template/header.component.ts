@@ -70,12 +70,6 @@ export class HeaderComponent {
     return status !== 'saved';
   });
 
-  markForTranslation() {
-    marker("save.error");
-    marker("save.unsaved");
-    marker("save.saving");
-    marker("save.saved");
-  }
   // Configure save button appearance based on status
   saveButtonConfig = computed(() => {
     const status = this.saveStatus();
