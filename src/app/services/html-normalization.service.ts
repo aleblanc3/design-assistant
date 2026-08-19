@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 //import * as parserHtml from 'prettier/parser-html';
 import { FetchService } from './fetch.service';
+import { CompareVersion } from '../common/data.model';
 
 export interface htmlProcessingResult {
     html: string;
@@ -9,7 +10,7 @@ export interface htmlProcessingResult {
         modal: boolean;
         dynamic: boolean;
     };
-    version?: 'live' | 'preview' | 'prototype' | 'baseline' | 'ai';
+    version?: CompareVersion;
     url?: string;
 }
 
@@ -66,12 +67,14 @@ export class HtmlNormalizationService {
     }
 
     // Normalize HTML content provided via URL or string
-    async normalizeHTML(page: string, mode: 'url' | 'string' = 'url'): Promise<htmlProcessingResult | undefined> {
+    async normalizeHTML(page: string, mode: 'url' | 'proxy' | 'string' = 'url'): Promise<htmlProcessingResult | undefined> {
         // 1. Get doc
         let doc;
         if (mode === 'url') {
             doc = await this.fetchService.fetchContent(`${page}?_=${Date.now()}`, "both");
-        } else { doc = new DOMParser().parseFromString(page, 'text/html'); }
+        } else if (mode === 'proxy') {
+            doc = this.fetchService.stringToDoc(await this.fetchService.fetchViaProxy(page));
+        } else { doc = this.fetchService.stringToDoc(page); }
         if (!doc) return;
 
         const origin = mode === 'url' ? new URL(page).origin : 'https://www.canada.ca';
@@ -101,7 +104,7 @@ export class HtmlNormalizationService {
         return {
             html: await this.formatHtml(content),
             found: foundFlags,
-            url: mode === 'url' ? page : undefined
+            url: mode !== 'string'  ? page : undefined
         }
 
     }
