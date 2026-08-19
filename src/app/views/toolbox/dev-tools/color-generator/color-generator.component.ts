@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
 
+import { PrimeNG } from 'primeng/config';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
@@ -15,7 +16,6 @@ import { ColorPickerComponent } from './color-picker.component';
 import { CopyPresetComponent } from './copy-preset.component';
 
 import { UserSettingsService } from '../../../../services/user-settings.service';
-import { updatePreset } from '@primeuix/themes';
 
 @Component({
   selector: 'aida-color-generator',
@@ -29,6 +29,7 @@ import { updatePreset } from '@primeuix/themes';
   styles: ``
 })
 export class ColorGeneratorComponent {
+  private readonly primeNGConfig = inject(PrimeNG);
   public settingsService = inject(UserSettingsService);
   customShades: Record<string, Record<number, string>> = {};
 
@@ -72,7 +73,15 @@ export class ColorGeneratorComponent {
           ...(this.customShades['primary'] ? { primary: this.customShades['primary'] } : {})
         }
       };
-      updatePreset(customPreset);
+      this.primeNGConfig.theme.set({
+        preset: customPreset,
+        options: {
+            colorScheme: 'light',
+            theme: 'blue',
+            ripple: true,
+            darkModeSelector: '.dark-mode'
+        }
+    });
     });
   }
 }

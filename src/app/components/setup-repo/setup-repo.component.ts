@@ -17,6 +17,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { ProjectStateService } from '../../services/project-state.service';
 import { ExportGitHubService } from '../../services/github/export-github.service';
 import { environment } from '../../../environments/environment';
+import { UserSettingsService } from '../../services/user-settings.service';
 
 type RepoMode = 'default' | 'baseline';
 
@@ -32,6 +33,7 @@ type RepoMode = 'default' | 'baseline';
 export class SetupRepoComponent implements OnInit {
   private projectState = inject(ProjectStateService);
   private exportGitHubService = inject(ExportGitHubService);
+  private settingsService = inject(UserSettingsService);
   private translate = inject(TranslateService);
 
   defaultOrg = environment.defaultOrg
@@ -45,6 +47,8 @@ export class SetupRepoComponent implements OnInit {
   }
   set projectRepo(value: 'local' | 'github') {
     this.projectState.setRepoType(value);
+    this.settingsService.includeLocal.set(value === 'local');
+    this.settingsService.includeGitHub.set(value === 'github');
   }
   repoOptions = [
     { name: 'project.repo.storage.github', value: 'github' as const, icon: 'pi pi-github' },
@@ -81,6 +85,7 @@ export class SetupRepoComponent implements OnInit {
   }
   set gitHubBaseline(value: boolean) {
     this.projectState.setGitHubRepo({ hasBaselineRepo: value });
+    this.settingsService.includeBaseline.set(value);
   }
 
   ownerFilter = /^[a-zA-Z0-9-]*$/;

@@ -108,7 +108,7 @@ export class ProjectSettingsComponent {
 
     //Choose source (for external data storage)
     get sourceOptions() {
-        const options = [{ label: this.translate.instant('common.source.canada'), value: 'live' }];
+        const options = [{ label: this.translate.instant('common.source.live'), value: 'live' }];
         if (this.projectCache.hasGitHub() || !this.onlyValid()) {
             options.push({ label: this.translate.instant('common.source.protoGH'), value: 'protoGH' })
         }
@@ -129,20 +129,6 @@ export class ProjectSettingsComponent {
             );
         }
         return options
-    }
-
-    get urlVersionOptions() {
-        const options = [
-            { label: this.translate.instant('common.version.canada'), value: 'live' },
-            { label: this.translate.instant('common.version.prototype.github'), value: 'protoGH' },
-            { label: this.translate.instant('common.version.prototype.local'), value: 'protoUT' }];
-        if (this.projectState.getProject().github.hasBaselineRepo) {
-            options.push(
-                { label: this.translate.instant('common.version.baseline.github'), value: 'baseGH' },
-                { label: this.translate.instant('common.version.baseline.local'), value: 'baseUT' }
-            )
-        }
-        return options;
     }
 
     //Choose view (for IA diagram)

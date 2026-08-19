@@ -6,12 +6,9 @@ import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
-import { PopoverModule } from 'primeng/popover';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
-import { IftaLabelModule } from 'primeng/iftalabel';
-import { PasswordModule } from 'primeng/password';
 
 import { GitHubAuthService } from '../../../services/github/github-auth.service';
 import { ExportGitHubService } from '../../../services/github/export-github.service';
@@ -24,8 +21,9 @@ import { GitHubUser } from '../../../common/data.model';
 
 @Component({
   selector: 'aida-sign-in-button',
-  imports: [TranslatePipe,
-    ButtonModule, AvatarModule, PopoverModule, MenuModule, DialogModule, IftaLabelModule, PasswordModule,
+  imports: [
+    TranslatePipe,
+    ButtonModule, AvatarModule, MenuModule, DialogModule,
     PatComponent, UserSettingsComponent
   ],
   templateUrl: './sign-in-button.component.html',
@@ -61,7 +59,19 @@ export class SignInButtonComponent implements OnInit {
   }
 
   get items(): MenuItem[] {
-    return [
+    const dropdownOptions = [
+      {
+        label: this.translate.instant('common.profile'),
+        items: [
+          {
+            label: this.translate.instant('settings._nav'),
+            icon: 'pi pi-cog',
+            command: () => {
+              this.showSettings = true;
+            }
+          },
+        ]
+      },
       {
         label: this.translate.instant('common.projects'),
         items: [
@@ -82,28 +92,29 @@ export class SignInButtonComponent implements OnInit {
             }
           }
         ]
-      },
-      {
-        label: this.translate.instant('common.profile'),
-        items: [
-          {
-            label: this.translate.instant('settings._nav'),
-            icon: 'pi pi-cog',
-            command: () => {
-              this.showSettings = true;
-            }
-          },
-          {
-            label: this.translate.instant('common.signout'),
-            icon: 'pi pi-sign-out',
-            command: () => {
-              this.authService.logout();
-              this.exportGitHubService.clearPAT();
-            }
-          }
-        ]
       }
     ]
+    if (!this.exportGitHubService.user()) {
+      dropdownOptions[0].items!.unshift(
+        {
+          label: this.translate.instant('common.signin'),
+          icon: 'pi pi-sign-in',
+          command: () => {
+            this.connectGitHub();
+          }
+        })
+    } else {
+      dropdownOptions[0].items!.unshift({
+        label: this.translate.instant('common.signout'),
+        icon: 'pi pi-sign-out',
+        command: () => {
+          console.log(this.exportGitHubService.user())
+          this.authService.logout();
+          this.exportGitHubService.clearPAT();
+        }
+      })
+    }
+    return dropdownOptions
   }
 
   // Signal to track if API Gateway is accessible

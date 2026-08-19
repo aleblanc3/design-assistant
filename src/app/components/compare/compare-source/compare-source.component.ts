@@ -17,7 +17,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 // Services
 import { CompareSourceService } from './compare-source.service';
-import { htmlProcessingResult } from '../../services/html-normalization.service';
+import { htmlProcessingResult } from '../../../services/html-normalization.service';
 
 export enum SourceViewType {
     Original = 'original',

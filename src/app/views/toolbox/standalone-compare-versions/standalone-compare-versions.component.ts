@@ -1,0 +1,74 @@
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+
+//Translation
+import { TranslatePipe, } from '@ngx-translate/core';
+
+//PrimeNG
+import { TabsModule } from 'primeng/tabs';
+
+//Services
+import { CompareService } from '../../../components/compare/compare.service';
+import { HtmlNormalizationService, htmlProcessingResult } from '../../../services/html-normalization.service';
+
+//Components
+import { CompareRenderedComponent } from '../../../components/compare/compare-rendered/compare-rendered.component';
+import { CompareSourceComponent } from '../../../components/compare/compare-source/compare-source.component';
+
+@Component({
+  selector: 'aida-standalone-compare-versions',
+  imports: [
+    TabsModule, TranslatePipe,
+    CompareRenderedComponent, CompareSourceComponent
+  ],
+  templateUrl: './standalone-compare-versions.component.html',
+  styles: '',
+})
+export class StandaloneCompareComponent implements OnInit {
+public htmlNormalizationService = inject(HtmlNormalizationService);
+private router = inject(Router);
+private route = inject(ActivatedRoute);
+
+// Signals
+originalHtml = signal<htmlProcessingResult | undefined>(undefined);
+modifiedHtml = signal<htmlProcessingResult | undefined>(undefined);
+
+// Handle accept/reject changes
+onContentChanged(event: { beforeContent: htmlProcessingResult; afterContent: htmlProcessingResult }): void {
+    // Update signals
+    this.originalHtml.set(event.beforeContent);
+    this.modifiedHtml.set(event.afterContent);
+}
+
+ngOnInit() {
+    // Update settings from url parameter (if present) then remove the param
+     this.route.queryParams.subscribe(async params => {
+      const allParams = { ...params }
+      // Handle before
+      if (params['before'] !== undefined) {
+        const before = await this.loadContent(params['before'])
+        this.originalHtml.set(before);
+        //delete allParams['before']
+      }
+      // Handle after
+      if (params['after'] !== undefined) {
+        const after = await this.loadContent(params['after'])
+        this.modifiedHtml.set(after);
+        //delete allParams['after']
+      }
+      // Remove processed parameters
+      if (Object.keys(params).length !== Object.keys(allParams).length) {
+        this.router.navigate([], {
+          queryParams: allParams,
+          replaceUrl: true,
+        });
+      }
+    });
+  }
+
+  private async loadContent(url: string): Promise<htmlProcessingResult|undefined>{
+    const fetchType = url.startsWith('http://cra-ut.isvcs.net/') || url.startsWith('https://canada-preview.adobecqms.net/') ? 'proxy' : 'url'
+    return await this.htmlNormalizationService.normalizeHTML(url, fetchType);
+  }
+
+}

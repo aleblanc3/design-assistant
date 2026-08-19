@@ -2,7 +2,7 @@
 // It expects inputs in htmlProcessingResult format which includes information to populate the legend
 // Format your url or string content through the normalizeHTML function in html-normalization.service convert it to an htmlProcessingResult
 
-import { Component, inject, input, Output, EventEmitter, ViewChild, ElementRef, signal, effect, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, inject, input, computed, Output, EventEmitter, ViewChild, ElementRef, signal, effect, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule, LocationStrategy } from '@angular/common';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
@@ -23,7 +23,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 // Services
 import { CompareRenderedService } from './compare-rendered.service';
-import { htmlProcessingResult } from '../../services/html-normalization.service';
+import { htmlProcessingResult } from '../../../services/html-normalization.service';
 
 export enum WebViewType {
     Original = 'original',
@@ -52,8 +52,10 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
     // Inputs
     beforeContent = input<htmlProcessingResult | undefined>();
     afterContent = input<htmlProcessingResult | undefined>();
-    //@Input() beforeContent: htmlProcessingResult | undefined;
-    //@Input() afterContent: htmlProcessingResult | undefined;
+
+    // Adjust inputs if one is undefined so we can render page with no changes
+    private readonly resolvedBefore = computed(() => this.beforeContent() ?? this.afterContent());
+    private readonly resolvedAfter = computed(() => this.afterContent() ?? this.beforeContent());
 
     // Outputs
     @Output() contentChanged = new EventEmitter<{
@@ -72,10 +74,8 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
         effect(async () => {
             const viewType = this.webSelectedView();
             const shadowRoot = this.shadowDOM();
-            const beforeContent = this.beforeContent();
-            const afterContent = this.afterContent();
-            if (this.beforeContent() && !this.afterContent()) this.afterContent = this.beforeContent;
-            if (!this.beforeContent() && this.afterContent()) this.beforeContent = this.afterContent;
+            const beforeContent = this.resolvedBefore();
+            const afterContent = this.resolvedAfter();
 
             if (beforeContent && afterContent && shadowRoot) {
                 await this.compareRenderedService.generateShadowDOMContent(
@@ -149,19 +149,21 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
     webSelectedView = signal<WebViewType>(WebViewType.Diff);
 
     get webViewOptions(): ViewOption<WebViewType>[] {
+        const beforeLabel = this.beforeContent()?.version ? this.translate.instant('common.source.'+this.beforeContent()?.version) : this.translate.instant('common.before');
+        const afterLabel = this.afterContent()?.version ? this.translate.instant('common.source.'+this.afterContent()?.version) : this.translate.instant('common.after');
         return [
             {
-                label: `compare.pageOptions.${this.beforeContent()?.version ?? 'before'}`,
+                label: beforeLabel,
                 value: WebViewType.Original,
                 icon: 'pi pi-file',
             },
             {
-                label: 'compare.view.comparison',
+                label: this.translate.instant('common.comparison'),
                 value: WebViewType.Diff,
                 icon: 'pi pi-sort-alt',
             },
             {
-                label: `compare.pageOptions.${this.afterContent()?.version ?? 'after'}`,
+                label: afterLabel,
                 value: WebViewType.Modified,
                 icon: 'pi pi-file-edit',
             },

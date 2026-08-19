@@ -6,6 +6,8 @@ import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import rs from 'text-readability';
 import { TranslateService } from '@ngx-translate/core';
 
+import { UrlVersion } from '../common/data.model';
+
 export interface JsonMetadata {
   owner?: string;                 // jrc:content.json gcContributor
   email?: string;                 // jrc:content.json gcBranch
@@ -52,8 +54,6 @@ export interface BreadcrumbNode {
   linkTooltip?: string;     // explanation for color/boldness of label
   styleClass?: string;      // for the label (used to set color and/or bold)
 }
-
-export type urlVersion = 'live' | 'protoGH' | 'baseGH' | 'protoUT' | 'baseUT' | 'preview' | 'upd';
 
 @Injectable({ providedIn: 'root' })
 export class FetchService {
@@ -692,7 +692,7 @@ export class FetchService {
 
   //Generate url for specific version
 
-  generateUrl(path: string, version: urlVersion = 'live', owner?: string, repo?: string): string {
+  generateUrl(path: string, version: UrlVersion = 'live', owner?: string, repo?: string): string {
     const repoDomain = owner === 'cra-proto' ? 'https://cra-test-arc.canada.ca' : owner === 'gc-proto' ? 'https://test.canada.ca' : `https://${owner}.github.io`
     switch (version) {
       case 'live':

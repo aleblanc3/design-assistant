@@ -2,7 +2,7 @@ import { Injectable, signal, effect, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { updatePreset } from '@primeuix/themes';
+import { PrimeNG } from 'primeng/config';
 import MyPreset from '../common/theme-presets/preset';
 import DeutanPreset from '../common/theme-presets/preset-deutan';
 import ProtanPreset from '../common/theme-presets/preset-protan';
@@ -13,9 +13,10 @@ export type ColorScheme = 'default' | 'deutan' | 'protan' | 'tritan' | 'custom';
 
 @Injectable({ providedIn: 'root' })
 export class UserSettingsService {
-  private translate = inject(TranslateService);
-  private router = inject(Router);
-  private title = inject(Title);
+  private readonly primeNGConfig = inject(PrimeNG);
+  private readonly translate = inject(TranslateService);
+  private readonly router = inject(Router);
+  private readonly title = inject(Title);
 
   // Language
   public currentLang = signal<string>('en');
@@ -34,6 +35,12 @@ export class UserSettingsService {
   // User
   public userId = signal<string>(this.getOrCreateUserId());
 
+  //Version  
+  public includePreview = signal<boolean>(localStorage.getItem('includePreview') === 'true' ? true : false);
+  public includeGitHub = signal<boolean>(false);
+  public includeLocal = signal<boolean>(false);
+  public includeBaseline = signal<boolean>(false);
+
   constructor() {
     // Language
     const supportedLangs = ['en', 'fr'];
@@ -49,6 +56,10 @@ export class UserSettingsService {
     effect(() => {
       this.applyColorScheme(this.colorScheme());
     });
+
+    effect(() => {
+      localStorage.setItem('includePreview', this.includePreview().toString());
+    })
 
   }
 
@@ -118,7 +129,15 @@ export class UserSettingsService {
       default:
         preset = MyPreset;
     }
-    updatePreset(preset);
+    this.primeNGConfig.theme.set({
+        preset: preset,
+        options: {
+            colorScheme: 'light',
+            theme: 'blue',
+            ripple: true,
+            darkModeSelector: '.dark-mode'
+        }
+    });
   }
 
   // UserId

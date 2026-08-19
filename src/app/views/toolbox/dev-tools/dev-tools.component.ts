@@ -45,42 +45,48 @@ export class DevToolsComponent {
   * DO NOT REMOVE - needed to preserve separators during i18n:clean
   */
   markForTranslation() {
-    //Views
+    //Separators
+    marker('about._');
+    marker('actions._');
+    marker('addPages._');
+    marker('aiPrompt._');
+    marker('collaborators._');
+    marker('common._');
+    marker('compare._');
     marker('dashboard._');
-    marker('project._');
-    marker('switch._');
-    marker('inventory._');
-    marker('iaDiagram._');
+    marker('dev._');
+    marker('editNode._');
+    marker('export._');
+    marker('exportPages._');
+    marker('feedback._');
+    marker('findPages._');
     marker('github._');
     marker('help._');
-    marker('about._');
-    marker('notFound._');
-    marker('dev._');
-    marker('standalone._');
-    marker('aiPrompt._');
+    marker('iaDiagram._');
     marker('importPage._');
-    marker('compare._');
-    // Components
+    marker('invalidUrls._');
+    marker('inventory._');
     marker('nav._');
-    marker('export._');
-    marker('settings._');
-    marker('collaborators._');
-    marker('addPages._');
-    marker('findPages._');
+    marker('notFound._');
+    marker('problems._');
+    marker('project._');
     marker('project.github._');
     marker('project.message._');
     marker('project.phase._');
+    marker('project.repo._');
     marker('project.setup._');
     marker('save._');
-    marker('feedback._');
+    marker('search._');
+    marker('settings._');
+    marker('standalone._');
+    marker('switch._');
+    marker('template._');
+    marker('ucdg._');
     //Other
-    marker('common._');
     marker('common.complete');
     marker('common.cra');
     marker('common.edited');
     marker('common.error');
     marker('common.pending');
-    marker('common.no');
-    marker('common.yes');
   }
 }

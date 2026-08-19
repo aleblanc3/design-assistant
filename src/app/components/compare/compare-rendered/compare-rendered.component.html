@@ -8,7 +8,7 @@
                            [ngModel]="webSelectedView()" (ngModelChange)="onWebViewChange($event)" />
             <label [for]="'show_' + view.value" class="cursor-pointer font-semibold flex align-items-center gap-1">
                 <i [class]="view.icon"></i>
-                {{ view.label | translate }}
+                {{ view.label }}
             </label>
         </div>
         }

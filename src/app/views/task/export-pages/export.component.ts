@@ -21,10 +21,11 @@ import { ProgressBarModule } from 'primeng/progressbar';
 //Services
 import { ExportGitHubService } from '../../../services/github/export-github.service';
 import { ProjectStateService } from '../../../services/project-state.service';
-import { FetchService, urlVersion } from '../../../services/fetch.service';
+import { FetchService } from '../../../services/fetch.service';
 import { GitHubAuthService } from '../../../services/github/github-auth.service';
 import { UsageService } from '../../../services/usage.service';
 import { HtmlNormalizationService } from '../../../services/html-normalization.service';
+import { ProjectCacheService } from '../../../services/project-cache.service';
 
 //Components
 import { SetupRepoComponent } from '../../../components/setup-repo/setup-repo.component';
@@ -32,9 +33,9 @@ import { SignInBannerComponent } from '../../../components/sign-in/sign-in-banne
 import { BookmarkletComponent } from '../../../components/bookmarklet/bookmarklet.component';
 import { ProjectSettingsComponent } from "../../../components/project-settings/project-settings.component";
 
+import { SourceVersion } from '../../../common/data.model';
 import { CDTS_TEMPLATE_ENG, CDTS_TEMPLATE_FRA, EXIT_PAGE_TEMPLATE_ENG, EXIT_PAGE_TEMPLATE_FRA, INDEX_PAGE_TEMPLATE_ENG, INDEX_PAGE_TEMPLATE_FRA, LINK_DETOUR_JS } from '../../../common/cdts.template';
 import { environment } from '../../../../environments/environment';
-import { ProjectCacheService } from '../../../services/project-cache.service';
 
 enum ExportStatus {
   ExportNew = 'exportPages.export.status.addToGitHub', // Export - New page
@@ -699,7 +700,7 @@ export class ExportComponent implements OnInit {
   /****** GITHUB SPECIFIC FUNCTIONS *********/
 
   //Get in-scope URLs and page content (used by export fxn)
-  private async getUrlandContent(node: TreeNode, lang: 'en' | 'fr' = 'en', owner: string, repo: string, source: urlVersion): Promise<PageData[]> {
+  private async getUrlandContent(node: TreeNode, lang: 'en' | 'fr' = 'en', owner: string, repo: string, source: SourceVersion): Promise<PageData[]> {
     const pages: PageData[] = [];
     const path = node.data?.path[lang];
     const url = this.fetchService.generateUrl(path, source, owner, repo);

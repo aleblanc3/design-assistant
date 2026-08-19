@@ -118,7 +118,7 @@ export const routes: Routes = [
     {
         path: 'compare',
         loadComponent: () => import('./views/task/compare-versions/compare.component').then(m => m.CompareComponent),
-        title: 'Compare._title',
+        title: 'compare._title',
     },
     //UTILITY PATHS
     {
@@ -147,6 +147,11 @@ export const routes: Routes = [
         path: 'standalone',
         loadComponent: () => import('./views/toolbox/standalone.component').then(m => m.StandaloneComponent),
         title: 'standalone._title',
+    },
+    {
+        path: 'standalone/compare-versions',
+        loadComponent: () => import('./views/toolbox/standalone-compare-versions/standalone-compare-versions.component').then(m => m.StandaloneCompareComponent),
+        title: 'compare._title',
     },
     //DEV PAGES
     {
