@@ -31,9 +31,9 @@ import { environment } from '../../environments/environment';
     <div class="flex flex-row align-items-center gap-2 lg:gap-3">
         @if(showSaveButton()){
         <p-button (onClick)="save()"
-          [icon]="saveButtonConfig().icon" [label]="saveButtonConfig().label | translate" [severity]="saveButtonConfig().severity"
+          [icon]="saveButtonConfig().icon" [label]="saveButtonConfig().label" [severity]="saveButtonConfig().severity"
           text rounded size="small" styleClass="white-space-nowrap -mr-2" />
-        <p-divider layout="vertical" styleClass="mx-0" />
+        <p-divider layout="vertical" class="mx-0" />
         }
         <aida-sign-in-button />
         <p-button (onClick)="settingsService.toggle()" rounded outlined size="small" severity="secondary" [icon]="settingsService.icon()" styleClass="darkmode-toggle secondary-outline" ariaLabel="Toggle between dark and light mode" />
@@ -81,28 +81,28 @@ export class HeaderComponent {
     const status = this.saveStatus();
     if (status === 'error') {
       return {
-        label: 'save.error',
+        label: this.translate.instant('save.error'),
         icon: 'pi pi-times-circle',
         severity: 'danger' as const
       };
     }
     if (status === 'saving') {
       return {
-        label: 'save.saving',
+        label: this.translate.instant('save.saving'),
         icon: 'pi pi-spin pi-spinner',
         severity: 'info' as const
       };
     }
     if (status === 'unsaved') {
       return {
-        label: 'save.unsaved',
+        label: this.translate.instant('save.unsaved'),
         icon: 'pi pi-exclamation-triangle',
         severity: 'danger' as const
       };
     }
     // Default (shouldn't show due to showSaveButton)
     return {
-      label: 'save.saved',
+      label: this.translate.instant('save.saved'),
       icon: 'pi pi-check',
       severity: 'success' as const
     };
