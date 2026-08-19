@@ -14,9 +14,9 @@ export type ColorScheme = 'default' | 'deutan' | 'protan' | 'tritan' | 'custom';
 @Injectable({ providedIn: 'root' })
 export class UserSettingsService {
   private readonly primeNGConfig = inject(PrimeNG);
-  private translate = inject(TranslateService);
-  private router = inject(Router);
-  private title = inject(Title);
+  private readonly translate = inject(TranslateService);
+  private readonly router = inject(Router);
+  private readonly title = inject(Title);
 
   // Language
   public currentLang = signal<string>('en');
@@ -35,6 +35,12 @@ export class UserSettingsService {
   // User
   public userId = signal<string>(this.getOrCreateUserId());
 
+  //Version  
+  public includePreview = signal<boolean>(localStorage.getItem('includePreview') === 'true' ? true : false);
+  public includeGitHub = signal<boolean>(false);
+  public includeLocal = signal<boolean>(false);
+  public includeBaseline = signal<boolean>(false);
+
   constructor() {
     // Language
     const supportedLangs = ['en', 'fr'];
@@ -50,6 +56,10 @@ export class UserSettingsService {
     effect(() => {
       this.applyColorScheme(this.colorScheme());
     });
+
+    effect(() => {
+      localStorage.setItem('includePreview', this.includePreview().toString());
+    })
 
   }
 

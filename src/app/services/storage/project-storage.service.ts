@@ -4,6 +4,7 @@ import { LocalStorageService } from './local-storage.service';
 import { FetchService } from '../fetch.service';
 import { Project, ProjectMetadata, ProjectTreeNodeData, LangData, PageTemplate } from '../../common/data.model';
 import { TreeNode } from 'primeng/api';
+import { UserSettingsService } from '../user-settings.service';
 
 export interface ActiveProject {
     key: string;
@@ -16,6 +17,7 @@ export class ProjectStorageService {
     //Services
     private cloudStorageService = inject(CloudStorageService);
     private localStorageService = inject(LocalStorageService);
+    private settingsService = inject(UserSettingsService);
     private fetchService = inject(FetchService);
 
     // Local storage keys
@@ -308,6 +310,11 @@ export class ProjectStorageService {
 
             // Set as active project
             this.setActiveProject(key, storageType);
+
+            // Update settingsService available version signals after project load
+            this.settingsService.includeBaseline.set(project.github.hasBaselineRepo);
+            this.settingsService.includeLocal.set(project.repoType === 'local');
+            this.settingsService.includeGitHub.set(project.repoType === 'github');
 
             //console.log(`Project "${key}" loaded successfully`);
             return project;
