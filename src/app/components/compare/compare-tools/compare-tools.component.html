@@ -1,0 +1,45 @@
+<h2 class="text-2xl my-1">{{ 'compare.tools._title' | translate }}</h2>
+<p class="my-1">{{ "compare.tools.description" | translate }}</p>
+
+<div class="flex justify-content-between w-full gap-2 mt-4">
+    <div class="flex gap-2">
+        <!--p-button
+                    label="Send to GenAI"
+                    [icon]="isLoading ? 'pi pi-spinner pi-spin' : 'pi pi-comments'"
+                    (onClick)="sendToAI()"
+                    [pTooltip]="aiDisabled"
+                    showDelay="1000"
+                    hideDelay="300"
+                    [disabled]="!uploadData?.originalHtml || isLoading || isDisabled" />
+          <aida-ai-options
+                           (promptChange)="onPromptChange($event)"
+                           (aiChange)="onAiChange($event)"
+                           (aiSubmit)="sendToAI()"
+                           (customPrompt)="onAppendCustom($event)"
+                           (editPrompt)="onPrependLevel($event)" /-->
+    </div>
+    <div class="flex gap-2">
+        <p-button [label]="'common.share' | translate" icon="pi pi-share-alt" severity="secondary" (onClick)="shareLink()" [disabled]="!compareService.selectedPage()"/>
+        <aida-user-settings mode="versions" />
+
+        <p-button
+                  label="Load all pages into cache"
+                  icon="pi pi-download"
+                  severity="success"
+                  (onClick)="setCacheForAll()"
+                  [loading]="compareService.loadingAll()" />
+        <p-button
+                  label="Cancel load cache"
+                  icon="pi pi-ban"
+                  severity="secondary"
+                  (onClick)="cancelSetCache()"
+                  [disabled]="!compareService.loadingAll()" />
+        <p-button
+                  label="Reset cache"
+                  icon="pi pi-trash"
+                  severity="danger"
+                  (onClick)="this.compareService.clearCache()" />
+    </div>
+</div>
+
+<p-toast />
