@@ -2,7 +2,9 @@ import { Injectable, signal, inject, effect } from '@angular/core';
 
 //Services
 import { ProjectStateService } from './project-state.service';
-import { FetchService, urlVersion } from './fetch.service';
+import { UserSettingsService } from './user-settings.service';
+import { FetchService } from './fetch.service';
+import { SourceVersion } from '../common/data.model';
 
 /*
  * Use this service to cache temporary variables related to the active project
@@ -10,7 +12,8 @@ import { FetchService, urlVersion } from './fetch.service';
 @Injectable({ providedIn: 'root' })
 export class ProjectCacheService {
     private projectState = inject(ProjectStateService);
-    private fetchService = inject(FetchService)
+    private fetchService = inject(FetchService);
+    private settingsService = inject(UserSettingsService);
 
     // Track availability of local and github versions (for managing UI state)
 
@@ -41,7 +44,7 @@ export class ProjectCacheService {
     public selectedVersion = signal<'prototype' | 'live' | 'baseline'>('prototype');
 
     /** Signal can be used to access specific versions stored outside of AIDA. Defaults to live. */
-    public selectedSource = signal<urlVersion>('live');
+    public selectedSource = signal<SourceVersion>('live');
 
     /** Signal for the IA diagram view. Defaults to changes. */
     public selectedViewIA = signal<'baseline' | 'changes' | 'final'>('changes');
@@ -74,6 +77,7 @@ export class ProjectCacheService {
     public checkLocalStatus(): void {
         if (this.localCheckInProgress) return;
         if (this.hasLocal() !== null) return;
+        if (!this.settingsService.includeLocal()) return;
         const owner = this.projectState.getProject().github.owner;
         const repo = this.projectState.getProject().github.repo;
         if (!owner || !repo) return;
@@ -82,7 +86,7 @@ export class ProjectCacheService {
         const checks: Promise<void>[] = [
             this.fetchService.fetchStatusViaProxy(url).then(result => this.hasLocal.set(result))
         ];
-        if (this.projectState.getProject().github.hasBaselineRepo) {
+        if (this.settingsService.includeBaseline()) {
             const urlBL = this.fetchService.generateUrl("index.html", "baseUT", owner, repo);
             checks.push(
                 this.fetchService.fetchStatusViaProxy(urlBL).then(result => this.hasLocalBL.set(result))
@@ -101,6 +105,7 @@ export class ProjectCacheService {
     */
     public checkGitHubStatus(): void {
         if (this.githubCheckInProgress) return;
+        if (!this.settingsService.includeGitHub()) return;
         const owner = this.projectState.getProject().github.owner;
         const repo = this.projectState.getProject().github.repo;
         if (!owner || !repo) return;
@@ -109,7 +114,7 @@ export class ProjectCacheService {
         const checks: Promise<void>[] = [
             this.fetchService.fetchStatus(url).then(response => this.hasGitHub.set(response.ok))
         ];
-        if (this.projectState.getProject().github.hasBaselineRepo) {
+        if (this.settingsService.includeBaseline()) {
             const urlBL = this.fetchService.generateUrl("index.html", "baseGH", owner, repo);
             checks.push(
                 this.fetchService.fetchStatus(urlBL).then(response => this.hasGitHubBL.set(response.ok))
@@ -129,6 +134,7 @@ export class ProjectCacheService {
     public checkPreviewStatus(): void {
         if (this.previewCheckInProgress) return;
         if (this.hasPreview() !== null) return;
+        if (!this.settingsService.includePreview()) return;
         this.previewCheckInProgress = true;
         const url = this.fetchService.generateUrl("", "preview");
         const checks: Promise<void>[] = [

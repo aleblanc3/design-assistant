@@ -1,5 +1,5 @@
 import { Injectable, signal, computed, inject, effect } from '@angular/core';
-import { Project, ProjectPhase, GitHubRepo, GitHubUser, ProjectTreeNodeData, TreeNodeData, FlattenedTreeNode, TreeNodeAction, TableColumn, MetadataReview, PageTemplate, LangData } from '../common/data.model';
+import { Project, ProjectPhase, GitHubRepo, GitHubUser, ProjectTreeNodeData, TreeNodeData, FlattenedTreeNode, TreeNodeAction, TableColumn, MetadataReview, PageTemplate, LangData, SourceVersion } from '../common/data.model';
 import { TreeNode } from 'primeng/api';
 import { environment } from '../../environments/environment';
 import { TranslateService } from '@ngx-translate/core';
@@ -8,7 +8,7 @@ import { marker } from '@colsen1991/ngx-translate-extract-marker';
 
 import { ProjectStorageService } from '../services/storage/project-storage.service';
 import { CollaboratorService } from './github/collaborator.service';
-import { FetchService, urlVersion } from './fetch.service';
+import { FetchService } from './fetch.service';
 import { AirtableService } from './data-sources/airtable.service';
 import { UpdService } from './data-sources/upd.service';
 import { VanityService } from './data-sources/vanity.service';
@@ -320,7 +320,7 @@ export class ProjectStateService {
     }
 
     // TODO: refactor getAllUrls and getAllPages to use new data structure
-    getAllPages(lang: 'en' | 'fr', urlVersion: urlVersion = 'protoGH', scope: 'all' | 'inScope' = 'all'): { label: string; path: string; url: string }[] {
+    getAllPages(lang: 'en' | 'fr', urlVersion: SourceVersion = 'protoGH', scope: 'all' | 'inScope' = 'all'): { label: string; path: string; url: string }[] {
         const version = urlVersion.startsWith('proto') ? 'prototype' : urlVersion.startsWith('base') ? 'baseline' : 'live'
         const pages: { label: string; path: string; url: string }[] = [];
         const traverse = (nodes: TreeNode<TreeNodeData>[]) => {
@@ -341,7 +341,7 @@ export class ProjectStateService {
         return pages;
     }
 
-    getPairedPages(urlVersion: urlVersion = 'protoGH', scope: 'all' | 'inScope' = 'all'): { en: { label: string; path: string; url: string; group: string }, fr: { label: string; path: string; url: string; group: string }, status: string }[] {
+    getPairedPages(urlVersion: SourceVersion = 'protoGH', scope: 'all' | 'inScope' = 'all'): { en: { label: string; path: string; url: string; group: string }, fr: { label: string; path: string; url: string; group: string }, status: string }[] {
         console.log("UPDATE", urlVersion)
         const version = urlVersion.startsWith('proto') ? 'prototype' : urlVersion.startsWith('base') ? 'baseline' : 'live'
         const pages: { en: { label: string; path: string; url: string; group: string }, fr: { label: string; path: string; url: string; group: string }, status: string }[] = [];
@@ -1141,7 +1141,7 @@ export class ProjectStateService {
         return breadcrumbs;
     }
 
-    public async refreshNode(node: TreeNode, urlVersion: urlVersion, fetchLive = false) {
+    public async refreshNode(node: TreeNode, urlVersion: SourceVersion, fetchLive = false) {
         const version = urlVersion.startsWith('proto') ? 'prototype' : urlVersion.startsWith('base') ? 'baseline' : 'live'
         const source = fetchLive ? 'live' : urlVersion;
         const sourceType = source.endsWith('UT') ? 'local' : source.endsWith('GH') ? 'github' : 'live'
@@ -1314,7 +1314,7 @@ export class ProjectStateService {
         this.setModifiedDate();
     }
 
-    public async refreshAll(nodes: TreeNode[], urlVersion: urlVersion, onlyNeverChecked = false, fetchLive = false) {
+    public async refreshAll(nodes: TreeNode[], urlVersion: SourceVersion, onlyNeverChecked = false, fetchLive = false) {
         const version = urlVersion.startsWith('proto') ? 'prototype' : urlVersion.startsWith('base') ? 'baseline' : 'live'
         for (const node of nodes) {
             const needsRefresh = onlyNeverChecked
