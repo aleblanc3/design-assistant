@@ -513,7 +513,7 @@ export class HtmlNormalizationService {
 
 
     // Clean up HTML for export with CDTS template
-    public async cleanContentForCdts(doc: Document): Promise<{ content: string; styles: string; scripts: string }> {
+    public async cleanContentForCdts(doc: Document, doubleH1?: string): Promise<{ content: string; styles: string; scripts: string }> {
         const mainEl = doc.querySelector('main');
         if (!mainEl) return { content: '', styles: '', scripts: '' };
 
@@ -521,10 +521,18 @@ export class HtmlNormalizationService {
         mainEl.querySelectorAll('section.pagedetails, div.pagedetails').forEach(el => el.remove());
 
         // Remove H1 and lead paragraph (injected via {{HEADER}} in template)
-        const h1 = mainEl.querySelector('h1');
-        const leadAboveH1 = h1?.previousElementSibling?.matches('p.lead') ? h1.previousElementSibling : null;
+        const h1 = mainEl.querySelectorAll('h1');
+        const leadAboveH1 = h1[0]?.previousElementSibling?.matches('p.lead') ? h1[0].previousElementSibling : null;
         leadAboveH1?.remove();
-        h1?.remove();
+        h1.forEach((heading: HTMLElement) => {
+            if (heading.classList.contains('gc-document-nav')) {
+                if (doubleH1) {
+                heading.textContent = doubleH1; // replace doubleH1 with heading from AIDA
+                }
+            } else {
+                heading.remove();
+            }
+        });
 
         // Flatten AEM mws wrappers
         mainEl.querySelectorAll('div[class^="mws"]').forEach(div => {

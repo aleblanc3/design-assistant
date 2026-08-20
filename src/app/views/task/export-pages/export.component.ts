@@ -483,7 +483,7 @@ export class ExportComponent implements OnInit {
         if (!doc) {
           throw new Error(`No document returned for ${url}`);
         }
-        ({ content, styles, scripts } = await this.htmlNormalizationService.cleanContentForCdts(doc));
+        ({ content, styles, scripts } = await this.htmlNormalizationService.cleanContentForCdts(doc, doubleH1));
         subject = (doc.querySelector('meta[name="dcterms.subject"]') as HTMLMetaElement)?.content.trim() || "";
         altLangPage = Array.from(doc.querySelectorAll<HTMLLinkElement>('link[rel="alternate"]')).find(link => link.getAttribute("hreflang") !== lang)?.href || "";
       } catch (error) {
