@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { ColorPickerModule } from 'primeng/colorpicker';
@@ -62,7 +62,8 @@ export interface ContrastTest {
         }
       </div>
       }
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ColorPickerComponent implements OnInit, OnChanges {
     @Input() key = '';

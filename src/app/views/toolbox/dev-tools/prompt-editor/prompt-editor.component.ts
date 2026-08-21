@@ -1,5 +1,5 @@
 // Angular
-import { Component, inject, ViewChild, ElementRef, effect } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, ViewChild, ElementRef, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -44,7 +44,7 @@ interface PromptEntry {
 interface TabConfig {
     title: string;
     value: number;
-    prompts: PromptEntry[];
+    prompts?: PromptEntry[];
     fragments?: { key: string; label: string; data: PromptEntry[] }[];
     tool: string;
     original: string;
@@ -59,16 +59,15 @@ interface TabConfig {
         ProgressSpinnerModule, MessageModule
     ],
     templateUrl: './prompt-editor.component.html',
-    styles: ``
 })
 export class PromptEditorComponent {
-    private exportGitHubService = inject(ExportGitHubService);
-    private settingsService = inject(UserSettingsService);
-    private openRouterService = inject(OpenRouterService);
-    private aiPromptService = inject(AiPromptService);
+    private readonly exportGitHubService = inject(ExportGitHubService);
+    private readonly settingsService = inject(UserSettingsService);
+    private readonly openRouterService = inject(OpenRouterService);
+    private readonly aiPromptService = inject(AiPromptService);
 
     // Breadcrumbs
-    breadcrumbs = [{ label: 'dev._title', route: '/dev' }, { label: 'dev.prompts._title' }]
+    protected readonly breadcrumbs = [{ label: 'dev._title', route: '/dev' }, { label: 'dev.prompts._title' }]
 
     constructor() {
         effect(() => {
@@ -84,34 +83,34 @@ export class PromptEditorComponent {
     }
 
     // Type guard
-    isPromptConfig(entry: PromptEntry): entry is PromptEntry & { promptText: PromptConfig } {
+    protected isPromptConfig(entry: PromptEntry): entry is PromptEntry & { promptText: PromptConfig } {
         return typeof entry.promptText === 'object' && entry.promptText !== null;
     }
 
-    isPromptString(entry: PromptEntry): entry is PromptEntry & { promptText: string } {
+    protected isPromptString(entry: PromptEntry): entry is PromptEntry & { promptText: string } {
         return typeof entry.promptText === 'string';
     }
 
-    isFragmentsTab(tab: TabConfig): boolean {
+    protected isFragmentsTab(tab: TabConfig): boolean {
         return tab.fragments !== undefined;
     }
 
-    OutputKey = OutputKey
+    protected readonly OutputKey = OutputKey
 
     // Shared prompt fragments
-    roleFragment: PromptEntry[] = Object.keys(RoleKey).map(enumKey => ({
+    private readonly roleFragment: PromptEntry[] = Object.keys(RoleKey).map(enumKey => ({
         enumKey,
         translationKey: RoleKey[enumKey as keyof typeof RoleKey],
         promptText: RoleFragment[RoleKey[enumKey as keyof typeof RoleKey]]
     }));
 
-    outputFragment: PromptEntry[] = Object.keys(OutputKey).map(enumKey => ({
+    private readonly outputFragment: PromptEntry[] = Object.keys(OutputKey).map(enumKey => ({
         enumKey,
         translationKey: OutputKey[enumKey as keyof typeof OutputKey],
         promptText: OutputFragment[OutputKey[enumKey as keyof typeof OutputKey]]
     }));
 
-    rubricFragment: PromptEntry[] = Object.keys(RubricKey).map(enumKey => ({
+    private readonly rubricFragment: PromptEntry[] = Object.keys(RubricKey).map(enumKey => ({
         enumKey,
         translationKey: RubricKey[enumKey as keyof typeof RubricKey],
         promptText: RubricFragment[RubricKey[enumKey as keyof typeof RubricKey]]
@@ -187,9 +186,9 @@ export class PromptEditorComponent {
     }
 
     // Tabs
-    selectedTab = 0;
+    selectedTab = 1;
     tabs: TabConfig[] = [
-        //{ title: 'aiPrompt.shared._title', value: 0, fragments: this.fragments, tool: "Shared", original: this.rebuildSharedFile() },
+        { title: 'aiPrompt.shared._title', value: 0, fragments: this.fragments, tool: "Shared", original: this.rebuildSharedFile() },
         { title: 'aiPrompt.inventory._title', value: 1, prompts: this.inventoryPrompts, tool: "Inventory", original: this.rebuildPromptFile('Inventory', this.inventoryPrompts) },
         { title: 'aiPrompt.pages._title', value: 2, prompts: this.pagePrompts, tool: "Page", original: this.rebuildPromptFile('Page', this.pagePrompts) },
         { title: 'aiPrompt.problems._title', value: 3, prompts: this.problemPrompts, tool: "Problem", original: this.rebuildPromptFile('Problem', this.problemPrompts) }
@@ -270,8 +269,11 @@ export class PromptEditorComponent {
 
     // Tracks if changes have been made to current tab
     hasChanges(): boolean {
+        if(!this.selectedTab) return false;
+        const prompts = this.tabs[this.selectedTab].prompts
+        if(!prompts) return false;
         const tab = this.tabs[this.selectedTab];
-        const updatedContent = this.rebuildPromptFile(tab.tool, tab.prompts);
+        const updatedContent = this.rebuildPromptFile(tab.tool, prompts);
         const originalContent = tab.original;
         return updatedContent !== originalContent;
     }
@@ -295,14 +297,18 @@ export class PromptEditorComponent {
     }
 
     // Update prompts diff
+    @ViewChild('diffContainer') diffContainer?: ElementRef<HTMLElement>;
     async updateDiff() {
+        if (!this.diffContainer) return;
+        const prompts = this.tabs[this.selectedTab].prompts
+        if(!prompts) return;
         // Lazy load both modules
         const [{ createPatch }, { Diff2HtmlUI }] = await Promise.all([
             import('diff'),
             import('diff2html/lib/ui/js/diff2html-ui-slim'),
         ]);
         const tab = this.tabs[this.selectedTab];
-        const updatedContent = this.rebuildPromptFile(tab.tool, tab.prompts);
+        const updatedContent = this.rebuildPromptFile(tab.tool, prompts);
         const originalContent = tab.original;
 
         // Create the patch
@@ -322,7 +328,7 @@ export class PromptEditorComponent {
         };
 
         const diff2htmlUi = new Diff2HtmlUI(
-            document.getElementById('diff-container')!,
+            this.diffContainer.nativeElement,
             patch,
             config
         );
@@ -335,6 +341,8 @@ export class PromptEditorComponent {
     @ViewChild('filePreview') filePreview?: ElementRef<HTMLPreElement>;
     async highlightFilePreview(): Promise<void> {
         if (!this.filePreview) return;
+        const prompts = this.tabs[this.selectedTab].prompts
+        if(!prompts) return;
 
         try {
             const { default: Prism } = await import('prismjs');
@@ -352,7 +360,7 @@ export class PromptEditorComponent {
                 codeBlock.className = 'language-typescript';
                 codeBlock.textContent = this.rebuildPromptFile(
                     this.tabs[this.selectedTab].tool,
-                    this.tabs[this.selectedTab].prompts
+                    prompts
                 );
                 Prism.highlightElement(codeBlock);
             }

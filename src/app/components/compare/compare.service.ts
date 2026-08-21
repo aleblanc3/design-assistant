@@ -8,6 +8,10 @@ import { UserSettingsService } from '../../services/user-settings.service';
 import { FetchService } from '../../services/fetch.service';
 import { SourceVersion, CompareVersion } from '../../common/data.model';
 
+// Constants
+import { AiFreeModelOptions, AiPaidModelOptions, AI_FREE_MODELS } from '../../common/prompts/ai-models.config';
+export type AiTaskOption = 'default' | 'models' | 'prompts';
+
 @Injectable({
     providedIn: 'root'
 })
@@ -33,6 +37,10 @@ export class CompareService {
     loadingBefore = signal<boolean>(false);
     loadingAfter = signal<boolean>(false);
     loadingAll = signal<boolean>(false);
+
+    aiDrawerVisible = signal<boolean>(false);
+    selectedTask = signal<AiTaskOption>('default');
+    selectedModel = signal<AiFreeModelOptions | AiPaidModelOptions>(AI_FREE_MODELS[0])
 
     // Helpers to get & set HTML cache
     getCachedHtml(url: string): htmlProcessingResult | undefined {

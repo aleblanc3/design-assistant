@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
@@ -26,7 +26,8 @@ import { UserSettingsService } from '../../../../services/user-settings.service'
     UserSettingsComponent, ColorPickerComponent, CopyPresetComponent
   ],
   templateUrl: './color-generator.component.html',
-  styles: ``
+  styles: ``,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ColorGeneratorComponent {
   private readonly primeNGConfig = inject(PrimeNG);

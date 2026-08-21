@@ -1,4 +1,4 @@
-import { Component, effect, OnDestroy, AfterViewInit, ViewChildren, QueryList, ElementRef, signal, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, effect, OnDestroy, AfterViewInit, ViewChildren, QueryList, ElementRef, signal, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
@@ -71,7 +71,8 @@ type PreviewConfig = MessagePreviewConfig | ButtonPreviewConfig | CardPreviewCon
         BreadcrumbModule, TabsModule, MessageModule, ButtonModule, TooltipModule, InputTextModule, TextareaModule, SelectModule, IftaLabelModule
     ],
     templateUrl: './design-patterns.component.html',
-    styleUrl: './design-patterns.component.css'
+    styleUrl: './design-patterns.component.css',
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DesignPatternsComponent implements AfterViewInit, OnDestroy {
     private settingsService = inject(UserSettingsService);

@@ -1,4 +1,4 @@
-import { Component, inject, effect } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, effect } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
 
@@ -20,13 +20,10 @@ import { HtmlNormalizationService, htmlProcessingResult } from '../../../service
 import { UserSettingsService } from '../../../services/user-settings.service';
 
 //Components
-import { CompareSelectComponent } from '../../../components/compare/compare-select/compare-select.component';
+import { CompareSelectComponent } from '../../../components/compare/compare-select-page/compare-select.component';
 import { CompareToolsComponent } from '../../../components/compare/compare-tools/compare-tools.component';
 import { CompareRenderedComponent } from '../../../components/compare/compare-rendered/compare-rendered.component';
 import { CompareSourceComponent } from '../../../components/compare/compare-source/compare-source.component';
-
-
-
 
 @Component({
   selector: 'aida-compare-versions',
@@ -36,7 +33,7 @@ import { CompareSourceComponent } from '../../../components/compare/compare-sour
     CompareSelectComponent, CompareToolsComponent, CompareRenderedComponent, CompareSourceComponent
   ],
   templateUrl: './compare.component.html',
-  styles: '',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CompareComponent {
   private translate = inject(TranslateService);
