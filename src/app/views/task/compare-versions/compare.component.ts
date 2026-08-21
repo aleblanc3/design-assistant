@@ -20,7 +20,7 @@ import { HtmlNormalizationService, htmlProcessingResult } from '../../../service
 import { UserSettingsService } from '../../../services/user-settings.service';
 
 //Components
-import { CompareSelectComponent } from '../../../components/compare/compare-select/compare-select.component';
+import { CompareSelectComponent } from '../../../components/compare/compare-select-page/compare-select.component';
 import { CompareToolsComponent } from '../../../components/compare/compare-tools/compare-tools.component';
 import { CompareRenderedComponent } from '../../../components/compare/compare-rendered/compare-rendered.component';
 import { CompareSourceComponent } from '../../../components/compare/compare-source/compare-source.component';
