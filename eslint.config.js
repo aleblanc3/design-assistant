@@ -37,6 +37,7 @@ module.exports = tseslint.config(
       "@typescript-eslint/prefer-for-of": "warn", // for (i=0...) → for (const item of array)
       "@typescript-eslint/prefer-includes": "warn", // indexOf() !== -1 → includes()
       "@typescript-eslint/prefer-string-starts-ends-with": "warn", // indexOf() === 0 → startsWith()
+      "@typescript-eslint/no-unused-expressions": "warn", // catches this.function instead of this.function()
 
       // Angular modern patterns
       "@angular-eslint/prefer-standalone": "warn", // Encourage standalone components
