@@ -645,7 +645,7 @@ export class FetchService {
     }
   }
 
-  getReadability(doc: Document): { fleschKincaid: number, gunningFog: number } {
+  public getReadability(doc: Document): { fleschKincaid: number, gunningFog: number } {
 
 
     // Remove fieldflow & other hard to score elements
