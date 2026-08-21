@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -19,13 +19,9 @@ import { ViewPagesComponent } from '../../../components/view-pages/view-pages.co
 
 @Component({
   selector: 'aida-edit-project',
-  imports: [
-    FormsModule, TranslatePipe,
-    SetupProjectComponent, SetupRepoComponent, AddCollaboratorsComponent, FindPagesComponent, AddUrlsComponent, ViewPagesComponent,
-    MessageModule,
-  ],
+  imports: [FormsModule, TranslatePipe, SetupProjectComponent, SetupRepoComponent, AddCollaboratorsComponent, FindPagesComponent, AddUrlsComponent, ViewPagesComponent, MessageModule],
   templateUrl: './edit-project.component.html',
-  styles: ``
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditProjectComponent {
   public projectState = inject(ProjectStateService);
@@ -41,5 +37,4 @@ export class EditProjectComponent {
     const repo = this.projectState.getProject().github.repo;
     return !!repo;
   }
-
 }

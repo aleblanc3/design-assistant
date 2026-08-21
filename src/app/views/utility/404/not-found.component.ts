@@ -1,21 +1,17 @@
 import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
-import { TranslatePipe } from "@ngx-translate/core";
+import { TranslatePipe } from '@ngx-translate/core';
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
 
 /**
  * Reviewed: 2026-08-13 (ng21)
- * 
+ *
  * Displays a random 404 message when users navigate to a broken link.
  */
 @Component({
   selector: 'aida-not-found',
   imports: [TranslatePipe],
-  template: `
-  
-    <span [innerHTML]="random404Key | translate" (click)="onNotFoundClick($event)" (keydown)="onNotFoundEnter($event)" tabindex="0" role="link"></span>
-  `,
-  styles: ``,
+  template: `<span [innerHTML]="random404Key | translate" (click)="onNotFoundClick($event)" (keydown)="onNotFoundEnter($event)" role="link" tabindex="0"></span>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NotFoundComponent implements OnInit {
@@ -39,7 +35,7 @@ export class NotFoundComponent implements OnInit {
   }
 
   /** Intercepts href enter to prevent app reload */
-   protected onNotFoundEnter(event: KeyboardEvent): void {
+  protected onNotFoundEnter(event: KeyboardEvent): void {
     if (event.key === 'Enter' || event.key === ' ') {
       const target = event.target as HTMLElement;
       if (target.closest('a')) {

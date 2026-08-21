@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
 //Custom components and services
@@ -8,12 +8,8 @@ import { ViewPagesComponent } from '../../../components/view-pages/view-pages.co
 
 @Component({
   selector: 'aida-add-pages',
-  imports: [
-    TranslatePipe,
-    AddUrlsComponent, FindPagesComponent, ViewPagesComponent
-  ],
+  imports: [TranslatePipe, AddUrlsComponent, FindPagesComponent, ViewPagesComponent],
   templateUrl: './add-pages.component.html',
-  styles: ``
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddPagesComponent {
-}
+export class AddPagesComponent {}

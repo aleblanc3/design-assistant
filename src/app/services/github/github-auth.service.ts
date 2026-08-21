@@ -69,9 +69,7 @@ export class GitHubAuthService {
       sessionStorage.setItem('github_oauth_state', state);
 
       // Call backend to get GitHub authorization URL
-      const response = await firstValueFrom(
-        this.http.get<{ authUrl: string }>(`${this.BACKEND_URL}/auth/github/url`)
-      );
+      const response = await firstValueFrom(this.http.get<{ authUrl: string }>(`${this.BACKEND_URL}/auth/github/url`));
 
       // Append state to the auth URL
       const authUrlWithState = `${response.authUrl}&state=${state}`;
@@ -97,12 +95,7 @@ export class GitHubAuthService {
 
     try {
       // Exchange code for access token via backend
-      const response = await firstValueFrom(
-        this.http.post<GitHubTokenResponse>(
-          `${this.BACKEND_URL}/auth/github/callback`,
-          { code }
-        )
-      );
+      const response = await firstValueFrom(this.http.post<GitHubTokenResponse>(`${this.BACKEND_URL}/auth/github/callback`, { code }));
 
       // Store the access token
       this.accessToken.set(response.access_token);
@@ -126,19 +119,21 @@ export class GitHubAuthService {
 
     try {
       const user = await firstValueFrom(
-        this.http.get<GitHubUser>('https://api.github.com/user', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: 'application/vnd.github.v3+json'
-          }
-        }).pipe(
-          catchError(error => {
-            console.error('Failed to fetch user info:', error);
-            // If token is invalid, clear it
-            this.logout();
-            return of(null);
+        this.http
+          .get<GitHubUser>('https://api.github.com/user', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: 'application/vnd.github.v3+json',
+            },
           })
-        )
+          .pipe(
+            catchError((error) => {
+              console.error('Failed to fetch user info:', error);
+              // If token is invalid, clear it
+              this.logout();
+              return of(null);
+            }),
+          ),
       );
 
       if (user) {
@@ -147,7 +142,7 @@ export class GitHubAuthService {
           id: user.id,
           avatar_url: user.avatar_url,
           name: user.name,
-          email: user.email
+          email: user.email,
         };
         this.currentUser.set(mappedUser);
       }
@@ -182,7 +177,6 @@ export class GitHubAuthService {
   }
 
   private generateState(): string {
-    return Math.random().toString(36).substring(2, 15) +
-      Math.random().toString(36).substring(2, 15);
+    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
   }
 }

@@ -1,5 +1,5 @@
-import { Component, inject, computed } from '@angular/core';
-import { TranslatePipe } from "@ngx-translate/core";
+import { Component, ChangeDetectionStrategy, inject, computed } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
 
 //PrimeNG
@@ -15,30 +15,24 @@ import { ProjectCacheService } from '../../services/project-cache.service';
 import { IaDiagramService } from '../ia-diagram/ia-diagram.service';
 
 @Component({
-    selector: 'aida-view-pages',
-    imports: [
-        TranslatePipe, RouterLink,
-        ButtonModule, DrawerModule, TableModule, TooltipModule,
-        ProjectSettingsComponent
-    ],
-    templateUrl: './view-pages.component.html',
-    styles: ``
+  selector: 'aida-view-pages',
+  imports: [TranslatePipe, RouterLink, ButtonModule, DrawerModule, TableModule, TooltipModule, ProjectSettingsComponent],
+  templateUrl: './view-pages.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewPagesComponent {
-    protected projectState = inject(ProjectStateService)
-    protected projectCache = inject(ProjectCacheService)
-    protected iaDiagram = inject(IaDiagramService)
+  protected projectState = inject(ProjectStateService);
+  protected projectCache = inject(ProjectCacheService);
+  protected iaDiagram = inject(IaDiagramService);
 
-//UI elements
+  //UI elements
   inScopePageCount = computed(() => this.projectState.getProject().inScopePages);
   showUrls = false;
   showIA = false;
   showBreadcrumb = false;
 
   //URL drawer - Both languages
-  pairedPagesForTable = computed(() =>
-    this.projectState.getPairedPages(this.projectCache.selectedSource(), this.projectCache.selectedScope())
-  );
+  pairedPagesForTable = computed(() => this.projectState.getPairedPages(this.projectCache.selectedSource(), this.projectCache.selectedScope()));
 
   //URL drawer - One language
   singlePagesForList = computed(() => {
@@ -52,9 +46,9 @@ export class ViewPagesComponent {
     const pairs = this.pairedPagesForTable();
     let text;
     if (lang === 'both') {
-      text = pairs.map(pair => `${pair.en.url}\t${pair.fr.url}`).join('\r\n');
+      text = pairs.map((pair) => `${pair.en.url}\t${pair.fr.url}`).join('\r\n');
     } else {
-      text = pairs.map(pair => `${pair[lang].url}`).join('\r\n');
+      text = pairs.map((pair) => `${pair[lang].url}`).join('\r\n');
     }
     try {
       await navigator.clipboard.writeText(text);

@@ -1,7 +1,7 @@
-import { Component, inject, signal, OnInit, effect } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, OnInit, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TranslatePipe, TranslateService } from "@ngx-translate/core";
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 
 import { CardModule } from 'primeng/card';
@@ -50,13 +50,39 @@ import { ProjectMetadata, ProjectPhase } from '../../../common/data.model';
 @Component({
   selector: 'aida-switch-project',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslatePipe,
-    CardModule, ButtonModule, DialogModule, FieldsetModule, TimelineModule, ProgressBarModule, SplitButtonModule, ChipModule,
-    InputTextModule, IconFieldModule, InputIconModule, SelectModule, MultiSelectModule,
-    CheckboxModule, DividerModule, SelectButtonModule, TagModule, TableModule, TabsModule, BadgeModule, AvatarModule, AvatarGroupModule, TooltipModule, MessageModule,
-    SetupProjectComponent, AddCollaboratorsComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    TranslatePipe,
+    CardModule,
+    ButtonModule,
+    DialogModule,
+    FieldsetModule,
+    TimelineModule,
+    ProgressBarModule,
+    SplitButtonModule,
+    ChipModule,
+    InputTextModule,
+    IconFieldModule,
+    InputIconModule,
+    SelectModule,
+    MultiSelectModule,
+    CheckboxModule,
+    DividerModule,
+    SelectButtonModule,
+    TagModule,
+    TableModule,
+    TabsModule,
+    BadgeModule,
+    AvatarModule,
+    AvatarGroupModule,
+    TooltipModule,
+    MessageModule,
+    SetupProjectComponent,
+    AddCollaboratorsComponent,
+  ],
   templateUrl: './switch-project.component.html',
-  styles: ``
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SwitchProjectComponent implements OnInit {
   private translate = inject(TranslateService);
@@ -90,14 +116,13 @@ export class SwitchProjectComponent implements OnInit {
   }
 
   async ngOnInit() {
-
     // Delete deleted projects after a period of time
     const deletedCount = this.projectStorageService.cleanupDeletedProjects();
     if (deletedCount > 0) {
       this.message.add({
         severity: 'info',
         summary: 'Cleanup completed',
-        detail: `${deletedCount} expired project${deletedCount > 1 ? 's' : ''} automatically deleted`
+        detail: `${deletedCount} expired project${deletedCount > 1 ? 's' : ''} automatically deleted`,
       });
     }
 
@@ -109,10 +134,8 @@ export class SwitchProjectComponent implements OnInit {
   groupedFilters: MenuItem[] = [];
 
   updateGroupedFilters() {
-    const allCollaborators = this.allProjects().flatMap(p => p.collaborators);
-    const uniqueCollaborators = Array.from(
-      new Map(allCollaborators.map(c => [c.login, c])).values()
-    ).sort((a, b) => a.login.localeCompare(b.login));
+    const allCollaborators = this.allProjects().flatMap((p) => p.collaborators);
+    const uniqueCollaborators = Array.from(new Map(allCollaborators.map((c) => [c.login, c])).values()).sort((a, b) => a.login.localeCompare(b.login));
 
     this.groupedFilters = [
       {
@@ -121,7 +144,7 @@ export class SwitchProjectComponent implements OnInit {
         items: [
           { label: 'Cloud', value: 'Cloud' },
           { label: 'Local', value: 'Local' },
-        ]
+        ],
       },
       {
         label: 'Project Phase',
@@ -133,15 +156,15 @@ export class SwitchProjectComponent implements OnInit {
           { label: this.translate.instant(ProjectPhase.Design), value: ProjectPhase.Design },
           { label: this.translate.instant(ProjectPhase.Approve), value: ProjectPhase.Approve },
           { label: this.translate.instant(ProjectPhase.Complete), value: ProjectPhase.Complete },
-        ]
+        ],
       },
       {
         label: 'Collaborators',
         value: 'collab',
-        items: uniqueCollaborators.map(c => ({
-          label: c.name || c.login,  // Use display name if available, fallback to login
-          value: c.login
-        }))
+        items: uniqueCollaborators.map((c) => ({
+          label: c.name || c.login, // Use display name if available, fallback to login
+          value: c.login,
+        })),
       },
     ];
 
@@ -153,7 +176,7 @@ export class SwitchProjectComponent implements OnInit {
         items: [
           { label: 'Default', value: 'DEFAULT' },
           { label: myOrg, value: myOrg },
-        ]
+        ],
       });
     }
   }
@@ -169,9 +192,7 @@ export class SwitchProjectComponent implements OnInit {
 
   //Load all projects
   async loadProjects(mode: 'saved' | 'deleted' = 'saved') {
-    const projects = mode === 'deleted'
-      ? this.projectStorageService.getLocalProjectList('deleted')
-      : await this.projectStorageService.getProjectList();
+    const projects = mode === 'deleted' ? this.projectStorageService.getLocalProjectList('deleted') : await this.projectStorageService.getProjectList();
     this.allProjects.set(projects);
   }
 
@@ -187,31 +208,32 @@ export class SwitchProjectComponent implements OnInit {
     // Apply search
     if (search) {
       const searchLower = search.toLowerCase();
-      filtered = filtered.filter(p =>
-        p.projectName?.toLowerCase().includes(searchLower) ||
-        p.id?.toLowerCase().includes(searchLower) ||
-        p.key?.toLowerCase().includes(searchLower) ||
-        p.phase?.toLowerCase().includes(searchLower) ||
-        p.storageType?.toLowerCase().includes(searchLower) ||
-        p.github?.owner?.toLowerCase().includes(searchLower) ||
-        p.github?.repo?.toLowerCase().includes(searchLower) ||
-        p.github?.branch?.toLowerCase().includes(searchLower) ||
-        p.collaborators?.some(c => c.login?.toLowerCase().includes(searchLower)) ||
-        p.collaborators?.some(c => c.name?.toLowerCase().includes(searchLower)) ||
-        p.collaborators?.some(c => c.email?.toLowerCase().includes(searchLower))
+      filtered = filtered.filter(
+        (p) =>
+          p.projectName?.toLowerCase().includes(searchLower) ||
+          p.id?.toLowerCase().includes(searchLower) ||
+          p.key?.toLowerCase().includes(searchLower) ||
+          p.phase?.toLowerCase().includes(searchLower) ||
+          p.storageType?.toLowerCase().includes(searchLower) ||
+          p.github?.owner?.toLowerCase().includes(searchLower) ||
+          p.github?.repo?.toLowerCase().includes(searchLower) ||
+          p.github?.branch?.toLowerCase().includes(searchLower) ||
+          p.collaborators?.some((c) => c.login?.toLowerCase().includes(searchLower)) ||
+          p.collaborators?.some((c) => c.name?.toLowerCase().includes(searchLower)) ||
+          p.collaborators?.some((c) => c.email?.toLowerCase().includes(searchLower)),
       );
     }
 
     // Apply filters
     if (filters.length > 0) {
-      filtered = filtered.filter(p => {
-        return filters.some(filterValue => {
+      filtered = filtered.filter((p) => {
+        return filters.some((filterValue) => {
           // Storage type
           if (filterValue === 'Cloud') return p.storageType === 'cloud';
           if (filterValue === 'Local') return p.storageType === 'local';
 
           // Collaborators
-          if (p.collaborators.some(c => c.login === filterValue)) {
+          if (p.collaborators.some((c) => c.login === filterValue)) {
             return true;
           }
 
@@ -253,14 +275,13 @@ export class SwitchProjectComponent implements OnInit {
   // Project File Actions - load, new, delete, save to cloud & save autosave
 
   async loadProject(key: string, id: string, storageType: 'local' | 'cloud' = 'local') {
-
     // Show loading state on card
     this.loadingKey = key;
     if (storageType === 'cloud') {
       this.loadingKey = id;
     }
 
-    await new Promise(resolve => setTimeout(resolve, 600));
+    await new Promise((resolve) => setTimeout(resolve, 600));
 
     try {
       const project = await this.projectStorageService.loadProject(this.loadingKey, storageType);
@@ -268,8 +289,8 @@ export class SwitchProjectComponent implements OnInit {
       if (project) {
         this.projectState.setProject(project); // Update the project state
         //Refresh live data if project is missing properties (for patching legacy data)
-        await this.projectState.refreshAll(project.projectData, "live", true);
-        await this.projectState.refreshAll(project.projectData, "baseGH", true, true);
+        await this.projectState.refreshAll(project.projectData, 'live', true);
+        await this.projectState.refreshAll(project.projectData, 'baseGH', true, true);
       } else {
         console.error('Failed to load project'); // Show error message
       }
@@ -278,7 +299,6 @@ export class SwitchProjectComponent implements OnInit {
       this.router.navigate(['/']);
     }
   }
-
 
   async newProject() {
     this.projectStorageService.clearActiveProject();
@@ -295,13 +315,13 @@ export class SwitchProjectComponent implements OnInit {
       this.message.add({
         severity: 'success',
         summary: 'Project saved',
-        detail: 'Your project has been saved successfully'
+        detail: 'Your project has been saved successfully',
       });
     } else {
       this.message.add({
         severity: 'error',
         summary: 'Save failed',
-        detail: 'Could not save the project'
+        detail: 'Could not save the project',
       });
     }
   }
@@ -310,7 +330,9 @@ export class SwitchProjectComponent implements OnInit {
     event?.stopPropagation();
 
     let key = project.key;
-    if (project.storageType === 'cloud') { key = project.id }
+    if (project.storageType === 'cloud') {
+      key = project.id;
+    }
 
     const success = await this.projectStorageService.deleteProject(key, project.storageType);
 
@@ -333,13 +355,13 @@ export class SwitchProjectComponent implements OnInit {
       this.message.add({
         severity: 'success',
         summary: 'Project deleted',
-        detail: 'The project has been removed'
+        detail: 'The project has been removed',
       });
     } else {
       this.message.add({
         severity: 'error',
         summary: 'Delete failed',
-        detail: 'Could not delete the project'
+        detail: 'Could not delete the project',
       });
     }
   }
@@ -348,7 +370,9 @@ export class SwitchProjectComponent implements OnInit {
   async uploadToCloud(project: ProjectMetadata, event?: Event) {
     event?.stopPropagation();
 
-    if (!this.collaboratorService.canEditProject(project)) { return; }
+    if (!this.collaboratorService.canEditProject(project)) {
+      return;
+    }
 
     // Load the full project from local storage
     const fullProject = await this.projectStorageService.loadProject(project.key, 'local');
@@ -356,7 +380,7 @@ export class SwitchProjectComponent implements OnInit {
       this.message.add({
         severity: 'error',
         summary: 'Upload failed',
-        detail: 'Could not load project data'
+        detail: 'Could not load project data',
       });
       return;
     }
@@ -377,13 +401,13 @@ export class SwitchProjectComponent implements OnInit {
       this.message.add({
         severity: 'success',
         summary: 'Uploaded to cloud',
-        detail: 'Your project is now available in the cloud'
+        detail: 'Your project is now available in the cloud',
       });
     } else {
       this.message.add({
         severity: 'error',
         summary: 'Upload failed',
-        detail: 'Could not upload project to cloud'
+        detail: 'Could not upload project to cloud',
       });
     }
   }
@@ -403,19 +427,14 @@ export class SwitchProjectComponent implements OnInit {
 
   getPhaseIcon(phase: string | undefined): string {
     const iconMap: Record<string, string> = {
-      'Discover': 'search',
-      'Design': 'pencil',
-      'Assess': 'chart-line',
-      'Approve': 'check-circle',
-      'Complete': 'verified'
+      Discover: 'search',
+      Design: 'pencil',
+      Assess: 'chart-line',
+      Approve: 'check-circle',
+      Complete: 'verified',
     };
     return iconMap[phase || 'Draft'] || 'pencil';
   }
-
-
-
-
-
 
   async loadCloudProject(cloudId: string) {
     const project = await this.cloudStorageService.getProject(cloudId);
@@ -440,18 +459,4 @@ export class SwitchProjectComponent implements OnInit {
       console.log('Cloud project deleted');
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
-

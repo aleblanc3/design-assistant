@@ -1,4 +1,4 @@
-import { Component, inject, computed, signal, ViewChild, effect } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, computed, signal, ViewChild, effect } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 
@@ -19,15 +19,14 @@ import { TreeNodeStyleService } from '../../services/treenode-style.service';
 import { EditNodeComponent } from '../edit-node/edit-node.component';
 import { AddUrlsService } from '../add-urls/add-urls.service';
 import { FetchService } from '../../services/fetch.service';
-import { ProjectSettingsComponent } from "../project-settings/project-settings.component";
+import { ProjectSettingsComponent } from '../project-settings/project-settings.component';
 
 @Component({
   selector: 'aida-ia-diagram',
-  imports: [TranslatePipe, FormsModule,
-    OrganizationChartModule, ButtonModule, TooltipModule, SelectButtonModule,
-    MenuModule, DialogModule, EditNodeComponent, ProjectSettingsComponent],
+  imports: [TranslatePipe, FormsModule, OrganizationChartModule, ButtonModule, TooltipModule, SelectButtonModule, MenuModule, DialogModule, EditNodeComponent, ProjectSettingsComponent],
   templateUrl: './ia-diagram.component.html',
-  styleUrl: './ia-diagram.component.css'
+  styleUrl: './ia-diagram.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IaDiagramComponent {
   private projectState = inject(ProjectStateService);
@@ -53,9 +52,11 @@ export class IaDiagramComponent {
   projectTree = computed(() => {
     let tree = this.projectState.getProject().projectData;
     //Adjustments for full tree or custom root
-    if (this.selectedTree() !== "full") {
+    if (this.selectedTree() !== 'full') {
       const custom = this.projectState.findNodeByPath(tree, this.selectedTree(), this.primaryLang);
-      if (custom) { tree = [custom] };
+      if (custom) {
+        tree = [custom];
+      }
     }
     //Adjustments for baseline or final version
     if (this.projectCache.selectedViewIA() === 'baseline') {
@@ -76,7 +77,7 @@ export class IaDiagramComponent {
     const lang = this.projectCache.selectedLang();
     const liveH1 = node.data?.live?.[lang]?.h1 ?? '';
     const protoH1 = node.data?.prototype?.[lang]?.h1 ?? '';
-    const changed = liveH1 !== protoH1
+    const changed = liveH1 !== protoH1;
     if (this.projectCache.selectedViewIA() === 'baseline') return liveH1;
     else if (this.projectCache.selectedViewIA() === 'final') return protoH1;
     else if (changed) return `<s class="text-color-secondary text-sm">${liveH1}</s><br>${protoH1}`;
@@ -95,7 +96,7 @@ export class IaDiagramComponent {
 
   onMenuClick(event: MouseEvent, node: TreeNode) {
     if (!node.data.path[this.primaryLang]) return;
-    const projectNode = this.projectState.findNodeByPath(this.projectData().projectData, node.data.path[this.primaryLang], this.primaryLang)
+    const projectNode = this.projectState.findNodeByPath(this.projectData().projectData, node.data.path[this.primaryLang], this.primaryLang);
     if (!projectNode) return;
 
     event.preventDefault();
@@ -105,38 +106,40 @@ export class IaDiagramComponent {
         items: [
           {
             label: this.translate.instant(`common.editNode`),
-            icon: "pi pi-pen-to-square",
-            command: () => { this.selectedNode = projectNode; this.editNode = true }
+            icon: 'pi pi-pen-to-square',
+            command: () => {
+              this.selectedNode = projectNode;
+              this.editNode = true;
+            },
           },
         ],
       },
       {
         label: this.translate.instant(`common.viewOptions`),
-        items: []
-      }];
+        items: [],
+      },
+    ];
 
     // Action: Reorder siblings
     const siblings = this.projectState.getSiblings(node);
     const index = siblings.indexOf(node);
-    const canMoveLeft = (index > 0 && !node.data.isNavChild);
-    const canMoveRight = (index < siblings.length - 1 && !node.data.isNavChild);
+    const canMoveLeft = index > 0 && !node.data.isNavChild;
+    const canMoveRight = index < siblings.length - 1 && !node.data.isNavChild;
     if (this.projectCache.selectedViewIA() === 'changes' && (canMoveRight || canMoveLeft)) {
       this.items[0].items!.push({ separator: true });
     }
     if (this.projectCache.selectedViewIA() === 'changes' && canMoveLeft) {
-      this.items[0].items!.push(
-        {
-          label: this.translate.instant(`common.moveLeft`),
-          icon: "pi pi-arrow-left",
-          command: () => this.projectState.reorderNode(node, "left")
-        }
-      );
+      this.items[0].items!.push({
+        label: this.translate.instant(`common.moveLeft`),
+        icon: 'pi pi-arrow-left',
+        command: () => this.projectState.reorderNode(node, 'left'),
+      });
     }
     if (this.projectCache.selectedViewIA() === 'changes' && canMoveRight) {
       this.items[0].items!.push({
         label: this.translate.instant(`common.moveRight`),
-        icon: "pi pi-arrow-right",
-        command: () => this.projectState.reorderNode(node, "right")
+        icon: 'pi pi-arrow-right',
+        command: () => this.projectState.reorderNode(node, 'right'),
       });
     }
     if (this.projectCache.selectedViewIA() === 'changes' && (canMoveRight || canMoveLeft)) {
@@ -146,22 +149,29 @@ export class IaDiagramComponent {
     if (this.projectCache.selectedViewIA() === 'changes' && !node.data.isCrawled && !node.data.isNavChild) {
       this.items[0].items!.push({
         label: this.translate.instant(`iaDiagram.menu.findChildren`),
-        icon: "pi pi-search",
-        command: () => { this.addUrlsService.addChildren(node, this.primaryLang); }
-      })
+        icon: 'pi pi-search',
+        command: () => {
+          this.addUrlsService.addChildren(node, this.primaryLang);
+        },
+      });
     }
     // Action: Add child page or delete node
     if (this.projectCache.selectedViewIA() === 'changes' && !node.data.isNavChild) {
       this.items[0].items!.push(
         {
           label: this.translate.instant(`iaDiagram.menu.createChild`),
-          icon: "pi pi-file-plus text-green-500",
-          command: () => { this.selectedNode = this.projectState.createNode(node); this.editNode = true }
+          icon: 'pi pi-file-plus text-green-500',
+          command: () => {
+            this.selectedNode = this.projectState.createNode(node);
+            this.editNode = true;
+          },
         },
         {
           label: this.translate.instant(`iaDiagram.menu.deleteNode`),
-          icon: "pi pi-trash text-red-500",
-          command: () => { this.projectState.deleteNode(node) }
+          icon: 'pi pi-trash text-red-500',
+          command: () => {
+            this.projectState.deleteNode(node);
+          },
         },
       );
     }
@@ -170,60 +180,61 @@ export class IaDiagramComponent {
     if (this.projectTree()[0].data.path[this.primaryLang] !== node.data.path[this.primaryLang] && !node.data.isNavChild) {
       this.items[1].items!.push({
         label: this.translate.instant(`iaDiagram.menu.viewAsRoot`),
-        icon: "pi pi-window-minimize",
-        command: () => this.selectedTree.set(node.data.path[this.primaryLang])
+        icon: 'pi pi-window-minimize',
+        command: () => this.selectedTree.set(node.data.path[this.primaryLang]),
       });
     }
-    if (this.selectedTree() !== "full") {
+    if (this.selectedTree() !== 'full') {
       this.items[1].items!.push({
         label: this.translate.instant(`iaDiagram.menu.viewFullTree`),
-        icon: "pi pi-window-maximize",
-        command: () => this.selectedTree.set("full")
+        icon: 'pi pi-window-maximize',
+        command: () => this.selectedTree.set('full'),
       });
     }
     // View: Show/hide children
     if (node.children?.length) {
       this.items[1].items!.push({
         label: this.translate.instant(`iaDiagram.menu.hideChildren`),
-        icon: "pi pi-eye-slash",
-        command: () => this.collapsedNodes.update(set => new Set([...set, node.data.path[this.primaryLang]]))
+        icon: 'pi pi-eye-slash',
+        command: () => this.collapsedNodes.update((set) => new Set([...set, node.data.path[this.primaryLang]])),
       });
     }
     if (!node.children?.length && (node.data.collapsedChildren?.length || node.data.hiddenChildrenUrls?.length)) {
       this.items[1].items!.push({
         label: this.translate.instant(`iaDiagram.menu.showChildren`),
-        icon: "pi pi-eye",
+        icon: 'pi pi-eye',
         command: () => {
-          this.collapsedNodes.update(set => {
+          this.collapsedNodes.update((set) => {
             const next = new Set(set);
             next.delete(node.data.path[this.primaryLang]); // in case children were collapsed
             return next;
           });
-          this.hiddenNodes.update(set => {
+          this.hiddenNodes.update((set) => {
             const next = new Set(set);
             (node.data.hiddenChildrenUrls ?? []).forEach((url: string) => next.delete(url));
             return next;
           });
-        }
+        },
       });
     }
     // View: Show/hide node
     if (node.parent) {
       this.items[1].items!.push({
         label: this.translate.instant(`iaDiagram.menu.hideNode`),
-        icon: "pi pi-eye-slash",
-        command: () => this.hiddenNodes.update(set => new Set([...set, node.data.path[this.primaryLang]]))
+        icon: 'pi pi-eye-slash',
+        command: () => this.hiddenNodes.update((set) => new Set([...set, node.data.path[this.primaryLang]])),
       });
     }
     if (node.children?.length && node.data.hiddenChildrenUrls?.length) {
       this.items[1].items!.push({
         label: this.translate.instant(`iaDiagram.menu.showHiddenNodes`),
-        icon: "pi pi-eye",
-        command: () => this.hiddenNodes.update(set => {
-          const next = new Set(set);
-          node.data.hiddenChildrenUrls.forEach((url: string) => next.delete(url));
-          return next;
-        })
+        icon: 'pi pi-eye',
+        command: () =>
+          this.hiddenNodes.update((set) => {
+            const next = new Set(set);
+            node.data.hiddenChildrenUrls.forEach((url: string) => next.delete(url));
+            return next;
+          }),
       });
     }
     //Show nav children
@@ -233,11 +244,11 @@ export class IaDiagramComponent {
 
       this.items[1].items!.push({
         label: navChildrenVisible ? this.translate.instant(`iaDiagram.menu.hideNavChildren`) : this.translate.instant(`iaDiagram.menu.showNavChildren`),
-        icon: navChildrenVisible ? "pi pi-eye-slash" : "pi pi-eye",
+        icon: navChildrenVisible ? 'pi pi-eye-slash' : 'pi pi-eye',
         command: async () => {
           //Toggle off
           if (this.navNodes().has(path)) {
-            this.navNodes.update(map => {
+            this.navNodes.update((map) => {
               const next = new Map(map);
               next.delete(path);
               return next;
@@ -246,31 +257,27 @@ export class IaDiagramComponent {
           }
           //Toggle on
           const type = this.projectState.getProject().repoType;
-          const version = type === "github" && this.projectCache.hasGitHub()
-            ? "protoGH"
-            : type === "local" && this.projectCache.hasLocal()
-              ? "protoUT"
-              : "live"
+          const version = type === 'github' && this.projectCache.hasGitHub() ? 'protoGH' : type === 'local' && this.projectCache.hasLocal() ? 'protoUT' : 'live';
           const url = this.fetchService.generateUrl(path, version, this.projectData().github.owner, this.projectData().github.repo);
           const viaProxy = version.endsWith('UT');
           let linkedPaths = await this.fetchService.getPaths(url, viaProxy);
           if (version !== 'live' && linkedPaths.length === 0) {
-            const urlLive = this.fetchService.generateUrl(path, "live");
+            const urlLive = this.fetchService.generateUrl(path, 'live');
             linkedPaths = await this.fetchService.getPaths(urlLive, false);
           }
-          const projectPaths = new Set(this.projectState.getAllPages(this.primaryLang).map(p => p.path));
-          const directChildPaths = new Set((node.children ?? []).map(child => child.data.path[this.primaryLang]));
-          const filteredPaths = linkedPaths.filter(p => projectPaths.has(p) && !directChildPaths.has(p) && p !== path);
-          console.log(filteredPaths)
-          this.navNodes.update(map => new Map(map).set(path, filteredPaths));
-        }
-      })
+          const projectPaths = new Set(this.projectState.getAllPages(this.primaryLang).map((p) => p.path));
+          const directChildPaths = new Set((node.children ?? []).map((child) => child.data.path[this.primaryLang]));
+          const filteredPaths = linkedPaths.filter((p) => projectPaths.has(p) && !directChildPaths.has(p) && p !== path);
+          console.log(filteredPaths);
+          this.navNodes.update((map) => new Map(map).set(path, filteredPaths));
+        },
+      });
     }
     // View: Fallback if no menu options available
     if (this.items[1].items!.length === 0) {
       this.items[1].items!.push({
         label: this.translate.instant(`iaDiagram.menu.noActions`),
-        disabled: true
+        disabled: true,
       });
     }
 

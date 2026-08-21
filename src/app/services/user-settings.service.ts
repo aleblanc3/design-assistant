@@ -35,7 +35,7 @@ export class UserSettingsService {
   // User
   public userId = signal<string>(this.getOrCreateUserId());
 
-  //Version  
+  //Version
   public includePreview = signal<boolean>(localStorage.getItem('includePreview') === 'true' ? true : false);
   public includeGitHub = signal<boolean>(false);
   public includeLocal = signal<boolean>(false);
@@ -50,7 +50,7 @@ export class UserSettingsService {
 
     // Dark & Light
     const storedTheme = localStorage.getItem('darkMode');
-    this.setDarkMode(storedTheme === 'true')
+    this.setDarkMode(storedTheme === 'true');
 
     // Default & Colorblind
     effect(() => {
@@ -59,8 +59,7 @@ export class UserSettingsService {
 
     effect(() => {
       localStorage.setItem('includePreview', this.includePreview().toString());
-    })
-
+    });
   }
 
   // Language
@@ -100,9 +99,7 @@ export class UserSettingsService {
   // Default & Colorblind
   private getStoredColorScheme(): ColorScheme {
     const stored = localStorage.getItem(this.colorSchemeKey);
-    return (stored === 'deutan' || stored === 'protan' || stored === 'tritan' || stored === 'custom' || stored === 'default')
-      ? stored
-      : 'default';
+    return stored === 'deutan' || stored === 'protan' || stored === 'tritan' || stored === 'custom' || stored === 'default' ? stored : 'default';
   }
 
   setColorScheme(scheme: ColorScheme) {
@@ -130,13 +127,13 @@ export class UserSettingsService {
         preset = MyPreset;
     }
     this.primeNGConfig.theme.set({
-        preset: preset,
-        options: {
-            colorScheme: 'light',
-            theme: 'blue',
-            ripple: true,
-            darkModeSelector: '.dark-mode'
-        }
+      preset: preset,
+      options: {
+        colorScheme: 'light',
+        theme: 'blue',
+        ripple: true,
+        darkModeSelector: '.dark-mode',
+      },
     });
   }
 
@@ -153,5 +150,4 @@ export class UserSettingsService {
     localStorage.setItem('userId', id);
     this.userId.set(id);
   }
-
 }

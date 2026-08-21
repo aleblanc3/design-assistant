@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject, effect } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
 
@@ -28,9 +28,17 @@ import { CompareSourceComponent } from '../../../components/compare/compare-sour
 @Component({
   selector: 'aida-compare-versions',
   imports: [
-    FormsModule, TranslatePipe,
-    ButtonModule, TabsModule, IftaLabelModule, SelectModule, CheckboxModule,
-    CompareSelectComponent, CompareToolsComponent, CompareRenderedComponent, CompareSourceComponent
+    FormsModule,
+    TranslatePipe,
+    ButtonModule,
+    TabsModule,
+    IftaLabelModule,
+    SelectModule,
+    CheckboxModule,
+    CompareSelectComponent,
+    CompareToolsComponent,
+    CompareRenderedComponent,
+    CompareSourceComponent,
   ],
   templateUrl: './compare.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -43,13 +51,12 @@ export class CompareComponent {
   private htmlNormalizationService = inject(HtmlNormalizationService);
   private settingsService = inject(UserSettingsService);
 
-
-   markForTranslation() {
+  markForTranslation() {
     marker('compare.view.linebyline');
     marker('compare.view.sidebyside');
   }
-  
-// Handle accept/reject changes
+
+  // Handle accept/reject changes
   onContentChanged(event: { beforeContent: htmlProcessingResult; afterContent: htmlProcessingResult }): void {
     // Update your signals
     this.compareService.originalHtml.set(event.beforeContent);

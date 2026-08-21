@@ -1,7 +1,7 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TranslatePipe } from "@ngx-translate/core";
+import { TranslatePipe } from '@ngx-translate/core';
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { RouterLink } from '@angular/router';
 
@@ -21,17 +21,13 @@ import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'aida-dashboard',
-  imports: [
-    CommonModule, FormsModule, TranslatePipe, RouterLink,
-    ExportProjectComponent, AddCollaboratorsComponent,
-    ButtonModule, TagModule, ProgressBarModule, CheckboxModule, DividerModule],
+  imports: [CommonModule, FormsModule, TranslatePipe, RouterLink, ExportProjectComponent, AddCollaboratorsComponent, ButtonModule, TagModule, ProgressBarModule, CheckboxModule, DividerModule],
   templateUrl: './dashboard.component.html',
-  styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent {
   private projectState = inject(ProjectStateService);
-  production = environment.production
+  production = environment.production;
 
   get projectData() {
     return this.projectState.getProject();
@@ -39,12 +35,7 @@ export class DashboardComponent {
 
   //Project phase
   ProjectPhase = ProjectPhase;
-  displayedPhases = [
-    ProjectPhase.Discover,
-    ProjectPhase.Assess,
-    ProjectPhase.Design,
-    ProjectPhase.Approve
-  ];
+  displayedPhases = [ProjectPhase.Discover, ProjectPhase.Assess, ProjectPhase.Design, ProjectPhase.Approve];
 
   //Project status
   PhaseStatus = PhaseStatus;
@@ -55,17 +46,17 @@ export class DashboardComponent {
 
     // Draft = all pending
     if (currentPhase === ProjectPhase.Draft) {
-      return this.displayedPhases.map(phase => ({
+      return this.displayedPhases.map((phase) => ({
         name: phase,
-        status: PhaseStatus.Pending
+        status: PhaseStatus.Pending,
       }));
     }
 
     // Complete = all complete
     if (currentPhase === ProjectPhase.Complete) {
-      return this.displayedPhases.map(phase => ({
+      return this.displayedPhases.map((phase) => ({
         name: phase,
-        status: PhaseStatus.Complete
+        status: PhaseStatus.Complete,
       }));
     }
 
@@ -74,10 +65,7 @@ export class DashboardComponent {
 
     return this.displayedPhases.map((phase, index) => ({
       name: phase,
-      status:
-        index < currentIndex ? PhaseStatus.Complete :
-          index === currentIndex ? PhaseStatus.Current :
-            PhaseStatus.Pending
+      status: index < currentIndex ? PhaseStatus.Complete : index === currentIndex ? PhaseStatus.Current : PhaseStatus.Pending,
     }));
   }
 
@@ -101,7 +89,7 @@ export class DashboardComponent {
 
   //Open GitHub repo in new tab
   openRepo(github: GitHubRepo, type: 'prototype' | 'baseline' = 'prototype') {
-    const url = "https://github.com/" + github.owner + "/" + (type === 'prototype' ? github.repo : github.repo + "-baseline");
+    const url = 'https://github.com/' + github.owner + '/' + (type === 'prototype' ? github.repo : github.repo + '-baseline');
     window.open(url, '_blank');
   }
 
@@ -111,7 +99,7 @@ export class DashboardComponent {
     }
   }
 
-  markForTranslation(){
+  markForTranslation() {
     marker('project.phase.discover.bullets');
     marker('project.phase.discover.description');
     marker('project.phase.discover.description2');
@@ -127,9 +115,9 @@ export class DashboardComponent {
   }
 
   //Mock data for now
-  selectedItems: { key: string, value: string }[] = [];
+  selectedItems: { key: string; value: string }[] = [];
 
-  checklist: { key: string, value: string }[] = [
+  checklist: { key: string; value: string }[] = [
     { key: 'Metadata', value: 'meta' },
     { key: 'Translations', value: 'translate' },
     { key: 'Validation', value: 'valid' },
@@ -142,4 +130,3 @@ export class DashboardComponent {
   pageProgress = 10;
   //End mock data
 }
-

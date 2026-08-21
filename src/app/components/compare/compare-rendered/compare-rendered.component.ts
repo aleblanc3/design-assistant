@@ -2,7 +2,7 @@
 // It expects inputs in htmlProcessingResult format which includes information to populate the legend
 // Format your url or string content through the normalizeHTML function in html-normalization.service convert it to an htmlProcessingResult
 
-import { Component, inject, input, computed, Output, EventEmitter, ViewChild, ElementRef, signal, effect, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, input, computed, Output, EventEmitter, ViewChild, ElementRef, signal, effect, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule, LocationStrategy } from '@angular/common';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
@@ -26,376 +26,358 @@ import { CompareRenderedService } from './compare-rendered.service';
 import { htmlProcessingResult } from '../../../services/html-normalization.service';
 
 export enum WebViewType {
-    Original = 'original',
-    Modified = 'modified',
-    Diff = 'diff'
+  Original = 'original',
+  Modified = 'modified',
+  Diff = 'diff',
 }
 
 export interface ViewOption<T = string> {
-    label: string;
-    value: T;
-    icon: string;
+  label: string;
+  value: T;
+  icon: string;
 }
 
 @Component({
-    selector: 'aida-compare-rendered',
-    imports: [TranslatePipe, CommonModule, FormsModule,
-        ButtonModule, SplitButtonModule, RadioButtonModule, ToolbarModule, TooltipModule, ToggleButtonModule],
-    templateUrl: './compare-rendered.component.html',
-    styleUrl: './compare-rendered.component.css'
+  selector: 'aida-compare-rendered',
+  imports: [TranslatePipe, CommonModule, FormsModule, ButtonModule, SplitButtonModule, RadioButtonModule, ToolbarModule, TooltipModule, ToggleButtonModule],
+  templateUrl: './compare-rendered.component.html',
+  styleUrl: './compare-rendered.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
-    private compareRenderedService = inject(CompareRenderedService);
-    private translate = inject(TranslateService);
-    private locationStrategy = inject(LocationStrategy);
+  private compareRenderedService = inject(CompareRenderedService);
+  private translate = inject(TranslateService);
+  private locationStrategy = inject(LocationStrategy);
 
-    // Inputs
-    beforeContent = input<htmlProcessingResult | undefined>();
-    afterContent = input<htmlProcessingResult | undefined>();
+  // Inputs
+  beforeContent = input<htmlProcessingResult | undefined>();
+  afterContent = input<htmlProcessingResult | undefined>();
 
-    // Adjust inputs if one is undefined so we can render page with no changes
-    private readonly resolvedBefore = computed(() => this.beforeContent() ?? this.afterContent());
-    private readonly resolvedAfter = computed(() => this.afterContent() ?? this.beforeContent());
+  // Adjust inputs if one is undefined so we can render page with no changes
+  private readonly resolvedBefore = computed(() => this.beforeContent() ?? this.afterContent());
+  private readonly resolvedAfter = computed(() => this.afterContent() ?? this.beforeContent());
 
-    // Outputs
-    @Output() contentChanged = new EventEmitter<{
-        beforeContent: htmlProcessingResult;
-        afterContent: htmlProcessingResult;
-    }>();
+  // Outputs
+  @Output() contentChanged = new EventEmitter<{
+    beforeContent: htmlProcessingResult;
+    afterContent: htmlProcessingResult;
+  }>();
 
-    // Get DOM elements from template
-    @ViewChild('liveContainer', { static: false }) liveContainer!: ElementRef;
+  // Get DOM elements from template
+  @ViewChild('liveContainer', { static: false }) liveContainer!: ElementRef;
 
-    // Signals
-    shadowDOM = signal<ShadowRoot | null>(null);
+  // Signals
+  shadowDOM = signal<ShadowRoot | null>(null);
 
-    // Effects
-    constructor() {
-        effect(async () => {
-            const viewType = this.webSelectedView();
-            const shadowRoot = this.shadowDOM();
-            const beforeContent = this.resolvedBefore();
-            const afterContent = this.resolvedAfter();
+  // Effects
+  constructor() {
+    effect(async () => {
+      const viewType = this.webSelectedView();
+      const shadowRoot = this.shadowDOM();
+      const beforeContent = this.resolvedBefore();
+      const afterContent = this.resolvedAfter();
 
-            if (beforeContent && afterContent && shadowRoot) {
-                await this.compareRenderedService.generateShadowDOMContent(
-                    shadowRoot,
-                    viewType,
-                    beforeContent.html,
-                    afterContent.html,
-                );
-                //Click listener for ShadowDom
-                if (this.shadowClickHandler) {
-                    this.shadowClickHandler();
-                    console.log('Reset shadow click handler');
-                }
-                this.shadowClickHandler = this.compareRenderedService.handleDocumentClick(
-                    shadowRoot,
-                    (index: number) => {
-                        this.currentIndex = index;
-                    },
-                );
-                //Selection listener for ShadowDom
-                if (this.shadowSelectionHandler) {
-                    this.shadowSelectionHandler();
-                    console.log('Reset shadow selection handler');
-                }
-                this.shadowSelectionHandler =
-                    this.compareRenderedService.handleSelection(shadowRoot);
-
-                //Get DOM element with a data-id
-                this.elements = this.compareRenderedService.getDataIdElements(shadowRoot);
-                if (this.elements.length > 0) {
-                    this.focusOnIndex(this.currentIndex); //set initial focus to 1st element
-                    //this.isDisabled = true;
-                    //this.aiDisabled = 'Accept or reject changes first';
-                } else {
-                    //this.isDisabled = false;
-                    //this.aiDisabled = '';
-                }
-            }
-
-
-        })
-    }
-
-    //Runs when view is initialized
-    ngAfterViewInit(): void {
-        const shadowRoot = this.compareRenderedService.initializeShadowDOM(
-            this.liveContainer.nativeElement,
-        );
-        if (shadowRoot) {
-            this.shadowDOM.set(shadowRoot);
-            console.log('Shadow DOM is initialized.');
-        }
-    }
-
-    //Runs when component is destroyed
-    ngOnDestroy(): void {
-        if (this.shadowDOM()) {
-            this.compareRenderedService.clearShadowDOM(this.shadowDOM()!);
-            this.shadowDOM.set(null);
-        }
+      if (beforeContent && afterContent && shadowRoot) {
+        await this.compareRenderedService.generateShadowDOMContent(shadowRoot, viewType, beforeContent.html, afterContent.html);
+        //Click listener for ShadowDom
         if (this.shadowClickHandler) {
-            this.shadowClickHandler();
+          this.shadowClickHandler();
+          console.log('Reset shadow click handler');
         }
+        this.shadowClickHandler = this.compareRenderedService.handleDocumentClick(shadowRoot, (index: number) => {
+          this.currentIndex = index;
+        });
+        //Selection listener for ShadowDom
         if (this.shadowSelectionHandler) {
-            this.shadowSelectionHandler();
+          this.shadowSelectionHandler();
+          console.log('Reset shadow selection handler');
         }
-    }
+        this.shadowSelectionHandler = this.compareRenderedService.handleSelection(shadowRoot);
 
-    //Web page view options
-    WebViewType = WebViewType;
-    webSelectedView = signal<WebViewType>(WebViewType.Diff);
-
-    get webViewOptions(): ViewOption<WebViewType>[] {
-        const beforeLabel = this.beforeContent()?.version ? this.translate.instant('common.source.'+this.beforeContent()?.version) : this.translate.instant('common.before');
-        const afterLabel = this.afterContent()?.version ? this.translate.instant('common.source.'+this.afterContent()?.version) : this.translate.instant('common.after');
-        return [
-            {
-                label: beforeLabel,
-                value: WebViewType.Original,
-                icon: 'pi pi-file',
-            },
-            {
-                label: this.translate.instant('common.comparison'),
-                value: WebViewType.Diff,
-                icon: 'pi pi-sort-alt',
-            },
-            {
-                label: afterLabel,
-                value: WebViewType.Modified,
-                icon: 'pi pi-file-edit',
-            },
-        ];
-    }
-
-    //Change web page view
-    async onWebViewChange(viewType: WebViewType) {
-        this.webSelectedView.set(viewType);
-    }
-
-    /* START OF TOOLBAR FUNCTIONS */
-
-    // 1. Shadow DOM navigation
-    private shadowClickHandler: (() => void) | null = null;
-    private shadowSelectionHandler: (() => void) | null = null;
-
-    currentIndex = 0;
-    elements: HTMLElement[] = [];
-
-    next() {
-        if (this.elements.length === 0) return;
-        this.currentIndex = (this.currentIndex + 1) % this.elements.length;
-        this.focusOnIndex(this.currentIndex);
-        this.compareRenderedService.lastSelection = {
-            count: 1,
-            startId: null,
-            endId: null,
-        }; //reset selection
-    }
-
-    prev() {
-        if (this.elements.length === 0) return;
-        this.currentIndex =
-            (this.currentIndex - 1 + this.elements.length) % this.elements.length;
-        this.focusOnIndex(this.currentIndex);
-        this.compareRenderedService.lastSelection = {
-            count: 1,
-            startId: null,
-            endId: null,
-        }; //reset selection
-    }
-
-    private focusOnIndex(index: number) {
-        const shadowRoot = this.shadowDOM();
-        if (!shadowRoot) return;
-        const el = this.elements[index];
-        this.compareRenderedService.highlightElement(el);
-        this.compareRenderedService.openParentDetails(el);
-        this.compareRenderedService.closeAllDetailsExcept(shadowRoot, el);
-        this.compareRenderedService.scrollToElement(el);
-    }
-
-    get displayCounter(): string {
-        if (!this.elements?.length) {
-            return this.translate.instant('compare.rendered.counter', { range: '0', total: '0' });
-        }
-
-        const total = this.elements.length;
-
-        // nothing highlighted
-        if (this.compareRenderedService.lastSelection.count === 0) {
-            return this.translate.instant('compare.rendered.counter', { range: '–', total });
-        }
-
-        // multiple highlighted
-        if (this.compareRenderedService.lastSelection.count > 1) {
-            if (
-                this.compareRenderedService.lastSelection.startId != null &&
-                this.compareRenderedService.lastSelection.endId != null
-            ) {
-                this.currentIndex = this.compareRenderedService.lastSelection.endId - 1;
-                const range = `${this.compareRenderedService.lastSelection.startId}–${this.compareRenderedService.lastSelection.endId}`;
-                return this.translate.instant('compare.rendered.counter', { range, total });
-            }
-            return this.translate.instant('compare.rendered.counter', { range: '–', total });
-        }
-
-        // single highlighted
-        const range = this.currentIndex + 1;
-        return this.translate.instant('compare.rendered.counter', { range, total });
-
-    }
-
-    get displayNumHighlighted(): string {
-        const count = this.compareRenderedService.lastSelection.count;
-        if (count < 1) return '';
-        if (this.compareRenderedService.lastSelection.count < 1) return '';
-        return this.translate.instant('compare.rendered.itemsSelected', { count });
-    }
-
-    // 2. Accept
-    toolbarAccept(): void {
-        this.processDiffChange('accept');
-    }
-
-    get acceptItems() {
-        return [
-            {
-                label: 'Accept all',
-                icon: 'pi pi-check-circle',
-                command: () => {
-                    //this.toolbarAcceptAll();
-                },
-                disabled: true,
-            },
-            {
-                separator: true,
-            },
-            {
-                label: this.translate.instant('compare.button.undo'),
-                icon: 'pi pi-refresh',
-                command: () => {
-                    //this.uploadState.undoLastChange();
-                },
-                disabled: true,
-            },
-        ];
-    }
-
-    // 3. Reject
-    toolbarReject(): void {
-        this.processDiffChange('reject');
-    }
-
-    get rejectItems() {
-        return [
-            {
-                label: 'Reject all',
-                icon: 'pi pi-times-circle',
-                command: () => {
-                    //this.toolbarRejectAll();
-                },
-                disabled: true,
-            },
-            {
-                separator: true,
-            },
-            {
-                label: this.translate.instant('compare.button.undo'),
-                icon: 'pi pi-refresh',
-                command: () => {
-                    //this.uploadState.undoLastChange();
-                },
-                disabled: true,
-            },
-        ];
-    }
-
-    // 4. Legend
-    readonly baseLegendItems = signal<{ text: string; colour: string; style: string; lineStyle?: string }[]>([
-        { text: 'compare.rendered.legend.previousVersion', colour: '#F3A59D', style: 'highlight' },
-        { text: 'compare.rendered.legend.updatedVersion', colour: '#83d5a8', style: 'highlight' },
-        { text: 'compare.rendered.legend.updatedLink', colour: '#FFEE8C', style: 'highlight' },
-        { text: 'compare.rendered.legend.hiddenContent', colour: '#6F9FFF', style: 'line' },
-        { text: 'compare.rendered.legend.modalContent', colour: '#666666', style: 'line', lineStyle: 'dashed', },
-        { text: 'compare.rendered.legend.dynamicContent', colour: '#fbc02f', style: 'line', lineStyle: 'dashed', },
-    ]);
-
-    markForTranslation() {
-        marker('compare.rendered.legend.previousVersion');
-        marker('compare.rendered.legend.updatedVersion');
-        marker('compare.rendered.legend.updatedLink');
-        marker('compare.rendered.legend.hiddenContent');
-        marker('compare.rendered.legend.modalContent');
-        marker('compare.rendered.legend.dynamicContent');
-    }
-
-    get legendItems() {
-        const view = this.webSelectedView();
-        const items = this.baseLegendItems();
-        const beforeFlags = this.beforeContent()?.found;
-        const afterFlags = this.afterContent()?.found;
-        return items
-            .map((item) => {
-
-                if (item.text === 'compare.rendered.legend.previousVersion') {
-                    if (view === WebViewType.Modified) {
-                        return null; // hide in Modified view
-                    }
-                    if (view === WebViewType.Original) {
-                        return { ...item, style: 'line' }; // change style in Original view
-                    }
-                    return item;
-                }
-
-                if (item.text === 'compare.rendered.legend.updatedVersion') {
-                    if (view === WebViewType.Original) {
-                        return null; // hide in Original view
-                    }
-                    if (view === WebViewType.Modified) {
-                        return { ...item, style: 'line' }; // change style in Modified view
-                    }
-                    return item;
-                }
-
-                if (item.text === 'compare.rendered.legend.updatedLink' && (view === WebViewType.Original || view === WebViewType.Modified)) {
-                    return null; //hide in both original and modified view
-                }
-
-                if (item.text === 'compare.rendered.legend.hiddenContent' && !beforeFlags?.hidden && !afterFlags?.hidden) {
-                    return null; //hide if hidden content not found in either original or modified
-                }
-
-                if (item.text === 'compare.rendered.legend.modalContent' && !beforeFlags?.modal && !afterFlags?.modal) {
-                    return null; //hide if modal content not found in either original or modified
-                }
-
-                if (item.text === 'compare.rendered.legend.dynamicContent' && !beforeFlags?.dynamic && !afterFlags?.dynamic) {
-                    return null; //hide if dynamic content not found in either original or modified
-                }
-
-                return item;
-            }).filter(Boolean) as typeof items;
-    };
-
-    // 5. Before/After - Edit
-    toggleEdit = false;
-    async toolbarToggleEdit(view: WebViewType): Promise<void> {
-        const shadowRoot = this.shadowDOM();
-        const editable = shadowRoot?.getElementById('editable');
-        if (!editable) {
-            console.warn('Editable area not found.');
-            this.toggleEdit = false;
-            return;
-        }
-        if (this.toggleEdit) {
-            //edit
-            editable.setAttribute('contenteditable', 'true');
-            editable.focus();
+        //Get DOM element with a data-id
+        this.elements = this.compareRenderedService.getDataIdElements(shadowRoot);
+        if (this.elements.length > 0) {
+          this.focusOnIndex(this.currentIndex); //set initial focus to 1st element
+          //this.isDisabled = true;
+          //this.aiDisabled = 'Accept or reject changes first';
         } else {
-            /*save
+          //this.isDisabled = false;
+          //this.aiDisabled = '';
+        }
+      }
+    });
+  }
+
+  //Runs when view is initialized
+  ngAfterViewInit(): void {
+    const shadowRoot = this.compareRenderedService.initializeShadowDOM(this.liveContainer.nativeElement);
+    if (shadowRoot) {
+      this.shadowDOM.set(shadowRoot);
+      console.log('Shadow DOM is initialized.');
+    }
+  }
+
+  //Runs when component is destroyed
+  ngOnDestroy(): void {
+    if (this.shadowDOM()) {
+      this.compareRenderedService.clearShadowDOM(this.shadowDOM()!);
+      this.shadowDOM.set(null);
+    }
+    if (this.shadowClickHandler) {
+      this.shadowClickHandler();
+    }
+    if (this.shadowSelectionHandler) {
+      this.shadowSelectionHandler();
+    }
+  }
+
+  //Web page view options
+  WebViewType = WebViewType;
+  webSelectedView = signal<WebViewType>(WebViewType.Diff);
+
+  get webViewOptions(): ViewOption<WebViewType>[] {
+    const beforeLabel = this.beforeContent()?.version ? this.translate.instant('common.source.' + this.beforeContent()?.version) : this.translate.instant('common.before');
+    const afterLabel = this.afterContent()?.version ? this.translate.instant('common.source.' + this.afterContent()?.version) : this.translate.instant('common.after');
+    return [
+      {
+        label: beforeLabel,
+        value: WebViewType.Original,
+        icon: 'pi pi-file',
+      },
+      {
+        label: this.translate.instant('common.comparison'),
+        value: WebViewType.Diff,
+        icon: 'pi pi-sort-alt',
+      },
+      {
+        label: afterLabel,
+        value: WebViewType.Modified,
+        icon: 'pi pi-file-edit',
+      },
+    ];
+  }
+
+  //Change web page view
+  async onWebViewChange(viewType: WebViewType) {
+    this.webSelectedView.set(viewType);
+  }
+
+  /* START OF TOOLBAR FUNCTIONS */
+
+  // 1. Shadow DOM navigation
+  private shadowClickHandler: (() => void) | null = null;
+  private shadowSelectionHandler: (() => void) | null = null;
+
+  currentIndex = 0;
+  elements: HTMLElement[] = [];
+
+  next() {
+    if (this.elements.length === 0) return;
+    this.currentIndex = (this.currentIndex + 1) % this.elements.length;
+    this.focusOnIndex(this.currentIndex);
+    this.compareRenderedService.lastSelection = {
+      count: 1,
+      startId: null,
+      endId: null,
+    }; //reset selection
+  }
+
+  prev() {
+    if (this.elements.length === 0) return;
+    this.currentIndex = (this.currentIndex - 1 + this.elements.length) % this.elements.length;
+    this.focusOnIndex(this.currentIndex);
+    this.compareRenderedService.lastSelection = {
+      count: 1,
+      startId: null,
+      endId: null,
+    }; //reset selection
+  }
+
+  private focusOnIndex(index: number) {
+    const shadowRoot = this.shadowDOM();
+    if (!shadowRoot) return;
+    const el = this.elements[index];
+    this.compareRenderedService.highlightElement(el);
+    this.compareRenderedService.openParentDetails(el);
+    this.compareRenderedService.closeAllDetailsExcept(shadowRoot, el);
+    this.compareRenderedService.scrollToElement(el);
+  }
+
+  get displayCounter(): string {
+    if (!this.elements?.length) {
+      return this.translate.instant('compare.rendered.counter', { range: '0', total: '0' });
+    }
+
+    const total = this.elements.length;
+
+    // nothing highlighted
+    if (this.compareRenderedService.lastSelection.count === 0) {
+      return this.translate.instant('compare.rendered.counter', { range: '–', total });
+    }
+
+    // multiple highlighted
+    if (this.compareRenderedService.lastSelection.count > 1) {
+      if (this.compareRenderedService.lastSelection.startId != null && this.compareRenderedService.lastSelection.endId != null) {
+        this.currentIndex = this.compareRenderedService.lastSelection.endId - 1;
+        const range = `${this.compareRenderedService.lastSelection.startId}–${this.compareRenderedService.lastSelection.endId}`;
+        return this.translate.instant('compare.rendered.counter', { range, total });
+      }
+      return this.translate.instant('compare.rendered.counter', { range: '–', total });
+    }
+
+    // single highlighted
+    const range = this.currentIndex + 1;
+    return this.translate.instant('compare.rendered.counter', { range, total });
+  }
+
+  get displayNumHighlighted(): string {
+    const count = this.compareRenderedService.lastSelection.count;
+    if (count < 1) return '';
+    if (this.compareRenderedService.lastSelection.count < 1) return '';
+    return this.translate.instant('compare.rendered.itemsSelected', { count });
+  }
+
+  // 2. Accept
+  toolbarAccept(): void {
+    this.processDiffChange('accept');
+  }
+
+  get acceptItems() {
+    return [
+      {
+        label: 'Accept all',
+        icon: 'pi pi-check-circle',
+        command: () => {
+          //this.toolbarAcceptAll();
+        },
+        disabled: true,
+      },
+      {
+        separator: true,
+      },
+      {
+        label: this.translate.instant('compare.button.undo'),
+        icon: 'pi pi-refresh',
+        command: () => {
+          //this.uploadState.undoLastChange();
+        },
+        disabled: true,
+      },
+    ];
+  }
+
+  // 3. Reject
+  toolbarReject(): void {
+    this.processDiffChange('reject');
+  }
+
+  get rejectItems() {
+    return [
+      {
+        label: 'Reject all',
+        icon: 'pi pi-times-circle',
+        command: () => {
+          //this.toolbarRejectAll();
+        },
+        disabled: true,
+      },
+      {
+        separator: true,
+      },
+      {
+        label: this.translate.instant('compare.button.undo'),
+        icon: 'pi pi-refresh',
+        command: () => {
+          //this.uploadState.undoLastChange();
+        },
+        disabled: true,
+      },
+    ];
+  }
+
+  // 4. Legend
+  readonly baseLegendItems = signal<{ text: string; colour: string; style: string; lineStyle?: string }[]>([
+    { text: 'compare.rendered.legend.previousVersion', colour: '#F3A59D', style: 'highlight' },
+    { text: 'compare.rendered.legend.updatedVersion', colour: '#83d5a8', style: 'highlight' },
+    { text: 'compare.rendered.legend.updatedLink', colour: '#FFEE8C', style: 'highlight' },
+    { text: 'compare.rendered.legend.hiddenContent', colour: '#6F9FFF', style: 'line' },
+    { text: 'compare.rendered.legend.modalContent', colour: '#666666', style: 'line', lineStyle: 'dashed' },
+    { text: 'compare.rendered.legend.dynamicContent', colour: '#fbc02f', style: 'line', lineStyle: 'dashed' },
+  ]);
+
+  markForTranslation() {
+    marker('compare.rendered.legend.previousVersion');
+    marker('compare.rendered.legend.updatedVersion');
+    marker('compare.rendered.legend.updatedLink');
+    marker('compare.rendered.legend.hiddenContent');
+    marker('compare.rendered.legend.modalContent');
+    marker('compare.rendered.legend.dynamicContent');
+  }
+
+  get legendItems() {
+    const view = this.webSelectedView();
+    const items = this.baseLegendItems();
+    const beforeFlags = this.beforeContent()?.found;
+    const afterFlags = this.afterContent()?.found;
+    return items
+      .map((item) => {
+        if (item.text === 'compare.rendered.legend.previousVersion') {
+          if (view === WebViewType.Modified) {
+            return null; // hide in Modified view
+          }
+          if (view === WebViewType.Original) {
+            return { ...item, style: 'line' }; // change style in Original view
+          }
+          return item;
+        }
+
+        if (item.text === 'compare.rendered.legend.updatedVersion') {
+          if (view === WebViewType.Original) {
+            return null; // hide in Original view
+          }
+          if (view === WebViewType.Modified) {
+            return { ...item, style: 'line' }; // change style in Modified view
+          }
+          return item;
+        }
+
+        if (item.text === 'compare.rendered.legend.updatedLink' && (view === WebViewType.Original || view === WebViewType.Modified)) {
+          return null; //hide in both original and modified view
+        }
+
+        if (item.text === 'compare.rendered.legend.hiddenContent' && !beforeFlags?.hidden && !afterFlags?.hidden) {
+          return null; //hide if hidden content not found in either original or modified
+        }
+
+        if (item.text === 'compare.rendered.legend.modalContent' && !beforeFlags?.modal && !afterFlags?.modal) {
+          return null; //hide if modal content not found in either original or modified
+        }
+
+        if (item.text === 'compare.rendered.legend.dynamicContent' && !beforeFlags?.dynamic && !afterFlags?.dynamic) {
+          return null; //hide if dynamic content not found in either original or modified
+        }
+
+        return item;
+      })
+      .filter(Boolean) as typeof items;
+  }
+
+  // 5. Before/After - Edit
+  toggleEdit = false;
+  async toolbarToggleEdit(view: WebViewType): Promise<void> {
+    const shadowRoot = this.shadowDOM();
+    const editable = shadowRoot?.getElementById('editable');
+    if (!editable) {
+      console.warn('Editable area not found.');
+      this.toggleEdit = false;
+      return;
+    }
+    if (this.toggleEdit) {
+      //edit
+      editable.setAttribute('contenteditable', 'true');
+      editable.focus();
+    } else {
+      /*save
             this.uploadState.savePreviousUploadData(); //save previous data for undo button
             editable.setAttribute('contenteditable', 'false');
             const editedHtml = await this.urlDataService.formatHtml(
@@ -414,46 +396,42 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
               });
             }
             this.toggleEdit = false;*/
-        }
     }
+  }
 
-    // 6. Before/After - Copy
-    toggleCopy = false;
-    toolbarToggleCopy(view: WebViewType): void {
-        const data = "test"
-        if (!data) return;
-        let htmlToCopy = '';/*
+  // 6. Before/After - Copy
+  toggleCopy = false;
+  toolbarToggleCopy(view: WebViewType): void {
+    const data = 'test';
+    if (!data) return;
+    let htmlToCopy = ''; /*
         if (view === WebViewType.Original) {
             htmlToCopy = data.originalHtml ?? '';
         } else if (view === WebViewType.Modified) {
             htmlToCopy = data.modifiedHtml ?? '';
         }*/
-        navigator.clipboard
-            .writeText(htmlToCopy)
-            .then(() => {
-                setTimeout(() => (this.toggleCopy = false), 1000);
-            })
-            .catch((err) => console.error('Clipboard copy failed:', err));
-    }
+    navigator.clipboard
+      .writeText(htmlToCopy)
+      .then(() => {
+        setTimeout(() => (this.toggleCopy = false), 1000);
+      })
+      .catch((err) => console.error('Clipboard copy failed:', err));
+  }
 
-    // 7. Before/After - Open URL
-    getUrl() {
-        if (this.webSelectedView() === WebViewType.Original) {
-            return this.beforeContent()?.url
-        }
-        else if (this.webSelectedView() === WebViewType.Modified) {
-            return this.afterContent()?.url
-        }
-        else return null
-    }
+  // 7. Before/After - Open URL
+  getUrl() {
+    if (this.webSelectedView() === WebViewType.Original) {
+      return this.beforeContent()?.url;
+    } else if (this.webSelectedView() === WebViewType.Modified) {
+      return this.afterContent()?.url;
+    } else return null;
+  }
 
-    /* END OF TOOLBAR FUNCTIONS */
+  /* END OF TOOLBAR FUNCTIONS */
 
-
-
-    //this.toggleEdit = false;
-    //Disable undo button
-    /*
+  //this.toggleEdit = false;
+  //Disable undo button
+  /*
     const undoText = this.translate.instant('page.compare.button.undo');
     [this.acceptItems, this.rejectItems].forEach((arr) => {
         const undoItem = arr.find((item) => item.label === undoText);
@@ -494,11 +472,7 @@ return this.uploadState.getUploadData(); // returns signal().value
 
 */
 
-
-
-
-
-    /*
+  /*
         
         
     
@@ -578,106 +552,114 @@ return this.uploadState.getUploadData(); // returns signal().value
     
         */
 
-
-
-
-    processDiffChange(mode: 'accept' | 'reject'): void {
-        //Get diff container
-        const shadowRoot = this.shadowDOM();
-        if (!shadowRoot) { console.warn('Shadow root not found.'); return; }
-
-        const diffContainer = shadowRoot.querySelector('.diff-content') as HTMLElement;
-        if (!diffContainer) { console.warn('Diff container not found'); return; }
-
-        //HANDLE HIGHLIGHTED DIFF//
-        //Get highlighted <ins> or <del> or <span>
-        const highlightedEls = diffContainer.querySelectorAll<HTMLElement>(
-            'ins.highlight, del.highlight, span.diff-group.highlight, span.updated-link.highlight',
-        );
-        if (!highlightedEls.length) { console.warn('highlighted elements not found'); return; }
-
-        const keepTag = mode === 'accept' ? 'ins' : 'del';
-        const removeTag = mode === 'accept' ? 'del' : 'ins';
-
-        // Moves all child nodes before the element
-        const unwrap = (el: HTMLElement) => {
-            while (el.firstChild) {
-                el.parentNode?.insertBefore(el.firstChild, el);
-            }
-            el.remove();
-        };
-
-        highlightedEls.forEach((highlighted) => {
-            //Keep highlighted tag (accept mode keep tag = ins)
-            if (highlighted.tagName.toLowerCase() === keepTag) { unwrap(highlighted); }
-
-            //Remove highlighted tag (accept mode remove tag = del)
-            else if (highlighted.tagName.toLowerCase() === removeTag) { highlighted.remove(); }
-
-            //Handle highlighted .diff-group or .updated-link (accept mode keep tag = ins)
-            else if (highlighted.tagName.toLowerCase() === 'span') {
-                const el = highlighted.querySelector(keepTag);
-                const link = highlighted.querySelector('a');
-                //console.log(`Highlighted group: `,el);
-                //console.log(`Highlighted link: `,link);
-                //diff-group
-                if (el) { unwrap(el); highlighted.remove(); }
-                //updated-link
-                else if (link) {
-                    if (mode === 'accept') { highlighted.replaceWith(link); }
-                    else {
-                        const oldHref = highlighted.getAttribute('title')?.replace(/^Old URL:\s*/, '') || '';
-                        link.setAttribute('href', oldHref);
-                        highlighted.replaceWith(link);
-                    }
-                }
-                //neither found
-                else {
-                    console.log(`No <${keepTag}> or updated-link found. Leaving content as-is.`,);
-                    return;
-                }
-            }
-        });
-
-        //HANDLE ALL OTHER CHANGES (OPPOSITE OF WHAT IS DONE WITH THE HIGHLIGHTED CHANGE)//
-        //Keep and unwrap remaining elements of opposite tag (including inside diff-group)
-        diffContainer
-            .querySelectorAll<HTMLElement>(`${removeTag}, span.diff-group`)
-            .forEach(unwrap);
-
-        // Remove remaining elements of the keep tag
-        diffContainer.querySelectorAll(keepTag).forEach((el) => { el.remove(); });
-
-        // Remove new/old link highlights
-        diffContainer.querySelectorAll('span.updated-link').forEach((span) => {
-            const link = span.querySelector('a');
-            if (!link) return;
-            if (mode === 'reject') {
-                span.replaceWith(link);
-            } else {
-                const oldHref = span.getAttribute('title')?.replace(/^Old URL:\s*/, '') || '';
-                link.setAttribute('href', oldHref);
-                span.replaceWith(link);
-            }
-        });
-
-        this.compareRenderedService.lastSelection = { count: 1, startId: null, endId: null }; //reset selection
-
-        //Merge with modified HTML
-        const updatedHtml = diffContainer.innerHTML;
-
-        const beforeContent = this.beforeContent();
-        const afterContent = this.afterContent();
-
-        if (!beforeContent || !afterContent) return;
-
-        this.contentChanged.emit({
-            beforeContent: mode === 'accept'
-                ? { ...beforeContent, html: updatedHtml, url: 'Change accepted' }
-                : beforeContent,
-            afterContent: mode === 'reject'
-                ? { ...afterContent, html: updatedHtml, url: 'Change rejected' }
-                : afterContent
-        });
+  processDiffChange(mode: 'accept' | 'reject'): void {
+    //Get diff container
+    const shadowRoot = this.shadowDOM();
+    if (!shadowRoot) {
+      console.warn('Shadow root not found.');
+      return;
     }
+
+    const diffContainer = shadowRoot.querySelector('.diff-content') as HTMLElement;
+    if (!diffContainer) {
+      console.warn('Diff container not found');
+      return;
+    }
+
+    //HANDLE HIGHLIGHTED DIFF//
+    //Get highlighted <ins> or <del> or <span>
+    const highlightedEls = diffContainer.querySelectorAll<HTMLElement>('ins.highlight, del.highlight, span.diff-group.highlight, span.updated-link.highlight');
+    if (!highlightedEls.length) {
+      console.warn('highlighted elements not found');
+      return;
+    }
+
+    const keepTag = mode === 'accept' ? 'ins' : 'del';
+    const removeTag = mode === 'accept' ? 'del' : 'ins';
+
+    // Moves all child nodes before the element
+    const unwrap = (el: HTMLElement) => {
+      while (el.firstChild) {
+        el.parentNode?.insertBefore(el.firstChild, el);
+      }
+      el.remove();
+    };
+
+    highlightedEls.forEach((highlighted) => {
+      //Keep highlighted tag (accept mode keep tag = ins)
+      if (highlighted.tagName.toLowerCase() === keepTag) {
+        unwrap(highlighted);
+      }
+
+      //Remove highlighted tag (accept mode remove tag = del)
+      else if (highlighted.tagName.toLowerCase() === removeTag) {
+        highlighted.remove();
+      }
+
+      //Handle highlighted .diff-group or .updated-link (accept mode keep tag = ins)
+      else if (highlighted.tagName.toLowerCase() === 'span') {
+        const el = highlighted.querySelector(keepTag);
+        const link = highlighted.querySelector('a');
+        //console.log(`Highlighted group: `,el);
+        //console.log(`Highlighted link: `,link);
+        //diff-group
+        if (el) {
+          unwrap(el);
+          highlighted.remove();
+        }
+        //updated-link
+        else if (link) {
+          if (mode === 'accept') {
+            highlighted.replaceWith(link);
+          } else {
+            const oldHref = highlighted.getAttribute('title')?.replace(/^Old URL:\s*/, '') || '';
+            link.setAttribute('href', oldHref);
+            highlighted.replaceWith(link);
+          }
+        }
+        //neither found
+        else {
+          console.log(`No <${keepTag}> or updated-link found. Leaving content as-is.`);
+          return;
+        }
+      }
+    });
+
+    //HANDLE ALL OTHER CHANGES (OPPOSITE OF WHAT IS DONE WITH THE HIGHLIGHTED CHANGE)//
+    //Keep and unwrap remaining elements of opposite tag (including inside diff-group)
+    diffContainer.querySelectorAll<HTMLElement>(`${removeTag}, span.diff-group`).forEach(unwrap);
+
+    // Remove remaining elements of the keep tag
+    diffContainer.querySelectorAll(keepTag).forEach((el) => {
+      el.remove();
+    });
+
+    // Remove new/old link highlights
+    diffContainer.querySelectorAll('span.updated-link').forEach((span) => {
+      const link = span.querySelector('a');
+      if (!link) return;
+      if (mode === 'reject') {
+        span.replaceWith(link);
+      } else {
+        const oldHref = span.getAttribute('title')?.replace(/^Old URL:\s*/, '') || '';
+        link.setAttribute('href', oldHref);
+        span.replaceWith(link);
+      }
+    });
+
+    this.compareRenderedService.lastSelection = { count: 1, startId: null, endId: null }; //reset selection
+
+    //Merge with modified HTML
+    const updatedHtml = diffContainer.innerHTML;
+
+    const beforeContent = this.beforeContent();
+    const afterContent = this.afterContent();
+
+    if (!beforeContent || !afterContent) return;
+
+    this.contentChanged.emit({
+      beforeContent: mode === 'accept' ? { ...beforeContent, html: updatedHtml, url: 'Change accepted' } : beforeContent,
+      afterContent: mode === 'reject' ? { ...afterContent, html: updatedHtml, url: 'Change rejected' } : afterContent,
+    });
+  }
 }

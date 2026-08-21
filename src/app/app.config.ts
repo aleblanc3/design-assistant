@@ -1,6 +1,6 @@
 //angular
-import { ApplicationConfig, provideZoneChangeDetection, provideAppInitializer, inject } from "@angular/core";
-import { provideHttpClient } from "@angular/common/http";
+import { ApplicationConfig, provideZoneChangeDetection, provideAppInitializer, inject } from '@angular/core';
+import { provideHttpClient } from '@angular/common/http';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr-CA';
 import localeEn from '@angular/common/locales/en-CA';
@@ -28,8 +28,7 @@ registerLocaleData(localeEn);
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes, withInMemoryScrolling({ anchorScrolling: 'enabled' })
-    ),
+    provideRouter(routes, withInMemoryScrolling({ anchorScrolling: 'enabled' })),
     { provide: TitleStrategy, useClass: CustomTitleStrategy },
     provideHttpClient(),
     provideTranslateService({
@@ -47,13 +46,13 @@ export const appConfig: ApplicationConfig = {
         preset: MyPreset,
         options: {
           colorScheme: 'light', // or 'dark'
-          theme: 'blue',        // or 'indigo', 'teal', etc.
+          theme: 'blue', // or 'indigo', 'teal', etc.
           ripple: true,
-          darkModeSelector: '.dark-mode'
-        }
-      }
+          darkModeSelector: '.dark-mode',
+        },
+      },
     }),
     MessageService,
-    ConfirmationService
+    ConfirmationService,
   ],
 };

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
@@ -10,12 +10,9 @@ import { GitHubAuthService } from '../../../services/github/github-auth.service'
 
 @Component({
   selector: 'aida-auth-callback',
-  imports: [
-    TranslatePipe,
-    ProgressSpinnerModule, MessageModule
-  ],
+  imports: [TranslatePipe, ProgressSpinnerModule, MessageModule],
   templateUrl: './auth-callback.component.html',
-  styles: ``
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthCallbackComponent implements OnInit {
   private route = inject(ActivatedRoute);
