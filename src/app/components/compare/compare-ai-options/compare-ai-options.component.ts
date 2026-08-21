@@ -23,9 +23,7 @@ import { CompareAiService } from '../compare-ai.service';
 
 //Constants
 import { AI_FREE_MODELS, AI_PAID_MODELS } from '../../../common/prompts/ai-models.config';
-import { PromptEntry, PagePromptKey } from '../../../common/prompts/prompt.model';
-import { PagePrompts } from '../../../common/prompts/page.prompts';
-
+import { PagePromptKey } from '../../../common/prompts/prompt.model';
 
 /**
  * Reviewed: 2026-08-19 (ng21)
