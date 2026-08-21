@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { TranslatePipe } from "@ngx-translate/core";
 import { RouterLink } from '@angular/router';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
@@ -10,7 +10,8 @@ import { DevToolsComponent } from '../toolbox/dev-tools/dev-tools.component';
     selector: 'aida-standalone',
     imports: [TranslatePipe, RouterLink, DevToolsComponent],
     templateUrl: 'standalone.component.html',
-    styles: ``
+    styles: ``,
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StandaloneComponent {
     private sanitizer = inject(DomSanitizer)

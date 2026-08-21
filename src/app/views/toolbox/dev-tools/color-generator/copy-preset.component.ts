@@ -1,4 +1,4 @@
-import { Component, Input, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, signal } from '@angular/core';
 
 //PrimeNG
 import { ButtonModule } from 'primeng/button';
@@ -39,7 +39,8 @@ import { ColorConverter } from '../../../../common/color-converter.util';
         style="resize: vertical;">
       </textarea>
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CopyPresetComponent {
     @Input() customShades: Record<string, Record<number, string>> = {};

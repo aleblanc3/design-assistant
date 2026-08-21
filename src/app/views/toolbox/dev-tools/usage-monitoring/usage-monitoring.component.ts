@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -100,30 +100,31 @@ const STATUS_FIELDS: Record<string, (keyof UsageRecord)[]> = {
         ChartModule,
     ],
     templateUrl: 'usage-monitoring.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsageMonitoringComponent implements OnInit {
-    private translate = inject(TranslateService);
-    private http = inject(HttpClient);
-    private settingsService = inject(UserSettingsService);
-    currentLang = this.settingsService.currentLang;
+    private readonly translate = inject(TranslateService);
+    private readonly http = inject(HttpClient);
+    private readonly settingsService = inject(UserSettingsService);
+    protected readonly currentLang = this.settingsService.currentLang;
 
     // Breadcrumbs
-    breadcrumbs = [{ label: 'dev._title', route: '/dev' }, { label: 'dev.monitoring._title' }]
+    protected readonly breadcrumbs = [{ label: 'dev._title', route: '/dev' }, { label: 'dev.monitoring._title' }]
 
     // Global stats (always loaded)
-    stats = signal<UsageStats | null>(null);
-    loading = signal(true);
-    error = signal<string | null>(null);
+    protected readonly stats = signal<UsageStats | null>(null);
+    protected readonly loading = signal(true);
+    protected readonly error = signal<string | null>(null);
 
     // Feature stats (loaded per feature)
-    featureItems = signal<UsageRecord[]>([]);
-    featureItemsLoading = signal(false);
-    featureItemsError = signal<string | null>(null);
+    private readonly featureItems = signal<UsageRecord[]>([]);
+    protected readonly featureItemsLoading = signal(false);
+    protected readonly featureItemsError = signal<string | null>(null);
 
     // Button to switch features
-    selectedFeature = signal<string>('metadata');
+    protected readonly selectedFeature = signal<string>('metadata');
 
-    featureOptions = computed<SelectItem[]>(() => {
+    protected readonly featureOptions = computed<SelectItem[]>(() => {
         this.currentLang();
         return [
             { label: this.translate.instant('dev.monitoring.metadata'), value: 'metadata' },
@@ -132,7 +133,7 @@ export class UsageMonitoringComponent implements OnInit {
         ];
     });
 
-    selectedFeatureLabel = computed(() => {
+    protected readonly selectedFeatureLabel = computed(() => {
         const label = this.featureOptions().find(f => f.value === this.selectedFeature())?.label ?? this.selectedFeature();
         return this.currentLang() === 'en'
             ? label.charAt(0).toUpperCase() + label.slice(1)
@@ -140,22 +141,22 @@ export class UsageMonitoringComponent implements OnInit {
     });
 
     // Button to toggle view (single & A/B)
-    compareMode = signal<boolean>(false);
+    protected readonly compareMode = signal<boolean>(false);
 
     // Filter state for each donut — TODO: default to meaningful comparison
-    filterA = signal<DonutFilter>({ field: 'all', model: 'all', promptVersion: 'all', userId: 'all' });
-    filterB = signal<DonutFilter>({ field: 'all', model: 'all', promptVersion: 'all', userId: 'all' });
+    protected readonly filterA = signal<DonutFilter>({ field: 'all', model: 'all', promptVersion: 'all', userId: 'all' });
+    protected readonly filterB = signal<DonutFilter>({ field: 'all', model: 'all', promptVersion: 'all', userId: 'all' });
 
 
-    updateFilterA(key: keyof DonutFilter, value: string) {
+    protected updateFilterA(key: keyof DonutFilter, value: string) {
         this.filterA.update(f => ({ ...f, [key]: value }));
     }
 
-    updateFilterB(key: keyof DonutFilter, value: string) {
+    protected updateFilterB(key: keyof DonutFilter, value: string) {
         this.filterB.update(f => ({ ...f, [key]: value }));
     }
 
-    onFeatureChange(feature: string) {
+    protected onFeatureChange(feature: string) {
         this.selectedFeature.set(feature);
         this.filterA.set({ field: 'all', model: 'all', promptVersion: 'all', userId: 'all' });
         this.filterB.set({ field: 'all', model: 'all', promptVersion: 'all', userId: 'all' });
@@ -163,10 +164,10 @@ export class UsageMonitoringComponent implements OnInit {
     }
 
     // Chart options
-    chartDataA = computed(() => this.buildChartData(this.filterA()));
-    chartDataB = computed(() => this.buildChartData(this.filterB()));
+    protected readonly chartDataA = computed(() => this.buildChartData(this.filterA()));
+    protected readonly chartDataB = computed(() => this.buildChartData(this.filterB()));
 
-    chartOptions = {
+    protected readonly chartOptions = {
         cutout: '65%',
         plugins: {
             legend: { display: false }
@@ -174,7 +175,7 @@ export class UsageMonitoringComponent implements OnInit {
     };
 
     // Filter - Field or prompt type options
-    fieldOptions = computed<SelectItem[]>(() => {
+    protected readonly fieldOptions = computed<SelectItem[]>(() => {
         this.currentLang();
         if (this.selectedFeature() === 'metadata') {
             return [
@@ -193,7 +194,7 @@ export class UsageMonitoringComponent implements OnInit {
     });
 
     // Filter - AI model options
-    modelOptions = computed<SelectItem[]>(() => {
+    protected readonly modelOptions = computed<SelectItem[]>(() => {
         this.currentLang();
         const models = [...new Set(this.featureItems().map(i => i.model).filter(Boolean))];
         return [
@@ -203,7 +204,7 @@ export class UsageMonitoringComponent implements OnInit {
     });
 
     // Filter - prompt version options
-    promptOptions = computed<SelectItem[]>(() => {
+    protected readonly promptOptions = computed<SelectItem[]>(() => {
         this.currentLang();
         const versions = [...new Set(this.featureItems().map(i => `v${i.promptVersion}`).filter(Boolean))];
         return [
@@ -213,7 +214,7 @@ export class UsageMonitoringComponent implements OnInit {
     });
 
     // Filter - userId options
-    userOptions = computed<SelectItem[]>(() => {
+    protected readonly userOptions = computed<SelectItem[]>(() => {
         this.currentLang();
         const users = [...new Set(this.featureItems().map(i => i.userId).filter(Boolean))];
         return [
@@ -265,7 +266,7 @@ export class UsageMonitoringComponent implements OnInit {
     }
 
     // Status's for legend
-    statusConfig = computed<Record<string, { label: string; color: string; hoverColor: string }>>(() => {
+    private readonly statusConfig = computed<Record<string, { label: string; color: string; hoverColor: string }>>(() => {
         this.currentLang();
         return {
             approvedAI: { label: this.translate.instant('dev.monitoring.status.approvedAI'), ...this.statusColours['approvedAI'] },
@@ -294,7 +295,7 @@ export class UsageMonitoringComponent implements OnInit {
             approvedAI: { color: this.getColour('--p-green-400'), hoverColor: this.getColour('--p-green-500') },
             approvedEdits: { color: this.getColour('--p-blue-400'), hoverColor: this.getColour('--p-blue-500') },
             edited: { color: this.getColour('--p-cyan-400'), hoverColor: this.getColour('--p-cyan-500') },
-            pending: { color: this.getColour('--p-surface-200'), hoverColor: this.getColour('--p-surface-300') },
+            pending: { color: this.getColour('--p-zinc-200'), hoverColor: this.getColour('--p-zinc-300') },
             rejected: { color: this.getColour('--p-red-400'), hoverColor: this.getColour('--p-red-500') },
             noChange: { color: this.getColour('--p-slate-200'), hoverColor: this.getColour('--p-slate-300') },
         };
@@ -302,7 +303,7 @@ export class UsageMonitoringComponent implements OnInit {
     }
 
     // Load global stats + default feature items
-    async load() {
+    protected async load() {
         this.loading.set(true);
         this.error.set(null);
         try {
@@ -320,7 +321,7 @@ export class UsageMonitoringComponent implements OnInit {
     }
 
     // Load items for a specific feature on demand
-    async loadFeature(feature: string) {
+    protected async loadFeature(feature: string) {
         this.featureItemsLoading.set(true);
         this.featureItemsError.set(null);
         try {
@@ -336,7 +337,7 @@ export class UsageMonitoringComponent implements OnInit {
     }
 
     // Breakdown stats for single view TODO: review and rewrite to present more useful information
-    summaryStats = computed(() => {
+    protected readonly summaryStats = computed(() => {
         const data = this.chartDataA();
         const total = data.legendItems.reduce((sum, i) => sum + i.count, 0);
         return data.legendItems.map(item => ({
@@ -346,14 +347,14 @@ export class UsageMonitoringComponent implements OnInit {
     });
 
     // Total reviewable fields for current feature
-    totalFields = computed(() => {
+    protected readonly totalFields = computed(() => {
         const items = this.featureItems();
         const statusFields = STATUS_FIELDS[this.selectedFeature()] ?? [];
         return items.reduce((total, item) =>
             total + statusFields.filter(f => item[f]).length, 0);
     });
 
-    totalFieldsReviewed = computed(() => {
+    protected readonly totalFieldsReviewed = computed(() => {
         const items = this.featureItems();
         const statusFields = STATUS_FIELDS[this.selectedFeature()] ?? [];
         return items.reduce((total, item) =>

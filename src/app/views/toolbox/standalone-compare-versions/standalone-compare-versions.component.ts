@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, inject, signal } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 //Translation
@@ -8,7 +8,6 @@ import { TranslatePipe, } from '@ngx-translate/core';
 import { TabsModule } from 'primeng/tabs';
 
 //Services
-import { CompareService } from '../../../components/compare/compare.service';
 import { HtmlNormalizationService, htmlProcessingResult } from '../../../services/html-normalization.service';
 
 //Components
@@ -23,6 +22,8 @@ import { CompareSourceComponent } from '../../../components/compare/compare-sour
   ],
   templateUrl: './standalone-compare-versions.component.html',
   styles: '',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  
 })
 export class StandaloneCompareComponent implements OnInit {
 public htmlNormalizationService = inject(HtmlNormalizationService);
@@ -30,11 +31,11 @@ private router = inject(Router);
 private route = inject(ActivatedRoute);
 
 // Signals
-originalHtml = signal<htmlProcessingResult | undefined>(undefined);
-modifiedHtml = signal<htmlProcessingResult | undefined>(undefined);
+protected readonly originalHtml = signal<htmlProcessingResult | undefined>(undefined);
+protected readonly modifiedHtml = signal<htmlProcessingResult | undefined>(undefined);
 
 // Handle accept/reject changes
-onContentChanged(event: { beforeContent: htmlProcessingResult; afterContent: htmlProcessingResult }): void {
+protected onContentChanged(event: { beforeContent: htmlProcessingResult; afterContent: htmlProcessingResult }): void {
     // Update signals
     this.originalHtml.set(event.beforeContent);
     this.modifiedHtml.set(event.afterContent);

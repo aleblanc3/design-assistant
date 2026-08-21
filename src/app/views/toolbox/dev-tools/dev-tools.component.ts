@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from "@ngx-translate/core";
 import { RouterLink } from '@angular/router';
@@ -36,7 +36,8 @@ import { ButtonModule } from 'primeng/button';
         </div>
   </div>
   `,
-  styles: ``
+  styles: ``,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DevToolsComponent {
   /**
