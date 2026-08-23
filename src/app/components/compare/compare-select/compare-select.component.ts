@@ -1,19 +1,18 @@
-import { Component, ChangeDetectionStrategy, inject, OnInit } from '@angular/core';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { marker } from '@colsen1991/ngx-translate-extract-marker';
 
-//PrimeNG
+import { marker } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { SelectModule } from 'primeng/select';
 
-//Services
-import { ProjectStateService } from '../../../services/project-state.service';
-import { CompareService } from '../compare.service';
 import { FetchService } from '../../../services/fetch.service';
 import { HtmlNormalizationService, htmlProcessingResult } from '../../../services/html-normalization.service';
+import { ProjectStateService } from '../../../services/project-state.service';
+import { CompareService } from '../compare.service';
 
-import { ALL_SOURCES, SourceVersion, CompareVersion } from '../../../common/data.model';
+import { ALL_SOURCES, CompareVersion, SourceVersion } from '../../../common/data.model';
 
 /**
  * Reviewed: 2026-08-19 (ng21)
