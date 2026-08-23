@@ -4,10 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
-import { ButtonModule } from 'primeng/button';
-import { CheckboxModule } from 'primeng/checkbox';
-import { IftaLabelModule } from 'primeng/iftalabel';
-import { SelectModule } from 'primeng/select';
 import { TabsModule } from 'primeng/tabs';
 
 import { CompareRenderedComponent } from '../../../components/compare/compare-rendered/compare-rendered.component';
@@ -23,19 +19,7 @@ import { UserSettingsService } from '../../../services/user-settings.service';
 
 @Component({
   selector: 'aida-compare-versions',
-  imports: [
-    FormsModule,
-    TranslatePipe,
-    ButtonModule,
-    TabsModule,
-    IftaLabelModule,
-    SelectModule,
-    CheckboxModule,
-    CompareSelectComponent,
-    CompareToolsComponent,
-    CompareRenderedComponent,
-    CompareSourceComponent,
-  ],
+  imports: [FormsModule, TranslatePipe, TabsModule, CompareRenderedComponent, CompareSelectComponent, CompareSourceComponent, CompareToolsComponent],
   templateUrl: './compare.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

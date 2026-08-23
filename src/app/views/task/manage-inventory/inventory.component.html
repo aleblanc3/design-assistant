@@ -35,11 +35,11 @@
           <label class="mb-1 font-semibold block" for="views'">{{ 'common.view' | translate }}</label>
           <div id="views" role="radiogroup">
             <div class="field-radiobutton">
-              <p-radioButton value="table" [(ngModel)]="projectState.selectedInventoryView" inputId="viewTable" name="view" />
+              <p-radiobutton value="table" [(ngModel)]="projectState.selectedInventoryView" inputId="viewTable" name="view" />
               <label for="viewTable">{{ 'inventory.view.table' | translate }}</label>
             </div>
             <div class="field-radiobutton">
-              <p-radioButton value="tree" [(ngModel)]="projectState.selectedInventoryView" inputId="viewTree" name="view" />
+              <p-radiobutton value="tree" [(ngModel)]="projectState.selectedInventoryView" inputId="viewTree" name="view" />
               <label for="viewTree">{{ 'inventory.view.tree' | translate }}</label>
             </div>
           </div>
@@ -53,7 +53,7 @@
               <!-- Top toolbar - Column settings - Group dropdown -->
 
               <p-iftalabel>
-                <p-multiSelect
+                <p-multiselect
                   [(ngModel)]="selectedGroups"
                   [maxSelectedLabels]="1"
                   [options]="groups"
@@ -70,13 +70,13 @@
                       <span class="font-semibold">{{ 'inventory.columnVis.selectGroups' | translate }}</span>
                     </div>
                   </ng-template>
-                </p-multiSelect>
+                </p-multiselect>
                 <label for="columns">{{ 'inventory.columnVis.visibleGroups' | translate }}</label>
               </p-iftalabel>
 
               <!-- Top toolbar - Column settings - Column dropdown -->
               <p-iftalabel>
-                <p-multiSelect
+                <p-multiselect
                   [(ngModel)]="selectedColumnFields"
                   [group]="true"
                   [maxSelectedLabels]="1"
@@ -96,7 +96,7 @@
                       <span class="font-semibold">{{ 'inventory.columnVis.selectColumns' | translate }}</span>
                     </div>
                   </ng-template>
-                </p-multiSelect>
+                </p-multiselect>
                 <label for="columns">{{ 'inventory.columnVis.visibleColumns' | translate }}</label>
               </p-iftalabel>
 
@@ -593,7 +593,7 @@
   </ng-template>
 </p-menu>
 <!--Context Menus-->
-<p-contextMenu [model]="itemsContext" #menuContext />
+<p-contextmenu [model]="itemsContext" #menuContext />
 <!-- Edit node popup-->
 <p-dialog [(visible)]="editNode" [header]="selectedNode.data?.prototype?.[currentLang].h1" [maximizable]="true" [modal]="true" [style]="{ height: '90vh' }" styleClass="w-10">
   @if (selectedNode) {
@@ -601,4 +601,4 @@
   }
 </p-dialog>
 <!--Confirm deletion-->
-<p-confirmDialog key="inventory" />
+<p-confirmdialog key="inventory" />

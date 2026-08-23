@@ -15,7 +15,7 @@ import { ProjectPhase } from '../../../common/data.model';
  */
 @Component({
   selector: 'aida-approve',
-  imports: [CommonModule, TranslatePipe, RouterLink, BreadcrumbModule],
+  imports: [CommonModule, RouterLink, TranslatePipe, BreadcrumbModule],
   templateUrl: 'approve.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

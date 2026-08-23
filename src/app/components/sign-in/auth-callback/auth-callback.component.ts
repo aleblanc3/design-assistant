@@ -11,7 +11,7 @@ import { GitHubAuthService } from '../../../services/github/github-auth.service'
 
 @Component({
   selector: 'aida-auth-callback',
-  imports: [TranslatePipe, ProgressSpinnerModule, MessageModule],
+  imports: [TranslatePipe, MessageModule, ProgressSpinnerModule],
   templateUrl: './auth-callback.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

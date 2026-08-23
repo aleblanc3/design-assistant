@@ -23,7 +23,7 @@ export interface TaskOption {
 @Component({
   selector: 'aida-get-task-urls',
   standalone: true,
-  imports: [FormsModule, TranslatePipe, AutoCompleteModule, IftaLabelModule, TagModule, ProgressSpinnerModule, ButtonModule, CheckboxModule],
+  imports: [FormsModule, TranslatePipe, AutoCompleteModule, ButtonModule, CheckboxModule, IftaLabelModule, ProgressSpinnerModule, TagModule],
   templateUrl: './get-task-urls.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

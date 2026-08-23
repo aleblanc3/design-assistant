@@ -167,22 +167,22 @@
             <div class="mb-3">
               @if (example.previewConfig) {
                 @if (example.previewConfig.type === 'text') {
-                  <p-iftaLabel>
+                  <p-iftalabel>
                     <input [(ngModel)]="exampleValue" [id]="example.previewConfig.id" fluid pInputText />
                     <label [for]="example.previewConfig.id">{{ example.previewConfig.label | translate }}</label>
-                  </p-iftaLabel>
+                  </p-iftalabel>
                 }
                 @if (example.previewConfig.type === 'textarea') {
-                  <p-iftaLabel>
+                  <p-iftalabel>
                     <textarea [(ngModel)]="exampleTextarea" [id]="example.previewConfig.id" [rows]="example.previewConfig.rows" fluid pInputTextarea></textarea>
                     <label [for]="example.previewConfig.id">{{ example.previewConfig.label | translate }}</label>
-                  </p-iftaLabel>
+                  </p-iftalabel>
                 }
                 @if (example.previewConfig.type === 'select') {
-                  <p-iftaLabel>
+                  <p-iftalabel>
                     <p-select [(ngModel)]="selectedOption" [inputId]="example.previewConfig.id" [options]="exampleOptions" fluid optionLabel="label" optionValue="value" />
                     <label [for]="example.previewConfig.id">{{ example.previewConfig.label | translate }}</label>
-                  </p-iftaLabel>
+                  </p-iftalabel>
                 }
               }
             </div>

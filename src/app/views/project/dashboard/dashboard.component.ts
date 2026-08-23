@@ -22,7 +22,7 @@ import { CurrentPhase, GitHubRepo, PhaseStatus, ProjectPhase } from '../../../co
 
 @Component({
   selector: 'aida-dashboard',
-  imports: [CommonModule, FormsModule, TranslatePipe, RouterLink, ExportProjectComponent, AddCollaboratorsComponent, ButtonModule, TagModule, ProgressBarModule, CheckboxModule, DividerModule],
+  imports: [CommonModule, FormsModule, RouterLink, TranslatePipe, ButtonModule, CheckboxModule, DividerModule, ProgressBarModule, TagModule, AddCollaboratorsComponent, ExportProjectComponent],
   templateUrl: './dashboard.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

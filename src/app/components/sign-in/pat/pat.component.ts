@@ -15,7 +15,7 @@ import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'aida-pat',
-  imports: [TranslatePipe, FormsModule, ButtonModule, IftaLabelModule, PasswordModule, TooltipModule, DialogModule],
+  imports: [FormsModule, TranslatePipe, ButtonModule, DialogModule, IftaLabelModule, PasswordModule, TooltipModule],
   templateUrl: './pat.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

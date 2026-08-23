@@ -26,7 +26,7 @@
             @if (isFragmentsTab(tab)) {
               @for (fragment of tab.fragments; track fragment.key) {
                 <div class="flex flex-row align-items-center gap-2">
-                  <p-radioButton [binary]="true" [inputId]="'show_' + fragment.key" [ngModel]="isFragmentVisible(fragment.key)" (ngModelChange)="toggleFragment(fragment.key)" />
+                  <p-radiobutton [binary]="true" [inputId]="'show_' + fragment.key" [ngModel]="isFragmentVisible(fragment.key)" (ngModelChange)="toggleFragment(fragment.key)" />
                   <label [for]="'show_' + fragment.key" class="cursor-pointer font-semibold">{{ fragment.label | translate }}</label>
                 </div>
               }
@@ -176,7 +176,7 @@
 <p-button (click)="testResponse()">Test response</p-button>
 <pre>Response: {{ response | json }}</pre>
 @if (aiState().loading) {
-  <p-progressSpinner />
+  <p-progressspinner />
 }
 @if (aiState().error) {
   <p-message [text]="aiState().error!" severity="error" />

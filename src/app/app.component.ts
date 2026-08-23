@@ -20,7 +20,7 @@ import { CustomTitleStrategy } from './common/custom-title-strategy';
 
 @Component({
   selector: 'aida-root',
-  imports: [RouterOutlet, RouterModule, HeaderComponent, SidebarComponent, FooterComponent],
+  imports: [RouterModule, RouterOutlet, FooterComponent, HeaderComponent, SidebarComponent],
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

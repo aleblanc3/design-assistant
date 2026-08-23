@@ -12,7 +12,7 @@ import { HtmlNormalizationService, htmlProcessingResult } from '../../../service
 
 @Component({
   selector: 'aida-standalone-compare-versions',
-  imports: [TabsModule, TranslatePipe, CompareRenderedComponent, CompareSourceComponent],
+  imports: [TranslatePipe, TabsModule, CompareRenderedComponent, CompareSourceComponent],
   templateUrl: './standalone-compare-versions.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

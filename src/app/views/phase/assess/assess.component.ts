@@ -15,7 +15,7 @@ import { ProjectPhase } from '../../../common/data.model';
  */
 @Component({
   selector: 'aida-assess',
-  imports: [CommonModule, TranslatePipe, RouterLink, BreadcrumbModule],
+  imports: [CommonModule, RouterLink, TranslatePipe, BreadcrumbModule],
   templateUrl: 'assess.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

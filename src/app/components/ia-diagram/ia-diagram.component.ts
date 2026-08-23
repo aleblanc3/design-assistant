@@ -8,7 +8,6 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { Menu, MenuModule } from 'primeng/menu';
 import { OrganizationChartModule } from 'primeng/organizationchart';
-import { SelectButtonModule } from 'primeng/selectbutton';
 import { TooltipModule } from 'primeng/tooltip';
 
 import { EditNodeComponent } from '../edit-node/edit-node.component';
@@ -23,7 +22,7 @@ import { IaDiagramService } from './ia-diagram.service';
 
 @Component({
   selector: 'aida-ia-diagram',
-  imports: [TranslatePipe, FormsModule, OrganizationChartModule, ButtonModule, TooltipModule, SelectButtonModule, MenuModule, DialogModule, EditNodeComponent, ProjectSettingsComponent],
+  imports: [FormsModule, TranslatePipe, ButtonModule, DialogModule, MenuModule, OrganizationChartModule, TooltipModule, EditNodeComponent, ProjectSettingsComponent],
   templateUrl: './ia-diagram.component.html',
   styleUrl: './ia-diagram.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

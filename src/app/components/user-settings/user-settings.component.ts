@@ -20,7 +20,7 @@ export type SettingsMode = 'all' | 'language' | 'theme' | 'versions';
 
 @Component({
   selector: 'aida-user-settings',
-  imports: [CommonModule, TranslatePipe, FormsModule, SelectButtonModule, SelectModule, CheckboxModule, ButtonModule, TooltipModule, DialogModule],
+  imports: [CommonModule, FormsModule, TranslatePipe, ButtonModule, CheckboxModule, DialogModule, SelectButtonModule, SelectModule, TooltipModule],
   templateUrl: './user-settings.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -23,7 +23,7 @@ type RepoMode = 'default' | 'baseline';
 
 @Component({
   selector: 'aida-setup-repo',
-  imports: [CommonModule, FormsModule, TranslatePipe, InputTextModule, IftaLabelModule, CheckboxModule, AutoCompleteModule, KeyFilterModule, MessageModule, SelectButtonModule],
+  imports: [CommonModule, FormsModule, TranslatePipe, AutoCompleteModule, CheckboxModule, IftaLabelModule, InputTextModule, KeyFilterModule, MessageModule, SelectButtonModule],
   templateUrl: './setup-repo.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

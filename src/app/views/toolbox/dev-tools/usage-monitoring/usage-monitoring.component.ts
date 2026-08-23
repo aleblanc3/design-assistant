@@ -95,21 +95,7 @@ const STATUS_FIELDS: Record<string, (keyof UsageRecord)[]> = {
 
 @Component({
   selector: 'aida-usage-monitoring',
-  imports: [
-    CommonModule,
-    FormsModule,
-    TranslatePipe,
-    RouterLink,
-    BreadcrumbModule,
-    SkeletonModule,
-    DividerModule,
-    ButtonModule,
-    SelectButtonModule,
-    ToggleButtonModule,
-    SelectModule,
-    IftaLabelModule,
-    ChartModule,
-  ],
+  imports: [CommonModule, FormsModule, RouterLink, TranslatePipe, BreadcrumbModule, ButtonModule, ChartModule, DividerModule, IftaLabelModule, SelectButtonModule, SelectModule, SkeletonModule, ToggleButtonModule],
   templateUrl: 'usage-monitoring.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

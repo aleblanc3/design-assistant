@@ -6,29 +6,16 @@ import { Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { FilterService, MenuItem, MessageService } from 'primeng/api';
-import { AvatarModule } from 'primeng/avatar';
-import { AvatarGroupModule } from 'primeng/avatargroup';
-import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
-import { CheckboxModule } from 'primeng/checkbox';
-import { ChipModule } from 'primeng/chip';
 import { DialogModule } from 'primeng/dialog';
-import { DividerModule } from 'primeng/divider';
-import { FieldsetModule } from 'primeng/fieldset';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { ProgressBarModule } from 'primeng/progressbar';
 import { SelectModule } from 'primeng/select';
-import { SelectButtonModule } from 'primeng/selectbutton';
-import { SplitButtonModule } from 'primeng/splitbutton';
-import { TableModule } from 'primeng/table';
-import { TabsModule } from 'primeng/tabs';
 import { TagModule } from 'primeng/tag';
-import { TimelineModule } from 'primeng/timeline';
 import { TooltipModule } from 'primeng/tooltip';
 
 import { AddCollaboratorsComponent } from '../../../components/add-collaborators/add-collaborators.component';
@@ -51,32 +38,19 @@ import { ProjectMetadata, ProjectPhase } from '../../../common/data.model';
     CommonModule,
     FormsModule,
     TranslatePipe,
-    CardModule,
     ButtonModule,
+    CardModule,
     DialogModule,
-    FieldsetModule,
-    TimelineModule,
-    ProgressBarModule,
-    SplitButtonModule,
-    ChipModule,
-    InputTextModule,
     IconFieldModule,
     InputIconModule,
-    SelectModule,
-    MultiSelectModule,
-    CheckboxModule,
-    DividerModule,
-    SelectButtonModule,
-    TagModule,
-    TableModule,
-    TabsModule,
-    BadgeModule,
-    AvatarModule,
-    AvatarGroupModule,
-    TooltipModule,
+    InputTextModule,
     MessageModule,
-    SetupProjectComponent,
+    MultiSelectModule,
+    SelectModule,
+    TagModule,
+    TooltipModule,
     AddCollaboratorsComponent,
+    SetupProjectComponent,
   ],
   templateUrl: './switch-project.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

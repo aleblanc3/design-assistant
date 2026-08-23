@@ -17,7 +17,7 @@ import { ProjectStateService } from '../../../services/project-state.service';
 
 @Component({
   selector: 'aida-edit-project',
-  imports: [FormsModule, TranslatePipe, MessageModule, SetupProjectComponent, SetupRepoComponent, AddCollaboratorsComponent, FindPagesComponent, AddUrlsComponent, ViewPagesComponent],
+  imports: [FormsModule, TranslatePipe, MessageModule, AddCollaboratorsComponent, AddUrlsComponent, FindPagesComponent, SetupProjectComponent, SetupRepoComponent, ViewPagesComponent],
   templateUrl: './edit-project.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

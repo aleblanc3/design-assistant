@@ -25,7 +25,7 @@ import { GitHubUser } from '../../../common/data.model';
 
 @Component({
   selector: 'aida-sign-in-button',
-  imports: [TranslatePipe, ButtonModule, AvatarModule, MenuModule, DialogModule, PatComponent, UserSettingsComponent],
+  imports: [TranslatePipe, AvatarModule, ButtonModule, DialogModule, MenuModule, PatComponent, UserSettingsComponent],
   templateUrl: './sign-in-button.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

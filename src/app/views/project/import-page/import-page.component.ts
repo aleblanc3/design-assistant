@@ -12,7 +12,7 @@ import { ProjectStorageService } from '../../../services/storage/project-storage
 
 @Component({
   selector: 'aida-import-page',
-  imports: [TranslatePipe, RouterModule, ProgressSpinnerModule],
+  imports: [RouterModule, TranslatePipe, ProgressSpinnerModule],
   templateUrl: 'import-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

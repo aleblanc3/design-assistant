@@ -24,7 +24,7 @@
           </div>
           @for (task of tasks; track task['value']; let i = $index) {
             <div class="flex flex-row align-items-center gap-2 mt-2">
-              <p-radioButton [inputId]="'task' + i" [ngModel]="compareService.selectedTask()" [value]="task['value']" (ngModelChange)="compareService.selectedTask.set($event)" size="large" />
+              <p-radiobutton [inputId]="'task' + i" [ngModel]="compareService.selectedTask()" [value]="task['value']" (ngModelChange)="compareService.selectedTask.set($event)" size="large" />
               <label [for]="'task' + i" class="cursor-pointer font-semibold">{{ task.label }}</label>
             </div>
           }
@@ -81,7 +81,7 @@
 <ng-template #prompt let-version>
   @for (prompt of prompts; track prompt['value']; let i = $index) {
     <div class="flex flex-row align-items-center gap-2 mt-2">
-      <p-radioButton [inputId]="'prompt' + version + i" [ngModel]="compareService.selectedModel()" [value]="prompt['value']" (ngModelChange)="compareService.selectedTask.set($event)" size="large" />
+      <p-radiobutton [inputId]="'prompt' + version + i" [ngModel]="compareService.selectedModel()" [value]="prompt['value']" (ngModelChange)="compareService.selectedTask.set($event)" size="large" />
       <label [for]="'prompt' + version + i" class="cursor-pointer font-semibold">{{ prompt.label }}</label>
     </div>
   }
@@ -92,14 +92,14 @@
   <p class="text-color-secondary text-sm mb-0">{{ 'compare.aiOptions.models.free' | translate }}</p>
   @for (model of freeModels; track model) {
     <div class="flex flex-row align-items-center gap-2 my-2">
-      <p-radioButton [inputId]="'model-' + model" [ngModel]="compareService.selectedModel()" [value]="model" (ngModelChange)="compareService.selectedModel.set($event)" size="large" />
+      <p-radiobutton [inputId]="'model-' + model" [ngModel]="compareService.selectedModel()" [value]="model" (ngModelChange)="compareService.selectedModel.set($event)" size="large" />
       <label [for]="'model-' + model" class="cursor-pointer font-semibold">{{ model }}</label>
     </div>
   }
   <p class="text-color-secondary text-sm mb-0">{{ 'compare.aiOptions.models.paid' | translate }}</p>
   @for (model of paidModels; track model.value) {
     <div class="flex flex-row align-items-center gap-2 mt-2">
-      <p-radioButton [inputId]="'model-' + model.value" [ngModel]="compareService.selectedModel()" [value]="model.value" (ngModelChange)="compareService.selectedModel.set($event)" />
+      <p-radiobutton [inputId]="'model-' + model.value" [ngModel]="compareService.selectedModel()" [value]="model.value" (ngModelChange)="compareService.selectedModel.set($event)" />
       <label [for]="'model-' + model.value" class="cursor-pointer font-semibold">
         {{ model.value }}
         <span class="text-color-secondary">({{ model.price }})</span>

@@ -10,7 +10,7 @@ import { UserSettingsService } from '../../services/user-settings.service';
 
 @Component({
   selector: 'aida-standalone',
-  imports: [TranslatePipe, RouterLink, DevToolsComponent],
+  imports: [RouterLink, TranslatePipe, DevToolsComponent],
   templateUrl: 'standalone.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

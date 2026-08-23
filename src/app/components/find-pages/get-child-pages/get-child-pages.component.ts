@@ -17,7 +17,7 @@ import { GetChildPagesService } from './get-child-pages.service';
 @Component({
   selector: 'aida-get-child-pages',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslatePipe, InputNumberModule, IftaLabelModule, ButtonModule, ProgressBarModule, CheckboxModule],
+  imports: [CommonModule, FormsModule, TranslatePipe, ButtonModule, CheckboxModule, IftaLabelModule, InputNumberModule, ProgressBarModule],
   templateUrl: './get-child-pages.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

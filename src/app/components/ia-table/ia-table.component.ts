@@ -5,13 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
 import { MenuItem, TreeDragDropService, TreeNode } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
 import { ContextMenu, ContextMenuModule } from 'primeng/contextmenu';
 import { DialogModule } from 'primeng/dialog';
-import { InputGroupModule } from 'primeng/inputgroup';
-import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { InputTextModule } from 'primeng/inputtext';
-import { TooltipModule } from 'primeng/tooltip';
 import { TreeModule, TreeNodeContextMenuSelectEvent, TreeNodeDropEvent } from 'primeng/tree';
 
 import { EditNodeComponent } from '../edit-node/edit-node.component';
@@ -24,7 +19,7 @@ import { AddUrlsService } from '../add-urls/add-urls.service';
 
 @Component({
   selector: 'aida-ia-table',
-  imports: [FormsModule, TreeModule, ContextMenuModule, DialogModule, InputTextModule, InputGroupModule, InputGroupAddonModule, ButtonModule, TooltipModule, EditNodeComponent],
+  imports: [FormsModule, ContextMenuModule, DialogModule, TreeModule, EditNodeComponent],
   providers: [TreeDragDropService],
   templateUrl: './ia-table.component.html',
   styleUrl: './ia-table.component.css',

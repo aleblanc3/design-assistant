@@ -23,21 +23,7 @@ import { AddUrlsService } from '../add-urls.service';
 
 @Component({
   selector: 'aida-invalid-urls',
-  imports: [
-    CommonModule,
-    FormsModule,
-    TranslatePipe,
-    TabsModule,
-    BadgeModule,
-    CheckboxModule,
-    ButtonModule,
-    IftaLabelModule,
-    SelectModule,
-    DialogModule,
-    TooltipModule,
-    MessageModule,
-    EditNodeComponent,
-  ],
+  imports: [CommonModule, FormsModule, TranslatePipe, BadgeModule, ButtonModule, CheckboxModule, DialogModule, IftaLabelModule, MessageModule, SelectModule, TabsModule, TooltipModule, EditNodeComponent],
   templateUrl: './invalid-urls.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

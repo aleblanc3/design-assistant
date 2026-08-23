@@ -17,7 +17,7 @@ import { AddUrlsService } from './add-urls.service';
 
 @Component({
   selector: 'aida-add-urls',
-  imports: [FormsModule, TranslatePipe, IftaLabelModule, TextareaModule, MessageModule, ButtonModule, ProgressBarModule, DialogModule, InvalidUrlsComponent],
+  imports: [FormsModule, TranslatePipe, ButtonModule, DialogModule, IftaLabelModule, MessageModule, ProgressBarModule, TextareaModule, InvalidUrlsComponent],
   templateUrl: './add-urls.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

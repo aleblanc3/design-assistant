@@ -5,12 +5,9 @@ import { RouterLink } from '@angular/router';
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslatePipe } from '@ngx-translate/core';
 
-import { ButtonModule } from 'primeng/button';
-import { CheckboxModule } from 'primeng/checkbox';
-
 @Component({
   selector: 'aida-dev-tools',
-  imports: [TranslatePipe, FormsModule, RouterLink, CheckboxModule, ButtonModule],
+  imports: [FormsModule, RouterLink, TranslatePipe],
   template: `
     <h2>{{ 'dev._title' | translate }}</h2>
     <p [innerHTML]="'dev.description' | translate"></p>

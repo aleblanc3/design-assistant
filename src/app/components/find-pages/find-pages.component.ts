@@ -9,7 +9,7 @@ import { GetTaskUrlsComponent } from './get-task-pages/get-task-urls.component';
 
 @Component({
   selector: 'aida-find-pages',
-  imports: [TranslatePipe, TabsModule, GetTaskUrlsComponent, GetChildPagesComponent],
+  imports: [TranslatePipe, TabsModule, GetChildPagesComponent, GetTaskUrlsComponent],
   templateUrl: './find-pages.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

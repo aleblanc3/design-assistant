@@ -4,7 +4,7 @@
   <div id="views" class="flex flex-row gap-3 my-1" role="radiogroup">
     @for (view of sourceViewOptions; track view.value) {
       <div class="field-radiobutton">
-        <p-radioButton [inputId]="'show_' + view.value" [name]="view.value" [ngModel]="sourceSelectedView()" [value]="view.value" (ngModelChange)="onSourceViewChange($event)" size="large" />
+        <p-radiobutton [inputId]="'show_' + view.value" [name]="view.value" [ngModel]="sourceSelectedView()" [value]="view.value" (ngModelChange)="onSourceViewChange($event)" size="large" />
         <label [for]="'show_' + view.value" class="cursor-pointer font-semibold flex align-items-center gap-1">
           <i [class]="view.icon"></i>
           {{ view.label | translate }}

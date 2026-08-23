@@ -54,24 +54,24 @@ import { InventoryPromptKey } from '../../../common/prompts/prompt.model';
     CommonModule,
     FormsModule,
     TranslatePipe,
-    TableModule,
-    TooltipModule,
-    TagModule,
     ButtonModule,
-    RadioButtonModule,
-    IftaLabelModule,
-    MultiSelectModule,
-    SelectModule,
-    TextareaModule,
-    MenuModule,
-    ContextMenuModule,
     ConfirmDialogModule,
+    ContextMenuModule,
     DialogModule,
-    ExportProjectComponent,
-    IaTableComponent,
-    EditNodeComponent,
+    IftaLabelModule,
+    MenuModule,
+    MultiSelectModule,
+    RadioButtonModule,
+    SelectModule,
+    TableModule,
+    TagModule,
+    TextareaModule,
+    TooltipModule,
     AddUrlsComponent,
+    EditNodeComponent,
+    ExportProjectComponent,
     FindPagesComponent,
+    IaTableComponent,
   ],
   templateUrl: './inventory.component.html',
   styleUrl: './inventory.component.css',
@@ -751,7 +751,7 @@ export class InventoryComponent implements OnInit {
   /**********************************************************
    *                                                        *
    *    START OF MENU & POPUP OPTIONS                       *
-   *    p-menu, p-contextMenu, p-dialog, p-confirmDialog    *
+   *    p-menu, p-contextmenu, p-dialog, p-confirmdialog    *
    *                                                        *
    **********************************************************/
 
@@ -1202,7 +1202,7 @@ export class InventoryComponent implements OnInit {
   /*********************************************************
    *                                                        *
    *    END OF MENU & POPUP OPTIONS                         *
-   *    p-menu, p-contextMenu, p-dialog, p-confirmDialog    *
+   *    p-menu, p-contextmenu, p-dialog, p-confirmdialog    *
    *                                                        *
    *********************************************************/
 

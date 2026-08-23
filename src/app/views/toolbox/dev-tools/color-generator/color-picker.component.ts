@@ -20,14 +20,14 @@ export interface ContrastTest {
 @Component({
   selector: 'aida-color-picker',
   standalone: true,
-  imports: [FormsModule, ColorPickerModule, InputTextModule, ButtonModule, InputGroupModule, InputGroupAddonModule],
+  imports: [FormsModule, ButtonModule, ColorPickerModule, InputGroupAddonModule, InputGroupModule, InputTextModule],
   template: `
     <div class="flex flex-column gap-2">
       <!-- Color Picker -->
       <div class="flex align-items-center gap-2 mb-2">
         <p-inputgroup>
           <p-inputgroup-addon>
-            <p-colorPicker [(ngModel)]="currentColor" (onChange)="onColorChange()" appendTo="body" />
+            <p-colorpicker [(ngModel)]="currentColor" (onChange)="onColorChange()" appendTo="body" />
           </p-inputgroup-addon>
           <input [(ngModel)]="currentColor" (change)="onColorChange()" pInputText placeholder="#000000" type="text" />
           @if (showReset) {

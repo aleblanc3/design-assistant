@@ -19,7 +19,7 @@ import { ProjectPhase } from '../../common/data.model';
 
 @Component({
   selector: 'aida-setup-project',
-  imports: [FormsModule, TranslatePipe, IftaLabelModule, KeyFilterModule, InputTextModule, SelectModule, SelectButtonModule, MessageModule],
+  imports: [FormsModule, TranslatePipe, IftaLabelModule, InputTextModule, KeyFilterModule, MessageModule, SelectButtonModule, SelectModule],
   templateUrl: './setup-project.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

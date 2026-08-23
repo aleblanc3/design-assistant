@@ -5,15 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
-import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { MessageModule } from 'primeng/message';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { SplitButtonModule } from 'primeng/splitbutton';
-import { Toast } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
-import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
 
 import { htmlProcessingResult } from '../../../services/html-normalization.service';
@@ -36,7 +31,7 @@ export interface ViewOption<T = string> {
  * Format your url or string content through the normalizeHTML function in html-normalization.service convert it to an htmlProcessingResult */
 @Component({
   selector: 'aida-compare-rendered',
-  imports: [TranslatePipe, CommonModule, FormsModule, ButtonModule, SplitButtonModule, RadioButtonModule, ToolbarModule, TooltipModule, ToggleButtonModule],
+  imports: [CommonModule, FormsModule, TranslatePipe, ButtonModule, RadioButtonModule, SplitButtonModule, ToggleButtonModule, TooltipModule],
   templateUrl: './compare-rendered.component.html',
   styleUrl: './compare-rendered.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -16,7 +16,7 @@ import { IaDiagramService } from '../ia-diagram/ia-diagram.service';
 
 @Component({
   selector: 'aida-view-pages',
-  imports: [TranslatePipe, RouterLink, ButtonModule, DrawerModule, TableModule, TooltipModule, ProjectSettingsComponent],
+  imports: [RouterLink, TranslatePipe, ButtonModule, DrawerModule, TableModule, TooltipModule, ProjectSettingsComponent],
   templateUrl: './view-pages.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -67,7 +67,7 @@ type PreviewConfig = MessagePreviewConfig | ButtonPreviewConfig | CardPreviewCon
 @Component({
   selector: 'aida-design-patterns',
   standalone: true,
-  imports: [FormsModule, TranslatePipe, RouterLink, BreadcrumbModule, TabsModule, MessageModule, ButtonModule, TooltipModule, InputTextModule, TextareaModule, SelectModule, IftaLabelModule],
+  imports: [FormsModule, RouterLink, TranslatePipe, BreadcrumbModule, ButtonModule, IftaLabelModule, InputTextModule, MessageModule, SelectModule, TabsModule, TextareaModule, TooltipModule],
   templateUrl: './design-patterns.component.html',
   styleUrl: './design-patterns.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -264,10 +264,10 @@ export class DesignPatternsComponent {
   public inputExamples: CodeExample<InputPreviewConfig>[] = [
     {
       label: 'Input Text with IFTA Label',
-      code: `<p-iftaLabel>
+      code: `<p-iftalabel>
     <input pInputText id="example-input" [(ngModel)]="value" fluid />
     <label for="example-input">{{ 'dev.patterns.input.text.label' | translate }}</label>
-</p-iftaLabel>`,
+</p-iftalabel>`,
       description: 'dev.patterns.input.text.desc',
       previewType: 'input',
       previewConfig: {
@@ -279,10 +279,10 @@ export class DesignPatternsComponent {
     },
     {
       label: 'Textarea with IFTA Label',
-      code: `<p-iftaLabel>
+      code: `<p-iftalabel>
     <textarea pInputTextarea id="example-textarea" [(ngModel)]="value" rows="3" fluid></textarea>
     <label for="example-textarea">{{ 'dev.patterns.input.textarea.label' | translate }}</label>
-</p-iftaLabel>`,
+</p-iftalabel>`,
       description: 'dev.patterns.input.textarea.desc',
       previewType: 'input',
       previewConfig: {
@@ -295,7 +295,7 @@ export class DesignPatternsComponent {
     },
     {
       label: 'Select with IFTA Label',
-      code: `<p-iftaLabel>
+      code: `<p-iftalabel>
     <p-select 
         inputId="example-select" 
         [options]="options" [(ngModel)]="selectedOption" 
@@ -303,7 +303,7 @@ export class DesignPatternsComponent {
         fluid
     />
     <label for="example-select">{{ 'dev.patterns.input.select.label' | translate }}</label>
-</p-iftaLabel>`,
+</p-iftalabel>`,
       description: 'dev.patterns.input.select.desc',
       previewType: 'input',
       previewConfig: {

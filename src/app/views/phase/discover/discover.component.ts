@@ -15,7 +15,7 @@ import { ProjectPhase } from '../../../common/data.model';
  */
 @Component({
   selector: 'aida-discover',
-  imports: [CommonModule, TranslatePipe, RouterLink, BreadcrumbModule],
+  imports: [CommonModule, RouterLink, TranslatePipe, BreadcrumbModule],
   templateUrl: 'discover.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

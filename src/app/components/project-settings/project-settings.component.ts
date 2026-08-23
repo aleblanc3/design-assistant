@@ -10,7 +10,7 @@ import { ProjectStateService } from '../../services/project-state.service';
 
 @Component({
   selector: 'aida-project-settings',
-  imports: [TranslatePipe, FormsModule, SelectButtonModule],
+  imports: [FormsModule, TranslatePipe, SelectButtonModule],
   templateUrl: './project-settings.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -4,15 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
-import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { MessageModule } from 'primeng/message';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { SplitButtonModule } from 'primeng/splitbutton';
-import { Toast } from 'primeng/toast';
-import { ToolbarModule } from 'primeng/toolbar';
-import { TooltipModule } from 'primeng/tooltip';
 
 import { htmlProcessingResult } from '../../../services/html-normalization.service';
 import { CompareSourceService } from './compare-source.service';
@@ -32,7 +24,7 @@ export interface ViewOption<T = string> {
 
 @Component({
   selector: 'aida-compare-source',
-  imports: [TranslatePipe, CommonModule, FormsModule, ButtonModule, SplitButtonModule, RadioButtonModule, ToolbarModule, TooltipModule],
+  imports: [CommonModule, FormsModule, TranslatePipe, RadioButtonModule],
   templateUrl: './compare-source.component.html',
   styleUrl: './compare-source.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -14,7 +14,6 @@ import { MessageModule } from 'primeng/message';
 import { PanelModule } from 'primeng/panel';
 import { Popover, PopoverModule } from 'primeng/popover';
 import { ProgressBarModule } from 'primeng/progressbar';
-import { SelectButtonModule } from 'primeng/selectbutton';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 
@@ -78,20 +77,19 @@ interface ExportMessage {
     CommonModule,
     FormsModule,
     TranslatePipe,
-    MessageModule,
     ButtonModule,
-    TooltipModule,
-    PopoverModule,
-    SelectButtonModule,
-    DividerModule,
-    TableModule,
     ChipModule,
+    DividerModule,
+    MessageModule,
     PanelModule,
+    PopoverModule,
     ProgressBarModule,
-    SetupRepoComponent,
-    SignInBannerComponent,
+    TableModule,
+    TooltipModule,
     BookmarkletComponent,
     ProjectSettingsComponent,
+    SetupRepoComponent,
+    SignInBannerComponent,
   ],
   templateUrl: './export.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

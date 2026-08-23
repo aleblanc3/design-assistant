@@ -2,7 +2,7 @@
 <p>{{ 'findPages.task.description' | translate }}</p>
 <!-- Task Selection Section -->
 <p-iftalabel>
-  <p-autoComplete
+  <p-autocomplete
     id="task-autocomplete"
     [(ngModel)]="selectedTasks"
     [disabled]="airtableService.isLoading()"
@@ -29,14 +29,14 @@
       </div>
     </ng-template>
     <ng-template #selectedItem let-selected>{{ selected.label }}</ng-template>
-  </p-autoComplete>
+  </p-autocomplete>
   <label for="task-autocomplete">{{ 'findPages.task.selectTask' | translate }}</label>
 </p-iftalabel>
 
 <!-- Loading indicator -->
 @if (airtableService.isLoading()) {
   <div class="mt-2 flex align-items-center gap-2">
-    <p-progressSpinner strokeWidth="4" styleClass="w-2rem h-2rem" />
+    <p-progressspinner strokeWidth="4" styleClass="w-2rem h-2rem" />
     <span>{{ 'findPages.task.loadingTasks' | translate }}</span>
   </div>
 }
