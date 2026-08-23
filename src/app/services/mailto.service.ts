@@ -1,9 +1,10 @@
-import { Injectable, inject } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { marker } from '@colsen1991/ngx-translate-extract-marker';
+import { inject, Injectable } from '@angular/core';
 
-import { ProjectStateService } from '../services/project-state.service';
+import { marker } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateService } from '@ngx-translate/core';
+
 import { ExportGitHubService } from '../services/github/export-github.service';
+import { ProjectStateService } from '../services/project-state.service';
 
 export interface MailtoContext {
   projectName?: string;

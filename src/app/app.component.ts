@@ -1,24 +1,22 @@
-import { Component, ChangeDetectionStrategy, OnInit, inject, effect } from '@angular/core';
-import { RouterOutlet, RouterModule, ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, effect, inject, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
 
-//Template
-import { HeaderComponent } from './template/header.component';
-import { SidebarComponent } from './template/sidebar.component';
-import { FooterComponent } from './template/footer.component';
-import { CustomTitleStrategy } from './common/custom-title-strategy';
-
-//PrimeNG
 import { PrimeNG } from 'primeng/config';
 
-//Services
-import { ProjectStorageService } from './services/storage/project-storage.service';
-import { ProjectStateService } from './services/project-state.service';
-import { ExportGitHubService } from './services/github/export-github.service';
+import { FooterComponent } from './template/footer.component';
+import { HeaderComponent } from './template/header.component';
+import { SidebarComponent } from './template/sidebar.component';
+
 import { CollaboratorService } from './services/github/collaborator.service';
+import { ExportGitHubService } from './services/github/export-github.service';
+import { ProjectStateService } from './services/project-state.service';
 import { CloudStorageService } from './services/storage/cloud-storage.service';
-import { UserSettingsService } from './services/user-settings.service';
+import { ProjectStorageService } from './services/storage/project-storage.service';
 import { UsageService } from './services/usage.service';
+import { UserSettingsService } from './services/user-settings.service';
+
+import { CustomTitleStrategy } from './common/custom-title-strategy';
 
 @Component({
   selector: 'aida-root',

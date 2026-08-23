@@ -1,9 +1,12 @@
-import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+
 import { firstValueFrom } from 'rxjs';
+
+import { UserSettingsService } from './user-settings.service';
+
 import { environment } from '../../environments/environment';
 import { MetadataReview } from '../common/data.model';
-import { UserSettingsService } from './user-settings.service';
 
 @Injectable({ providedIn: 'root' })
 export class UsageService {

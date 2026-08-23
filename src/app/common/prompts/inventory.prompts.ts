@@ -1,4 +1,4 @@
-import { InventoryPromptKey, PromptConfig, RoleKey, OutputKey, RubricKey } from './prompt.model';
+import { InventoryPromptKey, OutputKey, PromptConfig, RoleKey, RubricKey } from './prompt.model';
 
 export const InventoryPrompts: Record<InventoryPromptKey, PromptConfig> = {
   [InventoryPromptKey.Metadata]: {

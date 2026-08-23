@@ -1,12 +1,12 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TranslatePipe } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
-import { marker } from '@colsen1991/ngx-translate-extract-marker';
 
-//PrimeNG
-import { CheckboxModule } from 'primeng/checkbox';
+import { marker } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslatePipe } from '@ngx-translate/core';
+
 import { ButtonModule } from 'primeng/button';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @Component({
   selector: 'aida-dev-tools',

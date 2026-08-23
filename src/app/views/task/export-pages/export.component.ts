@@ -1,41 +1,39 @@
-import { Component, ChangeDetectionStrategy, inject, signal, computed, effect, ViewChild, untracked, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, signal, untracked, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { Router } from '@angular/router';
 
-//PrimeNG Modules
-import { TableModule } from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
+import { marker } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+
 import { TreeNode } from 'primeng/api';
-import { MessageModule } from 'primeng/message';
+import { ButtonModule } from 'primeng/button';
 import { ChipModule } from 'primeng/chip';
-import { TooltipModule } from 'primeng/tooltip';
-import { PopoverModule, Popover } from 'primeng/popover';
-import { SelectButtonModule } from 'primeng/selectbutton';
 import { DividerModule } from 'primeng/divider';
+import { MessageModule } from 'primeng/message';
 import { PanelModule } from 'primeng/panel';
+import { Popover, PopoverModule } from 'primeng/popover';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { TableModule } from 'primeng/table';
+import { TooltipModule } from 'primeng/tooltip';
 
-//Services
-import { ExportGitHubService } from '../../../services/github/export-github.service';
-import { ProjectStateService } from '../../../services/project-state.service';
-import { FetchService } from '../../../services/fetch.service';
-import { GitHubAuthService } from '../../../services/github/github-auth.service';
-import { UsageService } from '../../../services/usage.service';
-import { HtmlNormalizationService } from '../../../services/html-normalization.service';
-import { ProjectCacheService } from '../../../services/project-cache.service';
-
-//Components
-import { SetupRepoComponent } from '../../../components/setup-repo/setup-repo.component';
-import { SignInBannerComponent } from '../../../components/sign-in/sign-in-banner/sign-in-banner.component';
 import { BookmarkletComponent } from '../../../components/bookmarklet/bookmarklet.component';
 import { ProjectSettingsComponent } from '../../../components/project-settings/project-settings.component';
+import { SetupRepoComponent } from '../../../components/setup-repo/setup-repo.component';
+import { SignInBannerComponent } from '../../../components/sign-in/sign-in-banner/sign-in-banner.component';
 
-import { SourceVersion } from '../../../common/data.model';
-import { CDTS_TEMPLATE_ENG, CDTS_TEMPLATE_FRA, EXIT_PAGE_TEMPLATE_ENG, EXIT_PAGE_TEMPLATE_FRA, INDEX_PAGE_TEMPLATE_ENG, INDEX_PAGE_TEMPLATE_FRA, LINK_DETOUR_JS } from '../../../common/cdts.template';
+import { FetchService } from '../../../services/fetch.service';
+import { ExportGitHubService } from '../../../services/github/export-github.service';
+import { GitHubAuthService } from '../../../services/github/github-auth.service';
+import { HtmlNormalizationService } from '../../../services/html-normalization.service';
+import { ProjectCacheService } from '../../../services/project-cache.service';
+import { ProjectStateService } from '../../../services/project-state.service';
+import { UsageService } from '../../../services/usage.service';
+
 import { environment } from '../../../../environments/environment';
+import { CDTS_TEMPLATE_ENG, CDTS_TEMPLATE_FRA, EXIT_PAGE_TEMPLATE_ENG, EXIT_PAGE_TEMPLATE_FRA, INDEX_PAGE_TEMPLATE_ENG, INDEX_PAGE_TEMPLATE_FRA, LINK_DETOUR_JS } from '../../../common/cdts.template';
+import { SourceVersion } from '../../../common/data.model';
 
 enum ExportStatus {
   ExportNew = 'exportPages.export.status.addToGitHub', // Export - New page

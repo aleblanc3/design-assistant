@@ -1,15 +1,14 @@
-import { Injectable, inject, signal } from '@angular/core';
-import { htmlProcessingResult } from '../../services/html-normalization.service';
+import { inject, Injectable, signal } from '@angular/core';
 
-// Services
-import { ProjectStateService } from '../../services/project-state.service';
-import { ProjectCacheService } from '../../services/project-cache.service';
-import { UserSettingsService } from '../../services/user-settings.service';
 import { FetchService } from '../../services/fetch.service';
-import { SourceVersion, CompareVersion } from '../../common/data.model';
+import { htmlProcessingResult } from '../../services/html-normalization.service';
+import { ProjectCacheService } from '../../services/project-cache.service';
+import { ProjectStateService } from '../../services/project-state.service';
+import { UserSettingsService } from '../../services/user-settings.service';
 
-// Constants
-import { AiFreeModelOptions, AiPaidModelOptions, AI_FREE_MODELS } from '../../common/prompts/ai-models.config';
+import { CompareVersion, SourceVersion } from '../../common/data.model';
+import { AI_FREE_MODELS, AiFreeModelOptions, AiPaidModelOptions } from '../../common/prompts/ai-models.config';
+
 export type AiTaskOption = 'default' | 'models' | 'prompts';
 
 @Injectable({

@@ -1,6 +1,6 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 
-import { FetchService, BreadcrumbNode } from '../../../services/fetch.service';
+import { BreadcrumbNode, FetchService } from '../../../services/fetch.service';
 
 interface PageToAdd {
   url: string;

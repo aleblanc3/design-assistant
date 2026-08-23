@@ -1,25 +1,23 @@
 // Update all page dropdowns with thier valid versions (speeds up page switching)
-import { Component, ChangeDetectionStrategy, inject, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { Router, Params } from '@angular/router';
+import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
+import { Params, Router } from '@angular/router';
 
-//PrimeNG
-import { MenuModule } from 'primeng/menu';
-import { MessageService, MenuItem } from 'primeng/api';
-import { ToastModule } from 'primeng/toast';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+
+import { MenuItem, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DrawerModule } from 'primeng/drawer';
+import { MenuModule } from 'primeng/menu';
+import { ToastModule } from 'primeng/toast';
 
-//Services
-import { ProjectStateService } from '../../../services/project-state.service';
-import { CompareService } from '../compare.service';
-import { CompareAiService } from '../compare-ai.service';
-import { FetchService } from '../../../services/fetch.service';
-
-//Components
 import { UserSettingsComponent } from '../../user-settings/user-settings.component';
 import { CompareAiOptionsComponent } from '../compare-ai-options/compare-ai-options.component';
+
+import { FetchService } from '../../../services/fetch.service';
+import { ProjectStateService } from '../../../services/project-state.service';
+import { CompareAiService } from '../compare-ai.service';
+import { CompareService } from '../compare.service';
 
 @Component({
   selector: 'aida-compare-tools',

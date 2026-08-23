@@ -1,9 +1,12 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
-import { TranslatePipe } from '@ngx-translate/core';
-import { RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { UserSettingsService } from '../../services/user-settings.service';
+import { RouterLink } from '@angular/router';
+
+import { TranslatePipe } from '@ngx-translate/core';
+
 import { DevToolsComponent } from '../toolbox/dev-tools/dev-tools.component';
+
+import { UserSettingsService } from '../../services/user-settings.service';
 
 @Component({
   selector: 'aida-standalone',

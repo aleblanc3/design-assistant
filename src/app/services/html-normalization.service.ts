@@ -1,6 +1,8 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+
 //import * as parserHtml from 'prettier/parser-html';
 import { FetchService } from './fetch.service';
+
 import { CompareVersion } from '../common/data.model';
 
 export interface htmlProcessingResult {

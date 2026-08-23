@@ -1,19 +1,19 @@
-import { Component, ChangeDetectionStrategy, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
-//PrimeNG
-import { IftaLabelModule } from 'primeng/iftalabel';
-import { TextareaModule } from 'primeng/textarea';
-import { MessageModule } from 'primeng/message';
 import { ButtonModule } from 'primeng/button';
-import { ProgressBarModule } from 'primeng/progressbar';
 import { DialogModule } from 'primeng/dialog';
+import { IftaLabelModule } from 'primeng/iftalabel';
+import { MessageModule } from 'primeng/message';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { TextareaModule } from 'primeng/textarea';
 
-//Custom
+import { InvalidUrlsComponent } from './invalid-urls/invalid-urls.component';
+
 import { ProjectStateService } from '../../services/project-state.service';
 import { AddUrlsService } from './add-urls.service';
-import { InvalidUrlsComponent } from './invalid-urls/invalid-urls.component';
 
 @Component({
   selector: 'aida-add-urls',

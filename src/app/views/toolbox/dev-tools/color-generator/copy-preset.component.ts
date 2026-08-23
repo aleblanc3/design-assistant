@@ -1,12 +1,10 @@
-import { Component, ChangeDetectionStrategy, Input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
 
-//PrimeNG
 import { ButtonModule } from 'primeng/button';
 import { TextareaModule } from 'primeng/textarea';
 
-//Custom
-import { ContrastUtil } from '../../../../common/contrast.util';
 import { ColorConverter } from '../../../../common/color-converter.util';
+import { ContrastUtil } from '../../../../common/contrast.util';
 
 @Component({
   selector: 'aida-copy-preset',

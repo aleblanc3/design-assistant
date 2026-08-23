@@ -1,14 +1,14 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { ColorPickerModule } from 'primeng/colorpicker';
-import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { ColorPickerModule } from 'primeng/colorpicker';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { InputTextModule } from 'primeng/inputtext';
 
-import { ContrastUtil } from '../../../../common/contrast.util';
 import { ColorConverter } from '../../../../common/color-converter.util';
+import { ContrastUtil } from '../../../../common/contrast.util';
 
 export interface ContrastTest {
   shade: number;

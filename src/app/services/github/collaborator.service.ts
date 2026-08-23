@@ -1,8 +1,9 @@
-import { Injectable, inject } from '@angular/core';
-import { GitHubUser } from '../../common/data.model';
+import { inject, Injectable } from '@angular/core';
+
 import { ProjectStorageService } from '../storage/project-storage.service';
-import { ProjectMetadata, Project } from '../../common/data.model';
 import { ExportGitHubService } from './export-github.service';
+
+import { GitHubUser, Project, ProjectMetadata } from '../../common/data.model';
 
 @Injectable({ providedIn: 'root' })
 export class CollaboratorService {

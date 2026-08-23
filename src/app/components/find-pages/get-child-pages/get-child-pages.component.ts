@@ -1,19 +1,18 @@
-import { Component, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
 import { TranslatePipe } from '@ngx-translate/core';
 
-// PrimeNG modules
-import { InputNumberModule } from 'primeng/inputnumber';
-import { IftaLabelModule } from 'primeng/iftalabel';
 import { ButtonModule } from 'primeng/button';
-import { ProgressBarModule } from 'primeng/progressbar';
 import { CheckboxModule } from 'primeng/checkbox';
+import { IftaLabelModule } from 'primeng/iftalabel';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { ProgressBarModule } from 'primeng/progressbar';
 
-// Services
 import { ProjectStateService } from '../../../services/project-state.service';
-import { GetChildPagesService } from './get-child-pages.service';
 import { AddUrlsService } from '../../add-urls/add-urls.service';
+import { GetChildPagesService } from './get-child-pages.service';
 
 @Component({
   selector: 'aida-get-child-pages',

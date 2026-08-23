@@ -1,25 +1,23 @@
-import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
 import { TranslatePipe } from '@ngx-translate/core';
 
-//PrimeNG modules
 import { MessageModule } from 'primeng/message';
 
-//Custom services
-import { ProjectStateService } from '../../../services/project-state.service';
-import { IaDiagramService } from '../../../components/ia-diagram/ia-diagram.service';
-
-//Custom components
-import { SetupProjectComponent } from '../../../components/setup-project/setup-project.component';
-import { SetupRepoComponent } from '../../../components/setup-repo/setup-repo.component';
 import { AddCollaboratorsComponent } from '../../../components/add-collaborators/add-collaborators.component';
 import { AddUrlsComponent } from '../../../components/add-urls/add-urls.component';
 import { FindPagesComponent } from '../../../components/find-pages/find-pages.component';
+import { SetupProjectComponent } from '../../../components/setup-project/setup-project.component';
+import { SetupRepoComponent } from '../../../components/setup-repo/setup-repo.component';
 import { ViewPagesComponent } from '../../../components/view-pages/view-pages.component';
+
+import { IaDiagramService } from '../../../components/ia-diagram/ia-diagram.service';
+import { ProjectStateService } from '../../../services/project-state.service';
 
 @Component({
   selector: 'aida-edit-project',
-  imports: [FormsModule, TranslatePipe, SetupProjectComponent, SetupRepoComponent, AddCollaboratorsComponent, FindPagesComponent, AddUrlsComponent, ViewPagesComponent, MessageModule],
+  imports: [FormsModule, TranslatePipe, MessageModule, SetupProjectComponent, SetupRepoComponent, AddCollaboratorsComponent, FindPagesComponent, AddUrlsComponent, ViewPagesComponent],
   templateUrl: './edit-project.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,12 +1,13 @@
-import { Injectable, inject } from '@angular/core';
-import { environment } from '../../environments/environment';
-import { PageTemplate } from '../common/data.model';
-import { isPortalDomain } from '../common/portal-domains.config';
+import { inject, Injectable } from '@angular/core';
+
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
-import rs from 'text-readability';
 import { TranslateService } from '@ngx-translate/core';
 
-import { UrlVersion } from '../common/data.model';
+import rs from 'text-readability';
+
+import { environment } from '../../environments/environment';
+import { PageTemplate, UrlVersion } from '../common/data.model';
+import { isPortalDomain } from '../common/portal-domains.config';
 
 export interface JsonMetadata {
   owner?: string; // jrc:content.json gcContributor

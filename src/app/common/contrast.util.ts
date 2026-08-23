@@ -1,4 +1,5 @@
 import { ColorConverter } from './color-converter.util';
+
 export class ContrastUtil {
   /**
    * Calculate WCAG contrast ratio between two hex colors

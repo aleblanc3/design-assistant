@@ -1,19 +1,18 @@
-import { Component, ChangeDetectionStrategy, inject, computed, signal, effect, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
-// PrimeNG modules
-import { AutoCompleteModule, AutoCompleteCompleteEvent, AutoCompleteSelectEvent, AutoCompleteUnselectEvent } from 'primeng/autocomplete';
-import { IftaLabelModule } from 'primeng/iftalabel';
-import { TagModule } from 'primeng/tag';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { AutoCompleteCompleteEvent, AutoCompleteModule, AutoCompleteSelectEvent, AutoCompleteUnselectEvent } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
+import { IftaLabelModule } from 'primeng/iftalabel';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { TagModule } from 'primeng/tag';
 
-// Services
 import { AirtableService } from '../../../services/data-sources/airtable.service';
-import { AddUrlsService } from '../../add-urls/add-urls.service';
 import { ProjectStateService } from '../../../services/project-state.service';
+import { AddUrlsService } from '../../add-urls/add-urls.service';
 
 export interface TaskOption {
   id: number;

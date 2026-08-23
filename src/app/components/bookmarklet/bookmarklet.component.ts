@@ -1,9 +1,9 @@
-import { Component, ChangeDetectionStrategy, inject, computed, input } from '@angular/core';
-import { TranslatePipe } from '@ngx-translate/core';
-import { marker } from '@colsen1991/ngx-translate-extract-marker';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
-//Services
+import { marker } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslatePipe } from '@ngx-translate/core';
+
 import { ProjectStateService } from '../../services/project-state.service';
 
 @Component({

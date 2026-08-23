@@ -1,19 +1,20 @@
-import { Component, inject, input, effect, ChangeDetectionStrategy } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { MenuItem } from 'primeng/api';
-import { SelectButtonModule } from 'primeng/selectbutton';
-import { SelectModule } from 'primeng/select';
-import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
-import { TooltipModule } from 'primeng/tooltip';
+import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
+import { SelectModule } from 'primeng/select';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { TooltipModule } from 'primeng/tooltip';
 
-import { UserSettingsService, ColorScheme } from '../../services/user-settings.service';
 import { ProjectStateService } from '../../services/project-state.service';
+import { ColorScheme, UserSettingsService } from '../../services/user-settings.service';
 
 export type SettingsMode = 'all' | 'language' | 'theme' | 'versions';
 

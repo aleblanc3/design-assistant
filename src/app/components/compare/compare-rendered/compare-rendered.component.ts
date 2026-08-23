@@ -1,29 +1,23 @@
-// This component expects 2 inputs for the before & after content for the diff
-// It expects inputs in htmlProcessingResult format which includes information to populate the legend
-// Format your url or string content through the normalizeHTML function in html-normalization.service convert it to an htmlProcessingResult
-
-import { Component, ChangeDetectionStrategy, inject, input, computed, Output, EventEmitter, ViewChild, ElementRef, signal, effect, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule, LocationStrategy } from '@angular/common';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { marker } from '@colsen1991/ngx-translate-extract-marker';
+import { AfterViewInit, ChangeDetectionStrategy, Component, computed, effect, ElementRef, EventEmitter, inject, input, OnDestroy, Output, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-// PrimeNG modules
+import { marker } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { SplitButtonModule } from 'primeng/splitbutton';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { MessageModule } from 'primeng/message';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { Toast } from 'primeng/toast';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
-import { ToggleButtonModule } from 'primeng/togglebutton';
 
-import { MessageModule } from 'primeng/message';
-import { MessageService, ConfirmationService, MenuItem } from 'primeng/api';
-import { Toast } from 'primeng/toast';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-
-// Services
-import { CompareRenderedService } from './compare-rendered.service';
 import { htmlProcessingResult } from '../../../services/html-normalization.service';
+import { CompareRenderedService } from './compare-rendered.service';
 
 export enum WebViewType {
   Original = 'original',
@@ -37,6 +31,9 @@ export interface ViewOption<T = string> {
   icon: string;
 }
 
+/** This component expects 2 inputs for the before & after content for the diff
+ * It expects inputs in htmlProcessingResult format which includes information to populate the legend
+ * Format your url or string content through the normalizeHTML function in html-normalization.service convert it to an htmlProcessingResult */
 @Component({
   selector: 'aida-compare-rendered',
   imports: [TranslatePipe, CommonModule, FormsModule, ButtonModule, SplitButtonModule, RadioButtonModule, ToolbarModule, TooltipModule, ToggleButtonModule],

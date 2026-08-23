@@ -1,25 +1,25 @@
-import { Component, ChangeDetectionStrategy, inject, computed, signal, ViewChild, effect } from '@angular/core';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-// PrimeNG modules
-import { OrganizationChartModule } from 'primeng/organizationchart';
-import { ButtonModule } from 'primeng/button';
-import { TooltipModule } from 'primeng/tooltip';
-import { SelectButtonModule } from 'primeng/selectbutton';
-import { MenuModule, Menu } from 'primeng/menu';
-import { TreeNode, MenuItem } from 'primeng/api';
-import { DialogModule } from 'primeng/dialog';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
-// Services
-import { ProjectStateService } from '../../services/project-state.service';
-import { ProjectCacheService } from '../../services/project-cache.service';
-import { IaDiagramService } from './ia-diagram.service';
-import { TreeNodeStyleService } from '../../services/treenode-style.service';
+import { MenuItem, TreeNode } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { Menu, MenuModule } from 'primeng/menu';
+import { OrganizationChartModule } from 'primeng/organizationchart';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { TooltipModule } from 'primeng/tooltip';
+
 import { EditNodeComponent } from '../edit-node/edit-node.component';
-import { AddUrlsService } from '../add-urls/add-urls.service';
-import { FetchService } from '../../services/fetch.service';
 import { ProjectSettingsComponent } from '../project-settings/project-settings.component';
+
+import { FetchService } from '../../services/fetch.service';
+import { ProjectCacheService } from '../../services/project-cache.service';
+import { ProjectStateService } from '../../services/project-state.service';
+import { TreeNodeStyleService } from '../../services/treenode-style.service';
+import { AddUrlsService } from '../add-urls/add-urls.service';
+import { IaDiagramService } from './ia-diagram.service';
 
 @Component({
   selector: 'aida-ia-diagram',

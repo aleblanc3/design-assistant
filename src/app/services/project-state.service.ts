@@ -1,33 +1,36 @@
-import { Injectable, signal, computed, inject, effect } from '@angular/core';
-import {
-  Project,
-  ProjectPhase,
-  GitHubRepo,
-  GitHubUser,
-  ProjectTreeNodeData,
-  TreeNodeData,
-  FlattenedTreeNode,
-  TreeNodeAction,
-  TableColumn,
-  MetadataReview,
-  PageTemplate,
-  LangData,
-  SourceVersion,
-} from '../common/data.model';
-import { TreeNode } from 'primeng/api';
-import { environment } from '../../environments/environment';
-import { TranslateService } from '@ngx-translate/core';
-import { version as appVersion } from '../../../package.json';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
+
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateService } from '@ngx-translate/core';
+
+import { TreeNode } from 'primeng/api';
 
 import { ProjectStorageService } from '../services/storage/project-storage.service';
-import { CollaboratorService } from './github/collaborator.service';
-import { FetchService } from './fetch.service';
 import { AirtableService } from './data-sources/airtable.service';
 import { UpdService } from './data-sources/upd.service';
 import { VanityService } from './data-sources/vanity.service';
-import { UsageService } from './usage.service';
+import { FetchService } from './fetch.service';
+import { CollaboratorService } from './github/collaborator.service';
 import { ExportGitHubService } from './github/export-github.service';
+import { UsageService } from './usage.service';
+
+import { version as appVersion } from '../../../package.json';
+import { environment } from '../../environments/environment';
+import {
+  FlattenedTreeNode,
+  GitHubRepo,
+  GitHubUser,
+  LangData,
+  MetadataReview,
+  PageTemplate,
+  Project,
+  ProjectPhase,
+  ProjectTreeNodeData,
+  SourceVersion,
+  TableColumn,
+  TreeNodeAction,
+  TreeNodeData,
+} from '../common/data.model';
 
 export type SaveStatus = 'saved' | 'saving' | 'unsaved' | 'error';
 

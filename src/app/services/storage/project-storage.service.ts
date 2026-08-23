@@ -1,10 +1,13 @@
-import { Injectable, inject, signal, computed } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
+
+import { TreeNode } from 'primeng/api';
+
+import { FetchService } from '../fetch.service';
+import { UserSettingsService } from '../user-settings.service';
 import { CloudStorageService } from './cloud-storage.service';
 import { LocalStorageService } from './local-storage.service';
-import { FetchService } from '../fetch.service';
-import { Project, ProjectMetadata, ProjectTreeNodeData, LangData, PageTemplate } from '../../common/data.model';
-import { TreeNode } from 'primeng/api';
-import { UserSettingsService } from '../user-settings.service';
+
+import { LangData, PageTemplate, Project, ProjectMetadata, ProjectTreeNodeData } from '../../common/data.model';
 
 export interface ActiveProject {
   key: string;

@@ -1,17 +1,18 @@
-import { Component, ChangeDetectionStrategy, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
-// PrimeNG
-import { ButtonModule } from 'primeng/button';
-import { ToastModule } from 'primeng/toast';
-import { DividerModule } from 'primeng/divider';
 import { MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { DividerModule } from 'primeng/divider';
+import { ToastModule } from 'primeng/toast';
 
-// Custom
 import { SignInButtonComponent } from '../components/sign-in/sign-in-button/sign-in-button.component';
+
 import { ProjectStateService } from '../services/project-state.service';
 import { UserSettingsService } from '../services/user-settings.service';
+
 import { environment } from '../../environments/environment';
 
 @Component({

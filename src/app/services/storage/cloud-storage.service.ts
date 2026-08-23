@@ -1,8 +1,11 @@
-import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { firstValueFrom, of, catchError } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { computed, inject, Injectable, signal } from '@angular/core';
+
+import { catchError, firstValueFrom, of } from 'rxjs';
+
 import { ExportGitHubService } from '../github/export-github.service';
+
+import { environment } from '../../../environments/environment';
 import { Project, ProjectMetadata } from '../../common/data.model';
 
 @Injectable({ providedIn: 'root' })

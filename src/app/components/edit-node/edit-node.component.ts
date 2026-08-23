@@ -1,26 +1,26 @@
-import { Component, ChangeDetectionStrategy, inject, input, computed, signal, effect, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
-//PrimeNG modules
 import { TreeNode } from 'primeng/api';
-import { IftaLabelModule } from 'primeng/iftalabel';
-import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { SelectButtonModule } from 'primeng/selectbutton';
-import { TextareaModule } from 'primeng/textarea';
-import { MessageModule } from 'primeng/message';
-import { FieldsetModule } from 'primeng/fieldset';
-import { TagModule } from 'primeng/tag';
 import { CheckboxModule } from 'primeng/checkbox';
-import { SelectModule } from 'primeng/select';
+import { FieldsetModule } from 'primeng/fieldset';
+import { IftaLabelModule } from 'primeng/iftalabel';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
+import { SelectModule } from 'primeng/select';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { TagModule } from 'primeng/tag';
+import { TextareaModule } from 'primeng/textarea';
 
-//Services
 import { ProjectStateService } from '../../services/project-state.service';
-import { TreeNodeData, SourceVersion } from '../../common/data.model';
+
+import { SourceVersion, TreeNodeData } from '../../common/data.model';
 
 @Component({
   selector: 'aida-edit-node',

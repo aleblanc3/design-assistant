@@ -1,25 +1,25 @@
-import { Component, ChangeDetectionStrategy, inject, computed, ViewChild, TemplateRef, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, inject, signal, TemplateRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
-//PrimeNG
-import { TabsModule } from 'primeng/tabs';
-import { BadgeModule } from 'primeng/badge';
-import { CheckboxModule } from 'primeng/checkbox';
-import { ButtonModule } from 'primeng/button';
-import { IftaLabelModule } from 'primeng/iftalabel';
-import { SelectModule } from 'primeng/select';
-import { DialogModule } from 'primeng/dialog';
-import { TooltipModule } from 'primeng/tooltip';
 import { TreeNode } from 'primeng/api';
+import { BadgeModule } from 'primeng/badge';
+import { ButtonModule } from 'primeng/button';
+import { CheckboxModule } from 'primeng/checkbox';
+import { DialogModule } from 'primeng/dialog';
+import { IftaLabelModule } from 'primeng/iftalabel';
 import { MessageModule } from 'primeng/message';
+import { SelectModule } from 'primeng/select';
+import { TabsModule } from 'primeng/tabs';
+import { TooltipModule } from 'primeng/tooltip';
 
-//Custom
-import { AddUrlsService } from '../add-urls.service';
-import { ProjectStateService } from '../../../services/project-state.service';
 import { EditNodeComponent } from '../../edit-node/edit-node.component';
+
 import { FetchService } from '../../../services/fetch.service';
+import { ProjectStateService } from '../../../services/project-state.service';
+import { AddUrlsService } from '../add-urls.service';
 
 @Component({
   selector: 'aida-invalid-urls',

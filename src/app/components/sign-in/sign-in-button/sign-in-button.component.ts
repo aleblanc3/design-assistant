@@ -1,22 +1,26 @@
-import { Component, ChangeDetectionStrategy, inject, signal, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { timeout, catchError, of } from 'rxjs';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
-import { ButtonModule } from 'primeng/button';
-import { AvatarModule } from 'primeng/avatar';
-import { MenuModule } from 'primeng/menu';
-import { MenuItem } from 'primeng/api';
-import { DialogModule } from 'primeng/dialog';
+import { catchError, of, timeout } from 'rxjs';
 
-import { GitHubAuthService } from '../../../services/github/github-auth.service';
-import { ExportGitHubService } from '../../../services/github/export-github.service';
-import { ProjectStorageService } from '../../../services/storage/project-storage.service';
-import { ProjectStateService } from '../../../services/project-state.service';
-import { environment } from '../../../../environments/environment';
-import { PatComponent } from '../pat/pat.component';
+import { MenuItem } from 'primeng/api';
+import { AvatarModule } from 'primeng/avatar';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { MenuModule } from 'primeng/menu';
+
 import { UserSettingsComponent } from '../../user-settings/user-settings.component';
+import { PatComponent } from '../pat/pat.component';
+
+import { ExportGitHubService } from '../../../services/github/export-github.service';
+import { GitHubAuthService } from '../../../services/github/github-auth.service';
+import { ProjectStateService } from '../../../services/project-state.service';
+import { ProjectStorageService } from '../../../services/storage/project-storage.service';
+
+import { environment } from '../../../../environments/environment';
 import { GitHubUser } from '../../../common/data.model';
 
 @Component({

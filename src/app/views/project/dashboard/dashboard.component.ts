@@ -1,23 +1,24 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TranslatePipe } from '@ngx-translate/core';
-import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { RouterLink } from '@angular/router';
 
-//PrimeNG modules
+import { marker } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslatePipe } from '@ngx-translate/core';
+
 import { ButtonModule } from 'primeng/button';
-import { TagModule } from 'primeng/tag';
-import { ProgressBarModule } from 'primeng/progressbar';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DividerModule } from 'primeng/divider';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { TagModule } from 'primeng/tag';
 
-//Custom services and data interfaces
-import { ProjectStateService } from '../../../services/project-state.service';
-import { ProjectPhase, PhaseStatus, CurrentPhase, GitHubRepo } from '../../../common/data.model';
-import { ExportProjectComponent } from '../../../components/export-project/export-project.component';
 import { AddCollaboratorsComponent } from '../../../components/add-collaborators/add-collaborators.component';
+import { ExportProjectComponent } from '../../../components/export-project/export-project.component';
+
+import { ProjectStateService } from '../../../services/project-state.service';
+
 import { environment } from '../../../../environments/environment';
+import { CurrentPhase, GitHubRepo, PhaseStatus, ProjectPhase } from '../../../common/data.model';
 
 @Component({
   selector: 'aida-dashboard',

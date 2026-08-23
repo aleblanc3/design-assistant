@@ -1,18 +1,14 @@
-import { Component, ChangeDetectionStrategy, OnInit, inject, signal } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
-//Translation
 import { TranslatePipe } from '@ngx-translate/core';
 
-//PrimeNG
 import { TabsModule } from 'primeng/tabs';
 
-//Services
-import { HtmlNormalizationService, htmlProcessingResult } from '../../../services/html-normalization.service';
-
-//Components
 import { CompareRenderedComponent } from '../../../components/compare/compare-rendered/compare-rendered.component';
 import { CompareSourceComponent } from '../../../components/compare/compare-source/compare-source.component';
+
+import { HtmlNormalizationService, htmlProcessingResult } from '../../../services/html-normalization.service';
 
 @Component({
   selector: 'aida-standalone-compare-versions',

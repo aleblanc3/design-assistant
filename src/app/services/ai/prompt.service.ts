@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { PromptConfig, OutputKey, RubricKey } from '../../common/prompts/prompt.model';
-import { RoleFragment, OutputFragment, RubricFragment } from '../../common/prompts/shared.prompts';
+
+import { OutputKey, PromptConfig, RubricKey } from '../../common/prompts/prompt.model';
+import { OutputFragment, RoleFragment, RubricFragment } from '../../common/prompts/shared.prompts';
 
 @Injectable({ providedIn: 'root' })
 export class AiPromptService {

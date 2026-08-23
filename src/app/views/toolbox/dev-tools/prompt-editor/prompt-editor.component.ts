@@ -1,39 +1,37 @@
-// Angular
-import { Component, ChangeDetectionStrategy, inject, ViewChild, ElementRef, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TranslatePipe } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
-import { marker } from '@colsen1991/ngx-translate-extract-marker';
 
-// PrimeNG
+import { marker } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslatePipe } from '@ngx-translate/core';
+
+import { ColorSchemeType } from 'diff2html/lib/types';
+import type { Diff2HtmlUIConfig } from 'diff2html/lib/ui/js/diff2html-ui-slim';
+
 import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { ButtonModule } from 'primeng/button';
+import { CheckboxModule } from 'primeng/checkbox';
+import { FieldsetModule } from 'primeng/fieldset';
+import { IftaLabelModule } from 'primeng/iftalabel';
+import { MessageModule } from 'primeng/message';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { SelectModule } from 'primeng/select';
 import { TabsModule } from 'primeng/tabs';
 import { TextareaModule } from 'primeng/textarea';
-import { IftaLabelModule } from 'primeng/iftalabel';
-import { FieldsetModule } from 'primeng/fieldset';
-import { ButtonModule } from 'primeng/button';
-import { SelectModule } from 'primeng/select';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { CheckboxModule } from 'primeng/checkbox';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { MessageModule } from 'primeng/message';
 
-// AIDA
-import { RoleFragment, OutputFragment, RubricFragment } from '../../../../common/prompts/shared.prompts';
+import { OpenRouterResponse, OpenRouterService } from '../../../../services/ai/openrouter.service';
+import { AiPromptService } from '../../../../services/ai/prompt.service';
+import { ExportGitHubService } from '../../../../services/github/export-github.service';
+import { UserSettingsService } from '../../../../services/user-settings.service';
+
 import { InventoryPrompts } from '../../../../common/prompts/inventory.prompts';
 import { PagePrompts } from '../../../../common/prompts/page.prompts';
 import { ProblemPrompts } from '../../../../common/prompts/problems.prompts';
-import { PromptConfig, RoleKey, OutputKey, RubricKey, InventoryPromptKey, PagePromptKey, ProblemPromptKey } from '../../../../common/prompts/prompt.model';
-import { ExportGitHubService } from '../../../../services/github/export-github.service';
-import { UserSettingsService } from '../../../../services/user-settings.service';
-import { OpenRouterService, OpenRouterResponse } from '../../../../services/ai/openrouter.service';
-import { AiPromptService } from '../../../../services/ai/prompt.service';
-
-//Diff
-import type { Diff2HtmlUIConfig } from 'diff2html/lib/ui/js/diff2html-ui-slim';
-import { ColorSchemeType } from 'diff2html/lib/types';
+import { InventoryPromptKey, OutputKey, PagePromptKey, ProblemPromptKey, PromptConfig, RoleKey, RubricKey } from '../../../../common/prompts/prompt.model';
+import { OutputFragment, RoleFragment, RubricFragment } from '../../../../common/prompts/shared.prompts';
 
 interface PromptEntry {
   enumKey: string;

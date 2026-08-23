@@ -1,11 +1,12 @@
-import { Routes, Router } from '@angular/router';
 import { inject } from '@angular/core';
+import { Router, Routes } from '@angular/router';
+
 import { environment } from '../environments/environment';
 
 // Project views
 import { DashboardComponent } from './views/project/dashboard/dashboard.component';
-import { SwitchProjectComponent } from './views/project/switch-project/switch-project.component';
 import { EditProjectComponent } from './views/project/edit-project/edit-project.component';
+import { SwitchProjectComponent } from './views/project/switch-project/switch-project.component';
 
 // Phase views (topic pages)
 import { DiscoverComponent } from './views/phase/discover/discover.component';

@@ -1,20 +1,20 @@
-import { Component, ChangeDetectionStrategy, inject, effect, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TranslatePipe } from '@ngx-translate/core';
 import { Router } from '@angular/router';
-import { marker } from '@colsen1991/ngx-translate-extract-marker';
 
-//PrimeNG modules
+import { marker } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslatePipe } from '@ngx-translate/core';
+
 import { IftaLabelModule } from 'primeng/iftalabel';
-import { KeyFilterModule } from 'primeng/keyfilter';
 import { InputTextModule } from 'primeng/inputtext';
+import { KeyFilterModule } from 'primeng/keyfilter';
+import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { MessageModule } from 'primeng/message';
 
-//Custom components and services
-import { ProjectStateService } from '../../services/project-state.service';
 import { CollaboratorService } from '../../services/github/collaborator.service';
+import { ProjectStateService } from '../../services/project-state.service';
+
 import { ProjectPhase } from '../../common/data.model';
 
 @Component({

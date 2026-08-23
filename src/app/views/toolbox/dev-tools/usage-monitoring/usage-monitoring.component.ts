@@ -1,26 +1,27 @@
-import { Component, ChangeDetectionStrategy, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
-//PrimeNG Components
-import { BreadcrumbModule } from 'primeng/breadcrumb';
-import { SkeletonModule } from 'primeng/skeleton';
-import { DividerModule } from 'primeng/divider';
-import { ButtonModule } from 'primeng/button';
-import { SelectButtonModule } from 'primeng/selectbutton';
-import { ToggleButtonModule } from 'primeng/togglebutton';
-import { SelectModule } from 'primeng/select';
-import { ChartModule } from 'primeng/chart';
-import { IftaLabelModule } from 'primeng/iftalabel';
-import { SelectItem } from 'primeng/api';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
-//Services
-import { environment } from '../../../../../environments/environment';
+import { firstValueFrom } from 'rxjs';
+
+import { SelectItem } from 'primeng/api';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { ButtonModule } from 'primeng/button';
+import { ChartModule } from 'primeng/chart';
+import { DividerModule } from 'primeng/divider';
+import { IftaLabelModule } from 'primeng/iftalabel';
+import { SelectModule } from 'primeng/select';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { SkeletonModule } from 'primeng/skeleton';
+import { ToggleButtonModule } from 'primeng/togglebutton';
+
 import { UserSettingsService } from '../../../../services/user-settings.service';
+
+import { environment } from '../../../../../environments/environment';
 
 //TODO: Add option to filter by user
 

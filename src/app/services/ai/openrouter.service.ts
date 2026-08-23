@@ -1,9 +1,12 @@
-import { Injectable, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { inject, Injectable, signal } from '@angular/core';
+
 import { firstValueFrom } from 'rxjs';
+
+import { AiPromptService } from './prompt.service';
+
 import { environment } from '../../../environments/environment';
 import { PromptConfig } from '../../common/prompts/prompt.model';
-import { AiPromptService } from './prompt.service';
 
 export interface ChatMessage {
   role: 'user' | 'assistant' | 'system';

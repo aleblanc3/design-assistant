@@ -1,6 +1,8 @@
-import { Injectable, inject } from '@angular/core';
-import { UserSettingsService } from './user-settings.service';
+import { inject, Injectable } from '@angular/core';
+
 import { TreeNode } from 'primeng/api';
+
+import { UserSettingsService } from './user-settings.service';
 
 @Injectable({ providedIn: 'root' })
 export class TreeNodeStyleService {

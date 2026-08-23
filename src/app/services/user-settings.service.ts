@@ -1,13 +1,16 @@
-import { Injectable, signal, effect, inject } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { Router } from '@angular/router';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+
+import { TranslateService } from '@ngx-translate/core';
+
 import { PrimeNG } from 'primeng/config';
+
 import MyPreset from '../common/theme-presets/preset';
+import CustomPreset from '../common/theme-presets/preset-custom';
 import DeutanPreset from '../common/theme-presets/preset-deutan';
 import ProtanPreset from '../common/theme-presets/preset-protan';
 import TritanPreset from '../common/theme-presets/preset-tritan';
-import CustomPreset from '../common/theme-presets/preset-custom';
 
 export type ColorScheme = 'default' | 'deutan' | 'protan' | 'tritan' | 'custom';
 

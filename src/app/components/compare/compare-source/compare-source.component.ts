@@ -1,23 +1,21 @@
-import { Component, ChangeDetectionStrategy, inject, Input, OnChanges, SimpleChanges, ViewChild, ElementRef, computed, signal, effect } from '@angular/core';
 import { CommonModule, LocationStrategy } from '@angular/common';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { ChangeDetectionStrategy, Component, computed, effect, ElementRef, inject, Input, OnChanges, signal, SimpleChanges, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-// PrimeNG modules
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { SplitButtonModule } from 'primeng/splitbutton';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { MessageModule } from 'primeng/message';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { Toast } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
 
-import { MessageModule } from 'primeng/message';
-import { MessageService, ConfirmationService, MenuItem } from 'primeng/api';
-import { Toast } from 'primeng/toast';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-
-// Services
-import { CompareSourceService } from './compare-source.service';
 import { htmlProcessingResult } from '../../../services/html-normalization.service';
+import { CompareSourceService } from './compare-source.service';
 
 export enum SourceViewType {
   Original = 'original',

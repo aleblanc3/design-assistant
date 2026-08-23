@@ -1,7 +1,7 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+
 import { TranslatePipe } from '@ngx-translate/core';
 
-//Custom components and services
 import { AddUrlsComponent } from '../../../components/add-urls/add-urls.component';
 import { FindPagesComponent } from '../../../components/find-pages/find-pages.component';
 import { ViewPagesComponent } from '../../../components/view-pages/view-pages.component';

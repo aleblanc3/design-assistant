@@ -1,13 +1,12 @@
-import { Component, ChangeDetectionStrategy, inject, input, effect } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
-//PrimeNG
 import { SelectButtonModule } from 'primeng/selectbutton';
 
-//Services
-import { ProjectStateService } from '../../services/project-state.service';
 import { ProjectCacheService } from '../../services/project-cache.service';
+import { ProjectStateService } from '../../services/project-state.service';
 
 @Component({
   selector: 'aida-project-settings',

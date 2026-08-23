@@ -1,9 +1,8 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
-// Services
-import { CompareService } from './compare.service';
-import { AiPromptService } from '../../services/ai/prompt.service';
 import { OpenRouterService } from '../../services/ai/openrouter.service';
+import { AiPromptService } from '../../services/ai/prompt.service';
+import { CompareService } from './compare.service';
 
 @Injectable({
   providedIn: 'root',

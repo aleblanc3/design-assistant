@@ -1,13 +1,14 @@
-import { Component, ChangeDetectionStrategy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+
+import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslatePipe } from '@ngx-translate/core';
-import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
-import { ProjectStorageService } from '../../../services/storage/project-storage.service';
-import { ProjectStateService } from '../../../services/project-state.service';
-import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { AddUrlsService } from '../../../components/add-urls/add-urls.service';
+import { ProjectStateService } from '../../../services/project-state.service';
+import { ProjectStorageService } from '../../../services/storage/project-storage.service';
 
 @Component({
   selector: 'aida-import-page',

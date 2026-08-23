@@ -1,15 +1,14 @@
-import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
-//PrimeNG modules
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+
+import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
-import { MenuItem } from 'primeng/api';
 
-//Services
-import { ProjectStateService } from '../../services/project-state.service';
 import { ProjectCacheService } from '../../services/project-cache.service';
+import { ProjectStateService } from '../../services/project-state.service';
 
 @Component({
   selector: 'aida-export-project',

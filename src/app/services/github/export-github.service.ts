@@ -1,10 +1,12 @@
-import { Injectable, inject, signal, computed } from '@angular/core';
-import { FetchService } from '../fetch.service';
+import { computed, inject, Injectable, signal } from '@angular/core';
 
-import { GitHubAuthService } from './github-auth.service';
-import { GitHubUser } from '../../common/data.model';
 import { TreeNode } from 'primeng/api';
+
+import { FetchService } from '../fetch.service';
+import { GitHubAuthService } from './github-auth.service';
+
 import { environment } from '../../../environments/environment';
+import { GitHubUser } from '../../common/data.model';
 
 export interface GitHubFileRequest {
   message: string;

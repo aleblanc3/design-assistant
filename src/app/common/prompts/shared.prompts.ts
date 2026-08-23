@@ -1,4 +1,4 @@
-import { RoleKey, OutputKey, RubricKey } from './prompt.model';
+import { OutputKey, RoleKey, RubricKey } from './prompt.model';
 
 export const RoleFragment: Record<RoleKey, string> = {
   [RoleKey.SeoExpert]: 'You are a bilingual search engine optimization expert (Canadian French and English).',

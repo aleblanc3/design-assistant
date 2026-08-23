@@ -1,7 +1,9 @@
-import { Injectable, inject, signal, computed, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { firstValueFrom, catchError, of } from 'rxjs';
+
+import { catchError, firstValueFrom, of } from 'rxjs';
+
 import { environment } from '../../../environments/environment';
 import { GitHubUser } from '../../common/data.model';
 

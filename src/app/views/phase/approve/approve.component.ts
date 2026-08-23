@@ -1,12 +1,11 @@
-import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslatePipe } from '@ngx-translate/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-//PrimeNG
+import { TranslatePipe } from '@ngx-translate/core';
+
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 
-//Custom
 import { ProjectPhase } from '../../../common/data.model';
 
 /**

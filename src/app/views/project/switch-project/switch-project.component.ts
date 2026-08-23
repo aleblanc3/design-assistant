@@ -1,48 +1,45 @@
-import { Component, ChangeDetectionStrategy, inject, signal, OnInit, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, effect, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 
-import { CardModule } from 'primeng/card';
-import { ButtonModule } from 'primeng/button';
-import { DialogModule } from 'primeng/dialog';
-import { FieldsetModule } from 'primeng/fieldset';
-import { SplitButtonModule } from 'primeng/splitbutton';
-import { SelectButtonModule } from 'primeng/selectbutton';
-import { TagModule } from 'primeng/tag';
-import { TableModule } from 'primeng/table';
-import { TabsModule } from 'primeng/tabs';
-import { BadgeModule } from 'primeng/badge';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+
+import { FilterService, MenuItem, MessageService } from 'primeng/api';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
-import { TooltipModule } from 'primeng/tooltip';
-import { MessageModule } from 'primeng/message';
-import { MessageService } from 'primeng/api';
-
-import { DividerModule } from 'primeng/divider';
+import { BadgeModule } from 'primeng/badge';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ChipModule } from 'primeng/chip';
-import { TimelineModule } from 'primeng/timeline';
-import { ProgressBarModule } from 'primeng/progressbar';
-
-import { FilterService, MenuItem } from 'primeng/api';
-import { InputTextModule } from 'primeng/inputtext';
+import { DialogModule } from 'primeng/dialog';
+import { DividerModule } from 'primeng/divider';
+import { FieldsetModule } from 'primeng/fieldset';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
-import { SelectModule } from 'primeng/select';
+import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { SelectModule } from 'primeng/select';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { TableModule } from 'primeng/table';
+import { TabsModule } from 'primeng/tabs';
+import { TagModule } from 'primeng/tag';
+import { TimelineModule } from 'primeng/timeline';
+import { TooltipModule } from 'primeng/tooltip';
 
-//Services
-import { SetupProjectComponent } from '../../../components/setup-project/setup-project.component';
 import { AddCollaboratorsComponent } from '../../../components/add-collaborators/add-collaborators.component';
-import { GitHubAuthService } from '../../../services/github/github-auth.service';
-import { CollaboratorService } from '../../../services/github/collaborator.service';
+import { SetupProjectComponent } from '../../../components/setup-project/setup-project.component';
 
-//Storage
+import { CollaboratorService } from '../../../services/github/collaborator.service';
+import { GitHubAuthService } from '../../../services/github/github-auth.service';
 import { ProjectStateService } from '../../../services/project-state.service';
-import { ProjectStorageService } from '../../../services/storage/project-storage.service';
 import { CloudStorageService } from '../../../services/storage/cloud-storage.service';
+import { ProjectStorageService } from '../../../services/storage/project-storage.service';
+
 import { ProjectMetadata, ProjectPhase } from '../../../common/data.model';
 
 //TODO: FIX HARDCODED TRANSLATIONS

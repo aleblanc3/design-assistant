@@ -1,53 +1,52 @@
-import { Component, ChangeDetectionStrategy, OnInit, inject, effect, signal, computed, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
-//PrimeNG Modules
-import { TableModule, Table } from 'primeng/table';
+import { ConfirmationService, MenuItem, SelectItem, SelectItemGroup, SortEvent, TreeNode } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { TooltipModule } from 'primeng/tooltip';
-import { IftaLabelModule } from 'primeng/iftalabel';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { TagModule } from 'primeng/tag';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { MenuModule } from 'primeng/menu';
-import { ConfirmationService, MenuItem, SortEvent, TreeNode, SelectItemGroup, SelectItem } from 'primeng/api';
-import { ContextMenuModule, ContextMenu } from 'primeng/contextmenu';
-import { SelectModule } from 'primeng/select';
-import { TextareaModule } from 'primeng/textarea';
+import { ContextMenu, ContextMenuModule } from 'primeng/contextmenu';
 import { DialogModule } from 'primeng/dialog';
+import { IftaLabelModule } from 'primeng/iftalabel';
+import { MenuModule } from 'primeng/menu';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { SelectModule } from 'primeng/select';
+import { Table, TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { TextareaModule } from 'primeng/textarea';
+import { TooltipModule } from 'primeng/tooltip';
 
-//Components and models
-import { ExportProjectComponent } from '../../../components/export-project/export-project.component';
 import { AddUrlsComponent } from '../../../components/add-urls/add-urls.component';
-import {
-  FlattenedTreeNode,
-  TreeNodeTypes,
-  TreeNodeData,
-  TableColumn,
-  COLUMN_GROUPS,
-  FIELD_FILTERS,
-  PageTemplate,
-  MetadataField,
-  MetadataReviewStatus,
-  MetadataReview,
-  ColumnGroups,
-} from '../../../common/data.model';
-import { IaTableComponent } from '../../../components/ia-table/ia-table.component';
-import { InventoryPrompts } from '../../../common/prompts/inventory.prompts';
-import { InventoryPromptKey } from '../../../common/prompts/prompt.model';
 import { EditNodeComponent } from '../../../components/edit-node/edit-node.component';
-
-//Services
-import { ProjectStateService } from '../../../services/project-state.service';
-import { IaDiagramService } from '../../../components/ia-diagram/ia-diagram.service';
+import { ExportProjectComponent } from '../../../components/export-project/export-project.component';
 import { FindPagesComponent } from '../../../components/find-pages/find-pages.component';
+import { IaTableComponent } from '../../../components/ia-table/ia-table.component';
+
+import { IaDiagramService } from '../../../components/ia-diagram/ia-diagram.service';
 import { OpenRouterService } from '../../../services/ai/openrouter.service';
 import { FetchService } from '../../../services/fetch.service';
+import { ProjectStateService } from '../../../services/project-state.service';
+
+import {
+  COLUMN_GROUPS,
+  ColumnGroups,
+  FIELD_FILTERS,
+  FlattenedTreeNode,
+  MetadataField,
+  MetadataReview,
+  MetadataReviewStatus,
+  PageTemplate,
+  TableColumn,
+  TreeNodeData,
+  TreeNodeTypes,
+} from '../../../common/data.model';
 import { isKnownNumber } from '../../../common/phone-numbers.config';
+import { InventoryPrompts } from '../../../common/prompts/inventory.prompts';
+import { InventoryPromptKey } from '../../../common/prompts/prompt.model';
 
 @Component({
   selector: 'aida-inventory',

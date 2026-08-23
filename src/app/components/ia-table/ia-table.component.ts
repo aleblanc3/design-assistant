@@ -1,27 +1,26 @@
-import { Component, ChangeDetectionStrategy, inject, computed, ViewChild, effect, OnInit } from '@angular/core';
 import { LocationStrategy } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
 import { TranslateService } from '@ngx-translate/core';
 
-// PrimeNG modules
-import { TreeModule, TreeNodeContextMenuSelectEvent, TreeNodeDropEvent } from 'primeng/tree';
-import { ContextMenuModule, ContextMenu } from 'primeng/contextmenu';
-import { TreeNode, MenuItem, TreeDragDropService } from 'primeng/api';
+import { MenuItem, TreeDragDropService, TreeNode } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { ContextMenu, ContextMenuModule } from 'primeng/contextmenu';
+import { DialogModule } from 'primeng/dialog';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
-
-import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
-import { DialogModule } from 'primeng/dialog';
+import { TreeModule, TreeNodeContextMenuSelectEvent, TreeNodeDropEvent } from 'primeng/tree';
 
-// Services
+import { EditNodeComponent } from '../edit-node/edit-node.component';
+
+import { FetchService } from '../../services/fetch.service';
 import { ProjectStateService } from '../../services/project-state.service';
 import { TreeNodeStyleService } from '../../services/treenode-style.service';
 import { UserSettingsService } from '../../services/user-settings.service';
-import { EditNodeComponent } from '../edit-node/edit-node.component';
 import { AddUrlsService } from '../add-urls/add-urls.service';
-import { FetchService } from '../../services/fetch.service';
 
 @Component({
   selector: 'aida-ia-table',

@@ -1,4 +1,5 @@
-import { ProblemPromptKey, PromptConfig, RoleKey, OutputKey, RubricKey } from './prompt.model';
+import { OutputKey, ProblemPromptKey, PromptConfig, RoleKey, RubricKey } from './prompt.model';
+
 export const ProblemPrompts: Record<ProblemPromptKey, PromptConfig> = {
   [ProblemPromptKey.Alerts]: {
     role: RoleKey.ContentDesigner,

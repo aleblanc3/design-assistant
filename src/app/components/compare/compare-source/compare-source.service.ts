@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Diff2HtmlUI } from 'diff2html/lib/ui/js/diff2html-ui-slim';
+
 import { createPatch } from 'diff';
+import { Diff2HtmlUI } from 'diff2html/lib/ui/js/diff2html-ui-slim';
 import type { Diff2HtmlUIConfig } from 'diff2html/lib/ui/js/diff2html-ui-slim';
 
 @Injectable({

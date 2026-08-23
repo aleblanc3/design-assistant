@@ -1,18 +1,16 @@
-import { Component, ChangeDetectionStrategy, inject, signal, effect, computed, OnInit, untracked } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, signal, untracked } from '@angular/core';
+
 import { TranslatePipe } from '@ngx-translate/core';
 
-// PrimeNG
-import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
+import { DividerModule } from 'primeng/divider';
 
-//Components
 import { PatComponent } from '../pat/pat.component';
 
-//Services
-import { ProjectStateService } from '../../../services/project-state.service';
-import { UserSettingsService } from '../../../services/user-settings.service';
 import { ExportGitHubService } from '../../../services/github/export-github.service';
 import { GitHubAuthService } from '../../../services/github/github-auth.service';
+import { ProjectStateService } from '../../../services/project-state.service';
+import { UserSettingsService } from '../../../services/user-settings.service';
 
 type ConnectionStatus = 'checking' | 'connected' | 'warning' | 'error' | 'missing';
 

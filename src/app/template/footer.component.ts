@@ -1,6 +1,9 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+
 import { TranslatePipe } from '@ngx-translate/core';
+
 import { UserSettingsService } from '../services/user-settings.service';
+
 import { version as appVersion } from '../../../package.json';
 
 /**

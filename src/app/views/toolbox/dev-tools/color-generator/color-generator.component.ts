@@ -1,15 +1,16 @@
-import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TranslatePipe } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
 
-import { PrimeNG } from 'primeng/config';
+import { TranslatePipe } from '@ngx-translate/core';
+
+import { BadgeModule } from 'primeng/badge';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ButtonModule } from 'primeng/button';
-import { TagModule } from 'primeng/tag';
-import { BadgeModule } from 'primeng/badge';
-import { MessageModule } from 'primeng/message';
+import { PrimeNG } from 'primeng/config';
 import { DividerModule } from 'primeng/divider';
+import { MessageModule } from 'primeng/message';
+import { TagModule } from 'primeng/tag';
 
 import { UserSettingsComponent } from '../../../../components/user-settings/user-settings.component';
 import { ColorPickerComponent } from './color-picker.component';

@@ -1,17 +1,17 @@
-import { Component, ChangeDetectionStrategy, inject, computed } from '@angular/core';
-import { TranslatePipe } from '@ngx-translate/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-//PrimeNG
+import { TranslatePipe } from '@ngx-translate/core';
+
 import { ButtonModule } from 'primeng/button';
 import { DrawerModule } from 'primeng/drawer';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 
-//Custom
 import { ProjectSettingsComponent } from '../project-settings/project-settings.component';
-import { ProjectStateService } from '../../services/project-state.service';
+
 import { ProjectCacheService } from '../../services/project-cache.service';
+import { ProjectStateService } from '../../services/project-state.service';
 import { IaDiagramService } from '../ia-diagram/ia-diagram.service';
 
 @Component({

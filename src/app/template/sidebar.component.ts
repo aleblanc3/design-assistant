@@ -1,12 +1,13 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+
 import { TranslatePipe } from '@ngx-translate/core';
 
-//Services
-import { ProjectStateService } from '../services/project-state.service';
-import { ProjectCacheService } from '../services/project-cache.service';
 import { MailtoService } from '../services/mailto.service';
+import { ProjectCacheService } from '../services/project-cache.service';
+import { ProjectStateService } from '../services/project-state.service';
+
 import { environment } from '../../environments/environment';
 
 /**

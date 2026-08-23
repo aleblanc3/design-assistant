@@ -1,15 +1,16 @@
-import { Injectable, inject, signal, computed } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
+
 import { TreeNode } from 'primeng/api';
 
-// Services
+import { AirtableService } from '../../services/data-sources/airtable.service';
+import { UpdService } from '../../services/data-sources/upd.service';
+import { VanityService } from '../../services/data-sources/vanity.service';
 import { FetchService } from '../../services/fetch.service';
 import { ProjectStateService } from '../../services/project-state.service';
-import { UpdService } from '../../services/data-sources/upd.service';
-import { AirtableService } from '../../services/data-sources/airtable.service';
-import { VanityService } from '../../services/data-sources/vanity.service';
-import { PageActions, LangData, PageTemplate } from '../../common/data.model';
 import { ProjectStorageService } from '../../services/storage/project-storage.service';
 import { TreeNodeStyleService } from '../../services/treenode-style.service';
+
+import { LangData, PageActions, PageTemplate } from '../../common/data.model';
 
 //Interfaces
 export interface ValidationItem {

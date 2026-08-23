@@ -1,9 +1,9 @@
-import { Injectable, signal, inject, effect } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 
-//Services
+import { FetchService } from './fetch.service';
 import { ProjectStateService } from './project-state.service';
 import { UserSettingsService } from './user-settings.service';
-import { FetchService } from './fetch.service';
+
 import { SourceVersion } from '../common/data.model';
 
 /*
