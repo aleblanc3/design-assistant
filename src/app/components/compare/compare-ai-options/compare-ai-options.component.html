@@ -68,13 +68,7 @@
       </p-accordion-panel>
     </p-accordion>
   </div>
-  <p-button
-    [label]="'compare.aiOptions.send' | translate"
-    (onClick)="compareAiService.sendToAI(); compareService.aiDrawerVisible.update(v => !v)"
-    icon="pi pi pi-sparkles"
-    severity="primary"
-    styleClass="w-full min-w-max"
-  />
+  <p-button [label]="'compare.aiOptions.send' | translate" (onClick)="compareAiService.sendToAI(); toggleAiDrawer()" icon="pi pi pi-sparkles" severity="primary" styleClass="w-full min-w-max" />
 </div>
 
 <!--AI PROMPT TEMPLATE-->

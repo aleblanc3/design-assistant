@@ -181,17 +181,17 @@ export class SwitchProjectComponent implements OnInit {
       const searchLower = search.toLowerCase();
       filtered = filtered.filter(
         (p) =>
-          p.projectName?.toLowerCase().includes(searchLower) ||
-          p.id?.toLowerCase().includes(searchLower) ||
-          p.key?.toLowerCase().includes(searchLower) ||
-          p.phase?.toLowerCase().includes(searchLower) ||
-          p.storageType?.toLowerCase().includes(searchLower) ||
-          p.github?.owner?.toLowerCase().includes(searchLower) ||
-          p.github?.repo?.toLowerCase().includes(searchLower) ||
-          p.github?.branch?.toLowerCase().includes(searchLower) ||
-          p.collaborators?.some((c) => c.login?.toLowerCase().includes(searchLower)) ||
-          p.collaborators?.some((c) => c.name?.toLowerCase().includes(searchLower)) ||
-          p.collaborators?.some((c) => c.email?.toLowerCase().includes(searchLower)),
+          p.projectName.toLowerCase().includes(searchLower) ||
+          p.id.toLowerCase().includes(searchLower) ||
+          p.key.toLowerCase().includes(searchLower) ||
+          p.phase.toLowerCase().includes(searchLower) ||
+          p.storageType.toLowerCase().includes(searchLower) ||
+          p.github.owner.toLowerCase().includes(searchLower) ||
+          p.github.repo.toLowerCase().includes(searchLower) ||
+          p.github.branch.toLowerCase().includes(searchLower) ||
+          p.collaborators.some((c) => c.login?.toLowerCase().includes(searchLower)) ||
+          p.collaborators.some((c) => c.name?.toLowerCase().includes(searchLower)) ||
+          p.collaborators.some((c) => c.email?.toLowerCase().includes(searchLower)),
       );
     }
 

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
 
 import { ButtonModule } from 'primeng/button';
 import { TextareaModule } from 'primeng/textarea';
@@ -6,6 +6,10 @@ import { TextareaModule } from 'primeng/textarea';
 import { ColorConverter } from '../../../../common/color-converter.util';
 import { ContrastUtil } from '../../../../common/contrast.util';
 
+/**
+ * Reviewed: 2026-08-25 (ng21)
+ * Renders a copy/pasteable PrimeNG preset from the currently generated custom shades
+ */
 @Component({
   selector: 'aida-copy-preset',
   standalone: true,
@@ -14,17 +18,13 @@ import { ContrastUtil } from '../../../../common/contrast.util';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CopyPresetComponent {
-  @Input() customShades: Record<string, Record<number, string>> = {};
+  public readonly customShades = input<Record<string, Record<number, string>>>({});
 
   protected readonly copied = signal(false);
 
-  protected get generatedCode(): string {
-    return this.generatePresetCode();
-  }
+  protected readonly generatedCode = computed(() => this.generatePresetCode(this.customShades()));
 
-  private generatePresetCode(): string {
-    const shades = this.customShades;
-
+  private generatePresetCode(shades: Record<string, Record<number, string>>): string {
     // Helper to format shade with comment
     const formatShade = (shade: number, hex: string): string => {
       let comment = '';
@@ -174,7 +174,7 @@ export default CustomPreset;`;
   }
 
   protected copyToClipboard() {
-    navigator.clipboard.writeText(this.generatedCode).then(() => {
+    navigator.clipboard.writeText(this.generatedCode()).then(() => {
       this.copied.set(true);
       setTimeout(() => this.copied.set(false), 3000);
     });

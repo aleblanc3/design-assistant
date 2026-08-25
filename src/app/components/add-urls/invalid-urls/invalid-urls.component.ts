@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, signal, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal, TemplateRef, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -64,15 +64,15 @@ export class InvalidUrlsComponent {
   protected readonly initialTab = computed(() => this.tabs()[0]?.value ?? '0');
 
   //Template references
-  @ViewChild('broken', { static: true }) brokenTemplate!: TemplateRef<unknown>;
-  @ViewChild('redirect', { static: true }) redirectTemplate!: TemplateRef<unknown>;
-  @ViewChild('blocked', { static: true }) blockedTemplate!: TemplateRef<unknown>;
+  protected readonly brokenTemplate = viewChild.required<TemplateRef<unknown>>('broken');
+  protected readonly redirectTemplate = viewChild.required<TemplateRef<unknown>>('redirect');
+  protected readonly blockedTemplate = viewChild.required<TemplateRef<unknown>>('blocked');
 
   protected get outlets(): Record<string, TemplateRef<unknown>> {
     return {
-      broken: this.brokenTemplate,
-      redirect: this.redirectTemplate,
-      blocked: this.blockedTemplate,
+      broken: this.brokenTemplate(),
+      redirect: this.redirectTemplate(),
+      blocked: this.blockedTemplate(),
     };
   }
 

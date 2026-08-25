@@ -7,7 +7,8 @@ import { UserSettingsService } from '../user-settings.service';
 import { CloudStorageService } from './cloud-storage.service';
 import { LocalStorageService } from './local-storage.service';
 
-import { LangData, PageTemplate, Project, ProjectMetadata, ProjectTreeNodeData } from '../../common/data.model';
+import { environment } from '../../../environments/environment';
+import { LangData, PageTemplate, Project, ProjectMetadata, ProjectPhase, ProjectTreeNodeData } from '../../common/data.model';
 
 export interface ActiveProject {
   key: string;
@@ -252,8 +253,28 @@ export class ProjectStorageService {
     // Get cloud projects
     const cloudProjects = await this.cloudStorageService.projects();
 
+    // Normalize so we can trust ProjectMetadata's shape
+    const normalized = [...localProjects, ...cloudProjects].map((p) => this.patchProjectList(p));
+
     // Combine and sort by timestamp (most recent first)
-    return [...localProjects, ...cloudProjects].sort((a, b) => b.lastModified.getTime() - a.lastModified.getTime());
+    return normalized.sort((a, b) => b.lastModified.getTime() - a.lastModified.getTime());
+  }
+
+  /** Ensures all projects in list have all the required fields (older ones may be missing repoType) */
+  private patchProjectList(raw: Partial<ProjectMetadata>): ProjectMetadata {
+    return {
+      id: raw.id ?? '',
+      key: raw.key ?? '',
+      projectName: raw.projectName ?? 'common.autosave',
+      lastModified: raw.lastModified ?? new Date(0),
+      phase: raw.phase ?? ProjectPhase.Draft,
+      inScopePages: raw.inScopePages ?? 0,
+      collaborators: raw.collaborators ?? [],
+      github: raw.github ?? { owner: environment.defaultOrg, repo: '', branch: 'main', hasBaselineRepo: false },
+      storageType: raw.storageType ?? 'local',
+      repoType: raw.repoType ?? 'github',
+      org: raw.org,
+    };
   }
 
   public getLocalProjectList(mode: 'saved' | 'deleted' = 'saved'): ProjectMetadata[] {

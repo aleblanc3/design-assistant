@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, EventEmitter, input, Output, signal, untracked } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { ButtonModule } from 'primeng/button';
@@ -17,6 +17,10 @@ export interface ContrastTest {
   requiredRatio: number;
 }
 
+/**
+ * Reviewed: 2026-08-25 (ng21)
+ * Color picker with live shade generation and contrast testing against the base color.
+ */
 @Component({
   selector: 'aida-color-picker',
   standalone: true,
@@ -24,44 +28,46 @@ export interface ContrastTest {
   templateUrl: './color-picker.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ColorPickerComponent implements OnInit, OnChanges {
-  @Input() key = '';
-  @Input() initialColor = '#000000'; // Can be hex like '#00cccc' or CSS class like 'bg-green-500'
-  @Input() externalShades?: Record<number, string>;
-  @Input() contrastTests?: ContrastTest[];
-  @Input() showReset = true;
+export class ColorPickerComponent {
+  public readonly key = input('');
+  public readonly initialColor = input('#000000'); // Can be hex like '#00cccc' or CSS class like 'bg-green-500'
+  public readonly externalShades = input<Record<number, string>>();
+  public readonly contrastTests = input<ContrastTest[]>();
+  public readonly showReset = input(true);
   @Output() colorChanged = new EventEmitter<{ hex: string; shades: Record<number, string> }>();
 
-  currentColor = '';
-  defaultColor = '';
-  generatedShades: Record<number, string> = {};
+  protected readonly currentColor = signal('');
+  private readonly defaultColor = signal('');
+  private readonly generatedShades = signal<Record<number, string>>({});
 
-  ngOnInit() {
-    this.loadColor();
-  }
+  constructor() {
+    effect(() => {
+      this.key();
+      untracked(() => this.loadColor());
+    });
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['key']) {
-      this.loadColor();
-    }
-    if (changes['externalShades'] && this.externalShades) {
-      this.generatedShades = this.externalShades;
-      this.currentColor = this.externalShades[500] || this.currentColor;
-    }
+    // Sync in externally-provided presets whenever they change.
+    effect(() => {
+      const shades = this.externalShades();
+      if (shades) {
+        untracked(() => {
+          this.generatedShades.set(shades);
+          this.currentColor.set(shades[500] || this.currentColor());
+        });
+      }
+    });
   }
 
   private loadColor() {
-    this.currentColor = this.parseInitialColor(this.initialColor);
-    this.defaultColor = this.currentColor;
+    this.currentColor.set(this.parseInitialColor(this.initialColor()));
+    this.defaultColor.set(this.currentColor());
     this.loadShadesFromTheme();
-    //this.generateShades();
   }
 
   private loadShadesFromTheme() {
     const root = getComputedStyle(document.documentElement);
 
-    // Extract the color name from initialColor (e.g., 'bg-primary-500' => 'primary')
-    const colorMatch = this.initialColor.match(/bg-(\w+)-\d+/);
+    const colorMatch = this.initialColor().match(/bg-(\w+)-\d+/);
     const colorName = colorMatch ? colorMatch[1] : 'primary';
 
     const shades: Record<number, string> = {};
@@ -76,24 +82,21 @@ export class ColorPickerComponent implements OnInit, OnChanges {
       }
     });
 
-    // Only use generated shades if we couldn't read from theme
     if (Object.keys(shades).length > 0) {
-      this.generatedShades = shades;
+      this.generatedShades.set(shades);
     } else {
       this.generateShades();
     }
   }
 
-  private parseInitialColor(input: string): string {
-    // If it's already a hex color
-    if (input.startsWith('#')) {
-      return input;
+  private parseInitialColor(value: string): string {
+    if (value.startsWith('#')) {
+      return value;
     }
 
-    // If it's a CSS class like 'bg-green-500', extract from computed styles
-    if (input.includes('-')) {
+    if (value.includes('-')) {
       const tempDiv = document.createElement('div');
-      tempDiv.className = input;
+      tempDiv.className = value;
       tempDiv.style.display = 'none';
       document.body.appendChild(tempDiv);
 
@@ -105,30 +108,27 @@ export class ColorPickerComponent implements OnInit, OnChanges {
       }
     }
 
-    // Fallback
-    return input;
+    return value;
   }
 
-  onColorChange() {
-    if (!this.currentColor.match(/^#?[0-9A-Fa-f]{6}$/)) {
+  protected onColorChange() {
+    if (!this.currentColor().match(/^#?[0-9A-Fa-f]{6}$/)) {
       return; // Invalid color
     }
 
-    const normalizedHex = this.currentColor.startsWith('#') ? this.currentColor : '#' + this.currentColor;
-    this.currentColor = normalizedHex;
+    const normalizedHex = this.currentColor().startsWith('#') ? this.currentColor() : '#' + this.currentColor();
+    this.currentColor.set(normalizedHex);
 
     this.generateShades();
     this.emitChange();
   }
 
   private generateShades() {
-    this.generatedShades = this.generateColorShades(this.currentColor);
+    this.generatedShades.set(this.generateColorShades(this.currentColor()));
   }
 
   private generateColorShades(baseColor: string): Record<number, string> {
     const hsl = ColorConverter.hexToHsl(baseColor);
-
-    console.warn(hsl.l);
 
     const lightnessMap = {
       50: 95,
@@ -153,28 +153,28 @@ export class ColorPickerComponent implements OnInit, OnChanges {
     return shades;
   }
 
-  getContrastRatio(test: ContrastTest): string {
-    const bgColor = this.generatedShades[test.shade] || this.currentColor;
+  protected getContrastRatio(test: ContrastTest): string {
+    const bgColor = this.generatedShades()[test.shade] || this.currentColor();
     const ratio = ContrastUtil.getContrastRatio(test.textColor, bgColor);
     return ratio.toFixed(1);
   }
 
-  getContrastPasses(test: ContrastTest): boolean {
-    const bgColor = this.generatedShades[test.shade] || this.currentColor;
+  protected getContrastPasses(test: ContrastTest): boolean {
+    const bgColor = this.generatedShades()[test.shade] || this.currentColor();
     const ratio = ContrastUtil.getContrastRatio(test.textColor, bgColor);
     return ratio >= test.requiredRatio;
   }
 
-  reset() {
-    this.currentColor = this.defaultColor;
+  protected reset() {
+    this.currentColor.set(this.defaultColor());
     this.generateShades();
     this.emitChange();
   }
 
   private emitChange() {
     this.colorChanged.emit({
-      hex: this.currentColor,
-      shades: this.generatedShades,
+      hex: this.currentColor(),
+      shades: this.generatedShades(),
     });
   }
 }

@@ -8,5 +8,5 @@
     {{ copied() ? 'Copied! Send this to the AIDA development team.' : 'Copy this code to share your custom color scheme.' }}
   </p>
 
-  <textarea [value]="generatedCode" class="w-full font-mono text-sm" pInputTextarea readonly rows="30" style="resize: vertical"> </textarea>
+  <textarea [value]="generatedCode()" class="w-full font-mono text-sm" pInputTextarea readonly rows="30" style="resize: vertical"> </textarea>
 </div>

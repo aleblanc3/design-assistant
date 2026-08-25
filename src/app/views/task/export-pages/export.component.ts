@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, signal, untracked, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, signal, untracked, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -167,10 +167,10 @@ export class ExportComponent implements OnInit {
 
   // Template visiblity controls
   // If a repo is configured (and overlay is closed), show the repo settings as a secondary task instead of a card
-  @ViewChild('settingsOverlay') settingsOverlay!: Popover;
+  protected readonly settingsOverlay = viewChild<Popover>('settingsPopover');
   protected hasRepoConfig(): boolean {
     const hasGithubData = !!(this.projectData().github.owner && this.projectData().github.repo && this.projectData().github.branch);
-    return hasGithubData || this.settingsOverlay?.overlayVisible;
+    return hasGithubData || !!this.settingsOverlay()?.overlayVisible;
   }
 
   //Export context based on user selections above
