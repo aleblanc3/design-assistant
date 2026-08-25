@@ -1,17 +1,18 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+
 import { TranslatePipe } from '@ngx-translate/core';
 
-//Services
-import { ProjectStateService } from '../services/project-state.service';
-import { ProjectCacheService } from '../services/project-cache.service';
 import { MailtoService } from '../services/mailto.service';
+import { ProjectCacheService } from '../services/project-cache.service';
+import { ProjectStateService } from '../services/project-state.service';
+
 import { environment } from '../../environments/environment';
 
 /**
  * Reviewed: 2026-08-13 (ng21)
- * 
+ *
  * Left side navigation links. Collapses in mobile view.
  */
 @Component({
@@ -19,7 +20,6 @@ import { environment } from '../../environments/environment';
   standalone: true,
   imports: [CommonModule, RouterModule, TranslatePipe],
   templateUrl: './sidebar.component.html',
-  styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidebarComponent {
@@ -52,13 +52,13 @@ export class SidebarComponent {
   }
 
   protected readonly mailTo = () => {
-    this.mailtoService.openMailto(this.mailtoService.generateFeedbackMailto())
-  }
+    this.mailtoService.openMailto(this.mailtoService.generateFeedbackMailto());
+  };
   protected readonly checkStatus = () => {
-    this.projectCache.checkLocalStatus(); 
+    this.projectCache.checkLocalStatus();
     this.projectCache.checkPreviewStatus();
-  }
+  };
   protected readonly checkLocalStatus = () => {
-    this.projectCache.checkLocalStatus(); 
-  }
+    this.projectCache.checkLocalStatus();
+  };
 }

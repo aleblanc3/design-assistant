@@ -1,37 +1,25 @@
-import { Component, ChangeDetectionStrategy, inject, effect } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { marker } from '@colsen1991/ngx-translate-extract-marker';
 
-//Translation
+import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
-//PrimeNG
-import { ButtonModule } from 'primeng/button';
 import { TabsModule } from 'primeng/tabs';
-import { IftaLabelModule } from 'primeng/iftalabel';
-import { SelectModule } from 'primeng/select';
-import { CheckboxModule } from 'primeng/checkbox';
 
-//Services
-import { ProjectStateService } from '../../../services/project-state.service';
+import { CompareRenderedComponent } from '../../../components/compare/compare-rendered/compare-rendered.component';
+import { CompareSelectComponent } from '../../../components/compare/compare-select/compare-select.component';
+import { CompareSourceComponent } from '../../../components/compare/compare-source/compare-source.component';
+import { CompareToolsComponent } from '../../../components/compare/compare-tools/compare-tools.component';
+
 import { CompareService } from '../../../components/compare/compare.service';
 import { FetchService } from '../../../services/fetch.service';
 import { HtmlNormalizationService, htmlProcessingResult } from '../../../services/html-normalization.service';
+import { ProjectStateService } from '../../../services/project-state.service';
 import { UserSettingsService } from '../../../services/user-settings.service';
-
-//Components
-import { CompareSelectComponent } from '../../../components/compare/compare-select-page/compare-select.component';
-import { CompareToolsComponent } from '../../../components/compare/compare-tools/compare-tools.component';
-import { CompareRenderedComponent } from '../../../components/compare/compare-rendered/compare-rendered.component';
-import { CompareSourceComponent } from '../../../components/compare/compare-source/compare-source.component';
 
 @Component({
   selector: 'aida-compare-versions',
-  imports: [
-    FormsModule, TranslatePipe,
-    ButtonModule, TabsModule, IftaLabelModule, SelectModule, CheckboxModule,
-    CompareSelectComponent, CompareToolsComponent, CompareRenderedComponent, CompareSourceComponent
-  ],
+  imports: [FormsModule, TranslatePipe, TabsModule, CompareRenderedComponent, CompareSelectComponent, CompareSourceComponent, CompareToolsComponent],
   templateUrl: './compare.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -43,13 +31,12 @@ export class CompareComponent {
   private htmlNormalizationService = inject(HtmlNormalizationService);
   private settingsService = inject(UserSettingsService);
 
-
-   markForTranslation() {
+  markForTranslation() {
     marker('compare.view.linebyline');
     marker('compare.view.sidebyside');
   }
-  
-// Handle accept/reject changes
+
+  // Handle accept/reject changes
   onContentChanged(event: { beforeContent: htmlProcessingResult; afterContent: htmlProcessingResult }): void {
     // Update your signals
     this.compareService.originalHtml.set(event.beforeContent);

@@ -1,34 +1,28 @@
-import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslatePipe } from "@ngx-translate/core";
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-//PrimeNG
+import { TranslatePipe } from '@ngx-translate/core';
+
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 
-//Custom
 import { ProjectPhase } from '../../../common/data.model';
 
 /**
  * Reviewed: 2026-08-14 (ng21)
- * 
+ *
  * Doormats for the design phase
  */
 @Component({
-    selector: 'aida-design',
-    imports: [
-        CommonModule, TranslatePipe, RouterLink,
-        BreadcrumbModule
-    ],
-    templateUrl: 'design.component.html',
-    styles: ``,
-    changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'aida-design',
+  imports: [CommonModule, RouterLink, TranslatePipe, BreadcrumbModule],
+  templateUrl: 'design.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DesignComponent {
-    
-    protected readonly breadcrumbs = [{ label: 'dashboard._title', route: '/dashboard' }, { label: ProjectPhase.Design }]
-    /** Set breadcrumb to false if reusing these doormats on another page */
-    public readonly breadcrumb = input<boolean>(true);
+  protected readonly breadcrumbs = [{ label: 'dashboard._title', route: '/dashboard' }, { label: ProjectPhase.Design }];
+  /** Set breadcrumb to false if reusing these doormats on another page */
+  public readonly breadcrumb = input<boolean>(true);
 
-    protected readonly ProjectPhase = ProjectPhase
+  protected readonly ProjectPhase = ProjectPhase;
 }

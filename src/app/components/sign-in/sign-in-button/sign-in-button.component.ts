@@ -1,64 +1,60 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { timeout, catchError, of } from 'rxjs';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 
-import { ButtonModule } from 'primeng/button';
-import { AvatarModule } from 'primeng/avatar';
-import { MenuModule } from 'primeng/menu';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+
+import { catchError, of, timeout } from 'rxjs';
+
 import { MenuItem } from 'primeng/api';
+import { AvatarModule } from 'primeng/avatar';
+import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { MenuModule } from 'primeng/menu';
 
-import { GitHubAuthService } from '../../../services/github/github-auth.service';
-import { ExportGitHubService } from '../../../services/github/export-github.service';
-import { ProjectStorageService } from '../../../services/storage/project-storage.service';
-import { ProjectStateService } from '../../../services/project-state.service';
-import { environment } from '../../../../environments/environment';
-import { PatComponent } from '../pat/pat.component';
 import { UserSettingsComponent } from '../../user-settings/user-settings.component';
-import { GitHubUser } from '../../../common/data.model';
+import { PatComponent } from '../pat/pat.component';
+
+import { ExportGitHubService } from '../../../services/github/export-github.service';
+import { GitHubAuthService } from '../../../services/github/github-auth.service';
+import { ProjectStateService } from '../../../services/project-state.service';
+import { ProjectStorageService } from '../../../services/storage/project-storage.service';
+
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'aida-sign-in-button',
-  imports: [
-    TranslatePipe,
-    ButtonModule, AvatarModule, MenuModule, DialogModule,
-    PatComponent, UserSettingsComponent
-  ],
+  imports: [TranslatePipe, AvatarModule, ButtonModule, DialogModule, MenuModule, PatComponent, UserSettingsComponent],
   templateUrl: './sign-in-button.component.html',
-  styles: ``
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignInButtonComponent implements OnInit {
-  private http = inject(HttpClient);
-  private router = inject(Router);
-  private authService = inject(GitHubAuthService);
-  public exportGitHubService = inject(ExportGitHubService);
-  private projectStorageService = inject(ProjectStorageService);
-  private projectState = inject(ProjectStateService);
-  private translate = inject(TranslateService);
-
-  user = signal<GitHubUser | null>(this.exportGitHubService.user());
+  private readonly http = inject(HttpClient);
+  private readonly router = inject(Router);
+  private readonly authService = inject(GitHubAuthService);
+  protected readonly exportGitHubService = inject(ExportGitHubService);
+  private readonly projectStorageService = inject(ProjectStorageService);
+  private readonly projectState = inject(ProjectStateService);
+  private readonly translate = inject(TranslateService);
 
   // Variables
-  showPatSignIn = false;
-  showSettings = false;
+  protected showPatSignIn = false;
+  protected showSettings = false;
 
-  connectGitHub() {
+  private connectGitHub() {
     if (this.isApiGatewayAccessible()) {
       this.authService.login();
-    }
-    else {
+    } else {
       this.showPatSignIn = true;
     }
   }
 
-  async validatePAT() {
+  protected async validatePAT() {
     this.showPatSignIn = false;
     await this.exportGitHubService.validatePAT();
   }
 
-  get items(): MenuItem[] {
+  protected get items(): MenuItem[] {
     const dropdownOptions = [
       {
         label: this.translate.instant('common.profile'),
@@ -68,9 +64,9 @@ export class SignInButtonComponent implements OnInit {
             icon: 'pi pi-cog',
             command: () => {
               this.showSettings = true;
-            }
+            },
           },
-        ]
+        ],
       },
       {
         label: this.translate.instant('common.projects'),
@@ -82,63 +78,62 @@ export class SignInButtonComponent implements OnInit {
               this.projectStorageService.clearActiveProject();
               this.projectState.resetProject();
               this.router.navigate(['/new-project']);
-            }
+            },
           },
           {
             label: this.translate.instant('common.search'),
             icon: 'pi pi-search',
             command: () => {
               this.router.navigate(['/switch-project']);
-            }
-          }
-        ]
-      }
-    ]
+            },
+          },
+        ],
+      },
+    ];
     if (!this.exportGitHubService.user()) {
-      dropdownOptions[0].items!.unshift(
-        {
-          label: this.translate.instant('common.signin'),
-          icon: 'pi pi-sign-in',
-          command: () => {
-            this.connectGitHub();
-          }
-        })
+      dropdownOptions[0].items!.unshift({
+        label: this.translate.instant('common.signin'),
+        icon: 'pi pi-sign-in',
+        command: () => {
+          this.connectGitHub();
+        },
+      });
     } else {
       dropdownOptions[0].items!.unshift({
         label: this.translate.instant('common.signout'),
         icon: 'pi pi-sign-out',
         command: () => {
-          console.log(this.exportGitHubService.user())
+          console.log(this.exportGitHubService.user());
           this.authService.logout();
           this.exportGitHubService.clearPAT();
-        }
-      })
+        },
+      });
     }
-    return dropdownOptions
+    return dropdownOptions;
   }
 
   // Signal to track if API Gateway is accessible
-  isApiGatewayAccessible = signal<boolean>(true);
+  private readonly isApiGatewayAccessible = signal<boolean>(true);
 
   // Check if API gateway is available so we can surface the preferred sign-in method
   private checkApiGatewayAccess(): void {
-
     // Skip check on localhost (gateway isn't blocked but OAuth will be blocked by CORS)
     if (window.location.hostname === 'localhost') {
       this.isApiGatewayAccessible.set(false);
       return;
     }
 
-    this.http.get(`${environment.apiGateway}/auth/github/url`, {
-      observe: 'response'
-    })
+    this.http
+      .get(`${environment.apiGateway}/auth/github/url`, {
+        observe: 'response',
+      })
       .pipe(
         timeout(3000),
         catchError(() => {
           return of(null); // Any error (timeout, network, CORS, blocked) means it's inaccessible
-        })
+        }),
       )
-      .subscribe(response => {
+      .subscribe((response) => {
         this.isApiGatewayAccessible.set(response !== null);
       });
   }

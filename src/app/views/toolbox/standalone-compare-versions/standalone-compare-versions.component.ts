@@ -1,59 +1,50 @@
-import { Component, ChangeDetectionStrategy, OnInit, inject, signal } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
-//Translation
-import { TranslatePipe, } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
-//PrimeNG
 import { TabsModule } from 'primeng/tabs';
 
-//Services
-import { HtmlNormalizationService, htmlProcessingResult } from '../../../services/html-normalization.service';
-
-//Components
 import { CompareRenderedComponent } from '../../../components/compare/compare-rendered/compare-rendered.component';
 import { CompareSourceComponent } from '../../../components/compare/compare-source/compare-source.component';
 
+import { HtmlNormalizationService, htmlProcessingResult } from '../../../services/html-normalization.service';
+
 @Component({
   selector: 'aida-standalone-compare-versions',
-  imports: [
-    TabsModule, TranslatePipe,
-    CompareRenderedComponent, CompareSourceComponent
-  ],
+  imports: [TranslatePipe, TabsModule, CompareRenderedComponent, CompareSourceComponent],
   templateUrl: './standalone-compare-versions.component.html',
-  styles: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  
 })
 export class StandaloneCompareComponent implements OnInit {
-public htmlNormalizationService = inject(HtmlNormalizationService);
-private router = inject(Router);
-private route = inject(ActivatedRoute);
+  public htmlNormalizationService = inject(HtmlNormalizationService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
-// Signals
-protected readonly originalHtml = signal<htmlProcessingResult | undefined>(undefined);
-protected readonly modifiedHtml = signal<htmlProcessingResult | undefined>(undefined);
+  // Signals
+  protected readonly originalHtml = signal<htmlProcessingResult | undefined>(undefined);
+  protected readonly modifiedHtml = signal<htmlProcessingResult | undefined>(undefined);
 
-// Handle accept/reject changes
-protected onContentChanged(event: { beforeContent: htmlProcessingResult; afterContent: htmlProcessingResult }): void {
+  // Handle accept/reject changes
+  protected onContentChanged(event: { beforeContent: htmlProcessingResult; afterContent: htmlProcessingResult }): void {
     // Update signals
     this.originalHtml.set(event.beforeContent);
     this.modifiedHtml.set(event.afterContent);
-}
+  }
 
-ngOnInit() {
+  ngOnInit() {
     // Update settings from url parameter (if present) then remove the param
-     this.route.queryParams.subscribe(async params => {
-      const allParams = { ...params }
+    this.route.queryParams.subscribe(async (params) => {
+      const allParams = { ...params };
       // Handle before
       if (params['before'] !== undefined) {
-        const before = await this.loadContent(params['before'])
+        const before = await this.loadContent(params['before']);
         this.originalHtml.set(before);
         //delete allParams['before']
       }
       // Handle after
       if (params['after'] !== undefined) {
-        const after = await this.loadContent(params['after'])
+        const after = await this.loadContent(params['after']);
         this.modifiedHtml.set(after);
         //delete allParams['after']
       }
@@ -67,9 +58,8 @@ ngOnInit() {
     });
   }
 
-  private async loadContent(url: string): Promise<htmlProcessingResult|undefined>{
-    const fetchType = url.startsWith('http://cra-ut.isvcs.net/') || url.startsWith('https://canada-preview.adobecqms.net/') ? 'proxy' : 'url'
+  private async loadContent(url: string): Promise<htmlProcessingResult | undefined> {
+    const fetchType = url.startsWith('http://cra-ut.isvcs.net/') || url.startsWith('https://canada-preview.adobecqms.net/') ? 'proxy' : 'url';
     return await this.htmlNormalizationService.normalizeHTML(url, fetchType);
   }
-
 }

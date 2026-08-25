@@ -1,16 +1,11 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { TranslatePipe } from "@ngx-translate/core";
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'aida-about',
   imports: [TranslatePipe],
-  template: `
-    <h1 id="wb-cont">{{ 'about._title' | translate}}</h1>
-    <div [innerHTML]="'about.content' | translate"></div>
-  `,
-  styles: ``,
+  templateUrl: './about.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AboutComponent {
-
-}
+export class AboutComponent {}

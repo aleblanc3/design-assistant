@@ -1,51 +1,46 @@
 import { Injectable } from '@angular/core';
 
 export interface SelectionTypes {
-    count: number;
-    startId: number | null;
-    endId: number | null;
-};
+  count: number;
+  startId: number | null;
+  endId: number | null;
+}
 
 export interface DiffOptions {
-    repeatingWordsAccuracy?: number;
-    ignoreWhiteSpaceDifferences?: boolean;
-    orphanMatchThreshold?: number;
-    matchGranularity?: number;
-    combineWords?: boolean;
+  repeatingWordsAccuracy?: number;
+  ignoreWhiteSpaceDifferences?: boolean;
+  orphanMatchThreshold?: number;
+  matchGranularity?: number;
+  combineWords?: boolean;
 }
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class CompareRenderedService {
+  //Generate HTML diff (web page view) using htmldiff-js
+  async generateHtmlDiff(originalHtml: string, modifiedHtml: string): Promise<string> {
+    const options: DiffOptions = {
+      repeatingWordsAccuracy: 0,
+      ignoreWhiteSpaceDifferences: true,
+      orphanMatchThreshold: 0,
+      matchGranularity: 4,
+      combineWords: true,
+    };
 
-    //Generate HTML diff (web page view) using htmldiff-js
-    async generateHtmlDiff(originalHtml: string, modifiedHtml: string): Promise<string> {
-        const options: DiffOptions = {
-            repeatingWordsAccuracy: 0,
-            ignoreWhiteSpaceDifferences: true,
-            orphanMatchThreshold: 0,
-            matchGranularity: 4,
-            combineWords: true,
-        };
+    const { Diff } = await import('@ali-tas/htmldiff-js');
 
-        const { Diff } = await import('@ali-tas/htmldiff-js');
+    const diffResult = Diff.execute(originalHtml, modifiedHtml, options).replace(
+      /<(ins|del)[^>]*>(\s|&nbsp;|&#32;|&#160;|&#x00e2;|&#x0080;|&#x00af;|&#x202f;|&#xa0;)+<\/(ins|del)>/gis, // Remove empty or whitespace-only <ins>/<del> tags
+      ' ',
+    );
 
-        const diffResult = Diff.execute(
-            originalHtml,
-            modifiedHtml,
-            options,
-        ).replace(
-            /<(ins|del)[^>]*>(\s|&nbsp;|&#32;|&#160;|&#x00e2;|&#x0080;|&#x00af;|&#x202f;|&#xa0;)+<\/(ins|del)>/gis, // Remove empty or whitespace-only <ins>/<del> tags
-            ' ',
-        );
+    return diffResult;
+  }
 
-        return diffResult;
-    }
-
-    //Styles for HTML diff
-    getRenderedDiffStyles(): string {
-        return `     
+  //Styles for HTML diff
+  getRenderedDiffStyles(): string {
+    return `     
         /* Shadow DOM container and layout fixes */
           :host {
             all: initial;
@@ -190,228 +185,222 @@ export class CompareRenderedService {
             content: "or";
           }
         `;
+  }
+
+  //Initialize shadowDOM on an element
+  initializeShadowDOM(element: HTMLElement): ShadowRoot | null {
+    if (element && !element.shadowRoot) {
+      return element.attachShadow({ mode: 'open' });
+    }
+    return element?.shadowRoot ?? null;
+  }
+
+  //Clear shadowDom content
+  clearShadowDOM(shadowRoot: ShadowRoot): void {
+    if (shadowRoot) {
+      shadowRoot.innerHTML = '';
+    }
+  }
+
+  //Generate shadow DOM content based on view type
+  async generateShadowDOMContent(shadowRoot: ShadowRoot, viewType: 'original' | 'modified' | 'diff', originalHtml: string, modifiedHtml: string): Promise<void> {
+    if (!shadowRoot) {
+      console.error('Shadow DOM not available');
+      return;
     }
 
-    //Initialize shadowDOM on an element
-    initializeShadowDOM(element: HTMLElement): ShadowRoot | null {
-        if (element && !element.shadowRoot) {
-            return element.attachShadow({ mode: 'open' });
+    // Clear previous content
+    this.clearShadowDOM(shadowRoot);
+
+    // Add WET & other stylesheets
+    const wetStyles = [
+      'https://use.fontawesome.com/releases/v5.15.4/css/all.css',
+      'https://www.canada.ca/etc/designs/canada/wet-boew/css/theme.min.css',
+      'https://www.canada.ca/etc/designs/canada/wet-boew/méli-mélo/2025-12-mille-iles.min.css',
+    ];
+    for (const href of wetStyles) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = href;
+      shadowRoot.appendChild(link);
+    }
+
+    // Add base styles
+    const style = document.createElement('style');
+    style.textContent = this.getRenderedDiffStyles();
+    shadowRoot.insertBefore(style, shadowRoot.firstChild);
+
+    // Create container
+    const diffContainer = document.createElement('div');
+    diffContainer.className = 'rendered-diff-container';
+
+    const renderedContent = document.createElement('div');
+    renderedContent.classList.add('rendered-content');
+
+    //Switch views
+    switch (viewType) {
+      case 'original':
+        this.renderHtml(renderedContent, originalHtml, 'original-html');
+        break;
+      case 'modified':
+        this.renderHtml(renderedContent, modifiedHtml, 'modified-html');
+        break;
+      case 'diff':
+        await this.renderDiffHtml(renderedContent, originalHtml, modifiedHtml, 'diff-content');
+        break;
+    }
+
+    diffContainer.appendChild(renderedContent);
+    shadowRoot.appendChild(diffContainer);
+
+    // Load plugins
+    this.initShadowPlugins(shadowRoot);
+  }
+
+  //Render HTML
+  private renderHtml(container: HTMLElement, html: string, className: string): void {
+    container.classList.add(className);
+    container.innerHTML = `<div id="editable" contenteditable="false">${html}</div>`;
+  }
+
+  //Render Diff
+  private async renderDiffHtml(container: HTMLElement, originalHtml: string, modifiedHtml: string, className: string): Promise<void> {
+    const diffResult = await this.generateHtmlDiff(originalHtml, modifiedHtml);
+    const adjustedDiff = await this.adjustDOM(originalHtml, diffResult);
+    container.classList.add(className);
+    container.innerHTML = adjustedDiff;
+  }
+
+  //Initialize all plugins
+  private initShadowPlugins(shadowRoot: ShadowRoot): void {
+    this.initTabs(shadowRoot);
+    //this.initFieldFlow(shadowRoot);
+    //this.initDetails(shadowRoot);
+  }
+
+  //Initialize tabs
+  private initTabs(shadowRoot: ShadowRoot): void {
+    shadowRoot.querySelectorAll('.wb-tabs:not(.wb-tabs-inited)').forEach((tabsContainer, autoId) => {
+      const groupId = `wb-shadow-${autoId}`;
+      const groupClass = `${groupId}-grp`;
+
+      tabsContainer.classList.add('wb-init', 'wb-tabs-inited', 'tabs-acc');
+      tabsContainer.id = tabsContainer.id || groupId;
+
+      const tabpanels = tabsContainer.querySelector('.tabpanels');
+      if (!tabpanels) return;
+
+      const details = Array.from(tabpanels.querySelectorAll(':scope > details')) as HTMLDetailsElement[];
+      if (details.length === 0) return;
+
+      // Build the <ul role="tablist"> from summaries
+      const ul = document.createElement('ul');
+      ul.setAttribute('role', 'tablist');
+      ul.setAttribute('aria-live', 'off');
+      ul.setAttribute('aria-hidden', 'false');
+      ul.classList.add('generated');
+
+      details.forEach((detail, i) => {
+        const summary = detail.querySelector('summary');
+        const detailId = detail.id || `${groupId}-tab${i}`;
+        detail.id = detailId;
+        const linkId = `${detailId}-lnk`;
+
+        const li = document.createElement('li');
+        li.setAttribute('role', 'presentation');
+        if (i === 0) li.classList.add('active');
+
+        const a = document.createElement('a');
+        a.id = linkId;
+        a.href = `#${detailId}`;
+        a.setAttribute('role', 'tab');
+        a.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+        a.setAttribute('aria-controls', detailId);
+        a.setAttribute('tabindex', i === 0 ? '0' : '-1');
+        a.innerHTML = summary?.innerHTML || '';
+
+        li.appendChild(a);
+        ul.appendChild(li);
+
+        // Transform detail to match WET's output
+        const linkIdRef = linkId;
+        detail.setAttribute('role', 'tabpanel');
+        detail.setAttribute('aria-labelledby', linkIdRef);
+        detail.classList.add('wb-init', groupClass, 'fade');
+        detail.removeAttribute('open');
+
+        // Wrap existing content div in tgl-panel
+        const contentDiv = detail.querySelector('div');
+        if (contentDiv) {
+          const tglPanel = document.createElement('div');
+          tglPanel.classList.add('tgl-panel');
+          tglPanel.setAttribute('aria-expanded', 'true');
+          tglPanel.setAttribute('aria-hidden', 'false');
+          contentDiv.parentNode?.insertBefore(tglPanel, contentDiv);
+          tglPanel.appendChild(contentDiv);
         }
-        return element?.shadowRoot ?? null;
-    }
 
-    //Clear shadowDom content
-    clearShadowDOM(shadowRoot: ShadowRoot): void {
-        if (shadowRoot) {
-            shadowRoot.innerHTML = '';
-        }
-    }
-
-    //Generate shadow DOM content based on view type
-    async generateShadowDOMContent(
-        shadowRoot: ShadowRoot,
-        viewType: 'original' | 'modified' | 'diff',
-        originalHtml: string,
-        modifiedHtml: string
-    ): Promise<void> {
-        if (!shadowRoot) {
-            console.error('Shadow DOM not available');
-            return;
+        // Hide summary visually (tab list takes over)
+        if (summary) {
+          summary.setAttribute('aria-hidden', 'true');
+          summary.classList.add('wb-toggle', 'tgl-tab', 'wb-init', 'wb-toggle-inited');
         }
 
-        // Clear previous content
-        this.clearShadowDOM(shadowRoot);
-
-        // Add WET & other stylesheets
-        const wetStyles = [
-            'https://use.fontawesome.com/releases/v5.15.4/css/all.css',
-            'https://www.canada.ca/etc/designs/canada/wet-boew/css/theme.min.css',
-            'https://www.canada.ca/etc/designs/canada/wet-boew/méli-mélo/2025-12-mille-iles.min.css'
-        ];
-        for (const href of wetStyles) {
-            const link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = href;
-            shadowRoot.appendChild(link);
+        if (i === 0) {
+          // Active panel
+          detail.classList.add('in');
+          detail.setAttribute('open', '');
+          detail.setAttribute('aria-hidden', 'false');
+          detail.setAttribute('aria-expanded', 'true');
+        } else {
+          // Inactive panels
+          detail.classList.add('out', 'noheight');
+          detail.setAttribute('aria-hidden', 'true');
+          detail.setAttribute('aria-expanded', 'false');
         }
+      });
 
-        // Add base styles
-        const style = document.createElement('style');
-        style.textContent = this.getRenderedDiffStyles();
-        shadowRoot.insertBefore(style, shadowRoot.firstChild);
+      // Insert tab list before tabpanels
+      tabpanels.parentNode?.insertBefore(ul, tabpanels);
 
-        // Create container
-        const diffContainer = document.createElement('div');
-        diffContainer.className = 'rendered-diff-container';
+      // Wire up tab clicks
+      const tabLinks = Array.from(ul.querySelectorAll('a'));
+      tabLinks.forEach((link, i) => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
 
-        const renderedContent = document.createElement('div');
-        renderedContent.classList.add('rendered-content');
+          tabLinks.forEach((l, j) => {
+            const isActive = j === i;
+            l.setAttribute('aria-selected', String(isActive));
+            l.setAttribute('tabindex', isActive ? '0' : '-1');
+            l.closest('li')?.classList.toggle('active', isActive);
 
-        //Switch views
-        switch (viewType) {
-            case 'original':
-                this.renderHtml(renderedContent, originalHtml, 'original-html');
-                break;
-            case 'modified':
-                this.renderHtml(renderedContent, modifiedHtml, 'modified-html');
-                break;
-            case 'diff':
-                await this.renderDiffHtml(renderedContent, originalHtml, modifiedHtml, 'diff-content');
-                break;
-        }
-
-        diffContainer.appendChild(renderedContent);
-        shadowRoot.appendChild(diffContainer);
-
-        // Load plugins 
-        this.initShadowPlugins(shadowRoot);
-    }
-
-    //Render HTML
-    private renderHtml(container: HTMLElement, html: string, className: string): void {
-        container.classList.add(className);
-        container.innerHTML = `<div id="editable" contenteditable="false">${html}</div>`;
-    }
-
-    //Render Diff
-    private async renderDiffHtml(container: HTMLElement, originalHtml: string, modifiedHtml: string, className: string): Promise<void> {
-        const diffResult = await this.generateHtmlDiff(originalHtml, modifiedHtml);
-        const adjustedDiff = await this.adjustDOM(originalHtml, diffResult);
-        container.classList.add(className);
-        container.innerHTML = adjustedDiff;
-    }
-
-    //Initialize all plugins
-    private initShadowPlugins(shadowRoot: ShadowRoot): void {
-        this.initTabs(shadowRoot);
-        //this.initFieldFlow(shadowRoot);
-        //this.initDetails(shadowRoot);
-    }
-
-    //Initialize tabs
-    private initTabs(shadowRoot: ShadowRoot): void {
-        shadowRoot.querySelectorAll('.wb-tabs:not(.wb-tabs-inited)').forEach((tabsContainer, autoId) => {
-            const groupId = `wb-shadow-${autoId}`;
-            const groupClass = `${groupId}-grp`;
-
-            tabsContainer.classList.add('wb-init', 'wb-tabs-inited', 'tabs-acc');
-            tabsContainer.id = tabsContainer.id || groupId;
-
-            const tabpanels = tabsContainer.querySelector('.tabpanels');
-            if (!tabpanels) return;
-
-            const details = Array.from(tabpanels.querySelectorAll(':scope > details')) as HTMLDetailsElement[];
-            if (details.length === 0) return;
-
-            // Build the <ul role="tablist"> from summaries
-            const ul = document.createElement('ul');
-            ul.setAttribute('role', 'tablist');
-            ul.setAttribute('aria-live', 'off');
-            ul.setAttribute('aria-hidden', 'false');
-            ul.classList.add('generated');
-
-            details.forEach((detail, i) => {
-                const summary = detail.querySelector('summary');
-                const detailId = detail.id || `${groupId}-tab${i}`;
-                detail.id = detailId;
-                const linkId = `${detailId}-lnk`;
-
-                const li = document.createElement('li');
-                li.setAttribute('role', 'presentation');
-                if (i === 0) li.classList.add('active');
-
-                const a = document.createElement('a');
-                a.id = linkId;
-                a.href = `#${detailId}`;
-                a.setAttribute('role', 'tab');
-                a.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
-                a.setAttribute('aria-controls', detailId);
-                a.setAttribute('tabindex', i === 0 ? '0' : '-1');
-                a.innerHTML = summary?.innerHTML || '';
-
-                li.appendChild(a);
-                ul.appendChild(li);
-
-                // Transform detail to match WET's output
-                const linkIdRef = linkId;
-                detail.setAttribute('role', 'tabpanel');
-                detail.setAttribute('aria-labelledby', linkIdRef);
-                detail.classList.add('wb-init', groupClass, 'fade');
-                detail.removeAttribute('open');
-
-                // Wrap existing content div in tgl-panel
-                const contentDiv = detail.querySelector('div');
-                if (contentDiv) {
-                    const tglPanel = document.createElement('div');
-                    tglPanel.classList.add('tgl-panel');
-                    tglPanel.setAttribute('aria-expanded', 'true');
-                    tglPanel.setAttribute('aria-hidden', 'false');
-                    contentDiv.parentNode?.insertBefore(tglPanel, contentDiv);
-                    tglPanel.appendChild(contentDiv);
-                }
-
-                // Hide summary visually (tab list takes over)
-                if (summary) {
-                    summary.setAttribute('aria-hidden', 'true');
-                    summary.classList.add('wb-toggle', 'tgl-tab', 'wb-init', 'wb-toggle-inited');
-                }
-
-                if (i === 0) {
-                    // Active panel
-                    detail.classList.add('in');
-                    detail.setAttribute('open', '');
-                    detail.setAttribute('aria-hidden', 'false');
-                    detail.setAttribute('aria-expanded', 'true');
-                } else {
-                    // Inactive panels
-                    detail.classList.add('out', 'noheight');
-                    detail.setAttribute('aria-hidden', 'true');
-                    detail.setAttribute('aria-expanded', 'false');
-                }
-            });
-
-            // Insert tab list before tabpanels
-            tabpanels.parentNode?.insertBefore(ul, tabpanels);
-
-            // Wire up tab clicks
-            const tabLinks = Array.from(ul.querySelectorAll('a'));
-            tabLinks.forEach((link, i) => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-
-                    tabLinks.forEach((l, j) => {
-                        const isActive = j === i;
-                        l.setAttribute('aria-selected', String(isActive));
-                        l.setAttribute('tabindex', isActive ? '0' : '-1');
-                        l.closest('li')?.classList.toggle('active', isActive);
-
-                        const panel = details[j];
-                        if (isActive) {
-                            panel.classList.remove('out', 'noheight');
-                            panel.classList.add('in');
-                            panel.setAttribute('open', '');
-                            panel.setAttribute('aria-hidden', 'false');
-                            panel.setAttribute('aria-expanded', 'true');
-                        } else {
-                            panel.classList.remove('in');
-                            panel.classList.add('out', 'noheight');
-                            panel.removeAttribute('open');
-                            panel.setAttribute('aria-hidden', 'true');
-                            panel.setAttribute('aria-expanded', 'false');
-                        }
-                    });
-                });
-            });
+            const panel = details[j];
+            if (isActive) {
+              panel.classList.remove('out', 'noheight');
+              panel.classList.add('in');
+              panel.setAttribute('open', '');
+              panel.setAttribute('aria-hidden', 'false');
+              panel.setAttribute('aria-expanded', 'true');
+            } else {
+              panel.classList.remove('in');
+              panel.classList.add('out', 'noheight');
+              panel.removeAttribute('open');
+              panel.setAttribute('aria-hidden', 'true');
+              panel.setAttribute('aria-expanded', 'false');
+            }
+          });
         });
-    }
+      });
+    });
+  }
 
-    //Adjust diff result (mark changed links, images, remove nested diff tags)
-    private async adjustDOM(originalHtml: string, diffResult: string) {
-
-        // Parse current diff and before content
-        const parser = new DOMParser();
-        const diffDoc = parser.parseFromString(diffResult, 'text/html');
-        /*const beforeDoc = parser.parseFromString(originalHtml, 'text/html');
+  //Adjust diff result (mark changed links, images, remove nested diff tags)
+  private async adjustDOM(originalHtml: string, diffResult: string) {
+    // Parse current diff and before content
+    const parser = new DOMParser();
+    const diffDoc = parser.parseFromString(diffResult, 'text/html');
+    /*const beforeDoc = parser.parseFromString(originalHtml, 'text/html');
     
         type LinksMap = Map<string, LinkData[]>;
     
@@ -491,187 +480,184 @@ export class CompareRenderedService {
         }
     
         */
-        // Unwrap diff elements from parent tags like <mark>, <strong>, etc. if the parent contains nothing but the diff element
-        diffDoc.querySelectorAll('ins, del').forEach(diffEl => {
-            const parent = diffEl.parentElement;
-            if (parent &&
-                parent.tagName !== 'BODY' &&
-                parent.tagName !== 'UL' &&
-                parent.tagName !== 'OL' &&
-                parent.tagName !== 'SUMMARY' &&
-                parent.tagName !== 'DETAILS' &&
-                !parent.classList.contains('diffmod') &&
-                !parent.classList.contains('diffins') &&
-                !parent.classList.contains('diffdel') &&
-                parent.children.length === 1 &&
-                parent.textContent?.trim() === diffEl.textContent?.trim()) {
-                parent.replaceWith(diffEl);
+    // Unwrap diff elements from parent tags like <mark>, <strong>, etc. if the parent contains nothing but the diff element
+    diffDoc.querySelectorAll('ins, del').forEach((diffEl) => {
+      const parent = diffEl.parentElement;
+      if (
+        parent &&
+        parent.tagName !== 'BODY' &&
+        parent.tagName !== 'UL' &&
+        parent.tagName !== 'OL' &&
+        parent.tagName !== 'SUMMARY' &&
+        parent.tagName !== 'DETAILS' &&
+        !parent.classList.contains('diffmod') &&
+        !parent.classList.contains('diffins') &&
+        !parent.classList.contains('diffdel') &&
+        parent.children.length === 1 &&
+        parent.textContent?.trim() === diffEl.textContent?.trim()
+      ) {
+        parent.replaceWith(diffEl);
 
-                const inlineElements = ['STRONG', 'EM', 'B', 'I', 'MARK', 'CODE', 'ABBR', 'SPAN'];
+        const inlineElements = ['STRONG', 'EM', 'B', 'I', 'MARK', 'CODE', 'ABBR', 'SPAN'];
 
-                if (inlineElements.includes(parent.tagName)) {
-                    // Move parent element inside diff to preserve style
-                    const parentClone = parent.cloneNode(false) as Element;
-                    while (diffEl.firstChild) {
-                        parentClone.appendChild(diffEl.firstChild);
-                    }
-                    diffEl.appendChild(parentClone);
-                    parent.replaceWith(diffEl);
-                } else {
-                    // UNWRAP: for structural elements, just remove the parent
-                    parent.replaceWith(diffEl);
-                }
+        if (inlineElements.includes(parent.tagName)) {
+          // Move parent element inside diff to preserve style
+          const parentClone = parent.cloneNode(false) as Element;
+          while (diffEl.firstChild) {
+            parentClone.appendChild(diffEl.firstChild);
+          }
+          diffEl.appendChild(parentClone);
+          parent.replaceWith(diffEl);
+        } else {
+          // UNWRAP: for structural elements, just remove the parent
+          parent.replaceWith(diffEl);
+        }
+      }
+      if (diffEl.matches('ins:not(.diffins):not(.diffmod)') || diffEl.matches('del:not(.diffdel):not(.diffmod)')) {
+        // Unwrap non-standard ins/del
+        while (diffEl.firstChild) {
+          diffEl.parentNode?.insertBefore(diffEl.firstChild, diffEl);
+        }
+        diffEl.remove();
+      }
+    });
+
+    // Remove nested ins/del tags
+    diffDoc.querySelectorAll('del > del, ins > ins').forEach((el) => {
+      const parent = el.parentElement;
+      if (parent && parent.textContent?.trim() === el.textContent?.trim()) {
+        parent.replaceWith(el);
+      }
+    });
+
+    diffDoc.querySelectorAll('del > ins, ins > del').forEach((el) => {
+      const parent = el.parentElement;
+      if (parent && parent.textContent?.trim() === el.textContent?.trim()) {
+        parent.replaceWith(el);
+      }
+    });
+
+    // Wrap orphaned diff elements in lists with <li> tags
+    ['ul', 'ol'].forEach((listType) => {
+      diffDoc.querySelectorAll(listType).forEach((list) => {
+        Array.from(list.childNodes).forEach((child) => {
+          // If direct child is a diff element (not wrapped in <li>)
+          if (child.nodeType === Node.ELEMENT_NODE) {
+            const el = child as Element;
+            if (el.matches('ins.diffins, del.diffdel, ins.diffmod, del.diffmod') && el.parentElement?.tagName === listType.toUpperCase()) {
+              const li = diffDoc.createElement('li');
+              el.parentNode?.insertBefore(li, el);
+              li.appendChild(el);
             }
-            if (diffEl.matches('ins:not(.diffins):not(.diffmod)') ||
-                diffEl.matches('del:not(.diffdel):not(.diffmod)')) {
-                // Unwrap non-standard ins/del
-                while (diffEl.firstChild) {
-                    diffEl.parentNode?.insertBefore(diffEl.firstChild, diffEl);
-                }
-                diffEl.remove();
+          }
+        });
+      });
+    });
+
+    // Wrap orphaned diff elements in block elements with <p> tags
+    ['div', 'section', 'article', 'aside', 'nav', 'main', 'header', 'footer'].forEach((containerType) => {
+      diffDoc.querySelectorAll(containerType).forEach((container) => {
+        Array.from(container.childNodes).forEach((child) => {
+          if (child.nodeType === Node.ELEMENT_NODE) {
+            const el = child as Element;
+            // If it's a diff element directly in a block container
+            if (el.matches('ins.diffins, del.diffdel, ins.diffmod, del.diffmod') && el.parentElement?.tagName === containerType.toUpperCase()) {
+              const p = diffDoc.createElement('p');
+              el.parentNode?.insertBefore(p, el);
+              p.appendChild(el);
             }
+          }
         });
+      });
+    });
 
-        // Remove nested ins/del tags
-        diffDoc.querySelectorAll('del > del, ins > ins').forEach(el => {
-            const parent = el.parentElement;
-            if (parent && parent.textContent?.trim() === el.textContent?.trim()) {
-                parent.replaceWith(el);
+    // Group del.diffmod with ins.diffmod
+    diffDoc.querySelectorAll('del.diffmod').forEach((del) => {
+      if (del.parentElement?.classList.contains('diff-group')) {
+        return;
+      }
+
+      const wrapper = diffDoc.createElement('span');
+      wrapper.classList.add('diff-group');
+
+      del.parentNode?.insertBefore(wrapper, del);
+      wrapper.appendChild(del);
+
+      // Collect ALL consecutive sibling ins.diffmod elements
+      let nextEl = wrapper.nextElementSibling;
+      while (nextEl?.matches('ins.diffmod')) {
+        const toMove = nextEl;
+        nextEl = nextEl.nextElementSibling;
+        wrapper.appendChild(toMove);
+      }
+
+      // If no ins.diffmod siblings found, look across block boundaries
+      if (!wrapper.querySelector('ins.diffmod')) {
+        // Search in next sibling blocks (up to 3 levels deep)
+        let searchNode: Element | null = del.parentElement;
+        let depth = 0;
+
+        while (searchNode && searchNode.tagName !== 'BODY' && depth < 3) {
+          const nextBlock = searchNode.nextElementSibling;
+          if (nextBlock) {
+            // Look for first ins.diffmod in next block
+            const firstIns = nextBlock.querySelector('ins.diffmod');
+            if (firstIns) {
+              // Only pair if it's a small change (heuristic to avoid pairing unrelated content)
+              const insText = firstIns.textContent?.trim() || '';
+              const delText = del.textContent?.trim() || '';
+
+              // Pair if ins is small OR similar length to del (likely a word replacement)
+              if (insText.length < 50 || Math.abs(insText.length - delText.length) < 20) {
+                wrapper.appendChild(firstIns);
+                break;
+              }
             }
-        });
+          }
+          searchNode = searchNode.parentElement;
+          depth++;
+        }
+      }
+    });
 
-        diffDoc.querySelectorAll('del > ins, ins > del').forEach(el => {
-            const parent = el.parentElement;
-            if (parent && parent.textContent?.trim() === el.textContent?.trim()) {
-                parent.replaceWith(el);
+    // Reclassify orphaned ins.diffmod as ins.diffins
+    diffDoc.querySelectorAll('ins.diffmod').forEach((ins) => {
+      if (ins.parentElement?.classList.contains('diff-group')) {
+        return; // Skip
+      }
+      ins.classList.remove('diffmod');
+      ins.classList.add('diffins');
+    });
+
+    // Merge consecutive diff elements of the same type
+    ['ins.diffins', 'del.diffdel'].forEach((selector) => {
+      let changed = true;
+      while (changed) {
+        changed = false;
+        diffDoc.querySelectorAll(selector).forEach((el) => {
+          const next = el.nextSibling;
+          // Check if next sibling is the same type of diff element
+          if (next && next.nodeType === Node.ELEMENT_NODE && (next as Element).matches(selector)) {
+            // Merge: append next's content to current, then remove next
+            while (next.firstChild) {
+              el.appendChild(next.firstChild);
             }
+            next.remove();
+            changed = true;
+          }
         });
+      }
+    });
 
-        // Wrap orphaned diff elements in lists with <li> tags
-        ['ul', 'ol'].forEach(listType => {
-            diffDoc.querySelectorAll(listType).forEach(list => {
-                Array.from(list.childNodes).forEach(child => {
-                    // If direct child is a diff element (not wrapped in <li>)
-                    if (child.nodeType === Node.ELEMENT_NODE) {
-                        const el = child as Element;
-                        if (el.matches('ins.diffins, del.diffdel, ins.diffmod, del.diffmod') &&
-                            el.parentElement?.tagName === listType.toUpperCase()) {
+    // Group diffmods and assign IDs
+    const uniqueElements = Array.from(diffDoc.querySelectorAll('ins.diffins, del.diffdel, span.diff-group, .updated-link'));
 
-                            const li = diffDoc.createElement('li');
-                            el.parentNode?.insertBefore(li, el);
-                            li.appendChild(el);
-                        }
-                    }
-                });
-            });
-        });
+    // Re-index after filtering
+    uniqueElements.forEach((element, index) => {
+      element.setAttribute('data-id', `${index + 1}`);
+    });
 
-        // Wrap orphaned diff elements in block elements with <p> tags
-        ['div', 'section', 'article', 'aside', 'nav', 'main', 'header', 'footer'].forEach(containerType => {
-            diffDoc.querySelectorAll(containerType).forEach(container => {
-                Array.from(container.childNodes).forEach(child => {
-                    if (child.nodeType === Node.ELEMENT_NODE) {
-                        const el = child as Element;
-                        // If it's a diff element directly in a block container
-                        if (el.matches('ins.diffins, del.diffdel, ins.diffmod, del.diffmod') &&
-                            el.parentElement?.tagName === containerType.toUpperCase()) {
-
-                            const p = diffDoc.createElement('p');
-                            el.parentNode?.insertBefore(p, el);
-                            p.appendChild(el);
-                        }
-                    }
-                });
-            });
-        });
-
-        // Group del.diffmod with ins.diffmod
-        diffDoc.querySelectorAll('del.diffmod').forEach(del => {
-            if (del.parentElement?.classList.contains('diff-group')) {
-                return;
-            }
-
-            const wrapper = diffDoc.createElement('span');
-            wrapper.classList.add('diff-group');
-
-            del.parentNode?.insertBefore(wrapper, del);
-            wrapper.appendChild(del);
-
-            // Collect ALL consecutive sibling ins.diffmod elements
-            let nextEl = wrapper.nextElementSibling;
-            while (nextEl?.matches('ins.diffmod')) {
-                const toMove = nextEl;
-                nextEl = nextEl.nextElementSibling;
-                wrapper.appendChild(toMove);
-            }
-
-            // If no ins.diffmod siblings found, look across block boundaries
-            if (!wrapper.querySelector('ins.diffmod')) {
-                // Search in next sibling blocks (up to 3 levels deep)
-                let searchNode: Element | null = del.parentElement;
-                let depth = 0;
-
-                while (searchNode && searchNode.tagName !== 'BODY' && depth < 3) {
-                    const nextBlock = searchNode.nextElementSibling;
-                    if (nextBlock) {
-                        // Look for first ins.diffmod in next block
-                        const firstIns = nextBlock.querySelector('ins.diffmod');
-                        if (firstIns) {
-                            // Only pair if it's a small change (heuristic to avoid pairing unrelated content)
-                            const insText = firstIns.textContent?.trim() || '';
-                            const delText = del.textContent?.trim() || '';
-
-                            // Pair if ins is small OR similar length to del (likely a word replacement)
-                            if (insText.length < 50 || Math.abs(insText.length - delText.length) < 20) {
-                                wrapper.appendChild(firstIns);
-                                break;
-                            }
-                        }
-                    }
-                    searchNode = searchNode.parentElement;
-                    depth++;
-                }
-            }
-        });
-
-        // Reclassify orphaned ins.diffmod as ins.diffins
-        diffDoc.querySelectorAll('ins.diffmod').forEach(ins => {
-            if (ins.parentElement?.classList.contains('diff-group')) {
-                return; // Skip
-            }
-            ins.classList.remove('diffmod');
-            ins.classList.add('diffins');
-        });
-
-        // Merge consecutive diff elements of the same type
-        ['ins.diffins', 'del.diffdel'].forEach(selector => {
-            let changed = true;
-            while (changed) {
-                changed = false;
-                diffDoc.querySelectorAll(selector).forEach(el => {
-                    const next = el.nextSibling;
-                    // Check if next sibling is the same type of diff element
-                    if (next && next.nodeType === Node.ELEMENT_NODE && (next as Element).matches(selector)) {
-                        // Merge: append next's content to current, then remove next
-                        while (next.firstChild) {
-                            el.appendChild(next.firstChild);
-                        }
-                        next.remove();
-                        changed = true;
-                    }
-                });
-            }
-        });
-
-        // Group diffmods and assign IDs
-        const uniqueElements = Array.from(diffDoc.querySelectorAll('ins.diffins, del.diffdel, span.diff-group, .updated-link'));
-
-        // Re-index after filtering
-        uniqueElements.forEach((element, index) => {
-            element.setAttribute('data-id', `${index + 1}`);
-        });
-
-        /*  Skipping due to noise
+    /*  Skipping due to noise
             const wrapWithOverlayWrapper = (el: Element, parentClass: string) => {
               const parent = el.parentElement;
               const dataId = parent?.getAttribute('data-id');
@@ -693,353 +679,352 @@ export class CompareRenderedService {
               }
             });
         */
-        return diffDoc.body.innerHTML;
-    }
+    return diffDoc.body.innerHTML;
+  }
 
-    //Handle clicks inside Shadow DOM
-    handleDocumentClick(shadowRoot: ShadowRoot, updateCurrentIndex: (index: number) => void): () => void {
-        const clickHandler = (event: Event) => {
-            let target = event.target as HTMLElement;
+  //Handle clicks inside Shadow DOM
+  handleDocumentClick(shadowRoot: ShadowRoot, updateCurrentIndex: (index: number) => void): () => void {
+    const clickHandler = (event: Event) => {
+      let target = event.target as HTMLElement;
 
-            while (target && target.tagName !== 'A') {
-                target = target.parentElement as HTMLElement;
-            }
-            //link clicks
-            if (target?.tagName === 'A') {
-                event.preventDefault();
-                const href = target.getAttribute('href') ?? '';
-                //anchor links
-                if (href.startsWith('#')) {
-                    const sectionId = target.getAttribute('href')?.substring(1);
-                    const targetSection = shadowRoot.getElementById(sectionId ?? '');
+      while (target && target.tagName !== 'A') {
+        target = target.parentElement as HTMLElement;
+      }
+      //link clicks
+      if (target?.tagName === 'A') {
+        event.preventDefault();
+        const href = target.getAttribute('href') ?? '';
+        //anchor links
+        if (href.startsWith('#')) {
+          const sectionId = target.getAttribute('href')?.substring(1);
+          const targetSection = shadowRoot.getElementById(sectionId ?? '');
 
-                    if (targetSection) {
-                        targetSection.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start',
-                        });
-                    }
-                }
-            }
-            //diff clicks      
-            const changeElements = this.getDataIdElements(shadowRoot);
-
-            if (!changeElements.length) return;
-
-            const clickedElement = changeElements.find((el) =>
-                el.contains(event.target as Node)
-            );
-
-            if (!clickedElement) return;
-
-            //const index = Number(clickedElement.getAttribute('data-id'));
-            const index = changeElements.indexOf(clickedElement);
-            this.scrollToElement(clickedElement);
-            if (updateCurrentIndex) {
-                updateCurrentIndex(index);
-                this.lastSelection = { count: 1, startId: null, endId: null }; //reset selection
-            }
-
-        };
-
-        // Attach listener and return cleanup function
-        shadowRoot.addEventListener('click', clickHandler, true);
-
-        return () => {
-            shadowRoot.removeEventListener('click', clickHandler, true);
-        };
-    }
-
-    //Handle text selection inside Shadow DOM
-    handleSelection(shadowRoot: ShadowRoot): () => void {
-        const selectionHandler = () => {
-            this.highlightSelected(shadowRoot);
-        };
-
-        shadowRoot.addEventListener('mouseup', selectionHandler);
-        shadowRoot.addEventListener('keyup', selectionHandler); // for keyboard selection
-
-        return () => {
-            shadowRoot.removeEventListener('mouseup', selectionHandler);
-            shadowRoot.removeEventListener('keyup', selectionHandler);
-        };
-    }
-
-    //Helper functions for next/prev buttons
-    getDataIdElements(shadowRoot: ShadowRoot): HTMLElement[] {
-        return Array.from(shadowRoot.querySelectorAll<HTMLElement>('[data-id]'));
-    }
-
-    highlightElement(el: HTMLElement, highlightClass = 'highlight') {
-        this.clearHighlights(el.getRootNode() as ShadowRoot, highlightClass);
-        el.classList.add(highlightClass);
-    }
-
-    clearHighlights(shadowRoot: ShadowRoot, highlightClass = 'highlight') {
-        shadowRoot.querySelectorAll(`.${highlightClass}`).forEach((node) => {
-            node.classList.remove(highlightClass);
-        });
-    }
-
-    scrollToElement(el: HTMLElement) {
-        const shadowRoot = el.getRootNode() as ShadowRoot;
-        shadowRoot.querySelectorAll('.highlight').forEach(h => h.classList.remove('highlight'));
-        el.classList.add('highlight');
-        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-
-    openParentDetails(el: HTMLElement) {
-        const detailsEl = el.closest('details');
-        if (detailsEl) {
-            detailsEl.open = true;
+          if (targetSection) {
+            targetSection.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+            });
+          }
         }
+      }
+      //diff clicks
+      const changeElements = this.getDataIdElements(shadowRoot);
+
+      if (!changeElements.length) return;
+
+      const clickedElement = changeElements.find((el) => el.contains(event.target as Node));
+
+      if (!clickedElement) return;
+
+      //const index = Number(clickedElement.getAttribute('data-id'));
+      const index = changeElements.indexOf(clickedElement);
+      this.scrollToElement(clickedElement);
+      if (updateCurrentIndex) {
+        updateCurrentIndex(index);
+        this.lastSelection = { count: 1, startId: null, endId: null }; //reset selection
+      }
+    };
+
+    // Attach listener and return cleanup function
+    shadowRoot.addEventListener('click', clickHandler, true);
+
+    return () => {
+      shadowRoot.removeEventListener('click', clickHandler, true);
+    };
+  }
+
+  //Handle text selection inside Shadow DOM
+  handleSelection(shadowRoot: ShadowRoot): () => void {
+    const selectionHandler = () => {
+      this.highlightSelected(shadowRoot);
+    };
+
+    shadowRoot.addEventListener('mouseup', selectionHandler);
+    shadowRoot.addEventListener('keyup', selectionHandler); // for keyboard selection
+
+    return () => {
+      shadowRoot.removeEventListener('mouseup', selectionHandler);
+      shadowRoot.removeEventListener('keyup', selectionHandler);
+    };
+  }
+
+  //Helper functions for next/prev buttons
+  getDataIdElements(shadowRoot: ShadowRoot): HTMLElement[] {
+    return Array.from(shadowRoot.querySelectorAll<HTMLElement>('[data-id]'));
+  }
+
+  highlightElement(el: HTMLElement, highlightClass = 'highlight') {
+    this.clearHighlights(el.getRootNode() as ShadowRoot, highlightClass);
+    el.classList.add(highlightClass);
+  }
+
+  clearHighlights(shadowRoot: ShadowRoot, highlightClass = 'highlight') {
+    shadowRoot.querySelectorAll(`.${highlightClass}`).forEach((node) => {
+      node.classList.remove(highlightClass);
+    });
+  }
+
+  scrollToElement(el: HTMLElement) {
+    const shadowRoot = el.getRootNode() as ShadowRoot;
+    shadowRoot.querySelectorAll('.highlight').forEach((h) => h.classList.remove('highlight'));
+    el.classList.add('highlight');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  openParentDetails(el: HTMLElement) {
+    const detailsEl = el.closest('details');
+    if (detailsEl) {
+      detailsEl.open = true;
+    }
+  }
+
+  closeAllDetailsExcept(shadowRoot: ShadowRoot, keepOpenEl: HTMLElement) {
+    shadowRoot.querySelectorAll('details').forEach((details) => {
+      if (details !== keepOpenEl.closest('details')) {
+        (details as HTMLDetailsElement).open = false;
+      }
+    });
+  }
+
+  public lastSelection: SelectionTypes = { count: 1, startId: null, endId: null };
+
+  highlightSelected(shadowRoot: ShadowRoot): void {
+    //NOTE: window.getSelection() seems limited to text in shadowdom so extra checks needed to match with actual shadowdom elements
+    const selection = window.getSelection();
+    if (!shadowRoot || !selection) {
+      this.lastSelection = { count: 0, startId: null, endId: null };
+      return;
+    } //reset lastSelection
+
+    const selectedText = normalize(selection.toString());
+    if (!selectedText) return; //no change to lastSelection
+
+    //Step 1: Throw error if selected text not unique
+    try {
+      this.clearHighlights(shadowRoot);
+      findSelectionInShadow(shadowRoot, selectedText); //throws error if not unique
+      //Step 2: Find best match
+      const dataIdElements = this.getDataIdElements(shadowRoot);
+      // All matches
+      const matches = dataIdElements
+        .map((element) => {
+          const text = normalize(element.textContent || '');
+          return {
+            element,
+            dataId: parseInt(element.getAttribute('data-id') || '0'),
+            text,
+            textLength: text.length,
+          };
+        })
+        .filter((item) => item.text && selectedText.includes(item.text));
+
+      if (matches.length === 0) {
+        throw new Error('No diffs found in selected text.');
+      }
+      console.log(
+        'All matches:',
+        matches.map((m) => `${m.dataId}: "${m.text}"`),
+      );
+
+      // Best match = longest match
+      let bestMatch = matches.reduce((prev, current) => (current.textLength > prev.textLength ? current : prev));
+      console.log(`Initial best match: data-id="${bestMatch.dataId}", text: "${bestMatch.text}" (${bestMatch.textLength} chars)`);
+
+      // Handle short best match
+      if (bestMatch.text.length <= 20) {
+        console.log('Selected text: ', selectedText);
+        const expanded = expandBestMatch(bestMatch.element, selectedText.length, 3);
+        if (!selectedText.includes(expanded)) {
+          console.log('Initial best match was wrong, checking others.');
+          console.log('EXPANDED SHADOWDOM TEXT');
+          console.log(expanded);
+          const sortedMatches = matches.sort((a, b) => b.textLength - a.textLength);
+          let found = false;
+          console.log(sortedMatches);
+          for (const possibleMatch of sortedMatches) {
+            const expanded = expandBestMatch(possibleMatch.element, selectedText.length, 3);
+            console.log('Checking: ', expanded);
+            if (selectedText.includes(expanded)) {
+              bestMatch = possibleMatch;
+              found = true;
+              console.log(`New best match: data-id="${bestMatch.dataId}", text: "${bestMatch.text}" (${bestMatch.textLength} chars)`);
+              console.log('EXPANDED SHADOWDOM TEXT');
+              console.log(expanded);
+              break;
+            }
+          }
+          if (!found) {
+            throw new Error('No expanded matches match the selected text.');
+          }
+        }
+      }
+
+      // Get continuous range of matches
+      const matchedDataIds = new Set(matches.map((m) => m.dataId));
+      let startId = bestMatch.dataId;
+      let endId = bestMatch.dataId;
+
+      // Current best match
+      let finalText = checkRange(shadowRoot, startId, endId);
+
+      // Expand left
+      while (startId > 0) {
+        const includeText = checkRange(shadowRoot, startId - 1, endId);
+        if (includeText) {
+          startId--;
+          finalText = includeText;
+        } else {
+          break;
+        }
+      }
+
+      // Expand right
+      while (true) {
+        const includeText = checkRange(shadowRoot, startId, endId + 1);
+        if (includeText) {
+          endId++;
+          finalText = includeText;
+        } else {
+          break;
+        }
+      }
+
+      // Final range
+      console.log(`Final match between ${startId} and ${endId}:`, finalText);
+
+      // Step 3: Highlight the range
+      let highlightedCount = 0;
+      const elementById = Object.fromEntries(dataIdElements.map((el) => [parseInt(el.getAttribute('data-id') || '0'), el]));
+      for (let id = startId; id <= endId; id++) {
+        if (matchedDataIds.has(id)) {
+          const element = elementById[id];
+          if (element) {
+            element.classList.add('highlight');
+            highlightedCount++;
+          }
+        }
+      }
+      console.log(`Highlighted ${highlightedCount} elements from data-id ${startId} to ${endId}`);
+
+      this.lastSelection = { count: highlightedCount, startId: startId, endId: endId };
+      return;
+    } catch (err) {
+      console.error(err);
+      this.lastSelection = { count: 0, startId: null, endId: null }; //nothing selected
+      return;
     }
 
-    closeAllDetailsExcept(shadowRoot: ShadowRoot, keepOpenEl: HTMLElement) {
-        shadowRoot.querySelectorAll('details').forEach((details) => {
-            if (details !== keepOpenEl.closest('details')) {
-                (details as HTMLDetailsElement).open = false;
-            }
-        });
+    /********************
+     * HELPER FUNCTIONS *
+     ********************/
+
+    //Normalizes a string of text
+    function normalize(text: string): string {
+      return text.replace(/\s+/g, ' ').trim();
     }
 
+    //Extracts text-only from shadow dom
+    function extractShadowText(shadowRoot: ShadowRoot): string {
+      const walker = document.createTreeWalker(shadowRoot, NodeFilter.SHOW_TEXT, null);
+      let text = '';
 
-    public lastSelection: SelectionTypes = { count: 1, startId: null, endId: null };
+      let node: Node | null = walker.nextNode();
+      while (node) {
+        text += node.textContent || '';
+        node = walker.nextNode();
+      }
 
-    highlightSelected(shadowRoot: ShadowRoot): void {
-        //NOTE: window.getSelection() seems limited to text in shadowdom so extra checks needed to match with actual shadowdom elements
-        const selection = window.getSelection();
-        if (!shadowRoot || !selection) { this.lastSelection = { count: 0, startId: null, endId: null }; return }; //reset lastSelection
-
-        const selectedText = normalize(selection.toString());
-        if (!selectedText) return; //no change to lastSelection
-
-        //Step 1: Throw error if selected text not unique
-        try {
-            this.clearHighlights(shadowRoot);
-            findSelectionInShadow(shadowRoot, selectedText); //throws error if not unique
-            //Step 2: Find best match      
-            const dataIdElements = this.getDataIdElements(shadowRoot);
-            // All matches
-            const matches = dataIdElements
-                .map(element => {
-                    const text = normalize(element.textContent || "");
-                    return {
-                        element,
-                        dataId: parseInt(element.getAttribute("data-id") || "0"),
-                        text,
-                        textLength: text.length
-                    };
-                })
-                .filter(item => item.text && selectedText.includes(item.text));
-
-            if (matches.length === 0) {
-                throw new Error("No diffs found in selected text.");
-            }
-            console.log('All matches:', matches.map(m => `${m.dataId}: "${m.text}"`));
-
-            // Best match = longest match
-            let bestMatch = matches.reduce((prev, current) =>
-                current.textLength > prev.textLength ? current : prev
-            );
-            console.log(`Initial best match: data-id="${bestMatch.dataId}", text: "${bestMatch.text}" (${bestMatch.textLength} chars)`);
-
-            // Handle short best match
-            if (bestMatch.text.length <= 20) {
-                console.log("Selected text: ", selectedText);
-                const expanded = expandBestMatch(bestMatch.element, selectedText.length, 3);
-                if (!selectedText.includes(expanded)) {
-                    console.log("Initial best match was wrong, checking others.");
-                    console.log("EXPANDED SHADOWDOM TEXT")
-                    console.log(expanded)
-                    const sortedMatches = matches.sort((a, b) => b.textLength - a.textLength);
-                    let found = false;
-                    console.log(sortedMatches)
-                    for (const possibleMatch of sortedMatches) {
-                        const expanded = expandBestMatch(possibleMatch.element, selectedText.length, 3);
-                        console.log("Checking: ", expanded);
-                        if (selectedText.includes(expanded)) {
-                            bestMatch = possibleMatch;
-                            found = true;
-                            console.log(`New best match: data-id="${bestMatch.dataId}", text: "${bestMatch.text}" (${bestMatch.textLength} chars)`);
-                            console.log("EXPANDED SHADOWDOM TEXT")
-                            console.log(expanded)
-                            break;
-                        }
-                    }
-                    if (!found) { throw new Error("No expanded matches match the selected text."); }
-                }
-            }
-
-            // Get continuous range of matches
-            const matchedDataIds = new Set(matches.map(m => m.dataId));
-            let startId = bestMatch.dataId;
-            let endId = bestMatch.dataId;
-
-            // Current best match
-            let finalText = checkRange(shadowRoot, startId, endId);
-
-            // Expand left
-            while (startId > 0) {
-                const includeText = checkRange(shadowRoot, startId - 1, endId);
-                if (includeText) {
-                    startId--;
-                    finalText = includeText;
-                } else {
-                    break;
-                }
-            }
-
-            // Expand right
-            while (true) {
-                const includeText = checkRange(shadowRoot, startId, endId + 1);
-                if (includeText) {
-                    endId++;
-                    finalText = includeText;
-                } else {
-                    break;
-                }
-            }
-
-            // Final range
-            console.log(`Final match between ${startId} and ${endId}:`, finalText);
-
-            // Step 3: Highlight the range
-            let highlightedCount = 0;
-            const elementById = Object.fromEntries(dataIdElements.map(el => [parseInt(el.getAttribute('data-id') || '0'), el]));
-            for (let id = startId; id <= endId; id++) {
-                if (matchedDataIds.has(id)) {
-                    const element = elementById[id];
-                    if (element) {
-                        element.classList.add('highlight');
-                        highlightedCount++;
-                    }
-                }
-            }
-            console.log(`Highlighted ${highlightedCount} elements from data-id ${startId} to ${endId}`);
-
-            this.lastSelection = { count: highlightedCount, startId: startId, endId: endId };
-            return;
-
-        } catch (err) {
-            console.error(err);
-            this.lastSelection = { count: 0, startId: null, endId: null }; //nothing selected
-            return;
-        }
-
-        /********************
-         * HELPER FUNCTIONS *
-         ********************/
-
-        //Normalizes a string of text
-        function normalize(text: string): string {
-            return text.replace(/\s+/g, " ").trim();
-        }
-
-        //Extracts text-only from shadow dom
-        function extractShadowText(shadowRoot: ShadowRoot): string {
-
-            const walker = document.createTreeWalker(shadowRoot, NodeFilter.SHOW_TEXT, null);
-            let text = "";
-
-            let node: Node | null = walker.nextNode();
-            while (node) {
-                text += node.textContent || "";
-                node = walker.nextNode();
-            }
-
-            return normalize(text);
-        }
-
-        //Checks if selected text is unique in shadow dom
-        function findSelectionInShadow(shadowRoot: ShadowRoot, selectedText: string): number {
-            const shadowText = extractShadowText(shadowRoot);
-
-            if (!selectedText) return -1;
-
-            const idx = shadowText.indexOf(selectedText);
-
-            //No match
-            if (idx === -1) {
-                throw new Error("Selection not found in shadowDOM."); //should never appear
-            }
-            //2nd match
-            const secondIdx = shadowText.indexOf(selectedText, idx + 1);
-            if (secondIdx !== -1) {
-                throw new Error("Selected text is not unique in shadowDOM.");
-            }
-            //Unique match position
-            return idx;
-        }
-
-        function checkRange(root: ParentNode, startId: number, endId: number): string | null {
-            const startEl = root.querySelector(`[data-id="${startId}"]`);
-            const endEl = root.querySelector(`[data-id="${endId}"]`);
-
-            if (!startEl || !endEl) {
-                return null;
-            }
-
-            // Create a range of text from start element to end element
-            const range = document.createRange();
-            range.setStartBefore(startEl);
-            range.setEndAfter(endEl);
-            const rangeText = normalize(range.toString());
-
-            // Check if range is in the selected text
-            return selectedText.includes(rangeText) ? rangeText : null;
-        }
-
-        //Include text on either side of match to confirm accuracy
-        function expandBestMatch(element: HTMLElement, maxLength: number, chars = 5): string {
-            let text = normalize(element.textContent || "");
-            // If already longer than maxLength, just trim
-            if (text.length >= maxLength) return text.slice(0, maxLength);
-
-            // Expand backwards into previous text
-            let remaining = Math.min(chars, maxLength - text.length);
-            let prevNode: Node | null = element.previousSibling;
-            while (remaining > 0 && prevNode) {
-                if (prevNode.nodeType === Node.TEXT_NODE) {
-                    const slice = prevNode.textContent?.slice(-remaining) || "";
-                    text = joinStrings(slice, text);
-                    remaining -= slice.length;
-                }
-                prevNode = prevNode.previousSibling;
-            }
-
-            // Expand forwards into next text
-            remaining = Math.min(chars, maxLength - text.length);
-            let nextNode: Node | null = element.nextSibling;
-            while (remaining > 0 && nextNode) {
-                if (nextNode.nodeType === Node.TEXT_NODE) {
-                    const slice = nextNode.textContent?.slice(0, remaining) || "";
-                    text = joinStrings(text, slice);
-                    remaining -= slice.length;
-                }
-                nextNode = nextNode.nextSibling;
-            }
-
-            // Confirm final length is less than selection
-            if (text.length > maxLength) {
-                text = text.slice(0, maxLength);
-            }
-
-            return normalize(text);
-        }
-
-        function joinStrings(left: string, right: string): string {
-            if (!left) return right;
-            if (!right) return left;
-
-            const l = left[left.length - 1]; //last char
-            const r = right[0]; //first char
-
-            if (/\s/.test(l) || /\s/.test(r) || /[.,!?;:)]/.test(r)) {
-                return left + right;
-            }
-            return left + " " + right;
-        }
-
+      return normalize(text);
     }
+
+    //Checks if selected text is unique in shadow dom
+    function findSelectionInShadow(shadowRoot: ShadowRoot, selectedText: string): number {
+      const shadowText = extractShadowText(shadowRoot);
+
+      if (!selectedText) return -1;
+
+      const idx = shadowText.indexOf(selectedText);
+
+      //No match
+      if (idx === -1) {
+        throw new Error('Selection not found in shadowDOM.'); //should never appear
+      }
+      //2nd match
+      const secondIdx = shadowText.indexOf(selectedText, idx + 1);
+      if (secondIdx !== -1) {
+        throw new Error('Selected text is not unique in shadowDOM.');
+      }
+      //Unique match position
+      return idx;
+    }
+
+    function checkRange(root: ParentNode, startId: number, endId: number): string | null {
+      const startEl = root.querySelector(`[data-id="${startId}"]`);
+      const endEl = root.querySelector(`[data-id="${endId}"]`);
+
+      if (!startEl || !endEl) {
+        return null;
+      }
+
+      // Create a range of text from start element to end element
+      const range = document.createRange();
+      range.setStartBefore(startEl);
+      range.setEndAfter(endEl);
+      const rangeText = normalize(range.toString());
+
+      // Check if range is in the selected text
+      return selectedText.includes(rangeText) ? rangeText : null;
+    }
+
+    //Include text on either side of match to confirm accuracy
+    function expandBestMatch(element: HTMLElement, maxLength: number, chars = 5): string {
+      let text = normalize(element.textContent || '');
+      // If already longer than maxLength, just trim
+      if (text.length >= maxLength) return text.slice(0, maxLength);
+
+      // Expand backwards into previous text
+      let remaining = Math.min(chars, maxLength - text.length);
+      let prevNode: Node | null = element.previousSibling;
+      while (remaining > 0 && prevNode) {
+        if (prevNode.nodeType === Node.TEXT_NODE) {
+          const slice = prevNode.textContent?.slice(-remaining) || '';
+          text = joinStrings(slice, text);
+          remaining -= slice.length;
+        }
+        prevNode = prevNode.previousSibling;
+      }
+
+      // Expand forwards into next text
+      remaining = Math.min(chars, maxLength - text.length);
+      let nextNode: Node | null = element.nextSibling;
+      while (remaining > 0 && nextNode) {
+        if (nextNode.nodeType === Node.TEXT_NODE) {
+          const slice = nextNode.textContent?.slice(0, remaining) || '';
+          text = joinStrings(text, slice);
+          remaining -= slice.length;
+        }
+        nextNode = nextNode.nextSibling;
+      }
+
+      // Confirm final length is less than selection
+      if (text.length > maxLength) {
+        text = text.slice(0, maxLength);
+      }
+
+      return normalize(text);
+    }
+
+    function joinStrings(left: string, right: string): string {
+      if (!left) return right;
+      if (!right) return left;
+
+      const l = left[left.length - 1]; //last char
+      const r = right[0]; //first char
+
+      if (/\s/.test(l) || /\s/.test(r) || /[.,!?;:)]/.test(r)) {
+        return left + right;
+      }
+      return left + ' ' + right;
+    }
+  }
 }
