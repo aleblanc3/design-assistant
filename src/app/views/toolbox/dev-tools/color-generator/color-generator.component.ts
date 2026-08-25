@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
@@ -18,6 +19,10 @@ import { CopyPresetComponent } from './copy-preset.component';
 
 import { UserSettingsService } from '../../../../services/user-settings.service';
 
+/**
+ * Reviewed: 2026-08-25 (ng21)
+ * Playground for tuning per-scheme accent colors and exporting a PrimeNG preset.
+ */
 @Component({
   selector: 'aida-color-generator',
   standalone: true,
@@ -34,33 +39,33 @@ import { UserSettingsService } from '../../../../services/user-settings.service'
     ColorPickerComponent,
     CopyPresetComponent,
     UserSettingsComponent,
+    CommonModule,
   ],
   templateUrl: './color-generator.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ColorGeneratorComponent {
   private readonly primeNGConfig = inject(PrimeNG);
-  public settingsService = inject(UserSettingsService);
-  customShades: Record<string, Record<number, string>> = {};
+  protected readonly settingsService = inject(UserSettingsService);
 
-  breadcrumbs = [{ label: 'dev._title', route: '/dev' }, { label: 'dev.colors._title' }];
+  protected readonly customShades = signal<Record<string, Record<number, string>>>({});
 
-  onColorChange(event: { hex: string; shades: Record<number, string> }, color: 'primary' | 'red' | 'green' | 'purple') {
-    this.customShades[color] = event.shades;
+  protected readonly breadcrumbs = [{ label: 'dev._title', route: '/dev' }, { label: 'dev.colors._title' }];
+
+  protected onColorChange(event: { hex: string; shades: Record<number, string> }, color: 'primary' | 'red' | 'green' | 'purple') {
+    this.customShades.update((current) => ({ ...current, [color]: event.shades }));
     this.updateTheme();
   }
-  onInfoColorChange(event: { hex: string; shades: Record<number, string> }) {
-    this.customShades['sky'] = event.shades;
-    this.customShades['blue'] = event.shades;
+  protected onInfoColorChange(event: { hex: string; shades: Record<number, string> }) {
+    this.customShades.update((current) => ({ ...current, sky: event.shades, blue: event.shades }));
     this.updateTheme();
   }
-  onWarnColorChange(event: { hex: string; shades: Record<number, string> }) {
-    this.customShades['orange'] = event.shades;
-    this.customShades['yellow'] = event.shades;
+  protected onWarnColorChange(event: { hex: string; shades: Record<number, string> }) {
+    this.customShades.update((current) => ({ ...current, orange: event.shades, yellow: event.shades }));
     this.updateTheme();
   }
 
-  updateTheme() {
+  private updateTheme() {
     const scheme = this.settingsService.colorScheme();
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -84,12 +89,13 @@ export class ColorGeneratorComponent {
 
     presetPromise.then((module) => {
       const basePreset = module.default;
+      const shades = this.customShades();
       const customPreset = {
         ...basePreset,
-        primitive: { ...basePreset.primitive, ...this.customShades },
+        primitive: { ...basePreset.primitive, ...shades },
         semantic: {
           ...basePreset.semantic,
-          ...(this.customShades['primary'] ? { primary: this.customShades['primary'] } : {}),
+          ...(shades['primary'] ? { primary: shades['primary'] } : {}),
         },
       };
       this.primeNGConfig.theme.set({

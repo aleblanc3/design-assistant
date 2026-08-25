@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, effect, inject, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
@@ -35,7 +35,7 @@ export class SetupRepoComponent implements OnInit {
 
   defaultOrg = environment.defaultOrg;
 
-  @Input() mode: RepoMode = 'default';
+  public readonly mode = input<RepoMode>('default');
 
   //Local or GitHub content repository
   get projectRepo(): 'local' | 'github' {

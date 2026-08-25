@@ -46,7 +46,7 @@
                   { shade: 400, textColor: '#000000E6', textColorName: 'Black', requiredRatio: 4.5 },
                   { shade: 500, textColor: '#ffffff', textColorName: 'White', requiredRatio: 4.5 },
                 ]"
-                [externalShades]="customShades['primary']"
+                [externalShades]="customShades()['primary']"
                 [key]="settingsService.colorScheme() + '-primary'"
                 (colorChanged)="onColorChange($event, 'primary')"
                 initialColor="bg-primary-500"
@@ -74,7 +74,7 @@
                   { shade: 400, textColor: '#000000E6', textColorName: 'Black', requiredRatio: 4.5 },
                   { shade: 500, textColor: '#ffffff', textColorName: 'White', requiredRatio: 4.5 },
                 ]"
-                [externalShades]="customShades['green']"
+                [externalShades]="customShades()['green']"
                 [key]="settingsService.colorScheme() + '-success'"
                 (colorChanged)="onColorChange($event, 'green')"
                 initialColor="bg-green-500"
@@ -111,7 +111,7 @@
                   { shade: 400, textColor: '#000000E6', textColorName: 'Black', requiredRatio: 4.5 },
                   { shade: 500, textColor: '#ffffff', textColorName: 'White', requiredRatio: 4.5 },
                 ]"
-                [externalShades]="customShades['red']"
+                [externalShades]="customShades()['red']"
                 [key]="settingsService.colorScheme() + '-danger'"
                 (colorChanged)="onColorChange($event, 'red')"
                 initialColor="bg-red-500"
@@ -139,7 +139,7 @@
                   { shade: 400, textColor: '#000000E6', textColorName: 'Black', requiredRatio: 4.5 },
                   { shade: 500, textColor: '#ffffff', textColorName: 'White', requiredRatio: 4.5 },
                 ]"
-                [externalShades]="customShades['orange']"
+                [externalShades]="customShades()['orange']"
                 [key]="settingsService.colorScheme() + '-warn'"
                 (colorChanged)="onWarnColorChange($event)"
                 initialColor="bg-orange-500"
@@ -176,7 +176,7 @@
                   { shade: 400, textColor: '#000000E6', textColorName: 'Black', requiredRatio: 4.5 },
                   { shade: 500, textColor: '#ffffff', textColorName: 'White', requiredRatio: 4.5 },
                 ]"
-                [externalShades]="customShades['blue']"
+                [externalShades]="customShades()['blue']"
                 [key]="settingsService.colorScheme() + '-info'"
                 (colorChanged)="onInfoColorChange($event)"
                 initialColor="bg-blue-500"
@@ -202,7 +202,7 @@
                   { shade: 400, textColor: '#000000E6', textColorName: 'Black', requiredRatio: 4.5 },
                   { shade: 500, textColor: '#ffffff', textColorName: 'White', requiredRatio: 4.5 },
                 ]"
-                [externalShades]="customShades['purple']"
+                [externalShades]="customShades()['purple']"
                 [key]="settingsService.colorScheme() + '-help'"
                 (colorChanged)="onColorChange($event, 'purple')"
                 initialColor="bg-purple-500"
@@ -391,7 +391,7 @@
             { shade: 400, textColor: '#000000E6', textColorName: 'Black', requiredRatio: 4.5 },
             { shade: 500, textColor: '#ffffff', textColorName: 'White', requiredRatio: 4.5 },
           ]"
-          [externalShades]="customShades['primary']"
+          [externalShades]="customShades()['primary']"
           [key]="settingsService.colorScheme() + '-primary'"
           (colorChanged)="onColorChange($event, 'primary')"
           initialColor=" bg-primary-500"
@@ -404,7 +404,7 @@
             { shade: 400, textColor: '#000000E6', textColorName: 'Black', requiredRatio: 4.5 },
             { shade: 500, textColor: '#ffffff', textColorName: 'White', requiredRatio: 4.5 },
           ]"
-          [externalShades]="customShades['green']"
+          [externalShades]="customShades()['green']"
           [key]="settingsService.colorScheme() + '-success'"
           (colorChanged)="onColorChange($event, 'green')"
           initialColor="bg-green-500"
@@ -417,7 +417,7 @@
             { shade: 400, textColor: '#000000E6', textColorName: 'Black', requiredRatio: 4.5 },
             { shade: 500, textColor: '#ffffff', textColorName: 'White', requiredRatio: 4.5 },
           ]"
-          [externalShades]="customShades['red']"
+          [externalShades]="customShades()['red']"
           [key]="settingsService.colorScheme() + '-danger'"
           (colorChanged)="onColorChange($event, 'red')"
           initialColor="bg-red-500"
@@ -430,7 +430,7 @@
             { shade: 400, textColor: '#000000E6', textColorName: 'Black', requiredRatio: 4.5 },
             { shade: 500, textColor: '#ffffff', textColorName: 'White', requiredRatio: 4.5 },
           ]"
-          [externalShades]="customShades['orange']"
+          [externalShades]="customShades()['orange']"
           [key]="settingsService.colorScheme() + '-warn'"
           (colorChanged)="onWarnColorChange($event)"
           initialColor="bg-orange-500"
@@ -443,7 +443,7 @@
             { shade: 400, textColor: '#000000E6', textColorName: 'Black', requiredRatio: 4.5 },
             { shade: 500, textColor: '#ffffff', textColorName: 'White', requiredRatio: 4.5 },
           ]"
-          [externalShades]="customShades['blue']"
+          [externalShades]="customShades()['blue']"
           [key]="settingsService.colorScheme() + '-info'"
           (colorChanged)="onInfoColorChange($event)"
           initialColor="bg-blue-500"
@@ -456,7 +456,7 @@
             { shade: 400, textColor: '#000000E6', textColorName: 'Black', requiredRatio: 4.5 },
             { shade: 500, textColor: '#ffffff', textColorName: 'White', requiredRatio: 4.5 },
           ]"
-          [externalShades]="customShades['purple']"
+          [externalShades]="customShades()['purple']"
           [key]="settingsService.colorScheme() + '-help'"
           (colorChanged)="onColorChange($event, 'purple')"
           initialColor="bg-purple-500"
@@ -466,125 +466,52 @@
     <div class="grid">
       <div class="col-12 md:col-6">
         <h4 class="text-sm">Primary</h4>
-        <div class="flex gap-1 mb-3">
-          <div class="flex-1 h-3rem bg-primary-50 border-round"></div>
-          <div class="flex-1 h-3rem bg-primary-100 border-round"></div>
-          <div class="flex-1 h-3rem bg-primary-200 border-round"></div>
-          <div class="flex-1 h-3rem bg-primary-300 border-round"></div>
-          <div class="flex-1 h-3rem bg-primary-400 border-round"></div>
-          <div class="flex-1 h-3rem bg-primary-500 border-round"></div>
-          <div class="flex-1 h-3rem bg-primary-600 border-round"></div>
-          <div class="flex-1 h-3rem bg-primary-700 border-round"></div>
-          <div class="flex-1 h-3rem bg-primary-800 border-round"></div>
-          <div class="flex-1 h-3rem bg-primary-900 border-round"></div>
-        </div>
+        <ng-container *ngTemplateOutlet="shades; context: { shade: 'bg-primary', reverse: false }" />
       </div>
       <div class="col-12 md:col-6">
         <h4 class="text-sm">Green (success)</h4>
-        <div class="flex gap-1 mb-3">
-          <div class="flex-1 h-3rem bg-green-50 border-round"></div>
-          <div class="flex-1 h-3rem bg-green-100 border-round"></div>
-          <div class="flex-1 h-3rem bg-green-200 border-round"></div>
-          <div class="flex-1 h-3rem bg-green-300 border-round"></div>
-          <div class="flex-1 h-3rem bg-green-400 border-round"></div>
-          <div class="flex-1 h-3rem bg-green-500 border-round"></div>
-          <div class="flex-1 h-3rem bg-green-600 border-round"></div>
-          <div class="flex-1 h-3rem bg-green-700 border-round"></div>
-          <div class="flex-1 h-3rem bg-green-800 border-round"></div>
-          <div class="flex-1 h-3rem bg-green-900 border-round"></div>
-        </div>
+        <ng-container *ngTemplateOutlet="shades; context: { shade: 'bg-green', reverse: false }" />
       </div>
       <div class="col-12 md:col-6">
         <h4 class="text-sm">Red (danger)</h4>
-        <div class="flex gap-1 mb-3">
-          <div class="flex-1 h-3rem bg-red-50 border-round"></div>
-          <div class="flex-1 h-3rem bg-red-100 border-round"></div>
-          <div class="flex-1 h-3rem bg-red-200 border-round"></div>
-          <div class="flex-1 h-3rem bg-red-300 border-round"></div>
-          <div class="flex-1 h-3rem bg-red-400 border-round"></div>
-          <div class="flex-1 h-3rem bg-red-500 border-round"></div>
-          <div class="flex-1 h-3rem bg-red-600 border-round"></div>
-          <div class="flex-1 h-3rem bg-red-700 border-round"></div>
-          <div class="flex-1 h-3rem bg-red-800 border-round"></div>
-          <div class="flex-1 h-3rem bg-red-900 border-round"></div>
-        </div>
+        <ng-container *ngTemplateOutlet="shades; context: { shade: 'bg-red', reverse: false }" />
       </div>
       <div class="col-12 md:col-6">
         <h4 class="text-sm">Orange (warn)</h4>
-        <div class="flex gap-1 mb-3">
-          <div class="flex-1 h-3rem bg-orange-50 border-round"></div>
-          <div class="flex-1 h-3rem bg-orange-100 border-round"></div>
-          <div class="flex-1 h-3rem bg-orange-200 border-round"></div>
-          <div class="flex-1 h-3rem bg-orange-300 border-round"></div>
-          <div class="flex-1 h-3rem bg-orange-400 border-round"></div>
-          <div class="flex-1 h-3rem bg-orange-500 border-round"></div>
-          <div class="flex-1 h-3rem bg-orange-600 border-round"></div>
-          <div class="flex-1 h-3rem bg-orange-700 border-round"></div>
-          <div class="flex-1 h-3rem bg-orange-800 border-round"></div>
-          <div class="flex-1 h-3rem bg-orange-900 border-round"></div>
-        </div>
+        <ng-container *ngTemplateOutlet="shades; context: { shade: 'bg-orange', reverse: false }" />
       </div>
       <div class="col-12 md:col-6">
         <h4 class="text-sm">Blue (info)</h4>
-        <div class="flex gap-1 mb-3">
-          <div class="flex-1 h-3rem bg-blue-50 border-round"></div>
-          <div class="flex-1 h-3rem bg-blue-100 border-round"></div>
-          <div class="flex-1 h-3rem bg-blue-200 border-round"></div>
-          <div class="flex-1 h-3rem bg-blue-300 border-round"></div>
-          <div class="flex-1 h-3rem bg-blue-400 border-round"></div>
-          <div class="flex-1 h-3rem bg-blue-500 border-round"></div>
-          <div class="flex-1 h-3rem bg-blue-600 border-round"></div>
-          <div class="flex-1 h-3rem bg-blue-700 border-round"></div>
-          <div class="flex-1 h-3rem bg-blue-800 border-round"></div>
-          <div class="flex-1 h-3rem bg-blue-900 border-round"></div>
-        </div>
+        <ng-container *ngTemplateOutlet="shades; context: { shade: 'bg-blue', reverse: false }" />
       </div>
       <div class="col-12 md:col-6">
         <h4 class="text-sm">Purple (help)</h4>
-        <div class="flex gap-1 mb-3">
-          <div class="flex-1 h-3rem bg-purple-50 border-round"></div>
-          <div class="flex-1 h-3rem bg-purple-100 border-round"></div>
-          <div class="flex-1 h-3rem bg-purple-200 border-round"></div>
-          <div class="flex-1 h-3rem bg-purple-300 border-round"></div>
-          <div class="flex-1 h-3rem bg-purple-400 border-round"></div>
-          <div class="flex-1 h-3rem bg-purple-500 border-round"></div>
-          <div class="flex-1 h-3rem bg-purple-600 border-round"></div>
-          <div class="flex-1 h-3rem bg-purple-700 border-round"></div>
-          <div class="flex-1 h-3rem bg-purple-800 border-round"></div>
-          <div class="flex-1 h-3rem bg-purple-900 border-round"></div>
-        </div>
+        <ng-container *ngTemplateOutlet="shades; context: { shade: 'bg-purple', reverse: false }" />
       </div>
       <div class="col-12 md:col-6">
         <h4 class="text-sm">Surface (secondary)</h4>
-        <div class="flex gap-1 mb-3">
-          <div class="flex-1 h-3rem surface-50 border-round"></div>
-          <div class="flex-1 h-3rem surface-100 border-round"></div>
-          <div class="flex-1 h-3rem surface-200 border-round"></div>
-          <div class="flex-1 h-3rem surface-300 border-round"></div>
-          <div class="flex-1 h-3rem surface-400 border-round"></div>
-          <div class="flex-1 h-3rem surface-500 border-round"></div>
-          <div class="flex-1 h-3rem surface-600 border-round"></div>
-          <div class="flex-1 h-3rem surface-700 border-round"></div>
-          <div class="flex-1 h-3rem surface-800 border-round"></div>
-          <div class="flex-1 h-3rem surface-900 border-round"></div>
-        </div>
+        <ng-container *ngTemplateOutlet="shades; context: { shade: 'surface', reverse: false }" />
       </div>
       <div class="col-12 md:col-6">
         <h4 class="text-sm">Surface (contrast)</h4>
-        <div class="flex gap-1 mb-3">
-          <div class="flex-1 h-3rem surface-900 border-round"></div>
-          <div class="flex-1 h-3rem surface-800 border-round"></div>
-          <div class="flex-1 h-3rem surface-700 border-round"></div>
-          <div class="flex-1 h-3rem surface-600 border-round"></div>
-          <div class="flex-1 h-3rem surface-500 border-round"></div>
-          <div class="flex-1 h-3rem surface-400 border-round"></div>
-          <div class="flex-1 h-3rem surface-300 border-round"></div>
-          <div class="flex-1 h-3rem surface-200 border-round"></div>
-          <div class="flex-1 h-3rem surface-100 border-round"></div>
-          <div class="flex-1 h-3rem surface-50 border-round"></div>
-        </div>
+        <ng-container *ngTemplateOutlet="shades; context: { shade: 'surface', reverse: true }" />
       </div>
     </div>
   </div>
-  <aida-copy-preset [customShades]="customShades" />
+  <aida-copy-preset [customShades]="customShades()" />
 </div>
+
+<ng-template #shades let-reverse="reverse" let-shade="shade">
+  <div [class.flex-row-reverse]="reverse" class="flex gap-1 mb-3">
+    <div [class]="'flex-1 h-3rem ' + shade + '-50 border-round'"></div>
+    <div [class]="'flex-1 h-3rem ' + shade + '-100 border-round'"></div>
+    <div [class]="'flex-1 h-3rem ' + shade + '-200 border-round'"></div>
+    <div [class]="'flex-1 h-3rem ' + shade + '-300 border-round'"></div>
+    <div [class]="'flex-1 h-3rem ' + shade + '-400 border-round'"></div>
+    <div [class]="'flex-1 h-3rem ' + shade + '-500 border-round'"></div>
+    <div [class]="'flex-1 h-3rem ' + shade + '-600 border-round'"></div>
+    <div [class]="'flex-1 h-3rem ' + shade + '-700 border-round'"></div>
+    <div [class]="'flex-1 h-3rem ' + shade + '-800 border-round'"></div>
+    <div [class]="'flex-1 h-3rem ' + shade + '-900 border-round'"></div>
+  </div>
+</ng-template>

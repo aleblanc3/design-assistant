@@ -65,7 +65,7 @@
         {{ 'project.repo.local.message' | translate }}
       </p-message>
     }
-    @if (mode === 'baseline') {
+    @if (mode() === 'baseline') {
       <div class="flex align-items-center gap-2 mt-1">
         <p-checkbox [(ngModel)]="gitHubBaseline" [binary]="true" [disabled]="!gitHubRepo" inputId="baseline" size="large" />
         <label class="text-lg" for="baseline">{{ 'project.github.label.baseline' | translate }}</label>

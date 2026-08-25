@@ -1,11 +1,10 @@
-import { LocationStrategy } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { TranslateService } from '@ngx-translate/core';
 
 import { MenuItem, TreeDragDropService, TreeNode } from 'primeng/api';
-import { ContextMenu, ContextMenuModule } from 'primeng/contextmenu';
+import { ContextMenuModule } from 'primeng/contextmenu';
 import { DialogModule } from 'primeng/dialog';
 import { TreeModule, TreeNodeContextMenuSelectEvent, TreeNodeDropEvent } from 'primeng/tree';
 
@@ -59,7 +58,6 @@ export class IaTableComponent implements OnInit {
   }
 
   //Context menu
-  @ViewChild('cm') cm!: ContextMenu;
   protected options: MenuItem[] = []; //options for editing nodes
 
   //RIGHT & LEFT CLICK ACTIONS

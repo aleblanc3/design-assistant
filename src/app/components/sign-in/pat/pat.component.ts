@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { TranslatePipe } from '@ngx-translate/core';
@@ -20,25 +20,16 @@ import { environment } from '../../../../environments/environment';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PatComponent {
-  public exportGitHubService = inject(ExportGitHubService);
+  private readonly exportGitHubService = inject(ExportGitHubService);
 
-  @Input() validateOnBlur = false;
-
-  get pat(): string {
+  protected get pat(): string {
     return this.exportGitHubService.pat;
   }
 
-  set pat(value: string) {
+  protected set pat(value: string) {
     this.exportGitHubService.pat = value;
   }
 
-  showHelp = false;
-  defaultOrg = environment.defaultOrg;
-
-  async onPatBlur() {
-    console.log('RUNNING BLUR');
-    if (this.validateOnBlur) {
-      //await this.exportGitHubService.validatePAT();
-    }
-  }
+  protected showHelp = false;
+  protected readonly defaultOrg = environment.defaultOrg;
 }

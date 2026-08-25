@@ -31,14 +31,15 @@ module.exports = tseslint.config(
       '@typescript-eslint/prefer-includes': 'warn', // indexOf() !== -1 → includes()
       '@typescript-eslint/prefer-string-starts-ends-with': 'warn', // indexOf() === 0 → startsWith()
       '@typescript-eslint/no-unused-expressions': 'warn', // catches this.function instead of this.function()
+      //'@typescript-eslint/no-unnecessary-condition': 'warn', // catches conditions that are always truthy/falsey (very noisy and needs manual review to ensure data actually matches interface, leave off unless in cleanup mode)
 
       // Angular modern patterns
       '@angular-eslint/prefer-standalone': 'warn', // Encourage standalone components
       '@angular-eslint/prefer-on-push-component-change-detection': 'warn', // Performance boost
 
       // Signals (v20 prep)
-      '@angular-eslint/prefer-signals': 'warn', // flags @Input/@ViewChild/@ContentChild with signal alternatives
-      '@angular-eslint/no-uncalled-signals': 'warn', // catches `if (mySignal)` instead of `if (mySignal())`
+      '@angular-eslint/prefer-signals': 'error', // flags @Input/@ViewChild/@ContentChild with signal alternatives
+      '@angular-eslint/no-uncalled-signals': 'error', // catches `if (mySignal)` instead of `if (mySignal())`
     },
   },
   {

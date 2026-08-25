@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
@@ -286,9 +286,10 @@ export class PromptEditorComponent {
   }
 
   // Update prompts diff
-  @ViewChild('diffContainer') diffContainer?: ElementRef<HTMLElement>;
+  protected readonly diffContainer = viewChild<ElementRef<HTMLElement>>('diffContainer');
   async updateDiff() {
-    if (!this.diffContainer) return;
+    const diffContainer = this.diffContainer();
+    if (!diffContainer) return;
     const prompts = this.tabs[this.selectedTab].prompts;
     if (!prompts) return;
     // Lazy load both modules
@@ -309,16 +310,17 @@ export class PromptEditorComponent {
       colorScheme: this.settingsService.darkMode() ? ColorSchemeType.DARK : ColorSchemeType.LIGHT,
     };
 
-    const diff2htmlUi = new Diff2HtmlUI(this.diffContainer.nativeElement, patch, config);
+    const diff2htmlUi = new Diff2HtmlUI(diffContainer.nativeElement, patch, config);
 
     diff2htmlUi.draw();
     this.highlightFilePreview();
   }
 
   // Highlight code for export preview
-  @ViewChild('filePreview') filePreview?: ElementRef<HTMLPreElement>;
+  protected readonly filePreview = viewChild<ElementRef<HTMLPreElement>>('filePreview');
   async highlightFilePreview(): Promise<void> {
-    if (!this.filePreview) return;
+    const filePreview = this.filePreview();
+    if (!filePreview) return;
     const prompts = this.tabs[this.selectedTab].prompts;
     if (!prompts) return;
 
@@ -328,7 +330,7 @@ export class PromptEditorComponent {
 
       this.loadPrismTheme(this.settingsService.darkMode());
 
-      const pre = this.filePreview.nativeElement;
+      const pre = filePreview.nativeElement;
       const codeBlock = pre.querySelector('code');
 
       if (codeBlock) {

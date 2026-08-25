@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
@@ -97,8 +97,8 @@ export class InventoryComponent implements OnInit {
     });
   }
 
-  @ViewChild('dt') dt!: Table;
-  @ViewChild('menuContext') menuContext!: ContextMenu;
+  protected readonly dt = viewChild.required<Table>('dt');
+  protected readonly menuContext = viewChild.required<ContextMenu>('menuContext');
 
   // Variables
   private readonly allColumns = computed(() => this.projectState.treeTableColumns()); // All table columns
@@ -456,7 +456,7 @@ export class InventoryComponent implements OnInit {
       this.sortOrder.set(1);
       this.lastSortField = null;
       this.lastSortOrder = null;
-      this.dt.reset();
+      this.dt().reset();
     } else {
       this.sortField.set(event.field ?? null);
       this.sortOrder.set(event.order ?? 1);
@@ -1023,7 +1023,7 @@ export class InventoryComponent implements OnInit {
         break;
       }
     }
-    this.menuContext.show(event);
+    this.menuContext().show(event);
   }
 
   // Highlights cells with context menu or inline editing (on right click or long press)

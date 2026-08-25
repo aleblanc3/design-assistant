@@ -76,6 +76,10 @@ export class CompareAiOptionsComponent {
     }));
   }
 
+  protected toggleAiDrawer(): void {
+    this.compareService.aiDrawerVisible.update((v) => !v);
+  }
+
   markForTranslation() {
     marker('compare.aiOptions.comparison.help');
   }

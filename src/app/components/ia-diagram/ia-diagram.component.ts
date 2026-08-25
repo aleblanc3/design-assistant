@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -87,7 +87,7 @@ export class IaDiagramComponent {
   private readonly selectedTree = signal<'full' | string>('full');
 
   //Menu options
-  @ViewChild('menu') menu!: Menu;
+  protected readonly menu = viewChild.required<Menu>('menu');
   protected items: MenuItem[] = [];
 
   protected editNode = false;
@@ -280,7 +280,7 @@ export class IaDiagramComponent {
       });
     }
 
-    this.menu.toggle(event);
+    this.menu().toggle(event);
   }
 
   // Show/hide pages or children

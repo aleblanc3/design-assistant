@@ -177,4 +177,8 @@ export class CompareToolsComponent {
       this.compareService.loadingAll.set(false);
     }
   }
+
+  protected toggleAiDrawer(): void {
+    this.compareService.aiDrawerVisible.update((v) => !v);
+  }
 }
