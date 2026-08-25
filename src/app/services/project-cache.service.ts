@@ -11,22 +11,22 @@ import { SourceVersion } from '../common/data.model';
  */
 @Injectable({ providedIn: 'root' })
 export class ProjectCacheService {
-  private projectState = inject(ProjectStateService);
-  private fetchService = inject(FetchService);
-  private settingsService = inject(UserSettingsService);
+  private readonly projectState = inject(ProjectStateService);
+  private readonly fetchService = inject(FetchService);
+  private readonly settingsService = inject(UserSettingsService);
 
   // Track availability of local and github versions (for managing UI state)
 
   /** Signal will be true if prototype github repo exists (updatable via effect) */
-  public hasGitHub = signal<boolean>(false);
+  public readonly hasGitHub = signal<boolean>(false);
   /** Signal will be true if baseline github repo exists (updatable via effect) */
-  public hasGitHubBL = signal<boolean>(false);
+  public readonly hasGitHubBL = signal<boolean>(false);
   /** Signal will be true if local index page is fetchable (updatable via user action only) */
-  public hasLocal = signal<boolean | null>(null);
+  public readonly hasLocal = signal<boolean | null>(null);
   /** Signal will be true if local baseline index page is fetchable (updatable via user action only) */
-  public hasLocalBL = signal<boolean | null>(null);
+  public readonly hasLocalBL = signal<boolean | null>(null);
   /** Signal will be true if AEM preview is fetchable (updatable via user action only) */
-  public hasPreview = signal<boolean | null>(null);
+  public readonly hasPreview = signal<boolean | null>(null);
 
   private localCheckInProgress = false;
   private previewCheckInProgress = false;
@@ -35,22 +35,22 @@ export class ProjectCacheService {
   // Track user choices on select buttons (for managing UI state)
 
   /** Signal defaults to project language if 'both' is not a valid option */
-  public selectedLang = signal<'en' | 'fr' | 'both'>(this.projectState.detectPrimaryLanguage());
+  public readonly selectedLang = signal<'en' | 'fr' | 'both'>(this.projectState.detectPrimaryLanguage());
 
   /** Signal can be used to display all project pages or just the inScope pages */
-  public selectedScope = signal<'inScope' | 'all'>('inScope');
+  public readonly selectedScope = signal<'inScope' | 'all'>('inScope');
 
   /** Signal can be used to access specific versions stored in AIDA. Defaults to prototype. */
-  public selectedVersion = signal<'prototype' | 'live' | 'baseline'>('prototype');
+  public readonly selectedVersion = signal<'prototype' | 'live' | 'baseline'>('prototype');
 
   /** Signal can be used to access specific versions stored outside of AIDA. Defaults to live. */
-  public selectedSource = signal<SourceVersion>('live');
+  public readonly selectedSource = signal<SourceVersion>('live');
 
   /** Signal for the IA diagram view. Defaults to changes. */
-  public selectedViewIA = signal<'baseline' | 'changes' | 'final'>('changes');
+  public readonly selectedViewIA = signal<'baseline' | 'changes' | 'final'>('changes');
 
   /** Signal for the view URLs drawer. Defaults to url. */
-  public selectedDisplay = signal<'url' | 'title'>('url');
+  public readonly selectedDisplay = signal<'url' | 'title'>('url');
 
   constructor() {
     effect(() => {

@@ -31,7 +31,21 @@ export type CollaboratorMode = 'list' | 'dashboard' | 'switch';
  */
 @Component({
   selector: 'aida-add-collaborators',
-  imports: [CommonModule, FormsModule, TranslatePipe, AutoCompleteModule, AvatarGroupModule, AvatarModule, ButtonModule, ConfirmDialogModule, DialogModule, IftaLabelModule, KeyFilterModule, MessageModule, TooltipModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    TranslatePipe,
+    AutoCompleteModule,
+    AvatarGroupModule,
+    AvatarModule,
+    ButtonModule,
+    ConfirmDialogModule,
+    DialogModule,
+    IftaLabelModule,
+    KeyFilterModule,
+    MessageModule,
+    TooltipModule,
+  ],
   templateUrl: './add-collaborators.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

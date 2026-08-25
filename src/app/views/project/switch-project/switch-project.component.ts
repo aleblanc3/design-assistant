@@ -56,26 +56,26 @@ import { ProjectMetadata, ProjectPhase } from '../../../common/data.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SwitchProjectComponent implements OnInit {
-  private translate = inject(TranslateService);
-  private projectState = inject(ProjectStateService);
-  public projectStorageService = inject(ProjectStorageService);
-  public authService = inject(GitHubAuthService);
-  private cloudStorageService = inject(CloudStorageService);
-  public collaboratorService = inject(CollaboratorService);
+  private readonly translate = inject(TranslateService);
+  private readonly projectState = inject(ProjectStateService);
+  protected readonly projectStorageService = inject(ProjectStorageService);
+  protected readonly authService = inject(GitHubAuthService);
+  private readonly cloudStorageService = inject(CloudStorageService);
+  protected readonly collaboratorService = inject(CollaboratorService);
 
-  public router = inject(Router);
-  public message = inject(MessageService);
-  public filterService = inject(FilterService);
+  private readonly router = inject(Router);
+  private readonly message = inject(MessageService);
+  private readonly filterService = inject(FilterService);
 
   // Project list signal
-  allProjects = signal<ProjectMetadata[]>([]);
+  private readonly allProjects = signal<ProjectMetadata[]>([]);
 
   // Project filter & search
-  selectedFilter = signal<string[]>([]);
-  searchTerm = signal<string>('');
+  protected readonly selectedFilter = signal<string[]>([]);
+  protected readonly searchTerm = signal<string>('');
 
-  loadingKey: string | null = null;
-  showSave = false;
+  protected loadingKey: string | null = null;
+  protected showSave = false;
 
   constructor() {
     // Watch for project list changes and reload
@@ -102,9 +102,9 @@ export class SwitchProjectComponent implements OnInit {
   }
 
   //Filter options
-  groupedFilters: MenuItem[] = [];
+  protected groupedFilters: MenuItem[] = [];
 
-  updateGroupedFilters() {
+  protected updateGroupedFilters() {
     const allCollaborators = this.allProjects().flatMap((p) => p.collaborators);
     const uniqueCollaborators = Array.from(new Map(allCollaborators.map((c) => [c.login, c])).values()).sort((a, b) => a.login.localeCompare(b.login));
 
@@ -153,22 +153,22 @@ export class SwitchProjectComponent implements OnInit {
   }
 
   // Toggle between saved and deleted projects
-  currentMode = signal<'saved' | 'deleted'>('saved');
+  protected readonly currentMode = signal<'saved' | 'deleted'>('saved');
 
-  toggleProjectView() {
+  protected toggleProjectView() {
     const newMode = this.currentMode() === 'saved' ? 'deleted' : 'saved';
     this.currentMode.set(newMode);
     this.loadProjects(newMode);
   }
 
   //Load all projects
-  async loadProjects(mode: 'saved' | 'deleted' = 'saved') {
+  private async loadProjects(mode: 'saved' | 'deleted' = 'saved') {
     const projects = mode === 'deleted' ? this.projectStorageService.getLocalProjectList('deleted') : await this.projectStorageService.getProjectList();
     this.allProjects.set(projects);
   }
 
   // Get projects for display
-  get projects() {
+  protected get projects() {
     const all = this.allProjects();
     const sort = this.selectedSort();
     const filters = this.selectedFilter();
@@ -245,7 +245,7 @@ export class SwitchProjectComponent implements OnInit {
 
   // Project File Actions - load, new, delete, save to cloud & save autosave
 
-  async loadProject(key: string, id: string, storageType: 'local' | 'cloud' = 'local') {
+  protected async loadProject(key: string, id: string, storageType: 'local' | 'cloud' = 'local') {
     // Show loading state on card
     this.loadingKey = key;
     if (storageType === 'cloud') {
@@ -271,13 +271,13 @@ export class SwitchProjectComponent implements OnInit {
     }
   }
 
-  async newProject() {
+  protected async newProject() {
     this.projectStorageService.clearActiveProject();
     await this.projectState.resetProject();
     this.router.navigate(['/new-project']);
   }
 
-  async saveProject() {
+  protected async saveProject() {
     const success = await this.projectState.saveProject();
     if (success) {
       // Refresh project list
@@ -297,7 +297,7 @@ export class SwitchProjectComponent implements OnInit {
     }
   }
 
-  async deleteProject(project: ProjectMetadata, event?: Event) {
+  protected async deleteProject(project: ProjectMetadata, event?: Event) {
     event?.stopPropagation();
 
     let key = project.key;
@@ -338,7 +338,7 @@ export class SwitchProjectComponent implements OnInit {
   }
 
   // Upload local project to cloud
-  async uploadToCloud(project: ProjectMetadata, event?: Event) {
+  protected async uploadToCloud(project: ProjectMetadata, event?: Event) {
     event?.stopPropagation();
 
     if (!this.collaboratorService.canEditProject(project)) {
@@ -388,15 +388,15 @@ export class SwitchProjectComponent implements OnInit {
   //testing
 
   //Sort
-  selectedSort = signal<string>('date_desc');
-  sortOptions = [
+  protected readonly selectedSort = signal<string>('date_desc');
+  protected readonly sortOptions = [
     { label: 'Date (newest first)', value: 'date_desc' },
     { label: 'Date (oldest first)', value: 'date_asc' },
     { label: 'Name (A-Z)', value: 'name_asc' },
     { label: 'Name (Z-A)', value: 'name_desc' },
   ];
 
-  getPhaseIcon(phase: string | undefined): string {
+  protected getPhaseIcon(phase: string | undefined): string {
     const iconMap: Record<string, string> = {
       Discover: 'search',
       Design: 'pencil',
@@ -407,7 +407,7 @@ export class SwitchProjectComponent implements OnInit {
     return iconMap[phase || 'Draft'] || 'pencil';
   }
 
-  async loadCloudProject(cloudId: string) {
+  private async loadCloudProject(cloudId: string) {
     const project = await this.cloudStorageService.getProject(cloudId);
     if (!project?.projectData) return;
 
@@ -424,7 +424,7 @@ export class SwitchProjectComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  async deleteCloudProject(cloudId: string) {
+  private async deleteCloudProject(cloudId: string) {
     const success = await this.cloudStorageService.deleteProject(cloudId);
     if (success) {
       console.log('Cloud project deleted');

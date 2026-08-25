@@ -16,11 +16,11 @@ import { GitHubAuthService } from '../../../services/github/github-auth.service'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthCallbackComponent implements OnInit {
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private authService = inject(GitHubAuthService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly authService = inject(GitHubAuthService);
 
-  error = signal<string | null>(null);
+  protected readonly error = signal<string | null>(null);
 
   private markForTranslation() {
     marker('github.callback.error.invalidParams');

@@ -26,25 +26,24 @@ import { AddUrlsService } from '../add-urls/add-urls.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IaTableComponent implements OnInit {
-  private projectState = inject(ProjectStateService);
-  private treeNodeStyleService = inject(TreeNodeStyleService);
-  private settingsService = inject(UserSettingsService);
-  private locationStrategy = inject(LocationStrategy);
-  private translate = inject(TranslateService);
-  private addUrlsService = inject(AddUrlsService);
-  private fetchService = inject(FetchService);
+  private readonly projectState = inject(ProjectStateService);
+  private readonly treeNodeStyleService = inject(TreeNodeStyleService);
+  private readonly settingsService = inject(UserSettingsService);
+  private readonly translate = inject(TranslateService);
+  private readonly addUrlsService = inject(AddUrlsService);
+  private readonly fetchService = inject(FetchService);
 
-  projectTree = computed(() => this.projectState.getProject().projectData);
-  selectedNode?: TreeNode;
+  protected readonly projectTree = computed(() => this.projectState.getProject().projectData);
+  protected selectedNode?: TreeNode;
 
   //For edit node popup
-  editNode = false;
+  protected editNode = false;
 
   //Drag & drop states
-  draggable = true;
-  selectable = false;
+  protected draggable = true;
+  protected selectable = false;
 
-  get currentLanguage() {
+  protected get currentLanguage() {
     return this.translate.currentLang()?.startsWith('fr') ? 'fr' : 'en';
   }
 
@@ -61,16 +60,16 @@ export class IaTableComponent implements OnInit {
 
   //Context menu
   @ViewChild('cm') cm!: ContextMenu;
-  options: MenuItem[] = []; //options for editing nodes
+  protected options: MenuItem[] = []; //options for editing nodes
 
   //RIGHT & LEFT CLICK ACTIONS
-  onNodeClick(event: MouseEvent) {
+  protected onNodeClick(event: MouseEvent) {
     if (event.button === 0) {
       event.preventDefault();
     }
   }
 
-  onNodeContextMenu(event: TreeNodeContextMenuSelectEvent) {
+  protected onNodeContextMenu(event: TreeNodeContextMenuSelectEvent) {
     this.selectedNode = event.node;
     if (!this.selectedNode) return;
     const node = this.selectedNode;
@@ -204,7 +203,7 @@ export class IaTableComponent implements OnInit {
   }
 
   // Page moves
-  handleNodeDrop(event: TreeNodeDropEvent): void {
+  protected handleNodeDrop(event: TreeNodeDropEvent): void {
     const dragNode = event.dragNode;
     const dropNode = event.dropNode;
 

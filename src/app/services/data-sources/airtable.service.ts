@@ -15,27 +15,27 @@ export interface TransformedTask {
 
 @Injectable({ providedIn: 'root' })
 export class AirtableService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   private readonly FUNCTION_URL = environment.airtableFunctionUrl;
 
   // Signals for managing data state
-  private tasks = signal<TransformedTask[]>([]);
-  private loading = signal<boolean>(false);
-  private error = signal<string | null>(null);
-  private lastFetched = signal<number | null>(null);
+  private readonly tasks = signal<TransformedTask[]>([]);
+  private readonly loading = signal<boolean>(false);
+  private readonly error = signal<string | null>(null);
+  private readonly lastFetched = signal<number | null>(null);
 
   // Computed signals
-  public isLoading = computed(() => this.loading());
-  public hasError = computed(() => !!this.error());
-  public errorMessage = computed(() => this.error());
-  public data = computed(() => this.tasks());
-  public isCached = computed(() => this.lastFetched() !== null);
+  public readonly isLoading = computed(() => this.loading());
+  public readonly hasError = computed(() => !!this.error());
+  public readonly errorMessage = computed(() => this.error());
+  public readonly data = computed(() => this.tasks());
+  public readonly isCached = computed(() => this.lastFetched() !== null);
 
   /**
    * Fetch task data from Airtable (or use cached data if available)
    */
-  async fetchTasks(forceRefresh = false): Promise<TransformedTask[]> {
+  public async fetchTasks(forceRefresh = false): Promise<TransformedTask[]> {
     // Return cached data if available and not forcing refresh
     if (!forceRefresh && this.tasks().length > 0) {
       console.log('Using cached Airtable data');
@@ -77,7 +77,7 @@ export class AirtableService {
   /**
    * Clear cached data and fetch fresh data
    */
-  async refreshData(): Promise<TransformedTask[]> {
+  public async refreshData(): Promise<TransformedTask[]> {
     this.clearCache();
     return await this.fetchTasks(true);
   }
@@ -85,7 +85,7 @@ export class AirtableService {
   /**
    * Clear the cache and current data
    */
-  clearCache(): void {
+  private clearCache(): void {
     this.tasks.set([]);
     this.error.set(null);
     this.lastFetched.set(null);
@@ -95,7 +95,7 @@ export class AirtableService {
   /**
    * Get tasks filtered by language
    */
-  getTasksByLanguage(language: 'en' | 'fr'): TransformedTask[] {
+  public getTasksByLanguage(language: 'en' | 'fr'): TransformedTask[] {
     return this.tasks().filter((task) => {
       const urls = language === 'en' ? task.urlsEN : task.urlsFR;
       return urls.length > 0;
@@ -105,7 +105,7 @@ export class AirtableService {
   /**
    * Search tasks by name
    */
-  searchTasks(query: string, language: 'en' | 'fr' = 'en'): TransformedTask[] {
+  public searchTasks(query: string, language: 'en' | 'fr' = 'en'): TransformedTask[] {
     if (!query.trim()) {
       return this.tasks();
     }
@@ -118,7 +118,7 @@ export class AirtableService {
   }
 
   // Finds all tasks for a given URL
-  findTaskNamesByUrl(url: string, language: 'en' | 'fr'): string[] {
+  public findTaskNamesByUrl(url: string, language: 'en' | 'fr'): string[] {
     const matchingTasks = this.tasks().filter((task) => {
       const urls = language === 'en' ? task.urlsEN : task.urlsFR;
       return urls.some((taskUrl) => taskUrl === url);
@@ -130,14 +130,14 @@ export class AirtableService {
   /**
    * Check if data is available (cached or needs fetching)
    */
-  hasData(): boolean {
+  public hasData(): boolean {
     return this.tasks().length > 0;
   }
 
   /**
    * Get the timestamp of when data was last fetched
    */
-  getLastFetchedTime(): Date | null {
+  public getLastFetchedTime(): Date | null {
     const timestamp = this.lastFetched();
     return timestamp ? new Date(timestamp) : null;
   }

@@ -24,9 +24,9 @@ import { ProjectPhase } from '../../common/data.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SetupProjectComponent {
-  private projectState = inject(ProjectStateService);
-  private collaboratorService = inject(CollaboratorService);
-  router = inject(Router);
+  private readonly projectState = inject(ProjectStateService);
+  private readonly collaboratorService = inject(CollaboratorService);
+  private readonly router = inject(Router);
 
   constructor() {
     // Refresh projectName when there are changes to repo name (for initial sync fxn)
@@ -38,14 +38,14 @@ export class SetupProjectComponent {
   }
 
   //Project data
-  get projectData() {
+  private get projectData() {
     return this.projectState.getProject();
   }
 
   //Name input
-  projectName = this.projectData.projectName;
-  nameFilter = /^[a-zA-Z0-9-._ :']*$/;
-  updateName() {
+  protected projectName = this.projectData.projectName;
+  protected readonly nameFilter = /^[a-zA-Z0-9-._ :']*$/;
+  protected updateName() {
     this.projectName = this.projectName
       .trim()
       .replace(/^[-._ :']+|[-._ :']+$/g, '')
@@ -65,14 +65,14 @@ export class SetupProjectComponent {
   }
 
   //Phase dropdown
-  get projectPhase(): ProjectPhase {
+  protected get projectPhase(): ProjectPhase {
     return this.projectData.phase;
   }
-  set projectPhase(value: ProjectPhase) {
+  protected set projectPhase(value: ProjectPhase) {
     this.projectState.setProjectPhase(value);
   }
 
-  markForTranslation() {
+  private markForTranslation() {
     marker('project.setup.storage.local');
     marker('project.setup.storage.cloud');
     marker('project.phase.approve');
@@ -86,7 +86,7 @@ export class SetupProjectComponent {
     marker('project.phase.status.pending');
   }
 
-  phaseOptions = [
+  protected readonly phaseOptions = [
     { name: ProjectPhase.Draft, value: ProjectPhase.Draft },
     { name: ProjectPhase.Discover, value: ProjectPhase.Discover },
     { name: ProjectPhase.Assess, value: ProjectPhase.Assess },
@@ -96,14 +96,14 @@ export class SetupProjectComponent {
   ];
 
   //Storage select button
-  get projectStorage(): 'local' | 'cloud' {
+  protected get projectStorage(): 'local' | 'cloud' {
     return this.projectData.storageType;
   }
-  set projectStorage(value: 'local' | 'cloud') {
+  protected set projectStorage(value: 'local' | 'cloud') {
     this.projectState.setStorageType(value);
   }
 
-  storageOptions = computed(() => [
+  protected readonly storageOptions = computed(() => [
     { name: 'project.setup.storage.local', value: 'local' as const, icon: 'pi pi-desktop' },
     { name: 'project.setup.storage.cloud', value: 'cloud' as const, icon: 'pi pi-cloud', disabled: !this.collaboratorService.canEditProject(this.projectState.getProject()) },
   ]);

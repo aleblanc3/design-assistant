@@ -21,7 +21,6 @@ import { ProjectStateService } from '../../../services/project-state.service';
 import { ProjectStorageService } from '../../../services/storage/project-storage.service';
 
 import { environment } from '../../../../environments/environment';
-import { GitHubUser } from '../../../common/data.model';
 
 @Component({
   selector: 'aida-sign-in-button',
@@ -30,21 +29,19 @@ import { GitHubUser } from '../../../common/data.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignInButtonComponent implements OnInit {
-  private http = inject(HttpClient);
-  private router = inject(Router);
-  private authService = inject(GitHubAuthService);
-  public exportGitHubService = inject(ExportGitHubService);
-  private projectStorageService = inject(ProjectStorageService);
-  private projectState = inject(ProjectStateService);
-  private translate = inject(TranslateService);
-
-  user = signal<GitHubUser | null>(this.exportGitHubService.user());
+  private readonly http = inject(HttpClient);
+  private readonly router = inject(Router);
+  private readonly authService = inject(GitHubAuthService);
+  protected readonly exportGitHubService = inject(ExportGitHubService);
+  private readonly projectStorageService = inject(ProjectStorageService);
+  private readonly projectState = inject(ProjectStateService);
+  private readonly translate = inject(TranslateService);
 
   // Variables
-  showPatSignIn = false;
-  showSettings = false;
+  protected showPatSignIn = false;
+  protected showSettings = false;
 
-  connectGitHub() {
+  private connectGitHub() {
     if (this.isApiGatewayAccessible()) {
       this.authService.login();
     } else {
@@ -52,12 +49,12 @@ export class SignInButtonComponent implements OnInit {
     }
   }
 
-  async validatePAT() {
+  protected async validatePAT() {
     this.showPatSignIn = false;
     await this.exportGitHubService.validatePAT();
   }
 
-  get items(): MenuItem[] {
+  protected get items(): MenuItem[] {
     const dropdownOptions = [
       {
         label: this.translate.instant('common.profile'),
@@ -116,7 +113,7 @@ export class SignInButtonComponent implements OnInit {
   }
 
   // Signal to track if API Gateway is accessible
-  isApiGatewayAccessible = signal<boolean>(true);
+  private readonly isApiGatewayAccessible = signal<boolean>(true);
 
   // Check if API gateway is available so we can surface the preferred sign-in method
   private checkApiGatewayAccess(): void {

@@ -21,39 +21,7 @@ export interface ContrastTest {
   selector: 'aida-color-picker',
   standalone: true,
   imports: [FormsModule, ButtonModule, ColorPickerModule, InputGroupAddonModule, InputGroupModule, InputTextModule],
-  template: `
-    <div class="flex flex-column gap-2">
-      <!-- Color Picker -->
-      <div class="flex align-items-center gap-2 mb-2">
-        <p-inputgroup>
-          <p-inputgroup-addon>
-            <p-colorpicker [(ngModel)]="currentColor" (onChange)="onColorChange()" appendTo="body" />
-          </p-inputgroup-addon>
-          <input [(ngModel)]="currentColor" (change)="onColorChange()" pInputText placeholder="#000000" type="text" />
-          @if (showReset) {
-            <p-inputgroup-addon>
-              <p-button (onClick)="reset()" class="w-full h-full" label="Reset" severity="secondary" size="small" text />
-            </p-inputgroup-addon>
-          }
-        </p-inputgroup>
-      </div>
-    </div>
-
-    <!-- Contrast Tests -->
-    @if (contrastTests && contrastTests.length > 0) {
-      <div class="text-xs">
-        @for (test of contrastTests; track test.shade) {
-          <div class="flex align-items-center justify-content-between">
-            <span>{{ test.shade }} vs {{ test.textColorName }}:</span>
-            <div class="flex align-items-center gap-2">
-              <span class="font-semibold">{{ getContrastRatio(test) }}</span>
-              <span [class.pi-check]="getContrastPasses(test)" [class.pi-times]="!getContrastPasses(test)" [class]="getContrastPasses(test) ? 'text-green-500' : 'text-red-500'" class="pi"> </span>
-            </div>
-          </div>
-        }
-      </div>
-    }
-  `,
+  templateUrl: './color-picker.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ColorPickerComponent implements OnInit, OnChanges {

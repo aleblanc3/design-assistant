@@ -21,20 +21,19 @@ type ConnectionStatus = 'checking' | 'connected' | 'warning' | 'error' | 'missin
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignInBannerComponent implements OnInit {
-  private projectState = inject(ProjectStateService);
-  private settingsService = inject(UserSettingsService);
-  public exportGitHubService = inject(ExportGitHubService);
-  public authService = inject(GitHubAuthService);
+  private readonly projectState = inject(ProjectStateService);
+  private readonly settingsService = inject(UserSettingsService);
+  protected readonly exportGitHubService = inject(ExportGitHubService);
+  protected readonly authService = inject(GitHubAuthService);
 
-  username = computed(() => this.exportGitHubService.user()?.name || this.exportGitHubService.user()?.login || 'User');
+  protected readonly username = computed(() => this.exportGitHubService.user()?.name || this.exportGitHubService.user()?.login || 'User');
 
   //Signals
-  connectionStatus = signal<ConnectionStatus>('checking');
-  showDisclaimer = signal<boolean>(false);
-  pat = signal<string>(this.exportGitHubService.pat);
-  precheckInProgress = signal<boolean>(false);
+  protected readonly connectionStatus = signal<ConnectionStatus>('checking');
+  protected readonly showDisclaimer = signal<boolean>(false);
+  private readonly precheckInProgress = signal<boolean>(false);
 
-  private githubData = computed(
+  private readonly githubData = computed(
     () => {
       const project = this.projectState.getProject();
       return { owner: project.github.owner, repo: project.github.repo };
@@ -116,7 +115,7 @@ export class SignInBannerComponent implements OnInit {
     return colorMap[status] || '';
   }
 
-  getStatusIcons = computed(() => {
+  protected readonly getStatusIcons = computed(() => {
     const status = this.connectionStatus();
     const iconMap: Record<ConnectionStatus, string> = {
       connected: 'pi-check-circle',
@@ -129,12 +128,12 @@ export class SignInBannerComponent implements OnInit {
     return `pi ${iconMap[status]} ${this.getStatusTextColor(status)} text-2xl`;
   });
 
-  getTitleClasses = computed(() => {
+  protected readonly getTitleClasses = computed(() => {
     const status = this.connectionStatus();
     return `font-semibold my-0 ${this.getStatusTextColor(status)}`;
   });
 
-  getBgClasses = computed(() => {
+  protected readonly getBgClasses = computed(() => {
     const status = this.connectionStatus();
     const isDark = this.settingsService.darkMode();
 

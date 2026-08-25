@@ -30,15 +30,15 @@ export interface ViewOption<T = string> {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CompareSourceComponent {
-  private compareSourceService = inject(CompareSourceService);
+  private readonly compareSourceService = inject(CompareSourceService);
 
   @Input() beforeContent: htmlProcessingResult | undefined;
   @Input() afterContent: htmlProcessingResult | undefined;
 
   // Source view options
-  sourceSelectedView = signal<SourceViewType>(SourceViewType.SideBySide);
+  protected readonly sourceSelectedView = signal<SourceViewType>(SourceViewType.SideBySide);
 
-  get sourceViewOptions(): ViewOption<SourceViewType>[] {
+  protected get sourceViewOptions(): ViewOption<SourceViewType>[] {
     return [
       {
         label: `compare.pageOptions.${this.beforeContent?.version ?? 'before'}`,
@@ -63,7 +63,7 @@ export class CompareSourceComponent {
     ];
   }
 
-  onSourceViewChange(viewType: SourceViewType) {
+  protected onSourceViewChange(viewType: SourceViewType) {
     this.sourceSelectedView.set(viewType);
   }
 }

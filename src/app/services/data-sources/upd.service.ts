@@ -12,27 +12,27 @@ export interface UpdPageData {
 
 @Injectable({ providedIn: 'root' })
 export class UpdService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   private readonly DATA_URL = '/visits-urls.json';
 
   // Signals for managing data state
-  private pageData = signal<UpdPageData[]>([]);
-  private loading = signal<boolean>(false);
-  private error = signal<string | null>(null);
-  private lastFetched = signal<number | null>(null);
+  private readonly pageData = signal<UpdPageData[]>([]);
+  private readonly loading = signal<boolean>(false);
+  private readonly error = signal<string | null>(null);
+  private readonly lastFetched = signal<number | null>(null);
 
   // Computed signals
-  public isLoading = computed(() => this.loading());
-  public hasError = computed(() => !!this.error());
-  public errorMessage = computed(() => this.error());
-  public data = computed(() => this.pageData());
-  public isCached = computed(() => this.lastFetched() !== null);
+  public readonly isLoading = computed(() => this.loading());
+  public readonly hasError = computed(() => !!this.error());
+  public readonly errorMessage = computed(() => this.error());
+  public readonly data = computed(() => this.pageData());
+  public readonly isCached = computed(() => this.lastFetched() !== null);
 
   /**
    * Fetch UPD data from JSON file (or use cached data if available)
    */
-  async fetchData(forceRefresh = false): Promise<UpdPageData[]> {
+  public async fetchData(forceRefresh = false): Promise<UpdPageData[]> {
     // Return cached data if available and not forcing refresh
     if (!forceRefresh && this.pageData().length > 0) {
       console.log('Using cached UPD data');
@@ -74,7 +74,7 @@ export class UpdService {
   /**
    * Clear cached data and fetch fresh data
    */
-  async refreshData(): Promise<UpdPageData[]> {
+  public async refreshData(): Promise<UpdPageData[]> {
     this.clearCache();
     return await this.fetchData(true);
   }
@@ -82,7 +82,7 @@ export class UpdService {
   /**
    * Clear the cache and current data
    */
-  clearCache(): void {
+  private clearCache(): void {
     this.pageData.set([]);
     this.error.set(null);
     this.lastFetched.set(null);
@@ -92,7 +92,7 @@ export class UpdService {
   /**
    * Find visits for a given URL
    */
-  findVisitsByUrl(url: string): number {
+  public findVisitsByUrl(url: string): number {
     const page = this.pageData().find((item) => item.url === url);
     return page?.visits ?? -1;
   }
@@ -100,21 +100,21 @@ export class UpdService {
   /**
    * Find complete page data for a given URL
    */
-  findPageDataByUrl(url: string): UpdPageData | undefined {
+  public findPageDataByUrl(url: string): UpdPageData | undefined {
     return this.pageData().find((item) => item.url === url);
   }
 
   /**
    * Get top N pages by visits
    */
-  getTopPagesByVisits(limit = 10): UpdPageData[] {
+  public getTopPagesByVisits(limit = 10): UpdPageData[] {
     return [...this.pageData()].sort((a, b) => b.visits - a.visits).slice(0, limit);
   }
 
   /**
    * Search pages by title or URL
    */
-  searchPages(query: string): UpdPageData[] {
+  public searchPages(query: string): UpdPageData[] {
     if (!query.trim()) {
       return this.pageData();
     }
@@ -128,21 +128,21 @@ export class UpdService {
   /**
    * Get total visits across all pages
    */
-  getTotalVisits(): number {
+  public getTotalVisits(): number {
     return this.pageData().reduce((sum, page) => sum + page.visits, 0);
   }
 
   /**
    * Check if data is available (cached or needs fetching)
    */
-  hasData(): boolean {
+  public hasData(): boolean {
     return this.pageData().length > 0;
   }
 
   /**
    * Get the timestamp of when data was last fetched
    */
-  getLastFetchedTime(): Date | null {
+  public getLastFetchedTime(): Date | null {
     const timestamp = this.lastFetched();
     return timestamp ? new Date(timestamp) : null;
   }

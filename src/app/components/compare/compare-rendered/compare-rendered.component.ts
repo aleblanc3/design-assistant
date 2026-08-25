@@ -37,13 +37,12 @@ export interface ViewOption<T = string> {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
-  private compareRenderedService = inject(CompareRenderedService);
-  private translate = inject(TranslateService);
-  private locationStrategy = inject(LocationStrategy);
+  private readonly compareRenderedService = inject(CompareRenderedService);
+  private readonly translate = inject(TranslateService);
 
   // Inputs
-  beforeContent = input<htmlProcessingResult | undefined>();
-  afterContent = input<htmlProcessingResult | undefined>();
+  public readonly beforeContent = input<htmlProcessingResult | undefined>();
+  public readonly afterContent = input<htmlProcessingResult | undefined>();
 
   // Adjust inputs if one is undefined so we can render page with no changes
   private readonly resolvedBefore = computed(() => this.beforeContent() ?? this.afterContent());
@@ -59,7 +58,7 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
   @ViewChild('liveContainer', { static: false }) liveContainer!: ElementRef;
 
   // Signals
-  shadowDOM = signal<ShadowRoot | null>(null);
+  private readonly shadowDOM = signal<ShadowRoot | null>(null);
 
   // Effects
   constructor() {
@@ -124,10 +123,10 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
   }
 
   //Web page view options
-  WebViewType = WebViewType;
-  webSelectedView = signal<WebViewType>(WebViewType.Diff);
+  protected readonly WebViewType = WebViewType;
+  protected readonly webSelectedView = signal<WebViewType>(WebViewType.Diff);
 
-  get webViewOptions(): ViewOption<WebViewType>[] {
+  protected get webViewOptions(): ViewOption<WebViewType>[] {
     const beforeLabel = this.beforeContent()?.version ? this.translate.instant('common.source.' + this.beforeContent()?.version) : this.translate.instant('common.before');
     const afterLabel = this.afterContent()?.version ? this.translate.instant('common.source.' + this.afterContent()?.version) : this.translate.instant('common.after');
     return [
@@ -150,7 +149,7 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
   }
 
   //Change web page view
-  async onWebViewChange(viewType: WebViewType) {
+  protected async onWebViewChange(viewType: WebViewType) {
     this.webSelectedView.set(viewType);
   }
 
@@ -160,10 +159,10 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
   private shadowClickHandler: (() => void) | null = null;
   private shadowSelectionHandler: (() => void) | null = null;
 
-  currentIndex = 0;
-  elements: HTMLElement[] = [];
+  private currentIndex = 0;
+  private elements: HTMLElement[] = [];
 
-  next() {
+  protected next() {
     if (this.elements.length === 0) return;
     this.currentIndex = (this.currentIndex + 1) % this.elements.length;
     this.focusOnIndex(this.currentIndex);
@@ -174,7 +173,7 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
     }; //reset selection
   }
 
-  prev() {
+  protected prev() {
     if (this.elements.length === 0) return;
     this.currentIndex = (this.currentIndex - 1 + this.elements.length) % this.elements.length;
     this.focusOnIndex(this.currentIndex);
@@ -195,7 +194,7 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
     this.compareRenderedService.scrollToElement(el);
   }
 
-  get displayCounter(): string {
+  protected get displayCounter(): string {
     if (!this.elements?.length) {
       return this.translate.instant('compare.rendered.counter', { range: '0', total: '0' });
     }
@@ -222,7 +221,7 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
     return this.translate.instant('compare.rendered.counter', { range, total });
   }
 
-  get displayNumHighlighted(): string {
+  protected get displayNumHighlighted(): string {
     const count = this.compareRenderedService.lastSelection.count;
     if (count < 1) return '';
     if (this.compareRenderedService.lastSelection.count < 1) return '';
@@ -230,11 +229,11 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
   }
 
   // 2. Accept
-  toolbarAccept(): void {
+  protected toolbarAccept(): void {
     this.processDiffChange('accept');
   }
 
-  get acceptItems() {
+  protected get acceptItems() {
     return [
       {
         label: 'Accept all',
@@ -259,11 +258,11 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
   }
 
   // 3. Reject
-  toolbarReject(): void {
+  protected toolbarReject(): void {
     this.processDiffChange('reject');
   }
 
-  get rejectItems() {
+  protected get rejectItems() {
     return [
       {
         label: 'Reject all',
@@ -288,7 +287,7 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
   }
 
   // 4. Legend
-  readonly baseLegendItems = signal<{ text: string; colour: string; style: string; lineStyle?: string }[]>([
+  private readonly baseLegendItems = signal<{ text: string; colour: string; style: string; lineStyle?: string }[]>([
     { text: 'compare.rendered.legend.previousVersion', colour: '#F3A59D', style: 'highlight' },
     { text: 'compare.rendered.legend.updatedVersion', colour: '#83d5a8', style: 'highlight' },
     { text: 'compare.rendered.legend.updatedLink', colour: '#FFEE8C', style: 'highlight' },
@@ -297,7 +296,7 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
     { text: 'compare.rendered.legend.dynamicContent', colour: '#fbc02f', style: 'line', lineStyle: 'dashed' },
   ]);
 
-  markForTranslation() {
+  private markForTranslation() {
     marker('compare.rendered.legend.previousVersion');
     marker('compare.rendered.legend.updatedVersion');
     marker('compare.rendered.legend.updatedLink');
@@ -306,7 +305,7 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
     marker('compare.rendered.legend.dynamicContent');
   }
 
-  get legendItems() {
+  protected get legendItems() {
     const view = this.webSelectedView();
     const items = this.baseLegendItems();
     const beforeFlags = this.beforeContent()?.found;
@@ -355,8 +354,8 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
   }
 
   // 5. Before/After - Edit
-  toggleEdit = false;
-  async toolbarToggleEdit(view: WebViewType): Promise<void> {
+  protected toggleEdit = false;
+  protected async toolbarToggleEdit(view: WebViewType): Promise<void> {
     const shadowRoot = this.shadowDOM();
     const editable = shadowRoot?.getElementById('editable');
     if (!editable) {
@@ -392,8 +391,8 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
   }
 
   // 6. Before/After - Copy
-  toggleCopy = false;
-  toolbarToggleCopy(view: WebViewType): void {
+  protected toggleCopy = false;
+  protected toolbarToggleCopy(view: WebViewType): void {
     const data = 'test';
     if (!data) return;
     let htmlToCopy = ''; /*
@@ -411,7 +410,7 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
   }
 
   // 7. Before/After - Open URL
-  getUrl() {
+  protected getUrl() {
     if (this.webSelectedView() === WebViewType.Original) {
       return this.beforeContent()?.url;
     } else if (this.webSelectedView() === WebViewType.Modified) {
@@ -544,7 +543,7 @@ return this.uploadState.getUploadData(); // returns signal().value
     
         */
 
-  processDiffChange(mode: 'accept' | 'reject'): void {
+  private processDiffChange(mode: 'accept' | 'reject'): void {
     //Get diff container
     const shadowRoot = this.shadowDOM();
     if (!shadowRoot) {

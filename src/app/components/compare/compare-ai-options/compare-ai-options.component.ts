@@ -30,7 +30,21 @@ import { PagePromptKey } from '../../../common/prompts/prompt.model';
  */
 @Component({
   selector: 'aida-compare-ai-options',
-  imports: [CommonModule, FormsModule, TranslatePipe, AccordionModule, ButtonModule, CheckboxModule, DialogModule, FieldsetModule, IftaLabelModule, RadioButtonModule, SliderModule, TextareaModule, TooltipModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    TranslatePipe,
+    AccordionModule,
+    ButtonModule,
+    CheckboxModule,
+    DialogModule,
+    FieldsetModule,
+    IftaLabelModule,
+    RadioButtonModule,
+    SliderModule,
+    TextareaModule,
+    TooltipModule,
+  ],
   templateUrl: './compare-ai-options.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

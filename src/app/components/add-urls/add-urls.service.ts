@@ -37,13 +37,13 @@ export interface UrlState {
   providedIn: 'root',
 })
 export class AddUrlsService {
-  private fetchService = inject(FetchService);
-  private projectState = inject(ProjectStateService);
-  private updService = inject(UpdService);
-  private airtableService = inject(AirtableService);
-  private vanityService = inject(VanityService);
-  private projectStorageService = inject(ProjectStorageService);
-  private treeNodeStyleService = inject(TreeNodeStyleService);
+  private readonly fetchService = inject(FetchService);
+  private readonly projectState = inject(ProjectStateService);
+  private readonly updService = inject(UpdService);
+  private readonly airtableService = inject(AirtableService);
+  private readonly vanityService = inject(VanityService);
+  private readonly projectStorageService = inject(ProjectStorageService);
+  private readonly treeNodeStyleService = inject(TreeNodeStyleService);
 
   /********************************************************************************************************************
    *  STEPS                                                                                                           *
@@ -56,7 +56,7 @@ export class AddUrlsService {
    ********************************************************************************************************************/
 
   /** Current state of the add URL workflow */
-  public urlState = signal<UrlState>({
+  public readonly urlState = signal<UrlState>({
     rawUrls: '',
     urlsToValidate: [],
     urlsToReview: [],
@@ -66,23 +66,23 @@ export class AddUrlsService {
   });
 
   /** Updates a partial signal from the {@link urlState} */
-  setUrlState(partial: Partial<UrlState>) {
+  public setUrlState(partial: Partial<UrlState>) {
     this.urlState.update((curr) => ({ ...curr, ...partial }));
   }
 
   /** Updates urlsToReview from the {@link urlState} */
-  updateReviewStatus(hrefs: string[], status: ValidationItem['status']) {
+  public updateReviewStatus(hrefs: string[], status: ValidationItem['status']) {
     const hrefSet = new Set(hrefs);
     const urlsToReview = this.urlState().urlsToReview.map((url) => (hrefSet.has(url.href) ? { ...url, status } : url));
     this.setUrlState({ urlsToReview });
   }
 
-  projectLang = this.projectState.detectPrimaryLanguage();
+  private projectLang = this.projectState.detectPrimaryLanguage();
 
   /**** STEP 0 ********************************************************************************************************/
 
   /** Parse raw URL input into UrlItem array */
-  parseUrls(rawUrls: string, existingUrls: Set<string>, currentLang: 'en' | 'fr'): { parsedUrls: ValidationItem[]; duplicates: string[]; invalidUrls: string[]; oppositeLangUrls: string[] } {
+  public parseUrls(rawUrls: string, existingUrls: Set<string>, currentLang: 'en' | 'fr'): { parsedUrls: ValidationItem[]; duplicates: string[]; invalidUrls: string[]; oppositeLangUrls: string[] } {
     const seen = new Set<string>(existingUrls); //to track duplicates
     const duplicates: string[] = []; //to store duplicates
     const invalidUrls: string[] = []; //to store invalid urls
@@ -200,7 +200,7 @@ export class AddUrlsService {
   /**** STEP 1 ********************************************************************************************************/
 
   // Step 1: Validate multiple URLs sequentially (concurrency can cause issues with Akamai rate limiting)
-  async validateUrls(): Promise<void> {
+  public async validateUrls(): Promise<void> {
     this.setUrlState({ isValidating: true });
     const urls = this.urlState().urlsToValidate;
     for (const url of urls) {
@@ -227,7 +227,7 @@ export class AddUrlsService {
   }
 
   // Validate a single URL
-  async validateUrl(page: ValidationItem): Promise<void> {
+  private async validateUrl(page: ValidationItem): Promise<void> {
     try {
       const response = await this.fetchService.fetchStatus(page.href, 'prod', 3, 'none', 500);
 
@@ -254,7 +254,7 @@ export class AddUrlsService {
   }
 
   // Step 1: validating URL progress bar
-  validatingProgress = computed(() => {
+  public readonly validatingProgress = computed(() => {
     const { urlsToValidate } = this.urlState();
     const total = urlsToValidate.length;
     const processed = urlsToValidate.filter((u) => u.status !== 'checking').length;
@@ -267,10 +267,10 @@ export class AddUrlsService {
 
   /**** STEP 2 ********************************************************************************************************/
 
-  linkCache = new Map<string, string[]>();
+  private readonly linkCache = new Map<string, string[]>();
 
   // Step 2: Add multiple URLs sequentially (concurrency can cause issues with Akamai rate limiting)
-  async addUrls(parent: string | null = null) {
+  private async addUrls(parent: string | null = null) {
     this.setUrlState({ isAdding: true });
     const urls = this.urlState().urlsToAdd;
     //console.log(urls);
@@ -304,7 +304,7 @@ export class AddUrlsService {
   }
 
   // Step 2: Add a single URL
-  async addUrl(url: string, inScope: boolean, parent: string | null = null) {
+  private async addUrl(url: string, inScope: boolean, parent: string | null = null) {
     // Step 1: lookup url in tree and if found, flip status to inScope if mode is inScope, then return if found for either mode
     const inTree = this.projectState.urlExists(url);
     if (inTree) {
@@ -505,7 +505,7 @@ export class AddUrlsService {
   }
 
   // Step 2: adding URL progress bar
-  addingProgress = computed(() => {
+  public readonly addingProgress = computed(() => {
     const { urlsToAdd } = this.urlState();
     const total = urlsToAdd.length;
     const processed = urlsToAdd.filter((u) => u.status !== 'pending').length;
@@ -519,23 +519,23 @@ export class AddUrlsService {
   /**** OTHER UTILITIES ************************************************************************************************/
 
   // Previous project data for undo
-  private previousProjectData = signal<TreeNode[] | null>(null);
-  getPreviousProjectData = computed(() => this.previousProjectData());
-  setPreviousProjectData(data: TreeNode[] | null) {
+  private readonly previousProjectData = signal<TreeNode[] | null>(null);
+  public readonly getPreviousProjectData = computed(() => this.previousProjectData());
+  public setPreviousProjectData(data: TreeNode[] | null) {
     this.previousProjectData.set(data);
   }
 
   // Highlight logic
-  private highlight = signal<boolean>(false);
-  setHighlight(value: boolean) {
+  private readonly highlight = signal<boolean>(false);
+  public setHighlight(value: boolean) {
     this.highlight.set(value);
   }
-  getHighlight() {
+  public getHighlight() {
     return this.highlight();
   }
 
   // Append URLs to input (for the various find pages components)
-  appendUrlsToInput(newUrls: string[]): void {
+  public appendUrlsToInput(newUrls: string[]): void {
     const lang = this.projectState.detectPrimaryLanguage();
     const currentRawUrls = this.urlState().rawUrls;
     const additionalRawUrls = newUrls.join('\n');
@@ -551,7 +551,7 @@ export class AddUrlsService {
   }
 
   // Add child pages
-  async addChildren(node: TreeNode, lang: 'en' | 'fr'): Promise<void> {
+  public async addChildren(node: TreeNode, lang: 'en' | 'fr'): Promise<void> {
     const parentLink = this.fetchService.generateUrl(node.data?.path[lang], 'live');
     if (!parentLink) return;
 

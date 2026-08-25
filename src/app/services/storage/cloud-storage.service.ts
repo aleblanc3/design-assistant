@@ -10,22 +10,22 @@ import { Project, ProjectMetadata } from '../../common/data.model';
 
 @Injectable({ providedIn: 'root' })
 export class CloudStorageService {
-  private http = inject(HttpClient);
-  private gitHubAuthService = inject(ExportGitHubService);
+  private readonly http = inject(HttpClient);
+  private readonly gitHubAuthService = inject(ExportGitHubService);
 
   private readonly API_URL = `${environment.dynamodbFunctionUrl}projects`;
 
   // Signal for cloud project metadata (for list view)
-  private cloudProjects = signal<ProjectMetadata[]>([]);
-  public projects = computed(() => this.cloudProjects());
+  private readonly cloudProjects = signal<ProjectMetadata[]>([]);
+  public readonly projects = computed(() => this.cloudProjects());
 
   // Loading states
-  private loading = signal(false);
-  public isLoading = computed(() => this.loading());
+  private readonly loading = signal(false);
+  public readonly isLoading = computed(() => this.loading());
 
   // Error state
-  private error = signal<string | null>(null);
-  public errorMessage = computed(() => this.error());
+  private readonly error = signal<string | null>(null);
+  public readonly errorMessage = computed(() => this.error());
 
   constructor() {
     this.loadProjects(); // Load projects on service initialization
@@ -51,7 +51,7 @@ export class CloudStorageService {
    * Load all public project metadata (without full projectData)
    * Used for displaying project lists
    */
-  async loadProjects(): Promise<void> {
+  public async loadProjects(): Promise<void> {
     this.loading.set(true);
     this.error.set(null);
 
@@ -89,7 +89,7 @@ export class CloudStorageService {
   /**
    * Get a specific project with full content (including projectData)
    */
-  async getProject(projectId: string): Promise<Project | null> {
+  public async getProject(projectId: string): Promise<Project | null> {
     this.loading.set(true);
     this.error.set(null);
 
@@ -140,7 +140,7 @@ export class CloudStorageService {
    * @param projectId Optional - provide for updates, omit for new projects
    * @returns The project ID if successful, null if failed
    */
-  async saveProject(project: Project, projectId?: string): Promise<string | null> {
+  public async saveProject(project: Project, projectId?: string): Promise<string | null> {
     if (!this.gitHubAuthService.token()) {
       this.error.set('Authentication required to save projects');
       return null;
@@ -224,7 +224,7 @@ export class CloudStorageService {
   /**
    * Delete project from cloud (requires auth)
    */
-  async deleteProject(projectId: string): Promise<boolean> {
+  public async deleteProject(projectId: string): Promise<boolean> {
     if (!this.gitHubAuthService.token()) {
       this.error.set('Authentication required to delete projects');
       return false;

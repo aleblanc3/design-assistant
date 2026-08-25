@@ -95,27 +95,27 @@ interface ExportMessage {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExportComponent implements OnInit {
-  public projectState = inject(ProjectStateService);
-  public authService = inject(GitHubAuthService);
-  public exportGitHubService = inject(ExportGitHubService);
-  private fetchService = inject(FetchService);
-  public translate = inject(TranslateService);
-  private router = inject(Router);
-  private usageService = inject(UsageService);
-  private htmlNormalizationService = inject(HtmlNormalizationService);
-  public projectCache = inject(ProjectCacheService);
+  private readonly projectState = inject(ProjectStateService);
+  protected readonly authService = inject(GitHubAuthService);
+  protected readonly exportGitHubService = inject(ExportGitHubService);
+  private readonly fetchService = inject(FetchService);
+  private readonly translate = inject(TranslateService);
+  private readonly router = inject(Router);
+  private readonly usageService = inject(UsageService);
+  private readonly htmlNormalizationService = inject(HtmlNormalizationService);
+  protected readonly projectCache = inject(ProjectCacheService);
 
-  defaultOrg = environment.defaultOrg;
-  readonly ExportStatus = ExportStatus;
+  private readonly defaultOrg = environment.defaultOrg;
+  protected readonly ExportStatus = ExportStatus;
 
   //Signals
-  projectData = this.projectState.getProject;
+  protected readonly projectData = this.projectState.getProject;
 
-  filesTable = signal<FileStatus[]>([]);
-  exportMessage = signal<ExportMessage | null>(null);
-  repoType = signal<'local' | 'github'>(this.projectData().repoType);
+  protected readonly filesTable = signal<FileStatus[]>([]);
+  protected readonly exportMessage = signal<ExportMessage | null>(null);
+  protected readonly repoType = signal<'local' | 'github'>(this.projectData().repoType);
 
-  markForTranslation() {
+  private markForTranslation() {
     marker('exportPages.settings.description.prototype');
     marker('exportPages.settings.description.baseline');
     marker('exportPages.export.status.addOppLangToProject');
@@ -154,27 +154,27 @@ export class ExportComponent implements OnInit {
   }
 
   // Computed signals
-  gitHubData = computed(() => this.projectData().github);
+  protected readonly gitHubData = computed(() => this.projectData().github);
 
-  projectTable = computed(() => this.filesTable().filter((f) => f.path.startsWith('en') || f.path.startsWith('fr')));
-  templateTable = computed(() => this.filesTable().filter((f) => !f.path.startsWith('en') && !f.path.startsWith('fr')));
+  protected readonly projectTable = computed(() => this.filesTable().filter((f) => f.path.startsWith('en') || f.path.startsWith('fr')));
+  protected readonly templateTable = computed(() => this.filesTable().filter((f) => !f.path.startsWith('en') && !f.path.startsWith('fr')));
 
-  projectFileCount = computed(() => this.projectTable().filter((f) => f.status !== ExportStatus.AddToProject && f.status !== ExportStatus.OppLanguage).length);
-  templateFileCount = computed(() => this.templateTable().length);
+  protected readonly projectFileCount = computed(() => this.projectTable().filter((f) => f.status !== ExportStatus.AddToProject && f.status !== ExportStatus.OppLanguage).length);
+  protected readonly templateFileCount = computed(() => this.templateTable().length);
 
-  newCount = computed(() => this.filesTable().filter((f) => f.status === ExportStatus.ExportNew).length);
-  updatedCount = computed(() => this.filesTable().filter((f) => f.status === ExportStatus.ExportOverwrite).length);
+  protected readonly newCount = computed(() => this.filesTable().filter((f) => f.status === ExportStatus.ExportNew).length);
+  protected readonly updatedCount = computed(() => this.filesTable().filter((f) => f.status === ExportStatus.ExportOverwrite).length);
 
   // Template visiblity controls
   // If a repo is configured (and overlay is closed), show the repo settings as a secondary task instead of a card
   @ViewChild('settingsOverlay') settingsOverlay!: Popover;
-  hasRepoConfig(): boolean {
+  protected hasRepoConfig(): boolean {
     const hasGithubData = !!(this.projectData().github.owner && this.projectData().github.repo && this.projectData().github.branch);
     return hasGithubData || this.settingsOverlay?.overlayVisible;
   }
 
   //Export context based on user selections above
-  get exportContext() {
+  private get exportContext() {
     const source = this.projectCache.selectedSource();
 
     const repo = this.projectCache.selectedVersion() === 'prototype' ? this.gitHubData().repo : `${this.gitHubData().repo}-baseline`;
@@ -185,7 +185,7 @@ export class ExportComponent implements OnInit {
   }
 
   // Open targeted GitHub repo
-  openRepo() {
+  protected openRepo() {
     let modifier = '';
     if (this.projectCache.selectedVersion() === 'baseline') {
       modifier = '-baseline';
@@ -195,14 +195,14 @@ export class ExportComponent implements OnInit {
   }
 
   //CDTS template files
-  cdtsFiles = ['source/data/exclude-redirect-links.json', 'source/scripts/external-link-detour.js', 'source/exit-intent-e.html', 'source/exit-intent-f.html', 'index.html'];
+  private readonly cdtsFiles = ['source/data/exclude-redirect-links.json', 'source/scripts/external-link-detour.js', 'source/exit-intent-e.html', 'source/exit-intent-f.html', 'index.html'];
   //Jekyll template files
-  jekyllUpdateFiles = ['404.html', '_includes/*', 'index.html', 'source/data/exclude-redirect-links.json', 'source/exit-intent-e.html', 'source/exit-intent-f.html'];
-  jekyllSkipFiles = ['_config.yml', 'README.md', 'robots.txt'];
+  private readonly jekyllUpdateFiles = ['404.html', '_includes/*', 'index.html', 'source/data/exclude-redirect-links.json', 'source/exit-intent-e.html', 'source/exit-intent-f.html'];
+  private readonly jekyllSkipFiles = ['_config.yml', 'README.md', 'robots.txt'];
 
   // Populate files table (and compare project files with GitHub or UT)
   private compareFilesRequestId = 0;
-  async compareFiles() {
+  private async compareFiles() {
     const requestId = ++this.compareFilesRequestId;
     if (!this.repoType()) {
       this.repoType.set(this.projectData().repoType ?? 'github');
@@ -307,7 +307,7 @@ export class ExportComponent implements OnInit {
   }
 
   // File table button configuration & getters
-  colorConfig: Record<string, { icon: string; background: string; text: string }> = {
+  private readonly colorConfig: Record<string, { icon: string; background: string; text: string }> = {
     [ExportStatus.SkipNew]: {
       icon: 'pi pi-angle-double-right',
       background: 'bg-green-100 hover:bg-green-200',
@@ -340,17 +340,17 @@ export class ExportComponent implements OnInit {
     },
   };
 
-  getIcon(status: ExportStatus): string {
+  protected getIcon(status: ExportStatus): string {
     const config = this.colorConfig[status];
     return `${config.icon} ${config.text}`;
   }
 
-  getBgAndText(status: ExportStatus): string {
+  protected getBgAndText(status: ExportStatus): string {
     const config = this.colorConfig[status];
     return `${config.background} ${config.text}`;
   }
 
-  toggleUpdate(file: FileCompareRow) {
+  protected toggleUpdate(file: FileCompareRow) {
     switch (file.status) {
       case ExportStatus.SkipNew:
         file.status = ExportStatus.ExportNew;
@@ -369,7 +369,7 @@ export class ExportComponent implements OnInit {
     this.filesTable.set([...this.filesTable()]); // triggers UI refresh
   }
 
-  setAll(mode: 'export' | 'skip', table: 'project' | 'template') {
+  protected setAll(mode: 'export' | 'skip', table: 'project' | 'template') {
     const targetFiles = table === 'project' ? this.projectTable() : this.templateTable();
     const targetPaths = new Set(targetFiles.map((f) => f.path));
 
@@ -395,7 +395,7 @@ export class ExportComponent implements OnInit {
   }
 
   //Add to project
-  async addToProject(file: FileCompareRow) {
+  protected async addToProject(file: FileCompareRow) {
     let url = `https://www.canada.ca/${file.path}`;
     if (file.status === ExportStatus.OppLanguage) {
       try {
@@ -423,12 +423,12 @@ export class ExportComponent implements OnInit {
   }
 
   // Export progress
-  exportProgress = signal<ExportProgress | null>(null);
+  protected readonly exportProgress = signal<ExportProgress | null>(null);
 
   /*_________________________________________*/
   /****** HTML ZIP SPECIFIC FUNCTIONS *******/
 
-  async exportToFile() {
+  protected async exportToFile() {
     const JSZip = (await import('jszip')).default;
     const zip = new JSZip();
 
@@ -589,12 +589,12 @@ export class ExportComponent implements OnInit {
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   }
 
-  buildCdtsPage(template: string, vars: Record<string, string>): string {
+  private buildCdtsPage(template: string, vars: Record<string, string>): string {
     return Object.entries(vars).reduce((html, [key, value]) => html.replaceAll(`{{${key}}}`, () => value), template);
   }
 
   //Create index page for CDTS template
-  buildCdtsIndex(paths: Set<string>) {
+  private buildCdtsIndex(paths: Set<string>) {
     //Include GitHub link if previously exported
     const showGithubLink = !!this.projectState.getProject().lastExported && !!this.gitHubData().owner && !!this.gitHubData().repo;
     const { repo, scope } = this.exportContext;
@@ -757,7 +757,7 @@ export class ExportComponent implements OnInit {
   }
 
   // Main export function (DO NOT REMOVE TIMEOUTS, THEY GIVE ENOUGH TIME FOR SHA TO UPDATE BETWEEN EXPORTS)
-  async exportProjectToGitHub() {
+  protected async exportProjectToGitHub() {
     const { source, repo, scope } = this.exportContext;
     const owner = this.gitHubData().owner;
     const branch = this.gitHubData().branch;

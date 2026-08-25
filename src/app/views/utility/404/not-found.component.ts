@@ -12,7 +12,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'aida-not-found',
   imports: [TranslatePipe],
-  template: `<span [innerHTML]="random404Key | translate" (click)="onNotFoundClick($event)" (keydown)="onNotFoundEnter($event)" role="link" tabindex="0"></span>`,
+  templateUrl: './not-found.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NotFoundComponent implements OnInit {

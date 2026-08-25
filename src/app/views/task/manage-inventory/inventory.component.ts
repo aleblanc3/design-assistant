@@ -78,16 +78,16 @@ import { InventoryPromptKey } from '../../../common/prompts/prompt.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InventoryComponent implements OnInit {
-  public projectState = inject(ProjectStateService);
-  public translate = inject(TranslateService);
-  private confirmationService = inject(ConfirmationService);
-  public openRouterService = inject(OpenRouterService);
-  private fetchService = inject(FetchService);
-  public iaDiagram = inject(IaDiagramService);
+  protected readonly projectState = inject(ProjectStateService);
+  protected readonly translate = inject(TranslateService);
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly openRouterService = inject(OpenRouterService);
+  private readonly fetchService = inject(FetchService);
+  protected readonly iaDiagram = inject(IaDiagramService);
 
   // Variables
-  lang = this.projectState.detectPrimaryLanguage();
-  github = this.projectState.getProject().github;
+  private readonly lang = this.projectState.detectPrimaryLanguage();
+  private readonly github = this.projectState.getProject().github;
 
   // Effects
   constructor() {
@@ -101,9 +101,9 @@ export class InventoryComponent implements OnInit {
   @ViewChild('menuContext') menuContext!: ContextMenu;
 
   // Variables
-  readonly allColumns = computed(() => this.projectState.treeTableColumns()); // All table columns
-  readonly frozenColumns = signal<TableColumn[]>([]); // Visible table columns
-  scrollableColumns = signal<TableColumn[]>([]); // Visible table columns
+  private readonly allColumns = computed(() => this.projectState.treeTableColumns()); // All table columns
+  protected readonly frozenColumns = signal<TableColumn[]>([]); // Visible table columns
+  protected readonly scrollableColumns = signal<TableColumn[]>([]); // Visible table columns
 
   public selectedNodes: FlattenedTreeNode[] = []; // Flattened TreeNode data (for bulk actions - refresh, generate metadata, delete etc.)
 
@@ -112,29 +112,29 @@ export class InventoryComponent implements OnInit {
 
   private currentEditNode: FlattenedTreeNode | undefined; // Flattened TreeNode data (for individual actions - edit node, context menus etc.)
   private currentEditCol: TableColumn | undefined; // Table column (for determining which field is being edited or accessing other column properties)
-  isEditing = false; // Tracks if currently making inline edits
+  private isEditing = false; // Tracks if currently making inline edits
 
   private touchTimer: ReturnType<typeof setTimeout> | null = null; // Touch is alternative to right click for mobile cibtext menus
 
-  editNode = false; // Tracks if currently making dialog edits
-  selectedNode: TreeNode = {}; // TreeNode data for edit node dialog (not flattened!)
+  protected editNode = false; // Tracks if currently making dialog edits
+  protected selectedNode: TreeNode = {}; // TreeNode data for edit node dialog (not flattened!)
 
-  sortField = signal<string | null>(null);
-  sortOrder = signal<number>(1); // 1 = ascending, -1 = descending
-  lastSortField: string | null = null;
-  lastSortOrder: number | null = null;
+  private readonly sortField = signal<string | null>(null);
+  private readonly sortOrder = signal<number>(1); // 1 = ascending, -1 = descending
+  private lastSortField: string | null = null;
+  private lastSortOrder: number | null = null;
 
   private readonly COLUMN_KEY = 'inventoryColumnVisibility'; // Local storage key for loading previous table settings
   private readonly GROUP_KEY = 'inventoryGroupVisibility'; // Local storage key for loading previous table settings
 
-  expandAll: Record<string, boolean> = { metadata: false, notes: false, task: false, phoneNumbers: false, enVanity: false, frVanity: false }; // Tracks "expand all" state per group
-  expandedCells: Record<string, Set<string>> = { metadata: new Set(), notes: new Set(), task: new Set(), phoneNumbers: new Set(), enVanity: new Set(), frVanity: new Set() }; // Tracks individual cell expansion per group
+  protected readonly expandAll: Record<string, boolean> = { metadata: false, notes: false, task: false, phoneNumbers: false, enVanity: false, frVanity: false }; // Tracks "expand all" state per group
+  private readonly expandedCells: Record<string, Set<string>> = { metadata: new Set(), notes: new Set(), task: new Set(), phoneNumbers: new Set(), enVanity: new Set(), frVanity: new Set() }; // Tracks individual cell expansion per group
 
-  fieldFilters = FIELD_FILTERS; // Fields that are filterable
-  columnFilters = signal<Record<string, boolean>>({ inScope: true, anyUnusual: false }); // Tracks preset filter statuses
+  private readonly fieldFilters = FIELD_FILTERS; // Fields that are filterable
+  private readonly columnFilters = signal<Record<string, boolean>>({ inScope: true, anyUnusual: false }); // Tracks preset filter statuses
 
-  itemsContext: MenuItem[] = []; // context menu items (dynamically built)
-  itemsDropdown: MenuItem[] = []; // dropdown menu items (dynamically built)
+  protected itemsContext: MenuItem[] = []; // context menu items (dynamically built)
+  protected itemsDropdown: MenuItem[] = []; // dropdown menu items (dynamically built)
 
   /***********************************************************/
 
@@ -170,7 +170,7 @@ export class InventoryComponent implements OnInit {
    **********************************************************/
 
   // Table - get current data
-  tableData = computed<FlattenedTreeNode[]>(() => {
+  protected readonly tableData = computed<FlattenedTreeNode[]>(() => {
     const allNodes = this.projectState.flattenTree();
     const filters = this.columnFilters();
 
@@ -242,7 +242,7 @@ export class InventoryComponent implements OnInit {
   });
 
   // Get column group headings (includes frozen)
-  get groupedHeaders() {
+  protected get groupedHeaders() {
     const allGroups = this.columnGroups;
     const groups = allGroups.filter((g) => {
       const hasFrozenColumns = this.allColumns().some((col) => col.group === g && col.frozen);
@@ -263,7 +263,7 @@ export class InventoryComponent implements OnInit {
   }
 
   // For colspan - count visible columns in group (including frozen)
-  getVisibleColumnCount(group: SelectItemGroup): number {
+  protected getVisibleColumnCount(group: SelectItemGroup): number {
     return group.items.filter((item: SelectItem) => {
       const col = this.allColumns().find((c) => c.field === item.value);
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
@@ -272,7 +272,7 @@ export class InventoryComponent implements OnInit {
   }
 
   // For column borders
-  isLastInGroup(field: string): boolean {
+  protected isLastInGroup(field: string): boolean {
     // Find which group this column belongs to
     const group = this.groupedHeaders.find((g) => g.items.some((item: SelectItem) => item.value === field));
 
@@ -297,12 +297,12 @@ export class InventoryComponent implements OnInit {
   }
 
   // Table - returns the value of a cell (used by getBooleanIcon)
-  getBooleanValue(node: FlattenedTreeNode, col: TableColumn): boolean {
+  protected getBooleanValue(node: FlattenedTreeNode, col: TableColumn): boolean {
     return node[col.field] as boolean;
   }
 
   // Table - map status booleans to icons
-  getBooleanIcon(value: boolean, field: string): string {
+  protected getBooleanIcon(value: boolean, field: string): string {
     if (!value) return 'pi pi-minus text-gray-400';
 
     const trueIcons: Record<string, string> = {
@@ -320,11 +320,11 @@ export class InventoryComponent implements OnInit {
     return trueIcons[field] ?? 'pi pi-check text-green-500';
   }
 
-  getBooleanTooltip(value: boolean, field: string): string {
+  protected getBooleanTooltip(value: boolean, field: string): string {
     return `inventory.tooltip.boolean.${field}.${value}`;
   }
 
-  isKnownNumber = isKnownNumber;
+  protected readonly isKnownNumber = isKnownNumber;
 
   /**********************************************************
    *                                                         *
@@ -343,7 +343,7 @@ export class InventoryComponent implements OnInit {
   // 1. Visible column dropdowns
 
   // All column groups
-  get columnGroups() {
+  private get columnGroups() {
     const groups = [...COLUMN_GROUPS];
     if (this.translate.currentLang()?.startsWith('fr')) {
       [groups[0], groups[1]] = [groups[1], groups[0]];
@@ -352,7 +352,7 @@ export class InventoryComponent implements OnInit {
   }
 
   // Multiselect - visible groups
-  get groups() {
+  protected get groups() {
     return this.columnGroups.map((groupKey) => ({
       label: this.translate.instant(`inventory.columnGroups.${groupKey}`),
       value: groupKey,
@@ -360,7 +360,7 @@ export class InventoryComponent implements OnInit {
   }
 
   // Multiselect - visible columns
-  get groupedColumns() {
+  protected get groupedColumns() {
     const allGroups = this.columnGroups;
     const groups = allGroups.filter((g) => this.selectedGroups.includes(g));
 
@@ -377,14 +377,14 @@ export class InventoryComponent implements OnInit {
   }
 
   // Multiselect - column selection change handler
-  onColumnSelectionChange() {
+  protected onColumnSelectionChange() {
     this.updateVisibleColumns();
     this.saveColumnVisibility();
     this.syncSelectedGroups();
   }
 
   // Multiselect - group selection change handler
-  onGroupSelectionChange() {
+  protected onGroupSelectionChange() {
     this.selectedColumnFields = this.allColumns()
       .filter((col) => !col.frozen && this.selectedGroups.includes(col.group))
       .map((col) => col.field);
@@ -428,7 +428,7 @@ export class InventoryComponent implements OnInit {
 
   // 2. Visible column buttons
 
-  applyView(filter: (col: TableColumn) => boolean) {
+  private applyView(filter: (col: TableColumn) => boolean) {
     localStorage.removeItem('inventoryColumnVisibility');
     localStorage.removeItem('inventoryGroupVisibility');
     //Apply predefined column filter
@@ -439,18 +439,18 @@ export class InventoryComponent implements OnInit {
     this.updateVisibleColumns();
   }
 
-  viewDefault() {
+  protected viewDefault() {
     this.applyView((col) => col.visibleByDefault && !col.frozen);
   }
 
-  viewMetadata() {
+  protected viewMetadata() {
     this.applyView((col) => col.group === 'metadata');
   }
 
   // 3. Sort
 
   // Sort table
-  customSort(event: SortEvent): void {
+  protected customSort(event: SortEvent): void {
     if (event.field === this.lastSortField && event.order === 1 && this.lastSortOrder === -1) {
       this.sortField.set(null);
       this.sortOrder.set(1);
@@ -466,38 +466,38 @@ export class InventoryComponent implements OnInit {
   }
 
   // 4. Filter
-  resetFilters(): void {
+  private resetFilters(): void {
     this.columnFilters.set({
       inScope: true, // Reset to default state
     });
   }
 
-  hasActiveFilters(): boolean {
+  private hasActiveFilters(): boolean {
     const filters = this.columnFilters();
     const activeFilterCount = Object.values(filters).filter((v) => v === true).length;
     return activeFilterCount > 1 || !filters['inScope']; // Checks for filters other than inScope
   }
 
   // Track which boolean columns are filtered
-  isColumnFiltered(field: string): boolean {
+  protected isColumnFiltered(field: string): boolean {
     return this.columnFilters()[field] || false;
   }
 
-  toggleColumnFilter(field: string): void {
+  protected toggleColumnFilter(field: string): void {
     this.columnFilters.update((current) => ({
       ...current,
       [field]: !current[field],
     }));
   }
 
-  toggleFlaggedFilter(): void {
+  private toggleFlaggedFilter(): void {
     this.columnFilters.set({
       inScope: this.columnFilters()['anyUnusual'],
       anyUnusual: !this.columnFilters()['anyUnusual'],
     });
   }
 
-  toggleInScopeFilter(): void {
+  private toggleInScopeFilter(): void {
     this.columnFilters.set({
       inScope: !this.columnFilters()['inScope'],
       anyUnusual: false,
@@ -516,12 +516,12 @@ export class InventoryComponent implements OnInit {
   }
 
   // Check if a cell is expanded
-  isCellExpanded(key: string, rowIndex: number, field: string): boolean {
+  protected isCellExpanded(key: string, rowIndex: number, field: string): boolean {
     return this.expandAll[key] || this.expandedCells[key]?.has(`${rowIndex}-${field}`);
   }
 
   // Toggle individual cell
-  toggleCell(key: string, rowIndex: number, field: string) {
+  protected toggleCell(key: string, rowIndex: number, field: string) {
     const cellKey = `${rowIndex}-${field}`;
     const set = this.expandedCells[key];
     if (set.has(cellKey)) {
@@ -532,13 +532,13 @@ export class InventoryComponent implements OnInit {
   }
 
   // Toggle expand all for a group
-  toggleExpandAll(key: string) {
+  private toggleExpandAll(key: string) {
     this.expandAll[key] = !this.expandAll[key];
     if (this.expandAll[key]) this.expandedCells[key]?.clear();
   }
 
   // Check if a group or field has visible columns
-  hasVisible(key: string, byField = false): boolean {
+  private hasVisible(key: string, byField = false): boolean {
     return this.scrollableColumns().some((col) => (byField ? col.field === key : col.group === key));
   }
 
@@ -557,7 +557,7 @@ export class InventoryComponent implements OnInit {
    **********************************************************/
 
   // 1. Refresh (prototype or live data)
-  async refreshData(version: 'live' | 'prototype') {
+  private async refreshData(version: 'live' | 'prototype') {
     if (!this.selectedNodes.length) return;
     const urlVersion = version === 'live' ? 'live' : this.projectState.getProject().repoType === 'github' ? 'protoGH' : 'protoUT';
     this.projectState.refreshing.update((r) => ({ ...r, [version]: true }));
@@ -569,7 +569,7 @@ export class InventoryComponent implements OnInit {
   }
 
   // 2. AI metadata generation
-  async generateMetadata(mode: 'live' | 'prototype' = 'live') {
+  private async generateMetadata(mode: 'live' | 'prototype' = 'live') {
     if (!this.selectedNodes.length) return;
     const urlVersion = mode === 'live' ? 'live' : this.projectState.getProject().repoType === 'github' ? 'protoGH' : 'protoUT';
     for (const node of this.selectedNodes) {
@@ -652,7 +652,7 @@ export class InventoryComponent implements OnInit {
   }
 
   // 2b. Compare metadata fields after editing to determine status
-  compareMetadata(node: FlattenedTreeNode, col: TableColumn) {
+  protected compareMetadata(node: FlattenedTreeNode, col: TableColumn) {
     const compareCol = col.field.slice(2).replace(/^./, (c) => c.toLowerCase());
     const compareValue = (node as unknown as Record<string, unknown>)[compareCol] as string;
     if ((node[col.field] as MetadataField).edited === compareValue) {
@@ -664,16 +664,16 @@ export class InventoryComponent implements OnInit {
     }
   }
 
-  onPasteMetadata(node: FlattenedTreeNode, col: TableColumn) {
+  protected onPasteMetadata(node: FlattenedTreeNode, col: TableColumn) {
     setTimeout(() => this.compareMetadata(node, col), 0);
   }
 
-  onBlurMetadata() {
+  protected onBlurMetadata() {
     this.isEditing = false;
   }
 
   // 2c. Save AI metadata status (NOTE: KEEP THIS AS SEPARATE FUNCTION SINCE IT CALLS TRACK USAGE)
-  saveMetadata(node: FlattenedTreeNode, col: TableColumn, status: MetadataReviewStatus) {
+  private saveMetadata(node: FlattenedTreeNode, col: TableColumn, status: MetadataReviewStatus) {
     //Update FlattenedTreeNode
     (node[col.field] as MetadataField).status = status;
 
@@ -696,7 +696,7 @@ export class InventoryComponent implements OnInit {
   }
 
   // 3. Save new cell value
-  saveCell(newValue: boolean | string) {
+  protected saveCell(newValue: boolean | string) {
     if (!this.currentEditNode || !this.currentEditCol?.dataSection) return;
     const path = this.lang === 'fr' ? this.currentEditNode['frPath'] : this.currentEditNode['enPath'];
     const node = this.projectState.findNodeByPath(this.projectState.getProjectTree(), path, this.lang);
@@ -725,11 +725,11 @@ export class InventoryComponent implements OnInit {
     }
   }
 
-  getNestedValue(obj: TreeNodeData, path: string[]): TreeNodeTypes {
+  private getNestedValue(obj: TreeNodeData, path: string[]): TreeNodeTypes {
     return path.reduce((current: unknown, key: string) => (current && typeof current === 'object' ? (current as Record<string, unknown>)[key] : undefined), obj as unknown) as TreeNodeTypes;
   }
 
-  setNestedValue(obj: TreeNodeData, path: string[], value: TreeNodeTypes): void {
+  private setNestedValue(obj: TreeNodeData, path: string[], value: TreeNodeTypes): void {
     const last = path[path.length - 1];
     const target = path.slice(0, -1).reduce(
       (current: Record<string, unknown>, key: string) => {
@@ -756,7 +756,7 @@ export class InventoryComponent implements OnInit {
    **********************************************************/
 
   // 1. Dropdown menus (p-menu)
-  updateDropdown(mode: 'actions' | 'view' | 'newTab', path?: string) {
+  protected updateDropdown(mode: 'actions' | 'view' | 'newTab', path?: string) {
     switch (mode) {
       case 'actions': {
         const numPages = this.selectedNodes.length;
@@ -947,7 +947,7 @@ export class InventoryComponent implements OnInit {
   // 2. Context menus (for flipping booleans & updating AI text)
 
   // Update context menu
-  updateContext(event: MouseEvent | TouchEvent, type: 'boolean' | 'aiText', field: string, value: boolean | MetadataField) {
+  private updateContext(event: MouseEvent | TouchEvent, type: 'boolean' | 'aiText', field: string, value: boolean | MetadataField) {
     this.itemsContext = [];
     switch (type) {
       case 'boolean': {
@@ -1027,17 +1027,17 @@ export class InventoryComponent implements OnInit {
   }
 
   // Highlights cells with context menu or inline editing (on right click or long press)
-  hasContextMenu(group: string, type: string): boolean {
+  protected hasContextMenu(group: string, type: string): boolean {
     return ['status'].includes(group) || ['template', 'aiText', 'textArea'].includes(type);
   }
 
-  onTouchStart(event: TouchEvent, node: FlattenedTreeNode, col: TableColumn) {
+  protected onTouchStart(event: TouchEvent, node: FlattenedTreeNode, col: TableColumn) {
     this.touchTimer = setTimeout(() => {
       this.onRightClick(event, node, col);
     }, 500); // 500ms long press
   }
 
-  onTouchEnd() {
+  protected onTouchEnd() {
     if (this.touchTimer) {
       clearTimeout(this.touchTimer);
       this.touchTimer = null;
@@ -1045,7 +1045,7 @@ export class InventoryComponent implements OnInit {
   }
 
   // End editing when clicking outside of cell
-  onLeftClick(node: FlattenedTreeNode, col: TableColumn) {
+  protected onLeftClick(node: FlattenedTreeNode, col: TableColumn) {
     if (node !== this.currentEditNode) {
       this.currentEditNode = undefined;
     }
@@ -1055,7 +1055,7 @@ export class InventoryComponent implements OnInit {
   }
 
   // Start editing inline or open context menu
-  onRightClick(event: MouseEvent | TouchEvent, node: FlattenedTreeNode, col: TableColumn) {
+  protected onRightClick(event: MouseEvent | TouchEvent, node: FlattenedTreeNode, col: TableColumn) {
     event.preventDefault();
     if (!this.hasContextMenu(col.group, col.type)) return;
     this.isEditing = false;
@@ -1088,12 +1088,12 @@ export class InventoryComponent implements OnInit {
     }
   }
 
-  isEditingCell(node: FlattenedTreeNode, col: TableColumn, requireConfirm = false) {
+  protected isEditingCell(node: FlattenedTreeNode, col: TableColumn, requireConfirm = false) {
     return this.currentEditNode === node && this.currentEditCol === col && (requireConfirm ? this.isEditing : true);
   }
 
   // 3. Template dropdown options
-  get templateOptions() {
+  protected get templateOptions() {
     return Object.values(PageTemplate)
       .map((key) => ({
         value: key,
@@ -1103,18 +1103,18 @@ export class InventoryComponent implements OnInit {
   }
 
   // 4. Dialog popup (edit node)
-  get currentLang() {
+  protected get currentLang() {
     return this.translate.currentLang()?.startsWith('fr') ? 'fr' : 'en';
   }
 
-  edit(node: FlattenedTreeNode) {
+  protected edit(node: FlattenedTreeNode) {
     const path = this.lang === 'fr' ? node.frPath : node.enPath;
     this.selectedNode = this.projectState.findNodeByPath(this.projectState.getProjectTree(), path, this.lang) ?? {};
     this.editNode = true;
   }
 
   // 5. Confirmation dialogs (deletions)
-  onDeleteSelected() {
+  private onDeleteSelected() {
     if (!this.selectedNodes.length) return;
     const additionalDeletions = this.projectState.checkDeletionImpact(this.selectedNodes);
     if (additionalDeletions.length > 0) {
@@ -1194,7 +1194,7 @@ export class InventoryComponent implements OnInit {
   }
 
   // 5. Open in UPD
-  openInUPD(node: FlattenedTreeNode): void {
+  protected openInUPD(node: FlattenedTreeNode): void {
     const updLink = this.fetchService.generateUrl(this.lang === 'fr' ? node.frPath : node.enPath, 'upd');
     window.open(updLink, '_blank');
   }

@@ -29,7 +29,7 @@ export class UserSettingsComponent {
   private readonly translate = inject(TranslateService);
   private readonly projectState = inject(ProjectStateService);
 
-  mode = input<SettingsMode>('all');
+  public readonly mode = input<SettingsMode>('all');
 
   constructor() {
     effect(() => {
@@ -39,37 +39,37 @@ export class UserSettingsComponent {
   }
 
   // Language
-  get langOptions(): MenuItem[] {
+  protected get langOptions(): MenuItem[] {
     return [
       { label: this.translate.instant('common.language.english'), value: 'en' },
       { label: this.translate.instant('common.language.french'), value: 'fr' },
     ];
   }
 
-  get selectedLang(): string {
+  protected get selectedLang(): string {
     return this.settingsService.currentLang();
   }
 
-  set selectedLang(value: string) {
+  protected set selectedLang(value: string) {
     this.settingsService.setLanguage(value);
   }
 
   // Dark & Light theme
-  get themeOptions(): MenuItem[] {
+  protected get themeOptions(): MenuItem[] {
     return [
       { label: this.translate.instant('settings.theme.light'), value: false },
       { label: this.translate.instant('settings.theme.dark'), value: true },
     ];
   }
 
-  selectedTheme: boolean = this.settingsService.darkMode();
+  protected selectedTheme: boolean = this.settingsService.darkMode();
 
-  changeTheme() {
+  protected changeTheme() {
     this.settingsService.toggle();
   }
 
   // Default & other themes
-  get colorSchemes(): MenuItem[] {
+  protected get colorSchemes(): MenuItem[] {
     return [
       { label: this.translate.instant('settings.theme.default'), value: 'default' as ColorScheme },
       { label: this.translate.instant('settings.theme.deutan'), value: 'deutan' as ColorScheme },
@@ -79,14 +79,14 @@ export class UserSettingsComponent {
     ];
   }
 
-  selectedScheme = this.settingsService.colorScheme();
+  protected selectedScheme = this.settingsService.colorScheme();
 
-  changeScheme() {
+  protected changeScheme() {
     this.settingsService.setColorScheme(this.selectedScheme);
   }
 
   // Versions
-  get versionOptions(): MenuItem[] {
+  protected get versionOptions(): MenuItem[] {
     const options = [
       { label: this.translate.instant('common.source.preview'), value: this.settingsService.includePreview },
       { label: this.translate.instant('project.repo.storage.github'), value: this.settingsService.includeGitHub },
@@ -98,9 +98,9 @@ export class UserSettingsComponent {
     return options;
   }
 
-  showVersionHelp = false;
+  protected showVersionHelp = false;
 
-  markForTranslation() {
+  private markForTranslation() {
     marker('settings.versions.help');
   }
 }

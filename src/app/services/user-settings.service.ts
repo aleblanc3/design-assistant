@@ -22,27 +22,27 @@ export class UserSettingsService {
   private readonly title = inject(Title);
 
   // Language
-  public currentLang = signal<string>('en');
+  public readonly currentLang = signal<string>('en');
 
   // Dark & Light themes
-  public darkMode = signal<boolean>(false);
-  public icon = signal<string>('pi pi-sun');
+  public readonly darkMode = signal<boolean>(false);
+  public readonly icon = signal<string>('pi pi-sun');
 
   // Default & Colorblind themes
-  private colorSchemeKey = 'color-scheme';
-  colorScheme = signal<ColorScheme>(this.getStoredColorScheme());
+  private readonly colorSchemeKey = 'color-scheme';
+  public readonly colorScheme = signal<ColorScheme>(this.getStoredColorScheme());
 
   // Toolbox visibility (used by sidebar, undecided if we should surface in user settings)
-  toolbox = signal<string | null>(localStorage.getItem('myToolbox'));
+  public readonly toolbox = signal<string | null>(localStorage.getItem('myToolbox'));
 
   // User
-  public userId = signal<string>(this.getOrCreateUserId());
+  public readonly userId = signal<string>(this.getOrCreateUserId());
 
   //Version
-  public includePreview = signal<boolean>(localStorage.getItem('includePreview') === 'true' ? true : false);
-  public includeGitHub = signal<boolean>(false);
-  public includeLocal = signal<boolean>(false);
-  public includeBaseline = signal<boolean>(false);
+  public readonly includePreview = signal<boolean>(localStorage.getItem('includePreview') === 'true' ? true : false);
+  public readonly includeGitHub = signal<boolean>(false);
+  public readonly includeLocal = signal<boolean>(false);
+  public readonly includeBaseline = signal<boolean>(false);
 
   constructor() {
     // Language
@@ -66,7 +66,7 @@ export class UserSettingsService {
   }
 
   // Language
-  setLanguage(lang: string) {
+  public setLanguage(lang: string) {
     const useLang = lang === 'en' ? 'en' : 'fr';
     this.currentLang.set(useLang);
     this.translate.use(useLang);
@@ -74,7 +74,7 @@ export class UserSettingsService {
     console.log(`Language set to ${useLang}`);
   }
 
-  toggleLanguage() {
+  public toggleLanguage() {
     const newLang = this.currentLang() === 'en' ? 'fr' : 'en';
     this.setLanguage(newLang);
     //Update title on language change
@@ -87,7 +87,7 @@ export class UserSettingsService {
   }
 
   // Dark & Light
-  setDarkMode(enabled: boolean) {
+  private setDarkMode(enabled: boolean) {
     this.darkMode.set(enabled);
     localStorage.setItem('darkMode', String(enabled));
     document.documentElement.classList.toggle('dark-mode', enabled);
@@ -95,7 +95,7 @@ export class UserSettingsService {
     console.log(`Dark mode set to ${enabled}`);
   }
 
-  toggle() {
+  public toggle() {
     this.setDarkMode(!this.darkMode());
   }
 
@@ -105,7 +105,7 @@ export class UserSettingsService {
     return stored === 'deutan' || stored === 'protan' || stored === 'tritan' || stored === 'custom' || stored === 'default' ? stored : 'default';
   }
 
-  setColorScheme(scheme: ColorScheme) {
+  public setColorScheme(scheme: ColorScheme) {
     this.colorScheme.set(scheme);
     localStorage.setItem(this.colorSchemeKey, scheme);
   }
@@ -149,7 +149,7 @@ export class UserSettingsService {
     return id;
   }
 
-  setUserId(id: string): void {
+  public setUserId(id: string): void {
     localStorage.setItem('userId', id);
     this.userId.set(id);
   }

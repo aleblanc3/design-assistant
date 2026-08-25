@@ -48,20 +48,20 @@ NO persistence logic (that goes to ProjectStorageService)*/
 
 @Injectable({ providedIn: 'root' })
 export class ProjectStateService {
-  private translate = inject(TranslateService);
-  private projectStorageService = inject(ProjectStorageService);
-  private collaboratorService = inject(CollaboratorService);
-  private fetchService = inject(FetchService);
-  private airtableService = inject(AirtableService);
-  private updService = inject(UpdService);
-  private vanityService = inject(VanityService);
-  private usageService = inject(UsageService);
-  private exportGitHubService = inject(ExportGitHubService);
+  private readonly translate = inject(TranslateService);
+  private readonly projectStorageService = inject(ProjectStorageService);
+  private readonly collaboratorService = inject(CollaboratorService);
+  private readonly fetchService = inject(FetchService);
+  private readonly airtableService = inject(AirtableService);
+  private readonly updService = inject(UpdService);
+  private readonly vanityService = inject(VanityService);
+  private readonly usageService = inject(UsageService);
+  private readonly exportGitHubService = inject(ExportGitHubService);
 
-  private currentLang = signal<string>(this.translate.currentLang() ?? 'en');
+  private readonly currentLang = signal<string>(this.translate.currentLang() ?? 'en');
 
   // Main project state
-  private project = signal<Project>({
+  private readonly project = signal<Project>({
     id: this.generateId(),
     key: '',
     version: appVersion,
@@ -86,13 +86,13 @@ export class ProjectStateService {
     projectData: [],
   });
 
-  getProject = computed(() => this.project());
+  public readonly getProject = computed(() => this.project());
 
-  getGitHub = computed(() => this.project().github);
+  public readonly getGitHub = computed(() => this.project().github);
 
   // Track save status
-  private saveStatus = signal<SaveStatus>('saved');
-  public getSaveStatus = computed(() => this.saveStatus());
+  private readonly saveStatus = signal<SaveStatus>('saved');
+  public readonly getSaveStatus = computed(() => this.saveStatus());
 
   // Set autosave delay
   private autoSaveTimer: ReturnType<typeof setTimeout> | null = null;
@@ -100,7 +100,7 @@ export class ProjectStateService {
   private readonly MAX_UNSAVED_DURATION = 5 * 60 * 1000; // 5 minutes
 
   // Loading states for project versions
-  readonly refreshing = signal<{ prototype: boolean; live: boolean; baseline: boolean }>({
+  public readonly refreshing = signal<{ prototype: boolean; live: boolean; baseline: boolean }>({
     prototype: false,
     live: false,
     baseline: false,
@@ -143,12 +143,12 @@ export class ProjectStateService {
   }
 
   // Set entire project
-  setProject(project: Project) {
+  public setProject(project: Project) {
     this.project.set(project);
   }
 
   // Update project metadata
-  setProjectName(name: string) {
+  public setProjectName(name: string) {
     this.project.update((curr) => ({
       ...curr,
       projectName: name,
@@ -165,7 +165,7 @@ export class ProjectStateService {
     }
   }
 
-  setProjectPhase(phase: ProjectPhase) {
+  public setProjectPhase(phase: ProjectPhase) {
     this.project.update((curr) => ({
       ...curr,
       phase: phase,
@@ -173,7 +173,7 @@ export class ProjectStateService {
     }));
   }
 
-  setGitHubRepo(gitHubData: Partial<GitHubRepo>) {
+  public setGitHubRepo(gitHubData: Partial<GitHubRepo>) {
     this.project.update((curr) => ({
       ...curr,
       github: { ...curr.github, ...gitHubData },
@@ -188,7 +188,7 @@ export class ProjectStateService {
     }
   }
 
-  setCollaborators(collaborators: GitHubUser[]) {
+  public setCollaborators(collaborators: GitHubUser[]) {
     this.project.update((curr) => ({
       ...curr,
       collaborators,
@@ -196,7 +196,7 @@ export class ProjectStateService {
     }));
   }
 
-  setStorageType(type: 'local' | 'cloud') {
+  public setStorageType(type: 'local' | 'cloud') {
     this.project.update((curr) => ({
       ...curr,
       storageType: type,
@@ -204,7 +204,7 @@ export class ProjectStateService {
     }));
   }
 
-  setRepoType(type: 'local' | 'github') {
+  public setRepoType(type: 'local' | 'github') {
     this.project.update((curr) => ({
       ...curr,
       repoType: type,
@@ -212,7 +212,7 @@ export class ProjectStateService {
     }));
   }
 
-  setPageSha(path: string, sha: string, version: 'prototype' | 'baseline' = 'prototype', lang: 'en' | 'fr' = 'en'): void {
+  public setPageSha(path: string, sha: string, version: 'prototype' | 'baseline' = 'prototype', lang: 'en' | 'fr' = 'en'): void {
     const tree = this.getProjectTree();
     const node = this.findNodeByPath(tree, path, lang);
 
@@ -229,7 +229,7 @@ export class ProjectStateService {
     }
   }
 
-  setMetadataReview(path: string, review: MetadataReview, promptConfig?: object): void {
+  public setMetadataReview(path: string, review: MetadataReview, promptConfig?: object): void {
     const tree = this.getProjectTree();
     const lang = this.fetchService.getLang(path) ?? 'en';
     const node = this.findNodeByPath(tree, path, lang);
@@ -257,7 +257,7 @@ export class ProjectStateService {
     }
   }
 
-  setExportDate(): void {
+  public setExportDate(): void {
     this.project.update((p) => ({
       ...p,
       lastModified: new Date(),
@@ -265,7 +265,7 @@ export class ProjectStateService {
     }));
   }
 
-  setDownloadDate(): void {
+  public setDownloadDate(): void {
     this.project.update((p) => ({
       ...p,
       lastModified: new Date(),
@@ -273,7 +273,7 @@ export class ProjectStateService {
     }));
   }
 
-  setModifiedDate(): void {
+  public setModifiedDate(): void {
     this.project.update((p) => ({
       ...p,
       lastModified: new Date(),
@@ -281,9 +281,9 @@ export class ProjectStateService {
   }
 
   // Get project tree
-  getProjectTree = computed(() => this.project().projectData);
+  public readonly getProjectTree = computed(() => this.project().projectData);
 
-  setProjectTree(tree: TreeNode<ProjectTreeNodeData>[]) {
+  public setProjectTree(tree: TreeNode<ProjectTreeNodeData>[]) {
     const baselineCount = this.countPages('baseline');
     const inScopeCount = this.countPages('inScope');
     this.project.update((curr) => ({
@@ -311,7 +311,7 @@ export class ProjectStateService {
     return count;
   }
 
-  setScope(urls: string[]): void {
+  public setScope(urls: string[]): void {
     const currentTree = this.project().projectData;
     const traverse = (nodes: TreeNode<ProjectTreeNodeData>[]) => {
       for (const node of nodes) {
@@ -326,7 +326,7 @@ export class ProjectStateService {
   }
 
   // Check if URL already exists in tree
-  urlExists(url: string): boolean {
+  public urlExists(url: string): boolean {
     const urlLang = this.fetchService.getLang(url);
     if (!urlLang) return false;
     const urlPath = this.fetchService.generatePath(url);
@@ -341,7 +341,7 @@ export class ProjectStateService {
   }
 
   // TODO: refactor getAllUrls and getAllPages to use new data structure
-  getAllPages(lang: 'en' | 'fr', urlVersion: SourceVersion = 'protoGH', scope: 'all' | 'inScope' = 'all'): { label: string; path: string; url: string }[] {
+  public getAllPages(lang: 'en' | 'fr', urlVersion: SourceVersion = 'protoGH', scope: 'all' | 'inScope' = 'all'): { label: string; path: string; url: string }[] {
     const version = urlVersion.startsWith('proto') ? 'prototype' : urlVersion.startsWith('base') ? 'baseline' : 'live';
     const pages: { label: string; path: string; url: string }[] = [];
     const traverse = (nodes: TreeNode<TreeNodeData>[]) => {
@@ -361,7 +361,7 @@ export class ProjectStateService {
     return pages;
   }
 
-  getPairedPages(
+  public getPairedPages(
     urlVersion: SourceVersion = 'protoGH',
     scope: 'all' | 'inScope' = 'all',
   ): { en: { label: string; path: string; url: string; group: string }; fr: { label: string; path: string; url: string; group: string }; status: string }[] {
@@ -406,14 +406,14 @@ export class ProjectStateService {
   }
 
   //Template options
-  public templateOptions = computed(() =>
+  public readonly templateOptions = computed(() =>
     Object.values(PageTemplate)
       .map((key) => ({ value: key, label: this.translate.instant(key) }))
       .sort((a, b) => a.label.localeCompare(b.label, this.translate.currentLang())),
   );
 
   //TreeNode lookup
-  findNodeByPath(nodes: TreeNode[], path: string, lang: 'en' | 'fr' = 'en'): TreeNode | null {
+  public findNodeByPath(nodes: TreeNode[], path: string, lang: 'en' | 'fr' = 'en'): TreeNode | null {
     for (const node of nodes) {
       const nodeUrl = node.data.path[lang];
       if (nodeUrl === path) {
@@ -428,7 +428,7 @@ export class ProjectStateService {
   }
 
   // Get project state for saving (with circular references removed)
-  getProjectToSave(): Project {
+  public getProjectToSave(): Project {
     const currentProject = this.project();
     return {
       ...currentProject,
@@ -440,7 +440,7 @@ export class ProjectStateService {
    * Save project (manual or auto-save)
    * Cancels any pending auto-save timer
    */
-  async saveProject(): Promise<boolean> {
+  public async saveProject(): Promise<boolean> {
     // Cancel pending auto-save
     if (this.autoSaveTimer) {
       clearTimeout(this.autoSaveTimer);
@@ -494,7 +494,7 @@ export class ProjectStateService {
   /**
    * Check if there are unsaved changes
    */
-  hasUnsavedChanges(): boolean {
+  private hasUnsavedChanges(): boolean {
     const project = this.project();
     return project.lastModified > project.lastSaved;
   }
@@ -502,7 +502,7 @@ export class ProjectStateService {
   /**
    * Save if there are unsaved changes (used before project switch or app close)
    */
-  async saveIfNeeded(): Promise<boolean> {
+  private async saveIfNeeded(): Promise<boolean> {
     if (this.hasUnsavedChanges()) {
       return await this.saveProject();
     }
@@ -510,7 +510,7 @@ export class ProjectStateService {
   }
 
   // Export as JSON
-  exportProjectAsJson() {
+  public exportProjectAsJson() {
     const project = this.getProjectToSave();
     const data = JSON.stringify(project, null, 2);
     const blob = new Blob([data], { type: 'application/json' });
@@ -526,7 +526,7 @@ export class ProjectStateService {
   }
 
   // Import from JSON
-  importProjectFromJson(jsonString: string): boolean {
+  public importProjectFromJson(jsonString: string): boolean {
     try {
       const project: Project = JSON.parse(jsonString);
 
@@ -553,7 +553,7 @@ export class ProjectStateService {
   }
 
   // Reset project
-  async resetProject() {
+  public async resetProject() {
     // Save current project if needed before resetting
     this.saveIfNeeded();
 
@@ -586,7 +586,7 @@ export class ProjectStateService {
     console.log('Project reset');
   }
 
-  flattenTree(): FlattenedTreeNode[] {
+  public flattenTree(): FlattenedTreeNode[] {
     const tree = this.project().projectData;
     const flatNodes: FlattenedTreeNode[] = [];
 
@@ -663,7 +663,7 @@ export class ProjectStateService {
     return flatNodes;
   }
 
-  treeTableColumns = computed<TableColumn[]>(() => {
+  public readonly treeTableColumns = computed<TableColumn[]>(() => {
     const lang = this.currentLang().startsWith('fr') ? 'fr' : 'en';
     const enPrimary = lang !== 'fr' ? true : false;
     const frPrimary = lang === 'fr' ? true : false;
@@ -774,7 +774,7 @@ export class ProjectStateService {
     return actions;
   }
 
-  exportTreeAsCsv() {
+  public exportTreeAsCsv() {
     const tree = this.project().projectData;
     const rows: string[] = [];
     const lang = this.detectPrimaryLanguage();
@@ -912,7 +912,7 @@ export class ProjectStateService {
   }
 
   //For tree testing in Optimal Workshop or similar tools
-  exportAsTreeCsv() {
+  public exportAsTreeCsv() {
     const tree = this.project().projectData;
     const lang = this.detectPrimaryLanguage();
 
@@ -1028,7 +1028,7 @@ export class ProjectStateService {
       .join('-'); // Join with hyphens
   }
 
-  deleteNodes(selectedPages: FlattenedTreeNode[], canDeleteRoot = false) {
+  public deleteNodes(selectedPages: FlattenedTreeNode[], canDeleteRoot = false) {
     const projectTree = this.getProjectTree();
     const lang = this.detectPrimaryLanguage();
 
@@ -1077,7 +1077,7 @@ export class ProjectStateService {
   }
 
   // Check for child pages that will be deleted (so component UI can display a warning)
-  checkDeletionImpact(selectedPages: FlattenedTreeNode[]): { url: string; h1: string; inScope: boolean }[] {
+  public checkDeletionImpact(selectedPages: FlattenedTreeNode[]): { url: string; h1: string; inScope: boolean }[] {
     const projectTree = this.getProjectTree();
     const lang = this.detectPrimaryLanguage();
     const selectedUrls = new Set(lang === 'fr' ? selectedPages.map((p) => p.frPath) : selectedPages.map((p) => p.enPath));
@@ -1155,10 +1155,10 @@ export class ProjectStateService {
   }
 
   //Store settings for inventory table
-  selectedInventoryView: 'table' | 'tree' = 'table';
+  public selectedInventoryView: 'table' | 'tree' = 'table';
 
   // Get breadcrumb chain by url
-  getBreadcrumbChain(path: string, lang: 'en' | 'fr' = 'en'): { title: string; link: string }[] {
+  public getBreadcrumbChain(path: string, lang: 'en' | 'fr' = 'en'): { title: string; link: string }[] {
     const breadcrumbs: { title: string; link: string }[] = [];
 
     const findAndBuildChain = (nodes: TreeNode<TreeNodeData>[], targetPath: string, ancestors: TreeNode<TreeNodeData>[] = []): boolean => {
@@ -1498,7 +1498,7 @@ export class ProjectStateService {
   }
 
   // Get first URL from project to determine primary language
-  detectPrimaryLanguage(): 'en' | 'fr' {
+  public detectPrimaryLanguage(): 'en' | 'fr' {
     const nodes = this.getProjectTree();
     if (nodes.length > 0 && nodes[0].children && nodes[0].children.length > 0) {
       if (nodes[0].children[0].data.lang) {
@@ -1512,7 +1512,7 @@ export class ProjectStateService {
   }
 
   // Move a node to a different parent
-  moveNode(node: TreeNode, newParent: TreeNode): 'success' | 'circular' {
+  public moveNode(node: TreeNode, newParent: TreeNode): 'success' | 'circular' {
     // Guard against circular moves
     if (node === newParent || this.isAncestor(newParent, node)) {
       return 'circular';
@@ -1575,7 +1575,7 @@ export class ProjectStateService {
   }
 
   // Reorder a node among its siblings
-  reorderNode(node: TreeNode, direction: 'left' | 'right'): 'success' | 'no-parent' | 'at-boundary' {
+  public reorderNode(node: TreeNode, direction: 'left' | 'right'): 'success' | 'no-parent' | 'at-boundary' {
     if (!node.parent) return 'no-parent';
 
     const siblings = node.parent.children ?? [];
@@ -1592,20 +1592,20 @@ export class ProjectStateService {
     return 'success';
   }
 
-  getSiblings(node: TreeNode): TreeNode[] {
+  public getSiblings(node: TreeNode): TreeNode[] {
     if (!node.parent) return [];
     return node.parent.children ?? [];
   }
 
   // Clone so we don't edit the working copy if the IA tree
-  cloneTree(nodes: TreeNode[]): TreeNode[] {
+  public cloneTree(nodes: TreeNode[]): TreeNode[] {
     const clonedTree = structuredClone(nodes);
     this.projectStorageService.rebuildParents(clonedTree, undefined);
     return clonedTree;
   }
 
   // Restore moved pages to their original position and remove new pages
-  getBaselineTree(nodes: TreeNode[], mode: 'full' | 'custom' = 'full'): TreeNode[] {
+  public getBaselineTree(nodes: TreeNode[], mode: 'full' | 'custom' = 'full'): TreeNode[] {
     // Clone so we don't edit the working copy if the IA tree
     const clonedTree = this.cloneTree(nodes);
     const lang = this.detectPrimaryLanguage();
@@ -1649,7 +1649,7 @@ export class ProjectStateService {
   }
 
   // Remove ROT pages
-  getFinalTree(nodes: TreeNode[]): TreeNode[] {
+  public getFinalTree(nodes: TreeNode[]): TreeNode[] {
     // Clone so we don't edit the working copy if the IA tree
     const clonedTree = this.cloneTree(nodes);
     // Remove ROT
@@ -1658,7 +1658,7 @@ export class ProjectStateService {
   }
 
   // Remove collapsed or hidden pages
-  getDisplayTree(nodes: TreeNode[], collapsedUrls: Set<string>, hiddenUrls: Set<string>, navUrls: Map<string, string[]>): TreeNode[] {
+  public getDisplayTree(nodes: TreeNode[], collapsedUrls: Set<string>, hiddenUrls: Set<string>, navUrls: Map<string, string[]>): TreeNode[] {
     const clonedTree = this.cloneTree(nodes);
     if (navUrls.size > 0) this.applyNavState(clonedTree, navUrls);
     if (hiddenUrls.size > 0) this.applyHiddenState(clonedTree, hiddenUrls);

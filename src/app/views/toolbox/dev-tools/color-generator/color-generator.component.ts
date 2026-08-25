@@ -21,7 +21,20 @@ import { UserSettingsService } from '../../../../services/user-settings.service'
 @Component({
   selector: 'aida-color-generator',
   standalone: true,
-  imports: [FormsModule, RouterLink, TranslatePipe, BadgeModule, BreadcrumbModule, ButtonModule, DividerModule, MessageModule, TagModule, ColorPickerComponent, CopyPresetComponent, UserSettingsComponent],
+  imports: [
+    FormsModule,
+    RouterLink,
+    TranslatePipe,
+    BadgeModule,
+    BreadcrumbModule,
+    ButtonModule,
+    DividerModule,
+    MessageModule,
+    TagModule,
+    ColorPickerComponent,
+    CopyPresetComponent,
+    UserSettingsComponent,
+  ],
   templateUrl: './color-generator.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -28,18 +28,18 @@ import { IaDiagramService } from './ia-diagram.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IaDiagramComponent {
-  private projectState = inject(ProjectStateService);
-  public projectCache = inject(ProjectCacheService);
-  private translate = inject(TranslateService);
-  public iaDiagram = inject(IaDiagramService);
-  private treeNodeStyleService = inject(TreeNodeStyleService);
-  public addUrlsService = inject(AddUrlsService);
-  private fetchService = inject(FetchService);
+  private readonly projectState = inject(ProjectStateService);
+  protected readonly projectCache = inject(ProjectCacheService);
+  private readonly translate = inject(TranslateService);
+  protected readonly iaDiagram = inject(IaDiagramService);
+  private readonly treeNodeStyleService = inject(TreeNodeStyleService);
+  protected readonly addUrlsService = inject(AddUrlsService);
+  private readonly fetchService = inject(FetchService);
 
-  primaryLang = this.projectState.detectPrimaryLanguage();
+  protected readonly primaryLang = this.projectState.detectPrimaryLanguage();
 
   //Signals
-  projectData = this.projectState.getProject;
+  private readonly projectData = this.projectState.getProject;
 
   constructor() {
     effect(() => {
@@ -48,7 +48,7 @@ export class IaDiagramComponent {
     });
   }
 
-  projectTree = computed(() => {
+  protected readonly projectTree = computed(() => {
     let tree = this.projectState.getProject().projectData;
     //Adjustments for full tree or custom root
     if (this.selectedTree() !== 'full') {
@@ -72,7 +72,7 @@ export class IaDiagramComponent {
   });
 
   // Display H1
-  getH1Display(node: TreeNode): string {
+  protected getH1Display(node: TreeNode): string {
     const lang = this.projectCache.selectedLang();
     const liveH1 = node.data?.live?.[lang]?.h1 ?? '';
     const protoH1 = node.data?.prototype?.[lang]?.h1 ?? '';
@@ -84,16 +84,16 @@ export class IaDiagramComponent {
   }
 
   //Tree options
-  selectedTree = signal<'full' | string>('full');
+  private readonly selectedTree = signal<'full' | string>('full');
 
   //Menu options
   @ViewChild('menu') menu!: Menu;
-  items: MenuItem[] = [];
+  protected items: MenuItem[] = [];
 
-  editNode = false;
-  selectedNode: TreeNode = {};
+  protected editNode = false;
+  protected selectedNode: TreeNode = {};
 
-  onMenuClick(event: MouseEvent, node: TreeNode) {
+  protected onMenuClick(event: MouseEvent, node: TreeNode) {
     if (!node.data.path[this.primaryLang]) return;
     const projectNode = this.projectState.findNodeByPath(this.projectData().projectData, node.data.path[this.primaryLang], this.primaryLang);
     if (!projectNode) return;
@@ -284,20 +284,20 @@ export class IaDiagramComponent {
   }
 
   // Show/hide pages or children
-  collapsedNodes = signal<Set<string>>(new Set());
-  hiddenNodes = signal<Set<string>>(new Set());
-  navNodes = signal<Map<string, string[]>>(new Map());
+  private readonly collapsedNodes = signal<Set<string>>(new Set());
+  private readonly hiddenNodes = signal<Set<string>>(new Set());
+  private readonly navNodes = signal<Map<string, string[]>>(new Map());
 
   // Drag & drop
-  dragNode = signal<TreeNode | null>(null);
-  dropTarget = signal<TreeNode | null>(null);
+  private readonly dragNode = signal<TreeNode | null>(null);
+  private readonly dropTarget = signal<TreeNode | null>(null);
 
-  onDragStart(node: TreeNode) {
+  protected onDragStart(node: TreeNode) {
     if (this.projectCache.selectedViewIA() !== 'changes') return;
     this.dragNode.set(node);
   }
 
-  onDragOver(event: DragEvent, node: TreeNode) {
+  protected onDragOver(event: DragEvent, node: TreeNode) {
     event.preventDefault(); // required to allow drop
     if (this.projectCache.selectedViewIA() !== 'changes') return;
     if (node.data.path[this.primaryLang] !== this.dragNode()?.data?.path[this.primaryLang]) {
@@ -305,14 +305,14 @@ export class IaDiagramComponent {
     }
   }
 
-  onDragLeave(node: TreeNode) {
+  protected onDragLeave(node: TreeNode) {
     if (this.projectCache.selectedViewIA() !== 'changes') return;
     if (this.dropTarget()?.data?.path[this.primaryLang] === node.data.path[this.primaryLang]) {
       this.dropTarget.set(null);
     }
   }
 
-  onDrop() {
+  protected onDrop() {
     if (this.projectCache.selectedViewIA() !== 'changes') return;
     const drag = this.dragNode();
     const drop = this.dropTarget();

@@ -17,20 +17,20 @@ export interface GitHubFileRequest {
 
 @Injectable({ providedIn: 'root' })
 export class ExportGitHubService {
-  private fetchService = inject(FetchService);
-  private authService = inject(GitHubAuthService);
-  templateOrg = environment.templateOrg;
+  private readonly fetchService = inject(FetchService);
+  private readonly authService = inject(GitHubAuthService);
+  private readonly templateOrg = environment.templateOrg;
 
   // Manage GitHub token & user integration from OAuth and PAT
-  token = computed(() => (this.authService.isAuthenticated() ? (this.authService.getToken() ?? '') : this.patToken()));
+  public readonly token = computed(() => (this.authService.isAuthenticated() ? (this.authService.getToken() ?? '') : this.patToken()));
 
-  user = computed(() => (this.authService.isAuthenticated() ? this.authService.user() : this.patUser()));
+  public readonly user = computed(() => (this.authService.isAuthenticated() ? this.authService.user() : this.patUser()));
 
   // PAT - token (fallback access when OAuth not available)
   private readonly PAT_STORAGE_KEY = 'github_pat';
   private readonly PAT_USER_STORAGE_KEY = 'github_pat_user';
-  private patToken = signal<string>(this.loadPAT());
-  private patUser = signal<GitHubUser | null>(this.loadPATUser());
+  private readonly patToken = signal<string>(this.loadPAT());
+  private readonly patUser = signal<GitHubUser | null>(this.loadPATUser());
 
   public get pat(): string {
     return this.patToken();
@@ -651,7 +651,7 @@ Disallow: /
   }
 
   //Set up README.md <-- add mermaid chart to this
-  async createInitialReadme(owner: string, repo: string, branch: string, token: string, projectName: string, existingFiles: Map<string, string>, treeNodes?: TreeNode[]) {
+  private async createInitialReadme(owner: string, repo: string, branch: string, token: string, projectName: string, existingFiles: Map<string, string>, treeNodes?: TreeNode[]) {
     const filename = 'README.md';
     const date = new Date();
     const today = date.toISOString().split('T')[0];
@@ -957,7 +957,7 @@ ${mermaidChart}
     return btoa(binary);
   }
 
-  async exportToGitHub(
+  public async exportToGitHub(
     owner: string,
     repo: string,
     branch: string,
@@ -1127,7 +1127,7 @@ ${mermaidChart}
   }
 
   // Pull request method for prompt updates
-  async createPullRequestForPrompts(category: string, path: string, filename: string, content: string): Promise<{ prUrl: string; branchName: string }> {
+  public async createPullRequestForPrompts(category: string, path: string, filename: string, content: string): Promise<{ prUrl: string; branchName: string }> {
     const owner = this.templateOrg;
     const repo = 'ai-design-assistant';
     const baseBranch = 'dev';

@@ -10,32 +10,19 @@ import { ContrastUtil } from '../../../../common/contrast.util';
   selector: 'aida-copy-preset',
   standalone: true,
   imports: [ButtonModule, TextareaModule],
-  template: `
-    <div class="surface-card border-round p-4">
-      <div class="flex align-items-center justify-content-between mb-3">
-        <h3 class="m-0">Custom preset code</h3>
-        <p-button [severity]="copied() ? 'success' : 'primary'" (onClick)="copyToClipboard()" icon="pi pi-copy" label="Copy to clipboard" size="small" />
-      </div>
-
-      <p class="text-sm text-color-secondary mb-3">
-        {{ copied() ? 'Copied! Send this to the AIDA development team.' : 'Copy this code to share your custom color scheme.' }}
-      </p>
-
-      <textarea [value]="generatedCode" class="w-full font-mono text-sm" pInputTextarea readonly rows="30" style="resize: vertical;"> </textarea>
-    </div>
-  `,
+  templateUrl: './copy-preset.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CopyPresetComponent {
   @Input() customShades: Record<string, Record<number, string>> = {};
 
-  copied = signal(false);
+  protected readonly copied = signal(false);
 
-  get generatedCode(): string {
+  protected get generatedCode(): string {
     return this.generatePresetCode();
   }
 
-  generatePresetCode(): string {
+  private generatePresetCode(): string {
     const shades = this.customShades;
 
     // Helper to format shade with comment
@@ -112,7 +99,7 @@ ${darkPrimaryLines}
 export default CustomPreset;`;
   }
 
-  getDefaultShades(key: string): Record<number, string> {
+  private getDefaultShades(key: string): Record<number, string> {
     // Get current theme colors from CSS custom properties
     const root = getComputedStyle(document.documentElement);
     const shades: Record<number, string> = {};
@@ -170,7 +157,7 @@ export default CustomPreset;`;
     return '#000000';
   }
 
-  reversePrimaryShades(lightShades: Record<number, string>): Record<number, string> {
+  private reversePrimaryShades(lightShades: Record<number, string>): Record<number, string> {
     return {
       50: lightShades[950],
       100: lightShades[900],
@@ -186,7 +173,7 @@ export default CustomPreset;`;
     };
   }
 
-  copyToClipboard() {
+  protected copyToClipboard() {
     navigator.clipboard.writeText(this.generatedCode).then(() => {
       this.copied.set(true);
       setTimeout(() => this.copied.set(false), 3000);

@@ -15,20 +15,20 @@ interface GitHubTokenResponse {
 
 @Injectable({ providedIn: 'root' })
 export class GitHubAuthService {
-  private http = inject(HttpClient);
-  private router = inject(Router);
+  private readonly http = inject(HttpClient);
+  private readonly router = inject(Router);
 
   private readonly BACKEND_URL = environment.apiGateway;
   private readonly TOKEN_KEY = 'github_access_token';
   private readonly USER_KEY = 'github_user';
 
   // Signals
-  private accessToken = signal<string | null>(this.getStoredToken());
-  private currentUser = signal<GitHubUser | null>(this.getStoredUser());
+  private readonly accessToken = signal<string | null>(this.getStoredToken());
+  private readonly currentUser = signal<GitHubUser | null>(this.getStoredUser());
 
   // Computed signals
-  public isAuthenticated = computed(() => !!this.accessToken());
-  public user = computed(() => this.currentUser());
+  public readonly isAuthenticated = computed(() => !!this.accessToken());
+  public readonly user = computed(() => this.currentUser());
 
   constructor() {
     // Effect to persist token changes
@@ -60,7 +60,7 @@ export class GitHubAuthService {
   /**
    * Initiate GitHub OAuth flow by calling backend to get authorization URL
    */
-  async login(): Promise<void> {
+  public async login(): Promise<void> {
     try {
       // Store current URL to return here after login
       const currentUrl = this.router.url;
@@ -87,7 +87,7 @@ export class GitHubAuthService {
   /**
    * Handle OAuth callback from GitHub
    */
-  async handleCallback(code: string, state: string): Promise<void> {
+  public async handleCallback(code: string, state: string): Promise<void> {
     // Verify state to prevent CSRF
     const storedState = sessionStorage.getItem('github_oauth_state');
     if (state !== storedState) {
@@ -156,16 +156,14 @@ export class GitHubAuthService {
   /**
    * Logout and clear stored data
    */
-  logout(): void {
+  public logout(): void {
     this.accessToken.set(null);
     this.currentUser.set(null);
     //this.router.navigate(['/']);
   }
 
-  /**
-   * Get current access token value (for making authenticated GitHub API calls)
-   */
-  getToken(): string | null {
+  /** Get current access token value (for making authenticated GitHub API calls) */
+  public getToken(): string | null {
     return this.accessToken();
   }
 

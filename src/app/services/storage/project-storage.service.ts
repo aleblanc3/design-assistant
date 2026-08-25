@@ -18,16 +18,16 @@ export interface ActiveProject {
 @Injectable({ providedIn: 'root' })
 export class ProjectStorageService {
   //Services
-  private cloudStorageService = inject(CloudStorageService);
-  private localStorageService = inject(LocalStorageService);
-  private settingsService = inject(UserSettingsService);
-  private fetchService = inject(FetchService);
+  private readonly cloudStorageService = inject(CloudStorageService);
+  private readonly localStorageService = inject(LocalStorageService);
+  private readonly settingsService = inject(UserSettingsService);
+  private readonly fetchService = inject(FetchService);
 
   // Local storage keys
   private readonly ACTIVE_PROJECT_KEY = 'activeProject';
   private readonly SAVED_PROJECTS_KEY = 'savedProjects';
   private readonly DELETED_PROJECTS_KEY = 'deletedProjects';
-  public generateKeyFromName(projectName: string): string {
+  private generateKeyFromName(projectName: string): string {
     // Generates a project key for saving to local or cloud storage
     if (!projectName || projectName.trim() === '') {
       return 'autosave';
@@ -39,18 +39,18 @@ export class ProjectStorageService {
   private readonly DAYS_UNTIL_AUTO_DELETE = 30;
 
   // Signal for changes to project list
-  public projectListVersion = signal<number>(0);
-  public projectListChanged = computed(() => this.projectListVersion());
+  public readonly projectListVersion = signal<number>(0);
+  public readonly projectListChanged = computed(() => this.projectListVersion());
 
   /************************************
    ********** ACTIVE PROJECT **********
    ************************************/
   // Signal for current active project
-  private activeProject = signal<ActiveProject | null>(this.getActiveProject());
-  public currentActive = computed(() => this.activeProject());
+  private readonly activeProject = signal<ActiveProject | null>(this.getActiveProject());
+  public readonly currentActive = computed(() => this.activeProject());
 
   // Get active project key from local storage (used on initial app load)
-  getActiveProject(): ActiveProject | null {
+  public getActiveProject(): ActiveProject | null {
     const stored = this.localStorageService.getData(this.ACTIVE_PROJECT_KEY);
     if (!stored) return null;
 
@@ -68,7 +68,7 @@ export class ProjectStorageService {
   }
 
   // Set active project (used when switching projects)
-  setActiveProject(key: string, storageType: 'local' | 'cloud'): void {
+  private setActiveProject(key: string, storageType: 'local' | 'cloud'): void {
     const activeProject: ActiveProject = { key, storageType };
     this.localStorageService.saveData(this.ACTIVE_PROJECT_KEY, JSON.stringify(activeProject));
     this.activeProject.set(activeProject);
@@ -76,14 +76,14 @@ export class ProjectStorageService {
   }
 
   // Clear active project (used when starting new project)
-  clearActiveProject(): void {
+  public clearActiveProject(): void {
     this.localStorageService.removeData(this.ACTIVE_PROJECT_KEY);
     this.activeProject.set(null);
     //console.log('Active project cleared');
   }
 
   // Tracks if active project exists (true unless working in autosave file)
-  hasActiveProject(): boolean {
+  public hasActiveProject(): boolean {
     return this.getActiveProject() !== null;
   }
 
@@ -92,7 +92,7 @@ export class ProjectStorageService {
    ************************************/
 
   // Save to either local or cloud based on project.storageType (returns true if successful)
-  async saveProject(project: Project): Promise<boolean> {
+  public async saveProject(project: Project): Promise<boolean> {
     try {
       const newKey = this.generateKeyFromName(project.projectName);
       const storageType = project.storageType;
@@ -188,7 +188,7 @@ export class ProjectStorageService {
   }
 
   // Remove circular TreeNode references from TreeNodes
-  removeParents(nodes: TreeNode[]): TreeNode[] {
+  public removeParents(nodes: TreeNode[]): TreeNode[] {
     return nodes.map((node) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { parent, ...rest } = node;
@@ -200,7 +200,7 @@ export class ProjectStorageService {
   }
 
   // Add parent references back
-  rebuildParents(nodes: TreeNode[], parent: TreeNode | undefined): void {
+  public rebuildParents(nodes: TreeNode[], parent: TreeNode | undefined): void {
     for (const node of nodes) {
       node.parent = parent;
       if (node.children?.length) {
@@ -245,7 +245,7 @@ export class ProjectStorageService {
    *********** LOAD PROJECTS **********
    ************************************/
 
-  async getProjectList(): Promise<ProjectMetadata[]> {
+  public async getProjectList(): Promise<ProjectMetadata[]> {
     // Get local projects
     const localProjects = this.getLocalProjectList('saved');
 
@@ -279,7 +279,7 @@ export class ProjectStorageService {
    ************************************/
 
   // Gets project from local or cloud storage (caller will need to update project-state)
-  async loadProject(key: string, storageType: 'local' | 'cloud'): Promise<Project | null> {
+  public async loadProject(key: string, storageType: 'local' | 'cloud'): Promise<Project | null> {
     //console.log(`Loading project: ${key} from ${storageType}`);
 
     try {
@@ -376,7 +376,7 @@ export class ProjectStorageService {
   /**
    * Delete a project from local or cloud storage
    */
-  async deleteProject(key: string, storageType: 'local' | 'cloud'): Promise<boolean> {
+  public async deleteProject(key: string, storageType: 'local' | 'cloud'): Promise<boolean> {
     try {
       if (storageType === 'local') {
         const success = this.deleteLocalProject(key);
@@ -443,7 +443,7 @@ export class ProjectStorageService {
    ********************************************/
 
   // Loads project data without setting it as active
-  async loadProjectData(key: string, storageType: 'local' | 'cloud'): Promise<Project | null> {
+  public async loadProjectData(key: string, storageType: 'local' | 'cloud'): Promise<Project | null> {
     try {
       if (storageType === 'local') {
         return await this.loadFromLocal(key);

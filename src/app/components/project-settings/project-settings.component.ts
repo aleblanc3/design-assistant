@@ -15,26 +15,26 @@ import { ProjectStateService } from '../../services/project-state.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectSettingsComponent {
-  public projectCache = inject(ProjectCacheService);
-  private projectState = inject(ProjectStateService);
-  private translate = inject(TranslateService);
+  protected readonly projectCache = inject(ProjectCacheService);
+  private readonly projectState = inject(ProjectStateService);
+  private readonly translate = inject(TranslateService);
 
-  showLang = input(false);
-  allowBoth = input(false);
+  public readonly showLang = input(false);
+  public readonly allowBoth = input(false);
 
-  showScope = input(false);
+  public readonly showScope = input(false);
 
-  showVersion = input(false);
-  allowLive = input(false);
-  isPrototype = input(false);
+  public readonly showVersion = input(false);
+  public readonly allowLive = input(false);
+  public readonly isPrototype = input(false);
 
-  showSource = input(false);
-  allowPreview = input(false);
-  onlyValid = input(false);
+  public readonly showSource = input(false);
+  public readonly allowPreview = input(false);
+  public readonly onlyValid = input(false);
 
-  showViewIA = input(false);
+  public readonly showViewIA = input(false);
 
-  showDisplay = input(false);
+  public readonly showDisplay = input(false);
 
   constructor() {
     effect(() => {
@@ -67,7 +67,7 @@ export class ProjectSettingsComponent {
   }
 
   //Choose language
-  get languageOptions() {
+  protected get languageOptions() {
     const options: { label: string; value: string }[] = [];
     const primaryLang = this.projectState.detectPrimaryLanguage();
     const enLabel = { label: this.translate.instant('common.language.english'), value: 'en' };
@@ -85,7 +85,7 @@ export class ProjectSettingsComponent {
   }
 
   //Choose scope
-  get scopeOptions() {
+  protected get scopeOptions() {
     return [
       { label: this.translate.instant('common.scope.inScope'), value: 'inScope' },
       { label: this.translate.instant('common.scope.all'), value: 'all' },
@@ -93,7 +93,7 @@ export class ProjectSettingsComponent {
   }
 
   //Choose version (for AIDA data storage)
-  get versionOptions() {
+  protected get versionOptions() {
     if (this.allowLive()) {
       return [
         { label: this.translate.instant('common.version.prototype'), value: 'prototype' },
@@ -109,7 +109,7 @@ export class ProjectSettingsComponent {
   }
 
   //Choose source (for external data storage)
-  get sourceOptions() {
+  protected get sourceOptions() {
     const options = [{ label: this.translate.instant('common.source.live'), value: 'live' }];
     if (this.projectCache.hasGitHub() || !this.onlyValid()) {
       options.push({ label: this.translate.instant('common.source.protoGH'), value: 'protoGH' });
@@ -132,7 +132,7 @@ export class ProjectSettingsComponent {
   }
 
   //Choose view (for IA diagram)
-  get viewIAOptions() {
+  protected get viewIAOptions() {
     return [
       { label: this.translate.instant('common.view.baseline'), value: 'baseline' },
       { label: this.translate.instant('common.view.changes'), value: 'changes' },
@@ -141,7 +141,7 @@ export class ProjectSettingsComponent {
   }
 
   //Choose display (for IA diagram)
-  get displayOptions() {
+  protected get displayOptions() {
     return [
       { label: this.translate.instant('common.display.url'), value: 'url' },
       { label: this.translate.instant('common.display.title'), value: 'title' },

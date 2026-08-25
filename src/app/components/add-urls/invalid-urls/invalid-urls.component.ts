@@ -23,23 +23,37 @@ import { AddUrlsService } from '../add-urls.service';
 
 @Component({
   selector: 'aida-invalid-urls',
-  imports: [CommonModule, FormsModule, TranslatePipe, BadgeModule, ButtonModule, CheckboxModule, DialogModule, IftaLabelModule, MessageModule, SelectModule, TabsModule, TooltipModule, EditNodeComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    TranslatePipe,
+    BadgeModule,
+    ButtonModule,
+    CheckboxModule,
+    DialogModule,
+    IftaLabelModule,
+    MessageModule,
+    SelectModule,
+    TabsModule,
+    TooltipModule,
+    EditNodeComponent,
+  ],
   templateUrl: './invalid-urls.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InvalidUrlsComponent {
-  private addUrlsService = inject(AddUrlsService);
-  private projectState = inject(ProjectStateService);
-  private translate = inject(TranslateService);
-  private fetchService = inject(FetchService);
+  private readonly addUrlsService = inject(AddUrlsService);
+  private readonly projectState = inject(ProjectStateService);
+  private readonly translate = inject(TranslateService);
+  private readonly fetchService = inject(FetchService);
 
-  urlsBroken = computed(() => this.addUrlsService.urlState().urlsToReview.filter((url) => url.status === 'bad'));
-  urlsRedirect = computed(() => this.addUrlsService.urlState().urlsToReview.filter((url) => url.status === 'redirect'));
-  urlsBlocked = computed(() => this.addUrlsService.urlState().urlsToReview.filter((url) => url.status === 'blocked'));
+  protected readonly urlsBroken = computed(() => this.addUrlsService.urlState().urlsToReview.filter((url) => url.status === 'bad'));
+  protected readonly urlsRedirect = computed(() => this.addUrlsService.urlState().urlsToReview.filter((url) => url.status === 'redirect'));
+  protected readonly urlsBlocked = computed(() => this.addUrlsService.urlState().urlsToReview.filter((url) => url.status === 'blocked'));
 
-  urlsNew = computed(() => this.addUrlsService.urlState().urlsToReview.filter((url) => url.status === 'new'));
+  protected readonly urlsNew = computed(() => this.addUrlsService.urlState().urlsToReview.filter((url) => url.status === 'new'));
 
-  tabs = computed(() =>
+  protected readonly tabs = computed(() =>
     [
       { value: '0', status: 'broken', label: 'invalidUrls.broken.header', items: this.urlsBroken() },
       { value: '1', status: 'redirect', label: 'invalidUrls.redirect.header', items: this.urlsRedirect() },
@@ -47,14 +61,14 @@ export class InvalidUrlsComponent {
     ].filter((tab) => (tab.status === 'broken' ? tab.items.length > 0 || this.urlsNew().length > 0 : tab.items.length > 0)),
   );
 
-  initialTab = computed(() => this.tabs()[0]?.value ?? '0');
+  protected readonly initialTab = computed(() => this.tabs()[0]?.value ?? '0');
 
   //Template references
   @ViewChild('broken', { static: true }) brokenTemplate!: TemplateRef<unknown>;
   @ViewChild('redirect', { static: true }) redirectTemplate!: TemplateRef<unknown>;
   @ViewChild('blocked', { static: true }) blockedTemplate!: TemplateRef<unknown>;
 
-  get outlets(): Record<string, TemplateRef<unknown>> {
+  protected get outlets(): Record<string, TemplateRef<unknown>> {
     return {
       broken: this.brokenTemplate,
       redirect: this.redirectTemplate,
@@ -62,18 +76,18 @@ export class InvalidUrlsComponent {
     };
   }
 
-  selectedBrokenUrls = signal<string[]>([]);
-  isSelected(href: string): boolean {
+  protected readonly selectedBrokenUrls = signal<string[]>([]);
+  protected isSelected(href: string): boolean {
     return this.selectedBrokenUrls().includes(href);
   }
-  toggleBrokenUrl(href: string, selected: boolean) {
+  protected toggleBrokenUrl(href: string, selected: boolean) {
     this.selectedBrokenUrls.update((current) => (selected ? [...current, href] : current.filter((h) => h !== href)));
   }
 
   protected readonly parentPages = computed(() => this.projectState.getAllPages(this.projectState.detectPrimaryLanguage(), 'live', 'all'));
-  selectedParent?: string;
+  protected selectedParent?: string;
 
-  addUrlsToProject() {
+  protected addUrlsToProject() {
     console.log('ADDING!');
     console.log('Selected URLs: ', this.selectedBrokenUrls());
     console.log('Selected Parent: ', this.selectedParent);
@@ -91,17 +105,19 @@ export class InvalidUrlsComponent {
     if (newestUrl) this.edit(newestUrl);
   }
 
-  currentLang = this.translate.currentLang() === 'fr' ? 'fr' : 'en';
-  editNode = false; // Tracks if currently making dialog edits
-  selectedNode: TreeNode = {}; // TreeNode data for edit node dialog
-  edit(url: string) {
+  protected get currentLang() {
+    return this.translate.currentLang() === 'fr' ? 'fr' : 'en';
+  }
+  protected editNode = false; // Tracks if currently making dialog edits
+  protected selectedNode: TreeNode = {}; // TreeNode data for edit node dialog
+  protected edit(url: string) {
     const path = this.fetchService.generatePath(url);
     const lang = this.fetchService.getLang(url) ?? 'en';
     this.selectedNode = this.projectState.findNodeByPath(this.projectState.getProjectTree(), path, lang) ?? {};
     this.editNode = true;
   }
 
-  async copyToClipboard(url: string): Promise<void> {
+  protected async copyToClipboard(url: string): Promise<void> {
     try {
       await navigator.clipboard.writeText(url);
     } catch (error) {

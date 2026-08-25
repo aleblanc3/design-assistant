@@ -18,78 +18,29 @@ import { environment } from '../../environments/environment';
 @Component({
   selector: 'aida-header',
   imports: [CommonModule, TranslatePipe, ButtonModule, DividerModule, ToastModule, SignInButtonComponent],
-  template: `
-    <header>
-      <div class="flex flex-row gap-2 justify-content-end py-2 border-bottom-1 surface-border">
-        <img [alt]="'common.goc' | translate" [src]="logoSrc" class="opacity-70 h-1rem md:h-2rem flex mr-auto" />
-        <div class="flex flex-row align-items-center gap-2 lg:gap-3">
-          @if (showSaveButton()) {
-            <p-button
-              [icon]="saveButtonConfig().icon"
-              [label]="saveButtonConfig().label"
-              [severity]="saveButtonConfig().severity"
-              (onClick)="save()"
-              rounded
-              size="small"
-              styleClass="white-space-nowrap -mr-2"
-              text
-            />
-            <p-divider class="mx-0" layout="vertical" />
-          }
-          <aida-sign-in-button />
-          <p-button
-            [icon]="settingsService.icon()"
-            (onClick)="settingsService.toggle()"
-            ariaLabel="Toggle between dark and light mode"
-            outlined
-            rounded
-            severity="secondary"
-            size="small"
-            styleClass="darkmode-toggle secondary-outline"
-          />
-          <p-button
-            [ariaLabel]="'_app.oppLang' | translate"
-            (onClick)="settingsService.toggleLanguage()"
-            rounded
-            severity="secondary"
-            styleClass="underline text-blue-500 hover:text-blue-400 nohover -ml-2"
-            text
-          >
-            <span class="hidden sm:inline w-3rem">{{ '_app.oppLang' | translate }}</span>
-            <span class="inline sm:hidden w-1rem uppercase font-bold">{{ '_app.oppLang' | translate | slice: 0 : 2 }}</span>
-          </p-button>
-        </div>
-      </div>
-      @if (!production) {
-        <div class="sticky top-0 z-2 border-round-bottom-lg bg-primary text-center w-full">
-          {{ (sandbox ? '_app.env.sandbox' : '_app.env.dev') | translate }}
-        </div>
-      }
-      <p-toast />
-    </header>
-  `,
+  templateUrl: './header.component.html',
   styleUrl: './header.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  private translate = inject(TranslateService);
-  public settingsService = inject(UserSettingsService);
-  private projectState = inject(ProjectStateService);
-  public messageService = inject(MessageService);
-  public production = environment.production;
-  public sandbox = environment.sandbox;
+  private readonly translate = inject(TranslateService);
+  protected readonly settingsService = inject(UserSettingsService);
+  private readonly projectState = inject(ProjectStateService);
+  protected readonly messageService = inject(MessageService);
+  protected readonly production = environment.production;
+  protected readonly sandbox = environment.sandbox;
 
   // Get save status from project state
-  saveStatus = this.projectState.getSaveStatus;
+  private readonly saveStatus = this.projectState.getSaveStatus;
 
   // Show save button when there are unsaved changes
-  showSaveButton = computed(() => {
+  protected readonly showSaveButton = computed(() => {
     const status = this.saveStatus();
     return status !== 'saved';
   });
 
   // Configure save button appearance based on status
-  saveButtonConfig = computed(() => {
+  protected readonly saveButtonConfig = computed(() => {
     const status = this.saveStatus();
     if (status === 'error') {
       return {
@@ -121,7 +72,7 @@ export class HeaderComponent {
   });
 
   // Manual save
-  async save() {
+  protected async save() {
     const success = await this.projectState.saveProject();
     if (success) {
       this.messageService.add({
@@ -139,7 +90,7 @@ export class HeaderComponent {
   }
 
   // Dark/Light logos for different breakpoints
-  get logoSrc() {
+  protected get logoSrc() {
     return this.settingsService.darkMode() ? 'images/sig-wht-en.svg' : 'images/sig-blk-en.svg';
   }
 }

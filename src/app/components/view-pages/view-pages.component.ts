@@ -21,28 +21,26 @@ import { IaDiagramService } from '../ia-diagram/ia-diagram.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewPagesComponent {
-  protected projectState = inject(ProjectStateService);
-  protected projectCache = inject(ProjectCacheService);
-  protected iaDiagram = inject(IaDiagramService);
+  private readonly projectState = inject(ProjectStateService);
+  protected readonly projectCache = inject(ProjectCacheService);
+  protected readonly iaDiagram = inject(IaDiagramService);
 
   //UI elements
-  inScopePageCount = computed(() => this.projectState.getProject().inScopePages);
-  showUrls = false;
-  showIA = false;
-  showBreadcrumb = false;
+  protected readonly inScopePageCount = computed(() => this.projectState.getProject().inScopePages);
+  protected showUrls = false;
 
   //URL drawer - Both languages
-  pairedPagesForTable = computed(() => this.projectState.getPairedPages(this.projectCache.selectedSource(), this.projectCache.selectedScope()));
+  protected readonly pairedPagesForTable = computed(() => this.projectState.getPairedPages(this.projectCache.selectedSource(), this.projectCache.selectedScope()));
 
   //URL drawer - One language
-  singlePagesForList = computed(() => {
+  protected readonly singlePagesForList = computed(() => {
     const selectedLang = this.projectCache.selectedLang();
     const lang = selectedLang === 'both' ? this.projectState.detectPrimaryLanguage() : selectedLang;
     return this.projectState.getAllPages(lang, this.projectCache.selectedSource(), this.projectCache.selectedScope());
   });
 
   //URL drawer - Copy
-  async copyToClipboard(lang: 'en' | 'fr' | 'both'): Promise<void> {
+  protected async copyToClipboard(lang: 'en' | 'fr' | 'both'): Promise<void> {
     const pairs = this.pairedPagesForTable();
     let text;
     if (lang === 'both') {
