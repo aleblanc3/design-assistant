@@ -35,7 +35,7 @@ export class AddUrlsComponent implements OnInit {
   parseUrls(): void {
     const rawUrls = this.addUrlsService.urlState().rawUrls;
     const currentLang = this.translate.currentLang()?.startsWith('fr') ? 'fr' : 'en';
-    const existingUrls = new Set(this.projectState.getAllPages(currentLang, 'live', 'all').map((u) => u.url));
+    const existingUrls = new Set(this.projectState.getAllPages(currentLang, 'live', 'inScope').map((u) => u.url));
     const { parsedUrls, duplicates, invalidUrls, oppositeLangUrls } = this.addUrlsService.parseUrls(rawUrls, existingUrls, currentLang);
 
     console.log(parsedUrls);
