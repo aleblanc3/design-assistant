@@ -311,11 +311,11 @@ export class ProjectStateService {
     return count;
   }
 
-  public setScope(urls: string[]): void {
+  public setScope(paths: string[], lang: 'en' | 'fr' = 'en'): void {
     const currentTree = this.project().projectData;
-    const traverse = (nodes: TreeNode<ProjectTreeNodeData>[]) => {
+    const traverse = (nodes: TreeNode<TreeNodeData>[]) => {
       for (const node of nodes) {
-        if (node.data?.url && urls.includes(node.data.url)) {
+        if (node.data?.path[lang] && paths.includes(node.data.path[lang])) {
           node.data.status.inScope = true;
         }
         if (node.children?.length) traverse(node.children);

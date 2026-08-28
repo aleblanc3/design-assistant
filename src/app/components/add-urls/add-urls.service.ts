@@ -208,17 +208,31 @@ export class AddUrlsService {
     }
     // Filter out duplicates & invalid urls for urlsToAdd
     const validated = this.urlState().urlsToValidate;
-    const existingUrls = new Set(this.projectState.getAllPages(this.projectLang, 'live', 'all').map((u) => u.url));
+    const tree = this.projectState.getProjectTree();
 
     const seen = new Set<string>();
+    const pathsToFlip = new Set<string>();
+
     const urlsToAdd: AddItem[] = validated
       .filter((url) => url.status === 'ok' || url.status === 'redirect')
       .filter((url) => {
-        if (existingUrls.has(url.href) || seen.has(url.href)) return false;
+        const path = this.fetchService.generatePath(url.href);
+        const node = this.projectState.findNodeByPath(tree, path, this.projectLang);
+        if (node) {
+          if (!node.data?.status?.inScope) {
+            pathsToFlip.add(path);
+          }
+          return false;
+        }
+        if (seen.has(url.href)) return false;
         seen.add(url.href);
         return true;
       })
       .map((url) => ({ href: url.href, status: 'pending' }));
+
+    if (pathsToFlip.size) {
+      this.projectState.setScope([...pathsToFlip], this.projectLang);
+    }
 
     const urlsToReview: ValidationItem[] = validated.filter((url) => url.status === 'bad' || url.status === 'redirect' || url.status === 'blocked');
 
@@ -309,7 +323,9 @@ export class AddUrlsService {
     const inTree = this.projectState.urlExists(url);
     if (inTree) {
       if (inScope) {
-        this.projectState.setScope([url]);
+        const path = this.fetchService.generatePath(url);
+        const lang = this.fetchService.getLang(url) ?? 'en';
+        this.projectState.setScope([path], lang);
       }
       return;
     }

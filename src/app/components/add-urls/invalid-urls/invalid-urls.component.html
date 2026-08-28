@@ -2,7 +2,9 @@
   <p-tabs [value]="initialTab()">
     <p-tablist>
       @for (tab of tabs(); track tab.status) {
-        <p-tab [value]="tab.value">{{ tab.label | translate }}<p-badge [value]="tab.items.length" /></p-tab>
+        <p-tab [value]="tab.value">
+          <div class="flex flex-row align-items-center gap-1">{{ tab.label | translate }}<p-badge [value]="tab.items.length" /></div>
+        </p-tab>
       }
     </p-tablist>
     <p-tabpanels>

@@ -80,7 +80,7 @@
 }
 
 <!-- Invalid URLs popup -->
-<p-dialog [(visible)]="viewInvalidUrls" [header]="'invalidUrls._title' | translate" [maximizable]="true" [modal]="true" [style]="{ height: '90vh' }" styleClass="w-10">
+<p-dialog [(visible)]="viewInvalidUrls" [header]="'invalidUrls._title' | translate" [maximizable]="true" [modal]="true" [style]="{ height: '90vh' }" appendTo="body" styleClass="w-10">
   @if (addUrlsService.urlState().urlsToReview.length > 0) {
     <aida-invalid-urls (dialogClose)="viewInvalidUrls = false" />
   }
