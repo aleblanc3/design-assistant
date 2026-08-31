@@ -235,4 +235,30 @@ export class CollaboratorService {
   public getCollaboratorEmails(collabs: GitHubUser[]): string[] {
     return collabs.filter((collab): collab is GitHubUser & { email: string } => !!collab.email && collab.email.trim() !== '').map((collab) => collab.email);
   }
+
+  /** Get GitHub login from id */
+  public async getLogin(userID: string): Promise<string> {
+    const token = this.exportGitHubService.token();
+
+    const headers = token
+      ? {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/vnd.github+json',
+        }
+      : undefined;
+
+    try {
+      const response = await fetch(`https://api.github.com/user/${userID}`, { headers });
+      if (!response.ok) {
+        console.error(`Failed to fetch user details for ${userID}: ${response.status}`);
+        return userID;
+      } else {
+        const userData = await response.json();
+        return userData.login;
+      }
+    } catch (error) {
+      console.error(`Error fetching username for ${userID}:`, error);
+      return userID;
+    }
+  }
 }
