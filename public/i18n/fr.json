@@ -449,7 +449,7 @@
 	"findPages.task.addToProject": "Copier les URL",
 	"findPages.task.addToProject.description": "Copier {{number}} URL dans le champ « Ajouter des pages »",
 	"findPages.task.description": "Sélectionnez des tâches ou entrez un mot-clé pour filtrer la liste des tâches. Vous pouvez consulter les URL associées à chaque tâche et choisir celles à ajouter à votre projet.",
-	"findPages.task.loadingTasks": "Chargement des tâches...",
+	"findPages.task.loadingTasks": "Chargement des tâches",
 	"findPages.task.noTasksFound": "Aucune tâche trouvée",
 	"findPages.task.noUrls": "Il n'y a aucune URL associée à cette tâche.",
 	"findPages.task.searchPlaceholder": "Rechercher une tâche...",
