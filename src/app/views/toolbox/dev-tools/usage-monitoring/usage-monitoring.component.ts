@@ -334,7 +334,11 @@ export class UsageMonitoringComponent implements OnInit {
 
   /** Delete test data from AIDA developers */
   protected deleteTestData() {
-    this.usageService.deleteUserRecords('57812460');
+    this.usageService.deleteUserRecords('57812460').subscribe({
+      next: (res) => console.log(`Deleted ${res.deleted} records`),
+      error: (err) => console.error('Delete failed', err),
+    });
+    this.load();
   }
 
   protected async unmaskUserIds() {
