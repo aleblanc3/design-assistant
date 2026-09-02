@@ -9,6 +9,7 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DrawerModule } from 'primeng/drawer';
 import { MenuModule } from 'primeng/menu';
+import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
 
 import { UserSettingsComponent } from '../../user-settings/user-settings.component';
@@ -21,7 +22,7 @@ import { CompareService } from '../compare.service';
 
 @Component({
   selector: 'aida-compare-tools',
-  imports: [CommonModule, TranslatePipe, ButtonModule, DrawerModule, MenuModule, ToastModule, CompareAiOptionsComponent, UserSettingsComponent],
+  imports: [CommonModule, TranslatePipe, ButtonModule, DrawerModule, MenuModule, ToastModule, CompareAiOptionsComponent, UserSettingsComponent, MessageModule],
   templateUrl: './compare-tools.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
