@@ -9,6 +9,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 
 import { FetchService } from '../../../services/fetch.service';
 import { HtmlNormalizationService, htmlProcessingResult } from '../../../services/html-normalization.service';
+import { UserSettingsService } from '../../../services/user-settings.service';
 import { CompareSourceService } from './compare-source.service';
 
 export enum SourceViewType {
@@ -37,6 +38,8 @@ export class CompareSourceComponent {
   private readonly compareSourceService = inject(CompareSourceService);
   private readonly fetchService = inject(FetchService);
   private readonly htmlNormalizationService = inject(HtmlNormalizationService);
+
+  private readonly settingsService = inject(UserSettingsService);
 
   // Inputs
   public readonly beforeContent = input<htmlProcessingResult | undefined>();
@@ -113,6 +116,7 @@ export class CompareSourceComponent {
       const afterContent = this.resolvedAfter();
       const container = this.sourceContainer();
       this.translate.currentLang();
+      this.settingsService.darkMode();
       if (beforeContent && afterContent && container) {
         this.rebuildSourceContent(container.nativeElement, viewType, beforeContent, afterContent);
       }
