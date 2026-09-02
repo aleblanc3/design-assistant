@@ -1,8 +1,7 @@
-import { CommonModule, LocationStrategy } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, Component, computed, effect, ElementRef, inject, input, OnDestroy, output, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { MessageService } from 'primeng/api';
@@ -177,8 +176,8 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
   private shadowClickHandler: (() => void) | null = null;
   private shadowSelectionHandler: (() => void) | null = null;
 
-  private currentIndex = signal<number>(0);
-  private elements = signal<HTMLElement[]>([]);
+  private readonly currentIndex = signal<number>(0);
+  private readonly elements = signal<HTMLElement[]>([]);
 
   protected next() {
     if (this.elements().length === 0) return;
@@ -204,7 +203,7 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
     this.compareRenderedService.scrollToElement(el);
   }
 
-  protected displayCounter = computed(() => {
+  protected readonly displayCounter = computed(() => {
     const selection = this.compareRenderedService.lastSelection();
     if (!this.elements()?.length) {
       return this.translate.instant('compare.rendered.counter', { range: '0', total: '0' });
@@ -239,7 +238,7 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
   }
 
   // 2. Accept
-  protected acceptItems = computed(() => [
+  protected readonly acceptItems = computed(() => [
     {
       label: 'Accept all',
       icon: 'pi pi-check-circle',
@@ -263,7 +262,7 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
 
   // 3. Reject
 
-  protected rejectItems = computed(() => [
+  protected readonly rejectItems = computed(() => [
     {
       label: 'Reject all',
       icon: 'pi pi-times-circle',
@@ -306,7 +305,7 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
     for (const def of this.flagLegendDefs) {
       const show =
         view === WebViewType.Diff
-          ? beforeFlags?.[def.flag] || afterFlags?.[def.flag]
+          ? beforeFlags?.[def.flag] || afterFlags?.[def.flag] // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
           : view === WebViewType.Original
             ? beforeFlags?.[def.flag]
             : view === WebViewType.Modified
