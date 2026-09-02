@@ -22,7 +22,7 @@ import { CompareService } from '../compare.service';
 
 @Component({
   selector: 'aida-compare-tools',
-  imports: [CommonModule, TranslatePipe, ButtonModule, DrawerModule, MenuModule, ToastModule, CompareAiOptionsComponent, UserSettingsComponent, MessageModule],
+  imports: [CommonModule, TranslatePipe, ButtonModule, DrawerModule, MenuModule, MessageModule, ToastModule, CompareAiOptionsComponent, UserSettingsComponent],
   templateUrl: './compare-tools.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

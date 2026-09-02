@@ -8,13 +8,9 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { AccordionModule } from 'primeng/accordion';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import { FieldsetModule } from 'primeng/fieldset';
-import { IftaLabelModule } from 'primeng/iftalabel';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { SliderModule } from 'primeng/slider';
-import { TextareaModule } from 'primeng/textarea';
 import { TooltipModule } from 'primeng/tooltip';
 
 import { CompareAiService } from '../compare-ai.service';
@@ -30,21 +26,7 @@ import { PagePromptKey } from '../../../common/prompts/prompt.model';
  */
 @Component({
   selector: 'aida-compare-ai-options',
-  imports: [
-    CommonModule,
-    FormsModule,
-    TranslatePipe,
-    AccordionModule,
-    ButtonModule,
-    CheckboxModule,
-    DialogModule,
-    FieldsetModule,
-    IftaLabelModule,
-    RadioButtonModule,
-    SliderModule,
-    TextareaModule,
-    TooltipModule,
-  ],
+  imports: [CommonModule, FormsModule, TranslatePipe, AccordionModule, ButtonModule, DialogModule, FieldsetModule, RadioButtonModule, TooltipModule],
   templateUrl: './compare-ai-options.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

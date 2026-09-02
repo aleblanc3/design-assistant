@@ -20,7 +20,7 @@ import { UserSettingsService } from '../../../services/user-settings.service';
 
 @Component({
   selector: 'aida-compare-versions',
-  imports: [FormsModule, TranslatePipe, TabsModule, CompareRenderedComponent, CompareSelectComponent, CompareSourceComponent, CompareProblemsComponent, CompareToolsComponent],
+  imports: [FormsModule, TranslatePipe, TabsModule, CompareProblemsComponent, CompareRenderedComponent, CompareSelectComponent, CompareSourceComponent, CompareToolsComponent],
   templateUrl: './compare.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

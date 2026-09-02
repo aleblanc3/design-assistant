@@ -10,7 +10,6 @@ import { ButtonModule } from 'primeng/button';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { ToastModule } from 'primeng/toast';
-import { ToggleButtonModule } from 'primeng/togglebutton';
 import { TooltipModule } from 'primeng/tooltip';
 
 import { FetchService } from '../../../services/fetch.service';
@@ -34,7 +33,7 @@ export interface ViewOption<T = string> {
  * Format your url or string content through the normalizeHTML function in html-normalization.service convert it to an htmlProcessingResult */
 @Component({
   selector: 'aida-compare-rendered',
-  imports: [CommonModule, FormsModule, TranslatePipe, ButtonModule, RadioButtonModule, SplitButtonModule, ToggleButtonModule, TooltipModule, ToastModule],
+  imports: [CommonModule, FormsModule, TranslatePipe, ButtonModule, RadioButtonModule, SplitButtonModule, ToastModule, TooltipModule],
   templateUrl: './compare-rendered.component.html',
   styleUrl: './compare-rendered.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -315,17 +314,19 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
               : false;
 
       if (show) {
-        items.push({ text: this.translate.instant(def.textKey), colour: def.colour, style: def.style, lineStyle: def.lineStyle });
+        items.push({ text: def.text, colour: def.colour, style: def.style, lineStyle: def.lineStyle });
       }
     }
     return items;
   }
 
-  private readonly flagLegendDefs: { flag: 'hidden' | 'modal' | 'dynamic'; textKey: string; colour: string; style: string; lineStyle?: string }[] = [
-    { flag: 'hidden', textKey: 'compare.rendered.legend.hiddenContent', colour: '#6F9FFF', style: 'line' },
-    { flag: 'modal', textKey: 'compare.rendered.legend.modalContent', colour: '#666666', style: 'line', lineStyle: 'dashed' },
-    { flag: 'dynamic', textKey: 'compare.rendered.legend.dynamicContent', colour: '#fbc02f', style: 'line', lineStyle: 'dashed' },
-  ];
+  private get flagLegendDefs(): { flag: 'hidden' | 'modal' | 'dynamic'; text: string; colour: string; style: string; lineStyle?: string }[] {
+    return [
+      { flag: 'hidden', text: this.translate.instant('compare.rendered.legend.hiddenContent'), colour: '#6F9FFF', style: 'line' },
+      { flag: 'modal', text: this.translate.instant('compare.rendered.legend.modalContent'), colour: '#666666', style: 'line', lineStyle: 'dashed' },
+      { flag: 'dynamic', text: this.translate.instant('compare.rendered.legend.dynamicContent'), colour: '#fbc02f', style: 'line', lineStyle: 'dashed' },
+    ];
+  }
 
   // 5. Before/After - Edit
   protected readonly editing = signal<boolean>(false);
