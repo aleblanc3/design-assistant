@@ -1,16 +1,19 @@
 import { CommonModule, LocationStrategy } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, computed, effect, ElementRef, EventEmitter, inject, input, OnDestroy, Output, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, computed, effect, ElementRef, inject, input, OnDestroy, output, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { SplitButtonModule } from 'primeng/splitbutton';
+import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { TooltipModule } from 'primeng/tooltip';
 
+import { FetchService } from '../../../services/fetch.service';
 import { htmlProcessingResult } from '../../../services/html-normalization.service';
 import { CompareRenderedService } from './compare-rendered.service';
 
@@ -31,77 +34,75 @@ export interface ViewOption<T = string> {
  * Format your url or string content through the normalizeHTML function in html-normalization.service convert it to an htmlProcessingResult */
 @Component({
   selector: 'aida-compare-rendered',
-  imports: [CommonModule, FormsModule, TranslatePipe, ButtonModule, RadioButtonModule, SplitButtonModule, ToggleButtonModule, TooltipModule],
+  imports: [CommonModule, FormsModule, TranslatePipe, ButtonModule, RadioButtonModule, SplitButtonModule, ToggleButtonModule, TooltipModule, ToastModule],
   templateUrl: './compare-rendered.component.html',
   styleUrl: './compare-rendered.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
-  private readonly compareRenderedService = inject(CompareRenderedService);
   private readonly translate = inject(TranslateService);
+  private readonly messageService = inject(MessageService);
+  private readonly compareRenderedService = inject(CompareRenderedService);
+  private readonly fetchService = inject(FetchService);
 
   // Inputs
   public readonly beforeContent = input<htmlProcessingResult | undefined>();
   public readonly afterContent = input<htmlProcessingResult | undefined>();
+  public readonly canUndo = input<boolean>(false);
 
   // Adjust inputs if one is undefined so we can render page with no changes
   private readonly resolvedBefore = computed(() => this.beforeContent() ?? this.afterContent());
   private readonly resolvedAfter = computed(() => this.afterContent() ?? this.beforeContent());
 
   // Outputs
-  @Output() contentChanged = new EventEmitter<{
+  public readonly contentChanged = output<{
     beforeContent: htmlProcessingResult;
     afterContent: htmlProcessingResult;
   }>();
+  public readonly hasChanges = output<boolean>();
+  public readonly undoChanges = output<void>();
 
   // Get DOM elements from template
-  @ViewChild('liveContainer', { static: false }) liveContainer!: ElementRef;
+  public readonly liveContainer = viewChild<ElementRef>('liveContainer');
 
   // Signals
   private readonly shadowDOM = signal<ShadowRoot | null>(null);
 
+  // Prevent duplicate effects
+  private renderToken = 0;
+
   // Effects
   constructor() {
-    effect(async () => {
+    // Update Diff
+    effect((onCleanup) => {
       const viewType = this.webSelectedView();
       const shadowRoot = this.shadowDOM();
       const beforeContent = this.resolvedBefore();
       const afterContent = this.resolvedAfter();
-
       if (beforeContent && afterContent && shadowRoot) {
-        await this.compareRenderedService.generateShadowDOMContent(shadowRoot, viewType, beforeContent.html, afterContent.html);
-        //Click listener for ShadowDom
-        if (this.shadowClickHandler) {
-          this.shadowClickHandler();
-          console.log('Reset shadow click handler');
-        }
-        this.shadowClickHandler = this.compareRenderedService.handleDocumentClick(shadowRoot, (index: number) => {
-          this.currentIndex = index;
+        this.rebuildShadowContent(shadowRoot, viewType, beforeContent, afterContent);
+        onCleanup(() => {
+          this.shadowClickHandler?.();
+          this.shadowSelectionHandler?.();
+          this.shadowClickHandler = null;
+          this.shadowSelectionHandler = null;
         });
-        //Selection listener for ShadowDom
-        if (this.shadowSelectionHandler) {
-          this.shadowSelectionHandler();
-          console.log('Reset shadow selection handler');
-        }
-        this.shadowSelectionHandler = this.compareRenderedService.handleSelection(shadowRoot);
-
-        //Get DOM element with a data-id
-        this.elements = this.compareRenderedService.getDataIdElements(shadowRoot);
-        if (this.elements.length > 0) {
-          this.focusOnIndex(this.currentIndex); //set initial focus to 1st element
-          //this.isDisabled = true;
-          //this.aiDisabled = 'Accept or reject changes first';
-        } else {
-          //this.isDisabled = false;
-          //this.aiDisabled = '';
-        }
+      }
+    });
+    // Sync currentIndex whenever a multi-element selection lands
+    effect(() => {
+      const selection = this.compareRenderedService.lastSelection();
+      if (selection.count > 1 && selection.startId != null && selection.endId != null) {
+        this.currentIndex.set(selection.endId - 1);
       }
     });
   }
 
   //Runs when view is initialized
   ngAfterViewInit(): void {
-    const shadowRoot = this.compareRenderedService.initializeShadowDOM(this.liveContainer.nativeElement);
+    const container = this.liveContainer();
+    if (!container) return;
+    const shadowRoot = this.compareRenderedService.initializeShadowDOM(container.nativeElement);
     if (shadowRoot) {
       this.shadowDOM.set(shadowRoot);
       console.log('Shadow DOM is initialized.');
@@ -114,12 +115,30 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
       this.compareRenderedService.clearShadowDOM(this.shadowDOM()!);
       this.shadowDOM.set(null);
     }
-    if (this.shadowClickHandler) {
-      this.shadowClickHandler();
+  }
+
+  // Rebuild ShadowDOM
+  private async rebuildShadowContent(shadowRoot: ShadowRoot, viewType: WebViewType, beforeContent: htmlProcessingResult, afterContent: htmlProcessingResult): Promise<void> {
+    const token = ++this.renderToken;
+
+    await this.compareRenderedService.generateShadowDOMContent(shadowRoot, viewType, beforeContent.html, afterContent.html);
+
+    if (token !== this.renderToken) return; // a newer call started while we were awaiting — abandon this one
+
+    this.shadowClickHandler = this.compareRenderedService.handleDocumentClick(shadowRoot, (index: number) => {
+      this.currentIndex.set(index);
+    });
+
+    this.shadowSelectionHandler = this.compareRenderedService.handleSelection(shadowRoot);
+
+    this.elements.set(this.compareRenderedService.getDataIdElements(shadowRoot));
+    if (this.elements().length > 0) {
+      this.focusOnIndex(this.currentIndex());
+      this.hasChanges.emit(true);
+    } else {
+      this.hasChanges.emit(false);
     }
-    if (this.shadowSelectionHandler) {
-      this.shadowSelectionHandler();
-    }
+    console.log(this.elements().length);
   }
 
   //Web page view options
@@ -149,7 +168,7 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
   }
 
   //Change web page view
-  protected async onWebViewChange(viewType: WebViewType) {
+  protected onWebViewChange(viewType: WebViewType) {
     this.webSelectedView.set(viewType);
   }
 
@@ -159,391 +178,227 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
   private shadowClickHandler: (() => void) | null = null;
   private shadowSelectionHandler: (() => void) | null = null;
 
-  private currentIndex = 0;
-  private elements: HTMLElement[] = [];
+  private currentIndex = signal<number>(0);
+  private elements = signal<HTMLElement[]>([]);
 
   protected next() {
-    if (this.elements.length === 0) return;
-    this.currentIndex = (this.currentIndex + 1) % this.elements.length;
-    this.focusOnIndex(this.currentIndex);
-    this.compareRenderedService.lastSelection = {
-      count: 1,
-      startId: null,
-      endId: null,
-    }; //reset selection
+    if (this.elements().length === 0) return;
+    this.currentIndex.set((this.currentIndex() + 1) % this.elements().length);
+    this.focusOnIndex(this.currentIndex());
+    this.compareRenderedService.resetLastSelection();
   }
 
   protected prev() {
-    if (this.elements.length === 0) return;
-    this.currentIndex = (this.currentIndex - 1 + this.elements.length) % this.elements.length;
-    this.focusOnIndex(this.currentIndex);
-    this.compareRenderedService.lastSelection = {
-      count: 1,
-      startId: null,
-      endId: null,
-    }; //reset selection
+    if (this.elements().length === 0) return;
+    this.currentIndex.set((this.currentIndex() - 1 + this.elements().length) % this.elements().length);
+    this.focusOnIndex(this.currentIndex());
+    this.compareRenderedService.resetLastSelection();
   }
 
   private focusOnIndex(index: number) {
     const shadowRoot = this.shadowDOM();
     if (!shadowRoot) return;
-    const el = this.elements[index];
+    const el = this.elements()[index];
     this.compareRenderedService.highlightElement(el);
     this.compareRenderedService.openParentDetails(el);
     this.compareRenderedService.closeAllDetailsExcept(shadowRoot, el);
     this.compareRenderedService.scrollToElement(el);
   }
 
-  protected get displayCounter(): string {
-    if (!this.elements?.length) {
+  protected displayCounter = computed(() => {
+    const selection = this.compareRenderedService.lastSelection();
+    if (!this.elements()?.length) {
       return this.translate.instant('compare.rendered.counter', { range: '0', total: '0' });
     }
 
-    const total = this.elements.length;
+    const total = this.elements().length;
 
     // nothing highlighted
-    if (this.compareRenderedService.lastSelection.count === 0) {
+    if (selection.count === 0) {
       return this.translate.instant('compare.rendered.counter', { range: '–', total });
     }
 
     // multiple highlighted
-    if (this.compareRenderedService.lastSelection.count > 1) {
-      if (this.compareRenderedService.lastSelection.startId != null && this.compareRenderedService.lastSelection.endId != null) {
-        this.currentIndex = this.compareRenderedService.lastSelection.endId - 1;
-        const range = `${this.compareRenderedService.lastSelection.startId}–${this.compareRenderedService.lastSelection.endId}`;
+    if (selection.count > 1) {
+      if (selection.startId != null && selection.endId != null) {
+        const range = `${selection.startId}–${selection.endId}`;
         return this.translate.instant('compare.rendered.counter', { range, total });
       }
       return this.translate.instant('compare.rendered.counter', { range: '–', total });
     }
 
     // single highlighted
-    const range = this.currentIndex + 1;
+    const range = this.currentIndex() + 1;
     return this.translate.instant('compare.rendered.counter', { range, total });
-  }
+  });
 
   protected get displayNumHighlighted(): string {
-    const count = this.compareRenderedService.lastSelection.count;
+    const count = this.compareRenderedService.lastSelection().count;
     if (count < 1) return '';
-    if (this.compareRenderedService.lastSelection.count < 1) return '';
+    if (this.compareRenderedService.lastSelection().count < 1) return '';
     return this.translate.instant('compare.rendered.itemsSelected', { count });
   }
 
   // 2. Accept
-  protected toolbarAccept(): void {
-    this.processDiffChange('accept');
-  }
-
-  protected get acceptItems() {
-    return [
-      {
-        label: 'Accept all',
-        icon: 'pi pi-check-circle',
-        command: () => {
-          //this.toolbarAcceptAll();
-        },
-        disabled: true,
+  protected acceptItems = computed(() => [
+    {
+      label: 'Accept all',
+      icon: 'pi pi-check-circle',
+      command: () => {
+        this.processAllChanges('accept');
       },
-      {
-        separator: true,
+      disabled: !(this.elements().length > 0),
+    },
+    {
+      separator: true,
+    },
+    {
+      label: this.translate.instant('compare.button.undo'),
+      icon: 'pi pi-refresh',
+      command: () => {
+        this.undoChanges.emit();
       },
-      {
-        label: this.translate.instant('compare.button.undo'),
-        icon: 'pi pi-refresh',
-        command: () => {
-          //this.uploadState.undoLastChange();
-        },
-        disabled: true,
-      },
-    ];
-  }
-
-  // 3. Reject
-  protected toolbarReject(): void {
-    this.processDiffChange('reject');
-  }
-
-  protected get rejectItems() {
-    return [
-      {
-        label: 'Reject all',
-        icon: 'pi pi-times-circle',
-        command: () => {
-          //this.toolbarRejectAll();
-        },
-        disabled: true,
-      },
-      {
-        separator: true,
-      },
-      {
-        label: this.translate.instant('compare.button.undo'),
-        icon: 'pi pi-refresh',
-        command: () => {
-          //this.uploadState.undoLastChange();
-        },
-        disabled: true,
-      },
-    ];
-  }
-
-  // 4. Legend
-  private readonly baseLegendItems = signal<{ text: string; colour: string; style: string; lineStyle?: string }[]>([
-    { text: 'compare.rendered.legend.previousVersion', colour: '#F3A59D', style: 'highlight' },
-    { text: 'compare.rendered.legend.updatedVersion', colour: '#83d5a8', style: 'highlight' },
-    { text: 'compare.rendered.legend.updatedLink', colour: '#FFEE8C', style: 'highlight' },
-    { text: 'compare.rendered.legend.hiddenContent', colour: '#6F9FFF', style: 'line' },
-    { text: 'compare.rendered.legend.modalContent', colour: '#666666', style: 'line', lineStyle: 'dashed' },
-    { text: 'compare.rendered.legend.dynamicContent', colour: '#fbc02f', style: 'line', lineStyle: 'dashed' },
+      disabled: !this.canUndo(),
+    },
   ]);
 
-  private markForTranslation() {
-    marker('compare.rendered.legend.previousVersion');
-    marker('compare.rendered.legend.updatedVersion');
-    marker('compare.rendered.legend.updatedLink');
-    marker('compare.rendered.legend.hiddenContent');
-    marker('compare.rendered.legend.modalContent');
-    marker('compare.rendered.legend.dynamicContent');
-  }
+  // 3. Reject
 
+  protected rejectItems = computed(() => [
+    {
+      label: 'Reject all',
+      icon: 'pi pi-times-circle',
+      command: () => {
+        this.processAllChanges('reject');
+      },
+      disabled: !(this.elements().length > 0),
+    },
+    {
+      separator: true,
+    },
+    {
+      label: this.translate.instant('compare.button.undo'),
+      icon: 'pi pi-refresh',
+      command: () => {
+        this.undoChanges.emit();
+      },
+      disabled: !this.canUndo(),
+    },
+  ]);
+
+  // 4. Legend
   protected get legendItems() {
     const view = this.webSelectedView();
-    const items = this.baseLegendItems();
-    const beforeFlags = this.beforeContent()?.found;
-    const afterFlags = this.afterContent()?.found;
-    return items
-      .map((item) => {
-        if (item.text === 'compare.rendered.legend.previousVersion') {
-          if (view === WebViewType.Modified) {
-            return null; // hide in Modified view
-          }
-          if (view === WebViewType.Original) {
-            return { ...item, style: 'line' }; // change style in Original view
-          }
-          return item;
-        }
+    const items: { text: string; colour: string; style: string; lineStyle?: string }[] = [];
+    const beforeFlags = this.resolvedBefore()?.found;
+    const afterFlags = this.resolvedAfter()?.found;
 
-        if (item.text === 'compare.rendered.legend.updatedVersion') {
-          if (view === WebViewType.Original) {
-            return null; // hide in Original view
-          }
-          if (view === WebViewType.Modified) {
-            return { ...item, style: 'line' }; // change style in Modified view
-          }
-          return item;
-        }
+    if (view === WebViewType.Diff) {
+      items.push(
+        { text: this.translate.instant('compare.rendered.legend.previousVersion'), colour: '#F3A59D', style: 'highlight' },
+        { text: this.translate.instant('compare.rendered.legend.updatedVersion'), colour: '#83d5a8', style: 'highlight' },
+        { text: this.translate.instant('compare.rendered.legend.updatedLink'), colour: '#FFEE8C', style: 'highlight' },
+      );
+    } else if (view === WebViewType.Original) {
+      items.push({ text: this.translate.instant('compare.rendered.legend.previousVersion'), colour: '#F3A59D', style: 'line' });
+    } else if (view === WebViewType.Modified) {
+      items.push({ text: this.translate.instant('compare.rendered.legend.updatedVersion'), colour: '#83d5a8', style: 'line' });
+    }
+    for (const def of this.flagLegendDefs) {
+      const show =
+        view === WebViewType.Diff
+          ? beforeFlags?.[def.flag] || afterFlags?.[def.flag]
+          : view === WebViewType.Original
+            ? beforeFlags?.[def.flag]
+            : view === WebViewType.Modified
+              ? afterFlags?.[def.flag]
+              : false;
 
-        if (item.text === 'compare.rendered.legend.updatedLink' && (view === WebViewType.Original || view === WebViewType.Modified)) {
-          return null; //hide in both original and modified view
-        }
-
-        if (item.text === 'compare.rendered.legend.hiddenContent' && !beforeFlags?.hidden && !afterFlags?.hidden) {
-          return null; //hide if hidden content not found in either original or modified
-        }
-
-        if (item.text === 'compare.rendered.legend.modalContent' && !beforeFlags?.modal && !afterFlags?.modal) {
-          return null; //hide if modal content not found in either original or modified
-        }
-
-        if (item.text === 'compare.rendered.legend.dynamicContent' && !beforeFlags?.dynamic && !afterFlags?.dynamic) {
-          return null; //hide if dynamic content not found in either original or modified
-        }
-
-        return item;
-      })
-      .filter(Boolean) as typeof items;
+      if (show) {
+        items.push({ text: this.translate.instant(def.textKey), colour: def.colour, style: def.style, lineStyle: def.lineStyle });
+      }
+    }
+    return items;
   }
 
+  private readonly flagLegendDefs: { flag: 'hidden' | 'modal' | 'dynamic'; textKey: string; colour: string; style: string; lineStyle?: string }[] = [
+    { flag: 'hidden', textKey: 'compare.rendered.legend.hiddenContent', colour: '#6F9FFF', style: 'line' },
+    { flag: 'modal', textKey: 'compare.rendered.legend.modalContent', colour: '#666666', style: 'line', lineStyle: 'dashed' },
+    { flag: 'dynamic', textKey: 'compare.rendered.legend.dynamicContent', colour: '#fbc02f', style: 'line', lineStyle: 'dashed' },
+  ];
+
   // 5. Before/After - Edit
-  protected toggleEdit = false;
-  protected async toolbarToggleEdit(view: WebViewType): Promise<void> {
+  protected readonly editing = signal<boolean>(false);
+  protected async toggleEditing(view: WebViewType): Promise<void> {
+    this.editing.set(!this.editing());
+
     const shadowRoot = this.shadowDOM();
     const editable = shadowRoot?.getElementById('editable');
     if (!editable) {
       console.warn('Editable area not found.');
-      this.toggleEdit = false;
+      this.editing.set(false);
       return;
     }
-    if (this.toggleEdit) {
+    if (this.editing()) {
       //edit
       editable.setAttribute('contenteditable', 'true');
       editable.focus();
     } else {
-      /*save
-            this.uploadState.savePreviousUploadData(); //save previous data for undo button
-            editable.setAttribute('contenteditable', 'false');
-            const editedHtml = await this.urlDataService.formatHtml(
-              editable.innerHTML,
-              'edit',
-            );
-            if (view === WebViewType.Original) {
-              this.uploadState.mergeOriginalData({
-                originalUrl: 'User edited',
-                originalHtml: editedHtml,
-              });
-            } else if (view === WebViewType.Modified) {
-              this.uploadState.mergeModifiedData({
-                modifiedUrl: 'User edited',
-                modifiedHtml: editedHtml,
-              });
-            }
-            this.toggleEdit = false;*/
+      //save
+      editable.setAttribute('contenteditable', 'false');
+
+      const updatedContent = this.compareRenderedService.undoInitShadowPlugins(editable).innerHTML;
+
+      const beforeContent = this.resolvedBefore();
+      const afterContent = this.resolvedAfter();
+
+      if (!beforeContent || !afterContent) return;
+
+      this.contentChanged.emit({
+        beforeContent: view === WebViewType.Original ? { ...beforeContent, html: updatedContent } : beforeContent,
+        afterContent: view === WebViewType.Modified ? { ...afterContent, html: updatedContent } : afterContent,
+      });
     }
   }
 
   // 6. Before/After - Copy
-  protected toggleCopy = false;
-  protected toolbarToggleCopy(view: WebViewType): void {
-    const data = 'test';
-    if (!data) return;
-    let htmlToCopy = ''; /*
-        if (view === WebViewType.Original) {
-            htmlToCopy = data.originalHtml ?? '';
-        } else if (view === WebViewType.Modified) {
-            htmlToCopy = data.modifiedHtml ?? '';
-        }*/
+  protected readonly copying = signal<boolean>(false);
+  protected async toggleCopying(view: WebViewType): Promise<void> {
+    this.copying.set(true);
+
+    const htmlToCopy = view === WebViewType.Original ? (this.resolvedBefore()?.html ?? '') : view === WebViewType.Modified ? (this.resolvedAfter()?.html ?? '') : '';
     navigator.clipboard
       .writeText(htmlToCopy)
       .then(() => {
-        setTimeout(() => (this.toggleCopy = false), 1000);
+        this.messageService.add({
+          severity: 'success',
+          summary: this.translate.instant('common.copiedToClipboard'),
+          detail: htmlToCopy.slice(0, 100),
+          life: 3000,
+        });
+        setTimeout(() => this.copying.set(false), 1000);
       })
-      .catch((err) => console.error('Clipboard copy failed:', err));
+      .catch((err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: this.translate.instant('common.copyError'),
+          detail: this.translate.instant('compare.rendered.noHtmlToCopy'),
+          life: 5000,
+        });
+        this.copying.set(false);
+        console.error('Clipboard copy failed:', err);
+      });
   }
 
   // 7. Before/After - Open URL
-  protected getUrl() {
-    if (this.webSelectedView() === WebViewType.Original) {
-      return this.beforeContent()?.url;
-    } else if (this.webSelectedView() === WebViewType.Modified) {
-      return this.afterContent()?.url;
-    } else return null;
+  protected getUrl(): string | null {
+    const url = this.webSelectedView() === WebViewType.Original ? this.beforeContent()?.url : this.webSelectedView() === WebViewType.Modified ? this.afterContent()?.url : null;
+
+    return this.fetchService.isValidUrl(url) ? url : null;
   }
 
-  /* END OF TOOLBAR FUNCTIONS */
-
-  //this.toggleEdit = false;
-  //Disable undo button
-  /*
-    const undoText = this.translate.instant('page.compare.button.undo');
-    [this.acceptItems, this.rejectItems].forEach((arr) => {
-        const undoItem = arr.find((item) => item.label === undoText);
-        if (undoItem) {
-            undoItem.disabled = this.uploadState.isUndoDisabled();
-        }
-    });
-    //Checks if content is shareable
-    const canShareOriginal = this.urlDataService.isValidUrl(
-        data?.originalUrl,
-    );
-    const canShareModified = this.urlDataService.isValidUrl(
-        data?.modifiedUrl,
-    );
-    this.canShare = canShareOriginal || canShareModified;
-});
- 
-    //this.baseHref = this.locationStrategy.getBaseHref();
-}
-
- 
-//Disable AI if there are changes to accept/reject
-isDisabled = false;
-aiDisabled = '';
-
-acceptItems: MenuItem[] = [];
-rejectItems: MenuItem[] = [];
-
-get uploadType(): 'url' | 'paste' | 'word' {
-return this.uploadState.getSelectedUploadType(); // returns signal().value
-}
-
-get uploadData(): Partial<UploadData> | null {
-return this.uploadState.getUploadData(); // returns signal().value
-}
-
-
-
-*/
-
-  /*
-        
-        
-    
-        clearAll(event: Event) {
-            console.log('Clicked reset');
-            this.confirmationService.confirm({
-                target: event.target as EventTarget,
-                message: `<p class="mt-0">This will clear all uploaded content and any changes you made.</p>\n\n<p>You will lose your work and return to the upload screen.</p><p class="mb-0">Are you sure you want to reset?</p>`,
-                header: 'Confirm reset',
-                icon: 'pi pi-exclamation-circle',
-                rejectLabel: 'Cancel',
-                rejectButtonProps: {
-                    label: 'Cancel',
-                    icon: 'pi pi-undo',
-                    severity: 'secondary',
-                    outlined: true,
-                },
-                acceptButtonProps: {
-                    label: 'Reset',
-                    icon: 'pi pi-trash',
-                    severity: 'danger',
-                },
-                accept: () => {
-                    this.uploadState.resetUploadFlow();
-                    this.compareRenderedService.lastSelection = {
-                        count: 1,
-                        startId: null,
-                        endId: null,
-                    }; //reset selection
-                    this.router.navigate(['page-assistant']);
-                    console.log('Reset page comparison');
-                },
-                reject: () => {
-                    console.log('Cancel reset page comparison');
-                },
-            });
-        }
-    
-        canShare = false;
-        baseHref: string | null = null;
-        shareLink() {
-            console.log('Clicked share');
-            const data = this.uploadState.getUploadData();
-            if (!data) return;
-            const params: Params = {};
-            if (this.urlDataService.isValidUrl(data.originalUrl)) {
-                params['url'] = data.originalUrl;
-            } else if (this.urlDataService.isValidUrl(data.modifiedUrl)) {
-                params['url'] = data.modifiedUrl;
-            }
-            if (
-                this.urlDataService.isValidUrl(data.originalUrl) &&
-                this.urlDataService.isValidUrl(data.modifiedUrl) &&
-                data.originalUrl !== data.modifiedUrl
-            ) {
-                params['compareUrl'] = data.modifiedUrl;
-            }
-            const treeLink = this.router.createUrlTree(['page-assistant/share'], {
-                queryParams: params,
-            });
-            const shareLink = `${window.location.origin}${this.baseHref}${this.router.serializeUrl(treeLink).replace(/^\//, '')}`;
-    
-            navigator.clipboard
-                .writeText(shareLink)
-                .then(() => {
-                    this.messageService.add({
-                        severity: 'success',
-                        summary: 'Copied share link to clipboard',
-                        detail: `${shareLink}`,
-                        life: 1000,
-                    });
-                })
-                .catch((err) => console.error('Clipboard copy failed:', err));
-        }
-    
-        
-    
-        */
-
-  private processDiffChange(mode: 'accept' | 'reject'): void {
+  // Process Accept/Reject
+  protected processDiffChange(mode: 'accept' | 'reject'): void {
     //Get diff container
     const shadowRoot = this.shadowDOM();
     if (!shadowRoot) {
@@ -638,19 +493,35 @@ return this.uploadState.getUploadData(); // returns signal().value
       }
     });
 
-    this.compareRenderedService.lastSelection = { count: 1, startId: null, endId: null }; //reset selection
+    this.compareRenderedService.resetLastSelection();
 
     //Merge with modified HTML
-    const updatedHtml = diffContainer.innerHTML;
+    const updatedContent = this.compareRenderedService.undoInitShadowPlugins(diffContainer).innerHTML;
 
-    const beforeContent = this.beforeContent();
-    const afterContent = this.afterContent();
+    const beforeContent = this.resolvedBefore();
+    const afterContent = this.resolvedAfter();
 
     if (!beforeContent || !afterContent) return;
 
     this.contentChanged.emit({
-      beforeContent: mode === 'accept' ? { ...beforeContent, html: updatedHtml, url: 'Change accepted' } : beforeContent,
-      afterContent: mode === 'reject' ? { ...afterContent, html: updatedHtml, url: 'Change rejected' } : afterContent,
+      beforeContent: mode === 'accept' ? { ...beforeContent, html: updatedContent } : beforeContent,
+      afterContent: mode === 'reject' ? { ...afterContent, html: updatedContent } : afterContent,
+    });
+  }
+
+  // Process accept/reject all
+  processAllChanges(mode: 'accept' | 'reject') {
+    console.log(mode);
+    this.compareRenderedService.resetLastSelection();
+
+    const beforeContent = this.resolvedBefore();
+    const afterContent = this.resolvedAfter();
+
+    if (!beforeContent || !afterContent) return;
+
+    this.contentChanged.emit({
+      beforeContent: mode === 'accept' ? { html: afterContent.html, found: afterContent.found } : beforeContent,
+      afterContent: mode === 'reject' ? { html: beforeContent.html, found: beforeContent.found } : afterContent,
     });
   }
 }
