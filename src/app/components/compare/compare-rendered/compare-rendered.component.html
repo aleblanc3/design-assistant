@@ -77,6 +77,7 @@
     } @else {
       <div class="flex flex-row gap-1 align-items-center">
         <p-button
+          [disabled]="webSelectedView() === WebViewType.Original && !enableOriginalEdits()"
           [icon]="editing() ? 'pi pi-save' : 'pi pi-pen-to-square'"
           [label]="editing() ? ('common.save' | translate) : ('common.edit' | translate)"
           (onClick)="toggleEditing(webSelectedView())"
@@ -94,6 +95,13 @@
           <a [href]="getUrl()" class="secondary-outline no-underline" outlined pButton rel="noopener noreferrer" target="_blank">
             <span class="pButtonLabel"><i class="pi pi-external-link mr-2"></i>{{ 'common.openNewTab' | translate }}</span>
           </a>
+        }
+        @if (webSelectedView() === WebViewType.Original) {
+          @if (!enableOriginalEdits()) {
+            <p-button [label]="'common.enableEdits' | translate" (onClick)="enableOriginalEdits.set(true)" icon="pi pi-file-edit" outlined severity="warn" styleClass="secondary-outline" />
+          } @else {
+            <p-message icon="pi pi-exclamation-triangle" severity="warn">{{ 'compare.rendered.originalEditsMessage' | translate }}</p-message>
+          }
         }
       </div>
     }

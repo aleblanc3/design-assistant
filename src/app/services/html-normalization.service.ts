@@ -14,6 +14,7 @@ export interface htmlProcessingResult {
   };
   version?: CompareVersion;
   url?: string;
+  edited?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })

@@ -1,4 +1,6 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
+
+import { HtmlNormalizationService } from '../../../services/html-normalization.service';
 
 export interface SelectionTypes {
   count: number;
@@ -18,6 +20,8 @@ export interface DiffOptions {
   providedIn: 'root',
 })
 export class CompareRenderedService {
+  private readonly htmlNormalizationService = inject(HtmlNormalizationService);
+
   //Generate HTML diff (web page view) using htmldiff-js
   async generateHtmlDiff(originalHtml: string, modifiedHtml: string): Promise<string> {
     const options: DiffOptions = {
@@ -284,16 +288,21 @@ export class CompareRenderedService {
     this.undoInitTabs(clone);
     //this.undoInitFieldFlow(shadowRoot);
     //this.undoInitDetails(shadowRoot);
+    this.htmlNormalizationService.formatHtml(clone.toString());
     return clone;
   }
 
   /** Initialize tabs so they display in shadowDOM */
   private initTabs(shadowRoot: ShadowRoot): void {
-    shadowRoot.querySelectorAll('.wb-tabs:not(.wb-tabs-inited)').forEach((tabsContainer, autoId) => {
+    shadowRoot.querySelectorAll<HTMLElement>('.wb-tabs:not(.wb-tabs-inited)').forEach((tabsContainer, autoId) => {
       const groupId = `wb-shadow-${autoId}`;
       const groupClass = `${groupId}-grp`;
 
       tabsContainer.classList.add('wb-init', 'wb-tabs-inited', 'tabs-acc');
+      if (!tabsContainer.id) {
+        tabsContainer.id = groupId;
+        tabsContainer.dataset['autoId'] = 'true';
+      }
       tabsContainer.id = tabsContainer.id || groupId;
 
       const tabpanels = tabsContainer.querySelector('.tabpanels');
@@ -406,9 +415,18 @@ export class CompareRenderedService {
 
   /** Remove tab initialization so we can save source code */
   private undoInitTabs(container: HTMLElement) {
-    container.querySelectorAll('.wb-tabs.wb-tabs-inited').forEach((tabsContainer) => {
+    container.querySelectorAll<HTMLElement>('.wb-tabs.wb-tabs-inited').forEach((tabsContainer) => {
       tabsContainer.querySelectorAll(':scope > ul[role="tablist"].generated').forEach((ul) => ul.remove());
       tabsContainer.classList.remove('wb-init', 'wb-tabs-inited', 'tabs-acc');
+
+      // Remove the id initTabs auto-generated (only if it was auto-assigned, not pre-existing)
+      if (tabsContainer.dataset['autoId'] === 'true') {
+        tabsContainer.removeAttribute('id');
+        delete tabsContainer.dataset['autoId'];
+      }
+      if (tabsContainer.classList.length === 0) {
+        tabsContainer.removeAttribute('class');
+      }
 
       tabsContainer.querySelectorAll('details').forEach((detail) => {
         detail.removeAttribute('role');
@@ -419,11 +437,17 @@ export class CompareRenderedService {
         Array.from(detail.classList)
           .filter((c) => c.endsWith('-grp'))
           .forEach((c) => detail.classList.remove(c));
+        if (detail.classList.length === 0) {
+          detail.removeAttribute('class');
+        }
 
         const summary = detail.querySelector(':scope > summary');
         if (summary) {
           summary.removeAttribute('aria-hidden');
           summary.classList.remove('wb-toggle', 'tgl-tab', 'wb-init', 'wb-toggle-inited');
+          if (summary.classList.length === 0) {
+            summary.removeAttribute('class');
+          }
         }
 
         const tglPanel = detail.querySelector(':scope > .tgl-panel');
