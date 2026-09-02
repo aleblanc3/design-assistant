@@ -6,7 +6,6 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { TabsModule } from 'primeng/tabs';
 
-import { CompareProblemsComponent } from '../../../components/compare/compare-problems/compare-problems.component';
 import { CompareRenderedComponent } from '../../../components/compare/compare-rendered/compare-rendered.component';
 import { CompareSelectComponent } from '../../../components/compare/compare-select/compare-select.component';
 import { CompareSourceComponent } from '../../../components/compare/compare-source/compare-source.component';
@@ -20,7 +19,7 @@ import { UserSettingsService } from '../../../services/user-settings.service';
 
 @Component({
   selector: 'aida-compare-versions',
-  imports: [FormsModule, TranslatePipe, TabsModule, CompareProblemsComponent, CompareRenderedComponent, CompareSelectComponent, CompareSourceComponent, CompareToolsComponent],
+  imports: [FormsModule, TranslatePipe, TabsModule, CompareRenderedComponent, CompareSelectComponent, CompareSourceComponent, CompareToolsComponent],
   templateUrl: './compare.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
