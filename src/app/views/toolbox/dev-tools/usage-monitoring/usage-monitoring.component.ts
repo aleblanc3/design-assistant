@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -334,7 +333,11 @@ export class UsageMonitoringComponent implements OnInit {
 
   /** Delete test data from AIDA developers */
   protected deleteTestData() {
-    this.usageService.deleteUserRecords('57812460');
+    this.usageService.deleteUserRecords('57812460').subscribe({
+      next: (res) => console.log(`Deleted ${res.deleted} records`),
+      error: (err) => console.error('Delete failed', err),
+    });
+    this.load();
   }
 
   protected async unmaskUserIds() {

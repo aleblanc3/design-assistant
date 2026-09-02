@@ -19,7 +19,14 @@
       <p-tabpanels class="shadow-1">
         <!-- Rendered page -->
         <p-tabpanel value="0">
-          <aida-compare-rendered [afterContent]="compareService.modifiedHtml()" [beforeContent]="compareService.originalHtml()" (contentChanged)="onContentChanged($event)" />
+          <aida-compare-rendered
+            [afterContent]="compareService.modifiedHtml()"
+            [beforeContent]="compareService.originalHtml()"
+            [canUndo]="compareService.undoStack.canUndo()"
+            (contentChanged)="onContentChanged($event)"
+            (hasChanges)="onHasChanges($event)"
+            (undoChanges)="onUndo()"
+          />
         </p-tabpanel>
         <!-- Source code -->
         <!--p-tabpanel value="1">
@@ -27,7 +34,7 @@
         </p-tabpanel-->
         <!-- Problems -->
         <!--p-tabpanel value="2">
-          <aida-compare-problems [beforeContent]="compareService.originalHtml()" [afterContent]="compareService.modifiedHtml()"></aida-compare-problems>
+          <aida-compare-problems [afterContent]="compareService.modifiedHtml()" [beforeContent]="compareService.originalHtml()"></aida-compare-problems>
         </p-tabpanel-->
       </p-tabpanels>
     </p-tabs>

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 export interface SelectionTypes {
   count: number;
@@ -278,7 +278,16 @@ export class CompareRenderedService {
     //this.initDetails(shadowRoot);
   }
 
-  //Initialize tabs
+  //Undo init for saving source code
+  public undoInitShadowPlugins(container: HTMLElement): HTMLElement {
+    const clone = container.cloneNode(true) as HTMLElement;
+    this.undoInitTabs(clone);
+    //this.undoInitFieldFlow(shadowRoot);
+    //this.undoInitDetails(shadowRoot);
+    return clone;
+  }
+
+  /** Initialize tabs so they display in shadowDOM */
   private initTabs(shadowRoot: ShadowRoot): void {
     shadowRoot.querySelectorAll('.wb-tabs:not(.wb-tabs-inited)').forEach((tabsContainer, autoId) => {
       const groupId = `wb-shadow-${autoId}`;
@@ -395,11 +404,71 @@ export class CompareRenderedService {
     });
   }
 
+  /** Remove tab initialization so we can save source code */
+  private undoInitTabs(container: HTMLElement) {
+    container.querySelectorAll('.wb-tabs.wb-tabs-inited').forEach((tabsContainer) => {
+      tabsContainer.querySelectorAll(':scope > ul[role="tablist"].generated').forEach((ul) => ul.remove());
+      tabsContainer.classList.remove('wb-init', 'wb-tabs-inited', 'tabs-acc');
+
+      tabsContainer.querySelectorAll('details').forEach((detail) => {
+        detail.removeAttribute('role');
+        detail.removeAttribute('aria-labelledby');
+        detail.removeAttribute('aria-hidden');
+        detail.removeAttribute('aria-expanded');
+        detail.classList.remove('wb-init', 'fade', 'in', 'out', 'noheight');
+        Array.from(detail.classList)
+          .filter((c) => c.endsWith('-grp'))
+          .forEach((c) => detail.classList.remove(c));
+
+        const summary = detail.querySelector(':scope > summary');
+        if (summary) {
+          summary.removeAttribute('aria-hidden');
+          summary.classList.remove('wb-toggle', 'tgl-tab', 'wb-init', 'wb-toggle-inited');
+        }
+
+        const tglPanel = detail.querySelector(':scope > .tgl-panel');
+        if (tglPanel) {
+          while (tglPanel.firstChild) {
+            tglPanel.parentNode?.insertBefore(tglPanel.firstChild, tglPanel);
+          }
+          tglPanel.remove();
+        }
+      });
+    });
+  }
+
   //Adjust diff result (mark changed links, images, remove nested diff tags)
   private async adjustDOM(originalHtml: string, diffResult: string) {
     // Parse current diff and before content
     const parser = new DOMParser();
     const diffDoc = parser.parseFromString(diffResult, 'text/html');
+
+    // Unwrap images htmldiff.js incorrectly flagged as changed
+    const isImageOnly = (el: Element): boolean => {
+      const onlyChild = el.children.length === 1 ? el.children[0] : null;
+      return onlyChild?.tagName === 'IMG' && !el.textContent?.trim();
+    };
+    diffDoc.querySelectorAll('del.diffmod, del.diffdel').forEach((del) => {
+      if (!isImageOnly(del)) return;
+
+      const counterpart = del.nextElementSibling?.matches('ins.diffmod, ins.diffins')
+        ? del.nextElementSibling
+        : del.previousElementSibling?.matches('ins.diffmod, ins.diffins')
+          ? del.previousElementSibling
+          : null;
+
+      if (!counterpart || !isImageOnly(counterpart)) return;
+
+      const delImg = del.querySelector('img');
+      const insImg = counterpart.querySelector('img');
+
+      //If images are the same, diff was a false positve and should be undone
+      if (delImg && insImg && delImg.getAttribute('src') === insImg.getAttribute('src') && delImg.getAttribute('alt') === insImg.getAttribute('alt')) {
+        del.replaceWith(insImg.cloneNode(true));
+        counterpart.remove();
+      }
+    });
+
     /*const beforeDoc = parser.parseFromString(originalHtml, 'text/html');
     
         type LinksMap = Map<string, LinkData[]>;
@@ -721,7 +790,7 @@ export class CompareRenderedService {
       this.scrollToElement(clickedElement);
       if (updateCurrentIndex) {
         updateCurrentIndex(index);
-        this.lastSelection = { count: 1, startId: null, endId: null }; //reset selection
+        this.resetLastSelection();
       }
     };
 
@@ -786,15 +855,18 @@ export class CompareRenderedService {
     });
   }
 
-  public lastSelection: SelectionTypes = { count: 1, startId: null, endId: null };
+  public readonly lastSelection = signal<SelectionTypes>({ count: 1, startId: null, endId: null });
+  public resetLastSelection() {
+    this.lastSelection.set({ count: 1, startId: null, endId: null });
+  }
 
   highlightSelected(shadowRoot: ShadowRoot): void {
     //NOTE: window.getSelection() seems limited to text in shadowdom so extra checks needed to match with actual shadowdom elements
     const selection = window.getSelection();
     if (!shadowRoot || !selection) {
-      this.lastSelection = { count: 0, startId: null, endId: null };
+      this.resetLastSelection();
       return;
-    } //reset lastSelection
+    }
 
     const selectedText = normalize(selection.toString());
     if (!selectedText) return; //no change to lastSelection
@@ -906,11 +978,11 @@ export class CompareRenderedService {
       }
       console.log(`Highlighted ${highlightedCount} elements from data-id ${startId} to ${endId}`);
 
-      this.lastSelection = { count: highlightedCount, startId: startId, endId: endId };
+      this.lastSelection.set({ count: highlightedCount, startId: startId, endId: endId });
       return;
     } catch (err) {
       console.error(err);
-      this.lastSelection = { count: 0, startId: null, endId: null }; //nothing selected
+      this.resetLastSelection();
       return;
     }
 
