@@ -9,6 +9,7 @@ import type { Diff2HtmlUIConfig } from 'diff2html/lib/ui/js/diff2html-ui-slim';
 })
 export class CompareSourceService {
   private readonly translate = inject(TranslateService);
+
   //Update source code views
 
   async generateSourceContent(
@@ -99,6 +100,7 @@ export class CompareSourceService {
       const diff2 = new Diff2HtmlUI(container, patch, diffOptions);
       diff2.highlightCode();
       diff2.draw();
+      this.applyDiff2HtmlTheme();
     } catch (error) {
       console.error('Error generating diff2html:', error);
       container.innerHTML = '<p class="p-error">Error generating diff view.</p>';
@@ -113,16 +115,13 @@ export class CompareSourceService {
   }
 
   //Toggle theme for light/dark mode
-  public loadPrismTheme(): void {
+  private loadPrismTheme(): void {
     const isDarkMode = document.documentElement.classList.contains('dark-mode');
-
-    //Prism
     const existingLink = document.getElementById('prism-theme') as HTMLLinkElement;
-
-    const newHref = isDarkMode ? 'css/prism-okaidia.min.css' : 'css/prism.min.css';
+    const newHref = isDarkMode ? '/css/prism-okaidia.min.css' : '/css/prism.min.css';
 
     if (existingLink) {
-      if (existingLink.href.endsWith(newHref)) return; // already loaded
+      if (existingLink.href.endsWith(newHref)) return;
       existingLink.href = newHref;
     } else {
       const link = document.createElement('link');
@@ -131,10 +130,12 @@ export class CompareSourceService {
       link.href = newHref;
       document.head.appendChild(link);
     }
+  }
 
-    //Diff2Html
-    const diffWrappers = document.querySelectorAll('.d2h-wrapper');
-    diffWrappers.forEach((diffWrapper) => {
+  //Apply dark/light color scheme to diff2html wrapper elements
+  private applyDiff2HtmlTheme(): void {
+    const isDarkMode = document.documentElement.classList.contains('dark-mode');
+    document.querySelectorAll('.d2h-wrapper').forEach((diffWrapper) => {
       diffWrapper.classList.remove('d2h-dark-color-scheme', 'd2h-light-color-scheme');
       diffWrapper.classList.add(isDarkMode ? 'd2h-dark-color-scheme' : 'd2h-light-color-scheme');
     });
