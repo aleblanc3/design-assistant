@@ -20,7 +20,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { CompareAiService } from '../compare-ai.service';
 import { AiTaskOption, CompareService } from '../compare.service';
 
-import { AI_FREE_MODELS, AI_PAID_MODELS } from '../../../common/prompts/ai-models.config';
+import { AI_FREE_MODELS, AI_PAID_MODELS } from '../../../common/ai-models.config';
 import { PagePromptKey } from '../../../common/prompts/prompt.model';
 
 /**
@@ -52,6 +52,8 @@ export class CompareAiOptionsComponent {
   protected readonly compareService = inject(CompareService);
   protected readonly compareAiService = inject(CompareAiService);
   private readonly translate = inject(TranslateService);
+
+  protected readonly admin = localStorage.getItem('myOrg')?.toUpperCase() === 'ADMIN' ? true : false;
 
   /** AI model radio buttons */
   protected readonly freeModels = AI_FREE_MODELS;
