@@ -6,6 +6,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import { MessageModule } from 'primeng/message';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { ToastModule } from 'primeng/toast';
@@ -32,7 +33,7 @@ export interface ViewOption<T = string> {
  * Format your url or string content through the normalizeHTML function in html-normalization.service convert it to an htmlProcessingResult */
 @Component({
   selector: 'aida-compare-rendered',
-  imports: [CommonModule, FormsModule, TranslatePipe, ButtonModule, RadioButtonModule, SplitButtonModule, ToastModule, TooltipModule],
+  imports: [CommonModule, FormsModule, TranslatePipe, ButtonModule, MessageModule, RadioButtonModule, SplitButtonModule, ToastModule, TooltipModule],
   templateUrl: './compare-rendered.component.html',
   styleUrl: './compare-rendered.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -65,9 +66,49 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
 
   // Signals
   private readonly shadowDOM = signal<ShadowRoot | null>(null);
+  protected readonly enableOriginalEdits = signal<boolean>(false);
 
   // Prevent duplicate effects
   private renderToken = 0;
+
+  //Web page view options
+  protected readonly WebViewType = WebViewType;
+  protected readonly webSelectedView = signal<WebViewType>(WebViewType.Diff);
+
+  protected get webViewOptions(): ViewOption<WebViewType>[] {
+    const editedText = ` (${this.translate.instant('common.edited').toLowerCase()})`;
+
+    const beforeVersion = this.beforeContent()?.version;
+    const beforeBase = beforeVersion ? this.translate.instant('common.source.' + beforeVersion) : this.translate.instant('common.before');
+    const beforeLabel = beforeBase + (this.beforeContent()?.edited ? editedText : '');
+
+    const afterVersion = this.afterContent()?.version;
+    const afterBase = afterVersion ? this.translate.instant('common.source.' + afterVersion) : this.translate.instant('common.after');
+    const afterLabel = afterBase + (this.afterContent()?.edited ? editedText : '');
+
+    return [
+      {
+        label: beforeLabel,
+        value: WebViewType.Original,
+        icon: 'pi pi-file',
+      },
+      {
+        label: this.translate.instant('common.comparison'),
+        value: WebViewType.Diff,
+        icon: 'pi pi-sort-alt',
+      },
+      {
+        label: afterLabel,
+        value: WebViewType.Modified,
+        icon: 'pi pi-file-edit',
+      },
+    ];
+  }
+
+  //Change web page view
+  protected onWebViewChange(viewType: WebViewType) {
+    this.webSelectedView.set(viewType);
+  }
 
   // Effects
   constructor() {
@@ -86,6 +127,8 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
           this.shadowSelectionHandler = null;
         });
       }
+      this.enableOriginalEdits.set(false);
+      this.editing.set(false);
     });
     // Sync currentIndex whenever a multi-element selection lands
     effect(() => {
@@ -137,37 +180,6 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
       this.hasChanges.emit(false);
     }
     console.log(this.elements().length);
-  }
-
-  //Web page view options
-  protected readonly WebViewType = WebViewType;
-  protected readonly webSelectedView = signal<WebViewType>(WebViewType.Diff);
-
-  protected get webViewOptions(): ViewOption<WebViewType>[] {
-    const beforeLabel = this.beforeContent()?.version ? this.translate.instant('common.source.' + this.beforeContent()?.version) : this.translate.instant('common.before');
-    const afterLabel = this.afterContent()?.version ? this.translate.instant('common.source.' + this.afterContent()?.version) : this.translate.instant('common.after');
-    return [
-      {
-        label: beforeLabel,
-        value: WebViewType.Original,
-        icon: 'pi pi-file',
-      },
-      {
-        label: this.translate.instant('common.comparison'),
-        value: WebViewType.Diff,
-        icon: 'pi pi-sort-alt',
-      },
-      {
-        label: afterLabel,
-        value: WebViewType.Modified,
-        icon: 'pi pi-file-edit',
-      },
-    ];
-  }
-
-  //Change web page view
-  protected onWebViewChange(viewType: WebViewType) {
-    this.webSelectedView.set(viewType);
   }
 
   /* START OF TOOLBAR FUNCTIONS */
@@ -355,8 +367,8 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
       if (!beforeContent || !afterContent) return;
 
       this.contentChanged.emit({
-        beforeContent: view === WebViewType.Original ? { ...beforeContent, html: updatedContent } : beforeContent,
-        afterContent: view === WebViewType.Modified ? { ...afterContent, html: updatedContent } : afterContent,
+        beforeContent: view === WebViewType.Original ? { ...beforeContent, html: updatedContent, edited: true } : beforeContent,
+        afterContent: view === WebViewType.Modified ? { ...afterContent, html: updatedContent, edited: true } : afterContent,
       });
     }
   }
@@ -504,8 +516,8 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
     if (!beforeContent || !afterContent) return;
 
     this.contentChanged.emit({
-      beforeContent: mode === 'accept' ? { ...beforeContent, html: updatedContent } : beforeContent,
-      afterContent: mode === 'reject' ? { ...afterContent, html: updatedContent } : afterContent,
+      beforeContent: mode === 'accept' ? { ...beforeContent, html: updatedContent, edited: true } : beforeContent,
+      afterContent: mode === 'reject' ? { ...afterContent, html: updatedContent, edited: true } : afterContent,
     });
   }
 
@@ -520,8 +532,8 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
     if (!beforeContent || !afterContent) return;
 
     this.contentChanged.emit({
-      beforeContent: mode === 'accept' ? { html: afterContent.html, found: afterContent.found } : beforeContent,
-      afterContent: mode === 'reject' ? { html: beforeContent.html, found: beforeContent.found } : afterContent,
+      beforeContent: mode === 'accept' ? { ...beforeContent, html: afterContent.html, found: afterContent.found, edited: true } : beforeContent,
+      afterContent: mode === 'reject' ? { ...afterContent, html: beforeContent.html, found: beforeContent.found, edited: true } : afterContent,
     });
   }
 }
