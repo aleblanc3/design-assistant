@@ -1,13 +1,14 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
-import { createPatch } from 'diff';
-import { Diff2HtmlUI } from 'diff2html/lib/ui/js/diff2html-ui-slim';
+import { TranslateService } from '@ngx-translate/core';
+
 import type { Diff2HtmlUIConfig } from 'diff2html/lib/ui/js/diff2html-ui-slim';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CompareSourceService {
+  private readonly translate = inject(TranslateService);
   //Update source code views
 
   async generateSourceContent(
@@ -64,10 +65,7 @@ export class CompareSourceService {
   ): Promise<void> {
     try {
       //Import diff modules
-      //const [{ createPatch }, { default: Diff2HtmlUI }] = await Promise.all([
-      //  import('diff'),
-      //  import('diff2html/lib/ui/js/diff2html-ui-slim'),
-      //]);
+      const [{ createPatch }, { Diff2HtmlUI }] = await Promise.all([import('diff'), import('diff2html/lib/ui/js/diff2html-ui-slim')]);
 
       // Data used for diff
       const patch = createPatch('', originalHtml, modifiedHtml, originalUrl, modifiedUrl, {
@@ -82,6 +80,16 @@ export class CompareSourceService {
         matching: 'words',
         synchronisedScroll: true,
         highlight: true,
+        rawTemplates: {
+          'generic-empty-diff': `
+<tr>
+    <td class="d2h-info">
+        <div class="{{contentClass}} d2h-info">
+            ${this.translate.instant('compare.source.fileWithoutChanges')}
+        </div>
+    </td>
+</tr>`,
+        },
       };
 
       // Clear previous content

@@ -7,7 +7,7 @@
         <p-radiobutton [inputId]="'show_' + view.value" [name]="view.value" [ngModel]="sourceSelectedView()" [value]="view.value" (ngModelChange)="onSourceViewChange($event)" size="large" />
         <label [for]="'show_' + view.value" class="cursor-pointer font-semibold flex align-items-center gap-1">
           <i [class]="view.icon"></i>
-          {{ view.label | translate }}
+          {{ view.label }}
         </label>
       </div>
     }
