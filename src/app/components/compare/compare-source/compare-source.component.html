@@ -69,6 +69,7 @@
       }
     </div>
   </div>
-  <!--Shadow DOM-->
+  <!--Diff container-->
   <div [ngClass]="sourceSelectedView()" class="diff-container p-0" #sourceContainer></div>
+  <p-contextmenu [model]="snippetItems()" #snippetMenu />
 </div>

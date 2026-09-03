@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, effect, ElementRef, inject, input, output, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, ElementRef, inject, input, OnDestroy, output, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
-import { MessageService } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import { ContextMenu, ContextMenuModule } from 'primeng/contextmenu';
 import { MessageModule } from 'primeng/message';
 import { RadioButtonModule } from 'primeng/radiobutton';
 
@@ -13,6 +14,8 @@ import { FetchService } from '../../../services/fetch.service';
 import { HtmlNormalizationService, htmlProcessingResult } from '../../../services/html-normalization.service';
 import { UserSettingsService } from '../../../services/user-settings.service';
 import { CompareSourceService } from './compare-source.service';
+
+import { GCWEB_SNIPPETS_ENG, GCWEB_SNIPPETS_FRA, GCwebSnippet } from '../../../common/gcweb-snippets.config';
 
 export enum SourceViewType {
   Original = 'original',
@@ -29,12 +32,12 @@ export interface ViewOption<T = string> {
 
 @Component({
   selector: 'aida-compare-source',
-  imports: [CommonModule, FormsModule, TranslatePipe, ButtonModule, MessageModule, RadioButtonModule],
+  imports: [CommonModule, FormsModule, TranslatePipe, ButtonModule, ContextMenuModule, MessageModule, RadioButtonModule],
   templateUrl: './compare-source.component.html',
   styleUrl: './compare-source.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CompareSourceComponent {
+export class CompareSourceComponent implements OnDestroy {
   private readonly translate = inject(TranslateService);
   private readonly messageService = inject(MessageService);
   private readonly compareSourceService = inject(CompareSourceService);
@@ -127,6 +130,11 @@ export class CompareSourceComponent {
     });
   }
 
+  ngOnDestroy() {
+    const editable = this.sourceContainer()?.nativeElement;
+    editable?.removeEventListener('contextmenu', this.onSourceContextMenu);
+  }
+
   async rebuildSourceContent(container: HTMLElement, viewType: SourceViewType, beforeContent: htmlProcessingResult, afterContent: htmlProcessingResult): Promise<void> {
     const token = ++this.renderToken;
 
@@ -172,6 +180,7 @@ export class CompareSourceComponent {
     return items;
   }
 
+  // Edit
   protected readonly editing = signal<boolean>(false);
   protected async toggleEditing(view: SourceViewType): Promise<void> {
     this.editing.set(!this.editing());
@@ -185,10 +194,12 @@ export class CompareSourceComponent {
     if (this.editing()) {
       //edit
       editable.setAttribute('contenteditable', 'true');
+      editable.addEventListener('contextmenu', this.onSourceContextMenu);
       editable.focus();
     } else {
       //save
       editable.setAttribute('contenteditable', 'false');
+      editable.removeEventListener('contextmenu', this.onSourceContextMenu);
 
       const updatedContent = await this.htmlNormalizationService.formatHtml(editable.textContent);
 
@@ -237,5 +248,56 @@ export class CompareSourceComponent {
     const url = this.sourceSelectedView() === SourceViewType.Original ? this.beforeContent()?.url : this.sourceSelectedView() === SourceViewType.Modified ? this.afterContent()?.url : null;
 
     return this.fetchService.isValidUrl(url) ? url : null;
+  }
+
+  //Context menu
+  protected readonly snippetMenu = viewChild<ContextMenu>('snippetMenu');
+  private savedRange: Range | null = null;
+
+  protected readonly snippetItems = computed(() => {
+    const lang = this.translate.getCurrentLang() ?? 'en';
+    return lang.startsWith('fr') ? this.buildSnippetMenu(GCWEB_SNIPPETS_FRA) : this.buildSnippetMenu(GCWEB_SNIPPETS_ENG);
+  });
+
+  private buildSnippetMenu(snippets: GCwebSnippet[]): MenuItem[] {
+    const grouped = new Map<string, MenuItem[]>();
+    const topLevel: MenuItem[] = [];
+
+    for (const s of snippets) {
+      const item: MenuItem = { label: s.label, command: () => this.insertSnippet(s.snippet) };
+      if (s.category) {
+        if (!grouped.has(s.category)) grouped.set(s.category, []);
+        grouped.get(s.category)!.push(item);
+      } else {
+        topLevel.push(item);
+      }
+    }
+
+    const categoryMenus: MenuItem[] = Array.from(grouped.entries()).map(([category, items]) => ({
+      label: category,
+      items,
+    }));
+
+    return [...categoryMenus, ...topLevel];
+  }
+
+  private onSourceContextMenu = (event: MouseEvent): void => {
+    event.preventDefault();
+    const selection = window.getSelection();
+    this.savedRange = selection && selection.rangeCount > 0 ? selection.getRangeAt(0).cloneRange() : null;
+    this.snippetMenu()?.show(event);
+  };
+
+  private insertSnippet(snippet: string): void {
+    const editable = this.sourceContainer()?.nativeElement;
+    if (!editable) return;
+
+    editable.focus();
+    const selection = window.getSelection();
+    if (selection && this.savedRange) {
+      selection.removeAllRanges();
+      selection.addRange(this.savedRange);
+    }
+    document.execCommand('insertText', false, snippet);
   }
 }
