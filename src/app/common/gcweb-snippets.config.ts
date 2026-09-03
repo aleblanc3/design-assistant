@@ -26,8 +26,14 @@ export const GCWEB_SNIPPETS_ENG: GCwebSnippet[] = [
     snippet: `<ul class="list-unstyled cnjnctn-type-and">\n  <li class="cnjnctn-col">\n    <p>This is content for column A</p>\n  </li>\n  <li class="cnjnctn-col">\n    <p>This is content for column B</p>\n  </li>\n</ul>`,
   },
   {
-    label: 'Rescue link',
+    label: 'English',
+    category: 'Rescue link',
     snippet: `<p class="pull-left small"><strong>You may be looking for:</strong></p>\n<ul class="pull-left small mrgn-lft-md list-unstyled">\n  <li><a href="#">Link text</a></li>\n</ul>\n<div class="clearfix"></div>`,
+  },
+  {
+    label: 'French',
+    category: 'Rescue link',
+    snippet: `<p class="pull-left small"><strong>Vous cherchez peut-être :</strong></p>\n<ul class="pull-left small mrgn-lft-md list-unstyled">\n  <li><a href="#">Texte du lien</a></li>\n</ul>\n<div class="clearfix"></div>`,
   },
   {
     label: 'Bulleted',
@@ -52,7 +58,7 @@ export const GCWEB_SNIPPETS_ENG: GCwebSnippet[] = [
   {
     label: 'Definition',
     category: 'List',
-    snippet: `<dl class="dl-horizontal">\n  <dt>Term 1</dt>\n  <dd>Description of term 1</dd>\n  <dt>Term 2</dt>\n  <dd>Description of term 2</dd>\n  <dt>Term 3</dt>\n  <dd>Description of term 3</dd>\n</dl>`,
+    snippet: `<dl class="dl-horizontal dt-max">\n  <dt>Term 1</dt>\n  <dd>Description of term 1</dd>\n  <dt>Term 2</dt>\n  <dd>Description of term 2</dd>\n  <dt>Term 3</dt>\n  <dd>Description of term 3</dd>\n</dl>`,
   },
   { label: 'Expand/Collapse', snippet: `<details>\n  <summary>Descriptive title</summary>\n  <p>Secondary information.</p>\n</details>` },
   {
@@ -99,8 +105,14 @@ export const GCWEB_SNIPPETS_FRA: GCwebSnippet[] = [
     snippet: `<ul class="list-unstyled cnjnctn-type-and">\n  <li class="cnjnctn-col">\n    <p>Contenu de la colonne A</p>\n  </li>\n  <li class="cnjnctn-col">\n    <p>Contenu de la colonne B</p>\n  </li>\n</ul>`,
   },
   {
-    label: 'Lien de secours',
+    label: 'Français',
+    category: 'Lien de secours',
     snippet: `<p class="pull-left small"><strong>Vous cherchez peut-être :</strong></p>\n<ul class="pull-left small mrgn-lft-md list-unstyled">\n  <li><a href="#">Texte du lien</a></li>\n</ul>\n<div class="clearfix"></div>`,
+  },
+  {
+    label: 'Anglais',
+    category: 'Lien de secours',
+    snippet: `<p class="pull-left small"><strong>You may be looking for:</strong></p>\n<ul class="pull-left small mrgn-lft-md list-unstyled">\n  <li><a href="#">Link text</a></li>\n</ul>\n<div class="clearfix"></div>`,
   },
   {
     label: 'À puces',
@@ -125,7 +137,7 @@ export const GCWEB_SNIPPETS_FRA: GCwebSnippet[] = [
   {
     label: 'Définition',
     category: 'Liste',
-    snippet: `<dl class="dl-horizontal">\n  <dt>1er terme</dt>\n  <dd>Description du terme 1</dd>\n  <dt>2e terme</dt>\n  <dd>Description du terme 2</dd>\n  <dt>3e terme</dt>\n  <dd>Description du terme 3</dd>\n</dl>`,
+    snippet: `<dl class="dl-horizontal dt-max">\n  <dt>1er terme</dt>\n  <dd>Description du terme 1</dd>\n  <dt>2e terme</dt>\n  <dd>Description du terme 2</dd>\n  <dt>3e terme</dt>\n  <dd>Description du terme 3</dd>\n</dl>`,
   },
   { label: 'Développer/réduire', snippet: `<details>\n  <summary>Titre descriptif</summary>\n  <p>Renseignements secondaires.</p>\n</details>` },
   {

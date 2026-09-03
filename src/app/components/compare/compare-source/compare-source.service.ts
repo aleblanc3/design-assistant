@@ -66,7 +66,8 @@ export class CompareSourceService {
   ): Promise<void> {
     try {
       //Import diff modules
-      const [{ createPatch }, { Diff2HtmlUI }] = await Promise.all([import('diff'), import('diff2html/lib/ui/js/diff2html-ui-slim')]);
+      const [{ createPatch }, diff2htmlModule] = await Promise.all([import('diff'), import('diff2html/lib/ui/js/diff2html-ui-slim')]);
+      const Diff2HtmlUI = diff2htmlModule.Diff2HtmlUI;
 
       // Data used for diff
       const patch = createPatch('', originalHtml, modifiedHtml, originalUrl, modifiedUrl, {
