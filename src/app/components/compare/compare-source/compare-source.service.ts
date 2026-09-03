@@ -67,7 +67,11 @@ export class CompareSourceService {
     try {
       //Import diff modules
       const [{ createPatch }, diff2htmlModule] = await Promise.all([import('diff'), import('diff2html/lib/ui/js/diff2html-ui-slim')]);
-      const Diff2HtmlUI = diff2htmlModule.Diff2HtmlUI;
+      const Diff2HtmlUI = (diff2htmlModule as any).Diff2HtmlUI ?? (diff2htmlModule as any).default?.Diff2HtmlUI; // eslint-disable-line @typescript-eslint/no-explicit-any
+
+      if (!Diff2HtmlUI) {
+        throw new Error('Diff2HtmlUI export not found in diff2html-ui-slim module');
+      }
 
       // Data used for diff
       const patch = createPatch('', originalHtml, modifiedHtml, originalUrl, modifiedUrl, {
