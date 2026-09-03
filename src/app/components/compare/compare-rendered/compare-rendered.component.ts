@@ -164,7 +164,7 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
 
     await this.compareRenderedService.generateShadowDOMContent(shadowRoot, viewType, beforeContent.html, afterContent.html);
 
-    if (token !== this.renderToken) return; // a newer call started while we were awaiting — abandon this one
+    if (token !== this.renderToken) return; // cancel if a newer call was started while awaiting
 
     this.shadowClickHandler = this.compareRenderedService.handleDocumentClick(shadowRoot, (index: number) => {
       this.currentIndex.set(index);
@@ -176,7 +176,7 @@ export class CompareRenderedComponent implements AfterViewInit, OnDestroy {
     if (this.elements().length > 0) {
       this.focusOnIndex(this.currentIndex());
       this.hasChanges.emit(true);
-    } else {
+    } else if (this.webSelectedView() === WebViewType.Diff) {
       this.hasChanges.emit(false);
     }
     console.log(this.elements().length);
