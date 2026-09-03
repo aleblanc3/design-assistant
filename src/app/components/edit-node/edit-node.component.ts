@@ -209,6 +209,28 @@ export class EditNodeComponent {
     return Math.max(enDays ?? 0, frDays ?? 0);
   });
 
+  //Notes
+
+  protected readonly toggleNotes = signal<boolean>(false);
+
+  editNotes() {
+    const node = this.node();
+    if (!node.data?.notes) {
+      node.data.notes = { issue: '', solution: '' };
+    }
+    this.toggleNotes.set(!this.toggleNotes());
+  }
+
+  protected get noteConfig(): { label: string; icon: string } {
+    const node = this.node();
+    const hasNotes = (node.data?.notes?.issue.length ?? 0) + (node.data?.notes?.solution.length ?? 0) > 0;
+
+    if (this.toggleNotes()) {
+      return { label: this.translate.instant('editNode.notes.save'), icon: 'pi pi-save' };
+    }
+    return hasNotes ? { label: this.translate.instant('editNode.notes.edit'), icon: 'pi pi-file-edit' } : { label: this.translate.instant('editNode.notes.add'), icon: 'pi pi-file-plus' };
+  }
+
   //Parent page dropdown
   protected readonly enPages = computed(() => this.projectState.getAllPages('en', 'live', 'all'));
 
