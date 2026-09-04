@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, effect, inject, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -22,7 +23,7 @@ import { IaDiagramService } from './ia-diagram.service';
 
 @Component({
   selector: 'aida-ia-diagram',
-  imports: [FormsModule, TranslatePipe, ButtonModule, DialogModule, MenuModule, OrganizationChartModule, TooltipModule, EditNodeComponent, ProjectSettingsComponent],
+  imports: [CommonModule, FormsModule, TranslatePipe, ButtonModule, DialogModule, MenuModule, OrganizationChartModule, TooltipModule, EditNodeComponent, ProjectSettingsComponent],
   templateUrl: './ia-diagram.component.html',
   styleUrl: './ia-diagram.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -324,5 +325,37 @@ export class IaDiagramComponent {
     this.projectState.moveNode(drag, drop);
     this.dragNode.set(null);
     this.dropTarget.set(null);
+  }
+
+  protected get legendItems() {
+    const mainColours = this.treeNodeStyleService.bgColors;
+    const allColours = this.treeNodeStyleService.contextStyles;
+
+    const items: { context: string[]; text: string }[] = [
+      { context: [mainColours[0], mainColours[1], mainColours[3]], text: this.translate.instant('editNode.inScope') },
+      { context: [allColours['template']], text: this.translate.instant('iaDiagram.outOfScope') },
+    ];
+
+    const hasNew = this.projectState.findNodeWhere(this.projectTree(), (node) => node.data?.status?.isNew === true) !== null;
+    const hasMoves = this.projectState.findNodeWhere(this.projectTree(), (node) => node.data?.status?.isMoved === true) !== null;
+    const hasROT = this.projectState.findNodeWhere(this.projectTree(), (node) => node.data?.status?.isROT === true) !== null;
+    const hasRescues = Array.from(this.navNodes().values()).some((links) => links.length > 0);
+
+    if (this.projectCache.selectedViewIA() === 'changes') {
+      if (hasNew) {
+        items.push({ context: [allColours['new']], text: this.translate.instant('editNode.isNew') });
+      }
+      if (hasMoves) {
+        items.push({ context: [allColours['move']], text: this.translate.instant('editNode.isMoved') });
+      }
+      if (hasROT) {
+        items.push({ context: [allColours['rot']], text: this.translate.instant('editNode.isROT') });
+      }
+      if (hasRescues) {
+        items.push({ context: [allColours['navChild'], allColours['navChildTemp']], text: this.translate.instant('iaDiagram.hasRescues') });
+      }
+    }
+
+    return items;
   }
 }
