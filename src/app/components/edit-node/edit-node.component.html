@@ -768,14 +768,14 @@
             </p-fieldset>
           }
         </div>
-      } @else {
+      } @else if (node().data?.notes) {
         <div class="flex flex-column gap-1 mt-3">
           <p-iftalabel>
             <textarea
               id="issue"
               [(ngModel)]="node().data.notes.issue"
               (ngModelChange)="markChanges()"
-              class="secondary-outline"
+              class="secondary-outline min-h-6rem"
               autoResize="true"
               fluid
               pTextarea
@@ -789,7 +789,7 @@
               id="solution"
               [(ngModel)]="node().data.notes.solution"
               (ngModelChange)="markChanges()"
-              class="secondary-outline"
+              class="secondary-outline min-h-6rem"
               autoResize="true"
               fluid
               pTextarea

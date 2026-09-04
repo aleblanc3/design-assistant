@@ -92,8 +92,13 @@ export class IaDiagramComponent {
   protected items: MenuItem[] = [];
 
   protected editNode = false;
+  protected showNotes = false;
   protected selectedNode: TreeNode = {};
 
+  closeDialog() {
+    this.editNode = false;
+    this.showNotes = false;
+  }
   protected onMenuClick(event: MouseEvent, node: TreeNode) {
     if (!node.data.path[this.primaryLang]) return;
     const projectNode = this.projectState.findNodeByPath(this.projectData().projectData, node.data.path[this.primaryLang], this.primaryLang);
@@ -109,6 +114,7 @@ export class IaDiagramComponent {
             icon: 'pi pi-pen-to-square',
             command: () => {
               this.selectedNode = projectNode;
+              this.showNotes = false;
               this.editNode = true;
             },
           },
@@ -119,6 +125,19 @@ export class IaDiagramComponent {
         items: [],
       },
     ];
+
+    // Action: View notes
+    if ((projectNode.data?.notes?.issue.length ?? 0) + (projectNode.data?.notes?.solution.length ?? 0) > 0) {
+      this.items[0].items!.push({
+        label: this.translate.instant(`common.viewNotes`),
+        icon: 'pi pi-list',
+        command: () => {
+          this.selectedNode = projectNode;
+          this.showNotes = true;
+          this.editNode = true;
+        },
+      });
+    }
 
     // Action: Reorder siblings
     const siblings = this.projectState.getSiblings(node);
@@ -163,6 +182,7 @@ export class IaDiagramComponent {
           icon: 'pi pi-file-plus text-green-500',
           command: () => {
             this.selectedNode = this.projectState.createNode(node);
+            this.showNotes = false;
             this.editNode = true;
           },
         },

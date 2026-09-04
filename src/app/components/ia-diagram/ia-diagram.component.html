@@ -75,6 +75,6 @@
 
 <p-dialog [(visible)]="editNode" [header]="selectedNode.data?.prototype?.[projectCache.selectedLang()].h1" [maximizable]="true" [modal]="true" [style]="{ height: '90vh' }" styleClass="w-10">
   @if (selectedNode) {
-    <aida-edit-node [isOpen]="editNode" [node]="selectedNode" (dialogClose)="editNode = false" />
+    <aida-edit-node [initialShowNotes]="showNotes" [isOpen]="editNode" [node]="selectedNode" (dialogClose)="closeDialog()" />
   }
 </p-dialog>
