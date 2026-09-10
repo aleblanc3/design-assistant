@@ -96,11 +96,11 @@ export class ProjectCacheService {
    * Checks if a github index page exists for the project so UI can be updated
    ** Updates signals {@link hasGitHub} and {@link hasGitHubBL}
    *
-   * Call this fxn OnInit and via effect whenever the repo or owner change
+   * Call this fxn via effect whenever the repo or owner change
    *
    * Use {@link checkPreviewStatus} for AEM preview and an effect for GitHub versions
    */
-  public checkGitHubStatus(): void {
+  private checkGitHubStatus(): void {
     if (this.githubCheckInProgress) return;
     if (!this.settingsService.includeGitHub()) return;
     const owner = this.projectState.getProject().github.owner;
@@ -108,10 +108,10 @@ export class ProjectCacheService {
     if (!owner || !repo) return;
     this.githubCheckInProgress = true;
     const url = this.fetchService.generateUrl('index.html', 'protoGH', owner, repo);
-    const checks: Promise<void>[] = [this.fetchService.fetchStatus(url).then((response) => this.hasGitHub.set(response.ok))];
+    const checks: Promise<void>[] = [this.fetchService.fetchStatus(url, 'proto', 1).then((response) => this.hasGitHub.set(response.ok))];
     if (this.settingsService.includeBaseline()) {
       const urlBL = this.fetchService.generateUrl('index.html', 'baseGH', owner, repo);
-      checks.push(this.fetchService.fetchStatus(urlBL).then((response) => this.hasGitHubBL.set(response.ok)));
+      checks.push(this.fetchService.fetchStatus(urlBL, 'proto', 1).then((response) => this.hasGitHubBL.set(response.ok)));
     }
     Promise.all(checks).finally(() => {
       this.githubCheckInProgress = false;
