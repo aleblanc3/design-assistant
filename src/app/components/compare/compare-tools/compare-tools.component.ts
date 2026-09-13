@@ -135,7 +135,7 @@ export class CompareToolsComponent {
       return;
     }
     const params: Params = { before: beforeUrl, after: afterUrl };
-    const treeLink = this.router.createUrlTree(['/standalone/compare-versions'], { queryParams: params });
+    const treeLink = this.router.createUrlTree(['/standalone/compare'], { queryParams: params });
     const shareLink = `${window.location.origin}${this.router.serializeUrl(treeLink)}`;
 
     navigator.clipboard
