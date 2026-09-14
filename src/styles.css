@@ -58,11 +58,11 @@ main.container {
 /* ========== Desktop Layout ========== */
 @media screen and (min-width: 768px) {
   .l-navbar {
-    width: calc(var(--nav-width) + 7rem);
+    width: calc(var(--nav-width) + 8.1rem);
   }
 
   div.container {
-    padding-left: calc(var(--nav-width) + 7rem);
+    padding-left: calc(var(--nav-width) + 8.1rem);
   }
 }
 
