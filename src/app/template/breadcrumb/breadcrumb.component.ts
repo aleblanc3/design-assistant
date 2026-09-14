@@ -93,7 +93,7 @@ export class BreadcrumbComponent {
     const isSignedIn = !!this.exportGitHubService.user();
 
     const signInToUploadToCloud = isCollaborator && !isSignedIn && hasCollaborators ? this.translate.instant('project.global.signInToUpload') : undefined;
-    const cantUploadToCloud = !isCollaborator && !isSignedIn && hasCollaborators ? this.translate.instant('project.global.cantUpload') : undefined;
+    const cantUploadToCloud = !isCollaborator && hasCollaborators ? this.translate.instant('project.global.cantUpload') : undefined;
 
     const projectLabel = projectName && cantUploadToCloud ? this.translate.instant('project.global.copyOf') + ' ' + projectName : (projectName ?? '');
 
