@@ -4,12 +4,13 @@ import { Router, Routes } from '@angular/router';
 import { environment } from '../environments/environment';
 
 // Project views
-import { ProjectComponent } from './views/project/project.component';
 import { DashboardComponent } from './views/project/dashboard/dashboard.component';
 import { EditProjectComponent } from './views/project/edit-project/edit-project.component';
 import { SwitchProjectComponent } from './views/project/switch-project/switch-project.component';
 
-// Phase views (topic pages)
+// Topic pages
+import { ProjectComponent } from './views/project/project.component';
+import { TasksComponent } from './views/tasks/tasks.component';
 import { DiscoverComponent } from './views/phase/discover/discover.component';
 import { AssessComponent } from './views/phase/assess/assess.component';
 import { DesignComponent } from './views/phase/design/design.component';
@@ -112,14 +113,19 @@ export const routes: Routes = [
   },
   //TASK PATHS
   {
+    path: 'tasks',
+    component: TasksComponent,
+    title: 'nav.tasks',
+  },
+  {
     path: 'tasks/add-pages',
-    loadComponent: () => import('./views/task/add-pages/add-pages.component').then((m) => m.AddPagesComponent),
+    loadComponent: () => import('./views/tasks/add-pages/add-pages.component').then((m) => m.AddPagesComponent),
     title: 'addPages._title',
     data: { breadcrumbKey: 'tasks' },
   },
   {
     path: 'tasks/inventory',
-    loadComponent: () => import('./views/task/manage-inventory/inventory.component').then((m) => m.InventoryComponent),
+    loadComponent: () => import('./views/tasks/manage-inventory/inventory.component').then((m) => m.InventoryComponent),
     title: 'inventory._title',
     data: { breadcrumbKey: 'tasks' },
   },
@@ -130,13 +136,13 @@ export const routes: Routes = [
   },
   {
     path: 'tasks/export-pages',
-    loadComponent: () => import('./views/task/export-pages/export.component').then((m) => m.ExportComponent),
+    loadComponent: () => import('./views/tasks/export-pages/export.component').then((m) => m.ExportComponent),
     title: 'exportPages._nav',
     data: { breadcrumbKey: 'tasks' },
   },
   {
     path: 'tasks/compare',
-    loadComponent: () => import('./views/task/compare-versions/compare.component').then((m) => m.CompareComponent),
+    loadComponent: () => import('./views/tasks/compare-versions/compare.component').then((m) => m.CompareComponent),
     title: 'compare._title',
     data: { breadcrumbKey: 'tasks' },
   },
