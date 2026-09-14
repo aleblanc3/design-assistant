@@ -11,10 +11,12 @@
             <span class="legend-text">{{ item.text | translate }}</span>
           </div>
         }
-        <div class="flex align-items-center gap-1">
-          <i class="pi pi-times text-red-500"></i>
-          <span class="legend-text">{{ 'editNode.isOrphan' | translate }}</span>
-        </div>
+        @if (hasIaOrphan) {
+          <div class="flex align-items-center gap-1">
+            <i class="pi pi-times text-red-500"></i>
+            <span class="legend-text">{{ 'editNode.isOrphan' | translate }}</span>
+          </div>
+        }
       </div>
       <p-button [attr.aria-label]="'common.close' | translate" (onClick)="iaDiagram.closeDiagram()" class="align-items-start mb-1" icon="pi pi-times" rounded text />
     </div>
