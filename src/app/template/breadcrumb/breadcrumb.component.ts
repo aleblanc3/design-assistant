@@ -64,7 +64,7 @@ export class BreadcrumbComponent {
     if (!key) return []; // Don't display breadcrumb if there is no key
     const ancestors = BREADCRUMB_ANCESTORS[key] ?? [];
     if (ancestors.length === 0) return []; // Don't display breadcrumb if there are no links
-    return snapshot.title ? [...ancestors, { label: this.translate.instant(snapshot.title) }] : ancestors;
+    return snapshot.title ? [...ancestors, { label: snapshot.title }] : ancestors;
   }
 
   getDeepestSnapshot(snapshot: ActivatedRouteSnapshot): ActivatedRouteSnapshot {
