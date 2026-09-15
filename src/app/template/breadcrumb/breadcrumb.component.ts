@@ -19,7 +19,7 @@ import { UserSettingsService } from '../../services/user-settings.service';
 
 import { environment } from '../../../environments/environment';
 
-const HOME: MenuItem = { icon: 'pi pi-home', route: '/' };
+const HOME: MenuItem = { label: 'common.home', route: '/', icon: 'pi pi-home' };
 const PROJECT: MenuItem = { label: 'nav.project', route: '/project' };
 const TASKS: MenuItem = { label: 'nav.tasks', route: '/tasks' };
 const STANDALONE: MenuItem = { label: 'standalone._title', route: '/standalone' };
