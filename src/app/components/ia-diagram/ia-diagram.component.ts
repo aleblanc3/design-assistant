@@ -26,7 +26,7 @@ import { TreeNodeData } from '../../common/data.model';
 
 @Component({
   selector: 'aida-ia-diagram',
-  imports: [CommonModule, FormsModule, TranslatePipe, ButtonModule, DialogModule, RouterLink, MenuModule, OrganizationChartModule, TooltipModule, EditNodeComponent, ProjectSettingsComponent],
+  imports: [CommonModule, FormsModule, RouterLink, TranslatePipe, ButtonModule, DialogModule, MenuModule, OrganizationChartModule, TooltipModule, EditNodeComponent, ProjectSettingsComponent],
   templateUrl: './ia-diagram.component.html',
   styleUrl: './ia-diagram.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
