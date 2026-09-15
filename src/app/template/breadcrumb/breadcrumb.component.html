@@ -3,7 +3,7 @@
     {{ (sandbox ? '_app.env.sandbox' : '_app.env.dev') | translate }}
   </div>
 } @else if (projectDisplay.projectLabel && isProjectRoute()) {
-  <div class="sticky top-0 z-50 flex align-items-center gap-2 white-space-nowrap ml-auto max-w-max">
+  <div class="sticky top-0 z-50 flex align-items-center gap-2 white-space-nowrap ml-auto max-w-max min-h-1.5">
     @if (projectDisplay.tagLabel) {
       <p-tag [icon]="projectDisplay.tagIcon" [pTooltip]="projectDisplay.tagTooltip" [severity]="projectDisplay.tagSeverity" [value]="projectDisplay.tagLabel" tooltipPosition="left" />
     }
@@ -23,7 +23,7 @@
 }
 
 @if (breadcrumbs().length > 0) {
-  <div [class.sm:-mt-4]="removeMargin">
+  <div [class.sm:-mt-4]="removeMargin" class="h-1.5">
     <p-breadcrumb [model]="breadcrumbs()" styleClass="pt-1 pl-0 text-color-secondary">
       <ng-template let-item pTemplate="item">
         @if (item.route) {

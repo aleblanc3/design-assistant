@@ -100,7 +100,7 @@ export class BreadcrumbComponent {
     const signInToUploadToCloud = isCollaborator && !isSignedIn && hasCollaborators ? this.translate.instant('project.global.signInToUpload') : undefined;
     const cantUploadToCloud = !isCollaborator && hasCollaborators ? this.translate.instant('project.global.cantUpload') : undefined;
 
-    const projectLabel = projectName && cantUploadToCloud ? this.translate.instant('project.global.copyOf') + ' ' + projectName : (projectName ?? '');
+    const projectLabel = projectName ?? '';
 
     const tagLabel = signInToUploadToCloud ?? cantUploadToCloud;
     const tagSeverity = signInToUploadToCloud ? ('warn' as const) : ('danger' as const);
