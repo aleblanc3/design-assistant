@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -6,6 +6,12 @@ import { Router } from '@angular/router';
 })
 export class IaDiagramService {
   router = inject(Router);
+
+  // IA Diagram signals
+  readonly selectedTree = signal<string>('full');
+  readonly collapsedNodes = signal<Set<string>>(new Set());
+  readonly hiddenNodes = signal<Set<string>>(new Set());
+  readonly navNodes = signal<Map<string, string[]>>(new Map());
 
   openDiagram(): void {
     // Store current URL to return to
