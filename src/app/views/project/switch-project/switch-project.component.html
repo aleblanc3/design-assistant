@@ -212,7 +212,7 @@
 
     @if (!dialog.isCollaborator && dialog.hasCollaborators) {
       <p>{{ 'switch.upload.notCollaborator' | translate }}</p>
-      <aida-add-collaborators mode="view" />
+      <aida-add-collaborators [collabs]="dialog.project.collaborators" mode="view" />
     }
 
     @if (!dialog.isSignedIn) {
