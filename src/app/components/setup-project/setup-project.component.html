@@ -18,12 +18,25 @@
     <label for="phase">{{ 'project.setup.label.phase' | translate }}</label>
   </p-iftalabel>
   <!--Storage-->
-  <p-selectbutton [(ngModel)]="projectStorage" [options]="storageOptions()" [unselectable]="true" optionValue="value" styleClass="w-full">
+  <p-selectbutton [(ngModel)]="projectStorage" [options]="storageOptions()" [unselectable]="true" optionValue="value" styleClass="w-full p-0">
     <ng-template #item let-item>
-      <i [class]="item.icon"></i>
-      <span class="ml-1">
-        {{ 'project.setup.saveTo' | translate }} <span class="lowercase">{{ item.name | translate }}</span>
-      </span>
+      @if (item.signin) {
+        <aida-sign-in-button [customContent]="true" #signIn>
+          <div (click)="$event.stopPropagation(); signIn.connectGitHub()" (keydown.enter)="$event.stopPropagation(); signIn.connectGitHub()" class="flex gap-2 p-2 align-items-center" tabindex="0">
+            <i [class]="item.icon"></i>
+            <span>
+              {{ 'project.setup.signInTo' | translate }} <span class="lowercase">{{ 'project.setup.saveTo' | translate }} {{ item.name | translate }}</span>
+            </span>
+          </div>
+        </aida-sign-in-button>
+      } @else {
+        <div class="flex gap-2 p-2 align-items-center">
+          <i [class]="item.icon"></i>
+          <span>
+            {{ 'project.setup.saveTo' | translate }} <span class="lowercase">{{ item.name | translate }}</span>
+          </span>
+        </div>
+      }
     </ng-template>
   </p-selectbutton>
   <p-message icon="pi pi-info-circle" severity="info" size="small" variant="simple">{{
@@ -31,7 +44,7 @@
   }}</p-message>
 
   @if (uploadAccess === 'signIn') {
-    <aida-sign-in-button [buttonText]="'project.setup.storage.signInWarning' | translate" />
+    <aida-sign-in-button [customText]="'project.setup.storage.signInWarning' | translate" />
   } @else if (uploadAccess === 'notCollab') {
     <p-message icon="pi pi-exclamation-circle" severity="error">{{ 'project.setup.storage.notCollabWarning' | translate }}</p-message>
   }

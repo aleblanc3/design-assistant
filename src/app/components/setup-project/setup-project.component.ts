@@ -106,7 +106,7 @@ export class SetupProjectComponent {
 
   protected readonly storageOptions = computed(() => [
     { name: 'project.setup.storage.local', value: 'local' as const, icon: 'pi pi-desktop' },
-    { name: 'project.setup.storage.cloud', value: 'cloud' as const, icon: 'pi pi-cloud', disabled: !this.collaboratorService.canEditProject(this.projectState.getProject()) },
+    { name: 'project.setup.storage.cloud', value: 'cloud' as const, icon: 'pi pi-cloud', disabled: this.uploadAccess === 'notCollab', signin: this.uploadAccess === 'signIn' },
   ]);
 
   protected get uploadAccess() {
