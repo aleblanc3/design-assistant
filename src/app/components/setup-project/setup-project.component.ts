@@ -26,7 +26,7 @@ import { ProjectPhase } from '../../common/data.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SetupProjectComponent {
-  private readonly projectState = inject(ProjectStateService);
+  protected readonly projectState = inject(ProjectStateService);
   private readonly collaboratorService = inject(CollaboratorService);
   private readonly router = inject(Router);
   private readonly translate = inject(TranslateService);
@@ -97,10 +97,11 @@ export class SetupProjectComponent {
   ];
 
   //Storage select button
-  protected get projectStorage(): 'local' | 'cloud' {
-    return this.projectData.storageType;
-  }
-  protected set projectStorage(value: 'local' | 'cloud') {
+  protected readonly projectStorage = computed(() => this.projectData.storageType);
+  protected setProjectStorage(value: 'local' | 'cloud') {
+    if (this.uploadAccess && value === 'cloud') {
+      return; // don't switch to cloud if user doesn't have upload access
+    }
     this.projectState.setStorageType(value);
   }
 
@@ -117,5 +118,9 @@ export class SetupProjectComponent {
     if (cantUploadToCloud) return 'notCollab';
     else if (!isSignedIn) return 'signIn';
     else return undefined;
+  }
+
+  protected pendingCloudToggle(value: 'local' | 'cloud') {
+    localStorage.setItem('pendingStorageSwitch', value);
   }
 }

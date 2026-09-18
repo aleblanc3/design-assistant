@@ -18,11 +18,16 @@
     <label for="phase">{{ 'project.setup.label.phase' | translate }}</label>
   </p-iftalabel>
   <!--Storage-->
-  <p-selectbutton [(ngModel)]="projectStorage" [options]="storageOptions()" [unselectable]="true" optionValue="value" styleClass="w-full p-0">
+  <p-selectbutton [ngModel]="projectStorage()" [options]="storageOptions()" [unselectable]="true" (ngModelChange)="setProjectStorage($event)" optionValue="value" styleClass="w-full p-0">
     <ng-template #item let-item>
       @if (item.signin) {
         <aida-sign-in-button [customContent]="true" #signIn>
-          <div (click)="$event.stopPropagation(); signIn.connectGitHub()" (keydown.enter)="$event.stopPropagation(); signIn.connectGitHub()" class="flex gap-2 p-2 align-items-center" tabindex="0">
+          <div
+            (click)="$event.stopPropagation(); signIn.connectGitHub(); pendingCloudToggle(item.value)"
+            (keydown.enter)="$event.stopPropagation(); signIn.connectGitHub(); pendingCloudToggle(item.value)"
+            class="flex gap-2 p-2 align-items-center"
+            tabindex="0"
+          >
             <i [class]="item.icon"></i>
             <span>
               {{ 'project.setup.signInTo' | translate }} <span class="lowercase">{{ 'project.setup.saveTo' | translate }} {{ item.name | translate }}</span>
@@ -40,7 +45,7 @@
     </ng-template>
   </p-selectbutton>
   <p-message icon="pi pi-info-circle" severity="info" size="small" variant="simple">{{
-    projectStorage === 'local' ? ('project.setup.storage.localWarning' | translate) : ('project.setup.storage.cloudInfo' | translate)
+    projectStorage() === 'local' ? ('project.setup.storage.localWarning' | translate) : ('project.setup.storage.cloudInfo' | translate)
   }}</p-message>
 
   @if (uploadAccess === 'signIn') {
