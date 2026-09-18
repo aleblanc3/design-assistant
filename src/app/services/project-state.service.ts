@@ -134,6 +134,12 @@ export class ProjectStateService {
         }, this.AUTO_SAVE_DELAY);
       }
     });
+    effect(() => {
+      if (this.exportGitHubService.user() && localStorage.getItem('pendingStorageSwitch') === 'cloud') {
+        localStorage.removeItem('pendingStorageSwitch');
+        this.setStorageType('cloud');
+      }
+    });
     this.translate.onLangChange.subscribe((e) => this.currentLang.set(e.lang));
   }
 
