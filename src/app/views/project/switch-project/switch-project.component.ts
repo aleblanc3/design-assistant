@@ -29,6 +29,7 @@ import { ProjectStateService } from '../../../services/project-state.service';
 import { ProjectStorageService } from '../../../services/storage/project-storage.service';
 import { UserSettingsService } from '../../../services/user-settings.service';
 
+import { environment } from '../../../../environments/environment';
 import { ProjectMetadata, ProjectPhase } from '../../../common/data.model';
 import { TooltipDirective } from '../../../common/tooltip.directive';
 
@@ -189,7 +190,7 @@ export class SwitchProjectComponent implements OnInit {
       },
     ];
 
-    const myOrg = localStorage.getItem('myOrg'); // Only add Organization filter if myOrg is set
+    const myOrg = localStorage.getItem('myOrg') || environment.myOrg; // Only add Organization filter if myOrg is set
     if (myOrg) {
       this.groupedFilters.push({
         label: this.translate.instant('common.organization'),
@@ -313,7 +314,7 @@ export class SwitchProjectComponent implements OnInit {
           }
 
           // Organization
-          const projectOrg = p.org || localStorage.getItem('myOrg') || 'DEFAULT';
+          const projectOrg = p.org || localStorage.getItem('myOrg') || environment.myOrg || 'DEFAULT';
           if (filterValue === 'DEFAULT') return projectOrg === 'DEFAULT';
           const myOrg = localStorage.getItem('myOrg');
           if (filterValue === myOrg && myOrg) return projectOrg === myOrg;

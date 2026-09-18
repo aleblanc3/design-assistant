@@ -163,10 +163,11 @@
                       styleClass="secondary-outline"
                     />
                   }
-                  @if (project.storageType === 'local' && project.key !== 'autosave') {
+                  @if (project.storageType === 'local') {
                     <p-button
                       [aidaTooltip]="'switch.tooltip.saveToCloud' | translate"
                       (onClick)="handleUploadClick(project, $event)"
+                      disabled="project.key !== 'autosave'"
                       icon="pi pi-cloud-upload"
                       outlined
                       rounded
