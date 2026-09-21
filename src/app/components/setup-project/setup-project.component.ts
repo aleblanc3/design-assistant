@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -21,7 +22,7 @@ import { ProjectPhase } from '../../common/data.model';
 
 @Component({
   selector: 'aida-setup-project',
-  imports: [FormsModule, TranslatePipe, IftaLabelModule, InputTextModule, KeyFilterModule, MessageModule, SelectButtonModule, SelectModule, SignInButtonComponent],
+  imports: [CommonModule, FormsModule, TranslatePipe, IftaLabelModule, InputTextModule, KeyFilterModule, MessageModule, SelectButtonModule, SelectModule, SignInButtonComponent],
   templateUrl: './setup-project.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -30,6 +31,8 @@ export class SetupProjectComponent {
   private readonly collaboratorService = inject(CollaboratorService);
   private readonly router = inject(Router);
   private readonly translate = inject(TranslateService);
+
+  public readonly mode = input<'name' | undefined>(undefined);
 
   constructor() {
     // Refresh projectName when there are changes to repo name (for initial sync fxn)
