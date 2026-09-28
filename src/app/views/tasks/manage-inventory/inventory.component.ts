@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -83,6 +83,7 @@ export interface BooleanToggleItem extends MenuItem {
     ExportProjectComponent,
     IaTableComponent,
     TooltipDirective,
+    RouterLink,
   ],
   templateUrl: './inventory.component.html',
   styleUrl: './inventory.component.css',
