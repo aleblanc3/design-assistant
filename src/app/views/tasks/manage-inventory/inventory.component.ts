@@ -62,6 +62,7 @@ export interface BooleanToggleItem extends MenuItem {
   imports: [
     CommonModule,
     FormsModule,
+    RouterLink,
     TranslatePipe,
     ButtonModule,
     ConfirmDialogModule,
@@ -83,7 +84,6 @@ export interface BooleanToggleItem extends MenuItem {
     ExportProjectComponent,
     IaTableComponent,
     TooltipDirective,
-    RouterLink,
   ],
   templateUrl: './inventory.component.html',
   styleUrl: './inventory.component.css',
