@@ -113,18 +113,6 @@ export class ProjectStateService {
       const currentProject = this.project();
       const hasChanges = currentProject.lastModified > currentProject.lastSaved;
       if (hasChanges) {
-        // Check if user has permission to save
-        if (currentProject.storageType === 'cloud' && !this.collaboratorService.canEditProject(currentProject)) {
-          const { isSignedIn, isCollaborator } = this.collaboratorService.getUploadAccessInfo(currentProject);
-          const message = isCollaborator && !isSignedIn ? this.translate.instant('switch.convertToLocalMessage.signIn') : this.translate.instant('switch.convertToLocalMessage.notCollab');
-          this.messageService.add({
-            severity: 'info',
-            summary: this.translate.instant('switch.convertToLocalMessage.summary'),
-            detail: message,
-            sticky: true,
-          });
-          this.setStorageType('local');
-        }
         this.saveStatus.set('unsaved');
         // Calculate time since last save and save if exceeding the limit
         const timeSinceLastSave = currentProject.lastModified.getTime() - currentProject.lastSaved.getTime();
@@ -183,6 +171,29 @@ export class ProjectStateService {
     this.project.update((curr) => ({
       ...curr,
       phase: phase,
+      lastModified: new Date(),
+    }));
+  }
+
+  //Set locked by
+  public setLockedBy() {
+    const user = this.exportGitHubService.user()?.login;
+    if (!user) {
+      return;
+    }
+    this.project.update((curr) => ({
+      ...curr,
+      lockedBy: user,
+      lastModified: new Date(),
+    }));
+  }
+
+  //Set locked by
+  public removeLockedBy() {
+    this.project.update((curr) => ({
+      ...curr,
+      lockedBy: undefined,
+      storageType: 'cloud',
       lastModified: new Date(),
     }));
   }
@@ -512,6 +523,8 @@ export class ProjectStateService {
    * Cancels any pending auto-save timer
    */
   public async saveProject(): Promise<boolean> {
+    const project = this.project();
+
     // Cancel pending auto-save
     if (this.autoSaveTimer) {
       clearTimeout(this.autoSaveTimer);
@@ -522,7 +535,28 @@ export class ProjectStateService {
     this.saveStatus.set('saving');
 
     // Store the current lastSaved in case we need to rollback
-    const previousLastSaved = this.project().lastSaved;
+    const previousLastSaved = project.lastSaved;
+
+    // Convert to local if user does NOT have permission for cloud save
+    if (project.storageType === 'cloud') {
+      const { isSignedIn, isCollaborator, isLocked } = this.collaboratorService.getUploadAccessInfo(project);
+      const isLockedByOther = !!(isLocked && isLocked !== 'byMe');
+      if (!this.collaboratorService.canEditProject(project) || isLockedByOther) {
+        const message =
+          isCollaborator && !isSignedIn
+            ? this.translate.instant('switch.convertToLocalMessage.signIn')
+            : isCollaborator && isLockedByOther
+              ? this.translate.instant('switch.convertToLocalMessage.lockedBy', { user: isLocked })
+              : this.translate.instant('switch.convertToLocalMessage.notCollab');
+        this.messageService.add({
+          severity: 'info',
+          summary: this.translate.instant('switch.convertToLocalMessage.summary'),
+          detail: message,
+          sticky: true,
+        });
+        this.setStorageType('local');
+      }
+    }
 
     try {
       // Update lastSaved
@@ -531,8 +565,8 @@ export class ProjectStateService {
         lastSaved: new Date(),
       }));
 
-      const project = this.project();
-      const success = await this.projectStorageService.saveProject(project);
+      const projectToSave = this.project();
+      const success = await this.projectStorageService.saveProject(projectToSave);
 
       if (success) {
         // Wait 2 seconds before showing "saved" status
