@@ -159,6 +159,7 @@ export class ExportComponent {
 
   protected readonly newCount = computed(() => this.filesTable().filter((f) => f.status === ExportStatus.ExportNew).length);
   protected readonly updatedCount = computed(() => this.filesTable().filter((f) => f.status === ExportStatus.ExportOverwrite).length);
+  protected readonly skippedCount = computed(() => this.filesTable().filter((f) => f.status === ExportStatus.SkipNew || f.status === ExportStatus.SkipOverwrite).length);
 
   // Template visiblity controls
   // If a repo is configured (and overlay is closed), show the repo settings as a secondary task instead of a card

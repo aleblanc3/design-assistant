@@ -83,8 +83,8 @@
     <!--Stats Card (only visible if GitHub repo is configured)-->
     <div class="surface-card border-round-lg shadow-2 p-4 lg:mb-3 lg:w-4 w-full min-w-min">
       <h2 class="text-2xl my-1">{{ 'exportPages.data' | translate }}</h2>
-      <!-- Last Export Date -->
-      <div class="p-3 mb-3 text-center">
+      <div class="p-3 text-center">
+        <!-- Last Export Date -->
         <div class="text-600 text-sm opacity-90">{{ repoType() === 'github' ? ('exportPages.data.lastExported' | translate) : ('exportPages.data.lastDownloaded' | translate) }}</div>
         <div class="text-primary text-xl font-semibold">
           @if (repoType() === 'github' && projectData().lastExported && (projectData().lastExported?.getTime() ?? 0) > 0) {
@@ -95,12 +95,10 @@
             {{ 'common.never' | translate }}
           }
         </div>
-      </div>
-      <p-divider />
-
-      <!-- Total pages -->
-      <div class="text-center">
-        <div class="flex flex-row justify-content-around">
+        <p-divider />
+        <!-- Total pages -->
+        <div class="text-600 text-sm opacity-90">{{ 'exportPages.data.totalFiles' | translate }}</div>
+        <div class="flex justify-content-around">
           <div>
             <div class="text-5xl font-bold text-primary mb-1">
               {{ projectFileCount() }}
@@ -115,6 +113,35 @@
             </div>
             <div class="text-600 text-sm">
               {{ 'exportPages.data.jekyll' | translate }}
+            </div>
+          </div>
+        </div>
+        <p-divider />
+        <!--Export breakdown-->
+        <div class="text-600 text-sm opacity-90">{{ 'exportPages.data.includedFiles' | translate }}</div>
+        <div class="flex justify-content-around">
+          <div>
+            <div class="text-5xl font-bold text-primary mb-1">
+              {{ newCount() }}
+            </div>
+            <div class="text-600 text-sm">
+              {{ 'exportPages.data.new' | translate }}
+            </div>
+          </div>
+          <div>
+            <div class="text-5xl font-bold text-primary mb-1">
+              {{ updatedCount() }}
+            </div>
+            <div class="text-600 text-sm">
+              {{ 'exportPages.data.existing' | translate }}
+            </div>
+          </div>
+          <div>
+            <div class="text-5xl font-bold text-primary mb-1">
+              {{ skippedCount() }}
+            </div>
+            <div class="text-600 text-sm">
+              {{ 'exportPages.data.skipped' | translate }}
             </div>
           </div>
         </div>
