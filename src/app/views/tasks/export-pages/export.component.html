@@ -139,9 +139,16 @@
           <th class="text-xl">
             <span class="flex flex-row align-items-center gap-2">
               {{ 'common.status' | translate }}
-              <p-button (onClick)="setAll('skip', 'project')" icon="pi pi-angle-double-right" pTooltip="Skip all" severity="secondary" size="small" tooltipPosition="top" />
-              <p-button (onClick)="setAll('export', 'project')" icon="pi pi-sync" pTooltip="Update all" size="small" tooltipPosition="top" />
-              <p-button (onClick)="compareFiles()" icon="pi pi-sparkles" pTooltip="Skip ROT and pages edited in GitHub" size="small" tooltipPosition="top" />
+              <p-button
+                [pTooltip]="'exportPages.toggle.skipAll' | translate"
+                (onClick)="setAll('skip', 'project')"
+                icon="pi pi-angle-double-right"
+                severity="secondary"
+                size="small"
+                tooltipPosition="top"
+              />
+              <p-button [pTooltip]="'exportPages.toggle.updateAll' | translate" (onClick)="setAll('export', 'project')" icon="pi pi-sync" size="small" tooltipPosition="top" />
+              <p-button [pTooltip]="'exportPages.toggle.default' | translate" (onClick)="compareFiles()" icon="pi pi-sparkles" size="small" tooltipPosition="top" />
             </span>
           </th>
         </tr>
