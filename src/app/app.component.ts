@@ -68,6 +68,7 @@ export class AppComponent implements OnInit {
       // Handle org parameter
       if (params['org'] !== undefined) {
         this.handleStorageParam('myOrg', params['org']);
+        this.settingsService.org.set(params['org'].toUpperCase());
         delete allParams['org'];
         this.cloudStorageService.loadProjects();
       }
@@ -75,6 +76,7 @@ export class AppComponent implements OnInit {
       // Handle toolbox parameter
       if (params['toolbox'] !== undefined) {
         this.handleStorageParam('myToolbox', params['toolbox']);
+        this.settingsService.toolbox.set(params['toolbox'].toUpperCase());
         delete allParams['toolbox'];
         this.settingsService.toolbox.set(localStorage.getItem('myToolbox'));
       }
