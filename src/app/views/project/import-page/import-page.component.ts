@@ -60,7 +60,7 @@ export class ImportPageComponent implements OnInit {
             this.router.navigate(['/project/edit']);
             return;
           } else {
-            const active = this.projectStorageService.getActiveProject();
+            const active = this.projectStorageService.getActiveProject('session');
             if (active) {
               console.warn('Invalid URL domain. Skipping new project creation and redirecting user to dashboard for previously opened project.');
               this.router.navigate(['/project/dashboard']);
