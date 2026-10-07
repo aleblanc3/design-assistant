@@ -1,11 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, resource, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, resource, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { ButtonModule } from 'primeng/button';
-import { SkeletonModule } from 'primeng/skeleton';
 
 import { DoormatKey, DoormatsComponent } from '../../../components/doormats/doormats.component';
 
@@ -16,11 +15,11 @@ import { UserSettingsService } from '../../../services/user-settings.service';
 
 @Component({
   selector: 'aida-landing',
-  imports: [CommonModule, TranslatePipe, ButtonModule, SkeletonModule, DoormatsComponent, RouterLink],
+  imports: [CommonModule, RouterLink, TranslatePipe, ButtonModule, DoormatsComponent],
   templateUrl: 'landing.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LandingComponent implements OnInit {
+export class LandingComponent {
   private readonly translate = inject(TranslateService);
   private readonly projectState = inject(ProjectStateService);
   private readonly settingsService = inject(UserSettingsService);
@@ -41,7 +40,8 @@ export class LandingComponent implements OnInit {
         this.projectStorageService.clearActiveProject();
         return undefined;
       }
-      return { title: data.projectName, lastModified: data.lastModified };
+      const projectName = data.projectName || 'common.autosave';
+      return { title: projectName, lastModified: data.lastModified };
     },
   });
 
@@ -65,14 +65,18 @@ export class LandingComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-    this.getTitle();
+  constructor() {
+    effect(() => {
+      void this.settingsService.userId();
+      void this.settingsService.org();
+      this.getTitle();
+    });
   }
 
   protected async getTitle() {
     const user = await this.collaboratorService.getLogin(this.settingsService.userId());
     const org = this.settingsService.org();
-    if (!Number.isNaN(Number(user))) {
+    if (Number.isNaN(Number(user)) && !user.startsWith('user_')) {
       this.title.set(this.translate.instant('landing._title.user', { user: user }));
     } else this.title.set(this.translate.instant('landing._title', { org: org }));
   }
