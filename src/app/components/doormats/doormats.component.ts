@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
@@ -54,7 +54,7 @@ export type DoormatKey = keyof typeof DOORMATS;
 
 @Component({
   selector: 'aida-doormats',
-  imports: [RouterLink, TranslatePipe, CommonModule],
+  imports: [CommonModule, RouterLink, TranslatePipe],
   templateUrl: './doormats.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
