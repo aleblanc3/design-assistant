@@ -1,4 +1,11 @@
 // node_modules/@angular/common/locales/global/en-CA.js
+/**
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.dev/license
+ */
 (function(global2) {
   global2.ng ??= {};
   global2.ng.common ??= {};
@@ -10,10 +17,15 @@
       return 1;
     return 5;
   }
-  global2.ng.common.locales["en-ca"] = ["en-CA", [["am", "pm"], ["a.m.", "p.m."], u], [["a.m.", "pm"], ["a.m.", "p.m."], u], [["S", "M", "T", "W", "T", "F", "S"], ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]], u, [["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"], ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"], ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]], u, [["B", "A"], ["BC", "AD"], ["Before Christ", "Anno Domini"]], 0, [6, 0], ["y-MM-dd", "MMM d, y", "MMMM d, y", "EEEE, MMMM d, y"], ["h:mm a", "h:mm:ss a", "h:mm:ss a z", "h:mm:ss a zzzz"], ["{1}, {0}", u, "{1} 'at' {0}", u], [".", ",", ";", "%", "+", "-", "E", "\xD7", "\u2030", "\u221E", "NaN", ":"], ["#,##0.###", "#,##0%", "\xA4#,##0.00", "#E0"], "CAD", "$", "Canadian Dollar", { "CAD": ["$"], "JPY": ["JP\xA5", "\xA5"], "USD": ["US$", "$"] }, "ltr", plural, [[["mid", "n", "mor", "aft", "eve", "night"], ["midnight", "noon", "in the morning", "in the afternoon", "in the evening", "at night"], u], [["mid", "noon", "mor", "aft", "eve", "night"], ["midnight", "noon", "morning", "afternoon", "evening", "night"], u], ["00:00", "12:00", ["06:00", "12:00"], ["12:00", "18:00"], ["18:00", "21:00"], ["21:00", "06:00"]]]];
+  global2.ng.common.locales["en-ca"] = ["en-CA", [["am", "pm"], ["a.m.", "p.m."]], u, [["S", "M", "T", "W", "T", "F", "S"], ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]], u, [["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"], ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]], u, [["B", "A"], ["BC", "AD"], ["Before Christ", "Anno Domini"]], 0, [6, 0], ["y-MM-dd", "MMM d, y", "MMMM d, y", "EEEE, MMMM d, y"], ["h:mm\u202Fa", "h:mm:ss\u202Fa", "h:mm:ss\u202Fa z", "h:mm:ss\u202Fa zzzz"], ["{1}, {0}", u, u, u], [".", ",", ";", "%", "+", "-", "E", "\xD7", "\u2030", "\u221E", "NaN", ":"], ["#,##0.###", "#,##0%", "\xA4#,##0.00", "#E0"], "CAD", "$", "Canadian Dollar", { "CAD": ["$"], "JPY": ["JP\xA5", "\xA5"], "USD": ["US$", "$"] }, "ltr", plural, [[["mid", "n", "mor", "aft", "eve", "night"], ["midnight", "noon", "in the morning", "in the afternoon", "in the evening", "at night"], u], [["mid", "noon", "mor", "aft", "eve", "night"], ["midnight", "noon", "morning", "afternoon", "evening", "night"], u], ["00:00", "12:00", ["00:00", "12:00"], ["12:00", "18:00"], ["18:00", "21:00"], ["21:00", "24:00"]]]];
 })(globalThis);
 
 // node_modules/zone.js/fesm2015/zone.js
+/**
+ * @license Angular v<unknown>
+ * (c) 2010-2025 Google LLC. https://angular.io/
+ * License: MIT
+ */
 var global = globalThis;
 function __symbol__(name) {
   const symbolPrefix = global["__Zone_symbol_prefix"] || "__zone_symbol__";
@@ -2393,7 +2405,12 @@ var Zone$1 = loadZone();
 patchCommon(Zone$1);
 patchBrowser(Zone$1);
 
-// node_modules/@angular/localize/fesm2022/localize-CajB9YLv.mjs
+// node_modules/@angular/localize/fesm2022/_localize-chunk.mjs
+/**
+ * @license Angular v21.2.19
+ * (c) 2010-2026 Google LLC. https://angular.dev/
+ * License: MIT
+ */
 var BLOCK_MARKER$1 = ":";
 var Endian;
 (function(Endian2) {
@@ -2428,34 +2445,13 @@ function stripBlock(messagePart, rawMessagePart) {
 }
 
 // node_modules/@angular/localize/fesm2022/init.mjs
+/**
+ * @license Angular v21.2.19
+ * (c) 2010-2026 Google LLC. https://angular.dev/
+ * License: MIT
+ */
 globalThis.$localize = $localize;
 
 // angular:polyfills:angular:polyfills
 (globalThis.$localize ??= {}).locale = "en-CA";
-/*! Bundled license information:
-
-@angular/common/locales/global/en-CA.js:
-  (**
-   * @license
-   * Copyright Google LLC All Rights Reserved.
-   *
-   * Use of this source code is governed by an MIT-style license that can be
-   * found in the LICENSE file at https://angular.dev/license
-   *)
-
-zone.js/fesm2015/zone.js:
-  (**
-   * @license Angular v<unknown>
-   * (c) 2010-2025 Google LLC. https://angular.io/
-   * License: MIT
-   *)
-
-@angular/localize/fesm2022/localize-CajB9YLv.mjs:
-@angular/localize/fesm2022/init.mjs:
-  (**
-   * @license Angular v19.2.15
-   * (c) 2010-2025 Google LLC. https://angular.io/
-   * License: MIT
-   *)
-*/
 //# sourceMappingURL=polyfills.js.map
