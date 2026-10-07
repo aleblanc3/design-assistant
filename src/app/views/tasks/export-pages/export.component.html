@@ -104,7 +104,7 @@
               {{ projectFileCount() }}
             </div>
             <div class="text-600 text-sm">
-              {{ projectCache.selectedVersion() === 'prototype' ? ('exportPages.data.inScope' | translate) : ('exportPages.data.baseline' | translate) }}
+              {{ projectCache.selectedVersion() === 'prototype' ? ('exportPages.data.totalFiles.inScope' | translate) : ('exportPages.data.totalFiles.baseline' | translate) }}
             </div>
           </div>
           <div>
@@ -112,20 +112,20 @@
               {{ templateFileCount() }}
             </div>
             <div class="text-600 text-sm">
-              {{ 'exportPages.data.jekyll' | translate }}
+              {{ 'exportPages.data.totalFiles.template' | translate }}
             </div>
           </div>
         </div>
         <p-divider />
         <!--Export breakdown-->
-        <div class="text-600 text-sm opacity-90">{{ 'exportPages.data.includedFiles' | translate }}</div>
+        <div class="text-600 text-sm opacity-90">{{ 'exportPages.data.includedPages' | translate }}</div>
         <div class="flex justify-content-around">
           <div>
             <div class="text-3xl font-bold text-primary mb-1">
               {{ newCount() }}
             </div>
             <div class="text-600 text-sm">
-              {{ 'exportPages.data.new' | translate }}
+              {{ 'exportPages.data.includedPages.new' | translate }}
             </div>
           </div>
           <div>
@@ -133,7 +133,7 @@
               {{ updatedCount() }}
             </div>
             <div class="text-600 text-sm">
-              {{ 'exportPages.data.existing' | translate }}
+              {{ 'exportPages.data.includedPages.existing' | translate }}
             </div>
           </div>
           <div>
@@ -141,7 +141,7 @@
               {{ skippedCount() }}
             </div>
             <div class="text-600 text-sm">
-              {{ 'exportPages.data.skipped' | translate }}
+              {{ 'exportPages.data.includedPages.skipped' | translate }}
             </div>
           </div>
         </div>
@@ -162,7 +162,7 @@
           <th class="w-4rem">
             <p-checkbox [binary]="true" [ngModel]="allExported('project')" (onChange)="setAll(allExported('project') ? 'skip' : 'export', 'project')" />
           </th>
-          <th class="text-xl">{{ projectCache.selectedVersion() === 'prototype' ? ('exportPages.data.inScope' | translate) : ('exportPages.data.baseline' | translate) }}</th>
+          <th class="text-xl">{{ projectCache.selectedVersion() === 'prototype' ? ('exportPages.data.totalFiles.inScope' | translate) : ('exportPages.data.totalFiles.baseline' | translate) }}</th>
           <th class="text-xl">
             <span class="flex flex-row align-items-center gap-2">
               {{ 'common.status' | translate }}
@@ -223,7 +223,7 @@
     </p-table>
 
     <!--Template files-->
-    <p-panel [collapsed]="true" [header]="'exportPages.export.templateFiles' | translate: { count: templateFileCount() }" [toggleable]="true" class="mt-4">
+    <p-panel [collapsed]="true" [header]="'exportPages.export.templateFiles' | translate: { updated: templateUpdatedCount(), count: templateFileCount() }" [toggleable]="true" class="mt-4">
       <p-table [value]="templateTable()" size="small" stripedRows>
         <ng-template pTemplate="header">
           <tr>
