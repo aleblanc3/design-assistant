@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
@@ -17,7 +17,7 @@ export interface DoormatItem {
   descriptionKey: string;
   icon?: string;
   notOutlined?: boolean;
-  function?: any;
+  function?: string;
   isExternal?: boolean;
   hideInProd?: boolean;
 }
