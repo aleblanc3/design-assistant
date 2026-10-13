@@ -13,6 +13,8 @@ import { SelectModule } from 'primeng/select';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { TooltipModule } from 'primeng/tooltip';
 
+import { DoormatKey, DoormatsComponent } from '../doormats/doormats.component';
+
 import { ProjectStateService } from '../../services/project-state.service';
 import { ColorScheme, UserSettingsService } from '../../services/user-settings.service';
 
@@ -20,7 +22,7 @@ export type SettingsMode = 'all' | 'language' | 'theme' | 'versions' | 'autoChil
 
 @Component({
   selector: 'aida-user-settings',
-  imports: [CommonModule, FormsModule, TranslatePipe, ButtonModule, CheckboxModule, DialogModule, SelectButtonModule, SelectModule, TooltipModule],
+  imports: [CommonModule, FormsModule, TranslatePipe, ButtonModule, CheckboxModule, DialogModule, SelectButtonModule, SelectModule, TooltipModule, DoormatsComponent],
   templateUrl: './user-settings.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -100,6 +102,8 @@ export class UserSettingsComponent {
 
   protected showVersionHelp = false;
 
+  protected versionDoormats: DoormatKey[] = ['exportPages', 'editPages', 'compare'];
+
   // Auto-add child pages
   protected get childPagesOptions(): MenuItem[] {
     return [
@@ -107,6 +111,9 @@ export class UserSettingsComponent {
       { label: this.translate.instant('settings.childPages.autoAdd'), value: true },
     ];
   }
+  protected showChildrenHelp = false;
+
+  protected childPagesDoormats: DoormatKey[] = ['iaDiagram', 'addPages'];
 
   private markForTranslation() {
     marker('settings.versions.help');
