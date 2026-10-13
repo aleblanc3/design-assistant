@@ -66,7 +66,7 @@
               <p-button
                 [loading]="addUrlsService.urlState().isAdding"
                 [pTooltip]="'iaDiagram.menu.findChildren' | translate"
-                (click)="addUrlsService.addChildren(resolveRealNode(node), primaryLang)"
+                (click)="addChildren(resolveRealNode(node))"
                 class="absolute left-50 -translate-x-50 bottom-0 -mb-1"
                 icon="pi pi-plus-circle"
                 rounded
@@ -99,5 +99,32 @@
 <p-dialog [(visible)]="editNode" [header]="selectedNode?.data?.prototype?.[projectCache.selectedLang()]?.h1" [maximizable]="true" [modal]="true" [style]="{ height: '90vh' }" styleClass="w-10">
   @if (selectedNode) {
     <aida-edit-node [initialShowNotes]="showNotes" [isOpen]="editNode" [node]="selectedNode" (dialogClose)="closeDialog()" />
+  }
+</p-dialog>
+
+<p-dialog
+  [(visible)]="showAddPages"
+  [header]="selectedNode?.data?.prototype?.[projectCache.selectedLang()]?.h1"
+  [maximizable]="true"
+  [modal]="true"
+  (visibleChange)="cancelAddChildren($event)"
+  styleClass="w-6"
+>
+  @if (addUrlsService.childUrls().length > 0) {
+    <h3 class="text-xl my-2">{{ 'findPages.findChildren.urls' | translate }}</h3>
+    <div class="flex flex-column gap-2 max-h-64 overflow-y-auto border border-color-border p-2 rounded">
+      @for (item of addUrlsService.childUrls(); track item.url; let i = $index) {
+        <div class="flex align-items-center gap-2">
+          <p-checkbox [(ngModel)]="addUrlsService.childUrls()[i].selected" [binary]="true" [inputId]="'url-' + i" (ngModelChange)="addUrlsService.toggleSelectedChildren(i, $event)" size="large" />
+          <label [for]="'url-' + i" class="break-all">{{ item.url }}</label>
+        </div>
+      }
+    </div>
+    <div class="flex flex-row justify-content-end gap-2 mt-3">
+      <p-button [label]="'common.cancel' | translate" (onClick)="cancelAddChildren(false)" icon="pi pi-plus" outlined severity="secondary" styleClass="secondary-outline" />
+      <p-button [label]="'addPages.addToProject' | translate: { number: addUrlsService.selectedChildUrlsCount() }" (onClick)="addSelectedChildren()" icon="pi pi-plus" />
+    </div>
+  } @else {
+    <p>{{ 'findPages.findChildren.noUrls' | translate }}</p>
   }
 </p-dialog>

@@ -6,6 +6,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { MenuItem, TreeNode } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import { Menu, MenuModule } from 'primeng/menu';
 import { OrganizationChartModule } from 'primeng/organizationchart';
@@ -21,6 +22,7 @@ import { FetchService } from '../../../services/fetch.service';
 import { ProjectCacheService } from '../../../services/project-cache.service';
 import { ProjectStateService } from '../../../services/project-state.service';
 import { TreeNodeStyleService } from '../../../services/treenode-style.service';
+import { UserSettingsService } from '../../../services/user-settings.service';
 import { IaDiagramService } from './ia-diagram.service';
 
 import { TreeNodeData } from '../../../common/data.model';
@@ -32,6 +34,7 @@ import { TreeNodeData } from '../../../common/data.model';
     FormsModule,
     TranslatePipe,
     ButtonModule,
+    CheckboxModule,
     DialogModule,
     MenuModule,
     OrganizationChartModule,
@@ -53,6 +56,7 @@ export class IaDiagramComponent {
   private readonly treeNodeStyleService = inject(TreeNodeStyleService);
   protected readonly addUrlsService = inject(AddUrlsService);
   private readonly fetchService = inject(FetchService);
+  private readonly settingsService = inject(UserSettingsService);
 
   protected readonly primaryLang = this.projectState.detectPrimaryLanguage();
 
@@ -123,10 +127,13 @@ export class IaDiagramComponent {
   protected showNotes = false;
   protected selectedNode: TreeNode | undefined = undefined;
 
+  protected showAddPages = false;
+
   closeDialog() {
     this.editNode = false;
     this.showNotes = false;
     this.selectedNode = undefined;
+    this.showAddPages = false;
   }
 
   protected onMenuClick(event: MouseEvent, displayNode: TreeNode) {
@@ -215,15 +222,15 @@ export class IaDiagramComponent {
 
     if (this.projectCache.selectedViewIA() === 'changes' && !projectNode.data.isNavChild) {
       // Action: Find child pages
-      if (!projectNode.data.isCrawled) {
-        this.items[0].items!.push({
-          label: this.translate.instant(`iaDiagram.menu.findChildren`),
-          icon: 'pi pi-search',
-          command: () => {
-            this.addUrlsService.addChildren(projectNode, this.primaryLang);
-          },
-        });
-      }
+      const isCrawledColor = projectNode.data.isCrawled ? 'text-color-secondary' : '';
+      this.items[0].items!.push({
+        label: this.translate.instant(`iaDiagram.menu.findChildren`),
+        icon: 'pi pi-search ' + isCrawledColor,
+        labelClass: isCrawledColor,
+        command: () => {
+          this.addChildren(projectNode);
+        },
+      });
       // Action: Add child page or delete page
       this.items[0].items!.push(
         {
@@ -411,6 +418,42 @@ export class IaDiagramComponent {
     }
 
     this.menu().toggle(event);
+  }
+
+  /** Auto-add or show popup to add child pages */
+  protected async addChildren(node: TreeNode<TreeNodeData> | null) {
+    if (!node) return;
+    this.addUrlsService.setUrlState({
+      isAdding: true,
+    });
+    this.selectedNode = node;
+    const autoAdd = this.settingsService.autoAddChildren();
+    await this.addUrlsService.addChildren(node, this.primaryLang, autoAdd);
+    if (!autoAdd) {
+      this.showAddPages = true;
+    }
+  }
+
+  /** Add selected child pages from popup */
+  protected async addSelectedChildren() {
+    this.showAddPages = false;
+    this.addUrlsService.addSelectedChildren();
+    if (this.selectedNode && this.addUrlsService.childUrls().length === this.addUrlsService.selectedChildUrlsCount()) {
+      this.selectedNode.data.isCrawled = true;
+    }
+  }
+
+  /** Cancel adding child pages from popup */
+  protected cancelAddChildren(visible: boolean) {
+    if (visible) return;
+    this.showAddPages = false;
+    if (this.selectedNode && this.addUrlsService.childUrls().length === 0) {
+      this.selectedNode.data.isCrawled = true;
+    }
+    this.addUrlsService.setUrlState({
+      isAdding: false,
+      urlsToAdd: [],
+    });
   }
 
   /** Returns true if any child nodes have collapsed or hidden nodes and those child nodes also have child nodes */

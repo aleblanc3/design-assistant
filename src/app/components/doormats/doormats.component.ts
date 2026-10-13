@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
@@ -17,7 +17,7 @@ export interface DoormatItem {
   descriptionKey: string;
   icon?: string;
   notOutlined?: boolean;
-  function?: any;
+  function?: string;
   isExternal?: boolean;
   hideInProd?: boolean;
 }
@@ -29,7 +29,7 @@ export const DOORMATS = {
   switchProject: { path: AidaLinks.AllProjects, titleKey: 'switch._title', descriptionKey: 'switch.description', icon: 'folder_open' },
   //Active project
   dashboard: { path: AidaLinks.ProjectDashboard, titleKey: 'dashboard._title', descriptionKey: 'dashboard.description', icon: 'view_quilt' },
-  editProject: { path: AidaLinks.ProjectSettings, titleKey: 'project._nav.edit', descriptionKey: 'project.edit.description', icon: 'edit' },
+  editProject: { path: AidaLinks.ProjectSettings, titleKey: 'project._nav.edit', descriptionKey: 'project.edit.description', icon: 'settings' },
   addPages: { path: AidaLinks.ProjectAdd, titleKey: 'addPages._nav', descriptionKey: 'addPages.description', icon: 'note_add' },
   search: { path: undefined, titleKey: 'search._nav', descriptionKey: 'search.description', icon: 'manage_search', hideInProd: true },
   problems: { path: undefined, titleKey: 'problems._nav', descriptionKey: 'problems.description', icon: 'troubleshoot', hideInProd: true },
