@@ -16,7 +16,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ProjectStateService } from '../../services/project-state.service';
 import { ColorScheme, UserSettingsService } from '../../services/user-settings.service';
 
-export type SettingsMode = 'all' | 'language' | 'theme' | 'versions';
+export type SettingsMode = 'all' | 'language' | 'theme' | 'versions' | 'autoChildren';
 
 @Component({
   selector: 'aida-user-settings',
@@ -99,6 +99,14 @@ export class UserSettingsComponent {
   }
 
   protected showVersionHelp = false;
+
+  // Auto-add child pages
+  protected get childPagesOptions(): MenuItem[] {
+    return [
+      { label: this.translate.instant('settings.childPages.promptToAdd'), value: false },
+      { label: this.translate.instant('settings.childPages.autoAdd'), value: true },
+    ];
+  }
 
   private markForTranslation() {
     marker('settings.versions.help');

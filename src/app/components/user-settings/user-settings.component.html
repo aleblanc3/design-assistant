@@ -118,4 +118,23 @@
       </ng-template>
     </p-dialog>
   }
+  @if (mode() === 'autoChildren' || mode() === 'all') {
+    <div class="flex flex-column border-round p-1 text-color-secondary hover:surface-100 hover:text-primary">
+      <span class="text-xs my-1">{{ 'settings.childPages' | translate }}</span>
+      <p-selectbutton
+        [allowEmpty]="false"
+        [ngModel]="settingsService.autoAddChildren()"
+        [options]="childPagesOptions"
+        [unselectable]="true"
+        (ngModelChange)="settingsService.setAutoAddChildren($event)"
+        class="mb-0"
+        optionLabel="label"
+        optionValue="value"
+      >
+        <ng-template let-item pTemplate="item">
+          {{ item.label }}
+        </ng-template>
+      </p-selectbutton>
+    </div>
+  }
 </div>
