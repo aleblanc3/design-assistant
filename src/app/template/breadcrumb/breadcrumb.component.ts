@@ -7,12 +7,13 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { filter, map, startWith } from 'rxjs/operators';
 
-import { ConfirmationService, MenuItem } from 'primeng/api';
+import { MenuItem } from 'primeng/api';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MenuModule } from 'primeng/menu';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
+
+import { ProjectMenuComponent } from '../../components/project-menu/project-menu.component';
 
 import { CollaboratorService } from '../../services/github/collaborator.service';
 import { ProjectStateService } from '../../services/project-state.service';
@@ -34,14 +35,13 @@ const BREADCRUMB_ANCESTORS: Record<string, MenuItem[]> = {
 
 @Component({
   selector: 'aida-breadcrumb',
-  imports: [CommonModule, RouterLink, TranslatePipe, BreadcrumbModule, ConfirmDialogModule, MenuModule, TagModule, TooltipModule],
+  imports: [CommonModule, RouterLink, TranslatePipe, BreadcrumbModule, MenuModule, TagModule, TooltipModule, ProjectMenuComponent],
   templateUrl: './breadcrumb.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BreadcrumbComponent {
   private readonly router = inject(Router);
   private readonly translate = inject(TranslateService);
-  private readonly confirmationService = inject(ConfirmationService);
   private readonly projectState = inject(ProjectStateService);
   private readonly collaboratorService = inject(CollaboratorService);
 
@@ -112,70 +112,5 @@ export class BreadcrumbComponent {
     const lockedSeverity = isLocked === 'byMe' ? ('secondary' as const) : isLocked ? ('danger' as const) : undefined;
 
     return { projectLabel, icon, iconTooltip, tagLabel, tagTooltip, tagSeverity, tagIcon, lockedLabel, lockedSeverity };
-  }
-
-  protected get items(): MenuItem[] {
-    const { isSignedIn, isCollaborator, isLocked } = this.collaboratorService.getUploadAccessInfo(this.projectState.getProject());
-    const dropdownOptions = [
-      {
-        label: this.translate.instant('project.global.myProject'),
-        items: [
-          {
-            label: this.translate.instant('project._nav.edit'),
-            icon: 'pi pi-pencil',
-            command: () => {
-              this.router.navigate([AidaLinks.ProjectEdit]);
-            },
-          },
-        ],
-      },
-    ];
-    if (isSignedIn && isCollaborator) {
-      if (!isLocked && this.projectState.getProject().storageType === 'cloud') {
-        dropdownOptions[0].items.push({
-          label: this.translate.instant('project.global.lockProject'),
-          icon: 'pi pi-lock',
-          command: () => {
-            this.projectState.setLockedBy();
-          },
-        });
-      } else if (isLocked) {
-        dropdownOptions[0].items.push({
-          label: this.translate.instant('project.global.unlockProject'),
-          icon: 'pi pi-unlock',
-          command: () => {
-            this.unlockProject(isLocked);
-          },
-        });
-      }
-    }
-
-    return dropdownOptions;
-  }
-
-  private unlockProject(user: string) {
-    if (user === 'byMe') {
-      this.projectState.removeLockedBy();
-    } else {
-      this.confirmationService.confirm({
-        key: 'unlock',
-        message: this.translate.instant('project.global.unlockMessage', { user: user }),
-        header: this.translate.instant('project.global.unlockHeader'),
-        icon: 'pi pi-exclamation-circle text-red-500',
-        rejectButtonProps: {
-          label: this.translate.instant('common.cancel'),
-          severity: 'secondary',
-          outlined: true,
-          styleClass: 'secondary-outline',
-        },
-        acceptButtonProps: {
-          label: this.translate.instant('common.unlock'),
-          severity: 'danger',
-        },
-        accept: () => {
-          this.projectState.removeLockedBy();
-        },
-      });
-    }
   }
 }

@@ -12,8 +12,8 @@
     }
     <a
       [ngClass]="isEditActive() ? ['bg-primary-50', 'text-primary-500'] : ['surface-card', 'text-color-secondary']"
-      (click)="menu.toggle($event)"
-      (keydown.enter)="menu.toggle($event)"
+      (click)="project.toggle($event)"
+      (keydown.enter)="project.toggle($event)"
       class="no-underline border-round-bottom-xl cursor-pointer hover:bg-primary-50 hover:text-primary-500"
       tabindex="0"
     >
@@ -43,17 +43,4 @@
   </div>
 }
 
-<!--Menu-->
-<p-menu [model]="items" [popup]="true" #menu>
-  <ng-template #submenuheader let-item>
-    <span class="text-primary font-bold">{{ item.label | translate }}</span>
-  </ng-template>
-  <ng-template #item let-item>
-    <a class="p-menu-item-link">
-      <i [class]="item.icon"></i>
-      <span>{{ item.label | translate }}</span>
-    </a>
-  </ng-template>
-</p-menu>
-
-<p-confirmdialog key="unlock" position="topright" />
+<aida-project-menu #project />

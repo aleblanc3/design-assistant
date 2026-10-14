@@ -51,8 +51,8 @@
           </p>
           <div id="tasks" [class.md:hidden]="!isExpanded.tasks" aria-labelledby="menu-tasks" role="region">
             <ng-container *ngTemplateOutlet="link; context: { path: AidaLinks.ProjectDashboard, icon: 'view_quilt', text: ('dashboard._nav' | translate) }" />
-            <ng-container *ngTemplateOutlet="link; context: { path: AidaLinks.ProjectSettings, icon: 'settings', text: ('project._nav.edit' | translate) }" />
-            <ng-container *ngTemplateOutlet="link; context: { path: AidaLinks.ProjectAdd, icon: 'note_add', text: ('addPages._nav' | translate), isOutlined: true }" />
+            <!--ng-container *ngTemplateOutlet="link; context: { path: AidaLinks.ProjectSettings, icon: 'settings', text: ('project._nav.edit' | translate) }" />
+            <ng-container *ngTemplateOutlet="link; context: { path: AidaLinks.ProjectAdd, icon: 'note_add', text: ('addPages._nav' | translate), isOutlined: true }" /-->
             <ng-container *ngTemplateOutlet="link; context: { path: AidaLinks.ProjectSearch, icon: 'manage_search', text: ('search._nav' | translate), isOutlined: true, hideInProd: true }" />
             <ng-container *ngTemplateOutlet="link; context: { path: AidaLinks.ProjectProblems, icon: 'troubleshoot', text: ('problems._nav' | translate), isOutlined: true, hideInProd: true }" />
             <ng-container *ngTemplateOutlet="link; context: { path: AidaLinks.ProjectDiagram, icon: 'lan', text: ('iaDiagram._nav' | translate), isOutlined: true }" />
