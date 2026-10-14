@@ -39,11 +39,14 @@ export const DOORMATS = {
   exportPages: { path: AidaLinks.ProjectExport, titleKey: 'exportPages._nav', descriptionKey: 'exportPages.description', icon: 'drive_folder_upload' },
   editPages: { path: AidaLinks.ProjectEdit, titleKey: 'editPages._nav', descriptionKey: 'editPages.description', icon: 'auto_fix_high' },
   compare: { path: AidaLinks.ProjectCompare, titleKey: 'compare._nav', descriptionKey: 'compare.description', icon: 'library_books' },
-  //Settings
-  setupProject: { path: AidaLinks.ProjectSettings, titleKey: 'project.setup._title', descriptionKey: 'project.setup.description', icon: 'settings' },
-  setupRepo: { path: AidaLinks.ProjectSettings, titleKey: 'project.repo._title', descriptionKey: 'project.repo.description', icon: 'folder_zip' },
-  addCollabs: { path: AidaLinks.ProjectSettings, titleKey: 'collaborators._title', descriptionKey: 'collaborators.description', icon: 'group_add' },
+  //Page Settings
+  setupProject: { path: AidaLinks.ProjectSettings, titleKey: 'project._nav.edit', descriptionKey: 'project.edit.description', icon: 'settings' },
   addPages: { path: AidaLinks.ProjectAdd, titleKey: 'findPages._title', descriptionKey: 'addPages.description', icon: 'note_add' },
+  //Popup Settings
+  popSetupProject: { path: AidaLinks.ProjectSettings, titleKey: 'project.setup._title', descriptionKey: 'project.setup.description', icon: 'settings' },
+  popSetupRepo: { path: AidaLinks.ProjectSettings, titleKey: 'project.repo._title', descriptionKey: 'project.repo.description', icon: 'folder_zip' },
+  popAddCollabs: { path: AidaLinks.ProjectSettings, titleKey: 'collaborators._title', descriptionKey: 'collaborators.description', icon: 'group_add' },
+  popAddPages: { path: AidaLinks.ProjectAdd, titleKey: 'findPages._title', descriptionKey: 'addPages.description', icon: 'note_add' },
   //Help
   help: { path: AidaLinks.Help, titleKey: 'help._title', descriptionKey: 'help.description', icon: 'help_outline', hideInProd: true },
   contact: { path: AidaLinks.Contact, titleKey: 'feedback._title', descriptionKey: 'feedback.description', icon: 'feedback', function: 'mailTo' },
@@ -97,10 +100,10 @@ export class DoormatsComponent {
   protected getOnClick(key: DoormatKey): ((event: Event) => void) | undefined {
     const overrides: Partial<Record<DoormatKey, (event: Event) => void>> = {
       contact: this.mailTo,
-      setupProject: this.openDialog('setupProject'),
-      setupRepo: this.openDialog('setupRepo'),
-      addPages: this.openDialog('addPages'),
-      addCollabs: this.openDialog('addCollabs'),
+      popSetupProject: this.openDialog('setupProject'),
+      popSetupRepo: this.openDialog('setupRepo'),
+      popAddPages: this.openDialog('addPages'),
+      popAddCollabs: this.openDialog('addCollabs'),
     };
     return overrides[key];
   }

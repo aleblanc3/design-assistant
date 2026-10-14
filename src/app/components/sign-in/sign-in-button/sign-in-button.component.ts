@@ -8,7 +8,6 @@ import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { MenuModule } from 'primeng/menu';
-import { SplitButtonModule } from 'primeng/splitbutton';
 
 import { UserSettingsComponent } from '../../user-settings/user-settings.component';
 import { PatComponent } from '../pat/pat.component';
@@ -20,7 +19,7 @@ import { AidaLinks } from '../../../common/aidaLinks.config';
 
 @Component({
   selector: 'aida-sign-in-button',
-  imports: [TranslatePipe, AvatarModule, ButtonModule, DialogModule, MenuModule, SplitButtonModule, PatComponent, UserSettingsComponent],
+  imports: [TranslatePipe, AvatarModule, ButtonModule, DialogModule, MenuModule, PatComponent, UserSettingsComponent],
   templateUrl: './sign-in-button.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

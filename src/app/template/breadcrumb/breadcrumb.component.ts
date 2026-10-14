@@ -9,6 +9,7 @@ import { filter, map, startWith } from 'rxjs/operators';
 
 import { MenuItem } from 'primeng/api';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
@@ -35,7 +36,7 @@ const BREADCRUMB_ANCESTORS: Record<string, MenuItem[]> = {
 
 @Component({
   selector: 'aida-breadcrumb',
-  imports: [CommonModule, RouterLink, TranslatePipe, BreadcrumbModule, MenuModule, TagModule, TooltipModule, ProjectMenuComponent],
+  imports: [CommonModule, RouterLink, TranslatePipe, BreadcrumbModule, MenuModule, TagModule, TooltipModule, ProjectMenuComponent, ButtonModule],
   templateUrl: './breadcrumb.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
