@@ -89,7 +89,7 @@ export class ProjectMenuComponent {
         items: [
           {
             label: this.translate.instant('settings._title'),
-            icon: 'pi pi-cog',
+            icon: 'manage_accounts',
             command: () => {
               this.showDialog('userSettings');
             },
@@ -101,28 +101,28 @@ export class ProjectMenuComponent {
         items: [
           {
             label: this.translate.instant('project.setup._title'),
-            icon: 'pi pi-cog',
+            icon: 'settings',
             command: () => {
               this.showDialog('setupProject');
             },
           },
           {
             label: this.translate.instant('project.repo._title'),
-            icon: 'pi pi-github',
+            icon: 'folder_zip',
             command: () => {
               this.showDialog('setupRepo');
             },
           },
           {
             label: this.translate.instant('findPages._title'),
-            icon: 'pi pi-file-plus',
+            icon: 'note_add',
             command: () => {
               this.showDialog('addPages');
             },
           },
           {
             label: this.translate.instant('collaborators._title'),
-            icon: 'pi pi-users',
+            icon: 'group_add',
             command: () => {
               this.showDialog('addCollabs');
             },
@@ -134,14 +134,14 @@ export class ProjectMenuComponent {
         items: [
           {
             label: this.translate.instant('project._nav.new'),
-            icon: 'pi pi-plus',
+            icon: 'add',
             command: () => {
               this.router.navigate([AidaLinks.NewProject]);
             },
           },
           {
             label: this.translate.instant('switch._title'),
-            icon: 'pi pi-folder-open',
+            icon: 'folder_open',
             command: () => {
               this.router.navigate([AidaLinks.AllProjects]);
             },
@@ -153,7 +153,7 @@ export class ProjectMenuComponent {
     if (!this.signInService.user()) {
       dropdownOptions[0].items!.unshift({
         label: this.translate.instant('common.signin'),
-        icon: 'pi pi-sign-in',
+        icon: 'login',
         command: () => {
           this.connectGitHub();
         },
@@ -161,7 +161,7 @@ export class ProjectMenuComponent {
     } else {
       dropdownOptions[1].items!.unshift({
         label: this.translate.instant('common.signout'),
-        icon: 'pi pi-sign-out',
+        icon: 'logout',
         command: () => {
           console.log(this.signInService.user());
           this.authService.logout();

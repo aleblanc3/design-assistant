@@ -16,9 +16,11 @@
       @if (signInService.user(); as user) {
         <p-avatar [image]="user.avatar_url" shape="circle" />
         <div class="font-semibold pr-2">{{ user.name || user.login }}</div>
+        <i class="pi pi-angle-down text-primary text-lg pr-1"></i>
       } @else {
         <i class="pi pi-github text-4xl text-color-secondary"></i>
-        <div class="font-semibold pr-2">{{ 'common.signin' | translate }}</div>
+        <div class="font-semibold">{{ 'common.signin' | translate }}</div>
+        <i class="pi pi-angle-down text-primary text-lg pr-1"></i>
       }
     </p-button>
   } @else {

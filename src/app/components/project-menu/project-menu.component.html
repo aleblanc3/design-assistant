@@ -4,7 +4,11 @@
   </ng-template>
   <ng-template #item let-item>
     <a class="p-menu-item-link">
-      <i [class]="item.icon"></i>
+      @if (item.icon.startsWith('pi')) {
+        <i [class]="item.icon"></i>
+      } @else {
+        <span class="material-icons-outlined">{{ item.icon }}</span>
+      }
       <span>{{ item.label | translate }}</span>
     </a>
   </ng-template>
@@ -17,19 +21,34 @@
         <h2 class="text-2xl my-1">{{ 'github.connect.pat.header' | translate }}</h2>
       }
       @case ('userSettings') {
-        <h2 class="text-2xl my-1">{{ 'settings._title' | translate }}</h2>
+        <div class="flex gap-1">
+          <span class="material-icons-outlined text-5xl">manage_accounts</span>
+          <h2 class="text-2xl my-1">{{ 'settings._title' | translate }}</h2>
+        </div>
       }
       @case ('setupProject') {
-        <h2 class="text-2xl my-1">{{ 'project.setup._title' | translate }}</h2>
+        <div class="flex gap-1">
+          <span class="material-icons-outlined text-5xl">settings</span>
+          <h2 class="text-2xl my-1">{{ 'project.setup._title' | translate }}</h2>
+        </div>
       }
       @case ('setupRepo') {
-        <h2 class="text-2xl my-1">{{ 'project.repo._title' | translate }}</h2>
+        <div class="flex gap-1">
+          <span class="material-icons-outlined text-5xl">folder_zip</span>
+          <h2 class="text-2xl my-1">{{ 'project.repo._title' | translate }}</h2>
+        </div>
       }
       @case ('addPages') {
-        <h2 class="text-2xl my-1">{{ 'findPages._title' | translate }}</h2>
+        <div class="flex gap-1">
+          <span class="material-icons-outlined text-5xl">note_add</span>
+          <h2 class="text-2xl my-1">{{ 'findPages._title' | translate }}</h2>
+        </div>
       }
       @case ('addCollabs') {
-        <h2 class="text-2xl my-1">{{ 'collaborators._title' | translate }}</h2>
+        <div class="flex gap-1">
+          <span class="material-icons-outlined text-5xl">group_add</span>
+          <h2 class="text-2xl my-1">{{ 'collaborators._title' | translate }}</h2>
+        </div>
       }
     }
   </ng-template>
@@ -68,18 +87,5 @@
     }
   </ng-template>
 </p-dialog>
-
-<!--Menu-->
-<p-menu [model]="items" [popup]="true" #menu>
-  <ng-template #submenuheader let-item>
-    <span class="text-primary font-bold">{{ item.label | translate }}</span>
-  </ng-template>
-  <ng-template #item let-item>
-    <a class="p-menu-item-link">
-      <i [class]="item.icon"></i>
-      <span>{{ item.label | translate }}</span>
-    </a>
-  </ng-template>
-</p-menu>
 
 <p-confirmdialog key="unlock" position="topright" />

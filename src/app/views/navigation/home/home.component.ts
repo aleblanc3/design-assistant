@@ -31,7 +31,7 @@ export class HomeComponent {
 
   protected readonly title = signal<string>(this.translate.instant('home._title', { org: '' }));
   protected readonly taskDoormats: DoormatKey[] = ['dashboard', 'problems', 'iaDiagram', 'inventory', 'search', 'metadata', 'exportPages', 'editPages', 'compare'];
-  protected readonly settingsDoormats: DoormatKey[] = ['setupProject', 'setupRepo', 'addPages', 'addCollabs'];
+  protected readonly settingsDoormats: DoormatKey[] = ['setupProject', 'addPages'];
   protected readonly helpDoormats: DoormatKey[] = ['help', 'contact'];
 
   protected readonly showProject = computed(() => this.projectStorageService.hasActiveProject('session') || this.projectStorageService.hasActiveProject('local'));
