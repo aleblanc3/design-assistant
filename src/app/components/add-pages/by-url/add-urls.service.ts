@@ -614,14 +614,25 @@ export class AddUrlsService {
 
       // Step 2: Strip out any links that are already in the project
       const linksToAdd = [...allLinks].filter((url) => !existingPages.has(url));
-      if (linksToAdd.length === 0) return;
+
+      const linksToLimit = this.getChildUrlsService.skipFormsAndPubs;
+      const linkLimit = this.getChildUrlsService.PAGE_LIMIT;
+      const limited = linksToLimit.has(parentLink);
+
+      const limitedLinksToAdd = limited ? linksToAdd.slice(0, linkLimit) : linksToAdd;
+
+      if (limitedLinksToAdd.length === 0) return;
 
       // Step 3: add pages if they are a child of the parent page
       this.setUrlState({
         isAdding: true,
-        urlsToAdd: linksToAdd.map((url) => ({ href: url, status: 'pending' })),
+        urlsToAdd: limitedLinksToAdd.map((url) => ({ href: url, status: 'pending' })),
       });
       await this.addUrls(parentLink);
+
+      if (limited) {
+        return;
+      }
       node.data.isCrawled = true;
     } else {
       // POPUP MODE

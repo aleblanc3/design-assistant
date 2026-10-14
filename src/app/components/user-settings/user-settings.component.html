@@ -82,8 +82,10 @@
         </div>
       </div>
 
-      <h2>{{ 'settings.relatedTools' | translate }}</h2>
-      <aida-doormats [headingLevel]="'h3'" [keys]="versionDoormats" [style]="'topic'" />
+      @defer {
+        <h2>{{ 'settings.relatedTools' | translate }}</h2>
+        <aida-doormats [headingLevel]="'h3'" [keys]="versionDoormats" [style]="'topic'" />
+      }
 
       <!--Source list template-->
       <ng-template #sourceList let-showPreview="showPreview">
@@ -175,8 +177,10 @@
       @for (paragraph of ('settings.childPages.help.p2' | translate).split('|'); track paragraph; let first = $first) {
         <p [class.mt-0]="$first">{{ paragraph }}</p>
       }
-      <h2>{{ 'settings.relatedTools' | translate }}</h2>
-      <aida-doormats [headingLevel]="'h2'" [keys]="childPagesDoormats" [style]="'topic'" />
+      @defer {
+        <h2>{{ 'settings.relatedTools' | translate }}</h2>
+        <aida-doormats [headingLevel]="'h2'" [keys]="childPagesDoormats" [style]="'topic'" />
+      }
     </p-dialog>
   }
 </div>
