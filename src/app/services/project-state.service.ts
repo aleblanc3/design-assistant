@@ -12,6 +12,7 @@ import { VanityService } from './data-sources/vanity.service';
 import { FetchService } from './fetch.service';
 import { CollaboratorService } from './github/collaborator.service';
 import { ExportGitHubService } from './github/export-github.service';
+import { SignInService } from './github/sign-in.service';
 import { UsageService } from './usage.service';
 
 import { version as appVersion } from '../../../package.json';
@@ -59,6 +60,7 @@ export class ProjectStateService {
   private readonly vanityService = inject(VanityService);
   private readonly usageService = inject(UsageService);
   private readonly exportGitHubService = inject(ExportGitHubService);
+  private readonly signInService = inject(SignInService);
 
   private readonly currentLang = signal<string>(this.translate.currentLang() ?? 'en');
 
@@ -132,7 +134,7 @@ export class ProjectStateService {
       }
     });
     effect(() => {
-      if (this.exportGitHubService.user() && localStorage.getItem('pendingStorageSwitch') === 'cloud') {
+      if (this.signInService.user() && localStorage.getItem('pendingStorageSwitch') === 'cloud') {
         localStorage.removeItem('pendingStorageSwitch');
         this.setStorageType('cloud');
       }
@@ -188,7 +190,7 @@ export class ProjectStateService {
 
   //Set locked by
   public setLockedBy() {
-    const user = this.exportGitHubService.user()?.login;
+    const user = this.signInService.user()?.login;
     if (!user) {
       return;
     }
@@ -1358,7 +1360,7 @@ export class ProjectStateService {
         })();
         const parentLinks = parentDoc && liveEnUrl ? this.fetchService.getLinks(parentDoc, liveEnUrl) : undefined;
 
-        const lastModified = source !== 'live' ? await this.exportGitHubService.getLastModified(enUrl, owner, repo, branch, this.exportGitHubService.token() ?? undefined) : undefined;
+        const lastModified = source !== 'live' ? await this.exportGitHubService.getLastModified(enUrl, owner, repo, branch, this.signInService.token() ?? undefined) : undefined;
 
         const updated: Partial<LangData> = {
           h1: pageData.h1,
@@ -1432,7 +1434,7 @@ export class ProjectStateService {
         })();
         const parentLinks = parentDoc && liveFrUrl ? this.fetchService.getLinks(parentDoc, liveFrUrl) : undefined;
 
-        const lastModified = source !== 'live' ? await this.exportGitHubService.getLastModified(frUrl, owner, repo, branch, this.exportGitHubService.token() ?? undefined) : undefined;
+        const lastModified = source !== 'live' ? await this.exportGitHubService.getLastModified(frUrl, owner, repo, branch, this.signInService.token() ?? undefined) : undefined;
 
         const updated: Partial<LangData> = {
           h1: pageData.h1,

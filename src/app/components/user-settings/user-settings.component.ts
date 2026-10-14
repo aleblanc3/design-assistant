@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, forwardRef, inject, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
@@ -13,7 +13,8 @@ import { SelectModule } from 'primeng/select';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { TooltipModule } from 'primeng/tooltip';
 
-import { DoormatKey, DoormatsComponent } from '../doormats/doormats.component';
+import { DoormatsComponent } from '../doormats/doormats.component';
+import type { DoormatKey } from '../doormats/doormats.component';
 
 import { ProjectStateService } from '../../services/project-state.service';
 import { ColorScheme, UserSettingsService } from '../../services/user-settings.service';
@@ -22,7 +23,7 @@ export type SettingsMode = 'all' | 'language' | 'theme' | 'versions' | 'autoChil
 
 @Component({
   selector: 'aida-user-settings',
-  imports: [CommonModule, FormsModule, TranslatePipe, ButtonModule, CheckboxModule, DialogModule, SelectButtonModule, SelectModule, TooltipModule, DoormatsComponent],
+  imports: [CommonModule, FormsModule, TranslatePipe, ButtonModule, CheckboxModule, DialogModule, SelectButtonModule, SelectModule, TooltipModule, forwardRef(() => DoormatsComponent)],
   templateUrl: './user-settings.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

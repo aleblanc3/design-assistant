@@ -1,37 +1,33 @@
-import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-
-import { catchError, of, timeout } from 'rxjs';
 
 import { MenuItem } from 'primeng/api';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { MenuModule } from 'primeng/menu';
+import { SplitButtonModule } from 'primeng/splitbutton';
 
 import { UserSettingsComponent } from '../../user-settings/user-settings.component';
 import { PatComponent } from '../pat/pat.component';
 
-import { ExportGitHubService } from '../../../services/github/export-github.service';
 import { GitHubAuthService } from '../../../services/github/github-auth.service';
+import { SignInService } from '../../../services/github/sign-in.service';
 
-import { environment } from '../../../../environments/environment';
 import { AidaLinks } from '../../../common/aidaLinks.config';
 
 @Component({
   selector: 'aida-sign-in-button',
-  imports: [TranslatePipe, AvatarModule, ButtonModule, DialogModule, MenuModule, PatComponent, UserSettingsComponent],
+  imports: [TranslatePipe, AvatarModule, ButtonModule, DialogModule, MenuModule, SplitButtonModule, PatComponent, UserSettingsComponent],
   templateUrl: './sign-in-button.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SignInButtonComponent implements OnInit {
-  private readonly http = inject(HttpClient);
+export class SignInButtonComponent {
   private readonly router = inject(Router);
   private readonly authService = inject(GitHubAuthService);
-  protected readonly exportGitHubService = inject(ExportGitHubService);
+  protected readonly signInService = inject(SignInService);
   private readonly translate = inject(TranslateService);
 
   public readonly customText = input<string | undefined>(undefined);
@@ -42,7 +38,7 @@ export class SignInButtonComponent implements OnInit {
   protected readonly showSettings = signal(false);
 
   public connectGitHub() {
-    if (this.isApiGatewayAccessible()) {
+    if (this.signInService.isApiGatewayAccessible()) {
       this.authService.login();
     } else {
       this.showPatSignIn.set(true);
@@ -51,7 +47,7 @@ export class SignInButtonComponent implements OnInit {
 
   protected async validatePAT() {
     this.showPatSignIn.set(false);
-    await this.exportGitHubService.validatePAT();
+    await this.signInService.validatePAT();
   }
 
   protected get items(): MenuItem[] {
@@ -88,7 +84,7 @@ export class SignInButtonComponent implements OnInit {
         ],
       },
     ];
-    if (!this.exportGitHubService.user()) {
+    if (!this.signInService.user()) {
       dropdownOptions[0].items!.unshift({
         label: this.translate.instant('common.signin'),
         icon: 'pi pi-sign-in',
@@ -101,42 +97,12 @@ export class SignInButtonComponent implements OnInit {
         label: this.translate.instant('common.signout'),
         icon: 'pi pi-sign-out',
         command: () => {
-          console.log(this.exportGitHubService.user());
+          console.log(this.signInService.user());
           this.authService.logout();
-          this.exportGitHubService.clearPAT();
+          this.signInService.clearPAT();
         },
       });
     }
     return dropdownOptions;
-  }
-
-  // Signal to track if API Gateway is accessible
-  private readonly isApiGatewayAccessible = signal<boolean>(true);
-
-  // Check if API gateway is available so we can surface the preferred sign-in method
-  private checkApiGatewayAccess(): void {
-    // Skip check on localhost (gateway isn't blocked but OAuth will be blocked by CORS)
-    if (window.location.hostname === 'localhost') {
-      this.isApiGatewayAccessible.set(false);
-      return;
-    }
-
-    this.http
-      .get(`${environment.apiGateway}/auth/github/url`, {
-        observe: 'response',
-      })
-      .pipe(
-        timeout(3000),
-        catchError(() => {
-          return of(null); // Any error (timeout, network, CORS, blocked) means it's inaccessible
-        }),
-      )
-      .subscribe((response) => {
-        this.isApiGatewayAccessible.set(response !== null);
-      });
-  }
-
-  ngOnInit() {
-    this.checkApiGatewayAccess();
   }
 }

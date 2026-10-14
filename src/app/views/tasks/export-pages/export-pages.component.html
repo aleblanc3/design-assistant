@@ -4,7 +4,7 @@
 <h1 id="wb-cont">{{ repoType() === 'github' ? ('exportPages.github._title' | translate) : ('exportPages.zip._title' | translate) }}</h1>
 <p>{{ 'exportPages.description' | translate }}{{ 'exportPages.description2' | translate }}</p>
 <!-- Authentication Banner -->
-@if (!exportGitHubService.user() && repoType() === 'github') {
+@if (!signInService.user() && repoType() === 'github') {
   <p-message severity="info" styleClass="mb-2 sticky top-0 z-2">
     <div class="flex align-items-center gap-2">
       <i class="pi pi-info-circle font-bold"></i>
@@ -279,7 +279,7 @@
     <!--Export button-->
     @if (repoType() === 'github') {
       <p-button
-        [disabled]="projectFileCount() === 0 || !exportGitHubService.token() || !gitHubData().repo"
+        [disabled]="projectFileCount() === 0 || !signInService.token() || !gitHubData().repo"
         [label]="'exportPages.export.button.github' | translate"
         [loading]="exportProgress()"
         (onClick)="exportProjectToGitHub()"

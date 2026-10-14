@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -19,6 +19,8 @@ import { AddUrlsService } from './by-url/add-urls.service';
 })
 export class AddPagesComponent {
   protected readonly addUrlsService = inject(AddUrlsService);
+
+  public readonly noHeader = input<boolean>(false);
 
   markForTranslation() {
     marker('findPages.url.description');

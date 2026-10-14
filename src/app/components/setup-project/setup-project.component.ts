@@ -34,6 +34,7 @@ export class SetupProjectComponent {
   private readonly translate = inject(TranslateService);
 
   public readonly mode = input<'name' | undefined>(undefined);
+  public readonly noHeader = input<boolean>(false);
 
   constructor() {
     // Refresh projectName when there are changes to repo name (for initial sync fxn)

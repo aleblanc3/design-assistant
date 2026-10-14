@@ -26,6 +26,7 @@ import { SignInBannerComponent } from '../../../components/sign-in/sign-in-banne
 
 import { FetchService } from '../../../services/fetch.service';
 import { ExportGitHubService } from '../../../services/github/export-github.service';
+import { SignInService } from '../../../services/github/sign-in.service';
 import { HtmlNormalizationService } from '../../../services/html-normalization.service';
 import { ProjectCacheService } from '../../../services/project-cache.service';
 import { ProjectStateService } from '../../../services/project-state.service';
@@ -97,6 +98,7 @@ interface ExportMessage {
 export class ExportPagesComponent {
   private readonly projectState = inject(ProjectStateService);
   protected readonly exportGitHubService = inject(ExportGitHubService);
+  protected readonly signInService = inject(SignInService);
   private readonly fetchService = inject(FetchService);
   private readonly translate = inject(TranslateService);
   private readonly router = inject(Router);
@@ -134,7 +136,7 @@ export class ExportPagesComponent {
   constructor() {
     // Watch for changes to repo settings and run compareFiles()
     effect(async () => {
-      void this.exportGitHubService.token(); // track signal
+      void this.signInService.token(); // track signal
       void this.projectData().github.owner; // track signal
       void this.projectData().github.repo; // track signal
       void this.projectCache.selectedLang(); // track signal
@@ -238,7 +240,7 @@ export class ExportPagesComponent {
     // GitHub mode
     const owner = this.gitHubData().owner;
     const branch = this.gitHubData().branch;
-    const token = this.exportGitHubService.token();
+    const token = this.signInService.token();
 
     const githubPages: Map<string, string> = owner && this.gitHubData().repo ? await this.exportGitHubService.getRepoTree(owner, repo, branch, token) : new Map();
 
@@ -784,7 +786,7 @@ export class ExportPagesComponent {
     const { source, repo, scope } = this.exportContext;
     const owner = this.gitHubData().owner;
     const branch = this.gitHubData().branch;
-    const token = this.exportGitHubService.token();
+    const token = this.signInService.token();
     const projectName = this.projectData().projectName;
     const cacheVersion = this.projectCache.selectedVersion();
     const version = cacheVersion === 'live' ? 'prototype' : cacheVersion;

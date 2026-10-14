@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, viewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslatePipe } from '@ngx-translate/core';
+
+import { DialogMode, ProjectMenuComponent } from '../project-menu/project-menu.component';
 
 import { MailtoService } from '../../services/mailto.service';
 import { UserSettingsService } from '../../services/user-settings.service';
@@ -29,8 +31,6 @@ export const DOORMATS = {
   switchProject: { path: AidaLinks.AllProjects, titleKey: 'switch._title', descriptionKey: 'switch.description', icon: 'folder_open' },
   //Active project
   dashboard: { path: AidaLinks.ProjectDashboard, titleKey: 'dashboard._title', descriptionKey: 'dashboard.description', icon: 'view_quilt' },
-  editProject: { path: AidaLinks.ProjectSettings, titleKey: 'project._nav.edit', descriptionKey: 'project.edit.description', icon: 'settings' },
-  addPages: { path: AidaLinks.ProjectAdd, titleKey: 'addPages._nav', descriptionKey: 'addPages.description', icon: 'note_add' },
   search: { path: undefined, titleKey: 'search._nav', descriptionKey: 'search.description', icon: 'manage_search', hideInProd: true },
   problems: { path: undefined, titleKey: 'problems._nav', descriptionKey: 'problems.description', icon: 'troubleshoot', hideInProd: true },
   iaDiagram: { path: AidaLinks.ProjectDiagram, titleKey: 'iaDiagram._title', descriptionKey: 'iaDiagram.description', icon: 'lan' },
@@ -39,6 +39,11 @@ export const DOORMATS = {
   exportPages: { path: AidaLinks.ProjectExport, titleKey: 'exportPages._nav', descriptionKey: 'exportPages.description', icon: 'drive_folder_upload' },
   editPages: { path: AidaLinks.ProjectEdit, titleKey: 'editPages._nav', descriptionKey: 'editPages.description', icon: 'auto_fix_high' },
   compare: { path: AidaLinks.ProjectCompare, titleKey: 'compare._nav', descriptionKey: 'compare.description', icon: 'library_books' },
+  //Settings
+  setupProject: { path: AidaLinks.ProjectSettings, titleKey: 'project.setup._title', descriptionKey: 'project.setup.description', icon: 'settings' },
+  setupRepo: { path: AidaLinks.ProjectSettings, titleKey: 'project.repo._title', descriptionKey: 'project.repo.description', icon: 'folder_zip' },
+  addCollabs: { path: AidaLinks.ProjectSettings, titleKey: 'collaborators._title', descriptionKey: 'collaborators.description', icon: 'group_add' },
+  addPages: { path: AidaLinks.ProjectAdd, titleKey: 'findPages._title', descriptionKey: 'addPages.description', icon: 'note_add' },
   //Help
   help: { path: AidaLinks.Help, titleKey: 'help._title', descriptionKey: 'help.description', icon: 'help_outline', hideInProd: true },
   contact: { path: AidaLinks.Contact, titleKey: 'feedback._title', descriptionKey: 'feedback.description', icon: 'feedback', function: 'mailTo' },
@@ -57,7 +62,7 @@ export type DoormatKey = keyof typeof DOORMATS;
 
 @Component({
   selector: 'aida-doormats',
-  imports: [CommonModule, RouterLink, TranslatePipe],
+  imports: [CommonModule, RouterLink, TranslatePipe, ProjectMenuComponent],
   templateUrl: './doormats.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -71,6 +76,8 @@ export class DoormatsComponent {
   public readonly keys = input.required<DoormatKey[]>();
   public readonly headingLevel = input<'h2' | 'h3' | 'h4' | 'h5'>('h3');
   public readonly style = input<'topic' | 'card'>('topic');
+
+  private readonly dialog = viewChild.required(ProjectMenuComponent);
 
   protected iconClasses(notOutlined?: boolean) {
     const baseClasses = 'text-primary text-4xl p-2 border-1 border-round-lg surface-border';
@@ -90,6 +97,10 @@ export class DoormatsComponent {
   protected getOnClick(key: DoormatKey): ((event: Event) => void) | undefined {
     const overrides: Partial<Record<DoormatKey, (event: Event) => void>> = {
       contact: this.mailTo,
+      setupProject: this.openDialog('setupProject'),
+      setupRepo: this.openDialog('setupRepo'),
+      addPages: this.openDialog('addPages'),
+      addCollabs: this.openDialog('addCollabs'),
     };
     return overrides[key];
   }
@@ -97,6 +108,10 @@ export class DoormatsComponent {
   protected readonly mailTo = () => {
     console.log('Opening mailto!');
     this.mailtoService.openMailto(this.mailtoService.generateFeedbackMailto());
+  };
+
+  protected readonly openDialog = (mode: DialogMode) => () => {
+    this.dialog().showDialog(mode);
   };
 
   markForTranslation() {

@@ -13,7 +13,7 @@
     </p-menu>
 
     <p-button [outlined]="true" (onClick)="menu.toggle($event)" outlined rounded size="small" styleClass="secondary-outline p-1">
-      @if (exportGitHubService.user(); as user) {
+      @if (signInService.user(); as user) {
         <p-avatar [image]="user.avatar_url" shape="circle" />
         <div class="font-semibold pr-2">{{ user.name || user.login }}</div>
       } @else {
@@ -48,6 +48,7 @@
   [style]="{ width: '50vw' }"
   [visible]="showSettings()"
   (visibleChange)="showSettings.set($event)"
+  appendTo="body"
 >
   <div class="flex flex-row align-items-center gap-3">
     <i class="pi pi-cog text-6xl text-900"></i>
