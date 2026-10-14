@@ -41,8 +41,8 @@ export const DOORMATS = {
   compare: { path: AidaLinks.ProjectCompare, titleKey: 'compare._nav', descriptionKey: 'compare.description', icon: 'library_books' },
   //Settings
   setupProject: { path: AidaLinks.ProjectSettings, titleKey: 'project.setup._title', descriptionKey: 'project.setup.description', icon: 'settings' },
-  setupRepo: { path: undefined, titleKey: 'project.repo._title', descriptionKey: 'project.repo.description', icon: 'folder_zip' },
-  addCollabs: { path: undefined, titleKey: 'collaborators._title', descriptionKey: 'collaborators.description', icon: 'group_add' },
+  setupRepo: { path: AidaLinks.ProjectSettings, titleKey: 'project.repo._title', descriptionKey: 'project.repo.description', icon: 'folder_zip' },
+  addCollabs: { path: AidaLinks.ProjectSettings, titleKey: 'collaborators._title', descriptionKey: 'collaborators.description', icon: 'group_add' },
   addPages: { path: AidaLinks.ProjectAdd, titleKey: 'findPages._title', descriptionKey: 'addPages.description', icon: 'note_add' },
   //Help
   help: { path: AidaLinks.Help, titleKey: 'help._title', descriptionKey: 'help.description', icon: 'help_outline', hideInProd: true },
