@@ -1,5 +1,5 @@
 export const environment = {
-  production: false,
+  production: true,
   sandbox: false,
   apiGateway: 'https://nappswkoie.execute-api.ca-central-1.amazonaws.com/dev',
   dynamodbFunctionUrl: 'https://chi2rsccsm5tsbq3dzqez735gu0pxnlj.lambda-url.ca-central-1.on.aws/',
