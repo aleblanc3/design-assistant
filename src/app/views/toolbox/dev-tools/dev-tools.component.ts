@@ -65,5 +65,7 @@ export class DevToolsComponent {
     marker('common.edited');
     marker('common.error');
     marker('common.pending');
+    marker('common.new');
+    marker('common.problems');
   }
 }

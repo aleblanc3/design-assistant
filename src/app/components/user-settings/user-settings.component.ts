@@ -118,5 +118,8 @@ export class UserSettingsComponent {
 
   private markForTranslation() {
     marker('settings.versions.help');
+    marker('settings.childPages.help.l1');
+    marker('settings.childPages.help.p1');
+    marker('settings.childPages.help.p2');
   }
 }

@@ -23,6 +23,7 @@ export class AddPagesComponent {
   public readonly noHeader = input<boolean>(false);
 
   markForTranslation() {
+    marker('addPages._nav');
     marker('findPages.url.description');
   }
 }

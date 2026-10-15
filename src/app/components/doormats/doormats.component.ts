@@ -34,11 +34,11 @@ export const DOORMATS = {
   search: { path: undefined, titleKey: 'search._nav', descriptionKey: 'search.description', icon: 'manage_search', hideInProd: true },
   problems: { path: undefined, titleKey: 'problems._nav', descriptionKey: 'problems.description', icon: 'troubleshoot', hideInProd: true },
   iaDiagram: { path: AidaLinks.ProjectDiagram, titleKey: 'iaDiagram._title', descriptionKey: 'iaDiagram.description', icon: 'lan' },
-  inventory: { path: AidaLinks.ProjectInventory, titleKey: 'inventory._nav', descriptionKey: 'inventory.description', icon: 'checklist_rtl' },
+  inventory: { path: AidaLinks.ProjectInventory, titleKey: 'inventory._title', descriptionKey: 'inventory.description', icon: 'checklist_rtl' },
   metadata: { path: undefined, titleKey: 'metadata._nav', descriptionKey: 'metadata.description', icon: 'source', hideInProd: true },
-  exportPages: { path: AidaLinks.ProjectExport, titleKey: 'exportPages._nav', descriptionKey: 'exportPages.description', icon: 'drive_folder_upload' },
-  editPages: { path: AidaLinks.ProjectEdit, titleKey: 'editPages._nav', descriptionKey: 'editPages.description', icon: 'auto_fix_high' },
-  compare: { path: AidaLinks.ProjectCompare, titleKey: 'compare._nav', descriptionKey: 'compare.description', icon: 'library_books' },
+  exportPages: { path: AidaLinks.ProjectExport, titleKey: 'exportPages._title', descriptionKey: 'exportPages.description', icon: 'drive_folder_upload' },
+  editPages: { path: AidaLinks.ProjectEdit, titleKey: 'editPages._title', descriptionKey: 'editPages.description', icon: 'auto_fix_high' },
+  compare: { path: AidaLinks.ProjectCompare, titleKey: 'compare._title', descriptionKey: 'compare.description', icon: 'library_books' },
   //Page Settings
   setupProject: { path: AidaLinks.ProjectSettings, titleKey: 'project._nav.edit', descriptionKey: 'project.edit.description', icon: 'settings' },
   addPages: { path: AidaLinks.ProjectAdd, titleKey: 'findPages._title', descriptionKey: 'addPages.description', icon: 'note_add' },
@@ -51,7 +51,7 @@ export const DOORMATS = {
   help: { path: AidaLinks.Help, titleKey: 'help._title', descriptionKey: 'help.description', icon: 'help_outline', hideInProd: true },
   contact: { path: AidaLinks.Contact, titleKey: 'feedback._title', descriptionKey: 'feedback.description', icon: 'feedback', function: 'mailTo' },
   //Standalone
-  standaloneCompare: { path: AidaLinks.StandaloneCompare, titleKey: 'compare._nav', descriptionKey: 'compare.description' },
+  standaloneCompare: { path: AidaLinks.StandaloneCompare, titleKey: 'compare._title', descriptionKey: 'compare.description' },
   //Dev
   monitoring: { path: AidaLinks.DevMonitoring, titleKey: 'dev.monitoring._title', descriptionKey: 'dev.monitoring.description' },
   colors: { path: AidaLinks.DevColours, titleKey: 'dev.colors._title', descriptionKey: 'dev.colors.description' },
@@ -118,6 +118,7 @@ export class DoormatsComponent {
   };
 
   markForTranslation() {
+    marker('exportPages._title');
     marker('metadata._nav');
     marker('metadata.description');
     marker('feedback._title');
