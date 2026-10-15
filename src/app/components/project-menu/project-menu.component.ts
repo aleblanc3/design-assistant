@@ -23,8 +23,6 @@ import { GitHubAuthService } from '../../services/github/github-auth.service';
 import { SignInService } from '../../services/github/sign-in.service';
 import { ProjectStateService } from '../../services/project-state.service';
 
-import { AidaLinks } from '../../common/aidaLinks.config';
-
 export type DialogMode = 'PAT' | 'userSettings' | 'setupProject' | 'setupRepo' | 'addPages' | 'addCollabs';
 
 @Component({
@@ -125,25 +123,6 @@ export class ProjectMenuComponent {
             icon: 'group_add',
             command: () => {
               this.showDialog('addCollabs');
-            },
-          },
-        ],
-      },
-      {
-        label: this.translate.instant('common.projects'),
-        items: [
-          {
-            label: this.translate.instant('project._nav.new'),
-            icon: 'add',
-            command: () => {
-              this.router.navigate([AidaLinks.NewProject]);
-            },
-          },
-          {
-            label: this.translate.instant('switch._title'),
-            icon: 'folder_open',
-            command: () => {
-              this.router.navigate([AidaLinks.AllProjects]);
             },
           },
         ],
