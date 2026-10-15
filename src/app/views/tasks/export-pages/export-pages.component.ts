@@ -32,7 +32,6 @@ import { ProjectCacheService } from '../../../services/project-cache.service';
 import { ProjectStateService } from '../../../services/project-state.service';
 import { UsageService } from '../../../services/usage.service';
 
-import { environment } from '../../../../environments/environment';
 import { AidaLinks } from '../../../common/aidaLinks.config';
 import { CDTS_TEMPLATE_ENG, CDTS_TEMPLATE_FRA, EXIT_PAGE_TEMPLATE_ENG, EXIT_PAGE_TEMPLATE_FRA, INDEX_PAGE_TEMPLATE_ENG, INDEX_PAGE_TEMPLATE_FRA, LINK_DETOUR_JS } from '../../../common/cdts.template';
 import { SourceVersion } from '../../../common/data.model';
@@ -106,9 +105,7 @@ export class ExportPagesComponent {
   private readonly htmlNormalizationService = inject(HtmlNormalizationService);
   protected readonly projectCache = inject(ProjectCacheService);
 
-  private readonly defaultOrg = environment.defaultOrg;
   protected readonly ExportStatus = ExportStatus;
-  protected readonly projectName = this.projectState.getProject().projectName;
 
   //Signals
   protected readonly projectData = this.projectState.getProject;
