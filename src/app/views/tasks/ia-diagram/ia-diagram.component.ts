@@ -14,6 +14,7 @@ import { TooltipModule } from 'primeng/tooltip';
 
 import { AddPagesLinkComponent } from '../../../components/add-pages/add-pages-link/add-pages-link.component';
 import { EditNodeComponent } from '../../../components/edit-node/edit-node.component';
+import { IaTableComponent } from '../../../components/ia-table/ia-table.component';
 import { ProjectSettingsComponent } from '../../../components/project-settings/project-settings.component';
 import { SaveButtonComponent } from '../../../components/save-button/save-button.component';
 
@@ -41,6 +42,7 @@ import { TreeNodeData } from '../../../common/data.model';
     TooltipModule,
     AddPagesLinkComponent,
     EditNodeComponent,
+    IaTableComponent,
     ProjectSettingsComponent,
     SaveButtonComponent,
   ],
@@ -62,11 +64,16 @@ export class IaDiagramComponent {
 
   //Signals
   private readonly projectData = this.projectState.getProject;
+  protected readonly projectName = this.projectState.getProject().projectName;
 
   constructor() {
     effect(() => {
       const applyStatusColors = this.projectCache.selectedViewIA() === 'changes';
       this.treeNodeStyleService.updateNodeStyles(this.projectTree(), 0, applyStatusColors);
+    });
+    effect(() => {
+      this.projectCache.selectedDisplayIA();
+      this.projectState.expandNodes(this.projectState.getProject().projectData);
     });
   }
 
@@ -521,7 +528,7 @@ export class IaDiagramComponent {
 
     const depth = this.projectState.getInScopeMaxDepth(tree[0]);
     if (depth) {
-      const inScopeColours = Array.from({ length: depth + 1 }, (_, i) => mainColours[i]);
+      const inScopeColours = Array.from({ length: depth }, (_, i) => mainColours[i]);
       items.push({ context: inScopeColours, text: this.translate.instant('editNode.inScope') });
     }
 
@@ -561,7 +568,7 @@ export class IaDiagramComponent {
 
   get hasIaOrphan() {
     const tree = this.projectTree();
-    if (tree.length === 0) return false;
+    if (tree.length === 0 || this.projectCache.selectedDisplayIA() === 'list') return false;
     const lang = this.projectCache.selectedLang() ?? 'en';
     return this.projectState.findNodeWhere(tree, (node) => node.data?.live?.[lang].isOrphan === true) !== null;
   }
