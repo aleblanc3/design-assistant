@@ -30,6 +30,9 @@
       </ng-template>
     </p-breadcrumb>
   </div>
+  @if (projectDisplay.projectLabel && isProjectRoute()) {
+    <p class="dbl-h1">{{ projectDisplay.projectLabel }}</p>
+  }
 }
 
 <aida-project-menu #menu />

@@ -1278,9 +1278,6 @@ export class ProjectStateService {
     this.setProjectTree(projectTree);
   }
 
-  //Store settings for inventory table
-  public readonly selectedInventoryView = signal<'table' | 'tree'>('table');
-
   // Get breadcrumb chain by url
   public getBreadcrumbChain(path: string, lang: 'en' | 'fr' = 'en'): { title: string; link: string }[] {
     const breadcrumbs: { title: string; link: string }[] = [];

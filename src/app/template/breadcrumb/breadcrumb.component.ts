@@ -36,7 +36,7 @@ const BREADCRUMB_ANCESTORS: Record<string, MenuItem[]> = {
 
 @Component({
   selector: 'aida-breadcrumb',
-  imports: [CommonModule, RouterLink, TranslatePipe, BreadcrumbModule, MenuModule, TagModule, TooltipModule, ProjectMenuComponent, ButtonModule],
+  imports: [CommonModule, RouterLink, TranslatePipe, BreadcrumbModule, ButtonModule, MenuModule, TagModule, TooltipModule, ProjectMenuComponent],
   templateUrl: './breadcrumb.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

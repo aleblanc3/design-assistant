@@ -16,4 +16,5 @@ import { AidaLinks } from '../../../common/aidaLinks.config';
 export class AddPagesLinkComponent {
   protected readonly AidaLinks = AidaLinks;
   public readonly buttonOnly = input<boolean>(false);
+  public readonly noIcon = input<boolean>(false);
 }

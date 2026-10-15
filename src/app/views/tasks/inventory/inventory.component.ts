@@ -26,7 +26,6 @@ import { TextareaModule } from 'primeng/textarea';
 import { AddPagesComponent } from '../../../components/add-pages/add-pages.component';
 import { EditNodeComponent } from '../../../components/edit-node/edit-node.component';
 import { ExportProjectComponent } from '../../../components/export-project/export-project.component';
-import { IaTableComponent } from '../../../components/ia-table/ia-table.component';
 import { ViewPagesComponent } from '../../../components/view-pages/view-pages.component';
 
 import { OpenRouterService } from '../../../services/ai/openrouter.service';
@@ -84,7 +83,6 @@ export interface BooleanToggleItem extends MenuItem {
     AddPagesComponent,
     EditNodeComponent,
     ExportProjectComponent,
-    IaTableComponent,
     TooltipDirective,
     ViewPagesComponent,
   ],
@@ -104,7 +102,6 @@ export class InventoryComponent implements OnInit {
   protected readonly AidaLinks = AidaLinks;
 
   // Variables
-  protected readonly projectName = this.projectState.getProject().projectName;
   private readonly lang = this.projectState.detectPrimaryLanguage();
   private readonly github = this.projectState.getProject().github;
 

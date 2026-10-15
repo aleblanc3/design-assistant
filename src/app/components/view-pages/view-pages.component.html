@@ -69,14 +69,7 @@
         </ul>
       }
     </p-drawer>
-    <p-button
-      [label]="('common.view' | translate) + ' ' + ('iaDiagram.button' | translate)"
-      [routerLink]="AidaLinks.ProjectDiagram"
-      icon="pi pi-sitemap"
-      outlined
-      size="small"
-      styleClass="secondary-outline w-full min-w-max"
-    />
+    <p-button [label]="'iaDiagram.button' | translate" [routerLink]="AidaLinks.ProjectDiagram" icon="pi pi-sitemap" outlined size="small" styleClass="secondary-outline w-full min-w-max" />
     @if (showInventory()) {
       <p-button [label]="'inventory._title' | translate" [routerLink]="AidaLinks.ProjectInventory" icon="pi pi-list-check" outlined size="small" styleClass="secondary-outline w-full min-w-max" />
     }

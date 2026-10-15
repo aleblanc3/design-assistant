@@ -32,7 +32,6 @@ import { ProjectCacheService } from '../../../services/project-cache.service';
 import { ProjectStateService } from '../../../services/project-state.service';
 import { UsageService } from '../../../services/usage.service';
 
-import { environment } from '../../../../environments/environment';
 import { AidaLinks } from '../../../common/aidaLinks.config';
 import { CDTS_TEMPLATE_ENG, CDTS_TEMPLATE_FRA, EXIT_PAGE_TEMPLATE_ENG, EXIT_PAGE_TEMPLATE_FRA, INDEX_PAGE_TEMPLATE_ENG, INDEX_PAGE_TEMPLATE_FRA, LINK_DETOUR_JS } from '../../../common/cdts.template';
 import { SourceVersion } from '../../../common/data.model';
@@ -106,9 +105,7 @@ export class ExportPagesComponent {
   private readonly htmlNormalizationService = inject(HtmlNormalizationService);
   protected readonly projectCache = inject(ProjectCacheService);
 
-  private readonly defaultOrg = environment.defaultOrg;
   protected readonly ExportStatus = ExportStatus;
-  protected readonly projectName = this.projectState.getProject().projectName;
 
   //Signals
   protected readonly projectData = this.projectState.getProject;
@@ -649,7 +646,7 @@ export class ExportPagesComponent {
     //Labels
     const viewCanada = this.translate.instant('common.viewOnCanada');
     const viewUPD = this.translate.instant('common.viewOnUPD');
-    //const viewAIDA = this.translate.instant('common.viewOnAIDA');
+    const viewAIDA = this.translate.instant('common.viewOnAIDA');
     const ungroupedCaption = this.translate.instant('exportPages.ungroupedPages');
 
     //Table status map
@@ -679,6 +676,7 @@ export class ExportPagesComponent {
               data-versions='[
                 {"label": "${viewCanada}", "href":"${pair.en.url}"},
                 {"label": "${viewUPD}", "href":"${this.fetchService.generateUrl(pair.en.path, 'upd')}"}
+                {"label": "${viewAIDA}", "href":"${this.fetchService.generateUrl(pair.en.path, 'aida')}&title=${pair.en.label}"}
               ]'>${pair.en.label ?? pair.en.path}</a>`
             : `<i class="fa fa-minus"></i>`;
           const frCell = paths.has(pair.fr.path)
@@ -686,6 +684,7 @@ export class ExportPagesComponent {
               data-versions='[
                 {"label": "${viewCanada}", "href":"${pair.fr.url}"},
                 {"label": "${viewUPD}", "href":"${this.fetchService.generateUrl(pair.fr.path, 'upd')}"}
+                {"label": "${viewAIDA}", "href":"${this.fetchService.generateUrl(pair.fr.path, 'aida')}&title=${pair.fr.label}"}
               ]'>${pair.fr.label ?? pair.fr.path}</a>`
             : `<i class="fa fa-minus"></i>`;
           const cells = this.projectCache.selectedLang() === 'en' ? [enCell] : this.projectCache.selectedLang() === 'fr' ? [frCell] : [enCell, frCell];

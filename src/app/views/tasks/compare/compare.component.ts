@@ -33,8 +33,6 @@ export class CompareComponent {
   protected readonly showAiTools = computed(() => this.mode() === 'ai');
   protected readonly showAfterVersion = computed(() => this.mode() === 'compare');
 
-  protected readonly projectName = this.projectState.getProject().projectName;
-
   protected readonly selectedNode = signal<TreeNode | undefined>(undefined);
   protected editNode = false; // Tracks if currently making dialog edits
 

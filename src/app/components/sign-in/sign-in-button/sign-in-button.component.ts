@@ -55,7 +55,7 @@ export class SignInButtonComponent {
         label: this.translate.instant('common.profile'),
         items: [
           {
-            label: this.translate.instant('settings._nav'),
+            label: this.translate.instant('settings._title'),
             icon: 'pi pi-cog',
             command: () => {
               this.showSettings.set(true);
@@ -67,15 +67,15 @@ export class SignInButtonComponent {
         label: this.translate.instant('common.projects'),
         items: [
           {
-            label: this.translate.instant('common.new'),
+            label: this.translate.instant('project._nav.new'),
             icon: 'pi pi-plus',
             command: () => {
               this.router.navigate([AidaLinks.NewProject]);
             },
           },
           {
-            label: this.translate.instant('common.search'),
-            icon: 'pi pi-search',
+            label: this.translate.instant('switch._title'),
+            icon: 'pi pi-folder-open',
             command: () => {
               this.router.navigate([AidaLinks.AllProjects]);
             },
