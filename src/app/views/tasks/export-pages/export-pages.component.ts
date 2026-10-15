@@ -646,7 +646,7 @@ export class ExportPagesComponent {
     //Labels
     const viewCanada = this.translate.instant('common.viewOnCanada');
     const viewUPD = this.translate.instant('common.viewOnUPD');
-    //const viewAIDA = this.translate.instant('common.viewOnAIDA');
+    const viewAIDA = this.translate.instant('common.viewOnAIDA');
     const ungroupedCaption = this.translate.instant('exportPages.ungroupedPages');
 
     //Table status map
@@ -676,6 +676,7 @@ export class ExportPagesComponent {
               data-versions='[
                 {"label": "${viewCanada}", "href":"${pair.en.url}"},
                 {"label": "${viewUPD}", "href":"${this.fetchService.generateUrl(pair.en.path, 'upd')}"}
+                {"label": "${viewAIDA}", "href":"${this.fetchService.generateUrl(pair.en.path, 'aida')}&title=${pair.en.label}"}
               ]'>${pair.en.label ?? pair.en.path}</a>`
             : `<i class="fa fa-minus"></i>`;
           const frCell = paths.has(pair.fr.path)
@@ -683,6 +684,7 @@ export class ExportPagesComponent {
               data-versions='[
                 {"label": "${viewCanada}", "href":"${pair.fr.url}"},
                 {"label": "${viewUPD}", "href":"${this.fetchService.generateUrl(pair.fr.path, 'upd')}"}
+                {"label": "${viewAIDA}", "href":"${this.fetchService.generateUrl(pair.fr.path, 'aida')}&title=${pair.fr.label}"}
               ]'>${pair.fr.label ?? pair.fr.path}</a>`
             : `<i class="fa fa-minus"></i>`;
           const cells = this.projectCache.selectedLang() === 'en' ? [enCell] : this.projectCache.selectedLang() === 'fr' ? [frCell] : [enCell, frCell];

@@ -1,4 +1,4 @@
-<h1 id="wb-cont">{{ repoType() === 'github' ? ('exportPages.github._title' | translate) : ('exportPages.zip._title' | translate) }}</h1>
+<h1 id="wb-cont">{{ repoType() === 'github' ? ('exportPages.github._title' | translate) : ('exportPages.local._title' | translate) }}</h1>
 <p>{{ 'exportPages.description' | translate }}{{ 'exportPages.description2' | translate }}</p>
 <!-- Authentication Banner -->
 @if (!signInService.user() && repoType() === 'github') {
