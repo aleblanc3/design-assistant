@@ -2407,7 +2407,7 @@ patchBrowser(Zone$1);
 
 // node_modules/@angular/localize/fesm2022/_localize-chunk.mjs
 /**
- * @license Angular v21.2.19
+ * @license Angular v21.2.25
  * (c) 2010-2026 Google LLC. https://angular.dev/
  * License: MIT
  */
@@ -2446,7 +2446,7 @@ function stripBlock(messagePart, rawMessagePart) {
 
 // node_modules/@angular/localize/fesm2022/init.mjs
 /**
- * @license Angular v21.2.19
+ * @license Angular v21.2.25
  * (c) 2010-2026 Google LLC. https://angular.dev/
  * License: MIT
  */

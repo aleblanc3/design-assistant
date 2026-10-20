@@ -1,102 +1,114 @@
 import {
-  UserSettingsComponent
-} from "./chunk-7QEJQXLT.js";
+  SignInBannerComponent
+} from "./chunk-5QUFHAY2.js";
 import {
-  DoormatsComponent
-} from "./chunk-3JR6EDCC.js";
+  AddCollaboratorsComponent,
+  DoormatsComponent,
+  MailtoService,
+  MenuProjectComponent,
+  SetupProjectComponent,
+  SignInButtonComponent
+} from "./chunk-BMQ4WA6J.js";
+import {
+  SetupRepoComponent
+} from "./chunk-DYYMVEUX.js";
 import {
   AddPagesComponent
-} from "./chunk-ZDZSDICV.js";
+} from "./chunk-EZDOU5BO.js";
 import {
   ProgressSpinner,
   ProgressSpinnerModule
-} from "./chunk-6SMYSFE3.js";
-import "./chunk-RSD765OV.js";
+} from "./chunk-37MIQF4I.js";
 import {
-  ViewPagesComponent
-} from "./chunk-4TDHHXRJ.js";
-import "./chunk-LYJ6UFLM.js";
-import {
-  ConfirmDialog,
-  ConfirmDialogModule,
-  ExportProjectComponent,
-  TooltipDirective
-} from "./chunk-LFNSOSBU.js";
-import {
-  MultiSelect,
-  MultiSelectModule
-} from "./chunk-4KYICL7V.js";
-import {
-  SaveButtonComponent
-} from "./chunk-U4QMJZ2H.js";
-import {
-  Menu,
-  MenuModule
-} from "./chunk-2TAUS52W.js";
-import {
-  AddUrlsService
-} from "./chunk-5IF5B4GD.js";
-import "./chunk-LJSDRI7U.js";
-import {
-  Tag,
-  TagModule
-} from "./chunk-252626R6.js";
-import "./chunk-KGAQLXO4.js";
-import "./chunk-VDGWUB54.js";
-import {
-  IaDiagramService
-} from "./chunk-7WYF77OF.js";
-import {
-  KeyFilter,
-  KeyFilterModule,
-  PatComponent,
-  SetupRepoComponent,
-  SignInBannerComponent
-} from "./chunk-I3OATNLX.js";
-import {
-  AutoComplete,
-  AutoCompleteModule,
   ProgressBar,
   ProgressBarModule
-} from "./chunk-F6Y5W66Q.js";
+} from "./chunk-B24NYOWZ.js";
+import "./chunk-ZJEDW3IY.js";
 import {
-  TimesCircleIcon
-} from "./chunk-IC6HOP7U.js";
-import "./chunk-3URTOT63.js";
-import "./chunk-QYFOWPRO.js";
-import "./chunk-V3TEYCE6.js";
-import "./chunk-HD23M4TZ.js";
+  ViewPagesComponent
+} from "./chunk-2VCNMKWO.js";
+import "./chunk-VZZI6VUI.js";
 import {
-  ChevronRightIcon
-} from "./chunk-TOG4KYXV.js";
+  SaveButtonComponent
+} from "./chunk-UH2N7XUL.js";
 import {
   Divider,
   DividerModule
-} from "./chunk-P6AHYBO2.js";
+} from "./chunk-UTOG6HJ7.js";
 import {
-  AddPagesLinkComponent
-} from "./chunk-EK5ZHEPL.js";
-import "./chunk-TCDRCBMB.js";
+  AddUrlsService
+} from "./chunk-LLUV54UH.js";
 import {
-  Dialog,
-  DialogModule
-} from "./chunk-B7UQRAZM.js";
+  ExportProjectComponent
+} from "./chunk-BZKHK2S6.js";
 import {
-  IftaLabel,
-  IftaLabelModule
-} from "./chunk-L3YRAVQQ.js";
+  MultiSelect,
+  MultiSelectModule
+} from "./chunk-RMPI7EL5.js";
+import {
+  ConfirmDialog,
+  ConfirmDialogModule
+} from "./chunk-3ETRFT6E.js";
+import {
+  TimesCircleIcon
+} from "./chunk-VUVEB27N.js";
+import "./chunk-DD7YZ2W4.js";
+import {
+  Tag,
+  TagModule
+} from "./chunk-7EZBCBFO.js";
 import {
   Message,
   MessageModule
-} from "./chunk-LDQ2EBYC.js";
+} from "./chunk-HIIG3TAV.js";
+import {
+  IaDiagramService
+} from "./chunk-GTXUW26T.js";
+import "./chunk-MVMOVPBK.js";
+import {
+  AddPagesLinkComponent
+} from "./chunk-2ARSMMS7.js";
+import "./chunk-YVH33H3J.js";
+import "./chunk-XMCTV4P6.js";
+import {
+  TooltipDirective
+} from "./chunk-YEJSFSQN.js";
+import "./chunk-NTY2TKAB.js";
+import "./chunk-IAEHVNRB.js";
+import "./chunk-JUMOWLCN.js";
+import "./chunk-XIMGJIUL.js";
+import "./chunk-5F7XDNYM.js";
+import {
+  MenuModule
+} from "./chunk-EYV3DLIL.js";
+import "./chunk-SF7SFWA4.js";
+import "./chunk-MLWANVSV.js";
+import "./chunk-X3PHMRYB.js";
+import {
+  Dialog,
+  DialogModule
+} from "./chunk-UADAOQCQ.js";
+import {
+  IftaLabel,
+  IftaLabelModule
+} from "./chunk-SFFTHMKD.js";
 import {
   ProjectCacheService
-} from "./chunk-HR4YR3UR.js";
-import "./chunk-4HPV3GUF.js";
+} from "./chunk-OAXR5FFM.js";
+import "./chunk-D57SAGZH.js";
+import {
+  AidaLinks
+} from "./chunk-JNZO32C5.js";
+import "./chunk-EM76WITV.js";
 import {
   FocusTrap,
   ProjectStateService
-} from "./chunk-2XIXW3TN.js";
+} from "./chunk-LAULOW5M.js";
+import {
+  Checkbox,
+  CheckboxModule
+} from "./chunk-QKZZ62UI.js";
+import "./chunk-PY2FT4W4.js";
 import {
   CloudStorageService,
   CollaboratorService,
@@ -105,20 +117,18 @@ import {
   SelectButtonModule,
   UsageService,
   version
-} from "./chunk-Z6M6OINJ.js";
-import "./chunk-WDIDPUKP.js";
+} from "./chunk-7LI3JUNI.js";
 import {
-  Checkbox,
-  CheckboxModule
-} from "./chunk-POEP37ML.js";
-import {
-  ExportGitHubService,
-  GitHubAuthService
-} from "./chunk-NTW7IUNV.js";
+  GitHubAuthService,
+  SignInService
+} from "./chunk-WMXZG7VZ.js";
 import {
   PhaseStatus,
   ProjectPhase
-} from "./chunk-JQTGLD45.js";
+} from "./chunk-Q3YV2K2Z.js";
+import {
+  ChevronRightIcon
+} from "./chunk-53YNRXA3.js";
 import {
   CheckIcon,
   IconField,
@@ -127,41 +137,35 @@ import {
   InputIconModule,
   Select,
   SelectModule
-} from "./chunk-4Y476ECU.js";
+} from "./chunk-3SPBARR4.js";
 import {
   Badge,
   BaseComponent,
   BaseIcon,
+  BaseStyle,
   Bind,
   Button,
   ButtonModule,
+  ConfirmationService,
   ConnectedOverlayScrollHandler,
   DefaultValueAccessor,
   FormsModule,
   InputText,
   InputTextModule,
-  MaxLengthValidator,
+  MessageService,
   MotionDirective,
   MotionModule,
   NgControlStatus,
   NgModel,
-  PARENT_INSTANCE,
-  TimesIcon,
-  Tooltip,
-  TooltipModule,
-  s,
-  zindexutils
-} from "./chunk-MJIYSJ7V.js";
-import "./chunk-DMOF7S63.js";
-import {
-  BaseStyle,
-  ConfirmationService,
-  MessageService,
   OverlayService,
   P,
+  PARENT_INSTANCE,
   PrimeNG,
   PrimeTemplate,
   SharedModule,
+  TimesIcon,
+  Tooltip,
+  TooltipModule,
   TranslationKeys,
   UserSettingsService,
   V2 as V,
@@ -174,9 +178,12 @@ import {
   marker,
   providePrimeNG,
   qt,
+  s2 as s,
   te,
-  ut
-} from "./chunk-T4NCAOXG.js";
+  ut,
+  zindexutils
+} from "./chunk-AGPMTYRP.js";
+import "./chunk-DMOF7S63.js";
 import {
   ActivatedRoute,
   CommonModule,
@@ -205,7 +212,7 @@ import {
   registerLocaleData,
   withComponentInputBinding,
   withInMemoryScrolling
-} from "./chunk-TULSGE2I.js";
+} from "./chunk-MDI4WJGA.js";
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -216,7 +223,6 @@ import {
   DestroyRef,
   ElementRef,
   EventEmitter,
-  HostBinding,
   HostListener,
   Inject,
   Injectable,
@@ -252,7 +258,6 @@ import {
   setClassMetadata,
   signal,
   startWith,
-  timeout,
   toSignal,
   untracked,
   viewChild,
@@ -293,13 +298,13 @@ import {
   ɵɵpipeBind1,
   ɵɵpipeBind2,
   ɵɵpipeBind3,
-  ɵɵprojection,
-  ɵɵprojectionDef,
   ɵɵproperty,
   ɵɵpureFunction0,
   ɵɵpureFunction1,
   ɵɵpureFunction2,
+  ɵɵpureFunction3,
   ɵɵpureFunction4,
+  ɵɵpureFunction5,
   ɵɵqueryAdvance,
   ɵɵqueryRefresh,
   ɵɵreference,
@@ -323,7 +328,7 @@ import {
   ɵɵtwoWayListener,
   ɵɵtwoWayProperty,
   ɵɵviewQuerySignal
-} from "./chunk-LBDVV6V6.js";
+} from "./chunk-KRHY6Z2H.js";
 import {
   preset_default
 } from "./chunk-DKTF6WIM.js";
@@ -2679,11 +2684,9 @@ var BreadcrumbModule = class _BreadcrumbModule {
 })();
 
 // src/app/template/breadcrumb/breadcrumb.component.ts
-var _c06 = () => ["bg-primary-50", "text-primary-500"];
-var _c13 = () => ["surface-card", "text-color-secondary"];
 function BreadcrumbComponent_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 3);
+    \u0275\u0275elementStart(0, "div", 1);
     \u0275\u0275text(1);
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275elementEnd();
@@ -2696,7 +2699,7 @@ function BreadcrumbComponent_Conditional_0_Template(rf, ctx) {
 }
 function BreadcrumbComponent_Conditional_1_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "p-tag", 8);
+    \u0275\u0275element(0, "p-tag", 3);
   }
   if (rf & 2) {
     const ctx_r0 = \u0275\u0275nextContext(2);
@@ -2705,7 +2708,7 @@ function BreadcrumbComponent_Conditional_1_Conditional_1_Template(rf, ctx) {
 }
 function BreadcrumbComponent_Conditional_1_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "p-tag", 9);
+    \u0275\u0275element(0, "p-tag", 4);
   }
   if (rf & 2) {
     const ctx_r0 = \u0275\u0275nextContext(2);
@@ -2715,26 +2718,18 @@ function BreadcrumbComponent_Conditional_1_Conditional_2_Template(rf, ctx) {
 function BreadcrumbComponent_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
     const _r2 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 4);
-    \u0275\u0275conditionalCreate(1, BreadcrumbComponent_Conditional_1_Conditional_1_Template, 1, 2, "p-tag", 8);
-    \u0275\u0275conditionalCreate(2, BreadcrumbComponent_Conditional_1_Conditional_2_Template, 1, 4, "p-tag", 9);
-    \u0275\u0275elementStart(3, "a", 10);
-    \u0275\u0275listener("click", function BreadcrumbComponent_Conditional_1_Template_a_click_3_listener($event) {
-      \u0275\u0275restoreView(_r2);
-      \u0275\u0275nextContext();
-      const menu_r3 = \u0275\u0275reference(4);
-      return \u0275\u0275resetView(menu_r3.toggle($event));
-    })("keydown.enter", function BreadcrumbComponent_Conditional_1_Template_a_keydown_enter_3_listener($event) {
+    \u0275\u0275elementStart(0, "div", 2);
+    \u0275\u0275conditionalCreate(1, BreadcrumbComponent_Conditional_1_Conditional_1_Template, 1, 2, "p-tag", 3);
+    \u0275\u0275conditionalCreate(2, BreadcrumbComponent_Conditional_1_Conditional_2_Template, 1, 4, "p-tag", 4);
+    \u0275\u0275elementStart(3, "p-button", 5);
+    \u0275\u0275pipe(4, "translate");
+    \u0275\u0275listener("onClick", function BreadcrumbComponent_Conditional_1_Template_p_button_onClick_3_listener($event) {
       \u0275\u0275restoreView(_r2);
       \u0275\u0275nextContext();
       const menu_r3 = \u0275\u0275reference(4);
       return \u0275\u0275resetView(menu_r3.toggle($event));
     });
-    \u0275\u0275elementStart(4, "div", 11);
-    \u0275\u0275element(5, "i", 12);
-    \u0275\u0275elementStart(6, "span", 13);
-    \u0275\u0275text(7);
-    \u0275\u0275elementEnd()()()();
+    \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
     const ctx_r0 = \u0275\u0275nextContext();
@@ -2743,17 +2738,12 @@ function BreadcrumbComponent_Conditional_1_Template(rf, ctx) {
     \u0275\u0275advance();
     \u0275\u0275conditional(ctx_r0.projectDisplay.tagLabel ? 2 : -1);
     \u0275\u0275advance();
-    \u0275\u0275property("ngClass", ctx_r0.isEditActive() ? \u0275\u0275pureFunction0(7, _c06) : \u0275\u0275pureFunction0(8, _c13));
-    \u0275\u0275advance(2);
-    \u0275\u0275classMap("text-primary font-semibold mr-1 " + ctx_r0.projectDisplay.icon);
-    \u0275\u0275property("pTooltip", ctx_r0.projectDisplay.iconTooltip);
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(ctx_r0.projectDisplay.projectLabel);
+    \u0275\u0275property("label", \u0275\u0275pipeBind1(4, 3, "project._nav.edit"));
   }
 }
 function BreadcrumbComponent_Conditional_2_ng_template_2_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "a", 20)(1, "span", 21);
+    \u0275\u0275elementStart(0, "a", 13)(1, "span", 14);
     \u0275\u0275text(2);
     \u0275\u0275pipe(3, "translate");
     \u0275\u0275elementEnd()();
@@ -2768,7 +2758,7 @@ function BreadcrumbComponent_Conditional_2_ng_template_2_Conditional_0_Template(
 }
 function BreadcrumbComponent_Conditional_2_ng_template_2_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "a", 18);
+    \u0275\u0275elementStart(0, "a", 11);
     \u0275\u0275text(1);
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275elementEnd();
@@ -2782,7 +2772,7 @@ function BreadcrumbComponent_Conditional_2_ng_template_2_Conditional_1_Template(
 }
 function BreadcrumbComponent_Conditional_2_ng_template_2_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 19);
+    \u0275\u0275elementStart(0, "span", 12);
     \u0275\u0275text(1);
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275elementEnd();
@@ -2795,77 +2785,59 @@ function BreadcrumbComponent_Conditional_2_ng_template_2_Conditional_2_Template(
 }
 function BreadcrumbComponent_Conditional_2_ng_template_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275conditionalCreate(0, BreadcrumbComponent_Conditional_2_ng_template_2_Conditional_0_Template, 4, 6, "a", 17)(1, BreadcrumbComponent_Conditional_2_ng_template_2_Conditional_1_Template, 3, 4, "a", 18)(2, BreadcrumbComponent_Conditional_2_ng_template_2_Conditional_2_Template, 3, 3, "span", 19);
+    \u0275\u0275conditionalCreate(0, BreadcrumbComponent_Conditional_2_ng_template_2_Conditional_0_Template, 4, 6, "a", 10)(1, BreadcrumbComponent_Conditional_2_ng_template_2_Conditional_1_Template, 3, 4, "a", 11)(2, BreadcrumbComponent_Conditional_2_ng_template_2_Conditional_2_Template, 3, 3, "span", 12);
   }
   if (rf & 2) {
     const item_r4 = ctx.$implicit;
     \u0275\u0275conditional(item_r4.route && item_r4.icon ? 0 : item_r4.route && item_r4.label ? 1 : item_r4.label ? 2 : -1);
   }
 }
+function BreadcrumbComponent_Conditional_2_Conditional_3_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "p", 9);
+    \u0275\u0275text(1);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r0 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(ctx_r0.projectDisplay.projectLabel);
+  }
+}
 function BreadcrumbComponent_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 14)(1, "p-breadcrumb", 15);
-    \u0275\u0275template(2, BreadcrumbComponent_Conditional_2_ng_template_2_Template, 3, 1, "ng-template", 16);
+    \u0275\u0275elementStart(0, "div", 6)(1, "p-breadcrumb", 7);
+    \u0275\u0275template(2, BreadcrumbComponent_Conditional_2_ng_template_2_Template, 3, 1, "ng-template", 8);
     \u0275\u0275elementEnd()();
+    \u0275\u0275conditionalCreate(3, BreadcrumbComponent_Conditional_2_Conditional_3_Template, 2, 1, "p", 9);
   }
   if (rf & 2) {
     const ctx_r0 = \u0275\u0275nextContext();
     \u0275\u0275classProp("sm:-mt-4", ctx_r0.removeMargin);
     \u0275\u0275advance();
     \u0275\u0275property("model", ctx_r0.breadcrumbs());
-  }
-}
-function BreadcrumbComponent_ng_template_5_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 22);
-    \u0275\u0275text(1);
-    \u0275\u0275pipe(2, "translate");
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const item_r5 = ctx.$implicit;
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 1, item_r5.label));
-  }
-}
-function BreadcrumbComponent_ng_template_7_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "a", 23);
-    \u0275\u0275element(1, "i");
-    \u0275\u0275elementStart(2, "span");
-    \u0275\u0275text(3);
-    \u0275\u0275pipe(4, "translate");
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    const item_r6 = ctx.$implicit;
-    \u0275\u0275advance();
-    \u0275\u0275classMap(item_r6.icon);
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 3, item_r6.label));
+    \u0275\u0275conditional(ctx_r0.projectDisplay.projectLabel && ctx_r0.isProjectRoute() ? 3 : -1);
   }
 }
-var HOME = { label: "common.home", route: "/", icon: "pi pi-home" };
-var PROJECT = { label: "nav.project", route: "/project" };
-var TASKS = { label: "nav.tasks", route: "/tasks" };
-var STANDALONE = { label: "standalone._title", route: "/standalone" };
-var DEV = { label: "dev._title", route: "/dev" };
+var HOME = { label: "home._nav", route: AidaLinks.Home, icon: "pi pi-home" };
+var DASHBOARD = { label: "dashboard._title", route: AidaLinks.ProjectDashboard };
+var STANDALONE = { label: "standalone._title", route: AidaLinks.Standalone };
+var DEV = { label: "dev._title", route: AidaLinks.Dev };
 var BREADCRUMB_ANCESTORS = {
   home: [HOME],
-  "home.project": [HOME, PROJECT],
-  "home.tasks": [HOME, TASKS],
-  standalone: [STANDALONE],
-  dev: [DEV]
+  dashboard: [HOME, DASHBOARD],
+  standalone: [HOME, STANDALONE],
+  dev: [HOME, DEV]
 };
 var BreadcrumbComponent = class _BreadcrumbComponent {
   router = inject(Router);
   translate = inject(TranslateService);
-  confirmationService = inject(ConfirmationService);
   projectState = inject(ProjectStateService);
   collaboratorService = inject(CollaboratorService);
   production = environment.production;
   sandbox = environment.sandbox;
-  isEditActive = isActive("/project/edit", this.router);
+  isEditActive = isActive(AidaLinks.ProjectEdit, this.router);
   breadcrumbs = toSignal(this.router.events.pipe(filter((e) => e instanceof NavigationEnd), startWith(null), map(() => this.buildBreadcrumbs())), { initialValue: this.buildBreadcrumbs() });
   get removeMargin() {
     return this.projectDisplay.projectLabel && this.isProjectRoute() && this.production;
@@ -2890,9 +2862,8 @@ var BreadcrumbComponent = class _BreadcrumbComponent {
   }
   // Check route information to determine if global project banner should show
   matchOptions = { paths: "subset", queryParams: "ignored", fragment: "ignored", matrixParams: "ignored" };
-  isProjectActive = isActive("/project", this.router, this.matchOptions);
-  isTasksActive = isActive("/tasks", this.router, this.matchOptions);
-  isProjectRoute = computed(() => this.isProjectActive() || this.isTasksActive(), ...ngDevMode ? [{ debugName: "isProjectRoute" }] : (
+  isProjectActive = isActive(AidaLinks.ProjectDashboard, this.router, this.matchOptions);
+  isProjectRoute = computed(() => this.isProjectActive(), ...ngDevMode ? [{ debugName: "isProjectRoute" }] : (
     /* istanbul ignore next */
     []
   ));
@@ -2913,96 +2884,26 @@ var BreadcrumbComponent = class _BreadcrumbComponent {
     const lockedSeverity = isLocked === "byMe" ? "secondary" : isLocked ? "danger" : void 0;
     return { projectLabel, icon, iconTooltip, tagLabel, tagTooltip, tagSeverity, tagIcon, lockedLabel, lockedSeverity };
   }
-  get items() {
-    const { isSignedIn, isCollaborator, isLocked } = this.collaboratorService.getUploadAccessInfo(this.projectState.getProject());
-    const dropdownOptions = [
-      {
-        label: this.translate.instant("project.global.myProject"),
-        items: [
-          {
-            label: this.translate.instant("project._nav.edit"),
-            icon: "pi pi-pencil",
-            command: () => {
-              this.router.navigate(["/project/edit"]);
-            }
-          }
-        ]
-      }
-    ];
-    if (isSignedIn && isCollaborator) {
-      if (!isLocked && this.projectState.getProject().storageType === "cloud") {
-        dropdownOptions[0].items.push({
-          label: this.translate.instant("project.global.lockProject"),
-          icon: "pi pi-lock",
-          command: () => {
-            this.projectState.setLockedBy();
-          }
-        });
-      } else if (isLocked) {
-        dropdownOptions[0].items.push({
-          label: this.translate.instant("project.global.unlockProject"),
-          icon: "pi pi-unlock",
-          command: () => {
-            this.unlockProject(isLocked);
-          }
-        });
-      }
-    }
-    return dropdownOptions;
-  }
-  unlockProject(user) {
-    if (user === "byMe") {
-      this.projectState.removeLockedBy();
-    } else {
-      this.confirmationService.confirm({
-        key: "unlock",
-        message: this.translate.instant("project.global.unlockMessage", { user }),
-        header: this.translate.instant("project.global.unlockHeader"),
-        icon: "pi pi-exclamation-circle text-red-500",
-        rejectButtonProps: {
-          label: this.translate.instant("common.cancel"),
-          severity: "secondary",
-          outlined: true,
-          styleClass: "secondary-outline"
-        },
-        acceptButtonProps: {
-          label: this.translate.instant("common.unlock"),
-          severity: "danger"
-        },
-        accept: () => {
-          this.projectState.removeLockedBy();
-        }
-      });
-    }
-  }
-  markForTranslation() {
-    marker("common.home");
-  }
   static \u0275fac = function BreadcrumbComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _BreadcrumbComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _BreadcrumbComponent, selectors: [["aida-breadcrumb"]], decls: 10, vars: 4, consts: [["menu", ""], ["submenuheader", ""], ["item", ""], [1, "sticky", "top-0", "z-50", "flex", "justify-content-center", "border-round-bottom-lg", "bg-primary", "h-1.5"], [1, "sticky", "top-0", "z-50", "flex", "align-items-center", "gap-2", "white-space-nowrap", "ml-auto", "max-w-max", "min-h-1.5"], [1, "h-1.5", 3, "sm:-mt-4"], [3, "model", "popup"], ["key", "unlock", "position", "topright"], ["icon", "pi pi-lock", "tooltipPosition", "left", 3, "severity", "value"], ["tooltipPosition", "left", 3, "icon", "pTooltip", "severity", "value"], ["tabindex", "0", 1, "no-underline", "border-round-bottom-xl", "cursor-pointer", "hover:bg-primary-50", "hover:text-primary-500", 3, "click", "keydown.enter", "ngClass"], [1, "border-1", "border-top-none", "border-round-bottom-xl", "border-dashed", "surface-border", "py-1", "px-3"], ["tooltipPosition", "left", 3, "pTooltip"], [1, "text-sm"], [1, "h-1.5"], ["styleClass", "pt-1 pl-0 text-color-secondary bg-transparent", 3, "model"], ["pTemplate", "item"], [1, "p-menuitem-text", "no-underline", 3, "class", "routerLink"], [1, "p-menuitem-link", 3, "routerLink"], [1, "p-menuitem-text"], [1, "p-menuitem-text", "no-underline", 3, "routerLink"], [1, "sr-only"], [1, "text-primary", "font-bold"], [1, "p-menu-item-link"]], template: function BreadcrumbComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _BreadcrumbComponent, selectors: [["aida-breadcrumb"]], decls: 5, vars: 2, consts: [["menu", ""], [1, "sticky", "top-0", "z-50", "flex", "justify-content-center", "border-round-bottom-lg", "bg-primary", "h-1.5"], [1, "sticky", "top-0", "z-50", "flex", "align-items-center", "gap-2", "white-space-nowrap", "ml-auto", "max-w-max", "min-h-1.5"], ["icon", "pi pi-lock", "tooltipPosition", "left", 3, "severity", "value"], ["tooltipPosition", "left", 3, "icon", "pTooltip", "severity", "value"], ["icon", "pi pi-angle-down", "iconPos", "right", "size", "small", "styleClass", "border-noround-top border-round-bottom-xl", 3, "onClick", "label"], [1, "h-1.5"], ["styleClass", "pt-1 pl-0 text-color-secondary bg-transparent", 3, "model"], ["pTemplate", "item"], [1, "dbl-h1"], [1, "p-menuitem-text", "no-underline", 3, "class", "routerLink"], [1, "p-menuitem-link", 3, "routerLink"], [1, "p-menuitem-text"], [1, "p-menuitem-text", "no-underline", 3, "routerLink"], [1, "sr-only"]], template: function BreadcrumbComponent_Template(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275conditionalCreate(0, BreadcrumbComponent_Conditional_0_Template, 3, 3, "div", 3)(1, BreadcrumbComponent_Conditional_1_Template, 8, 9, "div", 4);
-      \u0275\u0275conditionalCreate(2, BreadcrumbComponent_Conditional_2_Template, 3, 3, "div", 5);
-      \u0275\u0275elementStart(3, "p-menu", 6, 0);
-      \u0275\u0275template(5, BreadcrumbComponent_ng_template_5_Template, 3, 3, "ng-template", null, 1, \u0275\u0275templateRefExtractor)(7, BreadcrumbComponent_ng_template_7_Template, 5, 5, "ng-template", null, 2, \u0275\u0275templateRefExtractor);
-      \u0275\u0275elementEnd();
-      \u0275\u0275element(9, "p-confirmdialog", 7);
+      \u0275\u0275conditionalCreate(0, BreadcrumbComponent_Conditional_0_Template, 3, 3, "div", 1)(1, BreadcrumbComponent_Conditional_1_Template, 5, 5, "div", 2);
+      \u0275\u0275conditionalCreate(2, BreadcrumbComponent_Conditional_2_Template, 4, 4);
+      \u0275\u0275element(3, "aida-menu-project", null, 0);
     }
     if (rf & 2) {
       \u0275\u0275conditional(!ctx.production ? 0 : ctx.projectDisplay.projectLabel && ctx.isProjectRoute() ? 1 : -1);
       \u0275\u0275advance(2);
       \u0275\u0275conditional(ctx.breadcrumbs().length > 0 ? 2 : -1);
-      \u0275\u0275advance();
-      \u0275\u0275property("model", ctx.items)("popup", true);
     }
-  }, dependencies: [CommonModule, NgClass, RouterLink, BreadcrumbModule, Breadcrumb, PrimeTemplate, ConfirmDialogModule, ConfirmDialog, MenuModule, Menu, TagModule, Tag, TooltipModule, Tooltip, TranslatePipe], encapsulation: 2, changeDetection: 0 });
+  }, dependencies: [CommonModule, RouterLink, BreadcrumbModule, Breadcrumb, PrimeTemplate, ButtonModule, Button, MenuModule, TagModule, Tag, TooltipModule, Tooltip, MenuProjectComponent, TranslatePipe], encapsulation: 2, changeDetection: 0 });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(BreadcrumbComponent, [{
     type: Component,
-    args: [{ selector: "aida-breadcrumb", imports: [CommonModule, RouterLink, TranslatePipe, BreadcrumbModule, ConfirmDialogModule, MenuModule, TagModule, TooltipModule], changeDetection: ChangeDetectionStrategy.OnPush, template: `@if (!production) {
+    args: [{ selector: "aida-breadcrumb", imports: [CommonModule, RouterLink, TranslatePipe, BreadcrumbModule, ButtonModule, MenuModule, TagModule, TooltipModule, MenuProjectComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: `@if (!production) {
   <div class="sticky top-0 z-50 flex justify-content-center border-round-bottom-lg bg-primary h-1.5">
     {{ (sandbox ? '_app.env.sandbox' : '_app.env.dev') | translate }}
   </div>
@@ -3014,18 +2915,7 @@ var BreadcrumbComponent = class _BreadcrumbComponent {
     @if (projectDisplay.tagLabel) {
       <p-tag [icon]="projectDisplay.tagIcon" [pTooltip]="projectDisplay.tagTooltip" [severity]="projectDisplay.tagSeverity" [value]="projectDisplay.tagLabel" tooltipPosition="left" />
     }
-    <a
-      [ngClass]="isEditActive() ? ['bg-primary-50', 'text-primary-500'] : ['surface-card', 'text-color-secondary']"
-      (click)="menu.toggle($event)"
-      (keydown.enter)="menu.toggle($event)"
-      class="no-underline border-round-bottom-xl cursor-pointer hover:bg-primary-50 hover:text-primary-500"
-      tabindex="0"
-    >
-      <div class="border-1 border-top-none border-round-bottom-xl border-dashed surface-border py-1 px-3">
-        <i [class]="'text-primary font-semibold mr-1 ' + projectDisplay.icon" [pTooltip]="projectDisplay.iconTooltip" tooltipPosition="left"></i>
-        <span class="text-sm">{{ projectDisplay.projectLabel }}</span>
-      </div>
-    </a>
+    <p-button [label]="'project._nav.edit' | translate" (onClick)="menu.toggle($event)" icon="pi pi-angle-down" iconPos="right" size="small" styleClass="border-noround-top border-round-bottom-xl" />
   </div>
 }
 
@@ -3045,22 +2935,12 @@ var BreadcrumbComponent = class _BreadcrumbComponent {
       </ng-template>
     </p-breadcrumb>
   </div>
+  @if (projectDisplay.projectLabel && isProjectRoute()) {
+    <p class="dbl-h1">{{ projectDisplay.projectLabel }}</p>
+  }
 }
 
-<!--Menu-->
-<p-menu [model]="items" [popup]="true" #menu>
-  <ng-template #submenuheader let-item>
-    <span class="text-primary font-bold">{{ item.label | translate }}</span>
-  </ng-template>
-  <ng-template #item let-item>
-    <a class="p-menu-item-link">
-      <i [class]="item.icon"></i>
-      <span>{{ item.label | translate }}</span>
-    </a>
-  </ng-template>
-</p-menu>
-
-<p-confirmdialog key="unlock" position="topright" />
+<aida-menu-project #menu />
 ` }]
   }], null, null);
 })();
@@ -3110,684 +2990,6 @@ var FooterComponent = class _FooterComponent {
 })();
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(FooterComponent, { className: "FooterComponent", filePath: "src/app/template/footer/footer.component.ts", lineNumber: 20 });
-})();
-
-// node_modules/@primeuix/styles/dist/avatar/index.mjs
-var style3 = "\n    .p-avatar {\n        display: inline-flex;\n        align-items: center;\n        justify-content: center;\n        width: dt('avatar.width');\n        height: dt('avatar.height');\n        font-size: dt('avatar.font.size');\n        background: dt('avatar.background');\n        color: dt('avatar.color');\n        border-radius: dt('avatar.border.radius');\n    }\n\n    .p-avatar-image {\n        background: transparent;\n    }\n\n    .p-avatar-circle {\n        border-radius: 50%;\n    }\n\n    .p-avatar-circle img {\n        border-radius: 50%;\n    }\n\n    .p-avatar-icon {\n        font-size: dt('avatar.icon.size');\n        width: dt('avatar.icon.size');\n        height: dt('avatar.icon.size');\n    }\n\n    .p-avatar img {\n        width: 100%;\n        height: 100%;\n    }\n\n    .p-avatar-lg {\n        width: dt('avatar.lg.width');\n        height: dt('avatar.lg.width');\n        font-size: dt('avatar.lg.font.size');\n    }\n\n    .p-avatar-lg .p-avatar-icon {\n        font-size: dt('avatar.lg.icon.size');\n        width: dt('avatar.lg.icon.size');\n        height: dt('avatar.lg.icon.size');\n    }\n\n    .p-avatar-xl {\n        width: dt('avatar.xl.width');\n        height: dt('avatar.xl.width');\n        font-size: dt('avatar.xl.font.size');\n    }\n\n    .p-avatar-xl .p-avatar-icon {\n        font-size: dt('avatar.xl.icon.size');\n        width: dt('avatar.xl.icon.size');\n        height: dt('avatar.xl.icon.size');\n    }\n\n    .p-avatar-group {\n        display: flex;\n        align-items: center;\n    }\n\n    .p-avatar-group .p-avatar + .p-avatar {\n        margin-inline-start: dt('avatar.group.offset');\n    }\n\n    .p-avatar-group .p-avatar {\n        border: 2px solid dt('avatar.group.border.color');\n    }\n\n    .p-avatar-group .p-avatar-lg + .p-avatar-lg {\n        margin-inline-start: dt('avatar.lg.group.offset');\n    }\n\n    .p-avatar-group .p-avatar-xl + .p-avatar-xl {\n        margin-inline-start: dt('avatar.xl.group.offset');\n    }\n";
-
-// node_modules/primeng/fesm2022/primeng-avatar.mjs
-var _c07 = ["*"];
-function Avatar_span_1_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 3);
-    \u0275\u0275text(1);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275classMap(ctx_r0.cx("label"));
-    \u0275\u0275property("pBind", ctx_r0.ptm("label"));
-    \u0275\u0275attribute("data-p", ctx_r0.dataP);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(ctx_r0.label);
-  }
-}
-function Avatar_ng_template_2_span_0_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275element(0, "span", 5);
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext(2);
-    \u0275\u0275classMap(ctx_r0.icon);
-    \u0275\u0275property("pBind", ctx_r0.ptm("icon"))("ngClass", ctx_r0.cx("icon"));
-    \u0275\u0275attribute("data-p", ctx_r0.dataP);
-  }
-}
-function Avatar_ng_template_2_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275template(0, Avatar_ng_template_2_span_0_Template, 1, 5, "span", 4);
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
-    const imageTemplate_r2 = \u0275\u0275reference(5);
-    \u0275\u0275property("ngIf", ctx_r0.icon)("ngIfElse", imageTemplate_r2);
-  }
-}
-function Avatar_ng_template_4_img_0_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r3 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "img", 7);
-    \u0275\u0275listener("error", function Avatar_ng_template_4_img_0_Template_img_error_0_listener($event) {
-      \u0275\u0275restoreView(_r3);
-      const ctx_r0 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r0.imageError($event));
-    });
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("pBind", ctx_r0.ptm("image"))("src", ctx_r0.image, \u0275\u0275sanitizeUrl);
-    \u0275\u0275attribute("aria-label", ctx_r0.ariaLabel)("data-p", ctx_r0.dataP);
-  }
-}
-function Avatar_ng_template_4_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275template(0, Avatar_ng_template_4_img_0_Template, 1, 4, "img", 6);
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275property("ngIf", ctx_r0.image);
-  }
-}
-var classes3 = {
-  root: ({
-    instance
-  }) => ["p-avatar p-component", {
-    "p-avatar-image": instance.image != null,
-    "p-avatar-circle": instance.shape === "circle",
-    "p-avatar-lg": instance.size === "large",
-    "p-avatar-xl": instance.size === "xlarge"
-  }],
-  label: "p-avatar-label",
-  icon: "p-avatar-icon"
-};
-var AvatarStyle = class _AvatarStyle extends BaseStyle {
-  name = "avatar";
-  style = style3;
-  classes = classes3;
-  static \u0275fac = /* @__PURE__ */ (() => {
-    let \u0275AvatarStyle_BaseFactory;
-    return function AvatarStyle_Factory(__ngFactoryType__) {
-      return (\u0275AvatarStyle_BaseFactory || (\u0275AvatarStyle_BaseFactory = \u0275\u0275getInheritedFactory(_AvatarStyle)))(__ngFactoryType__ || _AvatarStyle);
-    };
-  })();
-  static \u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({
-    token: _AvatarStyle,
-    factory: _AvatarStyle.\u0275fac
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(AvatarStyle, [{
-    type: Injectable
-  }], null, null);
-})();
-var AvatarClasses;
-(function(AvatarClasses2) {
-  AvatarClasses2["root"] = "p-avatar";
-  AvatarClasses2["label"] = "p-avatar-label";
-  AvatarClasses2["icon"] = "p-avatar-icon";
-  AvatarClasses2["image"] = "p-avatar-image";
-  AvatarClasses2["circle"] = "p-avatar-circle";
-  AvatarClasses2["large"] = "p-avatar-lg";
-  AvatarClasses2["xlarge"] = "p-avatar-xl";
-})(AvatarClasses || (AvatarClasses = {}));
-var AVATAR_INSTANCE = new InjectionToken("AVATAR_INSTANCE");
-var Avatar = class _Avatar extends BaseComponent {
-  componentName = "Avatar";
-  $pcAvatar = inject(AVATAR_INSTANCE, {
-    optional: true,
-    skipSelf: true
-  }) ?? void 0;
-  bindDirectiveInstance = inject(Bind, {
-    self: true
-  });
-  onAfterViewChecked() {
-    this.bindDirectiveInstance.setAttrs(this.ptms(["host", "root"]));
-  }
-  /**
-   * Defines the text to display.
-   * @group Props
-   */
-  label;
-  /**
-   * Defines the icon to display.
-   * @group Props
-   */
-  icon;
-  /**
-   * Defines the image to display.
-   * @group Props
-   */
-  image;
-  /**
-   * Size of the element.
-   * @group Props
-   */
-  size = "normal";
-  /**
-   * Shape of the element.
-   * @group Props
-   */
-  shape = "square";
-  /**
-   * Class of the element.
-   * @deprecated since v20.0.0, use `class` instead.
-   * @group Props
-   */
-  styleClass;
-  /**
-   * Establishes a string value that labels the component.
-   * @group Props
-   */
-  ariaLabel;
-  /**
-   * Establishes relationships between the component and label(s) where its value should be one or more element IDs.
-   * @group Props
-   */
-  ariaLabelledBy;
-  /**
-   * This event is triggered if an error occurs while loading an image file.
-   * @param {Event} event - Browser event.
-   * @group Emits
-   */
-  onImageError = new EventEmitter();
-  _componentStyle = inject(AvatarStyle);
-  imageError(event) {
-    this.onImageError.emit(event);
-  }
-  get dataP() {
-    return this.cn({
-      [this.shape]: this.shape,
-      [this.size]: this.size
-    });
-  }
-  static \u0275fac = /* @__PURE__ */ (() => {
-    let \u0275Avatar_BaseFactory;
-    return function Avatar_Factory(__ngFactoryType__) {
-      return (\u0275Avatar_BaseFactory || (\u0275Avatar_BaseFactory = \u0275\u0275getInheritedFactory(_Avatar)))(__ngFactoryType__ || _Avatar);
-    };
-  })();
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({
-    type: _Avatar,
-    selectors: [["p-avatar"]],
-    hostVars: 5,
-    hostBindings: function Avatar_HostBindings(rf, ctx) {
-      if (rf & 2) {
-        \u0275\u0275attribute("aria-label", ctx.ariaLabel)("aria-labelledby", ctx.ariaLabelledBy)("data-p", ctx.dataP);
-        \u0275\u0275classMap(ctx.cn(ctx.cx("root"), ctx.styleClass));
-      }
-    },
-    inputs: {
-      label: "label",
-      icon: "icon",
-      image: "image",
-      size: "size",
-      shape: "shape",
-      styleClass: "styleClass",
-      ariaLabel: "ariaLabel",
-      ariaLabelledBy: "ariaLabelledBy"
-    },
-    outputs: {
-      onImageError: "onImageError"
-    },
-    features: [\u0275\u0275ProvidersFeature([AvatarStyle, {
-      provide: AVATAR_INSTANCE,
-      useExisting: _Avatar
-    }, {
-      provide: PARENT_INSTANCE,
-      useExisting: _Avatar
-    }]), \u0275\u0275HostDirectivesFeature([Bind]), \u0275\u0275InheritDefinitionFeature],
-    ngContentSelectors: _c07,
-    decls: 6,
-    vars: 2,
-    consts: [["iconTemplate", ""], ["imageTemplate", ""], [3, "pBind", "class", 4, "ngIf", "ngIfElse"], [3, "pBind"], [3, "pBind", "class", "ngClass", 4, "ngIf", "ngIfElse"], [3, "pBind", "ngClass"], [3, "pBind", "src", "error", 4, "ngIf"], [3, "error", "pBind", "src"]],
-    template: function Avatar_Template(rf, ctx) {
-      if (rf & 1) {
-        \u0275\u0275projectionDef();
-        \u0275\u0275projection(0);
-        \u0275\u0275template(1, Avatar_span_1_Template, 2, 5, "span", 2)(2, Avatar_ng_template_2_Template, 1, 2, "ng-template", null, 0, \u0275\u0275templateRefExtractor)(4, Avatar_ng_template_4_Template, 1, 1, "ng-template", null, 1, \u0275\u0275templateRefExtractor);
-      }
-      if (rf & 2) {
-        const iconTemplate_r4 = \u0275\u0275reference(3);
-        \u0275\u0275advance();
-        \u0275\u0275property("ngIf", ctx.label)("ngIfElse", iconTemplate_r4);
-      }
-    },
-    dependencies: [CommonModule, NgClass, NgIf, SharedModule, Bind],
-    encapsulation: 2,
-    changeDetection: 0
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(Avatar, [{
-    type: Component,
-    args: [{
-      selector: "p-avatar",
-      standalone: true,
-      imports: [CommonModule, SharedModule, Bind],
-      template: `
-        <ng-content></ng-content>
-        <span [pBind]="ptm('label')" [class]="cx('label')" *ngIf="label; else iconTemplate" [attr.data-p]="dataP">{{ label }}</span>
-        <ng-template #iconTemplate><span [pBind]="ptm('icon')" [class]="icon" [ngClass]="cx('icon')" *ngIf="icon; else imageTemplate" [attr.data-p]="dataP"></span></ng-template>
-        <ng-template #imageTemplate><img [pBind]="ptm('image')" [src]="image" *ngIf="image" (error)="imageError($event)" [attr.aria-label]="ariaLabel" [attr.data-p]="dataP" /></ng-template>
-    `,
-      changeDetection: ChangeDetectionStrategy.OnPush,
-      encapsulation: ViewEncapsulation.None,
-      host: {
-        "[class]": "cn(cx('root'), styleClass)",
-        "[attr.aria-label]": "ariaLabel",
-        "[attr.aria-labelledby]": "ariaLabelledBy",
-        "[attr.data-p]": "dataP"
-      },
-      providers: [AvatarStyle, {
-        provide: AVATAR_INSTANCE,
-        useExisting: Avatar
-      }, {
-        provide: PARENT_INSTANCE,
-        useExisting: Avatar
-      }],
-      hostDirectives: [Bind]
-    }]
-  }], null, {
-    label: [{
-      type: Input
-    }],
-    icon: [{
-      type: Input
-    }],
-    image: [{
-      type: Input
-    }],
-    size: [{
-      type: Input
-    }],
-    shape: [{
-      type: Input
-    }],
-    styleClass: [{
-      type: Input
-    }],
-    ariaLabel: [{
-      type: Input
-    }],
-    ariaLabelledBy: [{
-      type: Input
-    }],
-    onImageError: [{
-      type: Output
-    }]
-  });
-})();
-var AvatarModule = class _AvatarModule {
-  static \u0275fac = function AvatarModule_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _AvatarModule)();
-  };
-  static \u0275mod = /* @__PURE__ */ \u0275\u0275defineNgModule({
-    type: _AvatarModule,
-    imports: [Avatar, SharedModule],
-    exports: [Avatar, SharedModule]
-  });
-  static \u0275inj = /* @__PURE__ */ \u0275\u0275defineInjector({
-    imports: [Avatar, SharedModule, SharedModule]
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(AvatarModule, [{
-    type: NgModule,
-    args: [{
-      imports: [Avatar, SharedModule],
-      exports: [Avatar, SharedModule]
-    }]
-  }], null, null);
-})();
-
-// src/app/components/sign-in/sign-in-button/sign-in-button.component.ts
-var _c08 = ["*"];
-var _c14 = () => ({ width: "50vw" });
-var _c23 = () => ({ "1199px": "75vw", "575": "90vw" });
-function SignInButtonComponent_Conditional_0_Conditional_0_ng_template_2_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 16);
-    \u0275\u0275text(1);
-    \u0275\u0275pipe(2, "translate");
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const item_r2 = ctx.$implicit;
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 1, item_r2.label));
-  }
-}
-function SignInButtonComponent_Conditional_0_Conditional_0_ng_template_4_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "a", 17);
-    \u0275\u0275element(1, "i");
-    \u0275\u0275elementStart(2, "span");
-    \u0275\u0275text(3);
-    \u0275\u0275pipe(4, "translate");
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    const item_r3 = ctx.$implicit;
-    \u0275\u0275advance();
-    \u0275\u0275classMap(item_r3.icon);
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 3, item_r3.label));
-  }
-}
-function SignInButtonComponent_Conditional_0_Conditional_0_Conditional_7_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275element(0, "p-avatar", 18);
-    \u0275\u0275elementStart(1, "div", 19);
-    \u0275\u0275text(2);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const user_r5 = ctx;
-    \u0275\u0275property("image", user_r5.avatar_url);
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(user_r5.name || user_r5.login);
-  }
-}
-function SignInButtonComponent_Conditional_0_Conditional_0_Conditional_8_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275element(0, "i", 20);
-    \u0275\u0275elementStart(1, "div", 19);
-    \u0275\u0275text(2);
-    \u0275\u0275pipe(3, "translate");
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 1, "common.signin"));
-  }
-}
-function SignInButtonComponent_Conditional_0_Conditional_0_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r1 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-menu", 14, 0);
-    \u0275\u0275template(2, SignInButtonComponent_Conditional_0_Conditional_0_ng_template_2_Template, 3, 3, "ng-template", null, 1, \u0275\u0275templateRefExtractor)(4, SignInButtonComponent_Conditional_0_Conditional_0_ng_template_4_Template, 5, 5, "ng-template", null, 2, \u0275\u0275templateRefExtractor);
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(6, "p-button", 15);
-    \u0275\u0275listener("onClick", function SignInButtonComponent_Conditional_0_Conditional_0_Template_p_button_onClick_6_listener($event) {
-      \u0275\u0275restoreView(_r1);
-      const menu_r4 = \u0275\u0275reference(1);
-      return \u0275\u0275resetView(menu_r4.toggle($event));
-    });
-    \u0275\u0275conditionalCreate(7, SignInButtonComponent_Conditional_0_Conditional_0_Conditional_7_Template, 3, 2)(8, SignInButtonComponent_Conditional_0_Conditional_0_Conditional_8_Template, 4, 3);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    let tmp_8_0;
-    const ctx_r5 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("model", ctx_r5.items)("popup", true);
-    \u0275\u0275advance(6);
-    \u0275\u0275property("outlined", true);
-    \u0275\u0275advance();
-    \u0275\u0275conditional((tmp_8_0 = ctx_r5.exportGitHubService.user()) ? 7 : 8, tmp_8_0);
-  }
-}
-function SignInButtonComponent_Conditional_0_Conditional_1_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r7 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 21);
-    \u0275\u0275listener("onClick", function SignInButtonComponent_Conditional_0_Conditional_1_Template_p_button_onClick_0_listener() {
-      \u0275\u0275restoreView(_r7);
-      const ctx_r5 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r5.connectGitHub());
-    });
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r5 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("label", ctx_r5.customText());
-  }
-}
-function SignInButtonComponent_Conditional_0_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275conditionalCreate(0, SignInButtonComponent_Conditional_0_Conditional_0_Template, 9, 4)(1, SignInButtonComponent_Conditional_0_Conditional_1_Template, 1, 1, "p-button", 13);
-  }
-  if (rf & 2) {
-    const ctx_r5 = \u0275\u0275nextContext();
-    \u0275\u0275conditional(!ctx_r5.customText() ? 0 : 1);
-  }
-}
-function SignInButtonComponent_Conditional_1_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275projection(0);
-  }
-}
-var SignInButtonComponent = class _SignInButtonComponent {
-  http = inject(HttpClient);
-  router = inject(Router);
-  authService = inject(GitHubAuthService);
-  exportGitHubService = inject(ExportGitHubService);
-  translate = inject(TranslateService);
-  customText = input(void 0, ...ngDevMode ? [{ debugName: "customText" }] : (
-    /* istanbul ignore next */
-    []
-  ));
-  customContent = input(false, ...ngDevMode ? [{ debugName: "customContent" }] : (
-    /* istanbul ignore next */
-    []
-  ));
-  // Variables
-  showPatSignIn = signal(false, ...ngDevMode ? [{ debugName: "showPatSignIn" }] : (
-    /* istanbul ignore next */
-    []
-  ));
-  showSettings = signal(false, ...ngDevMode ? [{ debugName: "showSettings" }] : (
-    /* istanbul ignore next */
-    []
-  ));
-  connectGitHub() {
-    if (this.isApiGatewayAccessible()) {
-      this.authService.login();
-    } else {
-      this.showPatSignIn.set(true);
-    }
-  }
-  validatePAT() {
-    return __async(this, null, function* () {
-      this.showPatSignIn.set(false);
-      yield this.exportGitHubService.validatePAT();
-    });
-  }
-  get items() {
-    const dropdownOptions = [
-      {
-        label: this.translate.instant("common.profile"),
-        items: [
-          {
-            label: this.translate.instant("settings._nav"),
-            icon: "pi pi-cog",
-            command: () => {
-              this.showSettings.set(true);
-            }
-          }
-        ]
-      },
-      {
-        label: this.translate.instant("common.projects"),
-        items: [
-          {
-            label: this.translate.instant("common.new"),
-            icon: "pi pi-plus",
-            command: () => {
-              this.router.navigate(["/project/new"]);
-            }
-          },
-          {
-            label: this.translate.instant("common.search"),
-            icon: "pi pi-search",
-            command: () => {
-              this.router.navigate(["/project/switch"]);
-            }
-          }
-        ]
-      }
-    ];
-    if (!this.exportGitHubService.user()) {
-      dropdownOptions[0].items.unshift({
-        label: this.translate.instant("common.signin"),
-        icon: "pi pi-sign-in",
-        command: () => {
-          this.connectGitHub();
-        }
-      });
-    } else {
-      dropdownOptions[0].items.unshift({
-        label: this.translate.instant("common.signout"),
-        icon: "pi pi-sign-out",
-        command: () => {
-          console.log(this.exportGitHubService.user());
-          this.authService.logout();
-          this.exportGitHubService.clearPAT();
-        }
-      });
-    }
-    return dropdownOptions;
-  }
-  // Signal to track if API Gateway is accessible
-  isApiGatewayAccessible = signal(true, ...ngDevMode ? [{ debugName: "isApiGatewayAccessible" }] : (
-    /* istanbul ignore next */
-    []
-  ));
-  // Check if API gateway is available so we can surface the preferred sign-in method
-  checkApiGatewayAccess() {
-    if (window.location.hostname === "localhost") {
-      this.isApiGatewayAccessible.set(false);
-      return;
-    }
-    this.http.get(`${environment.apiGateway}/auth/github/url`, {
-      observe: "response"
-    }).pipe(timeout(3e3), catchError(() => {
-      return of(null);
-    })).subscribe((response) => {
-      this.isApiGatewayAccessible.set(response !== null);
-    });
-  }
-  ngOnInit() {
-    this.checkApiGatewayAccess();
-  }
-  static \u0275fac = function SignInButtonComponent_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _SignInButtonComponent)();
-  };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SignInButtonComponent, selectors: [["aida-sign-in-button"]], inputs: { customText: [1, "customText"], customContent: [1, "customContent"] }, ngContentSelectors: _c08, decls: 23, vars: 25, consts: [["menu", ""], ["submenuheader", ""], ["item", ""], ["appendTo", "body", 1, "w-12", "lg:w-8", 3, "visibleChange", "header", "modal", "visible"], [1, "flex", "flex-row", "align-items-center", "gap-3", "-mt-2"], [1, "pi", "pi-key", "text-6xl", "text-900"], [1, "w-full"], [1, "text-sm", "text-color-secondary", "my-2"], [1, "flex", "justify-content-end", "mt-2"], [3, "onClick", "label"], [3, "visibleChange", "breakpoints", "header", "modal", "visible"], [1, "flex", "flex-row", "align-items-center", "gap-3"], [1, "pi", "pi-cog", "text-6xl", "text-900"], ["fluid", "", "icon", "pi pi-sign-in", 3, "label"], [3, "model", "popup"], ["outlined", "", "rounded", "", "size", "small", "styleClass", "secondary-outline p-1", 3, "onClick", "outlined"], [1, "text-primary", "font-bold"], [1, "p-menu-item-link"], ["shape", "circle", 3, "image"], [1, "font-semibold", "pr-2"], [1, "pi", "pi-github", "text-4xl", "text-color-secondary"], ["fluid", "", "icon", "pi pi-sign-in", 3, "onClick", "label"]], template: function SignInButtonComponent_Template(rf, ctx) {
-    if (rf & 1) {
-      \u0275\u0275projectionDef();
-      \u0275\u0275conditionalCreate(0, SignInButtonComponent_Conditional_0_Template, 2, 1)(1, SignInButtonComponent_Conditional_1_Template, 1, 0);
-      \u0275\u0275elementStart(2, "p-dialog", 3);
-      \u0275\u0275pipe(3, "translate");
-      \u0275\u0275listener("visibleChange", function SignInButtonComponent_Template_p_dialog_visibleChange_2_listener($event) {
-        return ctx.showPatSignIn.set($event);
-      });
-      \u0275\u0275elementStart(4, "div", 4);
-      \u0275\u0275element(5, "i", 5);
-      \u0275\u0275elementStart(6, "div", 6)(7, "p", 7);
-      \u0275\u0275text(8);
-      \u0275\u0275pipe(9, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275element(10, "aida-pat");
-      \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(11, "div", 8)(12, "p-button", 9);
-      \u0275\u0275pipe(13, "translate");
-      \u0275\u0275listener("onClick", function SignInButtonComponent_Template_p_button_onClick_12_listener() {
-        return ctx.validatePAT();
-      });
-      \u0275\u0275elementEnd()()();
-      \u0275\u0275elementStart(14, "p-dialog", 10);
-      \u0275\u0275pipe(15, "translate");
-      \u0275\u0275listener("visibleChange", function SignInButtonComponent_Template_p_dialog_visibleChange_14_listener($event) {
-        return ctx.showSettings.set($event);
-      });
-      \u0275\u0275elementStart(16, "div", 11);
-      \u0275\u0275element(17, "i", 12);
-      \u0275\u0275elementStart(18, "div", 6);
-      \u0275\u0275element(19, "aida-user-settings");
-      \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(20, "div", 8)(21, "p-button", 9);
-      \u0275\u0275pipe(22, "translate");
-      \u0275\u0275listener("onClick", function SignInButtonComponent_Template_p_button_onClick_21_listener() {
-        return ctx.showSettings.set(false);
-      });
-      \u0275\u0275elementEnd()()();
-    }
-    if (rf & 2) {
-      \u0275\u0275conditional(!ctx.customContent() ? 0 : 1);
-      \u0275\u0275advance(2);
-      \u0275\u0275property("header", \u0275\u0275pipeBind1(3, 13, "github.connect.pat.header"))("modal", true)("visible", ctx.showPatSignIn());
-      \u0275\u0275advance(6);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(9, 15, "github.connect.pat.description"));
-      \u0275\u0275advance(4);
-      \u0275\u0275property("label", \u0275\u0275pipeBind1(13, 17, "common.signin"));
-      \u0275\u0275advance(2);
-      \u0275\u0275styleMap(\u0275\u0275pureFunction0(23, _c14));
-      \u0275\u0275property("breakpoints", \u0275\u0275pureFunction0(24, _c23))("header", \u0275\u0275pipeBind1(15, 19, "settings._title"))("modal", true)("visible", ctx.showSettings());
-      \u0275\u0275advance(7);
-      \u0275\u0275property("label", \u0275\u0275pipeBind1(22, 21, "common.close"));
-    }
-  }, dependencies: [AvatarModule, Avatar, ButtonModule, Button, DialogModule, Dialog, MenuModule, Menu, PatComponent, UserSettingsComponent, TranslatePipe], encapsulation: 2, changeDetection: 0 });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(SignInButtonComponent, [{
-    type: Component,
-    args: [{ selector: "aida-sign-in-button", imports: [TranslatePipe, AvatarModule, ButtonModule, DialogModule, MenuModule, PatComponent, UserSettingsComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: `@if (!customContent()) {
-  @if (!customText()) {
-    <p-menu [model]="items" [popup]="true" #menu>
-      <ng-template #submenuheader let-item>
-        <span class="text-primary font-bold">{{ item.label | translate }}</span>
-      </ng-template>
-      <ng-template #item let-item>
-        <a class="p-menu-item-link">
-          <i [class]="item.icon"></i>
-          <span>{{ item.label | translate }}</span>
-        </a>
-      </ng-template>
-    </p-menu>
-
-    <p-button [outlined]="true" (onClick)="menu.toggle($event)" outlined rounded size="small" styleClass="secondary-outline p-1">
-      @if (exportGitHubService.user(); as user) {
-        <p-avatar [image]="user.avatar_url" shape="circle" />
-        <div class="font-semibold pr-2">{{ user.name || user.login }}</div>
-      } @else {
-        <i class="pi pi-github text-4xl text-color-secondary"></i>
-        <div class="font-semibold pr-2">{{ 'common.signin' | translate }}</div>
-      }
-    </p-button>
-  } @else {
-    <p-button [label]="customText()" (onClick)="connectGitHub()" fluid icon="pi pi-sign-in" />
-  }
-} @else {
-  <ng-content />
-}
-
-<p-dialog [header]="'github.connect.pat.header' | translate" [modal]="true" [visible]="showPatSignIn()" (visibleChange)="showPatSignIn.set($event)" class="w-12 lg:w-8" appendTo="body">
-  <div class="flex flex-row align-items-center gap-3 -mt-2">
-    <i class="pi pi-key text-6xl text-900"></i>
-    <div class="w-full">
-      <p class="text-sm text-color-secondary my-2">{{ 'github.connect.pat.description' | translate }}</p>
-      <aida-pat />
-    </div>
-  </div>
-  <div class="flex justify-content-end mt-2">
-    <p-button [label]="'common.signin' | translate" (onClick)="validatePAT()" />
-  </div>
-</p-dialog>
-
-<p-dialog
-  [breakpoints]="{ '1199px': '75vw', '575': '90vw' }"
-  [header]="'settings._title' | translate"
-  [modal]="true"
-  [style]="{ width: '50vw' }"
-  [visible]="showSettings()"
-  (visibleChange)="showSettings.set($event)"
->
-  <div class="flex flex-row align-items-center gap-3">
-    <i class="pi pi-cog text-6xl text-900"></i>
-    <div class="w-full">
-      <aida-user-settings />
-    </div>
-  </div>
-  <div class="flex justify-content-end mt-2">
-    <p-button [label]="'common.close' | translate" (onClick)="showSettings.set(false)" />
-  </div>
-</p-dialog>
-` }]
-  }], null, { customText: [{ type: Input, args: [{ isSignal: true, alias: "customText", required: false }] }], customContent: [{ type: Input, args: [{ isSignal: true, alias: "customContent", required: false }] }] });
-})();
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SignInButtonComponent, { className: "SignInButtonComponent", filePath: "src/app/components/sign-in/sign-in-button/sign-in-button.component.ts", lineNumber: 29 });
 })();
 
 // src/app/template/header/header.component.ts
@@ -3882,12 +3084,12 @@ var HeaderComponent = class _HeaderComponent {
 })();
 
 // node_modules/@primeuix/styles/dist/confirmpopup/index.mjs
-var style4 = "\n    .p-confirmpopup {\n        position: absolute;\n        margin-top: dt('confirmpopup.gutter');\n        top: 0;\n        left: 0;\n        background: dt('confirmpopup.background');\n        color: dt('confirmpopup.color');\n        border: 1px solid dt('confirmpopup.border.color');\n        border-radius: dt('confirmpopup.border.radius');\n        box-shadow: dt('confirmpopup.shadow');\n        will-change: transform;\n    }\n\n    .p-confirmpopup-content {\n        display: flex;\n        align-items: center;\n        padding: dt('confirmpopup.content.padding');\n        gap: dt('confirmpopup.content.gap');\n    }\n\n    .p-confirmpopup-icon {\n        font-size: dt('confirmpopup.icon.size');\n        width: dt('confirmpopup.icon.size');\n        height: dt('confirmpopup.icon.size');\n        color: dt('confirmpopup.icon.color');\n    }\n\n    .p-confirmpopup-footer {\n        display: flex;\n        justify-content: flex-end;\n        gap: dt('confirmpopup.footer.gap');\n        padding: dt('confirmpopup.footer.padding');\n    }\n\n    .p-confirmpopup-footer button {\n        width: auto;\n    }\n\n    .p-confirmpopup-footer button:last-child {\n        margin: 0;\n    }\n\n    .p-confirmpopup-flipped {\n        margin-block-start: calc(dt('confirmpopup.gutter') * -1);\n        margin-block-end: dt('confirmpopup.gutter');\n    }\n\n    .p-confirmpopup:after,\n    .p-confirmpopup:before {\n        bottom: 100%;\n        left: calc(dt('confirmpopup.arrow.offset') + dt('confirmpopup.arrow.left'));\n        content: ' ';\n        height: 0;\n        width: 0;\n        position: absolute;\n        pointer-events: none;\n    }\n\n    .p-confirmpopup:after {\n        border-width: calc(dt('confirmpopup.gutter') - 2px);\n        margin-left: calc(-1 * (dt('confirmpopup.gutter') - 2px));\n        border-style: solid;\n        border-color: transparent;\n        border-bottom-color: dt('confirmpopup.background');\n    }\n\n    .p-confirmpopup:before {\n        border-width: dt('confirmpopup.gutter');\n        margin-left: calc(-1 * dt('confirmpopup.gutter'));\n        border-style: solid;\n        border-color: transparent;\n        border-bottom-color: dt('confirmpopup.border.color');\n    }\n\n    .p-confirmpopup-flipped:after,\n    .p-confirmpopup-flipped:before {\n        bottom: auto;\n        top: 100%;\n    }\n\n    .p-confirmpopup-flipped:after {\n        border-bottom-color: transparent;\n        border-top-color: dt('confirmpopup.background');\n    }\n\n    .p-confirmpopup-flipped:before {\n        border-bottom-color: transparent;\n        border-top-color: dt('confirmpopup.border.color');\n    }\n";
+var style3 = "\n    .p-confirmpopup {\n        position: absolute;\n        margin-top: dt('confirmpopup.gutter');\n        top: 0;\n        left: 0;\n        background: dt('confirmpopup.background');\n        color: dt('confirmpopup.color');\n        border: 1px solid dt('confirmpopup.border.color');\n        border-radius: dt('confirmpopup.border.radius');\n        box-shadow: dt('confirmpopup.shadow');\n        will-change: transform;\n    }\n\n    .p-confirmpopup-content {\n        display: flex;\n        align-items: center;\n        padding: dt('confirmpopup.content.padding');\n        gap: dt('confirmpopup.content.gap');\n    }\n\n    .p-confirmpopup-icon {\n        font-size: dt('confirmpopup.icon.size');\n        width: dt('confirmpopup.icon.size');\n        height: dt('confirmpopup.icon.size');\n        color: dt('confirmpopup.icon.color');\n    }\n\n    .p-confirmpopup-footer {\n        display: flex;\n        justify-content: flex-end;\n        gap: dt('confirmpopup.footer.gap');\n        padding: dt('confirmpopup.footer.padding');\n    }\n\n    .p-confirmpopup-footer button {\n        width: auto;\n    }\n\n    .p-confirmpopup-footer button:last-child {\n        margin: 0;\n    }\n\n    .p-confirmpopup-flipped {\n        margin-block-start: calc(dt('confirmpopup.gutter') * -1);\n        margin-block-end: dt('confirmpopup.gutter');\n    }\n\n    .p-confirmpopup:after,\n    .p-confirmpopup:before {\n        bottom: 100%;\n        left: calc(dt('confirmpopup.arrow.offset') + dt('confirmpopup.arrow.left'));\n        content: ' ';\n        height: 0;\n        width: 0;\n        position: absolute;\n        pointer-events: none;\n    }\n\n    .p-confirmpopup:after {\n        border-width: calc(dt('confirmpopup.gutter') - 2px);\n        margin-left: calc(-1 * (dt('confirmpopup.gutter') - 2px));\n        border-style: solid;\n        border-color: transparent;\n        border-bottom-color: dt('confirmpopup.background');\n    }\n\n    .p-confirmpopup:before {\n        border-width: dt('confirmpopup.gutter');\n        margin-left: calc(-1 * dt('confirmpopup.gutter'));\n        border-style: solid;\n        border-color: transparent;\n        border-bottom-color: dt('confirmpopup.border.color');\n    }\n\n    .p-confirmpopup-flipped:after,\n    .p-confirmpopup-flipped:before {\n        bottom: auto;\n        top: 100%;\n    }\n\n    .p-confirmpopup-flipped:after {\n        border-bottom-color: transparent;\n        border-top-color: dt('confirmpopup.background');\n    }\n\n    .p-confirmpopup-flipped:before {\n        border-bottom-color: transparent;\n        border-top-color: dt('confirmpopup.border.color');\n    }\n";
 
 // node_modules/primeng/fesm2022/primeng-confirmpopup.mjs
-var _c09 = ["content"];
-var _c15 = ["accepticon"];
-var _c24 = ["rejecticon"];
+var _c06 = ["content"];
+var _c13 = ["accepticon"];
+var _c23 = ["rejecticon"];
 var _c33 = ["headless"];
 var _c42 = ["acceptButton"];
 var _c5 = ["rejectButton"];
@@ -4101,7 +3303,7 @@ function ConfirmPopup_Conditional_0_Template(rf, ctx) {
     \u0275\u0275property("ngIf", ctx_r1.headlessTemplate || ctx_r1._headlessTemplate)("ngIfElse", notHeadless_r6);
   }
 }
-var classes4 = {
+var classes3 = {
   root: () => ["p-confirmpopup p-component"],
   content: "p-confirmpopup-content",
   icon: ({
@@ -4114,8 +3316,8 @@ var classes4 = {
 };
 var ConfirmPopupStyle = class _ConfirmPopupStyle extends BaseStyle {
   name = "confirmpopup";
-  style = style4;
-  classes = classes4;
+  style = style3;
+  classes = classes3;
   static \u0275fac = /* @__PURE__ */ (() => {
     let \u0275ConfirmPopupStyle_BaseFactory;
     return function ConfirmPopupStyle_Factory(__ngFactoryType__) {
@@ -4596,7 +3798,7 @@ var ConfirmPopup = class _ConfirmPopup extends BaseComponent {
     selectors: [["p-confirmpopup"]],
     contentQueries: function ConfirmPopup_ContentQueries(rf, ctx, dirIndex) {
       if (rf & 1) {
-        \u0275\u0275contentQuery(dirIndex, _c09, 4)(dirIndex, _c15, 4)(dirIndex, _c24, 4)(dirIndex, _c33, 4)(dirIndex, PrimeTemplate, 4);
+        \u0275\u0275contentQuery(dirIndex, _c06, 4)(dirIndex, _c13, 4)(dirIndex, _c23, 4)(dirIndex, _c33, 4)(dirIndex, PrimeTemplate, 4);
       }
       if (rf & 2) {
         let _t;
@@ -4894,232 +4096,227 @@ var ConfirmPopupModule = class _ConfirmPopupModule {
   }], null, null);
 })();
 
-// src/app/services/mailto.service.ts
-var MailtoService = class _MailtoService {
-  translate = inject(TranslateService);
-  projectState = inject(ProjectStateService);
-  exportGitHubService = inject(ExportGitHubService);
-  markForTranslation() {
-    marker("feedback.email.bodyEN");
-    marker("feedback.email.bodyFR");
-  }
-  // App & browser context for bug reports
-  getProjectContext() {
-    const project = this.projectState.getProject();
-    return {
-      projectName: project.projectName,
-      projectStorage: project.storageType,
-      projectCreated: project.created,
-      projectSaved: project.lastSaved,
-      projectVersion: project.version,
-      projectRepo: project.github.repo ? `https://${project.github.owner}.github.io/${project.github.repo}` : "",
-      user: this.exportGitHubService.user()?.login ?? "",
-      browser: this.getBrowserInfo(),
-      screen: `${window.screen.width}x${window.screen.height}`,
-      viewport: `${window.innerWidth}x${window.innerHeight}`,
-      language: navigator.language,
-      currentUrl: window.location.href,
-      memory: performance.memory?.usedJSHeapSize ? `${Math.round(performance.memory.usedJSHeapSize / 1048576)}MB` : "N/A",
-      storageUsed: `${Math.round(JSON.stringify(localStorage).length / 1024)}KB`,
-      date: (/* @__PURE__ */ new Date()).toISOString()
-    };
-  }
-  getBrowserInfo() {
-    const ua = navigator.userAgent;
-    let browser = "Unknown Browser";
-    if (ua.includes("Edg/")) {
-      browser = `Edge ${ua.match(/Edg\/(\d+)/)?.[1]}`;
-    } else if (ua.includes("Chrome/")) {
-      browser = `Chrome ${ua.match(/Chrome\/(\d+)/)?.[1]}`;
-    } else if (ua.includes("Firefox/")) {
-      browser = `Firefox ${ua.match(/Firefox\/(\d+)/)?.[1]}`;
-    } else if (ua.includes("Safari/") && !ua.includes("Chrome")) {
-      browser = `Safari ${ua.match(/Version\/(\d+)/)?.[1]}`;
-    }
-    let os = "Unknown OS";
-    if (ua.includes("Windows NT 10.0")) {
-      os = "Windows 10/11";
-    } else if (ua.includes("Windows NT")) {
-      os = "Windows";
-    } else if (ua.includes("Android")) {
-      os = `Android ${ua.match(/Android (\d+)/)?.[1] || ""}`.trim();
-    } else if (ua.includes("iPhone") || ua.includes("iPad")) {
-      os = "iOS";
-    }
-    return `${browser} on ${os}`;
-  }
-  generateFeedbackMailto() {
-    const context = this.getProjectContext();
-    const subject = this.translate.instant("feedback.email.subject", { projectName: context.projectName });
-    const body = this.buildBilingualBody("feedback.email.bodyEN", "feedback.email.bodyFR", context);
-    return this.buildMailtoUrl("AIPIA-PIAAI@cra-arc.gc.ca", subject, body);
-  }
-  buildBilingualBody(enKey, frKey, context) {
-    const bodyEn = this.translate.instant(enKey, context);
-    const bodyFr = this.translate.instant(frKey, context);
-    return `${bodyEn}
-
----
-
-${bodyFr}`;
-  }
-  buildMailtoUrl(to, subject, body) {
-    return `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  }
-  openMailto(mailto) {
-    window.open(mailto, "_self");
-  }
-  static \u0275fac = function MailtoService_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _MailtoService)();
-  };
-  static \u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({ token: _MailtoService, factory: _MailtoService.\u0275fac, providedIn: "root" });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(MailtoService, [{
-    type: Injectable,
-    args: [{ providedIn: "root" }]
-  }], null, null);
-})();
-
 // src/app/template/sidebar/sidebar.component.ts
-var _c010 = () => ["/"];
-var _c16 = (a0, a1) => ({ path: "project/new", icon: "add", text: a0, onClick: a1 });
-var _c25 = (a0) => ({ path: "project/switch", icon: "folder_open", text: a0 });
-var _c34 = (a0) => ({ path: "tasks/add-pages", icon: "note_add", text: a0, isOutlined: true });
-var _c43 = (a0) => ({ path: "tasks/ia-diagram", icon: "lan", text: a0, isOutlined: true });
-var _c52 = (a0) => ({ path: "tasks/inventory", icon: "checklist_rtl", text: a0 });
-var _c62 = (a0, a1) => ({ path: "tasks/export-pages", icon: "drive_folder_upload", text: a0, isOutlined: true, onClick: a1 });
-var _c7 = (a0, a1) => ({ path: "tasks/edit-pages", icon: "auto_fix_high", text: a0, isOutlined: true, onClick: a1 });
-var _c8 = (a0, a1) => ({ path: "tasks/compare", icon: "library_books", text: a0, isOutlined: true, onClick: a1 });
-var _c9 = (a0) => ({ path: "standalone", icon: "home_repair_service", text: a0 });
-var _c10 = (a0) => ({ path: "about-us", icon: "wysiwyg", text: a0 });
-var _c11 = (a0, a1) => ({ path: "", icon: "feedback", text: a0, onClick: a1 });
-var _c122 = (a0) => ({ path: "project/edit", icon: "edit", text: a0 });
-var _c132 = (a0) => ({ path: "help", icon: "help_outline", text: a0 });
-var _c142 = (a0) => [a0];
-var _c152 = () => ["bg-primary-500", "text-primary-50"];
-function SidebarComponent_Conditional_18_ng_container_0_Template(rf, ctx) {
+var _c07 = (a0) => [a0];
+var _c14 = (a0, a1) => ({ path: a0, icon: "home", text: a1 });
+var _c24 = (a0, a1) => ({ path: a0, icon: "folder_open", text: a1 });
+var _c34 = (a0, a1, a2) => ({ path: a0, icon: "add", text: a1, onClick: a2 });
+var _c43 = (a0, a1) => ({ path: a0, icon: "home_repair_service", text: a1 });
+var _c52 = (a0, a1) => ({ path: a0, icon: "help_outline", text: a1, hideInProd: true });
+var _c62 = (a0, a1) => ({ path: a0, icon: "wysiwyg", text: a1 });
+var _c7 = (a0, a1) => ({ path: "", icon: "feedback", text: a0, onClick: a1 });
+var _c8 = (a0, a1) => ({ path: a0, icon: "view_quilt", text: a1 });
+var _c9 = (a0, a1) => ({ path: a0, icon: "manage_search", text: a1, isOutlined: true, hideInProd: true });
+var _c10 = (a0, a1) => ({ path: a0, icon: "troubleshoot", text: a1, isOutlined: true, hideInProd: true });
+var _c11 = (a0, a1) => ({ path: a0, icon: "lan", text: a1, isOutlined: true });
+var _c122 = (a0, a1) => ({ path: a0, icon: "checklist_rtl", text: a1 });
+var _c132 = (a0, a1) => ({ path: a0, icon: "source", text: a1, isOutlined: true, hideInProd: true });
+var _c142 = (a0, a1, a2) => ({ path: a0, icon: "drive_folder_upload", text: a1, isOutlined: true, onClick: a2 });
+var _c15 = (a0, a1, a2) => ({ path: a0, icon: "auto_fix_high", text: a1, isOutlined: true, onClick: a2 });
+var _c16 = (a0, a1, a2) => ({ path: a0, icon: "library_books", text: a1, isOutlined: true, onClick: a2 });
+function SidebarComponent_ng_container_11_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementContainer(0);
+  }
+}
+function SidebarComponent_ng_container_13_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementContainer(0);
+  }
+}
+function SidebarComponent_ng_container_15_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementContainer(0);
+  }
+}
+function SidebarComponent_Conditional_18_ng_container_10_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementContainer(0);
+  }
+}
+function SidebarComponent_Conditional_18_ng_container_12_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementContainer(0);
+  }
+}
+function SidebarComponent_Conditional_18_ng_container_14_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementContainer(0);
+  }
+}
+function SidebarComponent_Conditional_18_ng_container_16_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementContainer(0);
+  }
+}
+function SidebarComponent_Conditional_18_ng_container_18_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementContainer(0);
+  }
+}
+function SidebarComponent_Conditional_18_ng_container_20_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementContainer(0);
+  }
+}
+function SidebarComponent_Conditional_18_ng_container_22_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementContainer(0);
+  }
+}
+function SidebarComponent_Conditional_18_ng_container_24_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementContainer(0);
+  }
+}
+function SidebarComponent_Conditional_18_ng_container_26_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementContainer(0);
   }
 }
 function SidebarComponent_Conditional_18_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, SidebarComponent_Conditional_18_ng_container_0_Template, 1, 0, "ng-container", 12);
-    \u0275\u0275pipe(1, "translate");
+    const _r1 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 7)(1, "div", 10);
+    \u0275\u0275listener("click", function SidebarComponent_Conditional_18_Template_div_click_1_listener() {
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.toggleSection("tasks"));
+    })("keydown", function SidebarComponent_Conditional_18_Template_div_keydown_1_listener($event) {
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.toggleOnEnter($event, "tasks"));
+    });
+    \u0275\u0275elementStart(2, "span", 11);
+    \u0275\u0275text(3);
+    \u0275\u0275pipe(4, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(5, "span", 12);
+    \u0275\u0275text(6);
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(7, "p", 13);
+    \u0275\u0275text(8);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(9, "div", 14);
+    \u0275\u0275template(10, SidebarComponent_Conditional_18_ng_container_10_Template, 1, 0, "ng-container", 8);
+    \u0275\u0275pipe(11, "translate");
+    \u0275\u0275template(12, SidebarComponent_Conditional_18_ng_container_12_Template, 1, 0, "ng-container", 8);
+    \u0275\u0275pipe(13, "translate");
+    \u0275\u0275template(14, SidebarComponent_Conditional_18_ng_container_14_Template, 1, 0, "ng-container", 8);
+    \u0275\u0275pipe(15, "translate");
+    \u0275\u0275template(16, SidebarComponent_Conditional_18_ng_container_16_Template, 1, 0, "ng-container", 8);
+    \u0275\u0275pipe(17, "translate");
+    \u0275\u0275template(18, SidebarComponent_Conditional_18_ng_container_18_Template, 1, 0, "ng-container", 8);
+    \u0275\u0275pipe(19, "translate");
+    \u0275\u0275template(20, SidebarComponent_Conditional_18_ng_container_20_Template, 1, 0, "ng-container", 8);
+    \u0275\u0275pipe(21, "translate");
+    \u0275\u0275template(22, SidebarComponent_Conditional_18_ng_container_22_Template, 1, 0, "ng-container", 8);
+    \u0275\u0275pipe(23, "translate");
+    \u0275\u0275template(24, SidebarComponent_Conditional_18_ng_container_24_Template, 1, 0, "ng-container", 8);
+    \u0275\u0275pipe(25, "translate");
+    \u0275\u0275template(26, SidebarComponent_Conditional_18_ng_container_26_Template, 1, 0, "ng-container", 8);
+    \u0275\u0275pipe(27, "translate");
+    \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
-    \u0275\u0275nextContext();
-    const link_r1 = \u0275\u0275reference(54);
-    \u0275\u0275property("ngTemplateOutlet", link_r1)("ngTemplateOutletContext", \u0275\u0275pureFunction1(4, _c122, \u0275\u0275pipeBind1(1, 2, "project._nav.edit")));
+    const ctx_r1 = \u0275\u0275nextContext();
+    const link_r3 = \u0275\u0275reference(29);
+    \u0275\u0275advance();
+    \u0275\u0275attribute("aria-expanded", ctx_r1.isExpanded.tasks);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 24, "nav.activeProject"));
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate(ctx_r1.isExpanded.tasks ? "expand_less" : "expand_more");
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate1(" ", ctx_r1.hasName ? ctx_r1.projectState.getProject().projectName.slice(0, 30) : "common.autosave", " ");
+    \u0275\u0275advance();
+    \u0275\u0275classProp("md:hidden", !ctx_r1.isExpanded.tasks);
+    \u0275\u0275advance();
+    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(44, _c8, ctx_r1.AidaLinks.ProjectDashboard, \u0275\u0275pipeBind1(11, 26, "dashboard._nav")));
+    \u0275\u0275advance(2);
+    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(47, _c9, ctx_r1.AidaLinks.ProjectSearch, \u0275\u0275pipeBind1(13, 28, "search._nav")));
+    \u0275\u0275advance(2);
+    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(50, _c10, ctx_r1.AidaLinks.ProjectProblems, \u0275\u0275pipeBind1(15, 30, "problems._nav")));
+    \u0275\u0275advance(2);
+    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(53, _c11, ctx_r1.AidaLinks.ProjectDiagram, \u0275\u0275pipeBind1(17, 32, "iaDiagram._nav")));
+    \u0275\u0275advance(2);
+    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(56, _c122, ctx_r1.AidaLinks.ProjectInventory, \u0275\u0275pipeBind1(19, 34, "inventory._nav")));
+    \u0275\u0275advance(2);
+    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(59, _c132, ctx_r1.AidaLinks.ProjectMetadata, \u0275\u0275pipeBind1(21, 36, "metadata._nav")));
+    \u0275\u0275advance(2);
+    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction3(62, _c142, ctx_r1.AidaLinks.ProjectExport, \u0275\u0275pipeBind1(23, 38, "exportPages._nav"), ctx_r1.exportPages));
+    \u0275\u0275advance(2);
+    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction3(66, _c15, ctx_r1.AidaLinks.ProjectEdit, \u0275\u0275pipeBind1(25, 40, "editPages._nav"), ctx_r1.editPages));
+    \u0275\u0275advance(2);
+    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction3(70, _c16, ctx_r1.AidaLinks.ProjectCompare, \u0275\u0275pipeBind1(27, 42, "compare._nav"), ctx_r1.compareVersions));
   }
 }
-function SidebarComponent_ng_container_19_Template(rf, ctx) {
+function SidebarComponent_ng_container_20_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementContainer(0);
   }
 }
-function SidebarComponent_ng_container_21_Template(rf, ctx) {
+function SidebarComponent_ng_container_22_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementContainer(0);
   }
 }
-function SidebarComponent_ng_container_32_Template(rf, ctx) {
+function SidebarComponent_ng_container_24_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementContainer(0);
   }
 }
-function SidebarComponent_ng_container_34_Template(rf, ctx) {
+function SidebarComponent_ng_container_26_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementContainer(0);
   }
 }
-function SidebarComponent_ng_container_36_Template(rf, ctx) {
+function SidebarComponent_ng_template_28_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function SidebarComponent_ng_container_38_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function SidebarComponent_ng_container_40_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function SidebarComponent_ng_container_42_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function SidebarComponent_Conditional_44_Template(rf, ctx) {
-}
-function SidebarComponent_ng_container_46_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function SidebarComponent_Conditional_48_ng_container_0_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function SidebarComponent_Conditional_48_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275template(0, SidebarComponent_Conditional_48_ng_container_0_Template, 1, 0, "ng-container", 12);
-    \u0275\u0275pipe(1, "translate");
-  }
-  if (rf & 2) {
-    \u0275\u0275nextContext();
-    const link_r1 = \u0275\u0275reference(54);
-    \u0275\u0275property("ngTemplateOutlet", link_r1)("ngTemplateOutletContext", \u0275\u0275pureFunction1(4, _c132, \u0275\u0275pipeBind1(1, 2, "help._nav")));
-  }
-}
-function SidebarComponent_ng_container_49_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function SidebarComponent_ng_container_51_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function SidebarComponent_ng_template_53_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r2 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "a", 17);
-    \u0275\u0275listener("click", function SidebarComponent_ng_template_53_Template_a_click_0_listener($event) {
-      const onClick_r3 = \u0275\u0275restoreView(_r2).onClick;
-      return \u0275\u0275resetView(onClick_r3 ? onClick_r3($event) : null);
-    })("keydown.enter", function SidebarComponent_ng_template_53_Template_a_keydown_enter_0_listener($event) {
-      const onClick_r3 = \u0275\u0275restoreView(_r2).onClick;
-      return \u0275\u0275resetView(onClick_r3 ? onClick_r3($event) : null);
+    const _r4 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "a", 16);
+    \u0275\u0275listener("click", function SidebarComponent_ng_template_28_Conditional_0_Template_a_click_0_listener($event) {
+      \u0275\u0275restoreView(_r4);
+      const onClick_r5 = \u0275\u0275nextContext().onClick;
+      return \u0275\u0275resetView(onClick_r5 ? onClick_r5($event) : null);
+    })("keydown.enter", function SidebarComponent_ng_template_28_Conditional_0_Template_a_keydown_enter_0_listener($event) {
+      \u0275\u0275restoreView(_r4);
+      const onClick_r5 = \u0275\u0275nextContext().onClick;
+      return \u0275\u0275resetView(onClick_r5 ? onClick_r5($event) : null);
     });
     \u0275\u0275elementStart(1, "span");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "span", 18);
+    \u0275\u0275elementStart(3, "span", 17);
     \u0275\u0275text(4);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
-    const icon_r4 = ctx.icon;
-    const isOutlined_r5 = ctx.isOutlined;
-    const onClick_r3 = ctx.onClick;
-    const path_r6 = ctx.path;
-    const text_r7 = ctx.text;
-    const ctx_r7 = \u0275\u0275nextContext();
-    \u0275\u0275classProp("bg-primary-500", ctx_r7.isActive(path_r6))("text-primary-50", ctx_r7.isActive(path_r6));
-    \u0275\u0275property("aidaTooltip", ctx_r7.isSmall() ? text_r7 : void 0)("routerLink", onClick_r3 ? null : path_r6 ? \u0275\u0275pureFunction1(11, _c142, "/" + path_r6) : null)("routerLinkActive", \u0275\u0275pureFunction0(13, _c152));
+    const ctx_r5 = \u0275\u0275nextContext();
+    const hideInProd_r7 = ctx_r5.hideInProd;
+    const icon_r8 = ctx_r5.icon;
+    const isOutlined_r9 = ctx_r5.isOutlined;
+    const onClick_r5 = ctx_r5.onClick;
+    const path_r10 = ctx_r5.path;
+    const text_r11 = ctx_r5.text;
+    const ctx_r1 = \u0275\u0275nextContext();
+    \u0275\u0275property("aidaTooltip", ctx_r1.isSmall() ? text_r11 : void 0)("ngClass", hideInProd_r7 && ctx_r1.isActive(path_r10) ? "bg-red-500 text-red-50" : hideInProd_r7 ? "text-red-300" : ctx_r1.isActive(path_r10) ? "bg-primary-500 text-primary-50" : "")("routerLink", onClick_r5 ? null : path_r10 ? path_r10 : null);
     \u0275\u0275advance();
-    \u0275\u0275classMap(isOutlined_r5 ? "material-icons-outlined" : "material-icons text-2xl");
+    \u0275\u0275classMap((isOutlined_r9 ? "material-icons-outlined" : "material-icons") + " text-2xl");
     \u0275\u0275advance();
-    \u0275\u0275textInterpolate(icon_r4);
+    \u0275\u0275textInterpolate(icon_r8);
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(text_r7);
+    \u0275\u0275textInterpolate(text_r11);
+  }
+}
+function SidebarComponent_ng_template_28_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275conditionalCreate(0, SidebarComponent_ng_template_28_Conditional_0_Template, 5, 7, "a", 15);
+  }
+  if (rf & 2) {
+    const hideInProd_r7 = ctx.hideInProd;
+    const ctx_r1 = \u0275\u0275nextContext();
+    \u0275\u0275conditional(!hideInProd_r7 || !ctx_r1.production ? 0 : -1);
   }
 }
 var SidebarComponent = class _SidebarComponent {
@@ -5131,6 +4328,7 @@ var SidebarComponent = class _SidebarComponent {
   mailtoService = inject(MailtoService);
   production = environment.production;
   sandbox = environment.sandbox;
+  AidaLinks = AidaLinks;
   isSmall = signal(false, ...ngDevMode ? [{ debugName: "isSmall" }] : (
     /* istanbul ignore next */
     []
@@ -5148,13 +4346,14 @@ var SidebarComponent = class _SidebarComponent {
   get hasPages() {
     return !!this.projectState.getProject().baselinePages;
   }
+  currentPath = toSignal(this.router.events.pipe(filter((e) => e instanceof NavigationEnd), map(() => this.router.url.split(/[?#;]/)[0])), { initialValue: this.router.url.split(/[?#;]/)[0] });
   isActive(path) {
-    return !!path && this.router.url === "/" + path;
+    return !!path && this.currentPath() === path;
   }
   // Section toggle state
   isExpanded = {
     project: true,
-    tasks: false
+    tasks: true
   };
   toggleSection(section) {
     this.isExpanded[section] = !this.isExpanded[section];
@@ -5176,7 +4375,7 @@ var SidebarComponent = class _SidebarComponent {
           severity: "danger"
         },
         accept: () => {
-          this.router.navigate(["/project/new"]);
+          this.router.navigate([AidaLinks.NewProject]);
         },
         rejectButtonProps: {
           rejectLabel: this.translate.instant("common.cancel"),
@@ -5185,11 +4384,11 @@ var SidebarComponent = class _SidebarComponent {
           styleClass: "secondary-outline"
         },
         reject: () => {
-          this.router.navigate(["/project/edit"]);
+          this.router.navigate([AidaLinks.ProjectSettings]);
         }
       });
     } else {
-      this.router.navigate(["/project/new"]);
+      this.router.navigate([AidaLinks.NewProject]);
     }
   };
   mailTo = () => {
@@ -5198,21 +4397,21 @@ var SidebarComponent = class _SidebarComponent {
   compareVersions = () => {
     this.projectCache.checkLocalStatus();
     this.projectCache.checkPreviewStatus();
-    this.router.navigate(["/tasks/compare"]);
+    this.router.navigate([AidaLinks.ProjectCompare]);
   };
   editPages = () => {
     this.projectCache.checkLocalStatus();
     this.projectCache.checkPreviewStatus();
-    this.router.navigate(["/tasks/edit-pages"]);
+    this.router.navigate([AidaLinks.ProjectEdit]);
   };
   exportPages = () => {
     this.projectCache.checkLocalStatus();
-    this.router.navigate(["/tasks/export-pages"]);
+    this.router.navigate([AidaLinks.ProjectExport]);
   };
   static \u0275fac = function SidebarComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SidebarComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SidebarComponent, selectors: [["aida-sidebar"]], decls: 56, vars: 94, consts: [["link", ""], ["id", "nav-bar", 1, "l-navbar", "p-3"], [1, "flex", "flex-column", "justify-content-between", "h-full"], [1, "mb-4"], [1, "flex", "align-items-center", "gap-2", "p-0", "no-underline", 3, "routerLink"], [1, "material-icons", "text-5xl", "text-primary-300"], [1, "hidden", "md:inline", "text-lg", "font-semibold", "px-0"], [1, "mb-0", "md:mb-4"], ["aria-controls", "project", "role", "button", "tabindex", "0", 1, "hidden", "md:flex", "justify-content-between", "align-items-center", "text-lg", "text-primary-200", "hover:text-primary-400", "hover:font-bold", "cursor-pointer", 3, "click", "keydown"], ["id", "menu-project"], [1, "material-icons"], ["id", "project", "aria-labelledby", "menu-project", "role", "region"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], [1, "border-primary-300", "md:hidden"], ["aria-controls", "tasks", "role", "button", "tabindex", "0", 1, "hidden", "md:flex", "justify-content-between", "align-items-center", "text-lg", "text-primary-200", "hover:text-primary-400", "hover:font-bold", "cursor-pointer", 3, "click", "keydown"], ["id", "menu-tasks"], ["id", "tasks", "aria-labelledby", "menu-tasks", "role", "region"], ["aidaTooltipPosition", "left", "tabindex", "0", 1, "flex", "align-items-center", "gap-3", "py-1", "px-2", "m-1", "border-round", "no-underline", "hover:bg-primary-600", "cursor-pointer", 3, "click", "keydown.enter", "aidaTooltip", "routerLink", "routerLinkActive"], [1, "hidden", "md:inline", "text-md"]], template: function SidebarComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SidebarComponent, selectors: [["aida-sidebar"]], decls: 31, vars: 58, consts: [["link", ""], ["id", "nav-bar", 1, "l-navbar", "p-3"], [1, "flex", "flex-column", "justify-content-between", "h-full"], [1, "mb-4"], [1, "flex", "align-items-center", "gap-2", "p-0", "no-underline", 3, "routerLink"], [1, "material-icons", "text-5xl", "text-primary-300"], [1, "hidden", "md:inline", "text-lg", "font-semibold", "px-0"], [1, "mb-0", "md:mb-4"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], [1, "border-primary-300", "md:hidden"], ["aria-controls", "tasks", "role", "button", "tabindex", "0", 1, "hidden", "md:flex", "justify-content-between", "align-items-center", "text-xl", "text-primary-200", "hover:text-primary-400", "hover:font-bold", "cursor-pointer", 3, "click", "keydown"], ["id", "menu-tasks"], [1, "material-icons"], [1, "text-sm", "text-white-alpha-80", "hidden", "md:flex", "white-space-nowrap", "overflow-hidden", "text-overflow-clip", "mt-0"], ["id", "tasks", "aria-labelledby", "menu-tasks", "role", "region"], ["aidaTooltipPosition", "left", "tabindex", "0", 1, "flex", "align-items-center", "gap-3", "py-1", "px-2", "m-1", "border-round", "no-underline", "cursor-pointer", "hover:bg-primary-600", 3, "aidaTooltip", "ngClass", "routerLink"], ["aidaTooltipPosition", "left", "tabindex", "0", 1, "flex", "align-items-center", "gap-3", "py-1", "px-2", "m-1", "border-round", "no-underline", "cursor-pointer", "hover:bg-primary-600", 3, "click", "keydown.enter", "aidaTooltip", "ngClass", "routerLink"], [1, "hidden", "md:inline", "text-md"]], template: function SidebarComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "div", 1)(1, "nav", 2)(2, "div")(3, "div", 3)(4, "a", 4)(5, "span", 5);
       \u0275\u0275text(6);
@@ -5221,121 +4420,56 @@ var SidebarComponent = class _SidebarComponent {
       \u0275\u0275text(8);
       \u0275\u0275pipe(9, "translate");
       \u0275\u0275elementEnd()()();
-      \u0275\u0275elementStart(10, "div", 7)(11, "div", 8);
-      \u0275\u0275listener("click", function SidebarComponent_Template_div_click_11_listener() {
-        return ctx.toggleSection("project");
-      })("keydown", function SidebarComponent_Template_div_keydown_11_listener($event) {
-        return ctx.toggleOnEnter($event, "project");
-      });
-      \u0275\u0275elementStart(12, "span", 9);
-      \u0275\u0275text(13);
+      \u0275\u0275elementStart(10, "div", 7);
+      \u0275\u0275template(11, SidebarComponent_ng_container_11_Template, 1, 0, "ng-container", 8);
+      \u0275\u0275pipe(12, "translate");
+      \u0275\u0275template(13, SidebarComponent_ng_container_13_Template, 1, 0, "ng-container", 8);
       \u0275\u0275pipe(14, "translate");
+      \u0275\u0275template(15, SidebarComponent_ng_container_15_Template, 1, 0, "ng-container", 8);
+      \u0275\u0275pipe(16, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(15, "span", 10);
-      \u0275\u0275text(16);
-      \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(17, "div", 11);
-      \u0275\u0275conditionalCreate(18, SidebarComponent_Conditional_18_Template, 2, 6, "ng-container");
-      \u0275\u0275template(19, SidebarComponent_ng_container_19_Template, 1, 0, "ng-container", 12);
-      \u0275\u0275pipe(20, "translate");
-      \u0275\u0275template(21, SidebarComponent_ng_container_21_Template, 1, 0, "ng-container", 12);
-      \u0275\u0275pipe(22, "translate");
-      \u0275\u0275elementEnd()();
-      \u0275\u0275element(23, "hr", 13);
-      \u0275\u0275elementStart(24, "div", 7)(25, "div", 14);
-      \u0275\u0275listener("click", function SidebarComponent_Template_div_click_25_listener() {
-        return ctx.toggleSection("tasks");
-      })("keydown", function SidebarComponent_Template_div_keydown_25_listener($event) {
-        return ctx.toggleOnEnter($event, "tasks");
-      });
-      \u0275\u0275elementStart(26, "span", 15);
-      \u0275\u0275text(27);
-      \u0275\u0275pipe(28, "translate");
+      \u0275\u0275element(17, "hr", 9);
+      \u0275\u0275conditionalCreate(18, SidebarComponent_Conditional_18_Template, 28, 74, "div", 7);
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(29, "span", 10);
-      \u0275\u0275text(30);
-      \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(31, "div", 16);
-      \u0275\u0275template(32, SidebarComponent_ng_container_32_Template, 1, 0, "ng-container", 12);
-      \u0275\u0275pipe(33, "translate");
-      \u0275\u0275template(34, SidebarComponent_ng_container_34_Template, 1, 0, "ng-container", 12);
-      \u0275\u0275pipe(35, "translate");
-      \u0275\u0275template(36, SidebarComponent_ng_container_36_Template, 1, 0, "ng-container", 12);
-      \u0275\u0275pipe(37, "translate");
-      \u0275\u0275template(38, SidebarComponent_ng_container_38_Template, 1, 0, "ng-container", 12);
-      \u0275\u0275pipe(39, "translate");
-      \u0275\u0275template(40, SidebarComponent_ng_container_40_Template, 1, 0, "ng-container", 12);
-      \u0275\u0275pipe(41, "translate");
-      \u0275\u0275template(42, SidebarComponent_ng_container_42_Template, 1, 0, "ng-container", 12);
-      \u0275\u0275pipe(43, "translate");
-      \u0275\u0275conditionalCreate(44, SidebarComponent_Conditional_44_Template, 0, 0);
+      \u0275\u0275elementStart(19, "div");
+      \u0275\u0275template(20, SidebarComponent_ng_container_20_Template, 1, 0, "ng-container", 8);
+      \u0275\u0275pipe(21, "translate");
+      \u0275\u0275template(22, SidebarComponent_ng_container_22_Template, 1, 0, "ng-container", 8);
+      \u0275\u0275pipe(23, "translate");
+      \u0275\u0275template(24, SidebarComponent_ng_container_24_Template, 1, 0, "ng-container", 8);
+      \u0275\u0275pipe(25, "translate");
+      \u0275\u0275template(26, SidebarComponent_ng_container_26_Template, 1, 0, "ng-container", 8);
+      \u0275\u0275pipe(27, "translate");
       \u0275\u0275elementEnd()()();
-      \u0275\u0275elementStart(45, "div");
-      \u0275\u0275template(46, SidebarComponent_ng_container_46_Template, 1, 0, "ng-container", 12);
-      \u0275\u0275pipe(47, "translate");
-      \u0275\u0275conditionalCreate(48, SidebarComponent_Conditional_48_Template, 2, 6, "ng-container");
-      \u0275\u0275template(49, SidebarComponent_ng_container_49_Template, 1, 0, "ng-container", 12);
-      \u0275\u0275pipe(50, "translate");
-      \u0275\u0275template(51, SidebarComponent_ng_container_51_Template, 1, 0, "ng-container", 12);
-      \u0275\u0275pipe(52, "translate");
-      \u0275\u0275elementEnd()()();
-      \u0275\u0275template(53, SidebarComponent_ng_template_53_Template, 5, 14, "ng-template", null, 0, \u0275\u0275templateRefExtractor);
-      \u0275\u0275element(55, "p-confirmpopup");
+      \u0275\u0275template(28, SidebarComponent_ng_template_28_Template, 1, 1, "ng-template", null, 0, \u0275\u0275templateRefExtractor);
+      \u0275\u0275element(30, "p-confirmpopup");
     }
     if (rf & 2) {
-      const link_r1 = \u0275\u0275reference(54);
+      const link_r3 = \u0275\u0275reference(29);
       \u0275\u0275advance(4);
-      \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(66, _c010));
+      \u0275\u0275property("routerLink", \u0275\u0275pureFunction1(34, _c07, ctx.AidaLinks.Home));
       \u0275\u0275advance(2);
       \u0275\u0275textInterpolate(ctx.production ? "design_services" : ctx.sandbox ? "handyman" : "construction");
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(9, 38, ctx.production ? "_app._title" : ctx.sandbox ? "_app._title.sandbox" : "_app._title.dev"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(9, 18, ctx.production ? "_app._title" : ctx.sandbox ? "_app._title.sandbox" : "_app._title.dev"));
       \u0275\u0275advance(3);
-      \u0275\u0275attribute("aria-expanded", ctx.isExpanded.project);
+      \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(36, _c14, ctx.AidaLinks.Home, \u0275\u0275pipeBind1(12, 20, "home._nav")));
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(14, 40, "nav.project"));
+      \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(39, _c24, ctx.AidaLinks.AllProjects, \u0275\u0275pipeBind1(14, 22, "switch._nav")));
+      \u0275\u0275advance(2);
+      \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction3(42, _c34, ctx.AidaLinks.NewProject, \u0275\u0275pipeBind1(16, 24, "project._nav.new"), ctx.newProject));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(ctx.isExpanded.project ? "expand_less" : "expand_more");
-      \u0275\u0275advance();
-      \u0275\u0275classProp("md:hidden", !ctx.isExpanded.project);
-      \u0275\u0275advance();
       \u0275\u0275conditional(ctx.hasPages || ctx.hasName ? 18 : -1);
-      \u0275\u0275advance();
-      \u0275\u0275property("ngTemplateOutlet", link_r1)("ngTemplateOutletContext", \u0275\u0275pureFunction2(67, _c16, \u0275\u0275pipeBind1(20, 42, "project._nav.new"), ctx.newProject));
       \u0275\u0275advance(2);
-      \u0275\u0275property("ngTemplateOutlet", link_r1)("ngTemplateOutletContext", \u0275\u0275pureFunction1(70, _c25, \u0275\u0275pipeBind1(22, 44, "switch._nav")));
-      \u0275\u0275advance(4);
-      \u0275\u0275attribute("aria-expanded", ctx.isExpanded.tasks);
+      \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(46, _c43, ctx.AidaLinks.Standalone, \u0275\u0275pipeBind1(21, 26, "standalone._nav")));
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(28, 46, "nav.tasks"));
-      \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(ctx.isExpanded.tasks ? "expand_less" : "expand_more");
-      \u0275\u0275advance();
-      \u0275\u0275classProp("md:hidden", !ctx.isExpanded.tasks);
-      \u0275\u0275advance();
-      \u0275\u0275property("ngTemplateOutlet", link_r1)("ngTemplateOutletContext", \u0275\u0275pureFunction1(72, _c34, \u0275\u0275pipeBind1(33, 48, "addPages._nav")));
+      \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(49, _c52, ctx.AidaLinks.Help, \u0275\u0275pipeBind1(23, 28, "help._nav")));
       \u0275\u0275advance(2);
-      \u0275\u0275property("ngTemplateOutlet", link_r1)("ngTemplateOutletContext", \u0275\u0275pureFunction1(74, _c43, \u0275\u0275pipeBind1(35, 50, "iaDiagram._nav")));
+      \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(52, _c62, ctx.AidaLinks.About, \u0275\u0275pipeBind1(25, 30, "about._nav")));
       \u0275\u0275advance(2);
-      \u0275\u0275property("ngTemplateOutlet", link_r1)("ngTemplateOutletContext", \u0275\u0275pureFunction1(76, _c52, \u0275\u0275pipeBind1(37, 52, "inventory._nav")));
-      \u0275\u0275advance(2);
-      \u0275\u0275property("ngTemplateOutlet", link_r1)("ngTemplateOutletContext", \u0275\u0275pureFunction2(78, _c62, \u0275\u0275pipeBind1(39, 54, "exportPages._nav"), ctx.exportPages));
-      \u0275\u0275advance(2);
-      \u0275\u0275property("ngTemplateOutlet", link_r1)("ngTemplateOutletContext", \u0275\u0275pureFunction2(81, _c7, \u0275\u0275pipeBind1(41, 56, "editPages._nav"), ctx.editPages));
-      \u0275\u0275advance(2);
-      \u0275\u0275property("ngTemplateOutlet", link_r1)("ngTemplateOutletContext", \u0275\u0275pureFunction2(84, _c8, \u0275\u0275pipeBind1(43, 58, "compare._nav"), ctx.compareVersions));
-      \u0275\u0275advance(2);
-      \u0275\u0275conditional(!ctx.production ? 44 : -1);
-      \u0275\u0275advance(2);
-      \u0275\u0275property("ngTemplateOutlet", link_r1)("ngTemplateOutletContext", \u0275\u0275pureFunction1(87, _c9, \u0275\u0275pipeBind1(47, 60, "standalone._nav")));
-      \u0275\u0275advance(2);
-      \u0275\u0275conditional(!ctx.production ? 48 : -1);
-      \u0275\u0275advance();
-      \u0275\u0275property("ngTemplateOutlet", link_r1)("ngTemplateOutletContext", \u0275\u0275pureFunction1(89, _c10, \u0275\u0275pipeBind1(50, 62, "about._nav")));
-      \u0275\u0275advance(2);
-      \u0275\u0275property("ngTemplateOutlet", link_r1)("ngTemplateOutletContext", \u0275\u0275pureFunction2(91, _c11, \u0275\u0275pipeBind1(52, 64, "feedback._nav"), ctx.mailTo));
+      \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(55, _c7, \u0275\u0275pipeBind1(27, 32, "feedback._nav"), ctx.mailTo));
     }
-  }, dependencies: [CommonModule, NgTemplateOutlet, RouterModule, RouterLink, RouterLinkActive, ConfirmPopupModule, ConfirmPopup, TooltipDirective, TranslatePipe], encapsulation: 2, changeDetection: 0 });
+  }, dependencies: [CommonModule, NgClass, NgTemplateOutlet, RouterModule, RouterLink, ConfirmPopupModule, ConfirmPopup, TooltipDirective, TranslatePipe], encapsulation: 2, changeDetection: 0 });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(SidebarComponent, [{
@@ -5345,7 +4479,7 @@ var SidebarComponent = class _SidebarComponent {
     <div>
       <!-- App Title -->
       <div class="mb-4">
-        <a [routerLink]="['/']" class="flex align-items-center gap-2 p-0 no-underline">
+        <a [routerLink]="[AidaLinks.Home]" class="flex align-items-center gap-2 p-0 no-underline">
           <span class="material-icons text-5xl text-primary-300">{{ production ? 'design_services' : sandbox ? 'handyman' : 'construction' }}</span>
           <span class="hidden md:inline text-lg font-semibold px-0">{{ (production ? '_app._title' : sandbox ? '_app._title.sandbox' : '_app._title.dev') | translate }}</span>
         </a>
@@ -5353,7 +4487,7 @@ var SidebarComponent = class _SidebarComponent {
 
       <!-- Project Views -->
       <div class="mb-0 md:mb-4">
-        <div
+        <!--div
           [attr.aria-expanded]="isExpanded.project"
           (click)="toggleSection('project')"
           (keydown)="toggleOnEnter($event, 'project')"
@@ -5365,77 +4499,80 @@ var SidebarComponent = class _SidebarComponent {
           <span id="menu-project">{{ 'nav.project' | translate }}</span>
           <span class="material-icons">{{ isExpanded.project ? 'expand_less' : 'expand_more' }}</span>
         </div>
-        <div id="project" [class.md:hidden]="!isExpanded.project" aria-labelledby="menu-project" role="region">
-          @if (hasPages || hasName) {
-            <!--ng-container *ngTemplateOutlet="link; context: { path: 'project/dashboard', icon: 'view_quilt', text: ('dashboard._nav' | translate) }" /-->
-            <ng-container *ngTemplateOutlet="link; context: { path: 'project/edit', icon: 'edit', text: ('project._nav.edit' | translate) }" />
-          }
-          <ng-container *ngTemplateOutlet="link; context: { path: 'project/new', icon: 'add', text: ('project._nav.new' | translate), onClick: newProject }" />
-          <ng-container *ngTemplateOutlet="link; context: { path: 'project/switch', icon: 'folder_open', text: ('switch._nav' | translate) }" />
-        </div>
+        <div id="project" [class.md:hidden]="!isExpanded.project" aria-labelledby="menu-project" role="region"-->
+        <ng-container *ngTemplateOutlet="link; context: { path: AidaLinks.Home, icon: 'home', text: ('home._nav' | translate) }" />
+        <ng-container *ngTemplateOutlet="link; context: { path: AidaLinks.AllProjects, icon: 'folder_open', text: ('switch._nav' | translate) }" />
+        <ng-container *ngTemplateOutlet="link; context: { path: AidaLinks.NewProject, icon: 'add', text: ('project._nav.new' | translate), onClick: newProject }" />
+        <!--/div-->
       </div>
       <!-- Mobile divider -->
       <hr class="border-primary-300 md:hidden" />
       <!-- Task Views -->
-      <div class="mb-0 md:mb-4">
-        <div
-          [attr.aria-expanded]="isExpanded.tasks"
-          (click)="toggleSection('tasks')"
-          (keydown)="toggleOnEnter($event, 'tasks')"
-          class="hidden md:flex justify-content-between align-items-center text-lg text-primary-200 hover:text-primary-400 hover:font-bold cursor-pointer"
-          aria-controls="tasks"
-          role="button"
-          tabindex="0"
-        >
-          <span id="menu-tasks">{{ 'nav.tasks' | translate }}</span>
-          <span class="material-icons">{{ isExpanded.tasks ? 'expand_less' : 'expand_more' }}</span>
+      @if (hasPages || hasName) {
+        <div class="mb-0 md:mb-4">
+          <div
+            [attr.aria-expanded]="isExpanded.tasks"
+            (click)="toggleSection('tasks')"
+            (keydown)="toggleOnEnter($event, 'tasks')"
+            class="hidden md:flex justify-content-between align-items-center text-xl text-primary-200 hover:text-primary-400 hover:font-bold cursor-pointer"
+            aria-controls="tasks"
+            role="button"
+            tabindex="0"
+          >
+            <span id="menu-tasks">{{ 'nav.activeProject' | translate }}</span>
+            <span class="material-icons">{{ isExpanded.tasks ? 'expand_less' : 'expand_more' }}</span>
+          </div>
+          <p class="text-sm text-white-alpha-80 hidden md:flex white-space-nowrap overflow-hidden text-overflow-clip mt-0">
+            {{ hasName ? projectState.getProject().projectName.slice(0, 30) : 'common.autosave' }}
+          </p>
+          <div id="tasks" [class.md:hidden]="!isExpanded.tasks" aria-labelledby="menu-tasks" role="region">
+            <ng-container *ngTemplateOutlet="link; context: { path: AidaLinks.ProjectDashboard, icon: 'view_quilt', text: ('dashboard._nav' | translate) }" />
+            <!--ng-container *ngTemplateOutlet="link; context: { path: AidaLinks.ProjectSettings, icon: 'settings', text: ('project._nav.edit' | translate) }" />
+            <ng-container *ngTemplateOutlet="link; context: { path: AidaLinks.ProjectAdd, icon: 'note_add', text: ('addPages._nav' | translate), isOutlined: true }" /-->
+            <ng-container *ngTemplateOutlet="link; context: { path: AidaLinks.ProjectSearch, icon: 'manage_search', text: ('search._nav' | translate), isOutlined: true, hideInProd: true }" />
+            <ng-container *ngTemplateOutlet="link; context: { path: AidaLinks.ProjectProblems, icon: 'troubleshoot', text: ('problems._nav' | translate), isOutlined: true, hideInProd: true }" />
+            <ng-container *ngTemplateOutlet="link; context: { path: AidaLinks.ProjectDiagram, icon: 'lan', text: ('iaDiagram._nav' | translate), isOutlined: true }" />
+            <ng-container *ngTemplateOutlet="link; context: { path: AidaLinks.ProjectInventory, icon: 'checklist_rtl', text: ('inventory._nav' | translate) }" />
+            <ng-container *ngTemplateOutlet="link; context: { path: AidaLinks.ProjectMetadata, icon: 'source', text: ('metadata._nav' | translate), isOutlined: true, hideInProd: true }" />
+            <ng-container
+              *ngTemplateOutlet="link; context: { path: AidaLinks.ProjectExport, icon: 'drive_folder_upload', text: ('exportPages._nav' | translate), isOutlined: true, onClick: exportPages }"
+            />
+            <ng-container *ngTemplateOutlet="link; context: { path: AidaLinks.ProjectEdit, icon: 'auto_fix_high', text: ('editPages._nav' | translate), isOutlined: true, onClick: editPages }" />
+            <ng-container
+              *ngTemplateOutlet="link; context: { path: AidaLinks.ProjectCompare, icon: 'library_books', text: ('compare._nav' | translate), isOutlined: true, onClick: compareVersions }"
+            />
+          </div>
         </div>
-        <div id="tasks" [class.md:hidden]="!isExpanded.tasks" aria-labelledby="menu-tasks" role="region">
-          <ng-container *ngTemplateOutlet="link; context: { path: 'tasks/add-pages', icon: 'note_add', text: ('addPages._nav' | translate), isOutlined: true }" />
-          <ng-container *ngTemplateOutlet="link; context: { path: 'tasks/ia-diagram', icon: 'lan', text: ('iaDiagram._nav' | translate), isOutlined: true }" />
-          <ng-container *ngTemplateOutlet="link; context: { path: 'tasks/inventory', icon: 'checklist_rtl', text: ('inventory._nav' | translate) }" />
-          <ng-container
-            *ngTemplateOutlet="link; context: { path: 'tasks/export-pages', icon: 'drive_folder_upload', text: ('exportPages._nav' | translate), isOutlined: true, onClick: exportPages }"
-          />
-          <ng-container *ngTemplateOutlet="link; context: { path: 'tasks/edit-pages', icon: 'auto_fix_high', text: ('editPages._nav' | translate), isOutlined: true, onClick: editPages }" />
-          <ng-container *ngTemplateOutlet="link; context: { path: 'tasks/compare', icon: 'library_books', text: ('compare._nav' | translate), isOutlined: true, onClick: compareVersions }" />
-          @if (!production) {
-            <!--ng-container *ngTemplateOutlet="link; context: { path: 'tasks/problems', icon: 'troubleshoot', text: ('problems._nav' | translate), isOutlined: true}"/>
-          <ng-container *ngTemplateOutlet="link; context: { path: 'tasks/search', icon: 'manage_search', text: ('search._nav' | translate), isOutlined: true}"/-->
-          }
-        </div>
-      </div>
+      }
     </div>
 
     <!-- App Info -->
     <div>
-      <ng-container *ngTemplateOutlet="link; context: { path: 'standalone', icon: 'home_repair_service', text: ('standalone._nav' | translate) }" />
-      @if (!production) {
-        <ng-container *ngTemplateOutlet="link; context: { path: 'help', icon: 'help_outline', text: ('help._nav' | translate) }" />
-      }
-      <ng-container *ngTemplateOutlet="link; context: { path: 'about-us', icon: 'wysiwyg', text: ('about._nav' | translate) }" />
+      <ng-container *ngTemplateOutlet="link; context: { path: AidaLinks.Standalone, icon: 'home_repair_service', text: ('standalone._nav' | translate) }" />
+      <ng-container *ngTemplateOutlet="link; context: { path: AidaLinks.Help, icon: 'help_outline', text: ('help._nav' | translate), hideInProd: true }" />
+      <ng-container *ngTemplateOutlet="link; context: { path: AidaLinks.About, icon: 'wysiwyg', text: ('about._nav' | translate) }" />
       <ng-container *ngTemplateOutlet="link; context: { path: '', icon: 'feedback', text: ('feedback._nav' | translate), onClick: mailTo }" />
     </div>
   </nav>
 </div>
 
 <!--Link template-->
-<ng-template #link let-icon="icon" let-isOutlined="isOutlined" let-onClick="onClick" let-path="path" let-text="text">
-  <a
-    [aidaTooltip]="isSmall() ? text : undefined"
-    [class.bg-primary-500]="isActive(path)"
-    [class.text-primary-50]="isActive(path)"
-    [routerLink]="onClick ? null : path ? ['/' + path] : null"
-    [routerLinkActive]="['bg-primary-500', 'text-primary-50']"
-    (click)="onClick ? onClick($event) : null"
-    (keydown.enter)="onClick ? onClick($event) : null"
-    class="flex align-items-center gap-3 py-1 px-2 m-1 border-round no-underline hover:bg-primary-600 cursor-pointer"
-    aidaTooltipPosition="left"
-    tabindex="0"
-  >
-    <span [class]="isOutlined ? 'material-icons-outlined' : 'material-icons' + ' text-2xl'">{{ icon }}</span>
-    <span class="hidden md:inline text-md">{{ text }}</span>
-  </a>
+<ng-template #link let-hideInProd="hideInProd" let-icon="icon" let-isOutlined="isOutlined" let-onClick="onClick" let-path="path" let-text="text">
+  @if (!hideInProd || !production) {
+    <a
+      [aidaTooltip]="isSmall() ? text : undefined"
+      [ngClass]="hideInProd && isActive(path) ? 'bg-red-500 text-red-50' : hideInProd ? 'text-red-300' : isActive(path) ? 'bg-primary-500 text-primary-50' : ''"
+      [routerLink]="onClick ? null : path ? path : null"
+      (click)="onClick ? onClick($event) : null"
+      (keydown.enter)="onClick ? onClick($event) : null"
+      class="flex align-items-center gap-3 py-1 px-2 m-1 border-round no-underline cursor-pointer hover:bg-primary-600"
+      aidaTooltipPosition="left"
+      tabindex="0"
+    >
+      <span [class]="(isOutlined ? 'material-icons-outlined' : 'material-icons') + ' text-2xl'">{{ icon }}</span>
+      <span class="hidden md:inline text-md">{{ text }}</span>
+    </a>
+  }
 </ng-template>
 
 <p-confirmpopup />
@@ -5443,7 +4580,7 @@ var SidebarComponent = class _SidebarComponent {
   }], () => [], null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SidebarComponent, { className: "SidebarComponent", filePath: "src/app/template/sidebar/sidebar.component.ts", lineNumber: 29 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SidebarComponent, { className: "SidebarComponent", filePath: "src/app/template/sidebar/sidebar.component.ts", lineNumber: 33 });
 })();
 
 // src/app/common/custom-title-strategy.ts
@@ -5474,7 +4611,7 @@ var CustomTitleStrategy = class _CustomTitleStrategy extends TitleStrategy {
 })();
 
 // src/app/app.component.ts
-var _c011 = (a0, a1, a2, a3) => ({ "pi-check-circle": a0, "pi-info-circle": a1, "pi-exclamation-triangle": a2, "pi-times-circle": a3 });
+var _c08 = (a0, a1, a2, a3) => ({ "pi-check-circle": a0, "pi-info-circle": a1, "pi-exclamation-triangle": a2, "pi-times-circle": a3 });
 function AppComponent_ng_template_9_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275element(0, "i", 4);
@@ -5486,7 +4623,7 @@ function AppComponent_ng_template_9_Template(rf, ctx) {
   }
   if (rf & 2) {
     const message_r1 = ctx.$implicit;
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction4(3, _c011, message_r1.severity === "success", message_r1.severity === "info", message_r1.severity === "warn", message_r1.severity === "error"));
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction4(3, _c08, message_r1.severity === "success", message_r1.severity === "info", message_r1.severity === "warn", message_r1.severity === "error"));
     \u0275\u0275advance(3);
     \u0275\u0275textInterpolate(message_r1.summary);
     \u0275\u0275advance();
@@ -5502,13 +4639,13 @@ var AppComponent = class _AppComponent {
   projectStorageService = inject(ProjectStorageService);
   cloudStorageService = inject(CloudStorageService);
   projectState = inject(ProjectStateService);
-  exportGitHubService = inject(ExportGitHubService);
+  signInService = inject(SignInService);
   collaboratorService = inject(CollaboratorService);
   settingsService = inject(UserSettingsService);
   usageService = inject(UsageService);
   constructor() {
     effect(() => {
-      const user = this.exportGitHubService.user();
+      const user = this.signInService.user();
       if (user) {
         const tempUserId = this.settingsService.userId();
         this.settingsService.setUserId(user.id.toString());
@@ -5748,1437 +4885,299 @@ function provideTranslateMultiHttpLoader(config = {}) {
   }];
 }
 
-// node_modules/primeng/fesm2022/primeng-avatargroup.mjs
-var _c012 = ["*"];
-var classes5 = {
-  root: "p-avatar-group p-component"
-};
-var AvatarGroupStyle = class _AvatarGroupStyle extends BaseStyle {
-  name = "avatargroup";
-  classes = classes5;
-  static \u0275fac = /* @__PURE__ */ (() => {
-    let \u0275AvatarGroupStyle_BaseFactory;
-    return function AvatarGroupStyle_Factory(__ngFactoryType__) {
-      return (\u0275AvatarGroupStyle_BaseFactory || (\u0275AvatarGroupStyle_BaseFactory = \u0275\u0275getInheritedFactory(_AvatarGroupStyle)))(__ngFactoryType__ || _AvatarGroupStyle);
-    };
-  })();
-  static \u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({
-    token: _AvatarGroupStyle,
-    factory: _AvatarGroupStyle.\u0275fac
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(AvatarGroupStyle, [{
-    type: Injectable
-  }], null, null);
-})();
-var AvatarGroupClasses;
-(function(AvatarGroupClasses2) {
-  AvatarGroupClasses2["root"] = "p-avatar-group";
-})(AvatarGroupClasses || (AvatarGroupClasses = {}));
-var AVATARGROUP_INSTANCE = new InjectionToken("AVATARGROUP_INSTANCE");
-var AvatarGroup = class _AvatarGroup extends BaseComponent {
-  componentName = "AvatarGroup";
-  $pcAvatarGroup = inject(AVATARGROUP_INSTANCE, {
-    optional: true,
-    skipSelf: true
-  }) ?? void 0;
-  bindDirectiveInstance = inject(Bind, {
-    self: true
-  });
-  onAfterViewChecked() {
-    this.bindDirectiveInstance.setAttrs(this.ptms(["host", "root"]));
-  }
-  /**
-   * Style class of the component
-   * @group Props
-   */
-  styleClass;
-  /**
-   * Inline style of the component.
-   * @group Props
-   */
-  style;
-  get hostStyle() {
-    return this.style;
-  }
-  _componentStyle = inject(AvatarGroupStyle);
-  static \u0275fac = /* @__PURE__ */ (() => {
-    let \u0275AvatarGroup_BaseFactory;
-    return function AvatarGroup_Factory(__ngFactoryType__) {
-      return (\u0275AvatarGroup_BaseFactory || (\u0275AvatarGroup_BaseFactory = \u0275\u0275getInheritedFactory(_AvatarGroup)))(__ngFactoryType__ || _AvatarGroup);
-    };
-  })();
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({
-    type: _AvatarGroup,
-    selectors: [["p-avatarGroup"], ["p-avatar-group"], ["p-avatargroup"]],
-    hostVars: 4,
-    hostBindings: function AvatarGroup_HostBindings(rf, ctx) {
-      if (rf & 2) {
-        \u0275\u0275styleMap(ctx.hostStyle);
-        \u0275\u0275classMap(ctx.cn(ctx.cx("root"), ctx.styleClass));
-      }
-    },
-    inputs: {
-      styleClass: "styleClass",
-      style: "style"
-    },
-    features: [\u0275\u0275ProvidersFeature([AvatarGroupStyle, {
-      provide: AVATARGROUP_INSTANCE,
-      useExisting: _AvatarGroup
-    }, {
-      provide: PARENT_INSTANCE,
-      useExisting: _AvatarGroup
-    }]), \u0275\u0275HostDirectivesFeature([Bind]), \u0275\u0275InheritDefinitionFeature],
-    ngContentSelectors: _c012,
-    decls: 1,
-    vars: 0,
-    template: function AvatarGroup_Template(rf, ctx) {
-      if (rf & 1) {
-        \u0275\u0275projectionDef();
-        \u0275\u0275projection(0);
-      }
-    },
-    dependencies: [CommonModule, SharedModule],
-    encapsulation: 2,
-    changeDetection: 0
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(AvatarGroup, [{
-    type: Component,
-    args: [{
-      selector: "p-avatarGroup, p-avatar-group, p-avatargroup",
-      standalone: true,
-      imports: [CommonModule, SharedModule],
-      template: ` <ng-content></ng-content> `,
-      changeDetection: ChangeDetectionStrategy.OnPush,
-      encapsulation: ViewEncapsulation.None,
-      providers: [AvatarGroupStyle, {
-        provide: AVATARGROUP_INSTANCE,
-        useExisting: AvatarGroup
-      }, {
-        provide: PARENT_INSTANCE,
-        useExisting: AvatarGroup
-      }],
-      host: {
-        "[class]": "cn(cx('root'), styleClass)"
-      },
-      hostDirectives: [Bind]
-    }]
-  }], null, {
-    styleClass: [{
-      type: Input
-    }],
-    style: [{
-      type: Input
-    }],
-    hostStyle: [{
-      type: HostBinding,
-      args: ["style"]
-    }]
-  });
-})();
-var AvatarGroupModule = class _AvatarGroupModule {
-  static \u0275fac = function AvatarGroupModule_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _AvatarGroupModule)();
-  };
-  static \u0275mod = /* @__PURE__ */ \u0275\u0275defineNgModule({
-    type: _AvatarGroupModule,
-    imports: [AvatarGroup, SharedModule],
-    exports: [AvatarGroup, SharedModule]
-  });
-  static \u0275inj = /* @__PURE__ */ \u0275\u0275defineInjector({
-    imports: [AvatarGroup, SharedModule, SharedModule]
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(AvatarGroupModule, [{
-    type: NgModule,
-    args: [{
-      imports: [AvatarGroup, SharedModule],
-      exports: [AvatarGroup, SharedModule]
-    }]
-  }], null, null);
-})();
-
-// src/app/components/add-collaborators/add-collaborators.component.ts
-var _c013 = (a0) => ({ $implicit: a0, showName: true });
-var _c17 = (a0) => ({ name: a0 });
-var _c26 = (a0) => ({ $implicit: a0 });
-var _c35 = (a0) => ({ $implicit: a0, showName: false });
-var _c44 = (a0) => ({ number: a0 });
-var _c53 = (a0, a1) => ({ $implicit: a0, onCancel: a1 });
-var _forTrack0 = ($index, $item) => $item.id;
-function AddCollaboratorsComponent_Conditional_0_Conditional_3_For_2_ng_container_3_Template(rf, ctx) {
+// src/app/views/navigation/home/home.component.ts
+function HomeComponent_Conditional_3_Conditional_7_Conditional_8_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementContainer(0);
+    \u0275\u0275element(0, "p-button", 18);
+    \u0275\u0275pipe(1, "translate");
+  }
+  if (rf & 2) {
+    const ctx_r0 = \u0275\u0275nextContext(3);
+    \u0275\u0275property("label", \u0275\u0275pipeBind1(1, 2, "project.goDashboard"))("routerLink", ctx_r0.AidaLinks.ProjectDashboard);
   }
 }
-function AddCollaboratorsComponent_Conditional_0_Conditional_3_For_2_Conditional_4_Template(rf, ctx) {
+function HomeComponent_Conditional_3_Conditional_7_Conditional_9_Template(rf, ctx) {
   if (rf & 1) {
-    const _r1 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 13);
+    const _r2 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "p-button", 20);
     \u0275\u0275pipe(1, "translate");
-    \u0275\u0275listener("onClick", function AddCollaboratorsComponent_Conditional_0_Conditional_3_For_2_Conditional_4_Template_p_button_onClick_0_listener() {
-      \u0275\u0275restoreView(_r1);
-      const collab_r2 = \u0275\u0275nextContext().$implicit;
-      const ctx_r2 = \u0275\u0275nextContext(3);
-      return \u0275\u0275resetView(ctx_r2.removeCollaborator(collab_r2));
+    \u0275\u0275listener("onClick", function HomeComponent_Conditional_3_Conditional_7_Conditional_9_Template_p_button_onClick_0_listener() {
+      \u0275\u0275restoreView(_r2);
+      const ctx_r0 = \u0275\u0275nextContext(3);
+      return \u0275\u0275resetView(ctx_r0.loadProject());
     });
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const collab_r2 = \u0275\u0275nextContext().$implicit;
-    const ctx_r2 = \u0275\u0275nextContext(3);
-    \u0275\u0275property("pTooltip", \u0275\u0275pipeBind2(1, 1, "collaborators.remove", \u0275\u0275pureFunction1(4, _c17, ctx_r2.collaboratorService.getCollaboratorName(collab_r2))));
+    \u0275\u0275property("label", \u0275\u0275pipeBind1(1, 1, "project.load"));
   }
 }
-function AddCollaboratorsComponent_Conditional_0_Conditional_3_For_2_Template(rf, ctx) {
+function HomeComponent_Conditional_3_Conditional_7_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "li")(1, "div", 9)(2, "div", 10);
-    \u0275\u0275template(3, AddCollaboratorsComponent_Conditional_0_Conditional_3_For_2_ng_container_3_Template, 1, 0, "ng-container", 11);
-    \u0275\u0275elementEnd();
-    \u0275\u0275conditionalCreate(4, AddCollaboratorsComponent_Conditional_0_Conditional_3_For_2_Conditional_4_Template, 2, 6, "p-button", 12);
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    const collab_r2 = ctx.$implicit;
-    const ctx_r2 = \u0275\u0275nextContext(3);
-    const collabAvatar_r4 = \u0275\u0275reference(7);
-    \u0275\u0275advance(3);
-    \u0275\u0275property("ngTemplateOutlet", collabAvatar_r4)("ngTemplateOutletContext", \u0275\u0275pureFunction1(3, _c013, collab_r2));
-    \u0275\u0275advance();
-    \u0275\u0275conditional(ctx_r2.collaboratorService.canEditProject(ctx_r2.projectData()) ? 4 : -1);
-  }
-}
-function AddCollaboratorsComponent_Conditional_0_Conditional_3_Conditional_3_ng_container_0_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function AddCollaboratorsComponent_Conditional_0_Conditional_3_Conditional_3_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275template(0, AddCollaboratorsComponent_Conditional_0_Conditional_3_Conditional_3_ng_container_0_Template, 1, 0, "ng-container", 11);
-  }
-  if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext(3);
-    const collabAutocomplete_r5 = \u0275\u0275reference(5);
-    \u0275\u0275property("ngTemplateOutlet", collabAutocomplete_r5)("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c26, ctx_r2.addSelectedCollaborators));
-  }
-}
-function AddCollaboratorsComponent_Conditional_0_Conditional_3_Conditional_4_Conditional_4_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r6 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 16);
-    \u0275\u0275pipe(1, "translate");
-    \u0275\u0275listener("onClick", function AddCollaboratorsComponent_Conditional_0_Conditional_3_Conditional_4_Conditional_4_Template_p_button_onClick_0_listener() {
-      \u0275\u0275restoreView(_r6);
-      const ctx_r2 = \u0275\u0275nextContext(4);
-      return \u0275\u0275resetView(ctx_r2.openMailto(ctx_r2.getRequestAccessMailto()));
-    });
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    \u0275\u0275property("label", \u0275\u0275pipeBind1(1, 1, "collaborators.button.requestAccess"));
-  }
-}
-function AddCollaboratorsComponent_Conditional_0_Conditional_3_Conditional_4_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "p-message", 8)(1, "div", 14);
+    \u0275\u0275elementStart(0, "div")(1, "h3", 16);
     \u0275\u0275text(2);
     \u0275\u0275pipe(3, "translate");
-    \u0275\u0275conditionalCreate(4, AddCollaboratorsComponent_Conditional_0_Conditional_3_Conditional_4_Conditional_4_Template, 2, 3, "p-button", 15);
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext(3);
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(3, 2, "collaborators.message.notCollab"), " ");
-    \u0275\u0275advance(2);
-    \u0275\u0275conditional(ctx_r2.getRequestAccessMailto() ? 4 : -1);
-  }
-}
-function AddCollaboratorsComponent_Conditional_0_Conditional_3_Conditional_5_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "p-message", 6);
-    \u0275\u0275text(1);
-    \u0275\u0275pipe(2, "translate");
     \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 1, "collaborators.message.hasCollab"));
-  }
-}
-function AddCollaboratorsComponent_Conditional_0_Conditional_3_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "ul", 7);
-    \u0275\u0275repeaterCreate(1, AddCollaboratorsComponent_Conditional_0_Conditional_3_For_2_Template, 5, 5, "li", null, _forTrack0);
-    \u0275\u0275elementEnd();
-    \u0275\u0275conditionalCreate(3, AddCollaboratorsComponent_Conditional_0_Conditional_3_Conditional_3_Template, 1, 4, "ng-container")(4, AddCollaboratorsComponent_Conditional_0_Conditional_3_Conditional_4_Template, 5, 4, "p-message", 8)(5, AddCollaboratorsComponent_Conditional_0_Conditional_3_Conditional_5_Template, 3, 3, "p-message", 6);
-  }
-  if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance();
-    \u0275\u0275repeater(ctx_r2.collaborators());
-    \u0275\u0275advance(2);
-    \u0275\u0275conditional(ctx_r2.collaboratorService.canEditProject(ctx_r2.projectData()) ? 3 : ctx_r2.exportGitHubService.user() ? 4 : 5);
-  }
-}
-function AddCollaboratorsComponent_Conditional_0_Conditional_4_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "p-message", 6);
-    \u0275\u0275text(1);
-    \u0275\u0275pipe(2, "translate");
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 1, "collaborators.message.firstCollab"));
-  }
-}
-function AddCollaboratorsComponent_Conditional_0_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "h2", 5);
-    \u0275\u0275text(1);
-    \u0275\u0275pipe(2, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275conditionalCreate(3, AddCollaboratorsComponent_Conditional_0_Conditional_3_Template, 6, 1)(4, AddCollaboratorsComponent_Conditional_0_Conditional_4_Template, 3, 3, "p-message", 6);
-  }
-  if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext();
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 2, "collaborators._title"));
-    \u0275\u0275advance(2);
-    \u0275\u0275conditional(ctx_r2.collaborators().length > 0 ? 3 : 4);
-  }
-}
-function AddCollaboratorsComponent_Conditional_1_Conditional_3_For_2_ng_container_3_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function AddCollaboratorsComponent_Conditional_1_Conditional_3_For_2_Conditional_4_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r7 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 13);
-    \u0275\u0275pipe(1, "translate");
-    \u0275\u0275listener("onClick", function AddCollaboratorsComponent_Conditional_1_Conditional_3_For_2_Conditional_4_Template_p_button_onClick_0_listener() {
-      \u0275\u0275restoreView(_r7);
-      const collab_r8 = \u0275\u0275nextContext().$implicit;
-      const ctx_r2 = \u0275\u0275nextContext(3);
-      return \u0275\u0275resetView(ctx_r2.removeCollaborator(collab_r8));
-    });
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const collab_r8 = \u0275\u0275nextContext().$implicit;
-    const ctx_r2 = \u0275\u0275nextContext(3);
-    \u0275\u0275property("pTooltip", \u0275\u0275pipeBind2(1, 1, "collaborators.remove", \u0275\u0275pureFunction1(4, _c17, ctx_r2.collaboratorService.getCollaboratorName(collab_r8))));
-  }
-}
-function AddCollaboratorsComponent_Conditional_1_Conditional_3_For_2_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "li")(1, "div", 9)(2, "div", 10);
-    \u0275\u0275template(3, AddCollaboratorsComponent_Conditional_1_Conditional_3_For_2_ng_container_3_Template, 1, 0, "ng-container", 11);
-    \u0275\u0275elementEnd();
-    \u0275\u0275conditionalCreate(4, AddCollaboratorsComponent_Conditional_1_Conditional_3_For_2_Conditional_4_Template, 2, 6, "p-button", 12);
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    const collab_r8 = ctx.$implicit;
-    const ctx_r2 = \u0275\u0275nextContext(3);
-    const collabAvatar_r4 = \u0275\u0275reference(7);
-    \u0275\u0275advance(3);
-    \u0275\u0275property("ngTemplateOutlet", collabAvatar_r4)("ngTemplateOutletContext", \u0275\u0275pureFunction1(3, _c013, collab_r8));
-    \u0275\u0275advance();
-    \u0275\u0275conditional(ctx_r2.collaboratorService.canEditProject(ctx_r2.projectData()) ? 4 : -1);
-  }
-}
-function AddCollaboratorsComponent_Conditional_1_Conditional_3_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "ul", 7);
-    \u0275\u0275repeaterCreate(1, AddCollaboratorsComponent_Conditional_1_Conditional_3_For_2_Template, 5, 5, "li", null, _forTrack0);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance();
-    \u0275\u0275repeater(ctx_r2.collaborators());
-  }
-}
-function AddCollaboratorsComponent_Conditional_1_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "h2", 17);
-    \u0275\u0275text(1);
-    \u0275\u0275pipe(2, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275conditionalCreate(3, AddCollaboratorsComponent_Conditional_1_Conditional_3_Template, 3, 0, "ul", 7);
-  }
-  if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext();
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 2, "common.collaborators"));
-    \u0275\u0275advance(2);
-    \u0275\u0275conditional(ctx_r2.collaborators().length > 0 ? 3 : -1);
-  }
-}
-function AddCollaboratorsComponent_Conditional_2_Conditional_0_For_3_ng_container_0_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function AddCollaboratorsComponent_Conditional_2_Conditional_0_For_3_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275template(0, AddCollaboratorsComponent_Conditional_2_Conditional_0_For_3_ng_container_0_Template, 1, 0, "ng-container", 11);
-  }
-  if (rf & 2) {
-    const collab_r9 = ctx.$implicit;
-    \u0275\u0275nextContext(3);
-    const collabAvatar_r4 = \u0275\u0275reference(7);
-    \u0275\u0275property("ngTemplateOutlet", collabAvatar_r4)("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c35, collab_r9));
-  }
-}
-function AddCollaboratorsComponent_Conditional_2_Conditional_0_Conditional_4_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275element(0, "p-avatar", 20);
-    \u0275\u0275pipe(1, "translate");
-  }
-  if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext(3);
-    \u0275\u0275property("label", "+" + (ctx_r2.collaborators().length - ctx_r2.maxVisibleCollaborators).toString())("pTooltip", \u0275\u0275pipeBind2(1, 2, "collaborators.plusMore", \u0275\u0275pureFunction1(5, _c44, ctx_r2.collaborators().length - ctx_r2.maxVisibleCollaborators)));
-  }
-}
-function AddCollaboratorsComponent_Conditional_2_Conditional_0_Conditional_5_Conditional_0_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r11 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 23);
-    \u0275\u0275pipe(1, "translate");
-    \u0275\u0275listener("onClick", function AddCollaboratorsComponent_Conditional_2_Conditional_0_Conditional_5_Conditional_0_Template_p_button_onClick_0_listener() {
-      \u0275\u0275restoreView(_r11);
-      const ctx_r2 = \u0275\u0275nextContext(4);
-      return \u0275\u0275resetView(ctx_r2.openShareDialog());
-    });
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    \u0275\u0275property("pTooltip", \u0275\u0275pipeBind1(1, 1, "collaborators.addCollab"));
-  }
-}
-function AddCollaboratorsComponent_Conditional_2_Conditional_0_Conditional_5_ng_container_3_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function AddCollaboratorsComponent_Conditional_2_Conditional_0_Conditional_5_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r10 = \u0275\u0275getCurrentView();
-    \u0275\u0275conditionalCreate(0, AddCollaboratorsComponent_Conditional_2_Conditional_0_Conditional_5_Conditional_0_Template, 2, 3, "p-button", 21);
-    \u0275\u0275elementStart(1, "p-dialog", 22);
-    \u0275\u0275pipe(2, "translate");
-    \u0275\u0275twoWayListener("visibleChange", function AddCollaboratorsComponent_Conditional_2_Conditional_0_Conditional_5_Template_p_dialog_visibleChange_1_listener($event) {
-      \u0275\u0275restoreView(_r10);
-      const ctx_r2 = \u0275\u0275nextContext(3);
-      \u0275\u0275twoWayBindingSet(ctx_r2.showShareDialog, $event) || (ctx_r2.showShareDialog = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275template(3, AddCollaboratorsComponent_Conditional_2_Conditional_0_Conditional_5_ng_container_3_Template, 1, 0, "ng-container", 11);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext(3);
-    const collabAutocomplete_r5 = \u0275\u0275reference(5);
-    \u0275\u0275conditional(ctx_r2.collaboratorService.canEditProject(ctx_r2.projectData()) ? 0 : -1);
-    \u0275\u0275advance();
-    \u0275\u0275twoWayProperty("visible", ctx_r2.showShareDialog);
-    \u0275\u0275property("header", \u0275\u0275pipeBind1(2, 6, "collaborators.addCollab"))("modal", true);
-    \u0275\u0275advance(2);
-    \u0275\u0275property("ngTemplateOutlet", collabAutocomplete_r5)("ngTemplateOutletContext", \u0275\u0275pureFunction2(8, _c53, ctx_r2.addAndCloseShareDialog, ctx_r2.closeShareDialog));
-  }
-}
-function AddCollaboratorsComponent_Conditional_2_Conditional_0_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 18)(1, "p-avatar-group");
-    \u0275\u0275repeaterCreate(2, AddCollaboratorsComponent_Conditional_2_Conditional_0_For_3_Template, 1, 4, "ng-container", null, _forTrack0);
-    \u0275\u0275conditionalCreate(4, AddCollaboratorsComponent_Conditional_2_Conditional_0_Conditional_4_Template, 2, 7, "p-avatar", 20);
-    \u0275\u0275elementEnd();
-    \u0275\u0275conditionalCreate(5, AddCollaboratorsComponent_Conditional_2_Conditional_0_Conditional_5_Template, 4, 11);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance(2);
-    \u0275\u0275repeater(ctx_r2.collaborators().slice(0, ctx_r2.maxVisibleCollaborators));
-    \u0275\u0275advance(2);
-    \u0275\u0275conditional(ctx_r2.collaborators().length > ctx_r2.maxVisibleCollaborators ? 4 : -1);
-    \u0275\u0275advance();
-    \u0275\u0275conditional(ctx_r2.mode() === "dashboard" ? 5 : -1);
-  }
-}
-function AddCollaboratorsComponent_Conditional_2_Conditional_1_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "p", 19);
-    \u0275\u0275text(1);
-    \u0275\u0275pipe(2, "translate");
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 1, "common.none"));
-  }
-}
-function AddCollaboratorsComponent_Conditional_2_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275conditionalCreate(0, AddCollaboratorsComponent_Conditional_2_Conditional_0_Template, 6, 2, "div", 18)(1, AddCollaboratorsComponent_Conditional_2_Conditional_1_Template, 3, 3, "p", 19);
-  }
-  if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext();
-    \u0275\u0275conditional(ctx_r2.collaborators().length > 0 ? 0 : 1);
-  }
-}
-function AddCollaboratorsComponent_Conditional_3_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275element(0, "p-confirmdialog", 4);
-  }
-}
-function AddCollaboratorsComponent_ng_template_4_ng_template_2_ng_container_1_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function AddCollaboratorsComponent_ng_template_4_ng_template_2_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 29);
-    \u0275\u0275template(1, AddCollaboratorsComponent_ng_template_4_ng_template_2_ng_container_1_Template, 1, 0, "ng-container", 11);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const collab_r13 = ctx.$implicit;
-    \u0275\u0275nextContext(2);
-    const collabAvatar_r4 = \u0275\u0275reference(7);
-    \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", collabAvatar_r4)("ngTemplateOutletContext", \u0275\u0275pureFunction1(2, _c013, collab_r13));
-  }
-}
-function AddCollaboratorsComponent_ng_template_4_ng_template_4_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275text(0);
-  }
-  if (rf & 2) {
-    const selected_r14 = ctx.$implicit;
-    \u0275\u0275textInterpolate(selected_r14.login);
-  }
-}
-function AddCollaboratorsComponent_ng_template_4_Conditional_10_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r15 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 30);
-    \u0275\u0275pipe(1, "translate");
-    \u0275\u0275listener("onClick", function AddCollaboratorsComponent_ng_template_4_Conditional_10_Template_p_button_onClick_0_listener() {
-      \u0275\u0275restoreView(_r15);
-      const onCancel_r16 = \u0275\u0275nextContext().onCancel;
-      return \u0275\u0275resetView(onCancel_r16());
-    });
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    \u0275\u0275property("label", \u0275\u0275pipeBind1(1, 1, "common.cancel"));
-  }
-}
-function AddCollaboratorsComponent_ng_template_4_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r12 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-iftalabel")(1, "p-autocomplete", 24);
-    \u0275\u0275twoWayListener("ngModelChange", function AddCollaboratorsComponent_ng_template_4_Template_p_autocomplete_ngModelChange_1_listener($event) {
-      \u0275\u0275restoreView(_r12);
-      const ctx_r2 = \u0275\u0275nextContext();
-      \u0275\u0275twoWayBindingSet(ctx_r2.selectedCollaborators, $event) || (ctx_r2.selectedCollaborators = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("completeMethod", function AddCollaboratorsComponent_ng_template_4_Template_p_autocomplete_completeMethod_1_listener($event) {
-      \u0275\u0275restoreView(_r12);
-      const ctx_r2 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r2.filterCollaborators($event));
-    })("onDropdownClick", function AddCollaboratorsComponent_ng_template_4_Template_p_autocomplete_onDropdownClick_1_listener() {
-      \u0275\u0275restoreView(_r12);
-      const ctx_r2 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r2.onDropdownClick());
-    })("onSelect", function AddCollaboratorsComponent_ng_template_4_Template_p_autocomplete_onSelect_1_listener($event) {
-      \u0275\u0275restoreView(_r12);
-      const ctx_r2 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r2.onCollabSelect($event));
-    });
-    \u0275\u0275template(2, AddCollaboratorsComponent_ng_template_4_ng_template_2_Template, 2, 4, "ng-template", null, 2, \u0275\u0275templateRefExtractor)(4, AddCollaboratorsComponent_ng_template_4_ng_template_4_Template, 1, 1, "ng-template", null, 3, \u0275\u0275templateRefExtractor);
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(6, "label", 25);
-    \u0275\u0275text(7);
-    \u0275\u0275pipe(8, "translate");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(9, "div", 26);
-    \u0275\u0275conditionalCreate(10, AddCollaboratorsComponent_ng_template_4_Conditional_10_Template, 2, 3, "p-button", 27);
-    \u0275\u0275elementStart(11, "p-button", 28);
-    \u0275\u0275pipe(12, "translate");
-    \u0275\u0275listener("onClick", function AddCollaboratorsComponent_ng_template_4_Template_p_button_onClick_11_listener() {
-      const onAdd_r17 = \u0275\u0275restoreView(_r12).$implicit;
-      return \u0275\u0275resetView(onAdd_r17());
-    });
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    const onCancel_r16 = ctx.onCancel;
-    const ctx_r2 = \u0275\u0275nextContext();
-    \u0275\u0275advance();
-    \u0275\u0275twoWayProperty("ngModel", ctx_r2.selectedCollaborators);
-    \u0275\u0275property("appendTo", "body")("dropdown", true)("maxlength", 39)("multiple", true)("pKeyFilter", ctx_r2.collabFilter)("suggestions", ctx_r2.filteredCollaborators());
-    \u0275\u0275advance(6);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(8, 11, "collaborators.label.select"));
-    \u0275\u0275advance(3);
-    \u0275\u0275conditional(onCancel_r16 ? 10 : -1);
-    \u0275\u0275advance();
-    \u0275\u0275property("disabled", ctx_r2.selectedCollaborators.length === 0)("label", \u0275\u0275pipeBind1(12, 13, "common.add"));
-  }
-}
-function AddCollaboratorsComponent_ng_template_6_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275element(0, "p-avatar", 31);
-    \u0275\u0275text(1);
-  }
-  if (rf & 2) {
-    const collab_r18 = ctx.$implicit;
-    const showName_r19 = ctx.showName;
-    const ctx_r2 = \u0275\u0275nextContext();
-    \u0275\u0275property("image", collab_r18.avatar_url || void 0)("label", collab_r18.avatar_url ? void 0 : ctx_r2.collaboratorService.getCollaboratorInitials(collab_r18))("ngClass", ctx_r2.collaboratorService.getCollaboratorColorClass(collab_r18))("pTooltip", showName_r19 ? void 0 : ctx_r2.collaboratorService.getCollaboratorName(collab_r18));
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", showName_r19 ? ctx_r2.collaboratorService.getCollaboratorName(collab_r18) : void 0, "\n");
-  }
-}
-var AddCollaboratorsComponent = class _AddCollaboratorsComponent {
-  translate = inject(TranslateService);
-  confirmationService = inject(ConfirmationService);
-  projectState = inject(ProjectStateService);
-  collaboratorService = inject(CollaboratorService);
-  exportGitHubService = inject(ExportGitHubService);
-  /** Display modes: list, view, dashboard, or switch */
-  mode = input("list", ...ngDevMode ? [{ debugName: "mode" }] : (
-    /* istanbul ignore next */
-    []
-  ));
-  /** Only used to display collaborators for non-active projects, leave undefined for the active project */
-  collabs = input(null, ...ngDevMode ? [{ debugName: "collabs" }] : (
-    /* istanbul ignore next */
-    []
-  ));
-  maxVisibleCollaborators = 5;
-  projectData = this.projectState.getProject;
-  collaborators = computed(() => this.collabs() ?? this.projectData().collaborators, ...ngDevMode ? [{ debugName: "collaborators" }] : (
-    /* istanbul ignore next */
-    []
-  ));
-  /**  Remove collaborator (with confirmation for removing self) */
-  removeCollaborator(collab) {
-    const currentUser = this.exportGitHubService.user();
-    if (currentUser && collab.id === currentUser.id) {
-      this.confirmationService.confirm({
-        key: "collab",
-        icon: "pi pi-exclamation-triangle",
-        header: this.translate.instant("collaborators.confirm.removeSelf.header"),
-        message: this.translate.instant("collaborators.confirm.removeSelf.message"),
-        acceptButtonProps: {
-          label: this.translate.instant("collaborators.confirm.removeSelf.accept"),
-          severity: "danger"
-        },
-        rejectButtonProps: {
-          label: this.translate.instant("common.cancel"),
-          severity: "secondary",
-          outlined: true
-        },
-        accept: () => {
-          this.removeUser(collab);
-          console.warn("You removed yourself from the project. You will no longer be able to save changes to the cloud.");
-        }
-      });
-    } else {
-      this.removeUser(collab);
-    }
-  }
-  removeUser(collab) {
-    const updatedProject = this.collaboratorService.removeCollaborator(this.projectData(), collab);
-    this.projectState.setProject(updatedProject, "update");
-  }
-  // Variables for autocomplete dropdown
-  orgMembers = signal([], ...ngDevMode ? [{ debugName: "orgMembers" }] : (
-    /* istanbul ignore next */
-    []
-  ));
-  selectedCollaborators = [];
-  filteredCollaborators = signal([], ...ngDevMode ? [{ debugName: "filteredCollaborators" }] : (
-    /* istanbul ignore next */
-    []
-  ));
-  collabFilter = /^[a-zA-Z0-9-]*$/;
-  // Initialize dropdown with org members
-  constructor() {
-    effect(() => {
-      const owner = this.projectState.getGitHub().owner;
-      if (owner) {
-        this.setMembers(owner);
-      }
-    });
-  }
-  /** Populate dropdown list with members of a GitHub org */
-  setMembers(owner) {
-    return __async(this, null, function* () {
-      this.orgMembers.set(yield this.collaboratorService.getOrgMembers(owner));
-      this.filteredCollaborators.set([...this.orgMembers()]);
-    });
-  }
-  /** Filter collaborators:
-   ** show all if empty
-   ** otherwise filter by startsWith and then includes
-   ** otherwise try to fetch user
-   *
-   * Note: existing collaborators are not filtered out. This form can be used to update their user info.
-   */
-  filterCollaborators(event) {
-    return __async(this, null, function* () {
-      const query = event.query?.trim().toLowerCase().replace(/^-+|-+$/g, "").replace(/-{2,}/g, "-").substring(0, 39) || "";
-      if (query.length === 0) {
-        this.filteredCollaborators.set(this.orgMembers());
-        return;
-      }
-      const startsWith = this.orgMembers().filter((user) => user.login.toLowerCase().startsWith(query));
-      const includes = this.orgMembers().filter((user) => user.login.toLowerCase().includes(query) && !user.login.toLowerCase().startsWith(query));
-      this.filteredCollaborators.set(Array.from(/* @__PURE__ */ new Set([...startsWith, ...includes])));
-      if (this.filteredCollaborators().length === 0) {
-        const userDetails = yield this.collaboratorService.getUserDetails(query);
-        if (userDetails) {
-          this.filteredCollaborators.set([userDetails]);
-        }
-      }
-    });
-  }
-  /**  Find and update user details when a collaborator is selected (name and email will be missing initially)*/
-  onCollabSelect(event) {
-    return __async(this, null, function* () {
-      const selected = event.value;
-      if (!selected.name && !selected.email) {
-        const details = yield this.collaboratorService.getUserDetails(selected.login);
-        if (details) {
-          const index = this.selectedCollaborators.findIndex((c) => c.id === selected.id);
-          if (index !== -1) {
-            this.selectedCollaborators[index] = details;
-          }
-        }
-      }
-    });
-  }
-  /** Reset the filter */
-  onDropdownClick() {
-    this.filteredCollaborators.set([...this.orgMembers()]);
-  }
-  /** Add selected collaborators to project */
-  addSelectedCollaborators = () => {
-    if (this.selectedCollaborators.length === 0)
-      return;
-    const updatedProject = this.collaboratorService.addCollaborators(this.projectData(), this.selectedCollaborators);
-    this.projectState.setProject(updatedProject, "update");
-    this.selectedCollaborators = [];
-  };
-  // For share button (group mode)
-  showShareDialog = false;
-  openShareDialog() {
-    this.showShareDialog = true;
-  }
-  closeShareDialog = () => {
-    this.showShareDialog = false;
-    this.selectedCollaborators = [];
-  };
-  /** Add selected collaborators to project and close the share dialog */
-  addAndCloseShareDialog = () => {
-    this.addSelectedCollaborators();
-    this.closeShareDialog();
-  };
-  /** Format request access email (returns an empty string if no emails available for existing collaborators) */
-  getRequestAccessMailto() {
-    const emails = this.collaboratorService.getCollaboratorEmails(this.collaborators());
-    if (emails.length === 0)
-      return "";
-    const name = this.projectData().projectName;
-    const user = this.exportGitHubService.user();
-    const subject = this.translate.instant("collaborators.email.requestAccess.subject", { name });
-    const bodyEn = this.translate.instant("collaborators.email.requestAccess.bodyEN", { user, name });
-    const bodyFr = this.translate.instant("collaborators.email.requestAccess.bodyFR", { user, name });
-    const body = `${bodyEn}
-
-
-
-${bodyFr}`;
-    return `mailto:${emails.join(",")}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  }
-  /** Open preformated mailto in users registered mail client */
-  openMailto(mailto) {
-    window.open(mailto, "_self");
-  }
-  static \u0275fac = function AddCollaboratorsComponent_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _AddCollaboratorsComponent)();
-  };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AddCollaboratorsComponent, selectors: [["aida-add-collaborators"]], inputs: { mode: [1, "mode"], collabs: [1, "collabs"] }, decls: 8, vars: 4, consts: [["collabAutocomplete", ""], ["collabAvatar", ""], ["item", ""], ["selectedItem", ""], ["key", "collab"], [1, "text-2xl", "my-1"], ["icon", "pi pi-info-circle font-bold", "severity", "info"], [1, "list-unstyled"], ["icon", "pi pi-exclamation-triangle font-bold", "severity", "warn"], [1, "flex", "flex-row", "justify-content-between", "align-items-center", "gap-2"], [1, "flex", "align-items-center", "gap-2"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], ["icon", "pi pi-trash", "rounded", "", "severity", "danger", "text", "", 3, "pTooltip"], ["icon", "pi pi-trash", "rounded", "", "severity", "danger", "text", "", 3, "onClick", "pTooltip"], [1, "flex", "flex-row", "justify-content-between", "align-items-center"], ["icon", "pi pi-envelope", "link", "", "severity", "secondary", "size", "small", "styleClass", "mt-2", 3, "label"], ["icon", "pi pi-envelope", "link", "", "severity", "secondary", "size", "small", "styleClass", "mt-2", 3, "onClick", "label"], [1, "text-xl", "my-1"], [1, "flex", "flex-row", "align-content-center"], [1, "text-md", "my-0"], ["shape", "circle", "tooltipPosition", "top", 1, "mb-2", 3, "label", "pTooltip"], ["icon", "pi pi-share-alt", "rounded", "", "size", "small", "text", "", 3, "pTooltip"], ["styleClass", "w-12 md:w-8 lg:w-6", 3, "visibleChange", "visible", "header", "modal"], ["icon", "pi pi-share-alt", "rounded", "", "size", "small", "text", "", 3, "onClick", "pTooltip"], ["id", "collab", "fluid", "", "optionLabel", "login", "size", "small", 3, "ngModelChange", "completeMethod", "onDropdownClick", "onSelect", "ngModel", "appendTo", "dropdown", "maxlength", "multiple", "pKeyFilter", "suggestions"], ["for", "collab"], [1, "flex", "justify-content-end", "gap-2", "mt-2"], ["outlined", "", "severity", "secondary", "styleClass", "secondary-outline", 3, "label"], ["icon", "pi pi-plus", 3, "onClick", "disabled", "label"], [1, "flex", "flex-row", "gap-2", "align-items-center"], ["outlined", "", "severity", "secondary", "styleClass", "secondary-outline", 3, "onClick", "label"], ["shape", "circle", "tooltipPosition", "top", 1, "mb-2", 3, "image", "label", "ngClass", "pTooltip"]], template: function AddCollaboratorsComponent_Template(rf, ctx) {
-    if (rf & 1) {
-      \u0275\u0275conditionalCreate(0, AddCollaboratorsComponent_Conditional_0_Template, 5, 4);
-      \u0275\u0275conditionalCreate(1, AddCollaboratorsComponent_Conditional_1_Template, 4, 4);
-      \u0275\u0275conditionalCreate(2, AddCollaboratorsComponent_Conditional_2_Template, 2, 1);
-      \u0275\u0275conditionalCreate(3, AddCollaboratorsComponent_Conditional_3_Template, 1, 0, "p-confirmdialog", 4);
-      \u0275\u0275template(4, AddCollaboratorsComponent_ng_template_4_Template, 13, 15, "ng-template", null, 0, \u0275\u0275templateRefExtractor)(6, AddCollaboratorsComponent_ng_template_6_Template, 2, 5, "ng-template", null, 1, \u0275\u0275templateRefExtractor);
-    }
-    if (rf & 2) {
-      \u0275\u0275conditional(ctx.mode() === "list" ? 0 : -1);
-      \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.mode() === "view" ? 1 : -1);
-      \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.mode() === "dashboard" || ctx.mode() === "switch" ? 2 : -1);
-      \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.mode() === "list" ? 3 : -1);
-    }
-  }, dependencies: [CommonModule, NgClass, NgTemplateOutlet, FormsModule, NgControlStatus, MaxLengthValidator, NgModel, AutoCompleteModule, AutoComplete, AvatarGroupModule, AvatarGroup, AvatarModule, Avatar, ButtonModule, Button, ConfirmDialogModule, ConfirmDialog, DialogModule, Dialog, IftaLabelModule, IftaLabel, KeyFilterModule, KeyFilter, MessageModule, Message, TooltipModule, Tooltip, TranslatePipe], encapsulation: 2, changeDetection: 0 });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(AddCollaboratorsComponent, [{
-    type: Component,
-    args: [{ selector: "aida-add-collaborators", imports: [
-      CommonModule,
-      FormsModule,
-      TranslatePipe,
-      AutoCompleteModule,
-      AvatarGroupModule,
-      AvatarModule,
-      ButtonModule,
-      ConfirmDialogModule,
-      DialogModule,
-      IftaLabelModule,
-      KeyFilterModule,
-      MessageModule,
-      TooltipModule
-    ], changeDetection: ChangeDetectionStrategy.OnPush, template: `<!-- LIST MODE -->
-@if (mode() === 'list') {
-  <h2 class="text-2xl my-1">{{ 'collaborators._title' | translate }}</h2>
-  @if (collaborators().length > 0) {
-    <ul class="list-unstyled">
-      @for (collab of collaborators(); track collab.id) {
-        <li>
-          <div class="flex flex-row justify-content-between align-items-center gap-2">
-            <div class="flex align-items-center gap-2">
-              <ng-container *ngTemplateOutlet="collabAvatar; context: { $implicit: collab, showName: true }" />
-            </div>
-            @if (collaboratorService.canEditProject(projectData())) {
-              <p-button
-                [pTooltip]="'collaborators.remove' | translate: { name: collaboratorService.getCollaboratorName(collab) }"
-                (onClick)="removeCollaborator(collab)"
-                icon="pi pi-trash"
-                rounded
-                severity="danger"
-                text
-              />
-            }
-          </div>
-        </li>
-      }
-    </ul>
-    @if (collaboratorService.canEditProject(projectData())) {
-      <ng-container *ngTemplateOutlet="collabAutocomplete; context: { $implicit: addSelectedCollaborators }" />
-    } @else if (exportGitHubService.user()) {
-      <p-message icon="pi pi-exclamation-triangle font-bold" severity="warn">
-        <div class="flex flex-row justify-content-between align-items-center">
-          {{ 'collaborators.message.notCollab' | translate }}
-          @if (getRequestAccessMailto()) {
-            <p-button
-              [label]="'collaborators.button.requestAccess' | translate"
-              (onClick)="openMailto(getRequestAccessMailto())"
-              icon="pi pi-envelope"
-              link
-              severity="secondary"
-              size="small"
-              styleClass="mt-2"
-            />
-          }
-        </div>
-      </p-message>
-    } @else {
-      <p-message icon="pi pi-info-circle font-bold" severity="info">{{ 'collaborators.message.hasCollab' | translate }}</p-message>
-    }
-  } @else {
-    <p-message icon="pi pi-info-circle font-bold" severity="info">{{ 'collaborators.message.firstCollab' | translate }}</p-message>
-  }
-}
-<!--VIEW MODE-->
-@if (mode() === 'view') {
-  <h2 class="text-xl my-1">{{ 'common.collaborators' | translate }}</h2>
-  @if (collaborators().length > 0) {
-    <ul class="list-unstyled">
-      @for (collab of collaborators(); track collab.id) {
-        <li>
-          <div class="flex flex-row justify-content-between align-items-center gap-2">
-            <div class="flex align-items-center gap-2">
-              <ng-container *ngTemplateOutlet="collabAvatar; context: { $implicit: collab, showName: true }" />
-            </div>
-            @if (collaboratorService.canEditProject(projectData())) {
-              <p-button
-                [pTooltip]="'collaborators.remove' | translate: { name: collaboratorService.getCollaboratorName(collab) }"
-                (onClick)="removeCollaborator(collab)"
-                icon="pi pi-trash"
-                rounded
-                severity="danger"
-                text
-              />
-            }
-          </div>
-        </li>
-      }
-    </ul>
-  }
-}
-<!-- GROUP MODE -->
-@if (mode() === 'dashboard' || mode() === 'switch') {
-  @if (collaborators().length > 0) {
-    <div class="flex flex-row align-content-center">
-      <p-avatar-group>
-        @for (collab of collaborators().slice(0, maxVisibleCollaborators); track collab.id) {
-          <ng-container *ngTemplateOutlet="collabAvatar; context: { $implicit: collab, showName: false }" />
-        }
-        @if (collaborators().length > maxVisibleCollaborators) {
-          <p-avatar
-            [label]="'+' + (collaborators().length - maxVisibleCollaborators).toString()"
-            [pTooltip]="'collaborators.plusMore' | translate: { number: collaborators().length - maxVisibleCollaborators }"
-            class="mb-2"
-            shape="circle"
-            tooltipPosition="top"
-          />
-        }
-      </p-avatar-group>
-      @if (mode() === 'dashboard') {
-        @if (collaboratorService.canEditProject(projectData())) {
-          <p-button [pTooltip]="'collaborators.addCollab' | translate" (onClick)="openShareDialog()" icon="pi pi-share-alt" rounded size="small" text />
-        }
-        <p-dialog [(visible)]="showShareDialog" [header]="'collaborators.addCollab' | translate" [modal]="true" styleClass="w-12 md:w-8 lg:w-6">
-          <ng-container *ngTemplateOutlet="collabAutocomplete; context: { $implicit: addAndCloseShareDialog, onCancel: closeShareDialog }" />
-        </p-dialog>
-      }
-    </div>
-  } @else {
-    <p class="text-md my-0">{{ 'common.none' | translate }}</p>
-  }
-}
-
-<!--Confirmation dialog-->
-@if (mode() === 'list') {
-  <p-confirmdialog key="collab" />
-}
-
-<!--Autocomplete dropdown template-->
-<ng-template #collabAutocomplete let-onAdd let-onCancel="onCancel">
-  <p-iftalabel>
-    <p-autocomplete
-      id="collab"
-      [(ngModel)]="selectedCollaborators"
-      [appendTo]="'body'"
-      [dropdown]="true"
-      [maxlength]="39"
-      [multiple]="true"
-      [pKeyFilter]="collabFilter"
-      [suggestions]="filteredCollaborators()"
-      (completeMethod)="filterCollaborators($event)"
-      (onDropdownClick)="onDropdownClick()"
-      (onSelect)="onCollabSelect($event)"
-      fluid
-      optionLabel="login"
-      size="small"
-    >
-      <ng-template #item let-collab>
-        <div class="flex flex-row gap-2 align-items-center">
-          <ng-container *ngTemplateOutlet="collabAvatar; context: { $implicit: collab, showName: true }" />
-        </div>
-      </ng-template>
-      <ng-template #selectedItem let-selected>{{ selected.login }}</ng-template>
-    </p-autocomplete>
-    <label for="collab">{{ 'collaborators.label.select' | translate }}</label>
-  </p-iftalabel>
-  <div class="flex justify-content-end gap-2 mt-2">
-    @if (onCancel) {
-      <p-button [label]="'common.cancel' | translate" (onClick)="onCancel()" outlined severity="secondary" styleClass="secondary-outline" />
-    }
-    <p-button [disabled]="selectedCollaborators.length === 0" [label]="'common.add' | translate" (onClick)="onAdd()" icon="pi pi-plus" />
-  </div>
-</ng-template>
-
-<!--Avatar template-->
-<ng-template #collabAvatar let-collab let-showName="showName">
-  <p-avatar
-    [image]="collab.avatar_url || undefined"
-    [label]="collab.avatar_url ? undefined : collaboratorService.getCollaboratorInitials(collab)"
-    [ngClass]="collaboratorService.getCollaboratorColorClass(collab)"
-    [pTooltip]="showName ? undefined : collaboratorService.getCollaboratorName(collab)"
-    class="mb-2"
-    shape="circle"
-    tooltipPosition="top"
-  />
-  {{ showName ? collaboratorService.getCollaboratorName(collab) : undefined }}
-</ng-template>
-` }]
-  }], () => [], { mode: [{ type: Input, args: [{ isSignal: true, alias: "mode", required: false }] }], collabs: [{ type: Input, args: [{ isSignal: true, alias: "collabs", required: false }] }] });
-})();
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AddCollaboratorsComponent, { className: "AddCollaboratorsComponent", filePath: "src/app/components/add-collaborators/add-collaborators.component.ts", lineNumber: 52 });
-})();
-
-// src/app/components/setup-project/setup-project.component.ts
-var _c014 = (a0) => ({ user: a0 });
-function SetupProjectComponent_Conditional_0_ng_container_4_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function SetupProjectComponent_Conditional_0_ng_template_7_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275text(0);
-    \u0275\u0275pipe(1, "translate");
-  }
-  if (rf & 2) {
-    const item_r3 = ctx.$implicit;
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(1, 1, item_r3.name), " ");
-  }
-}
-function SetupProjectComponent_Conditional_0_ng_template_9_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275text(0);
-    \u0275\u0275pipe(1, "translate");
-  }
-  if (rf & 2) {
-    const item_r4 = ctx.$implicit;
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(1, 1, item_r4.name), " ");
-  }
-}
-function SetupProjectComponent_Conditional_0_ng_template_15_Conditional_0_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r5 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "aida-sign-in-button", 14, 3)(2, "div", 16);
-    \u0275\u0275listener("click", function SetupProjectComponent_Conditional_0_ng_template_15_Conditional_0_Template_div_click_2_listener($event) {
-      \u0275\u0275restoreView(_r5);
-      const signIn_r6 = \u0275\u0275reference(1);
-      const item_r7 = \u0275\u0275nextContext().$implicit;
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      $event.stopPropagation();
-      signIn_r6.connectGitHub();
-      return \u0275\u0275resetView(ctx_r1.pendingCloudToggle(item_r7.value));
-    })("keydown.enter", function SetupProjectComponent_Conditional_0_ng_template_15_Conditional_0_Template_div_keydown_enter_2_listener($event) {
-      \u0275\u0275restoreView(_r5);
-      const signIn_r6 = \u0275\u0275reference(1);
-      const item_r7 = \u0275\u0275nextContext().$implicit;
-      const ctx_r1 = \u0275\u0275nextContext(2);
-      $event.stopPropagation();
-      signIn_r6.connectGitHub();
-      return \u0275\u0275resetView(ctx_r1.pendingCloudToggle(item_r7.value));
-    });
-    \u0275\u0275element(3, "i");
-    \u0275\u0275elementStart(4, "span");
+    \u0275\u0275elementStart(4, "p", 17);
     \u0275\u0275text(5);
     \u0275\u0275pipe(6, "translate");
-    \u0275\u0275elementStart(7, "span", 17);
-    \u0275\u0275text(8);
-    \u0275\u0275pipe(9, "translate");
-    \u0275\u0275pipe(10, "translate");
-    \u0275\u0275elementEnd()()()();
-  }
-  if (rf & 2) {
-    const item_r7 = \u0275\u0275nextContext().$implicit;
-    \u0275\u0275property("customContent", true);
-    \u0275\u0275advance(3);
-    \u0275\u0275classMap(item_r7.icon);
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(6, 6, "project.setup.signInTo"), " ");
-    \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind1(9, 8, "project.setup.saveTo"), " ", \u0275\u0275pipeBind1(10, 10, item_r7.name));
-  }
-}
-function SetupProjectComponent_Conditional_0_ng_template_15_Conditional_1_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 15);
-    \u0275\u0275element(1, "i");
-    \u0275\u0275elementStart(2, "span");
-    \u0275\u0275text(3);
-    \u0275\u0275pipe(4, "translate");
-    \u0275\u0275elementStart(5, "span", 17);
-    \u0275\u0275text(6);
-    \u0275\u0275pipe(7, "translate");
-    \u0275\u0275elementEnd()()();
-  }
-  if (rf & 2) {
-    const item_r7 = \u0275\u0275nextContext().$implicit;
-    \u0275\u0275advance();
-    \u0275\u0275classMap(item_r7.icon);
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(4, 4, "project.setup.saveTo"), " ");
-    \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(7, 6, item_r7.name));
-  }
-}
-function SetupProjectComponent_Conditional_0_ng_template_15_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275conditionalCreate(0, SetupProjectComponent_Conditional_0_ng_template_15_Conditional_0_Template, 11, 12, "aida-sign-in-button", 14)(1, SetupProjectComponent_Conditional_0_ng_template_15_Conditional_1_Template, 8, 8, "div", 15);
-  }
-  if (rf & 2) {
-    const item_r7 = ctx.$implicit;
-    \u0275\u0275conditional(item_r7.signin ? 0 : 1);
-  }
-}
-function SetupProjectComponent_Conditional_0_Conditional_21_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275element(0, "aida-sign-in-button", 11);
-    \u0275\u0275pipe(1, "translate");
-  }
-  if (rf & 2) {
-    \u0275\u0275property("customText", \u0275\u0275pipeBind1(1, 1, "project.setup.storage.signInWarning"));
-  }
-}
-function SetupProjectComponent_Conditional_0_Conditional_22_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "p-message", 12);
-    \u0275\u0275text(1);
-    \u0275\u0275pipe(2, "translate");
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 1, "project.setup.storage.notCollabWarning"));
-  }
-}
-function SetupProjectComponent_Conditional_0_Conditional_23_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "p-message", 13);
-    \u0275\u0275text(1);
-    \u0275\u0275pipe(2, "translate");
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(2, 1, "project.setup.storage.lockedWarning", \u0275\u0275pureFunction1(4, _c014, ctx_r1.projectData.lockedBy)));
-  }
-}
-function SetupProjectComponent_Conditional_0_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r1 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "h2", 4);
-    \u0275\u0275text(1);
-    \u0275\u0275pipe(2, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "div", 5);
-    \u0275\u0275template(4, SetupProjectComponent_Conditional_0_ng_container_4_Template, 1, 0, "ng-container", 6);
-    \u0275\u0275elementStart(5, "p-iftalabel")(6, "p-select", 7);
-    \u0275\u0275twoWayListener("ngModelChange", function SetupProjectComponent_Conditional_0_Template_p_select_ngModelChange_6_listener($event) {
-      \u0275\u0275restoreView(_r1);
-      const ctx_r1 = \u0275\u0275nextContext();
-      \u0275\u0275twoWayBindingSet(ctx_r1.projectPhase, $event) || (ctx_r1.projectPhase = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275template(7, SetupProjectComponent_Conditional_0_ng_template_7_Template, 2, 3, "ng-template", null, 1, \u0275\u0275templateRefExtractor)(9, SetupProjectComponent_Conditional_0_ng_template_9_Template, 2, 3, "ng-template", null, 2, \u0275\u0275templateRefExtractor);
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(11, "label", 8);
-    \u0275\u0275text(12);
-    \u0275\u0275pipe(13, "translate");
+    \u0275\u0275pipe(7, "date");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(14, "p-selectbutton", 9);
-    \u0275\u0275listener("ngModelChange", function SetupProjectComponent_Conditional_0_Template_p_selectbutton_ngModelChange_14_listener($event) {
-      \u0275\u0275restoreView(_r1);
-      const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.setProjectStorage($event));
-    });
-    \u0275\u0275template(15, SetupProjectComponent_Conditional_0_ng_template_15_Template, 2, 1, "ng-template", null, 1, \u0275\u0275templateRefExtractor);
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(17, "p-message", 10);
-    \u0275\u0275text(18);
-    \u0275\u0275pipe(19, "translate");
-    \u0275\u0275pipe(20, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275conditionalCreate(21, SetupProjectComponent_Conditional_0_Conditional_21_Template, 2, 3, "aida-sign-in-button", 11)(22, SetupProjectComponent_Conditional_0_Conditional_22_Template, 3, 3, "p-message", 12)(23, SetupProjectComponent_Conditional_0_Conditional_23_Template, 3, 6, "p-message", 13);
-    \u0275\u0275elementEnd();
+    \u0275\u0275conditionalCreate(8, HomeComponent_Conditional_3_Conditional_7_Conditional_8_Template, 2, 4, "p-button", 18)(9, HomeComponent_Conditional_3_Conditional_7_Conditional_9_Template, 2, 3, "p-button", 19);
   }
   if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext();
-    const name_r8 = \u0275\u0275reference(3);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 10, "project.setup._title"));
+    const info_r3 = ctx;
+    const ctx_r0 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 4, info_r3.title));
     \u0275\u0275advance(3);
-    \u0275\u0275property("ngTemplateOutlet", name_r8);
-    \u0275\u0275advance(2);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.projectPhase);
-    \u0275\u0275property("options", ctx_r1.phaseOptions);
-    \u0275\u0275advance(6);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(13, 12, "project.setup.label.phase"));
-    \u0275\u0275advance(2);
-    \u0275\u0275property("ngModel", ctx_r1.projectStorage())("options", ctx_r1.storageOptions())("unselectable", true);
+    \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind1(6, 6, "switch.label.modified"), " ", \u0275\u0275pipeBind1(7, 8, info_r3.lastModified));
+    \u0275\u0275advance(3);
+    \u0275\u0275conditional(ctx_r0.projectStorageService.currentActive() ? 8 : 9);
+  }
+}
+function HomeComponent_Conditional_3_Conditional_8_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 14);
+    \u0275\u0275element(1, "i", 21);
+    \u0275\u0275elementEnd();
+  }
+}
+function HomeComponent_Conditional_3_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 2)(1, "div", 11)(2, "div", 12)(3, "h2", 5);
+    \u0275\u0275text(4);
+    \u0275\u0275pipe(5, "translate");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(6, "div", 13);
+    \u0275\u0275conditionalCreate(7, HomeComponent_Conditional_3_Conditional_7_Template, 10, 10)(8, HomeComponent_Conditional_3_Conditional_8_Template, 2, 0, "div", 14);
+    \u0275\u0275elementEnd()();
+    \u0275\u0275element(9, "img", 15);
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    let tmp_2_0;
+    const ctx_r0 = \u0275\u0275nextContext();
     \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate(ctx_r1.projectStorage() === "local" ? \u0275\u0275pipeBind1(19, 14, "project.setup.storage.localWarning") : \u0275\u0275pipeBind1(20, 16, "project.setup.storage.cloudInfo"));
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(5, 2, "home.header.resumeWork"));
     \u0275\u0275advance(3);
-    \u0275\u0275conditional(ctx_r1.uploadAccess === "signIn" ? 21 : ctx_r1.uploadAccess === "notCollab" ? 22 : ctx_r1.uploadAccess === "locked" ? 23 : -1);
+    \u0275\u0275conditional((tmp_2_0 = ctx_r0.projectInfo.value()) ? 7 : ctx_r0.projectInfo.isLoading() ? 8 : -1, tmp_2_0);
   }
 }
-function SetupProjectComponent_Conditional_1_ng_container_0_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementContainer(0);
-  }
-}
-function SetupProjectComponent_Conditional_1_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275template(0, SetupProjectComponent_Conditional_1_ng_container_0_Template, 1, 0, "ng-container", 6);
-  }
-  if (rf & 2) {
-    \u0275\u0275nextContext();
-    const name_r8 = \u0275\u0275reference(3);
-    \u0275\u0275property("ngTemplateOutlet", name_r8);
-  }
-}
-function SetupProjectComponent_ng_template_2_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r9 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-iftalabel")(1, "input", 18);
-    \u0275\u0275twoWayListener("ngModelChange", function SetupProjectComponent_ng_template_2_Template_input_ngModelChange_1_listener($event) {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext();
-      \u0275\u0275twoWayBindingSet(ctx_r1.projectName, $event) || (ctx_r1.projectName = $event);
-      return \u0275\u0275resetView($event);
-    });
-    \u0275\u0275listener("blur", function SetupProjectComponent_ng_template_2_Template_input_blur_1_listener() {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.updateName());
-    });
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(2, "label", 19);
-    \u0275\u0275text(3);
-    \u0275\u0275pipe(4, "translate");
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext();
-    \u0275\u0275advance();
-    \u0275\u0275twoWayProperty("ngModel", ctx_r1.projectName);
-    \u0275\u0275property("pKeyFilter", ctx_r1.nameFilter);
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 3, "project.setup.label.name"));
-  }
-}
-var SetupProjectComponent = class _SetupProjectComponent {
-  projectState = inject(ProjectStateService);
-  collaboratorService = inject(CollaboratorService);
-  router = inject(Router);
+var HomeComponent = class _HomeComponent {
   translate = inject(TranslateService);
-  mode = input(void 0, ...ngDevMode ? [{ debugName: "mode" }] : (
+  projectState = inject(ProjectStateService);
+  settingsService = inject(UserSettingsService);
+  collaboratorService = inject(CollaboratorService);
+  projectStorageService = inject(ProjectStorageService);
+  AidaLinks = AidaLinks;
+  title = signal(this.translate.instant("home._title", { org: "" }), ...ngDevMode ? [{ debugName: "title" }] : (
     /* istanbul ignore next */
     []
   ));
+  taskDoormats = ["dashboard", "problems", "iaDiagram", "inventory", "search", "metadata", "exportPages", "editPages", "compare"];
+  settingsDoormats = ["setupProject", "addPages"];
+  helpDoormats = ["help", "contact"];
+  showProject = computed(() => this.projectStorageService.hasActiveProject("session") || this.projectStorageService.hasActiveProject("local"), ...ngDevMode ? [{ debugName: "showProject" }] : (
+    /* istanbul ignore next */
+    []
+  ));
+  projectInfo = resource(__spreadProps(__spreadValues({}, ngDevMode ? { debugName: "projectInfo" } : (
+    /* istanbul ignore next */
+    {}
+  )), {
+    params: () => this.projectStorageService.currentActive() ?? this.projectStorageService.lastActive() ?? void 0,
+    loader: (_0) => __async(this, [_0], function* ({ params: project }) {
+      const data = yield this.projectStorageService.loadProjectData(project.key, project.storageType);
+      if (!data) {
+        this.projectStorageService.clearActiveProject();
+        return void 0;
+      }
+      const projectName = data.projectName || "common.autosave";
+      return { title: projectName, lastModified: data.lastModified };
+    })
+  }));
+  // Load previously active project
+  loadProject() {
+    return __async(this, null, function* () {
+      const active = this.projectStorageService.getActiveProject("local");
+      if (!active)
+        return;
+      console.log(`Attempting to load active project: ${active.key} from ${active.storageType}`);
+      try {
+        const project = yield this.projectStorageService.loadProject(active.key, active.storageType);
+        if (project) {
+          yield this.projectState.setProject(project, "load");
+          console.log(`Project loaded successfully: ${active.key}`);
+        } else {
+          console.error(`Failed to load project: ${active.key}`);
+          this.projectStorageService.clearActiveProject();
+        }
+      } catch (error) {
+        console.error(`Error loading active project: ${active.key}`, error);
+        this.projectStorageService.clearActiveProject();
+      }
+    });
+  }
   constructor() {
     effect(() => {
-      const stateRepo = this.projectData.github.repo;
-      this.projectName = this.projectData.projectName;
+      void this.settingsService.userId();
+      void this.settingsService.org();
+      this.getTitle();
     });
   }
-  //Project data
-  get projectData() {
-    return this.projectState.getProject();
+  getTitle() {
+    return __async(this, null, function* () {
+      const user = yield this.collaboratorService.getLogin(this.settingsService.userId());
+      const org = this.settingsService.org();
+      if (Number.isNaN(Number(user)) && !user.startsWith("user_")) {
+        this.title.set(this.translate.instant("home._title.user", { user }));
+      } else
+        this.title.set(this.translate.instant("home._title", { org }));
+    });
   }
-  //Name input
-  projectName = this.projectData.projectName;
-  nameFilter = /^[a-zA-Z0-9-._ :']*$/;
-  updateName() {
-    this.projectName = this.projectName.trim().replace(/^[-._ :']+|[-._ :']+$/g, "").replace(/[-]{2,}/g, "-").replace(/[.]{2,}/g, ".").replace(/[_]{2,}/g, "_").replace(/\s+/g, " ").replace(/[:]{2,}/g, ":").replace(/[']{2,}/g, "'");
-    this.projectState.setProjectName(this.projectName);
-    if (this.router.url === "/project/new" && this.projectName) {
-      this.router.navigate(["/project/edit"]);
-    }
-  }
-  //Phase dropdown
-  get projectPhase() {
-    return this.projectData.phase;
-  }
-  set projectPhase(value) {
-    this.projectState.setProjectPhase(value);
-  }
-  markForTranslation() {
-    marker("project.setup.storage.local");
-    marker("project.setup.storage.cloud");
-    marker("project.phase.approve");
-    marker("project.phase.assess");
-    marker("project.phase.complete");
-    marker("project.phase.design");
-    marker("project.phase.discover");
-    marker("project.phase.draft");
-    marker("project.phase.status.complete");
-    marker("project.phase.status.current");
-    marker("project.phase.status.pending");
-  }
-  phaseOptions = [
-    { name: ProjectPhase.Draft, value: ProjectPhase.Draft },
-    { name: ProjectPhase.Discover, value: ProjectPhase.Discover },
-    { name: ProjectPhase.Assess, value: ProjectPhase.Assess },
-    { name: ProjectPhase.Design, value: ProjectPhase.Design },
-    { name: ProjectPhase.Approve, value: ProjectPhase.Approve },
-    { name: ProjectPhase.Complete, value: ProjectPhase.Complete }
-  ];
-  //Storage select button
-  projectStorage = computed(() => this.projectData.storageType, ...ngDevMode ? [{ debugName: "projectStorage" }] : (
-    /* istanbul ignore next */
-    []
-  ));
-  setProjectStorage(value) {
-    if (this.uploadAccess && value === "cloud") {
-      return;
-    }
-    this.projectState.setStorageType(value);
-  }
-  storageOptions = computed(() => [
-    { name: "project.setup.storage.local", value: "local", icon: "pi pi-desktop" },
-    {
-      name: "project.setup.storage.cloud",
-      value: "cloud",
-      icon: "pi pi-cloud",
-      disabled: this.uploadAccess === "notCollab" || this.uploadAccess === "locked",
-      signin: this.uploadAccess === "signIn"
-    }
-  ], ...ngDevMode ? [{ debugName: "storageOptions" }] : (
-    /* istanbul ignore next */
-    []
-  ));
-  get uploadAccess() {
-    const { isSignedIn, isCollaborator, hasCollaborators, isLocked } = this.collaboratorService.getUploadAccessInfo(this.projectState.getProject());
-    const cantUploadToCloud = !isCollaborator && hasCollaborators ? this.translate.instant("project.global.cantUpload") : void 0;
-    const isLockedByOther = !!(isLocked && isLocked !== "byMe");
-    if (cantUploadToCloud)
-      return "notCollab";
-    else if (!isSignedIn)
-      return "signIn";
-    else if (isLockedByOther)
-      return "locked";
-    else
-      return void 0;
-  }
-  pendingCloudToggle(value) {
-    localStorage.setItem("pendingStorageSwitch", value);
-  }
-  static \u0275fac = function SetupProjectComponent_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _SetupProjectComponent)();
+  static \u0275fac = function HomeComponent_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _HomeComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SetupProjectComponent, selectors: [["aida-setup-project"]], inputs: { mode: [1, "mode"] }, decls: 4, vars: 1, consts: [["name", ""], ["item", ""], ["selectedItem", ""], ["signIn", ""], [1, "text-2xl", "my-1"], [1, "flex", "flex-column", "gap-2"], [4, "ngTemplateOutlet"], ["fluid", "", "inputId", "phase", "optionValue", "value", "styleClass", "w-full", 3, "ngModelChange", "ngModel", "options"], ["for", "phase"], ["optionValue", "value", "styleClass", "w-full p-0", 3, "ngModelChange", "ngModel", "options", "unselectable"], ["icon", "pi pi-info-circle", "severity", "info", "size", "small", "variant", "simple"], [3, "customText"], ["icon", "pi pi-exclamation-circle", "severity", "error"], ["icon", "pi pi-exclamation-triangle", "severity", "warn"], [3, "customContent"], [1, "flex", "gap-2", "p-2", "align-items-center"], ["tabindex", "0", 1, "flex", "gap-2", "p-2", "align-items-center", 3, "click", "keydown.enter"], [1, "lowercase"], ["id", "name", "fluid", "", "pInputText", "", "type", "text", 3, "ngModelChange", "blur", "ngModel", "pKeyFilter"], ["for", "name"]], template: function SetupProjectComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _HomeComponent, selectors: [["aida-home"]], decls: 29, vars: 38, consts: [["id", "wb-cont", 1, "text-primary", "noline"], [1, "flex", "flex-column", "gap-2"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "min-w-min"], [1, "flex", "flex-column", "lg:flex-row", "justify-content-between", "gap-2"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "min-w-min", "flex-1"], [1, "mt-0"], [1, "lg:p-4", "min-w-min", "flex", "flex-column", "gap-2"], ["fluid", "", 1, "lg:w-18rem", "white-space-nowrap", 3, "label", "outlined", "routerLink"], ["fluid", "", "outlined", "", 1, "lg:w-18rem", "white-space-nowrap", 3, "label", "routerLink"], [1, "mb-0"], [3, "headingLevel", "keys"], [1, "flex", "justify-content-between"], [1, "flex-1"], [1, "flex", "flex-column", "lg:flex-row", "gap-2", "justify-content-between", "surface-ground", "border-round-lg", "shadow-2", "p-4", "min-w-min", "flex-1"], [1, "p-2", "text-center", "h-3rem"], ["src", "images/laptop-preview.webp", 1, "opacity-80", "w-17rem", "h-9rem", "pl-4", "hidden", "lg:flex", "align-self-center", 3, "alt"], [1, "m-0", "text-xl"], [1, "m-0", "text-color-secondary", "text-sm"], ["fluid", "", 1, "white-space-nowrap", "lg:w-18rem", 3, "label", "routerLink"], ["fluid", "", 1, "white-space-nowrap", "lg:w-18rem", 3, "label"], ["fluid", "", 1, "white-space-nowrap", "lg:w-18rem", 3, "onClick", "label"], [1, "pi", "pi-spinner", "pi-spin", "text-5xl", "text-primary"]], template: function HomeComponent_Template(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275conditionalCreate(0, SetupProjectComponent_Conditional_0_Template, 24, 18)(1, SetupProjectComponent_Conditional_1_Template, 1, 1, "ng-container");
-      \u0275\u0275template(2, SetupProjectComponent_ng_template_2_Template, 5, 5, "ng-template", null, 0, \u0275\u0275templateRefExtractor);
+      \u0275\u0275elementStart(0, "h1", 0);
+      \u0275\u0275text(1);
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(2, "div", 1);
+      \u0275\u0275conditionalCreate(3, HomeComponent_Conditional_3_Template, 10, 4, "div", 2);
+      \u0275\u0275elementStart(4, "div", 3)(5, "div", 4)(6, "h2", 5);
+      \u0275\u0275text(7);
+      \u0275\u0275pipe(8, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(9, "p");
+      \u0275\u0275text(10);
+      \u0275\u0275pipe(11, "translate");
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(12, "div", 6);
+      \u0275\u0275element(13, "p-button", 7);
+      \u0275\u0275pipe(14, "translate");
+      \u0275\u0275element(15, "p-button", 8);
+      \u0275\u0275pipe(16, "translate");
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(17, "h2", 9);
+      \u0275\u0275text(18);
+      \u0275\u0275pipe(19, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275element(20, "aida-doormats", 10);
+      \u0275\u0275elementStart(21, "h2", 9);
+      \u0275\u0275text(22);
+      \u0275\u0275pipe(23, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275element(24, "aida-doormats", 10);
+      \u0275\u0275elementStart(25, "h2", 9);
+      \u0275\u0275text(26);
+      \u0275\u0275pipe(27, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275element(28, "aida-doormats", 10);
+      \u0275\u0275elementEnd();
     }
     if (rf & 2) {
-      \u0275\u0275conditional(!ctx.mode() ? 0 : ctx.mode() === "name" ? 1 : -1);
+      \u0275\u0275advance();
+      \u0275\u0275textInterpolate(ctx.title());
+      \u0275\u0275advance(2);
+      \u0275\u0275conditional(ctx.showProject() ? 3 : -1);
+      \u0275\u0275advance(4);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(8, 24, "home.aida.header"));
+      \u0275\u0275advance(3);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(11, 26, "home.aida.description"));
+      \u0275\u0275advance(3);
+      \u0275\u0275property("label", \u0275\u0275pipeBind1(14, 28, "project.startNew"))("outlined", ctx.showProject())("routerLink", ctx.AidaLinks.NewProject);
+      \u0275\u0275advance(2);
+      \u0275\u0275property("label", \u0275\u0275pipeBind1(16, 30, "switch.viewAll"))("routerLink", ctx.AidaLinks.AllProjects);
+      \u0275\u0275advance(3);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(19, 32, "home.header.taskDoormats"));
+      \u0275\u0275advance(2);
+      \u0275\u0275styleMap("card");
+      \u0275\u0275property("headingLevel", "h3")("keys", ctx.taskDoormats);
+      \u0275\u0275advance(2);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(23, 34, "home.header.settingsDoormats"));
+      \u0275\u0275advance(2);
+      \u0275\u0275styleMap("card");
+      \u0275\u0275property("headingLevel", "h3")("keys", ctx.settingsDoormats);
+      \u0275\u0275advance(2);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(27, 36, "home.header.helpDoormats"));
+      \u0275\u0275advance(2);
+      \u0275\u0275styleMap("card");
+      \u0275\u0275property("headingLevel", "h3")("keys", ctx.helpDoormats);
     }
-  }, dependencies: [CommonModule, NgTemplateOutlet, FormsModule, DefaultValueAccessor, NgControlStatus, NgModel, IftaLabelModule, IftaLabel, InputTextModule, InputText, KeyFilterModule, KeyFilter, MessageModule, Message, SelectButtonModule, SelectButton, SelectModule, Select, SignInButtonComponent, TranslatePipe], encapsulation: 2, changeDetection: 0 });
+  }, dependencies: [CommonModule, RouterLink, ButtonModule, Button, DoormatsComponent, DatePipe, TranslatePipe], encapsulation: 2, changeDetection: 0 });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(SetupProjectComponent, [{
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(HomeComponent, [{
     type: Component,
-    args: [{ selector: "aida-setup-project", imports: [CommonModule, FormsModule, TranslatePipe, IftaLabelModule, InputTextModule, KeyFilterModule, MessageModule, SelectButtonModule, SelectModule, SignInButtonComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: `@if (!mode()) {
-  <h2 class="text-2xl my-1">{{ 'project.setup._title' | translate }}</h2>
-  <div class="flex flex-column gap-2">
-    <!--Name-->
-    <ng-container *ngTemplateOutlet="name" />
-    <!--Phase-->
-    <p-iftalabel>
-      <p-select [(ngModel)]="projectPhase" [options]="phaseOptions" fluid inputId="phase" optionValue="value" styleClass="w-full">
-        <ng-template #item let-item>
-          {{ item.name | translate }}
-        </ng-template>
-        <ng-template #selectedItem let-item>
-          {{ item.name | translate }}
-        </ng-template>
-      </p-select>
-      <label for="phase">{{ 'project.setup.label.phase' | translate }}</label>
-    </p-iftalabel>
-    <!--Storage-->
-    <p-selectbutton [ngModel]="projectStorage()" [options]="storageOptions()" [unselectable]="true" (ngModelChange)="setProjectStorage($event)" optionValue="value" styleClass="w-full p-0">
-      <ng-template #item let-item>
-        @if (item.signin) {
-          <aida-sign-in-button [customContent]="true" #signIn>
-            <div
-              (click)="$event.stopPropagation(); signIn.connectGitHub(); pendingCloudToggle(item.value)"
-              (keydown.enter)="$event.stopPropagation(); signIn.connectGitHub(); pendingCloudToggle(item.value)"
-              class="flex gap-2 p-2 align-items-center"
-              tabindex="0"
-            >
-              <i [class]="item.icon"></i>
-              <span>
-                {{ 'project.setup.signInTo' | translate }} <span class="lowercase">{{ 'project.setup.saveTo' | translate }} {{ item.name | translate }}</span>
-              </span>
-            </div>
-          </aida-sign-in-button>
-        } @else {
-          <div class="flex gap-2 p-2 align-items-center">
-            <i [class]="item.icon"></i>
-            <span>
-              {{ 'project.setup.saveTo' | translate }} <span class="lowercase">{{ item.name | translate }}</span>
-            </span>
+    args: [{ selector: "aida-home", imports: [CommonModule, RouterLink, TranslatePipe, ButtonModule, DoormatsComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: `<h1 id="wb-cont" class="text-primary noline">{{ title() }}</h1>
+<div class="flex flex-column gap-2">
+  <!--RETURNING USER-->
+  @if (showProject()) {
+    <div class="surface-card border-round-lg shadow-2 p-4 min-w-min">
+      <div class="flex justify-content-between">
+        <div class="flex-1">
+          <h2 class="mt-0">{{ 'home.header.resumeWork' | translate }}</h2>
+          <div class="flex flex-column lg:flex-row gap-2 justify-content-between surface-ground border-round-lg shadow-2 p-4 min-w-min flex-1">
+            @if (projectInfo.value(); as info) {
+              <div>
+                <h3 class="m-0 text-xl">{{ info.title | translate }}</h3>
+                <p class="m-0 text-color-secondary text-sm">{{ 'switch.label.modified' | translate }} {{ info.lastModified | date }}</p>
+              </div>
+              @if (projectStorageService.currentActive()) {
+                <p-button [label]="'project.goDashboard' | translate" [routerLink]="AidaLinks.ProjectDashboard" class="white-space-nowrap lg:w-18rem" fluid />
+              } @else {
+                <p-button [label]="'project.load' | translate" (onClick)="loadProject()" class="white-space-nowrap lg:w-18rem" fluid />
+              }
+            } @else if (projectInfo.isLoading()) {
+              <div class="p-2 text-center h-3rem">
+                <i class="pi pi-spinner pi-spin text-5xl text-primary"></i>
+              </div>
+            }
           </div>
-        }
-      </ng-template>
-    </p-selectbutton>
-    <p-message icon="pi pi-info-circle" severity="info" size="small" variant="simple">{{
-      projectStorage() === 'local' ? ('project.setup.storage.localWarning' | translate) : ('project.setup.storage.cloudInfo' | translate)
-    }}</p-message>
-
-    @if (uploadAccess === 'signIn') {
-      <aida-sign-in-button [customText]="'project.setup.storage.signInWarning' | translate" />
-    } @else if (uploadAccess === 'notCollab') {
-      <p-message icon="pi pi-exclamation-circle" severity="error">{{ 'project.setup.storage.notCollabWarning' | translate }}</p-message>
-    } @else if (uploadAccess === 'locked') {
-      <p-message icon="pi pi-exclamation-triangle" severity="warn">{{ 'project.setup.storage.lockedWarning' | translate: { user: projectData.lockedBy } }}</p-message>
-    }
+        </div>
+        <img [alt]="" class="opacity-80 w-17rem h-9rem pl-4 hidden lg:flex align-self-center" src="images/laptop-preview.webp" />
+      </div>
+    </div>
+  }
+  <!--ALL USERS-->
+  <div class="flex flex-column lg:flex-row justify-content-between gap-2">
+    <div class="surface-card border-round-lg shadow-2 p-4 min-w-min flex-1">
+      <h2 class="mt-0">{{ 'home.aida.header' | translate }}</h2>
+      <p>{{ 'home.aida.description' | translate }}</p>
+    </div>
+    <div class="lg:p-4 min-w-min flex flex-column gap-2">
+      <p-button [label]="'project.startNew' | translate" [outlined]="showProject()" [routerLink]="AidaLinks.NewProject" class="lg:w-18rem white-space-nowrap" fluid />
+      <p-button [label]="'switch.viewAll' | translate" [routerLink]="AidaLinks.AllProjects" class="lg:w-18rem white-space-nowrap" fluid outlined />
+    </div>
   </div>
-} @else if (mode() === 'name') {
-  <!--Name-->
-  <ng-container *ngTemplateOutlet="name" />
-}
-
-<!--Templates-->
-<ng-template #name>
-  <p-iftalabel>
-    <input id="name" [(ngModel)]="projectName" [pKeyFilter]="nameFilter" (blur)="updateName()" fluid pInputText type="text" />
-    <label for="name">{{ 'project.setup.label.name' | translate }}</label>
-  </p-iftalabel>
-</ng-template>
+  <h2 class="mb-0">{{ 'home.header.taskDoormats' | translate }}</h2>
+  <aida-doormats [headingLevel]="'h3'" [keys]="taskDoormats" [style]="'card'" />
+  <h2 class="mb-0">{{ 'home.header.settingsDoormats' | translate }}</h2>
+  <aida-doormats [headingLevel]="'h3'" [keys]="settingsDoormats" [style]="'card'" />
+  <h2 class="mb-0">{{ 'home.header.helpDoormats' | translate }}</h2>
+  <aida-doormats [headingLevel]="'h3'" [keys]="helpDoormats" [style]="'card'" />
+</div>
 ` }]
-  }], () => [], { mode: [{ type: Input, args: [{ isSignal: true, alias: "mode", required: false }] }] });
+  }], () => [], null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SetupProjectComponent, { className: "SetupProjectComponent", filePath: "src/app/components/setup-project/setup-project.component.ts", lineNumber: 29 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(HomeComponent, { className: "HomeComponent", filePath: "src/app/views/navigation/home/home.component.ts", lineNumber: 24 });
 })();
 
-// src/app/views/project/dashboard/dashboard.component.ts
-var _c015 = (a0, a1) => ({ path: "tasks/discover", phase: a0, icon: "pi pi-search text-orange-500", stats: a1, ready: true });
-var _c18 = (a0, a1) => ({ path: "tasks/assess", phase: a0, icon: "pi pi-chart-line text-blue-500", stats: a1, ready: false });
-var _c27 = (a0, a1) => ({ path: "tasks/design", phase: a0, icon: "pi pi-pencil text-purple-500", stats: a1, ready: false });
-var _c36 = (a0, a1, a2, a3) => ({ path: "tasks/approve", phase: a0, icon: a1, stats: a2, content: a3, ready: false });
-var _c45 = (a0) => ({ phase: a0 });
-var _forTrack02 = ($index, $item) => $item.key;
-function DashboardComponent_Conditional_0_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "p");
-    \u0275\u0275text(1);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(ctx_r0.projectData.projectName);
-  }
-}
-function DashboardComponent_Conditional_13_Template(rf, ctx) {
+// src/app/views/navigation/dashboard/dashboard.component.ts
+var _c09 = (a0, a1, a2) => ({ path: a0, phase: a1, icon: "pi pi-search text-orange-500", stats: a2, ready: true });
+var _c17 = (a0, a1, a2) => ({ path: a0, phase: a1, icon: "pi pi-chart-line text-blue-500", stats: a2, ready: false });
+var _c25 = (a0, a1, a2) => ({ path: a0, phase: a1, icon: "pi pi-pencil text-purple-500", stats: a2, ready: false });
+var _c35 = (a0, a1, a2, a3, a4) => ({ path: a0, phase: a1, icon: a2, stats: a3, content: a4, ready: false });
+var _c44 = (a0) => ({ phase: a0 });
+var _forTrack0 = ($index, $item) => $item.key;
+function DashboardComponent_Conditional_12_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275text(0);
     \u0275\u0275pipe(1, "translate");
-    \u0275\u0275element(2, "p-tag", 30);
+    \u0275\u0275element(2, "p-tag", 29);
     \u0275\u0275pipe(3, "translate");
   }
   if (rf & 2) {
@@ -7188,10 +5187,10 @@ function DashboardComponent_Conditional_13_Template(rf, ctx) {
     \u0275\u0275property("rounded", true)("value", \u0275\u0275pipeBind1(3, 5, ctx_r0.projectData.phase));
   }
 }
-function DashboardComponent_Conditional_14_Template(rf, ctx) {
+function DashboardComponent_Conditional_13_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "aida-setup-project", 31);
-    \u0275\u0275elementStart(1, "p-message", 32);
+    \u0275\u0275element(0, "aida-setup-project", 30);
+    \u0275\u0275elementStart(1, "p-message", 31);
     \u0275\u0275text(2);
     \u0275\u0275pipe(3, "translate");
     \u0275\u0275elementEnd();
@@ -7201,35 +5200,35 @@ function DashboardComponent_Conditional_14_Template(rf, ctx) {
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 1, "project.message.noName"));
   }
 }
-function DashboardComponent_ng_container_47_Template(rf, ctx) {
+function DashboardComponent_ng_container_45_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementContainer(0);
   }
 }
-function DashboardComponent_ng_container_48_Template(rf, ctx) {
+function DashboardComponent_ng_container_46_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementContainer(0);
   }
 }
-function DashboardComponent_ng_container_51_Template(rf, ctx) {
+function DashboardComponent_ng_container_49_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementContainer(0);
   }
 }
-function DashboardComponent_ng_container_52_Template(rf, ctx) {
+function DashboardComponent_ng_container_50_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementContainer(0);
   }
 }
-function DashboardComponent_ng_template_53_Template(rf, ctx) {
+function DashboardComponent_ng_template_51_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 33)(1, "span", 34);
+    \u0275\u0275elementStart(0, "div", 32)(1, "span", 33);
     \u0275\u0275text(2, "library_books");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "div", 35)(4, "p", 36);
+    \u0275\u0275elementStart(3, "div", 34)(4, "p", 35);
     \u0275\u0275text(5);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(6, "p", 37);
+    \u0275\u0275elementStart(6, "p", 36);
     \u0275\u0275text(7);
     \u0275\u0275pipe(8, "translate");
     \u0275\u0275elementEnd()()();
@@ -7242,15 +5241,15 @@ function DashboardComponent_ng_template_53_Template(rf, ctx) {
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(8, 2, "common.inScopePages"));
   }
 }
-function DashboardComponent_ng_template_55_Template(rf, ctx) {
+function DashboardComponent_ng_template_53_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 33)(1, "span", 34);
+    \u0275\u0275elementStart(0, "div", 32)(1, "span", 33);
     \u0275\u0275text(2, "troubleshoot");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "div", 35)(4, "p", 36);
+    \u0275\u0275elementStart(3, "div", 34)(4, "p", 35);
     \u0275\u0275text(5);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(6, "p", 37);
+    \u0275\u0275elementStart(6, "p", 36);
     \u0275\u0275text(7);
     \u0275\u0275pipe(8, "translate");
     \u0275\u0275elementEnd()()();
@@ -7263,9 +5262,9 @@ function DashboardComponent_ng_template_55_Template(rf, ctx) {
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(8, 2, "dashboard.stats.issuesFound"));
   }
 }
-function DashboardComponent_ng_template_57_Conditional_1_ng_template_1_Template(rf, ctx) {
+function DashboardComponent_ng_template_55_Conditional_1_ng_template_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 40);
+    \u0275\u0275elementStart(0, "span", 39);
     \u0275\u0275text(1);
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275elementEnd();
@@ -7276,10 +5275,10 @@ function DashboardComponent_ng_template_57_Conditional_1_ng_template_1_Template(
     \u0275\u0275textInterpolate3("", ctx_r0.pageProgress, "/", ctx_r0.projectData.inScopePages, " ", \u0275\u0275pipeBind1(2, 3, "dashboard.stats.pagesEdited"));
   }
 }
-function DashboardComponent_ng_template_57_Conditional_1_Template(rf, ctx) {
+function DashboardComponent_ng_template_55_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p-progressbar", 39);
-    \u0275\u0275template(1, DashboardComponent_ng_template_57_Conditional_1_ng_template_1_Template, 3, 5, "ng-template", null, 6, \u0275\u0275templateRefExtractor);
+    \u0275\u0275elementStart(0, "p-progressbar", 38);
+    \u0275\u0275template(1, DashboardComponent_ng_template_55_Conditional_1_ng_template_1_Template, 3, 5, "ng-template", null, 6, \u0275\u0275templateRefExtractor);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -7287,9 +5286,9 @@ function DashboardComponent_ng_template_57_Conditional_1_Template(rf, ctx) {
     \u0275\u0275property("showValue", false)("value", ctx_r0.pageProgress / ctx_r0.projectData.inScopePages * 100);
   }
 }
-function DashboardComponent_ng_template_57_Conditional_2_ng_template_1_Template(rf, ctx) {
+function DashboardComponent_ng_template_55_Conditional_2_ng_template_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 40);
+    \u0275\u0275elementStart(0, "span", 39);
     \u0275\u0275text(1);
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275elementEnd();
@@ -7300,10 +5299,10 @@ function DashboardComponent_ng_template_57_Conditional_2_ng_template_1_Template(
     \u0275\u0275textInterpolate3("", ctx_r0.problemProgress, "/", ctx_r0.assessmentStats.issuesFound, " ", \u0275\u0275pipeBind1(2, 3, "dashboard.stats.issuesFixed"));
   }
 }
-function DashboardComponent_ng_template_57_Conditional_2_Template(rf, ctx) {
+function DashboardComponent_ng_template_55_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p-progressbar", 39);
-    \u0275\u0275template(1, DashboardComponent_ng_template_57_Conditional_2_ng_template_1_Template, 3, 5, "ng-template", null, 6, \u0275\u0275templateRefExtractor);
+    \u0275\u0275elementStart(0, "p-progressbar", 38);
+    \u0275\u0275template(1, DashboardComponent_ng_template_55_Conditional_2_ng_template_1_Template, 3, 5, "ng-template", null, 6, \u0275\u0275templateRefExtractor);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -7311,11 +5310,11 @@ function DashboardComponent_ng_template_57_Conditional_2_Template(rf, ctx) {
     \u0275\u0275property("showValue", false)("value", ctx_r0.problemProgress / ctx_r0.assessmentStats.issuesFound * 100);
   }
 }
-function DashboardComponent_ng_template_57_Template(rf, ctx) {
+function DashboardComponent_ng_template_55_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 38);
-    \u0275\u0275conditionalCreate(1, DashboardComponent_ng_template_57_Conditional_1_Template, 3, 2, "p-progressbar", 39);
-    \u0275\u0275conditionalCreate(2, DashboardComponent_ng_template_57_Conditional_2_Template, 3, 2, "p-progressbar", 39);
+    \u0275\u0275elementStart(0, "div", 37);
+    \u0275\u0275conditionalCreate(1, DashboardComponent_ng_template_55_Conditional_1_Template, 3, 2, "p-progressbar", 38);
+    \u0275\u0275conditionalCreate(2, DashboardComponent_ng_template_55_Conditional_2_Template, 3, 2, "p-progressbar", 38);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -7326,7 +5325,7 @@ function DashboardComponent_ng_template_57_Template(rf, ctx) {
     \u0275\u0275conditional(ctx_r0.assessmentStats.issuesFound > 0 ? 2 : -1);
   }
 }
-function DashboardComponent_ng_template_59_Conditional_0_ng_template_1_Template(rf, ctx) {
+function DashboardComponent_ng_template_57_Conditional_0_ng_template_1_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "span");
     \u0275\u0275text(1);
@@ -7338,10 +5337,10 @@ function DashboardComponent_ng_template_59_Conditional_0_ng_template_1_Template(
     \u0275\u0275textInterpolate2("", ctx_r0.selectedItems.length, "/", ctx_r0.checklist.length);
   }
 }
-function DashboardComponent_ng_template_59_Conditional_0_Template(rf, ctx) {
+function DashboardComponent_ng_template_57_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p-progressbar", 39);
-    \u0275\u0275template(1, DashboardComponent_ng_template_59_Conditional_0_ng_template_1_Template, 2, 2, "ng-template", null, 6, \u0275\u0275templateRefExtractor);
+    \u0275\u0275elementStart(0, "p-progressbar", 38);
+    \u0275\u0275template(1, DashboardComponent_ng_template_57_Conditional_0_ng_template_1_Template, 2, 2, "ng-template", null, 6, \u0275\u0275templateRefExtractor);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -7349,27 +5348,27 @@ function DashboardComponent_ng_template_59_Conditional_0_Template(rf, ctx) {
     \u0275\u0275property("showValue", false)("value", ctx_r0.selectedItems.length / ctx_r0.checklist.length * 100);
   }
 }
-function DashboardComponent_ng_template_59_Template(rf, ctx) {
+function DashboardComponent_ng_template_57_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275conditionalCreate(0, DashboardComponent_ng_template_59_Conditional_0_Template, 3, 2, "p-progressbar", 39);
+    \u0275\u0275conditionalCreate(0, DashboardComponent_ng_template_57_Conditional_0_Template, 3, 2, "p-progressbar", 38);
   }
   if (rf & 2) {
     const ctx_r0 = \u0275\u0275nextContext();
     \u0275\u0275conditional(ctx_r0.assessmentStats.issuesFound > 0 ? 0 : -1);
   }
 }
-function DashboardComponent_ng_template_61_For_2_Template(rf, ctx) {
+function DashboardComponent_ng_template_59_For_2_Template(rf, ctx) {
   if (rf & 1) {
     const _r2 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 42)(1, "p-checkbox", 43);
-    \u0275\u0275twoWayListener("ngModelChange", function DashboardComponent_ng_template_61_For_2_Template_p_checkbox_ngModelChange_1_listener($event) {
+    \u0275\u0275elementStart(0, "div", 41)(1, "p-checkbox", 42);
+    \u0275\u0275twoWayListener("ngModelChange", function DashboardComponent_ng_template_59_For_2_Template_p_checkbox_ngModelChange_1_listener($event) {
       \u0275\u0275restoreView(_r2);
       const ctx_r0 = \u0275\u0275nextContext(2);
       \u0275\u0275twoWayBindingSet(ctx_r0.selectedItems, $event) || (ctx_r0.selectedItems = $event);
       return \u0275\u0275resetView($event);
     });
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(2, "label", 44);
+    \u0275\u0275elementStart(2, "label", 43);
     \u0275\u0275text(3);
     \u0275\u0275pipe(4, "translate");
     \u0275\u0275elementEnd()();
@@ -7386,15 +5385,15 @@ function DashboardComponent_ng_template_61_For_2_Template(rf, ctx) {
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 5, item_r3.key));
   }
 }
-function DashboardComponent_ng_template_61_Template(rf, ctx) {
+function DashboardComponent_ng_template_59_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 41);
-    \u0275\u0275listener("click", function DashboardComponent_ng_template_61_Template_div_click_0_listener($event) {
+    \u0275\u0275elementStart(0, "div", 40);
+    \u0275\u0275listener("click", function DashboardComponent_ng_template_59_Template_div_click_0_listener($event) {
       return $event.stopPropagation();
-    })("keydown", function DashboardComponent_ng_template_61_Template_div_keydown_0_listener($event) {
+    })("keydown", function DashboardComponent_ng_template_59_Template_div_keydown_0_listener($event) {
       return $event.stopPropagation();
     });
-    \u0275\u0275repeaterCreate(1, DashboardComponent_ng_template_61_For_2_Template, 5, 7, "div", 42, _forTrack02);
+    \u0275\u0275repeaterCreate(1, DashboardComponent_ng_template_59_For_2_Template, 5, 7, "div", 41, _forTrack0);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -7403,9 +5402,9 @@ function DashboardComponent_ng_template_61_Template(rf, ctx) {
     \u0275\u0275repeater(ctx_r0.checklist);
   }
 }
-function DashboardComponent_ng_template_63_Conditional_11_For_2_Template(rf, ctx) {
+function DashboardComponent_ng_template_61_Conditional_11_For_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "li", 53);
+    \u0275\u0275elementStart(0, "li", 52);
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
   }
@@ -7415,18 +5414,18 @@ function DashboardComponent_ng_template_63_Conditional_11_For_2_Template(rf, ctx
     \u0275\u0275textInterpolate(bullet_r4);
   }
 }
-function DashboardComponent_ng_template_63_Conditional_11_ng_container_4_Template(rf, ctx) {
+function DashboardComponent_ng_template_61_Conditional_11_ng_container_4_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementContainer(0);
   }
 }
-function DashboardComponent_ng_template_63_Conditional_11_Template(rf, ctx) {
+function DashboardComponent_ng_template_61_Conditional_11_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "ul", 52);
-    \u0275\u0275repeaterCreate(1, DashboardComponent_ng_template_63_Conditional_11_For_2_Template, 2, 1, "li", 53, \u0275\u0275repeaterTrackByIdentity);
+    \u0275\u0275elementStart(0, "ul", 51);
+    \u0275\u0275repeaterCreate(1, DashboardComponent_ng_template_61_Conditional_11_For_2_Template, 2, 1, "li", 52, \u0275\u0275repeaterTrackByIdentity);
     \u0275\u0275pipe(3, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275template(4, DashboardComponent_ng_template_63_Conditional_11_ng_container_4_Template, 1, 0, "ng-container", 54);
+    \u0275\u0275template(4, DashboardComponent_ng_template_61_Conditional_11_ng_container_4_Template, 1, 0, "ng-container", 53);
   }
   if (rf & 2) {
     const ctx_r4 = \u0275\u0275nextContext();
@@ -7438,29 +5437,29 @@ function DashboardComponent_ng_template_63_Conditional_11_Template(rf, ctx) {
     \u0275\u0275property("ngTemplateOutlet", content_r6);
   }
 }
-function DashboardComponent_ng_template_63_Conditional_12_Template(rf, ctx) {
+function DashboardComponent_ng_template_61_Conditional_12_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "p-tag", 51);
+    \u0275\u0275element(0, "p-tag", 50);
     \u0275\u0275pipe(1, "translate");
   }
   if (rf & 2) {
     \u0275\u0275property("rounded", true)("value", \u0275\u0275pipeBind1(1, 2, "project.dashboard.comingSoon"));
   }
 }
-function DashboardComponent_ng_template_63_Conditional_13_ng_container_0_Template(rf, ctx) {
+function DashboardComponent_ng_template_61_Conditional_13_ng_container_0_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementContainer(0);
   }
 }
-function DashboardComponent_ng_template_63_Conditional_13_Template(rf, ctx) {
+function DashboardComponent_ng_template_61_Conditional_13_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, DashboardComponent_ng_template_63_Conditional_13_ng_container_0_Template, 1, 0, "ng-container", 54);
-    \u0275\u0275elementStart(1, "span", 55);
+    \u0275\u0275template(0, DashboardComponent_ng_template_61_Conditional_13_ng_container_0_Template, 1, 0, "ng-container", 53);
+    \u0275\u0275elementStart(1, "span", 54);
     \u0275\u0275text(2);
     \u0275\u0275pipe(3, "translate");
     \u0275\u0275pipe(4, "lowercase");
     \u0275\u0275pipe(5, "translate");
-    \u0275\u0275element(6, "i", 56);
+    \u0275\u0275element(6, "i", 55);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -7469,25 +5468,25 @@ function DashboardComponent_ng_template_63_Conditional_13_Template(rf, ctx) {
     const stats_r8 = ctx_r4.stats;
     \u0275\u0275property("ngTemplateOutlet", stats_r8);
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind2(5, 6, "project.dashboard.viewTasks", \u0275\u0275pureFunction1(9, _c45, \u0275\u0275pipeBind1(4, 4, \u0275\u0275pipeBind1(3, 2, phase_r7)))), " ");
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind2(5, 6, "project.dashboard.viewTasks", \u0275\u0275pureFunction1(9, _c44, \u0275\u0275pipeBind1(4, 4, \u0275\u0275pipeBind1(3, 2, phase_r7)))), " ");
   }
 }
-function DashboardComponent_ng_template_63_Template(rf, ctx) {
+function DashboardComponent_ng_template_61_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 45)(1, "div", 46)(2, "div", 47);
+    \u0275\u0275elementStart(0, "div", 44)(1, "div", 45)(2, "div", 46);
     \u0275\u0275element(3, "i");
-    \u0275\u0275elementStart(4, "h3", 48);
+    \u0275\u0275elementStart(4, "h3", 47);
     \u0275\u0275text(5);
     \u0275\u0275pipe(6, "translate");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(7, "p", 49);
+    \u0275\u0275elementStart(7, "p", 48);
     \u0275\u0275text(8);
     \u0275\u0275pipe(9, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(10, "div", 50);
-    \u0275\u0275conditionalCreate(11, DashboardComponent_ng_template_63_Conditional_11_Template, 5, 3)(12, DashboardComponent_ng_template_63_Conditional_12_Template, 2, 4, "p-tag", 51);
+    \u0275\u0275elementStart(10, "div", 49);
+    \u0275\u0275conditionalCreate(11, DashboardComponent_ng_template_61_Conditional_11_Template, 5, 3)(12, DashboardComponent_ng_template_61_Conditional_12_Template, 2, 4, "p-tag", 50);
     \u0275\u0275elementEnd()();
-    \u0275\u0275conditionalCreate(13, DashboardComponent_ng_template_63_Conditional_13_Template, 7, 11);
+    \u0275\u0275conditionalCreate(13, DashboardComponent_ng_template_61_Conditional_13_Template, 7, 11);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -7497,7 +5496,7 @@ function DashboardComponent_ng_template_63_Template(rf, ctx) {
     const ready_r11 = ctx.ready;
     const ctx_r0 = \u0275\u0275nextContext();
     \u0275\u0275classMap(ctx_r0.getCardClasses(phase_r7, ready_r11));
-    \u0275\u0275property("routerLink", ready_r11 || !ctx_r0.production ? "/" + path_r10 : null);
+    \u0275\u0275property("routerLink", ready_r11 || !ctx_r0.production ? path_r10 : null);
     \u0275\u0275advance(3);
     \u0275\u0275classMap(icon_r9 + " text-xl");
     \u0275\u0275advance(2);
@@ -7515,6 +5514,7 @@ var DashboardComponent = class _DashboardComponent {
   settingsService = inject(UserSettingsService);
   production = environment.production;
   sandbox = environment.production;
+  AidaLinks = AidaLinks;
   get projectData() {
     return this.projectState.getProject();
   }
@@ -7606,93 +5606,91 @@ var DashboardComponent = class _DashboardComponent {
   static \u0275fac = function DashboardComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _DashboardComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _DashboardComponent, selectors: [["aida-dashboard"]], decls: 65, vars: 48, consts: [["discover", ""], ["assess", ""], ["design", ""], ["approve", ""], ["approveChecklist", ""], ["phase", ""], ["content", ""], ["id", "wb-cont"], [1, "flex", "flex-column", "gap-3"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min"], [1, "flex", "flex-column", "lg:flex-row", "justify-content-between", "align-items-start", "gap-2"], [1, "flex", "flex-column", "gap-2", "w-full"], [1, "text-2xl", "my-1", "flex", "align-items-center", "gap-2"], [1, "flex", "flex-row", "justify-content-start", "gap-2"], [1, "flex", "flex-row", "gap-2", "flex-1"], [1, "pi", "pi-copy", "text-primary", "text-3xl", "align-self-center"], [1, "flex", "flex-column", "align-self-start"], [1, "text-sm", "text-600", "my-1"], [1, "text-xl", "font-bold", "my-0"], [1, "pi", "pi-clock", "text-primary", "text-3xl", "align-self-center"], [1, "text-md", "my-0", "white-space-nowrap"], [1, "pi", "pi-users", "text-primary", "text-3xl", "align-self-center"], ["mode", "dashboard"], [1, "flex", "flex-row", "lg:flex-column", "lg:mt-0", "gap-2"], [3, "buttonOnly"], ["icon", "pi pi-arrow-right-arrow-left", "label", "Switch Project", "outlined", "", "routerLink", "/project/switch", "size", "small", "styleClass", "secondary-outline white-space-nowrap w-full"], [1, "flex", "flex-column", "lg:flex-row", "gap-3", "w-full"], [1, "flex", "flex-column", "gap-3", "w-full"], [1, "flex", "flex-column", "md:flex-row", "gap-3", "flex-1"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], [1, "capitalize", 3, "rounded", "value"], ["mode", "name"], ["icon", "pi pi-info-circle", "severity", "info"], [1, "flex", "flex-row", "justify-content-center", "align-content-center", "gap-2"], [1, "material-icons", "text-primary", "text-7xl", "mt-5"], [1, "flex", "flex-column", "mt-0"], [1, "text-3xl", "text-600", "mb-0"], [1, "text-xl", "font-bold", "mt-0", "lowercase"], [1, "flex", "flex-column", "gap-2"], [1, "h-2rem", "centered-label", 3, "showValue", "value"], [1, "lowercase"], ["tabindex", "0", 1, "flex", "flex-column", "gap-1", "ml-4", "-mt-2", "mb-2", 3, "click", "keydown"], [1, "flex", "flex-row", "gap-2"], ["name", "group", 3, "ngModelChange", "ngModel", "inputId", "value"], [3, "for"], [1, "surface-card", "border-round-lg", "p-4", "w-full", "min-w-min", "md:w-6", "flex", "flex-column", "justify-content-between", 3, "routerLink"], [1, "flex-1"], [1, "flex", "align-items-center", "mb-3"], [1, "text-lg", "font-semibold", "text-900", "ml-2", "m-0"], [1, "text-600", "text-sm", "mb-3", "min-h-2rem"], [1, "border-top-1", "surface-border", "pt-3"], ["severity", "secondary", 3, "rounded", "value"], [1, "list-disc", "mt-0", "pl-4", "flex", "flex-column", "gap-2", "text-primary"], [1, "text-sm", "text-700"], [4, "ngTemplateOutlet"], [1, "align-self-end", "mt-3", "-mb-3", "-mr-3", "hover:text-primary", "hover:underline"], [1, "pi", "pi-arrow-right", "text-primary", "ml-1"]], template: function DashboardComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _DashboardComponent, selectors: [["aida-dashboard"]], decls: 63, vars: 52, consts: [["discover", ""], ["assess", ""], ["design", ""], ["approve", ""], ["approveChecklist", ""], ["phase", ""], ["content", ""], ["id", "wb-cont"], [1, "flex", "flex-column", "gap-3"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min"], [1, "flex", "flex-column", "lg:flex-row", "justify-content-between", "align-items-start", "gap-2"], [1, "flex", "flex-column", "gap-2", "w-full"], [1, "text-2xl", "my-1", "flex", "align-items-center", "gap-2"], [1, "flex", "flex-row", "justify-content-start", "gap-2"], [1, "flex", "flex-row", "gap-2", "flex-1"], [1, "pi", "pi-copy", "text-primary", "text-3xl", "align-self-center"], [1, "flex", "flex-column", "align-self-start"], [1, "text-sm", "text-600", "my-1"], [1, "text-xl", "font-bold", "my-0"], [1, "pi", "pi-clock", "text-primary", "text-3xl", "align-self-center"], [1, "text-md", "my-0", "white-space-nowrap"], [1, "pi", "pi-users", "text-primary", "text-3xl", "align-self-center"], ["mode", "dashboard"], [1, "flex", "flex-row", "lg:flex-column", "lg:mt-0", "gap-2"], [3, "buttonOnly", "noIcon"], [1, "flex", "flex-column", "lg:flex-row", "gap-3", "w-full"], [1, "flex", "flex-column", "gap-3", "w-full"], [1, "flex", "flex-column", "md:flex-row", "gap-3", "flex-1"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], [1, "capitalize", 3, "rounded", "value"], ["mode", "name"], ["icon", "pi pi-info-circle", "severity", "info"], [1, "flex", "flex-row", "justify-content-center", "align-content-center", "gap-2"], [1, "material-icons", "text-primary", "text-7xl", "mt-5"], [1, "flex", "flex-column", "mt-0"], [1, "text-3xl", "text-600", "mb-0"], [1, "text-xl", "font-bold", "mt-0", "lowercase"], [1, "flex", "flex-column", "gap-2"], [1, "h-2rem", "centered-label", 3, "showValue", "value"], [1, "lowercase"], ["tabindex", "0", 1, "flex", "flex-column", "gap-1", "ml-4", "-mt-2", "mb-2", 3, "click", "keydown"], [1, "flex", "flex-row", "gap-2"], ["name", "group", 3, "ngModelChange", "ngModel", "inputId", "value"], [3, "for"], [1, "surface-card", "border-round-lg", "p-4", "w-full", "min-w-min", "md:w-6", "flex", "flex-column", "justify-content-between", 3, "routerLink"], [1, "flex-1"], [1, "flex", "align-items-center", "mb-3"], [1, "text-lg", "font-semibold", "text-900", "ml-2", "m-0"], [1, "text-600", "text-sm", "mb-3", "min-h-2rem"], [1, "border-top-1", "surface-border", "pt-3"], ["severity", "secondary", 3, "rounded", "value"], [1, "list-disc", "mt-0", "pl-4", "flex", "flex-column", "gap-2", "text-primary"], [1, "text-sm", "text-700"], [4, "ngTemplateOutlet"], [1, "align-self-end", "mt-3", "-mb-3", "-mr-3", "hover:text-primary", "hover:underline"], [1, "pi", "pi-arrow-right", "text-primary", "ml-1"]], template: function DashboardComponent_Template(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275conditionalCreate(0, DashboardComponent_Conditional_0_Template, 2, 1, "p");
-      \u0275\u0275elementStart(1, "h1", 7);
-      \u0275\u0275text(2);
-      \u0275\u0275pipe(3, "translate");
+      \u0275\u0275elementStart(0, "h1", 7);
+      \u0275\u0275text(1);
+      \u0275\u0275pipe(2, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(4, "p");
-      \u0275\u0275text(5);
+      \u0275\u0275elementStart(3, "p");
+      \u0275\u0275text(4);
+      \u0275\u0275pipe(5, "translate");
       \u0275\u0275pipe(6, "translate");
-      \u0275\u0275pipe(7, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(8, "div", 8)(9, "div", 9)(10, "div", 10)(11, "div", 11)(12, "h2", 12);
-      \u0275\u0275conditionalCreate(13, DashboardComponent_Conditional_13_Template, 4, 7)(14, DashboardComponent_Conditional_14_Template, 4, 3);
+      \u0275\u0275elementStart(7, "div", 8)(8, "div", 9)(9, "div", 10)(10, "div", 11)(11, "h2", 12);
+      \u0275\u0275conditionalCreate(12, DashboardComponent_Conditional_12_Template, 4, 7)(13, DashboardComponent_Conditional_13_Template, 4, 3);
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(15, "div", 13)(16, "div", 14);
-      \u0275\u0275element(17, "i", 15);
-      \u0275\u0275elementStart(18, "div", 16)(19, "p", 17);
-      \u0275\u0275text(20);
-      \u0275\u0275pipe(21, "translate");
+      \u0275\u0275elementStart(14, "div", 13)(15, "div", 14);
+      \u0275\u0275element(16, "i", 15);
+      \u0275\u0275elementStart(17, "div", 16)(18, "p", 17);
+      \u0275\u0275text(19);
+      \u0275\u0275pipe(20, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(22, "p", 18);
-      \u0275\u0275text(23);
+      \u0275\u0275elementStart(21, "p", 18);
+      \u0275\u0275text(22);
       \u0275\u0275elementEnd()()();
-      \u0275\u0275elementStart(24, "div", 14);
-      \u0275\u0275element(25, "i", 19);
-      \u0275\u0275elementStart(26, "div", 16)(27, "p", 17);
-      \u0275\u0275text(28);
-      \u0275\u0275pipe(29, "translate");
+      \u0275\u0275elementStart(23, "div", 14);
+      \u0275\u0275element(24, "i", 19);
+      \u0275\u0275elementStart(25, "div", 16)(26, "p", 17);
+      \u0275\u0275text(27);
+      \u0275\u0275pipe(28, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(30, "p", 20);
-      \u0275\u0275text(31);
-      \u0275\u0275pipe(32, "date");
+      \u0275\u0275elementStart(29, "p", 20);
+      \u0275\u0275text(30);
+      \u0275\u0275pipe(31, "date");
       \u0275\u0275elementEnd()()();
-      \u0275\u0275elementStart(33, "div", 14);
-      \u0275\u0275element(34, "i", 21);
-      \u0275\u0275elementStart(35, "div", 16)(36, "p", 17);
-      \u0275\u0275text(37);
-      \u0275\u0275pipe(38, "translate");
+      \u0275\u0275elementStart(32, "div", 14);
+      \u0275\u0275element(33, "i", 21);
+      \u0275\u0275elementStart(34, "div", 16)(35, "p", 17);
+      \u0275\u0275text(36);
+      \u0275\u0275pipe(37, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275element(39, "aida-add-collaborators", 22);
+      \u0275\u0275element(38, "aida-add-collaborators", 22);
       \u0275\u0275elementEnd()()()();
-      \u0275\u0275elementStart(40, "div", 23);
-      \u0275\u0275element(41, "aida-add-pages-link", 24)(42, "p-button", 25)(43, "aida-export-project");
+      \u0275\u0275elementStart(39, "div", 23);
+      \u0275\u0275element(40, "aida-add-pages-link", 24)(41, "aida-export-project");
       \u0275\u0275elementEnd()()();
-      \u0275\u0275elementStart(44, "div", 26)(45, "div", 27)(46, "div", 28);
-      \u0275\u0275template(47, DashboardComponent_ng_container_47_Template, 1, 0, "ng-container", 29)(48, DashboardComponent_ng_container_48_Template, 1, 0, "ng-container", 29);
+      \u0275\u0275elementStart(42, "div", 25)(43, "div", 26)(44, "div", 27);
+      \u0275\u0275template(45, DashboardComponent_ng_container_45_Template, 1, 0, "ng-container", 28)(46, DashboardComponent_ng_container_46_Template, 1, 0, "ng-container", 28);
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(49, "div", 27)(50, "div", 28);
-      \u0275\u0275template(51, DashboardComponent_ng_container_51_Template, 1, 0, "ng-container", 29)(52, DashboardComponent_ng_container_52_Template, 1, 0, "ng-container", 29);
+      \u0275\u0275elementStart(47, "div", 26)(48, "div", 27);
+      \u0275\u0275template(49, DashboardComponent_ng_container_49_Template, 1, 0, "ng-container", 28)(50, DashboardComponent_ng_container_50_Template, 1, 0, "ng-container", 28);
       \u0275\u0275elementEnd()()()();
-      \u0275\u0275template(53, DashboardComponent_ng_template_53_Template, 9, 4, "ng-template", null, 0, \u0275\u0275templateRefExtractor)(55, DashboardComponent_ng_template_55_Template, 9, 4, "ng-template", null, 1, \u0275\u0275templateRefExtractor)(57, DashboardComponent_ng_template_57_Template, 3, 2, "ng-template", null, 2, \u0275\u0275templateRefExtractor)(59, DashboardComponent_ng_template_59_Template, 1, 1, "ng-template", null, 3, \u0275\u0275templateRefExtractor)(61, DashboardComponent_ng_template_61_Template, 3, 0, "ng-template", null, 4, \u0275\u0275templateRefExtractor)(63, DashboardComponent_ng_template_63_Template, 14, 13, "ng-template", null, 5, \u0275\u0275templateRefExtractor);
+      \u0275\u0275template(51, DashboardComponent_ng_template_51_Template, 9, 4, "ng-template", null, 0, \u0275\u0275templateRefExtractor)(53, DashboardComponent_ng_template_53_Template, 9, 4, "ng-template", null, 1, \u0275\u0275templateRefExtractor)(55, DashboardComponent_ng_template_55_Template, 3, 2, "ng-template", null, 2, \u0275\u0275templateRefExtractor)(57, DashboardComponent_ng_template_57_Template, 1, 1, "ng-template", null, 3, \u0275\u0275templateRefExtractor)(59, DashboardComponent_ng_template_59_Template, 3, 0, "ng-template", null, 4, \u0275\u0275templateRefExtractor)(61, DashboardComponent_ng_template_61_Template, 14, 13, "ng-template", null, 5, \u0275\u0275templateRefExtractor);
     }
     if (rf & 2) {
-      const discover_r12 = \u0275\u0275reference(54);
-      const assess_r13 = \u0275\u0275reference(56);
-      const design_r14 = \u0275\u0275reference(58);
-      const approve_r15 = \u0275\u0275reference(60);
-      const approveChecklist_r16 = \u0275\u0275reference(62);
-      const phase_r17 = \u0275\u0275reference(64);
-      \u0275\u0275conditional(ctx.projectData.projectName ? 0 : -1);
-      \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 19, ctx.production ? "_app._title" : ctx.sandbox ? "_app._title.sandbox" : "_app._title.dev"));
+      const discover_r12 = \u0275\u0275reference(52);
+      const assess_r13 = \u0275\u0275reference(54);
+      const design_r14 = \u0275\u0275reference(56);
+      const approve_r15 = \u0275\u0275reference(58);
+      const approveChecklist_r16 = \u0275\u0275reference(60);
+      const phase_r17 = \u0275\u0275reference(62);
+      \u0275\u0275advance();
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 19, "dashboard._title"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind1(6, 21, "dashboard.description"), "", \u0275\u0275pipeBind1(7, 23, "dashboard.description2"));
+      \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind1(5, 21, "dashboard.description"), "", \u0275\u0275pipeBind1(6, 23, "dashboard.description2"));
       \u0275\u0275advance(8);
-      \u0275\u0275conditional(ctx.projectData.projectName ? 13 : 14);
+      \u0275\u0275conditional(ctx.projectData.projectName ? 12 : 13);
       \u0275\u0275advance(7);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(21, 25, "common.pages"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(20, 25, "common.pages"));
       \u0275\u0275advance(3);
       \u0275\u0275textInterpolate(ctx.projectData.inScopePages);
       \u0275\u0275advance(5);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(29, 27, "common.modified"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(28, 27, "common.modified"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(32, 29, ctx.projectData.lastModified, "short"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(31, 29, ctx.projectData.lastModified, "short"));
       \u0275\u0275advance(6);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(38, 32, "common.collaborators"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(37, 32, "common.collaborators"));
       \u0275\u0275advance(4);
-      \u0275\u0275property("buttonOnly", true);
-      \u0275\u0275advance(6);
-      \u0275\u0275property("ngTemplateOutlet", phase_r17)("ngTemplateOutletContext", \u0275\u0275pureFunction2(34, _c015, ctx.ProjectPhase.Discover, discover_r12));
+      \u0275\u0275property("buttonOnly", true)("noIcon", true);
+      \u0275\u0275advance(5);
+      \u0275\u0275property("ngTemplateOutlet", phase_r17)("ngTemplateOutletContext", \u0275\u0275pureFunction3(34, _c09, ctx.AidaLinks.PhaseDiscover, ctx.ProjectPhase.Discover, discover_r12));
       \u0275\u0275advance();
-      \u0275\u0275property("ngTemplateOutlet", phase_r17)("ngTemplateOutletContext", \u0275\u0275pureFunction2(37, _c18, ctx.ProjectPhase.Assess, assess_r13));
+      \u0275\u0275property("ngTemplateOutlet", phase_r17)("ngTemplateOutletContext", \u0275\u0275pureFunction3(38, _c17, ctx.AidaLinks.PhaseAssess, ctx.ProjectPhase.Assess, assess_r13));
       \u0275\u0275advance(3);
-      \u0275\u0275property("ngTemplateOutlet", phase_r17)("ngTemplateOutletContext", \u0275\u0275pureFunction2(40, _c27, ctx.ProjectPhase.Design, design_r14));
+      \u0275\u0275property("ngTemplateOutlet", phase_r17)("ngTemplateOutletContext", \u0275\u0275pureFunction3(42, _c25, ctx.AidaLinks.PhaseDesign, ctx.ProjectPhase.Design, design_r14));
       \u0275\u0275advance();
-      \u0275\u0275property("ngTemplateOutlet", phase_r17)("ngTemplateOutletContext", \u0275\u0275pureFunction4(43, _c36, ctx.ProjectPhase.Approve, ctx.selectedItems.length / ctx.checklist.length * 100 === 100 ? "pi pi-check-circle text-green-500" : "pi pi-check-circle text-red-500", approve_r15, approveChecklist_r16));
+      \u0275\u0275property("ngTemplateOutlet", phase_r17)("ngTemplateOutletContext", \u0275\u0275pureFunction5(46, _c35, ctx.AidaLinks.PhaseApprove, ctx.ProjectPhase.Approve, ctx.selectedItems.length / ctx.checklist.length * 100 === 100 ? "pi pi-check-circle text-green-500" : "pi pi-check-circle text-red-500", approve_r15, approveChecklist_r16));
     }
   }, dependencies: [
     CommonModule,
@@ -7702,7 +5700,6 @@ var DashboardComponent = class _DashboardComponent {
     NgModel,
     RouterLink,
     ButtonModule,
-    Button,
     CheckboxModule,
     Checkbox,
     DividerModule,
@@ -7739,10 +5736,7 @@ var DashboardComponent = class _DashboardComponent {
       AddPagesLinkComponent,
       ExportProjectComponent,
       SetupProjectComponent
-    ], changeDetection: ChangeDetectionStrategy.OnPush, template: `@if (projectData.projectName) {
-  <p>{{ projectData.projectName }}</p>
-}
-<h1 id="wb-cont">{{ (production ? '_app._title' : sandbox ? '_app._title.sandbox' : '_app._title.dev') | translate }}</h1>
+    ], changeDetection: ChangeDetectionStrategy.OnPush, template: `<h1 id="wb-cont">{{ 'dashboard._title' | translate }}</h1>
 <p>{{ 'dashboard.description' | translate }}{{ 'dashboard.description2' | translate }}</p>
 
 <!--Content-->
@@ -7788,15 +5782,14 @@ var DashboardComponent = class _DashboardComponent {
         </div>
       </div>
       <div class="flex flex-row lg:flex-column lg:mt-0 gap-2">
-        <aida-add-pages-link [buttonOnly]="true" />
-        <p-button icon="pi pi-arrow-right-arrow-left" label="Switch Project" outlined routerLink="/project/switch" size="small" styleClass="secondary-outline white-space-nowrap w-full" />
+        <aida-add-pages-link [buttonOnly]="true" [noIcon]="true" />
         <aida-export-project />
       </div>
     </div>
 
     <!--p-divider />
 
-    <h3 class="mb-2">{{ 'project.phase._title' | translate }}</h3>
+    <h3 class="mb-2">{{ 'project.setup.label.phase' | translate }}</h3>
     <div class="flex flex-column md:flex-row md:flex-wrap justify-content-start lg:justify-content-around gap-2">
       @for (phase of projectPhases; track phase.name; let i = $index) {
         <div
@@ -7850,9 +5843,9 @@ var DashboardComponent = class _DashboardComponent {
       <!-- Phases -->
       <div class="flex flex-column md:flex-row gap-3 flex-1">
         <!-- Discover -->
-        <ng-container *ngTemplateOutlet="phase; context: { path: 'tasks/discover', phase: ProjectPhase.Discover, icon: 'pi pi-search text-orange-500', stats: discover, ready: true }" />
+        <ng-container *ngTemplateOutlet="phase; context: { path: AidaLinks.PhaseDiscover, phase: ProjectPhase.Discover, icon: 'pi pi-search text-orange-500', stats: discover, ready: true }" />
         <!-- Assess -->
-        <ng-container *ngTemplateOutlet="phase; context: { path: 'tasks/assess', phase: ProjectPhase.Assess, icon: 'pi pi-chart-line text-blue-500', stats: assess, ready: false }" />
+        <ng-container *ngTemplateOutlet="phase; context: { path: AidaLinks.PhaseAssess, phase: ProjectPhase.Assess, icon: 'pi pi-chart-line text-blue-500', stats: assess, ready: false }" />
       </div>
     </div>
     <div class="flex flex-column gap-3 w-full">
@@ -7867,13 +5860,13 @@ var DashboardComponent = class _DashboardComponent {
       <!-- Phases -->
       <div class="flex flex-column md:flex-row gap-3 flex-1">
         <!-- Design -->
-        <ng-container *ngTemplateOutlet="phase; context: { path: 'tasks/design', phase: ProjectPhase.Design, icon: 'pi pi-pencil text-purple-500', stats: design, ready: false }" />
+        <ng-container *ngTemplateOutlet="phase; context: { path: AidaLinks.PhaseDesign, phase: ProjectPhase.Design, icon: 'pi pi-pencil text-purple-500', stats: design, ready: false }" />
         <!-- Approve -->
         <ng-container
           *ngTemplateOutlet="
             phase;
             context: {
-              path: 'tasks/approve',
+              path: AidaLinks.PhaseApprove,
               phase: ProjectPhase.Approve,
               icon: (selectedItems.length / checklist.length) * 100 === 100 ? 'pi pi-check-circle text-green-500' : 'pi pi-check-circle text-red-500',
               stats: approve,
@@ -7956,7 +5949,7 @@ var DashboardComponent = class _DashboardComponent {
 <ng-template #phase let-content="content" let-icon="icon" let-path="path" let-phase="phase" let-ready="ready" let-stats="stats">
   <div
     [class]="getCardClasses(phase, ready)"
-    [routerLink]="ready || !production ? '/' + path : null"
+    [routerLink]="ready || !production ? path : null"
     class="surface-card border-round-lg p-4 w-full min-w-min md:w-6 flex flex-column justify-content-between"
   >
     <div class="flex-1">
@@ -7991,23 +5984,200 @@ var DashboardComponent = class _DashboardComponent {
   }], null, null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(DashboardComponent, { className: "DashboardComponent", filePath: "src/app/views/project/dashboard/dashboard.component.ts", lineNumber: 48 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(DashboardComponent, { className: "DashboardComponent", filePath: "src/app/views/navigation/dashboard/dashboard.component.ts", lineNumber: 49 });
 })();
 
-// src/app/views/project/edit-project/edit-project.component.ts
-function EditProjectComponent_Conditional_0_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "p");
-    \u0275\u0275text(1);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(ctx_r0.projectState.getProject().projectName);
-  }
-}
-function EditProjectComponent_Conditional_8_Template(rf, ctx) {
+// src/app/views/navigation/phase/discover/discover.component.ts
+var DiscoverComponent = class _DiscoverComponent {
+  ProjectPhase = ProjectPhase;
+  discoverDoormats = ["addPages", "search", "problems", "iaDiagram", "inventory"];
+  externalDoormats = ["ucdgDiscover"];
+  static \u0275fac = function DiscoverComponent_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _DiscoverComponent)();
+  };
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _DiscoverComponent, selectors: [["aida-discover"]], decls: 12, vars: 14, consts: [["id", "wb-cont"], [3, "keys"]], template: function DiscoverComponent_Template(rf, ctx) {
+    if (rf & 1) {
+      \u0275\u0275elementStart(0, "h1", 0);
+      \u0275\u0275text(1);
+      \u0275\u0275pipe(2, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(3, "p");
+      \u0275\u0275text(4);
+      \u0275\u0275pipe(5, "translate");
+      \u0275\u0275pipe(6, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275element(7, "aida-doormats", 1);
+      \u0275\u0275elementStart(8, "h2");
+      \u0275\u0275text(9);
+      \u0275\u0275pipe(10, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275element(11, "aida-doormats", 1);
+    }
+    if (rf & 2) {
+      \u0275\u0275advance();
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 6, ctx.ProjectPhase.Discover));
+      \u0275\u0275advance(3);
+      \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind1(5, 8, ctx.ProjectPhase.Discover + ".description"), "", \u0275\u0275pipeBind1(6, 10, ctx.ProjectPhase.Discover + ".description2"));
+      \u0275\u0275advance(3);
+      \u0275\u0275property("keys", ctx.discoverDoormats);
+      \u0275\u0275advance(2);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(10, 12, "common.extResources"));
+      \u0275\u0275advance(2);
+      \u0275\u0275property("keys", ctx.externalDoormats);
+    }
+  }, dependencies: [DoormatsComponent, TranslatePipe], encapsulation: 2, changeDetection: 0 });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(DiscoverComponent, [{
+    type: Component,
+    args: [{ selector: "aida-discover", imports: [TranslatePipe, DoormatsComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: `<h1 id="wb-cont">{{ ProjectPhase.Discover | translate }}</h1>
+<p>{{ ProjectPhase.Discover + '.description' | translate }}{{ ProjectPhase.Discover + '.description2' | translate }}</p>
+<!--Task Doormats-->
+<aida-doormats [keys]="discoverDoormats" />
+<!--External Doormats-->
+<h2>{{ 'common.extResources' | translate }}</h2>
+<aida-doormats [keys]="externalDoormats" />
+` }]
+  }], null, null);
+})();
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(DiscoverComponent, { className: "DiscoverComponent", filePath: "src/app/views/navigation/phase/discover/discover.component.ts", lineNumber: 20 });
+})();
+
+// src/app/views/navigation/phase/assess/assess.component.ts
+var AssessComponent = class _AssessComponent {
+  ProjectPhase = ProjectPhase;
+  assessDoormats = ["problems", "iaDiagram", "inventory", "exportPages"];
+  static \u0275fac = function AssessComponent_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _AssessComponent)();
+  };
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AssessComponent, selectors: [["aida-assess"]], decls: 8, vars: 10, consts: [["id", "wb-cont"], [3, "keys"]], template: function AssessComponent_Template(rf, ctx) {
+    if (rf & 1) {
+      \u0275\u0275elementStart(0, "h1", 0);
+      \u0275\u0275text(1);
+      \u0275\u0275pipe(2, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(3, "p");
+      \u0275\u0275text(4);
+      \u0275\u0275pipe(5, "translate");
+      \u0275\u0275pipe(6, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275element(7, "aida-doormats", 1);
+    }
+    if (rf & 2) {
+      \u0275\u0275advance();
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 4, ctx.ProjectPhase.Assess));
+      \u0275\u0275advance(3);
+      \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind1(5, 6, ctx.ProjectPhase.Assess + ".description"), "", \u0275\u0275pipeBind1(6, 8, ctx.ProjectPhase.Assess + ".description2"));
+      \u0275\u0275advance(3);
+      \u0275\u0275property("keys", ctx.assessDoormats);
+    }
+  }, dependencies: [DoormatsComponent, TranslatePipe], encapsulation: 2, changeDetection: 0 });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(AssessComponent, [{
+    type: Component,
+    args: [{ selector: "aida-assess", imports: [TranslatePipe, DoormatsComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: `<h1 id="wb-cont">{{ ProjectPhase.Assess | translate }}</h1>
+<p>{{ ProjectPhase.Assess + '.description' | translate }}{{ ProjectPhase.Assess + '.description2' | translate }}</p>
+<!--Task Doormats-->
+<aida-doormats [keys]="assessDoormats" />
+` }]
+  }], null, null);
+})();
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AssessComponent, { className: "AssessComponent", filePath: "src/app/views/navigation/phase/assess/assess.component.ts", lineNumber: 20 });
+})();
+
+// src/app/views/navigation/phase/design/design.component.ts
+var DesignComponent = class _DesignComponent {
+  ProjectPhase = ProjectPhase;
+  designDoormats = ["exportPages", "editPages", "compare"];
+  static \u0275fac = function DesignComponent_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _DesignComponent)();
+  };
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _DesignComponent, selectors: [["aida-design"]], decls: 8, vars: 10, consts: [["id", "wb-cont"], [3, "keys"]], template: function DesignComponent_Template(rf, ctx) {
+    if (rf & 1) {
+      \u0275\u0275elementStart(0, "h1", 0);
+      \u0275\u0275text(1);
+      \u0275\u0275pipe(2, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(3, "p");
+      \u0275\u0275text(4);
+      \u0275\u0275pipe(5, "translate");
+      \u0275\u0275pipe(6, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275element(7, "aida-doormats", 1);
+    }
+    if (rf & 2) {
+      \u0275\u0275advance();
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 4, ctx.ProjectPhase.Design));
+      \u0275\u0275advance(3);
+      \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind1(5, 6, ctx.ProjectPhase.Design + ".description"), "", \u0275\u0275pipeBind1(6, 8, ctx.ProjectPhase.Design + ".description2"));
+      \u0275\u0275advance(3);
+      \u0275\u0275property("keys", ctx.designDoormats);
+    }
+  }, dependencies: [DoormatsComponent, TranslatePipe], encapsulation: 2, changeDetection: 0 });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(DesignComponent, [{
+    type: Component,
+    args: [{ selector: "aida-design", imports: [TranslatePipe, DoormatsComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: `<h1 id="wb-cont">{{ ProjectPhase.Design | translate }}</h1>
+<p>{{ ProjectPhase.Design + '.description' | translate }}{{ ProjectPhase.Design + '.description2' | translate }}</p>
+<!--Task Doormats-->
+<aida-doormats [keys]="designDoormats" />
+` }]
+  }], null, null);
+})();
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(DesignComponent, { className: "DesignComponent", filePath: "src/app/views/navigation/phase/design/design.component.ts", lineNumber: 20 });
+})();
+
+// src/app/views/navigation/phase/approve/approve.component.ts
+var ApproveComponent = class _ApproveComponent {
+  ProjectPhase = ProjectPhase;
+  approveDoormats = ["problems", "inventory"];
+  static \u0275fac = function ApproveComponent_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _ApproveComponent)();
+  };
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _ApproveComponent, selectors: [["aida-approve"]], decls: 8, vars: 10, consts: [["id", "wb-cont"], [3, "keys"]], template: function ApproveComponent_Template(rf, ctx) {
+    if (rf & 1) {
+      \u0275\u0275elementStart(0, "h1", 0);
+      \u0275\u0275text(1);
+      \u0275\u0275pipe(2, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(3, "p");
+      \u0275\u0275text(4);
+      \u0275\u0275pipe(5, "translate");
+      \u0275\u0275pipe(6, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275element(7, "aida-doormats", 1);
+    }
+    if (rf & 2) {
+      \u0275\u0275advance();
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 4, ctx.ProjectPhase.Approve));
+      \u0275\u0275advance(3);
+      \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind1(5, 6, ctx.ProjectPhase.Approve + ".description"), "", \u0275\u0275pipeBind1(6, 8, ctx.ProjectPhase.Approve + ".description2"));
+      \u0275\u0275advance(3);
+      \u0275\u0275property("keys", ctx.approveDoormats);
+    }
+  }, dependencies: [DoormatsComponent, TranslatePipe], encapsulation: 2, changeDetection: 0 });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(ApproveComponent, [{
+    type: Component,
+    args: [{ selector: "aida-approve", imports: [TranslatePipe, DoormatsComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: `<h1 id="wb-cont">{{ ProjectPhase.Approve | translate }}</h1>
+<p>{{ ProjectPhase.Approve + '.description' | translate }}{{ ProjectPhase.Approve + '.description2' | translate }}</p>
+<!--Task Doormats-->
+<aida-doormats [keys]="approveDoormats" />
+` }]
+  }], null, null);
+})();
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(ApproveComponent, { className: "ApproveComponent", filePath: "src/app/views/navigation/phase/approve/approve.component.ts", lineNumber: 20 });
+})();
+
+// src/app/views/project/project-setup/project-setup.component.ts
+function ProjectSetupComponent_Conditional_7_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "p-message", 1);
     \u0275\u0275text(1);
@@ -8019,7 +6189,7 @@ function EditProjectComponent_Conditional_8_Template(rf, ctx) {
     \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(2, 1, "project.message.noName"), " ");
   }
 }
-function EditProjectComponent_Conditional_9_Template(rf, ctx) {
+function ProjectSetupComponent_Conditional_8_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "p-message", 1);
     \u0275\u0275text(1);
@@ -8031,14 +6201,14 @@ function EditProjectComponent_Conditional_9_Template(rf, ctx) {
     \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(2, 1, "project.message.noRepo"), " ");
   }
 }
-function EditProjectComponent_Conditional_14_Template(rf, ctx) {
+function ProjectSetupComponent_Conditional_13_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 5);
     \u0275\u0275element(1, "aida-setup-repo");
     \u0275\u0275elementEnd();
   }
 }
-var EditProjectComponent = class _EditProjectComponent {
+var ProjectSetupComponent = class _ProjectSetupComponent {
   projectState = inject(ProjectStateService);
   iaDiagram = inject(IaDiagramService);
   //Check if project is named and has repo
@@ -8054,63 +6224,58 @@ var EditProjectComponent = class _EditProjectComponent {
     const repo = this.projectState.getProject().github.repo;
     return !!repo;
   }
-  static \u0275fac = function EditProjectComponent_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _EditProjectComponent)();
+  static \u0275fac = function ProjectSetupComponent_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _ProjectSetupComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _EditProjectComponent, selectors: [["aida-edit-project"]], decls: 21, vars: 15, consts: [["id", "wb-cont"], ["icon", "pi pi-info-circle font-bold", "severity", "info", "styleClass", "mb-2"], [1, "flex", "flex-column", "gap-3"], [1, "flex", "lg:flex-row", "flex-column", "gap-3"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min", 3, "ngClass"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "lg:w-4", "min-w-min"], ["mode", "list"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min"]], template: function EditProjectComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _ProjectSetupComponent, selectors: [["aida-project-setup"]], decls: 20, vars: 14, consts: [["id", "wb-cont"], ["icon", "pi pi-info-circle font-bold", "severity", "info", "styleClass", "mb-2"], [1, "flex", "flex-column", "gap-3"], [1, "flex", "lg:flex-row", "flex-column", "gap-3"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min", 3, "ngClass"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "lg:w-4", "min-w-min"], ["mode", "list"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "w-full", "min-w-min"]], template: function ProjectSetupComponent_Template(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275conditionalCreate(0, EditProjectComponent_Conditional_0_Template, 2, 1, "p");
-      \u0275\u0275elementStart(1, "h1", 0);
-      \u0275\u0275text(2);
-      \u0275\u0275pipe(3, "translate");
+      \u0275\u0275elementStart(0, "h1", 0);
+      \u0275\u0275text(1);
+      \u0275\u0275pipe(2, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(4, "p");
-      \u0275\u0275text(5);
+      \u0275\u0275elementStart(3, "p");
+      \u0275\u0275text(4);
+      \u0275\u0275pipe(5, "translate");
       \u0275\u0275pipe(6, "translate");
-      \u0275\u0275pipe(7, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275conditionalCreate(8, EditProjectComponent_Conditional_8_Template, 3, 3, "p-message", 1);
-      \u0275\u0275conditionalCreate(9, EditProjectComponent_Conditional_9_Template, 3, 3, "p-message", 1);
-      \u0275\u0275elementStart(10, "div", 2)(11, "div", 3)(12, "div", 4);
-      \u0275\u0275element(13, "aida-setup-project");
+      \u0275\u0275conditionalCreate(7, ProjectSetupComponent_Conditional_7_Template, 3, 3, "p-message", 1);
+      \u0275\u0275conditionalCreate(8, ProjectSetupComponent_Conditional_8_Template, 3, 3, "p-message", 1);
+      \u0275\u0275elementStart(9, "div", 2)(10, "div", 3)(11, "div", 4);
+      \u0275\u0275element(12, "aida-setup-project");
       \u0275\u0275elementEnd();
-      \u0275\u0275conditionalCreate(14, EditProjectComponent_Conditional_14_Template, 2, 0, "div", 5);
-      \u0275\u0275elementStart(15, "div", 4);
-      \u0275\u0275element(16, "aida-add-collaborators", 6);
+      \u0275\u0275conditionalCreate(13, ProjectSetupComponent_Conditional_13_Template, 2, 0, "div", 5);
+      \u0275\u0275elementStart(14, "div", 4);
+      \u0275\u0275element(15, "aida-add-collaborators", 6);
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(17, "div", 7);
-      \u0275\u0275element(18, "aida-add-pages");
+      \u0275\u0275elementStart(16, "div", 7);
+      \u0275\u0275element(17, "aida-add-pages");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(19, "div", 7);
-      \u0275\u0275element(20, "aida-view-pages");
+      \u0275\u0275elementStart(18, "div", 7);
+      \u0275\u0275element(19, "aida-view-pages");
       \u0275\u0275elementEnd()();
     }
     if (rf & 2) {
-      \u0275\u0275conditional(ctx.projectState.getProject().projectName ? 0 : -1);
-      \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 9, ctx.hasName || ctx.hasPages ? "project._nav.edit" : "project._nav.new"));
-      \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind1(6, 11, ctx.hasName || ctx.hasPages ? "project.edit.description" : "project.new.description"), "", \u0275\u0275pipeBind1(7, 13, "project.edit.description2"));
-      \u0275\u0275advance(3);
-      \u0275\u0275conditional(!ctx.hasName ? 8 : -1);
       \u0275\u0275advance();
-      \u0275\u0275conditional(!ctx.hasRepo ? 9 : -1);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 8, ctx.hasName || ctx.hasPages ? "project._nav.edit" : "project._nav.new"));
+      \u0275\u0275advance(3);
+      \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind1(5, 10, ctx.hasName || ctx.hasPages ? "project.edit.description" : "project.new.description"), "", \u0275\u0275pipeBind1(6, 12, "project.edit.description2"));
+      \u0275\u0275advance(3);
+      \u0275\u0275conditional(!ctx.hasName ? 7 : -1);
+      \u0275\u0275advance();
+      \u0275\u0275conditional(!ctx.hasRepo ? 8 : -1);
       \u0275\u0275advance(3);
       \u0275\u0275property("ngClass", ctx.hasName && ctx.hasPages ? "lg:w-4" : "lg:w-6");
       \u0275\u0275advance(2);
-      \u0275\u0275conditional(ctx.hasName && ctx.hasPages ? 14 : -1);
+      \u0275\u0275conditional(ctx.hasName && ctx.hasPages ? 13 : -1);
       \u0275\u0275advance();
       \u0275\u0275property("ngClass", ctx.hasName && ctx.hasPages ? "lg:w-4" : "lg:w-6");
     }
   }, dependencies: [CommonModule, NgClass, FormsModule, MessageModule, Message, AddCollaboratorsComponent, AddPagesComponent, SetupProjectComponent, SetupRepoComponent, ViewPagesComponent, TranslatePipe], encapsulation: 2, changeDetection: 0 });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(EditProjectComponent, [{
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(ProjectSetupComponent, [{
     type: Component,
-    args: [{ selector: "aida-edit-project", imports: [CommonModule, FormsModule, TranslatePipe, MessageModule, AddCollaboratorsComponent, AddPagesComponent, SetupProjectComponent, SetupRepoComponent, ViewPagesComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: `@if (projectState.getProject().projectName) {
-  <p>{{ projectState.getProject().projectName }}</p>
-}
-<h1 id="wb-cont">{{ (hasName || hasPages ? 'project._nav.edit' : 'project._nav.new') | translate }}</h1>
+    args: [{ selector: "aida-project-setup", imports: [CommonModule, FormsModule, TranslatePipe, MessageModule, AddCollaboratorsComponent, AddPagesComponent, SetupProjectComponent, SetupRepoComponent, ViewPagesComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: `<h1 id="wb-cont">{{ (hasName || hasPages ? 'project._nav.edit' : 'project._nav.new') | translate }}</h1>
 <p>{{ (hasName || hasPages ? 'project.edit.description' : 'project.new.description') | translate }}{{ 'project.edit.description2' | translate }}</p>
 
 <!--Messages if user has required actions that affect the app globally-->
@@ -8159,12 +6324,12 @@ var EditProjectComponent = class _EditProjectComponent {
   }], null, null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(EditProjectComponent, { className: "EditProjectComponent", filePath: "src/app/views/project/edit-project/edit-project.component.ts", lineNumber: 24 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(ProjectSetupComponent, { className: "ProjectSetupComponent", filePath: "src/app/views/project/project-setup/project-setup.component.ts", lineNumber: 24 });
 })();
 
 // src/app/views/project/switch-project/switch-project.component.ts
-var _c016 = (a0) => ({ user: a0 });
-var _forTrack03 = ($index, $item) => $item.key + $item.storageType;
+var _c010 = (a0) => ({ user: a0 });
+var _forTrack02 = ($index, $item) => $item.key + $item.storageType;
 function SwitchProjectComponent_Conditional_7_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "p-message", 2)(1, "div", 28);
@@ -8509,7 +6674,7 @@ function SwitchProjectComponent_Conditional_34_For_2_Template(rf, ctx) {
 function SwitchProjectComponent_Conditional_34_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 19);
-    \u0275\u0275repeaterCreate(1, SwitchProjectComponent_Conditional_34_For_2_Template, 26, 13, "div", 31, _forTrack03);
+    \u0275\u0275repeaterCreate(1, SwitchProjectComponent_Conditional_34_For_2_Template, 26, 13, "div", 31, _forTrack02);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -8552,7 +6717,7 @@ function SwitchProjectComponent_Conditional_48_Conditional_3_Template(rf, ctx) {
   if (rf & 2) {
     const dialog_r11 = \u0275\u0275nextContext();
     \u0275\u0275advance();
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(2, 1, "switch.upload.isLockedByOtherWarning", \u0275\u0275pureFunction1(4, _c016, dialog_r11.isLockedByOther)));
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(2, 1, "switch.upload.isLockedByOtherWarning", \u0275\u0275pureFunction1(4, _c010, dialog_r11.isLockedByOther)));
   }
 }
 function SwitchProjectComponent_Conditional_48_Conditional_4_Template(rf, ctx) {
@@ -8648,10 +6813,10 @@ var SwitchProjectComponent = class _SwitchProjectComponent {
   translate = inject(TranslateService);
   projectState = inject(ProjectStateService);
   projectStorageService = inject(ProjectStorageService);
-  exportGitHubService = inject(ExportGitHubService);
   collaboratorService = inject(CollaboratorService);
   settingsService = inject(UserSettingsService);
   confirmationService = inject(ConfirmationService);
+  signInService = inject(SignInService);
   router = inject(Router);
   message = inject(MessageService);
   // Project list signal
@@ -8913,13 +7078,13 @@ var SwitchProjectComponent = class _SwitchProjectComponent {
         }
       } finally {
         this.loadingKey = null;
-        this.router.navigate(["/"]);
+        this.router.navigate([AidaLinks.Home]);
       }
     });
   }
   newProject() {
     return __async(this, null, function* () {
-      this.router.navigate(["/project/new"]);
+      this.router.navigate([AidaLinks.NewProject]);
     });
   }
   saveProject() {
@@ -9194,7 +7359,7 @@ var SwitchProjectComponent = class _SwitchProjectComponent {
       \u0275\u0275advance(3);
       \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind1(5, 29, "switch.description"), "", \u0275\u0275pipeBind1(6, 31, "switch.description2"));
       \u0275\u0275advance(3);
-      \u0275\u0275conditional(!ctx.exportGitHubService.user() ? 7 : -1);
+      \u0275\u0275conditional(!ctx.signInService.user() ? 7 : -1);
       \u0275\u0275advance(4);
       \u0275\u0275property("allowEmpty", false)("ngModel", ctx.selectedPreset())("options", ctx.filterPresets());
       \u0275\u0275advance(2);
@@ -9300,7 +7465,7 @@ var SwitchProjectComponent = class _SwitchProjectComponent {
 <p>{{ 'switch.description' | translate }}{{ 'switch.description2' | translate }}</p>
 
 <!-- Authentication Banner -->
-@if (!exportGitHubService.user()) {
+@if (!signInService.user()) {
   <p-message severity="info" styleClass="mb-2 sticky top-0 z-2">
     <div class="flex align-items-center gap-2">
       <i class="pi pi-info-circle font-bold"></i>
@@ -9555,524 +7720,10 @@ var SwitchProjectComponent = class _SwitchProjectComponent {
   }], () => [], null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SwitchProjectComponent, { className: "SwitchProjectComponent", filePath: "src/app/views/project/switch-project/switch-project.component.ts", lineNumber: 69 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SwitchProjectComponent, { className: "SwitchProjectComponent", filePath: "src/app/views/project/switch-project/switch-project.component.ts", lineNumber: 70 });
 })();
 
-// src/app/views/utility/landing/landing.component.ts
-function LandingComponent_Conditional_3_Conditional_6_Conditional_8_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275element(0, "p-button", 18);
-  }
-}
-function LandingComponent_Conditional_3_Conditional_6_Conditional_9_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r1 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-button", 20);
-    \u0275\u0275listener("onClick", function LandingComponent_Conditional_3_Conditional_6_Conditional_9_Template_p_button_onClick_0_listener() {
-      \u0275\u0275restoreView(_r1);
-      const ctx_r1 = \u0275\u0275nextContext(3);
-      return \u0275\u0275resetView(ctx_r1.loadProject());
-    });
-    \u0275\u0275elementEnd();
-  }
-}
-function LandingComponent_Conditional_3_Conditional_6_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div")(1, "h3", 16);
-    \u0275\u0275text(2);
-    \u0275\u0275pipe(3, "translate");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(4, "p", 17);
-    \u0275\u0275text(5);
-    \u0275\u0275pipe(6, "translate");
-    \u0275\u0275pipe(7, "date");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275conditionalCreate(8, LandingComponent_Conditional_3_Conditional_6_Conditional_8_Template, 1, 0, "p-button", 18)(9, LandingComponent_Conditional_3_Conditional_6_Conditional_9_Template, 1, 0, "p-button", 19);
-  }
-  if (rf & 2) {
-    const info_r3 = ctx;
-    const ctx_r1 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 4, info_r3.title));
-    \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind1(6, 6, "switch.label.modified"), " ", \u0275\u0275pipeBind1(7, 8, info_r3.lastModified));
-    \u0275\u0275advance(3);
-    \u0275\u0275conditional(ctx_r1.projectStorageService.currentActive() ? 8 : 9);
-  }
-}
-function LandingComponent_Conditional_3_Conditional_7_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 14);
-    \u0275\u0275element(1, "i", 21);
-    \u0275\u0275elementEnd();
-  }
-}
-function LandingComponent_Conditional_3_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 2)(1, "div", 11)(2, "div", 12)(3, "h2", 5);
-    \u0275\u0275text(4, "Resume work on your active project");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(5, "div", 13);
-    \u0275\u0275conditionalCreate(6, LandingComponent_Conditional_3_Conditional_6_Template, 10, 10)(7, LandingComponent_Conditional_3_Conditional_7_Template, 2, 0, "div", 14);
-    \u0275\u0275elementEnd()();
-    \u0275\u0275element(8, "img", 15);
-    \u0275\u0275elementEnd()();
-  }
-  if (rf & 2) {
-    let tmp_1_0;
-    const ctx_r1 = \u0275\u0275nextContext();
-    \u0275\u0275advance(6);
-    \u0275\u0275conditional((tmp_1_0 = ctx_r1.projectInfo.value()) ? 6 : ctx_r1.projectInfo.isLoading() ? 7 : -1, tmp_1_0);
-  }
-}
-var LandingComponent = class _LandingComponent {
-  translate = inject(TranslateService);
-  projectState = inject(ProjectStateService);
-  settingsService = inject(UserSettingsService);
-  collaboratorService = inject(CollaboratorService);
-  projectStorageService = inject(ProjectStorageService);
-  title = signal(this.translate.instant("landing._title", { org: "" }), ...ngDevMode ? [{ debugName: "title" }] : (
-    /* istanbul ignore next */
-    []
-  ));
-  taskDoormats = ["addPages", "search", "problems", "iaDiagram", "inventory", "metadata", "exportPages", "editPages", "compare"];
-  helpDoormats = ["help", "contact"];
-  showProject = computed(() => this.projectStorageService.hasActiveProject("session") || this.projectStorageService.hasActiveProject("local"), ...ngDevMode ? [{ debugName: "showProject" }] : (
-    /* istanbul ignore next */
-    []
-  ));
-  projectInfo = resource(__spreadProps(__spreadValues({}, ngDevMode ? { debugName: "projectInfo" } : (
-    /* istanbul ignore next */
-    {}
-  )), {
-    params: () => this.projectStorageService.currentActive() ?? this.projectStorageService.lastActive() ?? void 0,
-    loader: (_0) => __async(this, [_0], function* ({ params: project }) {
-      const data = yield this.projectStorageService.loadProjectData(project.key, project.storageType);
-      if (!data) {
-        this.projectStorageService.clearActiveProject();
-        return void 0;
-      }
-      const projectName = data.projectName || "common.autosave";
-      return { title: projectName, lastModified: data.lastModified };
-    })
-  }));
-  // Load previously active project
-  loadProject() {
-    return __async(this, null, function* () {
-      const active = this.projectStorageService.getActiveProject("local");
-      if (!active)
-        return;
-      console.log(`Attempting to load active project: ${active.key} from ${active.storageType}`);
-      try {
-        const project = yield this.projectStorageService.loadProject(active.key, active.storageType);
-        if (project) {
-          yield this.projectState.setProject(project, "load");
-          console.log(`Project loaded successfully: ${active.key}`);
-        } else {
-          console.error(`Failed to load project: ${active.key}`);
-          this.projectStorageService.clearActiveProject();
-        }
-      } catch (error) {
-        console.error(`Error loading active project: ${active.key}`, error);
-        this.projectStorageService.clearActiveProject();
-      }
-    });
-  }
-  constructor() {
-    effect(() => {
-      void this.settingsService.userId();
-      void this.settingsService.org();
-      this.getTitle();
-    });
-  }
-  getTitle() {
-    return __async(this, null, function* () {
-      const user = yield this.collaboratorService.getLogin(this.settingsService.userId());
-      const org = this.settingsService.org();
-      if (Number.isNaN(Number(user)) && !user.startsWith("user_")) {
-        this.title.set(this.translate.instant("landing._title.user", { user }));
-      } else
-        this.title.set(this.translate.instant("landing._title", { org }));
-    });
-  }
-  static \u0275fac = function LandingComponent_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _LandingComponent)();
-  };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _LandingComponent, selectors: [["aida-landing"]], decls: 19, vars: 11, consts: [["id", "wb-cont", 1, "text-primary", "noline"], [1, "flex", "flex-column", "gap-2"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "min-w-min"], [1, "flex", "flex-column", "lg:flex-row", "justify-content-between", "gap-2"], [1, "surface-card", "border-round-lg", "shadow-2", "p-4", "min-w-min", "flex-1"], [1, "mt-0"], [1, "lg:p-4", "min-w-min", "flex", "flex-column", "gap-2"], ["fluid", "", "label", "Start new project", "routerLink", "/project/new", 1, "lg:w-15rem", 3, "outlined"], ["fluid", "", "label", "View all projects", "outlined", "", "routerLink", "/project/switch"], [1, "mb-0"], [3, "headingLevel", "keys"], [1, "flex", "justify-content-between"], [1, "flex-1"], [1, "flex", "flex-column", "lg:flex-row", "gap-2", "justify-content-between", "surface-ground", "border-round-lg", "shadow-2", "p-4", "min-w-min", "flex-1"], [1, "p-2", "text-center", "h-3rem"], ["src", "images/laptop-preview.webp", 1, "opacity-80", "w-17rem", "h-9rem", "pl-4", "hidden", "lg:flex", "align-self-center", 3, "alt"], [1, "m-0", "text-xl"], [1, "m-0", "text-color-secondary", "text-sm"], ["fluid", "", "label", "Go to dashboard", "routerLink", "/project/dashboard"], ["fluid", "", "label", "Load project"], ["fluid", "", "label", "Load project", 3, "onClick"], [1, "pi", "pi-spinner", "pi-spin", "text-5xl", "text-primary"]], template: function LandingComponent_Template(rf, ctx) {
-    if (rf & 1) {
-      \u0275\u0275elementStart(0, "h1", 0);
-      \u0275\u0275text(1);
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(2, "div", 1);
-      \u0275\u0275conditionalCreate(3, LandingComponent_Conditional_3_Template, 9, 1, "div", 2);
-      \u0275\u0275elementStart(4, "div", 3)(5, "div", 4)(6, "h2", 5);
-      \u0275\u0275text(7, "What AIDA does");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(8, "p");
-      \u0275\u0275text(9, " The AI Design Assistant (AIDA) speeds up web content design activities. Add pages to your project and AIDA will create a visualization of the page relationships and pull in all the information needed to use the included tools. ");
-      \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(10, "div", 6);
-      \u0275\u0275element(11, "p-button", 7)(12, "p-button", 8);
-      \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(13, "h2", 9);
-      \u0275\u0275text(14, "What you can do");
-      \u0275\u0275elementEnd();
-      \u0275\u0275element(15, "aida-doormats", 10);
-      \u0275\u0275elementStart(16, "h2", 9);
-      \u0275\u0275text(17, "Get help");
-      \u0275\u0275elementEnd();
-      \u0275\u0275element(18, "aida-doormats", 10);
-      \u0275\u0275elementEnd();
-    }
-    if (rf & 2) {
-      \u0275\u0275advance();
-      \u0275\u0275textInterpolate(ctx.title());
-      \u0275\u0275advance(2);
-      \u0275\u0275conditional(ctx.showProject() ? 3 : -1);
-      \u0275\u0275advance(8);
-      \u0275\u0275property("outlined", ctx.showProject());
-      \u0275\u0275advance(4);
-      \u0275\u0275styleMap("card");
-      \u0275\u0275property("headingLevel", "h3")("keys", ctx.taskDoormats);
-      \u0275\u0275advance(3);
-      \u0275\u0275styleMap("card");
-      \u0275\u0275property("headingLevel", "h3")("keys", ctx.helpDoormats);
-    }
-  }, dependencies: [CommonModule, RouterLink, ButtonModule, Button, DoormatsComponent, DatePipe, TranslatePipe], encapsulation: 2, changeDetection: 0 });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(LandingComponent, [{
-    type: Component,
-    args: [{ selector: "aida-landing", imports: [CommonModule, RouterLink, TranslatePipe, ButtonModule, DoormatsComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: `<h1 id="wb-cont" class="text-primary noline">{{ title() }}</h1>
-<div class="flex flex-column gap-2">
-  <!--RETURNING USER-->
-  @if (showProject()) {
-    <div class="surface-card border-round-lg shadow-2 p-4 min-w-min">
-      <div class="flex justify-content-between">
-        <div class="flex-1">
-          <h2 class="mt-0">Resume work on your active project</h2>
-          <div class="flex flex-column lg:flex-row gap-2 justify-content-between surface-ground border-round-lg shadow-2 p-4 min-w-min flex-1">
-            @if (projectInfo.value(); as info) {
-              <div>
-                <h3 class="m-0 text-xl">{{ info.title | translate }}</h3>
-                <p class="m-0 text-color-secondary text-sm">{{ 'switch.label.modified' | translate }} {{ info.lastModified | date }}</p>
-              </div>
-              @if (projectStorageService.currentActive()) {
-                <p-button fluid label="Go to dashboard" routerLink="/project/dashboard" />
-              } @else {
-                <p-button (onClick)="loadProject()" fluid label="Load project" />
-              }
-            } @else if (projectInfo.isLoading()) {
-              <div class="p-2 text-center h-3rem">
-                <i class="pi pi-spinner pi-spin text-5xl text-primary"></i>
-              </div>
-            }
-          </div>
-        </div>
-        <img [alt]="" class="opacity-80 w-17rem h-9rem pl-4 hidden lg:flex align-self-center" src="images/laptop-preview.webp" />
-      </div>
-    </div>
-  }
-  <!--ALL USERS-->
-  <div class="flex flex-column lg:flex-row justify-content-between gap-2">
-    <div class="surface-card border-round-lg shadow-2 p-4 min-w-min flex-1">
-      <h2 class="mt-0">What AIDA does</h2>
-      <p>
-        The AI Design Assistant (AIDA) speeds up web content design activities. Add pages to your project and AIDA will create a visualization of the page relationships and pull in all the information
-        needed to use the included tools.
-      </p>
-    </div>
-    <div class="lg:p-4 min-w-min flex flex-column gap-2">
-      <p-button [outlined]="showProject()" class="lg:w-15rem" fluid label="Start new project" routerLink="/project/new" />
-      <p-button fluid label="View all projects" outlined routerLink="/project/switch" />
-    </div>
-  </div>
-  <h2 class="mb-0">What you can do</h2>
-  <aida-doormats [headingLevel]="'h3'" [keys]="taskDoormats" [style]="'card'" />
-  <h2 class="mb-0">Get help</h2>
-  <aida-doormats [headingLevel]="'h3'" [keys]="helpDoormats" [style]="'card'" />
-</div>
-` }]
-  }], () => [], null);
-})();
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(LandingComponent, { className: "LandingComponent", filePath: "src/app/views/utility/landing/landing.component.ts", lineNumber: 22 });
-})();
-
-// src/app/views/project/project.component.ts
-var ProjectComponent = class _ProjectComponent {
-  projectDoormats = ["editProject", "newProject", "switchProject"];
-  static \u0275fac = function ProjectComponent_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _ProjectComponent)();
-  };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _ProjectComponent, selectors: [["aida-project"]], decls: 8, vars: 10, consts: [["id", "wb-cont"], [3, "keys"]], template: function ProjectComponent_Template(rf, ctx) {
-    if (rf & 1) {
-      \u0275\u0275elementStart(0, "h1", 0);
-      \u0275\u0275text(1);
-      \u0275\u0275pipe(2, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(3, "p");
-      \u0275\u0275text(4);
-      \u0275\u0275pipe(5, "translate");
-      \u0275\u0275pipe(6, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275element(7, "aida-doormats", 1);
-    }
-    if (rf & 2) {
-      \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 4, "nav.project"));
-      \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind1(5, 6, "nav.project.description"), "", \u0275\u0275pipeBind1(6, 8, "nav.project.description2"));
-      \u0275\u0275advance(3);
-      \u0275\u0275property("keys", ctx.projectDoormats);
-    }
-  }, dependencies: [DoormatsComponent, TranslatePipe], encapsulation: 2, changeDetection: 0 });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(ProjectComponent, [{
-    type: Component,
-    args: [{ selector: "aida-project", imports: [TranslatePipe, DoormatsComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: `<h1 id="wb-cont">{{ 'nav.project' | translate }}</h1>
-<p>{{ 'nav.project.description' | translate }}{{ 'nav.project.description2' | translate }}</p>
-<aida-doormats [keys]="projectDoormats" />
-` }]
-  }], null, null);
-})();
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(ProjectComponent, { className: "ProjectComponent", filePath: "src/app/views/project/project.component.ts", lineNumber: 18 });
-})();
-
-// src/app/views/tasks/tasks.component.ts
-var TasksComponent = class _TasksComponent {
-  tasksDoormats = ["addPages", "search", "problems", "iaDiagram", "inventory", "exportPages", "editPages", "compare"];
-  static \u0275fac = function TasksComponent_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _TasksComponent)();
-  };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _TasksComponent, selectors: [["aida-tasks"]], decls: 8, vars: 10, consts: [["id", "wb-cont"], [3, "keys"]], template: function TasksComponent_Template(rf, ctx) {
-    if (rf & 1) {
-      \u0275\u0275elementStart(0, "h1", 0);
-      \u0275\u0275text(1);
-      \u0275\u0275pipe(2, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(3, "p");
-      \u0275\u0275text(4);
-      \u0275\u0275pipe(5, "translate");
-      \u0275\u0275pipe(6, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275element(7, "aida-doormats", 1);
-    }
-    if (rf & 2) {
-      \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 4, "nav.tasks"));
-      \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind1(5, 6, "nav.tasks.description"), "", \u0275\u0275pipeBind1(6, 8, "nav.tasks.description2"));
-      \u0275\u0275advance(3);
-      \u0275\u0275property("keys", ctx.tasksDoormats);
-    }
-  }, dependencies: [DoormatsComponent, TranslatePipe], encapsulation: 2, changeDetection: 0 });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(TasksComponent, [{
-    type: Component,
-    args: [{ selector: "aida-tasks", imports: [TranslatePipe, DoormatsComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: `<h1 id="wb-cont">{{ 'nav.tasks' | translate }}</h1>
-<p>{{ 'nav.tasks.description' | translate }}{{ 'nav.tasks.description2' | translate }}</p>
-<aida-doormats [keys]="tasksDoormats" />
-` }]
-  }], null, null);
-})();
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(TasksComponent, { className: "TasksComponent", filePath: "src/app/views/tasks/tasks.component.ts", lineNumber: 18 });
-})();
-
-// src/app/views/phase/discover/discover.component.ts
-var DiscoverComponent = class _DiscoverComponent {
-  ProjectPhase = ProjectPhase;
-  discoverDoormats = ["addPages", "search", "problems", "iaDiagram", "inventory"];
-  externalDoormats = ["ucdgDiscover"];
-  static \u0275fac = function DiscoverComponent_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _DiscoverComponent)();
-  };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _DiscoverComponent, selectors: [["aida-discover"]], decls: 12, vars: 14, consts: [["id", "wb-cont"], [3, "keys"]], template: function DiscoverComponent_Template(rf, ctx) {
-    if (rf & 1) {
-      \u0275\u0275elementStart(0, "h1", 0);
-      \u0275\u0275text(1);
-      \u0275\u0275pipe(2, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(3, "p");
-      \u0275\u0275text(4);
-      \u0275\u0275pipe(5, "translate");
-      \u0275\u0275pipe(6, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275element(7, "aida-doormats", 1);
-      \u0275\u0275elementStart(8, "h2");
-      \u0275\u0275text(9);
-      \u0275\u0275pipe(10, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275element(11, "aida-doormats", 1);
-    }
-    if (rf & 2) {
-      \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 6, ctx.ProjectPhase.Discover));
-      \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind1(5, 8, ctx.ProjectPhase.Discover + ".description"), "", \u0275\u0275pipeBind1(6, 10, ctx.ProjectPhase.Discover + ".description2"));
-      \u0275\u0275advance(3);
-      \u0275\u0275property("keys", ctx.discoverDoormats);
-      \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(10, 12, "common.extResources"));
-      \u0275\u0275advance(2);
-      \u0275\u0275property("keys", ctx.externalDoormats);
-    }
-  }, dependencies: [DoormatsComponent, TranslatePipe], encapsulation: 2, changeDetection: 0 });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(DiscoverComponent, [{
-    type: Component,
-    args: [{ selector: "aida-discover", imports: [TranslatePipe, DoormatsComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: `<h1 id="wb-cont">{{ ProjectPhase.Discover | translate }}</h1>
-<p>{{ ProjectPhase.Discover + '.description' | translate }}{{ ProjectPhase.Discover + '.description2' | translate }}</p>
-<!--Task Doormats-->
-<aida-doormats [keys]="discoverDoormats" />
-<!--External Doormats-->
-<h2>{{ 'common.extResources' | translate }}</h2>
-<aida-doormats [keys]="externalDoormats" />
-` }]
-  }], null, null);
-})();
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(DiscoverComponent, { className: "DiscoverComponent", filePath: "src/app/views/phase/discover/discover.component.ts", lineNumber: 20 });
-})();
-
-// src/app/views/phase/assess/assess.component.ts
-var AssessComponent = class _AssessComponent {
-  ProjectPhase = ProjectPhase;
-  assessDoormats = ["problems", "iaDiagram", "inventory", "exportPages"];
-  static \u0275fac = function AssessComponent_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _AssessComponent)();
-  };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AssessComponent, selectors: [["aida-assess"]], decls: 8, vars: 10, consts: [["id", "wb-cont"], [3, "keys"]], template: function AssessComponent_Template(rf, ctx) {
-    if (rf & 1) {
-      \u0275\u0275elementStart(0, "h1", 0);
-      \u0275\u0275text(1);
-      \u0275\u0275pipe(2, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(3, "p");
-      \u0275\u0275text(4);
-      \u0275\u0275pipe(5, "translate");
-      \u0275\u0275pipe(6, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275element(7, "aida-doormats", 1);
-    }
-    if (rf & 2) {
-      \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 4, ctx.ProjectPhase.Assess));
-      \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind1(5, 6, ctx.ProjectPhase.Assess + ".description"), "", \u0275\u0275pipeBind1(6, 8, ctx.ProjectPhase.Assess + ".description2"));
-      \u0275\u0275advance(3);
-      \u0275\u0275property("keys", ctx.assessDoormats);
-    }
-  }, dependencies: [DoormatsComponent, TranslatePipe], encapsulation: 2, changeDetection: 0 });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(AssessComponent, [{
-    type: Component,
-    args: [{ selector: "aida-assess", imports: [TranslatePipe, DoormatsComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: `<h1 id="wb-cont">{{ ProjectPhase.Assess | translate }}</h1>
-<p>{{ ProjectPhase.Assess + '.description' | translate }}{{ ProjectPhase.Assess + '.description2' | translate }}</p>
-<!--Task Doormats-->
-<aida-doormats [keys]="assessDoormats" />
-` }]
-  }], null, null);
-})();
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AssessComponent, { className: "AssessComponent", filePath: "src/app/views/phase/assess/assess.component.ts", lineNumber: 20 });
-})();
-
-// src/app/views/phase/design/design.component.ts
-var DesignComponent = class _DesignComponent {
-  ProjectPhase = ProjectPhase;
-  designDoormats = ["exportPages", "editPages", "compare"];
-  static \u0275fac = function DesignComponent_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _DesignComponent)();
-  };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _DesignComponent, selectors: [["aida-design"]], decls: 8, vars: 10, consts: [["id", "wb-cont"], [3, "keys"]], template: function DesignComponent_Template(rf, ctx) {
-    if (rf & 1) {
-      \u0275\u0275elementStart(0, "h1", 0);
-      \u0275\u0275text(1);
-      \u0275\u0275pipe(2, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(3, "p");
-      \u0275\u0275text(4);
-      \u0275\u0275pipe(5, "translate");
-      \u0275\u0275pipe(6, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275element(7, "aida-doormats", 1);
-    }
-    if (rf & 2) {
-      \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 4, ctx.ProjectPhase.Design));
-      \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind1(5, 6, ctx.ProjectPhase.Design + ".description"), "", \u0275\u0275pipeBind1(6, 8, ctx.ProjectPhase.Design + ".description2"));
-      \u0275\u0275advance(3);
-      \u0275\u0275property("keys", ctx.designDoormats);
-    }
-  }, dependencies: [DoormatsComponent, TranslatePipe], encapsulation: 2, changeDetection: 0 });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(DesignComponent, [{
-    type: Component,
-    args: [{ selector: "aida-design", imports: [TranslatePipe, DoormatsComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: `<h1 id="wb-cont">{{ ProjectPhase.Design | translate }}</h1>
-<p>{{ ProjectPhase.Design + '.description' | translate }}{{ ProjectPhase.Design + '.description2' | translate }}</p>
-<!--Task Doormats-->
-<aida-doormats [keys]="designDoormats" />
-` }]
-  }], null, null);
-})();
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(DesignComponent, { className: "DesignComponent", filePath: "src/app/views/phase/design/design.component.ts", lineNumber: 20 });
-})();
-
-// src/app/views/phase/approve/approve.component.ts
-var ApproveComponent = class _ApproveComponent {
-  ProjectPhase = ProjectPhase;
-  approveDoormats = ["problems", "inventory"];
-  static \u0275fac = function ApproveComponent_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _ApproveComponent)();
-  };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _ApproveComponent, selectors: [["aida-approve"]], decls: 8, vars: 10, consts: [["id", "wb-cont"], [3, "keys"]], template: function ApproveComponent_Template(rf, ctx) {
-    if (rf & 1) {
-      \u0275\u0275elementStart(0, "h1", 0);
-      \u0275\u0275text(1);
-      \u0275\u0275pipe(2, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(3, "p");
-      \u0275\u0275text(4);
-      \u0275\u0275pipe(5, "translate");
-      \u0275\u0275pipe(6, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275element(7, "aida-doormats", 1);
-    }
-    if (rf & 2) {
-      \u0275\u0275advance();
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 4, ctx.ProjectPhase.Approve));
-      \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind1(5, 6, ctx.ProjectPhase.Approve + ".description"), "", \u0275\u0275pipeBind1(6, 8, ctx.ProjectPhase.Approve + ".description2"));
-      \u0275\u0275advance(3);
-      \u0275\u0275property("keys", ctx.approveDoormats);
-    }
-  }, dependencies: [DoormatsComponent, TranslatePipe], encapsulation: 2, changeDetection: 0 });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(ApproveComponent, [{
-    type: Component,
-    args: [{ selector: "aida-approve", imports: [TranslatePipe, DoormatsComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: `<h1 id="wb-cont">{{ ProjectPhase.Approve | translate }}</h1>
-<p>{{ ProjectPhase.Approve + '.description' | translate }}{{ ProjectPhase.Approve + '.description2' | translate }}</p>
-<!--Task Doormats-->
-<aida-doormats [keys]="approveDoormats" />
-` }]
-  }], null, null);
-})();
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(ApproveComponent, { className: "ApproveComponent", filePath: "src/app/views/phase/approve/approve.component.ts", lineNumber: 20 });
-})();
-
-// src/app/components/sign-in/auth-callback/auth-callback.component.ts
+// src/app/views/utility/auth-callback/auth-callback.component.ts
 function AuthCallbackComponent_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275element(0, "p-progressspinner", 3);
@@ -10116,7 +7767,7 @@ var AuthCallbackComponent = class _AuthCallbackComponent {
     const state = params["state"];
     const error = params["error"];
     if (!code && !state && !error) {
-      this.router.navigate(["/"], { replaceUrl: true });
+      this.router.navigate([AidaLinks.Home], { replaceUrl: true });
       return;
     }
     if (error) {
@@ -10134,7 +7785,7 @@ var AuthCallbackComponent = class _AuthCallbackComponent {
     return __async(this, null, function* () {
       try {
         yield this.authService.handleCallback(code, state);
-        const returnUrl = sessionStorage.getItem("github_oauth_return_url") || "/tasks/export-pages";
+        const returnUrl = sessionStorage.getItem("github_oauth_return_url") || AidaLinks.ProjectExport;
         sessionStorage.removeItem("github_oauth_return_url");
         this.router.navigate([returnUrl], { replaceUrl: true });
       } catch (error) {
@@ -10175,10 +7826,10 @@ var AuthCallbackComponent = class _AuthCallbackComponent {
   }], null, null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AuthCallbackComponent, { className: "AuthCallbackComponent", filePath: "src/app/components/sign-in/auth-callback/auth-callback.component.ts", lineNumber: 18 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AuthCallbackComponent, { className: "AuthCallbackComponent", filePath: "src/app/views/utility/auth-callback/auth-callback.component.ts", lineNumber: 20 });
 })();
 
-// src/app/views/project/import-page/import-page.component.ts
+// src/app/views/utility/import-page/import-page.component.ts
 var ImportPageComponent = class _ImportPageComponent {
   router = inject(Router);
   route = inject(ActivatedRoute);
@@ -10198,7 +7849,7 @@ var ImportPageComponent = class _ImportPageComponent {
           const title = params["title"]?.replaceAll("- Canada.ca", "").trim();
           if (!url) {
             console.warn("Missing URL parameter. Redirecting to new project.");
-            this.router.navigate(["/project/new"]);
+            this.router.navigate([AidaLinks.NewProject]);
             return;
           }
           try {
@@ -10211,29 +7862,29 @@ var ImportPageComponent = class _ImportPageComponent {
                 this.projectState.setProjectName(title);
               }
               this.addUrlsService.setHighlight(true);
-              this.router.navigate(["/project/edit"]);
+              this.router.navigate([AidaLinks.ProjectSettings]);
               return;
             } else {
               const active = this.projectStorageService.getActiveProject("session");
               if (active) {
                 console.warn("Invalid URL domain. Skipping new project creation and redirecting user to dashboard for previously opened project.");
-                this.router.navigate(["/project/dashboard"]);
+                this.router.navigate([AidaLinks.ProjectDashboard]);
                 return;
               } else {
                 console.warn("Invalid URL domain. Redirecting user to create a new project.");
-                this.router.navigate(["/project/new"]);
+                this.router.navigate([AidaLinks.NewProject]);
                 return;
               }
             }
           } catch (urlError) {
             console.warn(`Invalid URL format. Redirecting user. ${urlError}`);
-            this.router.navigate(["/project/dashboard"]);
+            this.router.navigate([AidaLinks.ProjectDashboard]);
             return;
           }
         });
       } catch (error) {
         console.error(error);
-        this.router.navigate(["/project/edit"]);
+        this.router.navigate([AidaLinks.ProjectSettings]);
         return;
       } finally {
         this.isLoading = false;
@@ -10269,10 +7920,10 @@ var ImportPageComponent = class _ImportPageComponent {
   }], null, null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(ImportPageComponent, { className: "ImportPageComponent", filePath: "src/app/views/project/import-page/import-page.component.ts", lineNumber: 19 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(ImportPageComponent, { className: "ImportPageComponent", filePath: "src/app/views/utility/import-page/import-page.component.ts", lineNumber: 21 });
 })();
 
-// src/app/views/utility/404/not-found.component.ts
+// src/app/views/utility/404/404.component.ts
 function NotFoundComponent_For_6_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275domElementStart(0, "p");
@@ -10303,7 +7954,7 @@ var NotFoundComponent = class _NotFoundComponent {
     const target = event.target;
     if (target.closest("a")) {
       event.preventDefault();
-      this.router.navigateByUrl("/");
+      this.router.navigateByUrl(AidaLinks.Home);
     }
   }
   /** Intercepts href enter to prevent app reload */
@@ -10312,7 +7963,7 @@ var NotFoundComponent = class _NotFoundComponent {
       const target = event.target;
       if (target.closest("a")) {
         event.preventDefault();
-        this.router.navigateByUrl("/");
+        this.router.navigateByUrl(AidaLinks.Home);
       }
     }
   }
@@ -10393,7 +8044,7 @@ var NotFoundComponent = class _NotFoundComponent {
   }], null, null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(NotFoundComponent, { className: "NotFoundComponent", filePath: "src/app/views/utility/404/not-found.component.ts", lineNumber: 20 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(NotFoundComponent, { className: "NotFoundComponent", filePath: "src/app/views/utility/404/404.component.ts", lineNumber: 22 });
 })();
 
 // src/app/app.routes.ts
@@ -10401,7 +8052,7 @@ var landingGuard = () => {
   const router = inject(Router);
   const projectStorageService = inject(ProjectStorageService);
   if (!projectStorageService.hasActiveProject("session") && projectStorageService.hasSavedProjects()) {
-    return router.createUrlTree(["project/switch"]);
+    return router.createUrlTree([AidaLinks.AllProjects]);
   }
   return true;
 };
@@ -10411,7 +8062,7 @@ var editProjectGuard = () => {
   const hasPages = !!projectState.getProject().baselinePages;
   const hasName = !!projectState.getProject().projectName;
   if (!hasPages && !hasName) {
-    return router.createUrlTree(["/project/new"]);
+    return router.createUrlTree([AidaLinks.NewProject]);
   }
   return true;
 };
@@ -10431,118 +8082,115 @@ var iaDiagramGuard = () => {
   return true;
 };
 var routes = [
-  //PROJECT PATHS
+  //COMMON PATH OPTIONS
   {
     path: "",
-    component: DashboardComponent,
-    canActivate: [landingGuard],
-    title: environment.production ? "_app._title" : environment.sandbox ? "_app._title.sandbox" : "_app._title.dev",
-    children: []
-  },
-  {
-    path: "landing",
-    component: LandingComponent,
+    pathMatch: "full",
+    component: HomeComponent,
     title: environment.production ? "_app._title" : environment.sandbox ? "_app._title.sandbox" : "_app._title.dev"
   },
   {
     path: "project",
-    component: ProjectComponent,
-    title: "nav.project",
+    data: { breadcrumbKey: "home" },
+    children: [
+      {
+        path: "all",
+        component: SwitchProjectComponent,
+        title: "switch._title"
+      },
+      {
+        path: "new",
+        component: ProjectSetupComponent,
+        canActivate: [newProjectGuard],
+        title: "project._nav.new"
+      }
+    ]
+  },
+  //ACTIVE PROJECT PATH OPTIONS
+  {
+    path: "active-project",
+    pathMatch: "full",
+    component: DashboardComponent,
+    canActivate: [landingGuard],
+    title: "dashboard._title",
     data: { breadcrumbKey: "home" }
   },
   {
-    path: "project/dashboard",
-    component: DashboardComponent,
-    title: "dashboard._title",
-    data: { breadcrumbKey: "home.project" }
-  },
-  {
-    path: "project/switch",
-    component: SwitchProjectComponent,
-    title: "switch._title",
-    data: { breadcrumbKey: "home.project" }
-  },
-  {
-    path: "project/new",
-    component: EditProjectComponent,
-    canActivate: [newProjectGuard],
-    title: "project._nav.new",
-    data: { breadcrumbKey: "home.project" }
-  },
-  {
-    path: "project/edit",
-    component: EditProjectComponent,
-    canActivate: [editProjectGuard],
-    title: "project._nav.edit",
-    data: { breadcrumbKey: "home.project" }
+    path: "active-project",
+    data: { breadcrumbKey: "dashboard" },
+    children: [
+      {
+        path: "settings",
+        component: ProjectSetupComponent,
+        canActivate: [editProjectGuard],
+        title: "project._nav.edit"
+      },
+      {
+        path: "add-pages",
+        loadComponent: () => import("./chunk-YYIR6SKS.js").then((m) => m.AddOrViewPagesComponent),
+        title: "addPages._title"
+      },
+      {
+        path: "ia-diagram",
+        canActivate: [iaDiagramGuard],
+        loadComponent: () => import("./chunk-LT2BS5LU.js").then((m) => m.IaDiagramComponent),
+        title: "iaDiagram._title"
+      },
+      {
+        path: "inventory",
+        loadComponent: () => import("./chunk-YL3BWDML.js").then((m) => m.InventoryComponent),
+        title: "inventory._title"
+      },
+      {
+        path: "metadata",
+        loadComponent: () => import("./chunk-OGBOZ6QA.js").then((m) => m.MetadataComponent),
+        title: "metadata._title"
+      },
+      {
+        path: "export-pages",
+        loadComponent: () => import("./chunk-VZGOU2CP.js").then((m) => m.ExportPagesComponent),
+        title: "exportPages._nav"
+      },
+      {
+        path: "edit-pages",
+        loadComponent: () => import("./chunk-2TFUKHQJ.js").then((m) => m.CompareComponent),
+        title: "editPages._title",
+        data: { mode: "ai" }
+      },
+      {
+        path: "compare-pages",
+        loadComponent: () => import("./chunk-2TFUKHQJ.js").then((m) => m.CompareComponent),
+        title: "compare._title",
+        data: { mode: "compare" }
+      }
+    ]
   },
   //PHASE TOPIC PAGES
   {
-    path: "tasks/discover",
-    component: DiscoverComponent,
-    title: "project.phase.discover",
-    data: { breadcrumbKey: "home.tasks" }
-  },
-  {
-    path: "tasks/assess",
-    component: AssessComponent,
-    title: "project.phase.assess",
-    data: { breadcrumbKey: "home.tasks" }
-  },
-  {
-    path: "tasks/design",
-    component: DesignComponent,
-    title: "project.phase.design",
-    data: { breadcrumbKey: "home.tasks" }
-  },
-  {
-    path: "tasks/approve",
-    component: ApproveComponent,
-    title: "project.phase.approve",
-    data: { breadcrumbKey: "home.tasks" }
-  },
-  //TASK PATHS
-  {
-    path: "tasks",
-    component: TasksComponent,
-    title: "nav.tasks",
-    data: { breadcrumbKey: "home" }
-  },
-  {
-    path: "tasks/add-pages",
-    loadComponent: () => import("./chunk-TVSKQR33.js").then((m) => m.AddOrViewPagesComponent),
-    title: "addPages._title",
-    data: { breadcrumbKey: "home.tasks" }
-  },
-  {
-    path: "tasks/inventory",
-    loadComponent: () => import("./chunk-MYHY2O3H.js").then((m) => m.InventoryComponent),
-    title: "inventory._title",
-    data: { breadcrumbKey: "home.tasks" }
-  },
-  {
-    path: "tasks/ia-diagram",
-    canActivate: [iaDiagramGuard],
-    loadComponent: () => import("./chunk-HMCDDBHL.js").then((m) => m.IaDiagramComponent),
-    title: "iaDiagram._title"
-  },
-  {
-    path: "tasks/export-pages",
-    loadComponent: () => import("./chunk-TH4JOYZ2.js").then((m) => m.ExportComponent),
-    title: "exportPages._nav",
-    data: { breadcrumbKey: "home.tasks" }
-  },
-  {
-    path: "tasks/compare",
-    loadComponent: () => import("./chunk-MO45OU6N.js").then((m) => m.CompareComponent),
-    title: "compare._title",
-    data: { breadcrumbKey: "home.tasks", mode: "compare" }
-  },
-  {
-    path: "tasks/edit-pages",
-    loadComponent: () => import("./chunk-MO45OU6N.js").then((m) => m.CompareComponent),
-    title: "editPages._title",
-    data: { breadcrumbKey: "home.tasks", mode: "ai" }
+    path: "phase",
+    data: { breadcrumbKey: "dashboard" },
+    children: [
+      {
+        path: "discover",
+        component: DiscoverComponent,
+        title: "project.phase.discover"
+      },
+      {
+        path: "assess",
+        component: AssessComponent,
+        title: "project.phase.assess"
+      },
+      {
+        path: "design",
+        component: DesignComponent,
+        title: "project.phase.design"
+      },
+      {
+        path: "approve",
+        component: ApproveComponent,
+        title: "project.phase.approve"
+      }
+    ]
   },
   //UTILITY PATHS
   {
@@ -10558,57 +8206,66 @@ var routes = [
   //HELP CONTENT
   {
     path: "help",
-    loadComponent: () => import("./chunk-H6GKP3TO.js").then((m) => m.HelpComponent),
+    loadComponent: () => import("./chunk-HTAQTWW5.js").then((m) => m.HelpComponent),
     title: "help._title",
     data: { breadcrumbKey: "home" }
   },
   {
     path: "about-us",
-    loadComponent: () => import("./chunk-HSCB7H32.js").then((m) => m.AboutComponent),
+    loadComponent: () => import("./chunk-DY65O7ZC.js").then((m) => m.AboutComponent),
     title: "about._title",
     data: { breadcrumbKey: "home" }
   },
   //TOOLBOX PAGES
   {
     path: "standalone",
-    loadComponent: () => import("./chunk-KN33K4UQ.js").then((m) => m.StandaloneComponent),
+    pathMatch: "full",
+    loadComponent: () => import("./chunk-LELDROMC.js").then((m) => m.StandaloneComponent),
     title: "standalone._title"
   },
   {
-    path: "standalone/compare",
-    loadComponent: () => import("./chunk-ZDNCU5DU.js").then((m) => m.StandaloneCompareComponent),
-    title: "compare._title",
-    data: { breadcrumbKey: "standalone" }
+    path: "standalone",
+    data: { breadcrumbKey: "standalone" },
+    children: [
+      {
+        path: "compare-pages",
+        loadComponent: () => import("./chunk-FO4U3IJL.js").then((m) => m.StandaloneCompareComponent),
+        title: "compare._title"
+      }
+    ]
   },
   //DEV PAGES
   {
     path: "dev",
-    loadComponent: () => import("./chunk-C4PFNDKZ.js").then((m) => m.DevToolsComponent),
+    pathMatch: "full",
+    loadComponent: () => import("./chunk-WY5O3EMR.js").then((m) => m.DevToolsComponent),
     title: "dev._title"
   },
   {
-    path: "dev/monitoring",
-    loadComponent: () => import("./chunk-RNB4FQRW.js").then((m) => m.UsageMonitoringComponent),
-    title: "dev.monitoring._title",
-    data: { breadcrumbKey: "dev" }
-  },
-  {
-    path: "dev/color-generator",
-    loadComponent: () => import("./chunk-JN6KBCJ7.js").then((m) => m.ColorGeneratorComponent),
-    title: "dev.colors._title",
-    data: { breadcrumbKey: "dev" }
-  },
-  {
-    path: "dev/design-patterns",
-    loadComponent: () => import("./chunk-MAJZE77C.js").then((m) => m.DesignPatternsComponent),
-    title: "dev.patterns._title",
-    data: { breadcrumbKey: "dev" }
-  },
-  {
-    path: "dev/prompt-editor",
-    loadComponent: () => import("./chunk-7WGW2T2P.js").then((m) => m.PromptEditorComponent),
-    title: "dev.prompts._title",
-    data: { breadcrumbKey: "dev" }
+    path: "dev",
+    data: { breadcrumbKey: "dev" },
+    children: [
+      {
+        path: "monitoring",
+        loadComponent: () => import("./chunk-E6AYUMC2.js").then((m) => m.UsageMonitoringComponent),
+        title: "dev.monitoring._title"
+      },
+      {
+        path: "colour-generator",
+        loadComponent: () => import("./chunk-RTOSMPWZ.js").then((m) => m.ColorGeneratorComponent),
+        title: "dev.colors._title"
+      },
+      {
+        path: "design-patterns",
+        loadComponent: () => import("./chunk-CCLCNS34.js").then((m) => m.DesignPatternsComponent),
+        title: "dev.patterns._title"
+      },
+      {
+        path: "prompt-editor",
+        loadComponent: () => import("./chunk-FXB45HVB.js").then((m) => m.PromptEditorComponent),
+        title: "dev.prompts._title"
+      }
+    ]
   },
   //404
   {
@@ -10624,7 +8281,7 @@ registerLocaleData(en_CA_default);
 var appConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes, withInMemoryScrolling({ anchorScrolling: "enabled" }), withComponentInputBinding()),
+    provideRouter(routes, withInMemoryScrolling({ scrollPositionRestoration: "enabled", anchorScrolling: "enabled" }), withComponentInputBinding()),
     { provide: TitleStrategy, useClass: CustomTitleStrategy },
     provideHttpClient(),
     provideTranslateService({

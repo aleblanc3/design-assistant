@@ -20428,11 +20428,13 @@
 :root {
   --header-height: 3rem;
   --mobile-nav-width: 4.8rem;
-  --desktop-nav-width: calc(var(--mobile-nav-width) + 8.1rem);
+  --desktop-nav-width: calc(var(--mobile-nav-width) + 8.5rem);
   --body-font: "Noto Sans", sans-serif;
   --z-fixed: 100;
   --aida-border-width: 1.5px;
   --aida-border-width-checked: 2px;
+  --surface-ground: var(--p-zinc-50);
+  --surface-ground-dark: var(--p-zinc-950);
 }
 *,
 :before,
@@ -20446,6 +20448,9 @@ body {
   font-family: var(--body-font);
   font-size: var(--font-size);
   transition: 0.3s;
+}
+html.dark-mode body {
+  background-color: var(--surface-ground-dark);
 }
 div.container {
   min-height: 97vh;
@@ -20823,7 +20828,14 @@ h1 + p {
   max-width: 130ch;
 }
 p:has(+ h1) {
-  margin-bottom: -0.5rem;
+  margin-bottom: -0.75rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--p-surface-400);
+}
+.dbl-h1 {
+  margin-bottom: -0.75rem;
   font-size: 1.1rem;
   font-weight: 600;
   letter-spacing: 0.01em;
@@ -20908,6 +20920,18 @@ p:has(+ h1) {
   transform: translateX(-50%) translateY(-0.05rem);
   border-top-color: transparent;
   border-bottom-color: var(--p-surface-600);
+}
+.cursor-help {
+  cursor: help;
+}
+.hover\:border-1:hover {
+  border-width: 1px !important;
+}
+.hover\:border-2:hover {
+  border-width: 2px !important;
+}
+.hover\:border-3:hover {
+  border-width: 3px !important;
 }
 
 /* node_modules/diff2html/bundles/css/diff2html.min.css */
