@@ -120,6 +120,7 @@ export class ColorGeneratorComponent {
 
   borderColorOptions = [
     { label: 'undefined', value: null },
+    { label: 'border-transparent', value: 'border-transparent' },
     { label: 'border-primary', value: 'border-primary' },
     { label: 'surface-border', value: 'surface-border' },
     { label: 'border-0', value: 'border-0' },
@@ -193,23 +194,23 @@ export class ColorGeneratorComponent {
   }
 
   //Global card settings
-  selectedBorderWidth = null;
-  selectedBorderColor = null;
-  selectedBorderRadius = 'border-round-lg';
+  selectedBorderWidth = 'border-1';
+  selectedBorderColor = 'surface-border';
+  selectedBorderRadius = 'border-round-md';
   selectedBackground = 'surface-card';
 
   //Flat only
-  selectedFlatShadow = 'shadow-2';
+  selectedFlatShadow = 'null';
 
   //Interactive only
   selectedInteractiveShadow = 'shadow-1';
   selectedHoverShadow = 'shadow-3';
-  selectedHoverBorderWidth = null;
-  selectedHoverBorderColor = null;
+  selectedHoverBorderWidth = 'border-1';
+  selectedHoverBorderColor = 'border-primary';
 
   //Active only
   protected readonly activeCard = signal(2);
-  selectedActiveBorderWidth = 'border-3';
+  selectedActiveBorderWidth = 'border-2';
   selectedActiveBorderColor = 'border-primary';
 
   //Background colours
