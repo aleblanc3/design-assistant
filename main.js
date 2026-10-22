@@ -1,6 +1,6 @@
 import {
   SignInBannerComponent
-} from "./chunk-FUS5HWEB.js";
+} from "./chunk-Q2SQWSDP.js";
 import {
   AddCollaboratorsComponent,
   DoormatsComponent,
@@ -8,13 +8,13 @@ import {
   MenuProjectComponent,
   SetupProjectComponent,
   SignInButtonComponent
-} from "./chunk-POMNQR7K.js";
+} from "./chunk-YQHLBD4F.js";
 import {
   SetupRepoComponent
-} from "./chunk-EFVTZ247.js";
+} from "./chunk-7UM4HJML.js";
 import {
   AddPagesComponent
-} from "./chunk-OBBZK34J.js";
+} from "./chunk-W5JF6P5T.js";
 import {
   ProgressSpinner,
   ProgressSpinnerModule
@@ -26,21 +26,21 @@ import {
 import "./chunk-4ECWLYHO.js";
 import {
   ViewPagesComponent
-} from "./chunk-S3RWXFTQ.js";
-import "./chunk-5RPYWMTT.js";
+} from "./chunk-K7PFRQWU.js";
+import "./chunk-JM3RJKVD.js";
 import {
   SaveButtonComponent
-} from "./chunk-QFRLGKDI.js";
+} from "./chunk-ADVE2F2T.js";
 import {
   Divider,
   DividerModule
 } from "./chunk-ATVW4L4U.js";
 import {
   AddUrlsService
-} from "./chunk-EMPI6W3G.js";
+} from "./chunk-NL4TPFOO.js";
 import {
   ExportProjectComponent
-} from "./chunk-E7KI4TQQ.js";
+} from "./chunk-QDCQWCYE.js";
 import {
   MultiSelect,
   MultiSelectModule
@@ -48,11 +48,11 @@ import {
 import {
   ConfirmDialog,
   ConfirmDialogModule
-} from "./chunk-LIE4RGVD.js";
+} from "./chunk-PQRHCNLI.js";
 import {
   TimesCircleIcon
 } from "./chunk-ULNRCSK5.js";
-import "./chunk-WG3NUWQA.js";
+import "./chunk-QV2MUELL.js";
 import {
   Tag,
   TagModule
@@ -64,19 +64,19 @@ import {
 import {
   IaDiagramService
 } from "./chunk-4SEU7J4Z.js";
-import "./chunk-MY4QUQSJ.js";
+import "./chunk-VQBI46HK.js";
 import {
   AddPagesLinkComponent
 } from "./chunk-3Y4CZOCC.js";
 import "./chunk-OIQTDMBR.js";
-import "./chunk-MMMMCSB4.js";
+import "./chunk-NL5XKBQB.js";
 import {
   TooltipDirective
 } from "./chunk-YEJSFSQN.js";
 import {
   StyleCardService
-} from "./chunk-N66KUVBA.js";
-import "./chunk-PSLNIJPA.js";
+} from "./chunk-XN4WNFGN.js";
+import "./chunk-6F5LXSLL.js";
 import "./chunk-P3TRDY63.js";
 import "./chunk-NQRO2LC7.js";
 import "./chunk-5QMHUOJQ.js";
@@ -90,14 +90,14 @@ import "./chunk-Y576ZK6L.js";
 import {
   Dialog,
   DialogModule
-} from "./chunk-XGGA5NEC.js";
+} from "./chunk-7ZDCSAJQ.js";
 import {
   IftaLabel,
   IftaLabelModule
 } from "./chunk-FQDO2XGS.js";
 import {
   ProjectCacheService
-} from "./chunk-AIJO5IRI.js";
+} from "./chunk-2TMLCNBU.js";
 import "./chunk-D57SAGZH.js";
 import {
   AidaLinks
@@ -106,7 +106,7 @@ import "./chunk-MKX7R2UM.js";
 import {
   FocusTrap,
   ProjectStateService
-} from "./chunk-7CIBQE5S.js";
+} from "./chunk-35HWDDPQ.js";
 import {
   Checkbox,
   CheckboxModule
@@ -120,7 +120,7 @@ import {
   SelectButtonModule,
   UsageService,
   version
-} from "./chunk-EGAYUXAY.js";
+} from "./chunk-ZELECDZO.js";
 import {
   GitHubAuthService,
   SignInService
@@ -4655,8 +4655,12 @@ var AppComponent = class _AppComponent {
         if (tempUserId.startsWith("user_")) {
           this.usageService.updateUserId(tempUserId, user.id.toString());
         }
-        this.collaboratorService.addCurrentUserToLocalProjects(user).then(() => {
-          this.loadProject();
+        this.collaboratorService.addCurrentUserToLocalProjects(user).then((updatedKeys) => {
+          const active = this.projectStorageService.getActiveProject("session");
+          if (!active || !updatedKeys.includes(active.key))
+            return;
+          const updated = this.collaboratorService.addCollaborators(this.projectState.getProject(), [user]);
+          this.projectState.setProject(updated, "update");
         });
       }
     });
@@ -7280,7 +7284,7 @@ var SwitchProjectComponent = class _SwitchProjectComponent {
   static \u0275fac = function SwitchProjectComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SwitchProjectComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SwitchProjectComponent, selectors: [["aida-switch-project"]], decls: 50, vars: 52, consts: [["signIn", ""], ["id", "wb-cont"], ["severity", "info", "styleClass", "mb-2 sticky top-0 z-2"], [1, "flex", "flex-column-reverse", "xl:flex-row", "justify-content-between", "align-items-start", "gap-2", "mb-3"], [1, "flex", "flex-column", "lg:flex-row", "gap-2", "w-full"], ["styleClass", "w-full secondary-outline white-space-nowrap", 3, "ngModelChange", "allowEmpty", "ngModel", "options"], ["inputId", "filter", 1, "min-w-15rem", 3, "ngModelChange", "onClick", "ngModel", "group", "options"], ["for", "filter"], ["id", "search", "pInputText", "", "type", "text", 1, "min-w-15rem", 3, "ngModelChange", "ngModel"], [1, "pi", "pi-search"], ["for", "search"], ["id", "sort", 1, "min-w-15rem", 3, "ngModelChange", "ngModel", "options"], ["for", "sort"], [1, "flex", "flex-row", "xl:flex-column", "gap-2"], ["icon", "pi pi-plus", "outlined", "", "size", "small", "styleClass", "white-space-nowrap secondary-outline w-full", 3, "onClick", "label"], ["disabled", "", "icon", "pi pi-upload", "label", "Import project", "outlined", "", "size", "small", "styleClass", "white-space-nowrap secondary-outline w-full"], ["outlined", "", "size", "small", "styleClass", "white-space-nowrap secondary-outline w-full", 3, "icon", "label"], [1, "mt-0", "text-sm", "text-color-secondary"], [1, "grid"], [1, "text-color-secondary", "ml-2"], ["styleClass", "max-w-25rem", 3, "visibleChange", "visible", "header", "modal"], [1, "text-color-secondary", "-mt-1"], [1, "flex", "justify-end", "gap-2", "mt-2"], ["severity", "secondary", 3, "onClick", "label"], [3, "onClick", "disabled", "label"], ["key", "delete"], ["styleClass", "max-w-max", 3, "header", "modal", "visible"], [1, "flex", "align-items-center", "gap-2"], [1, "pi", "pi-info-circle", "font-bold"], ["outlined", "", "size", "small", "styleClass", "white-space-nowrap secondary-outline w-full", 3, "onClick", "icon", "label"], [1, "col-12", "md:col-6", "lg:col-4"], ["tabindex", "0", 1, "h-full", 3, "click", "keydown.enter"], [1, "flex", "h-full"], [1, "flex", "flex-column", "justify-content-between", "flex-1"], [1, "p-2", "m-2", "h-2rem"], [1, "flex", "gap-2"], ["icon", "pi pi-desktop", "severity", "secondary", 3, "value"], ["icon", "pi pi-cloud", "severity", "info", 3, "value"], [3, "customContent"], ["icon", "pi pi-eye", "severity", "warn", 3, "value"], ["icon", "pi pi-exclamation-triangle", "severity", "danger", 3, "value"], ["icon", "pi pi-check", "severity", "success", 3, "value"], [1, "px-2", "mx-2"], [1, "text-xl"], [1, "flex", "gap-2", "justify-content-center", "mt-5"], [1, "flex", "flex-column", "gap-2", "text-sm", "text-color-secondary"], [1, "p-2", "m-2"], [1, "border-left-1", "surface-border", "surface-50", "p-2", "w-4rem"], [1, "flex", "flex-column", "gap-1"], ["icon", "pi pi-save", "outlined", "", "rounded", "", "severity", "success", "size", "large", "styleClass", "secondary-outline", 3, "aidaTooltip"], ["icon", "pi pi-cloud-upload", "outlined", "", "rounded", "", "size", "large", "styleClass", "secondary-outline", 3, "aidaTooltip", "disabled"], ["icon", "pi pi-trash", "outlined", "", "rounded", "", "severity", "danger", "size", "large", "styleClass", "secondary-outline", 3, "aidaTooltip"], ["icon", "pi pi-sign-in", "severity", "warn", "tabindex", "0", 3, "click", "keydown.enter", "value"], [1, "pi", "pi-spin", "pi-spinner", "text-primary-500", "text-2xl"], [1, "text-sm", "text-color-secondary", 3, "innerHTML"], [1, "pi", "pi-github", "text-lg"], [1, "pi", "pi-copy", "text-lg"], [1, "pi", "pi-clock", "text-lg"], [1, "pi", "pi-lock", "text-lg"], ["align", "left"], [1, "text-color-secondary"], [1, "pi", "pi-users", "text-lg"], ["mode", "switch", 3, "collabs"], ["icon", "pi pi-save", "outlined", "", "rounded", "", "severity", "success", "size", "large", "styleClass", "secondary-outline", 3, "onClick", "aidaTooltip"], ["icon", "pi pi-cloud-upload", "outlined", "", "rounded", "", "size", "large", "styleClass", "secondary-outline", 3, "onClick", "aidaTooltip", "disabled"], ["icon", "pi pi-trash", "outlined", "", "rounded", "", "severity", "danger", "size", "large", "styleClass", "secondary-outline", 3, "onClick", "aidaTooltip"], ["styleClass", "max-w-max", 3, "visibleChange", "header", "modal", "visible"], ["icon", "pi pi-exclamation-triangle", "severity", "warn"], [1, "flex", "justify-content-end", "gap-2", "mt-3"], ["outlined", "", "severity", "secondary", 3, "onClick", "label"], ["severity", "danger", 3, "label"], ["mode", "view", 3, "collabs"], [1, "mt-3"], ["mode", "cloud"], ["severity", "danger", 3, "onClick", "label"]], template: function SwitchProjectComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SwitchProjectComponent, selectors: [["aida-switch-project"]], decls: 50, vars: 52, consts: [["signIn", ""], ["id", "wb-cont"], ["severity", "info", "styleClass", "mb-2 sticky top-0 z-2"], [1, "flex", "flex-column-reverse", "xl:flex-row", "justify-content-between", "align-items-start", "gap-2", "mb-3"], [1, "flex", "flex-column", "lg:flex-row", "gap-2", "w-full"], ["styleClass", "w-full secondary-outline white-space-nowrap", 3, "ngModelChange", "allowEmpty", "ngModel", "options"], ["inputId", "filter", 1, "min-w-15rem", 3, "ngModelChange", "onClick", "ngModel", "group", "options"], ["for", "filter"], ["id", "search", "pInputText", "", "type", "text", 1, "min-w-15rem", 3, "ngModelChange", "ngModel"], [1, "pi", "pi-search"], ["for", "search"], ["id", "sort", 1, "min-w-15rem", 3, "ngModelChange", "ngModel", "options"], ["for", "sort"], [1, "flex", "flex-row", "xl:flex-column", "gap-2"], ["icon", "pi pi-plus", "outlined", "", "size", "small", "styleClass", "white-space-nowrap secondary-outline w-full", 3, "onClick", "label"], ["disabled", "", "icon", "pi pi-upload", "label", "Import project", "outlined", "", "size", "small", "styleClass", "white-space-nowrap secondary-outline w-full"], ["outlined", "", "size", "small", "styleClass", "white-space-nowrap secondary-outline w-full", 3, "icon", "label"], [1, "mt-0", "text-sm", "text-color-secondary"], [1, "grid"], [1, "text-color-secondary", "ml-2"], ["styleClass", "max-w-25rem", 3, "visibleChange", "visible", "header", "modal"], [1, "text-color-secondary", "-mt-1"], [1, "flex", "justify-end", "gap-2", "mt-2"], ["severity", "secondary", 3, "onClick", "label"], [3, "onClick", "disabled", "label"], ["key", "delete"], ["styleClass", "max-w-max", 3, "header", "modal", "visible"], [1, "flex", "align-items-center", "gap-2"], [1, "pi", "pi-info-circle", "font-bold"], ["outlined", "", "size", "small", "styleClass", "white-space-nowrap secondary-outline w-full", 3, "onClick", "icon", "label"], [1, "col-12", "md:col-6", "lg:col-4"], ["tabindex", "0", 1, "h-full", 3, "click", "keydown.enter"], [1, "flex", "h-full"], [1, "flex", "flex-column", "justify-content-between", "flex-1"], [1, "p-2", "m-2", "h-2rem"], [1, "flex", "gap-2"], ["icon", "pi pi-desktop", "severity", "secondary", 3, "value"], ["icon", "pi pi-cloud", "severity", "info", 3, "value"], [3, "customContent"], ["icon", "pi pi-eye", "severity", "warn", 3, "value"], ["icon", "pi pi-exclamation-triangle", "severity", "danger", 3, "value"], ["icon", "pi pi-check", "severity", "success", 3, "value"], [1, "px-2", "mx-2"], [1, "text-xl"], [1, "flex", "gap-2", "justify-content-center", "mt-5"], [1, "flex", "flex-column", "gap-2", "text-sm", "text-color-secondary"], [1, "p-2", "m-2"], [1, "border-left-1", "surface-border", "surface-50", "border-round-right", "p-2", "w-4rem"], [1, "flex", "flex-column", "gap-1"], ["icon", "pi pi-save", "outlined", "", "rounded", "", "severity", "success", "size", "large", "styleClass", "secondary-outline", 3, "aidaTooltip"], ["icon", "pi pi-cloud-upload", "outlined", "", "rounded", "", "size", "large", "styleClass", "secondary-outline", 3, "aidaTooltip", "disabled"], ["icon", "pi pi-trash", "outlined", "", "rounded", "", "severity", "danger", "size", "large", "styleClass", "secondary-outline", 3, "aidaTooltip"], ["icon", "pi pi-sign-in", "severity", "warn", "tabindex", "0", 3, "click", "keydown.enter", "value"], [1, "pi", "pi-spin", "pi-spinner", "text-primary-500", "text-2xl"], [1, "text-sm", "text-color-secondary", 3, "innerHTML"], [1, "pi", "pi-github", "text-lg"], [1, "pi", "pi-copy", "text-lg"], [1, "pi", "pi-clock", "text-lg"], [1, "pi", "pi-lock", "text-lg"], ["align", "left"], [1, "text-color-secondary"], [1, "pi", "pi-users", "text-lg"], ["mode", "switch", 3, "collabs"], ["icon", "pi pi-save", "outlined", "", "rounded", "", "severity", "success", "size", "large", "styleClass", "secondary-outline", 3, "onClick", "aidaTooltip"], ["icon", "pi pi-cloud-upload", "outlined", "", "rounded", "", "size", "large", "styleClass", "secondary-outline", 3, "onClick", "aidaTooltip", "disabled"], ["icon", "pi pi-trash", "outlined", "", "rounded", "", "severity", "danger", "size", "large", "styleClass", "secondary-outline", 3, "onClick", "aidaTooltip"], ["styleClass", "max-w-max", 3, "visibleChange", "header", "modal", "visible"], ["icon", "pi pi-exclamation-triangle", "severity", "warn"], [1, "flex", "justify-content-end", "gap-2", "mt-3"], ["outlined", "", "severity", "secondary", 3, "onClick", "label"], ["severity", "danger", 3, "label"], ["mode", "view", 3, "collabs"], [1, "mt-3"], ["mode", "cloud"], ["severity", "danger", 3, "onClick", "label"]], template: function SwitchProjectComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "h1", 1);
       \u0275\u0275text(1);
@@ -7645,7 +7649,7 @@ var SwitchProjectComponent = class _SwitchProjectComponent {
                   }
                 </div>
               </div>
-              <div class="border-left-1 surface-border surface-50 p-2 w-4rem">
+              <div class="border-left-1 surface-border surface-50 border-round-right p-2 w-4rem">
                 <!--RIGHT SIDE: Actions-->
                 <div class="flex flex-column gap-1">
                   @if (project.key === 'autosave') {
@@ -8149,39 +8153,39 @@ var routes = [
       },
       {
         path: "add-pages",
-        loadComponent: () => import("./chunk-E3AK7FOQ.js").then((m) => m.AddOrViewPagesComponent),
+        loadComponent: () => import("./chunk-TYUHFBBG.js").then((m) => m.AddOrViewPagesComponent),
         title: "addPages._title"
       },
       {
         path: "ia-diagram",
         canActivate: [iaDiagramGuard],
-        loadComponent: () => import("./chunk-D54GDJ6H.js").then((m) => m.IaDiagramComponent),
+        loadComponent: () => import("./chunk-BCH4HYBV.js").then((m) => m.IaDiagramComponent),
         title: "iaDiagram._title"
       },
       {
         path: "inventory",
-        loadComponent: () => import("./chunk-OMEIYD7T.js").then((m) => m.InventoryComponent),
+        loadComponent: () => import("./chunk-DE2DWVLH.js").then((m) => m.InventoryComponent),
         title: "inventory._title"
       },
       {
         path: "metadata",
-        loadComponent: () => import("./chunk-JILCGEWI.js").then((m) => m.MetadataComponent),
+        loadComponent: () => import("./chunk-QS2H3GDB.js").then((m) => m.MetadataComponent),
         title: "metadata._title"
       },
       {
         path: "export-pages",
-        loadComponent: () => import("./chunk-GB56SLBX.js").then((m) => m.ExportPagesComponent),
+        loadComponent: () => import("./chunk-FUDMBVZY.js").then((m) => m.ExportPagesComponent),
         title: "exportPages._nav"
       },
       {
         path: "edit-pages",
-        loadComponent: () => import("./chunk-PWHZNQPL.js").then((m) => m.CompareComponent),
+        loadComponent: () => import("./chunk-A7LNBITV.js").then((m) => m.CompareComponent),
         title: "editPages._title",
         data: { mode: "ai" }
       },
       {
         path: "compare-pages",
-        loadComponent: () => import("./chunk-PWHZNQPL.js").then((m) => m.CompareComponent),
+        loadComponent: () => import("./chunk-A7LNBITV.js").then((m) => m.CompareComponent),
         title: "compare._title",
         data: { mode: "compare" }
       }
@@ -8228,7 +8232,7 @@ var routes = [
   //HELP CONTENT
   {
     path: "help",
-    loadComponent: () => import("./chunk-X4INHLGP.js").then((m) => m.HelpComponent),
+    loadComponent: () => import("./chunk-6PWUP6K4.js").then((m) => m.HelpComponent),
     title: "help._title",
     data: { breadcrumbKey: "home" }
   },
@@ -8242,7 +8246,7 @@ var routes = [
   {
     path: "standalone",
     pathMatch: "full",
-    loadComponent: () => import("./chunk-QPYWVP7Q.js").then((m) => m.StandaloneComponent),
+    loadComponent: () => import("./chunk-EHBQOD3P.js").then((m) => m.StandaloneComponent),
     title: "standalone._title"
   },
   {
@@ -8251,7 +8255,7 @@ var routes = [
     children: [
       {
         path: "compare-pages",
-        loadComponent: () => import("./chunk-HU6PLCMI.js").then((m) => m.StandaloneCompareComponent),
+        loadComponent: () => import("./chunk-R2FWTJEO.js").then((m) => m.StandaloneCompareComponent),
         title: "compare._title"
       }
     ]
@@ -8260,7 +8264,7 @@ var routes = [
   {
     path: "dev",
     pathMatch: "full",
-    loadComponent: () => import("./chunk-I6BWMFLQ.js").then((m) => m.DevToolsComponent),
+    loadComponent: () => import("./chunk-UP2PKCNS.js").then((m) => m.DevToolsComponent),
     title: "dev._title"
   },
   {
@@ -8269,22 +8273,22 @@ var routes = [
     children: [
       {
         path: "monitoring",
-        loadComponent: () => import("./chunk-AEOLZSVA.js").then((m) => m.UsageMonitoringComponent),
+        loadComponent: () => import("./chunk-4MKZZVWJ.js").then((m) => m.UsageMonitoringComponent),
         title: "dev.monitoring._title"
       },
       {
         path: "colour-generator",
-        loadComponent: () => import("./chunk-XJQG4OV2.js").then((m) => m.ColorGeneratorComponent),
+        loadComponent: () => import("./chunk-FER6K3DT.js").then((m) => m.ColorGeneratorComponent),
         title: "dev.colors._title"
       },
       {
         path: "design-patterns",
-        loadComponent: () => import("./chunk-E7PNZRQ3.js").then((m) => m.DesignPatternsComponent),
+        loadComponent: () => import("./chunk-5AXIVMBU.js").then((m) => m.DesignPatternsComponent),
         title: "dev.patterns._title"
       },
       {
         path: "prompt-editor",
-        loadComponent: () => import("./chunk-3VY5XZTV.js").then((m) => m.PromptEditorComponent),
+        loadComponent: () => import("./chunk-GZXUQZOE.js").then((m) => m.PromptEditorComponent),
         title: "dev.prompts._title"
       }
     ]
