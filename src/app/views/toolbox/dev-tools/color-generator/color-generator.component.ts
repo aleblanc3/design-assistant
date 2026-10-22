@@ -205,7 +205,6 @@ export class ColorGeneratorComponent {
   //Interactive only
   selectedInteractiveShadow = 'shadow-1';
   selectedHoverShadow = 'shadow-3';
-  selectedHoverBorderWidth = 'border-1';
   selectedHoverBorderColor = 'border-primary';
 
   //Active only
@@ -227,7 +226,6 @@ export class ColorGeneratorComponent {
     const flatShadow = this.selectedFlatShadow && !isInteractive ? this.selectedFlatShadow + ' ' : '';
     const interactiveShadow = this.selectedInteractiveShadow && isInteractive ? this.selectedInteractiveShadow + ' ' : '';
     //Hover state
-    const hoverBorderWidth = this.selectedHoverBorderWidth && isInteractive ? 'hover:' + this.selectedHoverBorderWidth + ' ' : '';
     const hoverBorderColor = this.selectedHoverBorderColor && isInteractive ? 'hover:' + this.selectedHoverBorderColor + ' ' : '';
     const hoverShadow = this.selectedHoverShadow && isInteractive ? 'hover:' + this.selectedHoverShadow + ' ' : '';
     const hoverBG = this.selectedHoverBackground() && isInteractive ? 'hover:' + this.selectedHoverBackground() + ' ' : '';
@@ -236,20 +234,6 @@ export class ColorGeneratorComponent {
     const activeBG = this.selectedActiveBackground() && isActive ? this.selectedActiveBackground() + ' ' : 'surface-card ';
     const activeBorderWidth = this.selectedActiveBorderWidth && isActive ? this.selectedActiveBorderWidth + ' ' : '';
     const activeBorderColor = this.selectedActiveBorderColor && isActive ? this.selectedActiveBorderColor + ' ' : '';
-    return (
-      borderRadius +
-      flatShadow +
-      interactiveShadow +
-      borderWidth +
-      activeBorderWidth +
-      borderColor +
-      activeBorderColor +
-      activeBG +
-      hoverShadow +
-      hoverBorderWidth +
-      hoverBorderColor +
-      hoverBG +
-      cursor
-    ).trim();
+    return (borderRadius + flatShadow + interactiveShadow + borderWidth + activeBorderWidth + borderColor + activeBorderColor + activeBG + hoverShadow + hoverBorderColor + hoverBG + cursor).trim();
   }
 }

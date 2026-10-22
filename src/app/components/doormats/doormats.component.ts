@@ -85,7 +85,7 @@ export class DoormatsComponent {
   private readonly dialog = viewChild.required(MenuProjectComponent);
 
   protected iconClasses(notOutlined?: boolean) {
-    const baseClasses = 'text-primary text-4xl p-2 border-1 border-round-lg surface-border';
+    const baseClasses = 'text-primary text-4xl p-2 border-1 border-round surface-border';
     const materialClass = notOutlined ? 'material-icons' : 'material-icons-outlined';
     const bgClass = this.settingsService.darkMode() ? 'bg-primary-800' : 'bg-primary-50';
     return baseClasses + ' ' + materialClass + ' ' + bgClass;

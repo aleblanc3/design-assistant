@@ -10,7 +10,7 @@ export class StyleCardService {
 
   /** Naming convention: f = flat, i = interactive, a = active, i = light mode, d = dark mode */
   /** Border radius (flat, interactive & active) */
-  private readonly fiaClasses = signal<string>('border-round-md ');
+  private readonly fiaClasses = signal<string>('border-round ');
   /** Border width, border colour and bg colour (flat & interactive) */
   private readonly fiClasses = signal<string>('border-1 ');
   /** Shadow, hover shadow, hover border colour, cursor (interactive, active) */
