@@ -8,13 +8,13 @@ import {
   MenuProjectComponent,
   SetupProjectComponent,
   SignInButtonComponent
-} from "./chunk-YQHLBD4F.js";
+} from "./chunk-TQ3R6TAB.js";
 import {
   SetupRepoComponent
 } from "./chunk-7UM4HJML.js";
 import {
   AddPagesComponent
-} from "./chunk-W5JF6P5T.js";
+} from "./chunk-JZMHSMZB.js";
 import {
   ProgressSpinner,
   ProgressSpinnerModule
@@ -26,7 +26,7 @@ import {
 import "./chunk-4ECWLYHO.js";
 import {
   ViewPagesComponent
-} from "./chunk-K7PFRQWU.js";
+} from "./chunk-WWLKAOJG.js";
 import "./chunk-JM3RJKVD.js";
 import {
   SaveButtonComponent
@@ -40,7 +40,7 @@ import {
 } from "./chunk-NL4TPFOO.js";
 import {
   ExportProjectComponent
-} from "./chunk-QDCQWCYE.js";
+} from "./chunk-5TVNCMBP.js";
 import {
   MultiSelect,
   MultiSelectModule
@@ -52,11 +52,11 @@ import {
 import {
   TimesCircleIcon
 } from "./chunk-ULNRCSK5.js";
-import "./chunk-QV2MUELL.js";
+import "./chunk-LAPEOTIF.js";
 import {
   Tag,
   TagModule
-} from "./chunk-4673KVKI.js";
+} from "./chunk-MA272S66.js";
 import {
   Message,
   MessageModule
@@ -64,19 +64,19 @@ import {
 import {
   IaDiagramService
 } from "./chunk-4SEU7J4Z.js";
-import "./chunk-VQBI46HK.js";
+import "./chunk-H5QXCKXH.js";
 import {
   AddPagesLinkComponent
 } from "./chunk-3Y4CZOCC.js";
 import "./chunk-OIQTDMBR.js";
-import "./chunk-NL5XKBQB.js";
+import "./chunk-LB56YE6V.js";
 import {
   TooltipDirective
 } from "./chunk-YEJSFSQN.js";
 import {
   StyleCardService
 } from "./chunk-XN4WNFGN.js";
-import "./chunk-6F5LXSLL.js";
+import "./chunk-VJ6BX3I2.js";
 import "./chunk-P3TRDY63.js";
 import "./chunk-NQRO2LC7.js";
 import "./chunk-5QMHUOJQ.js";
@@ -84,8 +84,9 @@ import "./chunk-OFBI5QRC.js";
 import {
   MenuModule
 } from "./chunk-PL2PAX7Y.js";
-import "./chunk-YTOYTTTA.js";
+import "./chunk-QCGQGT6S.js";
 import "./chunk-VAGTSXG4.js";
+import "./chunk-7DITWZ3V.js";
 import "./chunk-Y576ZK6L.js";
 import {
   Dialog,
@@ -95,14 +96,15 @@ import {
   IftaLabel,
   IftaLabelModule
 } from "./chunk-FQDO2XGS.js";
-import {
-  ProjectCacheService
-} from "./chunk-2TMLCNBU.js";
-import "./chunk-D57SAGZH.js";
+import "./chunk-P4REA7J6.js";
 import {
   AidaLinks
 } from "./chunk-JNZO32C5.js";
+import {
+  ProjectCacheService
+} from "./chunk-NO4MF57T.js";
 import "./chunk-MKX7R2UM.js";
+import "./chunk-D57SAGZH.js";
 import {
   FocusTrap,
   ProjectStateService
@@ -8153,39 +8155,39 @@ var routes = [
       },
       {
         path: "add-pages",
-        loadComponent: () => import("./chunk-TYUHFBBG.js").then((m) => m.AddOrViewPagesComponent),
+        loadComponent: () => import("./chunk-NUV72F65.js").then((m) => m.AddOrViewPagesComponent),
         title: "addPages._title"
       },
       {
         path: "ia-diagram",
         canActivate: [iaDiagramGuard],
-        loadComponent: () => import("./chunk-BCH4HYBV.js").then((m) => m.IaDiagramComponent),
+        loadComponent: () => import("./chunk-R2RIDZOE.js").then((m) => m.IaDiagramComponent),
         title: "iaDiagram._title"
       },
       {
         path: "inventory",
-        loadComponent: () => import("./chunk-DE2DWVLH.js").then((m) => m.InventoryComponent),
+        loadComponent: () => import("./chunk-DZ6VJRJH.js").then((m) => m.InventoryComponent),
         title: "inventory._title"
       },
       {
         path: "metadata",
-        loadComponent: () => import("./chunk-QS2H3GDB.js").then((m) => m.MetadataComponent),
+        loadComponent: () => import("./chunk-4R7CHNLL.js").then((m) => m.MetadataComponent),
         title: "metadata._title"
       },
       {
         path: "export-pages",
-        loadComponent: () => import("./chunk-FUDMBVZY.js").then((m) => m.ExportPagesComponent),
+        loadComponent: () => import("./chunk-MBPKIPSB.js").then((m) => m.ExportPagesComponent),
         title: "exportPages._nav"
       },
       {
         path: "edit-pages",
-        loadComponent: () => import("./chunk-A7LNBITV.js").then((m) => m.CompareComponent),
+        loadComponent: () => import("./chunk-NONVGCSD.js").then((m) => m.CompareComponent),
         title: "editPages._title",
         data: { mode: "ai" }
       },
       {
         path: "compare-pages",
-        loadComponent: () => import("./chunk-A7LNBITV.js").then((m) => m.CompareComponent),
+        loadComponent: () => import("./chunk-NONVGCSD.js").then((m) => m.CompareComponent),
         title: "compare._title",
         data: { mode: "compare" }
       }
@@ -8246,7 +8248,7 @@ var routes = [
   {
     path: "standalone",
     pathMatch: "full",
-    loadComponent: () => import("./chunk-EHBQOD3P.js").then((m) => m.StandaloneComponent),
+    loadComponent: () => import("./chunk-R5FSDKJN.js").then((m) => m.StandaloneComponent),
     title: "standalone._title"
   },
   {
@@ -8264,7 +8266,7 @@ var routes = [
   {
     path: "dev",
     pathMatch: "full",
-    loadComponent: () => import("./chunk-UP2PKCNS.js").then((m) => m.DevToolsComponent),
+    loadComponent: () => import("./chunk-UMUH6EMR.js").then((m) => m.DevToolsComponent),
     title: "dev._title"
   },
   {
@@ -8278,7 +8280,7 @@ var routes = [
       },
       {
         path: "colour-generator",
-        loadComponent: () => import("./chunk-FER6K3DT.js").then((m) => m.ColorGeneratorComponent),
+        loadComponent: () => import("./chunk-6IDIFESP.js").then((m) => m.ColorGeneratorComponent),
         title: "dev.colors._title"
       },
       {
@@ -8288,7 +8290,7 @@ var routes = [
       },
       {
         path: "prompt-editor",
-        loadComponent: () => import("./chunk-GZXUQZOE.js").then((m) => m.PromptEditorComponent),
+        loadComponent: () => import("./chunk-RN3NQOCL.js").then((m) => m.PromptEditorComponent),
         title: "dev.prompts._title"
       }
     ]
