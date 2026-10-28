@@ -1,4 +1,4 @@
-<p-button [label]="'common.actions' | translate" (onClick)="updateDropdown(); menu.toggle($event)" icon="pi pi-chevron-down" iconPos="right" outlined styleClass="secondary-outline h-3rem" />
+<p-button [label]="'common.bulkActions' | translate" (onClick)="updateDropdown(); menu.toggle($event)" icon="pi pi-chevron-down" iconPos="right" outlined styleClass="secondary-outline h-3rem" />
 <p-menu [model]="itemsDropdown" [popup]="true" #menu>
   <ng-template #submenuheader let-item>
     <span [class]="item.styleClass">{{ item.label | translate }}</span>
