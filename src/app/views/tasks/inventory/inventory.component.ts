@@ -1333,7 +1333,7 @@ export class InventoryComponent implements OnInit {
         acceptButtonStyleClass: 'p-button-danger',
         rejectButtonStyleClass: 'p-button-secondary',
         accept: () => {
-          this.projectState.deleteNodes(this.selectedNodes, true);
+          this.projectState.deleteFlatNodes(this.selectedNodes, true);
           this.selectedNodes = [];
         },
       });
@@ -1389,7 +1389,7 @@ export class InventoryComponent implements OnInit {
       acceptButtonStyleClass: 'p-button-danger',
       rejectButtonStyleClass: 'p-button-secondary',
       accept: () => {
-        this.projectState.deleteNodes(this.selectedNodes, true);
+        this.projectState.deleteFlatNodes(this.selectedNodes, true);
         this.selectedNodes = []; // Clear selection after delete
       },
     });
