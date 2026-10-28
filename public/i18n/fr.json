@@ -804,7 +804,7 @@
 	"metadata.status.changeLive": "Les changements sont en ligne",
 	"metadata.status.changePendingReview": "Changements en attente d'examen",
 	"metadata.status.noChangesApproved": "Examiné sans changement",
-	"metadata.status.noChangesPendingReview": "Confirmer qu'aucun changement n'est nécessaire",
+	"metadata.status.noChangesPendingReview": "Confirmer qu'aucun changement n'est prévu",
 	"metadata.tooltip.generateTitle": "Générer le titre à partir du H1 et du double H1",
 	"metadata.tooltip.notH1Match": "Le titre ne correspond pas à votre H1 et à votre double H1",
 	"metadata.tooltip.tooLong": "Les métadonnées sont trop longues (plus de 160 caractères)",
