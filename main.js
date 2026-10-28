@@ -1,6 +1,6 @@
 import {
   SignInBannerComponent
-} from "./chunk-Q2SQWSDP.js";
+} from "./chunk-LDYDJYWY.js";
 import {
   AddCollaboratorsComponent,
   DoormatsComponent,
@@ -8,112 +8,115 @@ import {
   MenuProjectComponent,
   SetupProjectComponent,
   SignInButtonComponent
-} from "./chunk-TQ3R6TAB.js";
+} from "./chunk-6EVUOYV5.js";
 import {
   SetupRepoComponent
-} from "./chunk-7UM4HJML.js";
+} from "./chunk-REZCW6NP.js";
 import {
   AddPagesComponent
-} from "./chunk-JZMHSMZB.js";
+} from "./chunk-I5RMBQGM.js";
 import {
   ProgressSpinner,
   ProgressSpinnerModule
-} from "./chunk-22EMPEFJ.js";
-import {
-  ProgressBar,
-  ProgressBarModule
-} from "./chunk-OE6OK7VB.js";
-import "./chunk-4ECWLYHO.js";
+} from "./chunk-OZPJLQRB.js";
+import "./chunk-YS2HXGZD.js";
+import "./chunk-4QA7ITXV.js";
 import {
   ViewPagesComponent
-} from "./chunk-WWLKAOJG.js";
-import "./chunk-JM3RJKVD.js";
+} from "./chunk-UGTN5VPL.js";
+import "./chunk-677JLHV2.js";
 import {
   SaveButtonComponent
-} from "./chunk-ADVE2F2T.js";
+} from "./chunk-GOBS3JP2.js";
 import {
   Divider,
   DividerModule
-} from "./chunk-ATVW4L4U.js";
+} from "./chunk-R7MRXE6F.js";
 import {
   AddUrlsService
-} from "./chunk-NL4TPFOO.js";
+} from "./chunk-6BLFN2PU.js";
 import {
   ExportProjectComponent
-} from "./chunk-5TVNCMBP.js";
+} from "./chunk-CQP2FZ7I.js";
 import {
   MultiSelect,
   MultiSelectModule
-} from "./chunk-2LBPWPXO.js";
+} from "./chunk-T6RAYL7V.js";
 import {
   ConfirmDialog,
   ConfirmDialogModule
-} from "./chunk-PQRHCNLI.js";
+} from "./chunk-Y6C6PSHI.js";
 import {
   TimesCircleIcon
-} from "./chunk-ULNRCSK5.js";
-import "./chunk-LAPEOTIF.js";
-import {
-  Tag,
-  TagModule
-} from "./chunk-MA272S66.js";
-import {
-  Message,
-  MessageModule
-} from "./chunk-GGIC4QUJ.js";
+} from "./chunk-TEPEDXMN.js";
 import {
   IaDiagramService
-} from "./chunk-4SEU7J4Z.js";
-import "./chunk-H5QXCKXH.js";
+} from "./chunk-JFDYGS4D.js";
+import "./chunk-MUTHVD5E.js";
+import {
+  ProgressBar,
+  ProgressBarModule
+} from "./chunk-2CMBSBBR.js";
 import {
   AddPagesLinkComponent
-} from "./chunk-3Y4CZOCC.js";
+} from "./chunk-VM42GDUP.js";
 import "./chunk-OIQTDMBR.js";
-import "./chunk-LB56YE6V.js";
 import {
   TooltipDirective
 } from "./chunk-YEJSFSQN.js";
 import {
   StyleCardService
 } from "./chunk-XN4WNFGN.js";
-import "./chunk-VJ6BX3I2.js";
-import "./chunk-P3TRDY63.js";
-import "./chunk-NQRO2LC7.js";
-import "./chunk-5QMHUOJQ.js";
-import "./chunk-OFBI5QRC.js";
+import "./chunk-LHHJXRVI.js";
+import "./chunk-IEIRNN7O.js";
+import "./chunk-A64J2QZJ.js";
+import "./chunk-CPPYY42N.js";
+import "./chunk-IYQUILDN.js";
 import {
   MenuModule
-} from "./chunk-PL2PAX7Y.js";
-import "./chunk-QCGQGT6S.js";
-import "./chunk-VAGTSXG4.js";
-import "./chunk-7DITWZ3V.js";
-import "./chunk-Y576ZK6L.js";
+} from "./chunk-UIHSOUVP.js";
+import "./chunk-SF6D4YBJ.js";
+import "./chunk-GOJEMXPB.js";
+import {
+  Tag,
+  TagModule
+} from "./chunk-TEJYSMVH.js";
+import "./chunk-TGMCBEYX.js";
+import {
+  Message,
+  MessageModule
+} from "./chunk-QU77XNP2.js";
 import {
   Dialog,
   DialogModule
-} from "./chunk-7ZDCSAJQ.js";
+} from "./chunk-D2IYO2LM.js";
 import {
   IftaLabel,
   IftaLabelModule
-} from "./chunk-FQDO2XGS.js";
-import "./chunk-P4REA7J6.js";
+} from "./chunk-DEEWKCKY.js";
+import "./chunk-S6EJPLRR.js";
 import {
   AidaLinks
-} from "./chunk-JNZO32C5.js";
+} from "./chunk-NOSJTLX4.js";
+import "./chunk-R53FJ7GL.js";
+import "./chunk-KF7CJTX7.js";
+import {
+  ChevronRightIcon
+} from "./chunk-RUKWKULH.js";
 import {
   ProjectCacheService
-} from "./chunk-NO4MF57T.js";
-import "./chunk-MKX7R2UM.js";
+} from "./chunk-NFB4ATIL.js";
 import "./chunk-D57SAGZH.js";
 import {
   FocusTrap,
   ProjectStateService
-} from "./chunk-35HWDDPQ.js";
+} from "./chunk-F4KIDQT7.js";
 import {
   Checkbox,
   CheckboxModule
-} from "./chunk-REIT3HFO.js";
-import "./chunk-6U2RHGUD.js";
+} from "./chunk-EI26I4O3.js";
+import "./chunk-DMOF7S63.js";
+import "./chunk-6S55WOIY.js";
 import {
   CloudStorageService,
   CollaboratorService,
@@ -122,7 +125,7 @@ import {
   SelectButtonModule,
   UsageService,
   version
-} from "./chunk-ZELECDZO.js";
+} from "./chunk-ER4QCIKI.js";
 import {
   GitHubAuthService,
   SignInService
@@ -130,10 +133,7 @@ import {
 import {
   PhaseStatus,
   ProjectPhase
-} from "./chunk-M6FDN6OY.js";
-import {
-  ChevronRightIcon
-} from "./chunk-BHVFX6OF.js";
+} from "./chunk-XREV6GCY.js";
 import {
   CheckIcon,
   IconField,
@@ -142,7 +142,7 @@ import {
   InputIconModule,
   Select,
   SelectModule
-} from "./chunk-JR3PODJQ.js";
+} from "./chunk-HJXNETTU.js";
 import {
   Badge,
   BaseComponent,
@@ -166,8 +166,7 @@ import {
   marker,
   s,
   zindexutils
-} from "./chunk-QN4TTD5X.js";
-import "./chunk-DMOF7S63.js";
+} from "./chunk-C3GPHJPQ.js";
 import {
   ActivatedRoute,
   BaseStyle,
@@ -2892,7 +2891,7 @@ var BreadcrumbComponent = class _BreadcrumbComponent {
   static \u0275fac = function BreadcrumbComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _BreadcrumbComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _BreadcrumbComponent, selectors: [["aida-breadcrumb"]], decls: 5, vars: 2, consts: [["menu", ""], [1, "sticky", "top-0", "z-50", "flex", "justify-content-center", "border-round-bottom-lg", "bg-primary", "h-1.5"], [1, "sticky", "top-0", "z-50", "flex", "align-items-center", "gap-2", "white-space-nowrap", "ml-auto", "max-w-max", "min-h-1.5"], ["icon", "pi pi-lock", "tooltipPosition", "left", 3, "severity", "value"], ["tooltipPosition", "left", 3, "icon", "pTooltip", "severity", "value"], ["icon", "pi pi-angle-down", "iconPos", "right", "size", "small", "styleClass", "border-noround-top border-round-bottom-xl", 3, "onClick", "label"], [1, "h-1.5"], ["styleClass", "pt-1 pl-0 text-color-secondary bg-transparent", 3, "model"], ["pTemplate", "item"], [1, "dbl-h1"], [1, "p-menuitem-text", "no-underline", 3, "class", "routerLink"], [1, "p-menuitem-link", 3, "routerLink"], [1, "p-menuitem-text"], [1, "p-menuitem-text", "no-underline", 3, "routerLink"], [1, "sr-only"]], template: function BreadcrumbComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _BreadcrumbComponent, selectors: [["aida-breadcrumb"]], decls: 5, vars: 2, consts: [["menu", ""], [1, "sticky", "top-0", "z-50", "flex", "justify-content-center", "border-round-bottom-lg", "bg-primary", "h-1.5"], [1, "sticky", "top-0", "z-50", "flex", "align-items-center", "gap-2", "white-space-nowrap", "ml-auto", "max-w-max", "min-h-1.5"], ["icon", "pi pi-lock", "tooltipPosition", "left", 3, "severity", "value"], ["tooltipPosition", "left", 3, "icon", "pTooltip", "severity", "value"], ["icon", "pi pi-angle-down", "iconPos", "right", "styleClass", "border-noround-top border-round-bottom-xl", 3, "onClick", "label"], [1, "h-1.5"], ["styleClass", "pt-1 pl-0 text-color-secondary bg-transparent", 3, "model"], ["pTemplate", "item"], [1, "dbl-h1"], [1, "p-menuitem-text", "no-underline", 3, "class", "routerLink"], [1, "p-menuitem-link", 3, "routerLink"], [1, "p-menuitem-text"], [1, "p-menuitem-text", "no-underline", 3, "routerLink"], [1, "sr-only"]], template: function BreadcrumbComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275conditionalCreate(0, BreadcrumbComponent_Conditional_0_Template, 3, 3, "div", 1)(1, BreadcrumbComponent_Conditional_1_Template, 5, 5, "div", 2);
       \u0275\u0275conditionalCreate(2, BreadcrumbComponent_Conditional_2_Template, 4, 4);
@@ -2920,7 +2919,7 @@ var BreadcrumbComponent = class _BreadcrumbComponent {
     @if (projectDisplay.tagLabel) {
       <p-tag [icon]="projectDisplay.tagIcon" [pTooltip]="projectDisplay.tagTooltip" [severity]="projectDisplay.tagSeverity" [value]="projectDisplay.tagLabel" tooltipPosition="left" />
     }
-    <p-button [label]="'project._nav.edit' | translate" (onClick)="menu.toggle($event)" icon="pi pi-angle-down" iconPos="right" size="small" styleClass="border-noround-top border-round-bottom-xl" />
+    <p-button [label]="'project._nav.edit' | translate" (onClick)="menu.toggle($event)" icon="pi pi-angle-down" iconPos="right" styleClass="border-noround-top border-round-bottom-xl" />
   </div>
 }
 
@@ -3007,7 +3006,7 @@ var HeaderComponent = class _HeaderComponent {
   static \u0275fac = function HeaderComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _HeaderComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _HeaderComponent, selectors: [["aida-header"]], decls: 17, vars: 18, consts: [[1, "flex", "flex-row", "gap-2", "justify-content-end", "py-2", "border-bottom-1", "surface-border"], [1, "opacity-70", "h-1rem", "md:h-2rem", "flex", "mr-auto", 3, "alt", "src"], [1, "flex", "flex-row", "align-items-center", "gap-2", "lg:gap-3"], ["ariaLabel", "Toggle between dark and light mode", "outlined", "", "rounded", "", "severity", "secondary", "size", "small", "styleClass", "darkmode-toggle secondary-outline", 3, "onClick", "icon"], ["rounded", "", "severity", "secondary", "styleClass", "underline text-blue-500 hover:text-blue-400 nohover -ml-2", "text", "", 3, "onClick", "ariaLabel"], [1, "hidden", "sm:inline", "w-3rem"], [1, "inline", "sm:hidden", "w-1rem", "uppercase", "font-bold"]], template: function HeaderComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _HeaderComponent, selectors: [["aida-header"]], decls: 17, vars: 18, consts: [[1, "flex", "flex-row", "gap-2", "justify-content-end", "py-2", "border-bottom-1", "surface-border"], [1, "opacity-70", "h-1rem", "md:h-2rem", "flex", "mr-auto", 3, "alt", "src"], [1, "flex", "flex-row", "align-items-center", "gap-2", "lg:gap-3"], ["ariaLabel", "Toggle between dark and light mode", "outlined", "", "rounded", "", "severity", "secondary", "styleClass", "darkmode-toggle secondary-outline", 3, "onClick", "icon"], ["rounded", "", "severity", "secondary", "styleClass", "underline text-blue-500 hover:text-blue-400 nohover -ml-2", "text", "", 3, "onClick", "ariaLabel"], [1, "hidden", "sm:inline", "w-3rem"], [1, "inline", "sm:hidden", "w-1rem", "uppercase", "font-bold"]], template: function HeaderComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "header")(1, "div", 0);
       \u0275\u0275element(2, "img", 1);
@@ -3064,7 +3063,6 @@ var HeaderComponent = class _HeaderComponent {
         outlined
         rounded
         severity="secondary"
-        size="small"
         styleClass="darkmode-toggle secondary-outline"
       />
       <p-button
@@ -4374,7 +4372,7 @@ var SidebarComponent = class _SidebarComponent {
       this.confirmationService.confirm({
         target: event?.target,
         message: this.translate.instant("project.new.confirmMessage"),
-        icon: "pi pi-exclamation-circle text-red-500",
+        icon: "pi pi-exclamation-circle text-red",
         acceptButtonProps: {
           acceptLabel: this.translate.instant("common.overwrite"),
           severity: "danger"
@@ -4728,7 +4726,7 @@ var AppComponent = class _AppComponent {
   static \u0275fac = function AppComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _AppComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AppComponent, selectors: [["aida-root"]], decls: 11, vars: 0, consts: [["message", ""], [1, "container", "md:mx-6", "my-2"], [1, "container"], ["key", "html"], ["aria-hidden", "true", "data-pc-section", "messageicon", 1, "p-toast-message-icon", "p-icon", "pi", 3, "ngClass"], ["data-pc-section", "messagetext", 1, "p-toast-message-text"], ["data-pc-section", "summary", 1, "p-toast-summary"], ["data-pc-section", "detail", 1, "p-toast-detail", 3, "innerHTML"]], template: function AppComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AppComponent, selectors: [["aida-root"]], decls: 12, vars: 0, consts: [["message", ""], [1, "container", "md:mx-6", "my-2"], [1, "container"], ["key", "html"], ["aria-hidden", "true", "data-pc-section", "messageicon", 1, "p-toast-message-icon", "p-icon", "pi", 3, "ngClass"], ["data-pc-section", "messagetext", 1, "p-toast-message-text"], ["data-pc-section", "summary", 1, "p-toast-summary"], ["data-pc-section", "detail", 1, "p-toast-detail", 3, "innerHTML"]], template: function AppComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "div", 1);
       \u0275\u0275element(1, "aida-header");
@@ -4741,13 +4739,14 @@ var AppComponent = class _AppComponent {
       \u0275\u0275elementStart(8, "p-toast", 3);
       \u0275\u0275template(9, AppComponent_ng_template_9_Template, 5, 8, "ng-template", null, 0, \u0275\u0275templateRefExtractor);
       \u0275\u0275elementEnd();
+      \u0275\u0275element(11, "p-confirmdialog");
     }
-  }, dependencies: [CommonModule, NgClass, RouterModule, RouterOutlet, ToastModule, Toast, BreadcrumbComponent, FooterComponent, HeaderComponent, SidebarComponent], encapsulation: 2, changeDetection: 0 });
+  }, dependencies: [CommonModule, NgClass, RouterModule, RouterOutlet, ConfirmDialog, ToastModule, Toast, BreadcrumbComponent, FooterComponent, HeaderComponent, SidebarComponent], encapsulation: 2, changeDetection: 0 });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(AppComponent, [{
     type: Component,
-    args: [{ selector: "aida-root", imports: [CommonModule, RouterModule, RouterOutlet, ToastModule, BreadcrumbComponent, FooterComponent, HeaderComponent, SidebarComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: `<div class="container md:mx-6 my-2">
+    args: [{ selector: "aida-root", imports: [CommonModule, RouterModule, RouterOutlet, ConfirmDialog, ToastModule, BreadcrumbComponent, FooterComponent, HeaderComponent, SidebarComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: `<div class="container md:mx-6 my-2">
   <aida-header />
   <main class="container">
     <aida-breadcrumb />
@@ -4776,11 +4775,12 @@ var AppComponent = class _AppComponent {
     </div>
   </ng-template>
 </p-toast>
+<p-confirmdialog />
 ` }]
   }], () => [], null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AppComponent, { className: "AppComponent", filePath: "src/app/app.component.ts", lineNumber: 30 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AppComponent, { className: "AppComponent", filePath: "src/app/app.component.ts", lineNumber: 31 });
 })();
 
 // node_modules/@angular/common/locales/en-CA.js
@@ -4988,7 +4988,7 @@ var HomeComponent = class _HomeComponent {
     /* istanbul ignore next */
     []
   ));
-  taskDoormats = ["dashboard", "problems", "iaDiagram", "inventory", "search", "metadata", "exportPages", "editPages", "compare"];
+  taskDoormats = ["dashboard", "problems", "iaDiagram", "inventory", "search", "metadata", "exportPages", "editPages", "compare", "languages"];
   settingsDoormats = ["setupProject", "addPages"];
   helpDoormats = ["help", "contact"];
   showProject = computed(() => this.projectStorageService.hasActiveProject("session") || this.projectStorageService.hasActiveProject("local"), ...ngDevMode ? [{ debugName: "showProject" }] : (
@@ -5034,6 +5034,7 @@ var HomeComponent = class _HomeComponent {
   }
   constructor() {
     effect(() => {
+      void this.translate.currentLang();
       void this.settingsService.userId();
       void this.settingsService.org();
       this.getTitle();
@@ -5043,16 +5044,17 @@ var HomeComponent = class _HomeComponent {
     return __async(this, null, function* () {
       const user = yield this.collaboratorService.getLogin(this.settingsService.userId());
       const org = this.settingsService.org();
+      const orgTranslation = org ? this.translate.instant("org." + org.toLowerCase()) : "";
       if (Number.isNaN(Number(user)) && !user.startsWith("user_")) {
         this.title.set(this.translate.instant("home._title.user", { user }));
       } else
-        this.title.set(this.translate.instant("home._title", { org }));
+        this.title.set(this.translate.instant("home._title", { org: orgTranslation }));
     });
   }
   static \u0275fac = function HomeComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _HomeComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _HomeComponent, selectors: [["aida-home"]], decls: 29, vars: 40, consts: [["id", "wb-cont", 1, "text-primary", "noline"], [1, "flex", "flex-column", "gap-2"], [3, "class"], [1, "flex", "flex-column", "lg:flex-row", "justify-content-between", "gap-2"], [1, "flex-1"], [1, "mt-0"], [1, "lg:p-4", "min-w-min", "flex", "flex-column", "gap-2"], ["fluid", "", 1, "lg:w-18rem", "white-space-nowrap", 3, "label", "outlined", "routerLink"], ["fluid", "", "outlined", "", 1, "lg:w-18rem", "white-space-nowrap", 3, "label", "routerLink"], [1, "mb-0"], [3, "headingLevel", "keys"], [1, "flex", "justify-content-between"], [1, "flex", "flex-column", "lg:flex-row", "gap-2", "justify-content-between", "flex-1"], [1, "p-2", "text-center", "h-3rem"], ["src", "images/laptop-preview.webp", 1, "opacity-80", "w-17rem", "h-9rem", "pl-4", "hidden", "lg:flex", "align-self-center", 3, "alt"], [1, "m-0", "text-xl"], [1, "m-0", "text-color-secondary", "text-sm"], ["fluid", "", 1, "white-space-nowrap", "lg:w-18rem", 3, "label", "routerLink"], ["fluid", "", 1, "white-space-nowrap", "lg:w-18rem", 3, "label"], ["fluid", "", 1, "white-space-nowrap", "lg:w-18rem", 3, "onClick", "label"], [1, "pi", "pi-spinner", "pi-spin", "text-5xl", "text-primary"]], template: function HomeComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _HomeComponent, selectors: [["aida-home"]], decls: 29, vars: 40, consts: [["id", "wb-cont", 1, "text-primary", "noline"], [1, "flex", "flex-column", "gap-2"], [3, "class"], [1, "flex", "flex-column", "lg:flex-row", "justify-content-between", "gap-2"], [1, "flex-1"], [1, "mt-0"], [1, "lg:p-4", "min-w-min", "flex", "flex-column", "gap-2"], ["fluid", "", "size", "large", 1, "lg:w-18rem", "white-space-nowrap", 3, "label", "outlined", "routerLink"], ["fluid", "", "outlined", "", "size", "large", 1, "lg:w-18rem", "white-space-nowrap", 3, "label", "routerLink"], [1, "mb-0"], [3, "headingLevel", "keys"], [1, "flex", "justify-content-between"], [1, "flex", "flex-column", "lg:flex-row", "gap-2", "justify-content-between", "flex-1"], [1, "p-2", "text-center", "h-3rem"], ["src", "images/laptop-preview.webp", 1, "opacity-80", "w-17rem", "h-9rem", "pl-4", "hidden", "lg:flex", "align-self-center", 3, "alt"], [1, "m-0", "text-xl"], [1, "m-0", "text-color-secondary", "text-sm"], ["fluid", "", "size", "large", 1, "white-space-nowrap", "lg:w-18rem", 3, "label", "routerLink"], ["fluid", "", "size", "large", 1, "white-space-nowrap", "lg:w-18rem", 3, "label"], ["fluid", "", "size", "large", 1, "white-space-nowrap", "lg:w-18rem", 3, "onClick", "label"], [1, "pi", "pi-spinner", "pi-spin", "text-5xl", "text-primary"]], template: function HomeComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "h1", 0);
       \u0275\u0275text(1);
@@ -5141,9 +5143,9 @@ var HomeComponent = class _HomeComponent {
                 <p class="m-0 text-color-secondary text-sm">{{ 'switch.label.modified' | translate }} {{ info.lastModified | date }}</p>
               </div>
               @if (projectStorageService.currentActive()) {
-                <p-button [label]="'project.goDashboard' | translate" [routerLink]="AidaLinks.ProjectDashboard" class="white-space-nowrap lg:w-18rem" fluid />
+                <p-button [label]="'project.goDashboard' | translate" [routerLink]="AidaLinks.ProjectDashboard" class="white-space-nowrap lg:w-18rem" fluid size="large" />
               } @else {
-                <p-button [label]="'project.load' | translate" (onClick)="loadProject()" class="white-space-nowrap lg:w-18rem" fluid />
+                <p-button [label]="'project.load' | translate" (onClick)="loadProject()" class="white-space-nowrap lg:w-18rem" fluid size="large" />
               }
             } @else if (projectInfo.isLoading()) {
               <div class="p-2 text-center h-3rem">
@@ -5163,8 +5165,8 @@ var HomeComponent = class _HomeComponent {
       <p>{{ 'home.aida.description' | translate }}</p>
     </div>
     <div class="lg:p-4 min-w-min flex flex-column gap-2">
-      <p-button [label]="'project.startNew' | translate" [outlined]="showProject()" [routerLink]="AidaLinks.NewProject" class="lg:w-18rem white-space-nowrap" fluid />
-      <p-button [label]="'switch.viewAll' | translate" [routerLink]="AidaLinks.AllProjects" class="lg:w-18rem white-space-nowrap" fluid outlined />
+      <p-button [label]="'project.startNew' | translate" [outlined]="showProject()" [routerLink]="AidaLinks.NewProject" class="lg:w-18rem white-space-nowrap" fluid size="large" />
+      <p-button [label]="'switch.viewAll' | translate" [routerLink]="AidaLinks.AllProjects" class="lg:w-18rem white-space-nowrap" fluid outlined size="large" />
     </div>
   </div>
   <h2 class="mb-0">{{ 'home.header.taskDoormats' | translate }}</h2>
@@ -5515,7 +5517,7 @@ function DashboardComponent_ng_template_61_Template(rf, ctx) {
     \u0275\u0275advance(3);
     \u0275\u0275classMap(icon_r9 + " text-xl");
     \u0275\u0275advance();
-    \u0275\u0275classMap(!ready_r11 && !ctx_r0.production ? "text-red-500" : "text-900");
+    \u0275\u0275classMap(!ready_r11 && !ctx_r0.production ? "text-red" : "text-900");
     \u0275\u0275advance();
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(6, 11, phase_r7));
     \u0275\u0275advance(3);
@@ -5710,7 +5712,7 @@ var DashboardComponent = class _DashboardComponent {
       \u0275\u0275advance(3);
       \u0275\u0275property("ngTemplateOutlet", phase_r17)("ngTemplateOutletContext", \u0275\u0275pureFunction3(44, _c25, ctx.AidaLinks.PhaseDesign, ctx.ProjectPhase.Design, design_r14));
       \u0275\u0275advance();
-      \u0275\u0275property("ngTemplateOutlet", phase_r17)("ngTemplateOutletContext", \u0275\u0275pureFunction5(48, _c35, ctx.AidaLinks.PhaseApprove, ctx.ProjectPhase.Approve, ctx.selectedItems.length / ctx.checklist.length * 100 === 100 ? "pi pi-check-circle text-green-500" : "pi pi-check-circle text-red-500", approve_r15, approveChecklist_r16));
+      \u0275\u0275property("ngTemplateOutlet", phase_r17)("ngTemplateOutletContext", \u0275\u0275pureFunction5(48, _c35, ctx.AidaLinks.PhaseApprove, ctx.ProjectPhase.Approve, ctx.selectedItems.length / ctx.checklist.length * 100 === 100 ? "pi pi-check-circle text-green" : "pi pi-check-circle text-red", approve_r15, approveChecklist_r16));
     }
   }, dependencies: [
     CommonModule,
@@ -5888,7 +5890,7 @@ var DashboardComponent = class _DashboardComponent {
             context: {
               path: AidaLinks.PhaseApprove,
               phase: ProjectPhase.Approve,
-              icon: (selectedItems.length / checklist.length) * 100 === 100 ? 'pi pi-check-circle text-green-500' : 'pi pi-check-circle text-red-500',
+              icon: (selectedItems.length / checklist.length) * 100 === 100 ? 'pi pi-check-circle text-green' : 'pi pi-check-circle text-red',
               stats: approve,
               content: approveChecklist,
               ready: false,
@@ -5975,7 +5977,7 @@ var DashboardComponent = class _DashboardComponent {
     <div class="flex-1">
       <div class="flex align-items-center mb-3">
         <i [class]="icon + ' text-xl'"></i>
-        <h3 [class]="!ready && !production ? 'text-red-500' : 'text-900'" class="text-lg font-semibold ml-2 m-0">{{ phase | translate }}</h3>
+        <h3 [class]="!ready && !production ? 'text-red' : 'text-900'" class="text-lg font-semibold ml-2 m-0">{{ phase | translate }}</h3>
       </div>
       <p class="text-600 text-sm mb-3 min-h-2rem">{{ phase + '.description' | translate }}</p>
       <div class="border-top-1 surface-border pt-3">
@@ -6848,7 +6850,7 @@ var SwitchProjectComponent = class _SwitchProjectComponent {
   confirmationService = inject(ConfirmationService);
   signInService = inject(SignInService);
   router = inject(Router);
-  message = inject(MessageService);
+  messageService = inject(MessageService);
   // Project list signal
   allProjects = signal([], ...ngDevMode ? [{ debugName: "allProjects" }] : (
     /* istanbul ignore next */
@@ -6891,10 +6893,10 @@ var SwitchProjectComponent = class _SwitchProjectComponent {
     return __async(this, null, function* () {
       const deletedCount = this.projectStorageService.cleanupDeletedProjects();
       if (deletedCount > 0) {
-        this.message.add({
+        this.messageService.add({
           severity: "info",
-          summary: "Cleanup completed",
-          detail: `${deletedCount} expired project${deletedCount > 1 ? "s" : ""} automatically deleted`
+          summary: this.translate.instant("switch.toast.cleanUp.summary"),
+          detail: this.translate.instant("switch.toast.cleanUp.detail", { count: deletedCount })
         });
       }
       yield this.loadProjects(this.currentMode());
@@ -7116,16 +7118,16 @@ var SwitchProjectComponent = class _SwitchProjectComponent {
       const success = yield this.projectState.saveProject();
       if (success) {
         yield this.loadProjects();
-        this.message.add({
+        this.messageService.add({
           severity: "success",
-          summary: "Project saved",
-          detail: "Your project has been saved successfully"
+          summary: this.translate.instant("switch.toast.saveSuccess.summary"),
+          detail: this.translate.instant("switch.toast.saveSuccess.detail")
         });
       } else {
-        this.message.add({
+        this.messageService.add({
           severity: "error",
-          summary: "Save failed",
-          detail: "Could not save the project"
+          summary: this.translate.instant("switch.toast.saveFail.summary"),
+          detail: this.translate.instant("switch.toast.saveFail.detail")
         });
       }
     });
@@ -7135,7 +7137,7 @@ var SwitchProjectComponent = class _SwitchProjectComponent {
     if (project.storageType === "cloud") {
       this.confirmationService.confirm({
         key: "delete",
-        icon: "pi pi-exclamation-triangle text-red-500",
+        icon: "pi pi-exclamation-triangle text-red",
         header: this.translate.instant("switch.confirmDelete.header"),
         message: this.translate.instant("switch.confirmDelete.message"),
         acceptButtonProps: {
@@ -7174,16 +7176,16 @@ var SwitchProjectComponent = class _SwitchProjectComponent {
         if (active?.key === key) {
           this.newProject();
         }
-        this.message.add({
+        this.messageService.add({
           severity: "success",
-          summary: "Project deleted",
-          detail: "The project has been removed"
+          summary: this.translate.instant("switch.toast.deleteSuccess.summary"),
+          detail: this.translate.instant("switch.toast.deleteSuccess.detail")
         });
       } else {
-        this.message.add({
+        this.messageService.add({
           severity: "error",
-          summary: "Delete failed",
-          detail: "Could not delete the project"
+          summary: this.translate.instant("switch.toast.deleteFail.summary"),
+          detail: this.translate.instant("switch.toast.deleteFail.detail")
         });
       }
     });
@@ -7197,10 +7199,10 @@ var SwitchProjectComponent = class _SwitchProjectComponent {
       }
       const fullProject = yield this.projectStorageService.loadProject(project.key, "local");
       if (!fullProject) {
-        this.message.add({
+        this.messageService.add({
           severity: "error",
-          summary: "Upload failed",
-          detail: "Could not load project data"
+          summary: this.translate.instant("switch.toast.uploadFail.summary"),
+          detail: this.translate.instant("switch.toast.uploadFail.detail1")
         });
         return;
       }
@@ -7212,16 +7214,16 @@ var SwitchProjectComponent = class _SwitchProjectComponent {
       if (success) {
         yield this.projectStorageService.deleteProject(project.key, "local");
         yield this.loadProjects();
-        this.message.add({
+        this.messageService.add({
           severity: "success",
-          summary: "Uploaded to cloud",
-          detail: "Your project is now available in the cloud"
+          summary: this.translate.instant("switch.toast.uploadSuccess.summary"),
+          detail: this.translate.instant("switch.toast.uploadSuccess.detail")
         });
       } else {
-        this.message.add({
+        this.messageService.add({
           severity: "error",
-          summary: "Upload failed",
-          detail: "Could not upload project to cloud"
+          summary: this.translate.instant("switch.toast.uploadFail.summary"),
+          detail: this.translate.instant("switch.toast.uploadFail.detail2")
         });
       }
     });
@@ -7286,7 +7288,7 @@ var SwitchProjectComponent = class _SwitchProjectComponent {
   static \u0275fac = function SwitchProjectComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SwitchProjectComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SwitchProjectComponent, selectors: [["aida-switch-project"]], decls: 50, vars: 52, consts: [["signIn", ""], ["id", "wb-cont"], ["severity", "info", "styleClass", "mb-2 sticky top-0 z-2"], [1, "flex", "flex-column-reverse", "xl:flex-row", "justify-content-between", "align-items-start", "gap-2", "mb-3"], [1, "flex", "flex-column", "lg:flex-row", "gap-2", "w-full"], ["styleClass", "w-full secondary-outline white-space-nowrap", 3, "ngModelChange", "allowEmpty", "ngModel", "options"], ["inputId", "filter", 1, "min-w-15rem", 3, "ngModelChange", "onClick", "ngModel", "group", "options"], ["for", "filter"], ["id", "search", "pInputText", "", "type", "text", 1, "min-w-15rem", 3, "ngModelChange", "ngModel"], [1, "pi", "pi-search"], ["for", "search"], ["id", "sort", 1, "min-w-15rem", 3, "ngModelChange", "ngModel", "options"], ["for", "sort"], [1, "flex", "flex-row", "xl:flex-column", "gap-2"], ["icon", "pi pi-plus", "outlined", "", "size", "small", "styleClass", "white-space-nowrap secondary-outline w-full", 3, "onClick", "label"], ["disabled", "", "icon", "pi pi-upload", "label", "Import project", "outlined", "", "size", "small", "styleClass", "white-space-nowrap secondary-outline w-full"], ["outlined", "", "size", "small", "styleClass", "white-space-nowrap secondary-outline w-full", 3, "icon", "label"], [1, "mt-0", "text-sm", "text-color-secondary"], [1, "grid"], [1, "text-color-secondary", "ml-2"], ["styleClass", "max-w-25rem", 3, "visibleChange", "visible", "header", "modal"], [1, "text-color-secondary", "-mt-1"], [1, "flex", "justify-end", "gap-2", "mt-2"], ["severity", "secondary", 3, "onClick", "label"], [3, "onClick", "disabled", "label"], ["key", "delete"], ["styleClass", "max-w-max", 3, "header", "modal", "visible"], [1, "flex", "align-items-center", "gap-2"], [1, "pi", "pi-info-circle", "font-bold"], ["outlined", "", "size", "small", "styleClass", "white-space-nowrap secondary-outline w-full", 3, "onClick", "icon", "label"], [1, "col-12", "md:col-6", "lg:col-4"], ["tabindex", "0", 1, "h-full", 3, "click", "keydown.enter"], [1, "flex", "h-full"], [1, "flex", "flex-column", "justify-content-between", "flex-1"], [1, "p-2", "m-2", "h-2rem"], [1, "flex", "gap-2"], ["icon", "pi pi-desktop", "severity", "secondary", 3, "value"], ["icon", "pi pi-cloud", "severity", "info", 3, "value"], [3, "customContent"], ["icon", "pi pi-eye", "severity", "warn", 3, "value"], ["icon", "pi pi-exclamation-triangle", "severity", "danger", 3, "value"], ["icon", "pi pi-check", "severity", "success", 3, "value"], [1, "px-2", "mx-2"], [1, "text-xl"], [1, "flex", "gap-2", "justify-content-center", "mt-5"], [1, "flex", "flex-column", "gap-2", "text-sm", "text-color-secondary"], [1, "p-2", "m-2"], [1, "border-left-1", "surface-border", "surface-50", "border-round-right", "p-2", "w-4rem"], [1, "flex", "flex-column", "gap-1"], ["icon", "pi pi-save", "outlined", "", "rounded", "", "severity", "success", "size", "large", "styleClass", "secondary-outline", 3, "aidaTooltip"], ["icon", "pi pi-cloud-upload", "outlined", "", "rounded", "", "size", "large", "styleClass", "secondary-outline", 3, "aidaTooltip", "disabled"], ["icon", "pi pi-trash", "outlined", "", "rounded", "", "severity", "danger", "size", "large", "styleClass", "secondary-outline", 3, "aidaTooltip"], ["icon", "pi pi-sign-in", "severity", "warn", "tabindex", "0", 3, "click", "keydown.enter", "value"], [1, "pi", "pi-spin", "pi-spinner", "text-primary-500", "text-2xl"], [1, "text-sm", "text-color-secondary", 3, "innerHTML"], [1, "pi", "pi-github", "text-lg"], [1, "pi", "pi-copy", "text-lg"], [1, "pi", "pi-clock", "text-lg"], [1, "pi", "pi-lock", "text-lg"], ["align", "left"], [1, "text-color-secondary"], [1, "pi", "pi-users", "text-lg"], ["mode", "switch", 3, "collabs"], ["icon", "pi pi-save", "outlined", "", "rounded", "", "severity", "success", "size", "large", "styleClass", "secondary-outline", 3, "onClick", "aidaTooltip"], ["icon", "pi pi-cloud-upload", "outlined", "", "rounded", "", "size", "large", "styleClass", "secondary-outline", 3, "onClick", "aidaTooltip", "disabled"], ["icon", "pi pi-trash", "outlined", "", "rounded", "", "severity", "danger", "size", "large", "styleClass", "secondary-outline", 3, "onClick", "aidaTooltip"], ["styleClass", "max-w-max", 3, "visibleChange", "header", "modal", "visible"], ["icon", "pi pi-exclamation-triangle", "severity", "warn"], [1, "flex", "justify-content-end", "gap-2", "mt-3"], ["outlined", "", "severity", "secondary", 3, "onClick", "label"], ["severity", "danger", 3, "label"], ["mode", "view", 3, "collabs"], [1, "mt-3"], ["mode", "cloud"], ["severity", "danger", 3, "onClick", "label"]], template: function SwitchProjectComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SwitchProjectComponent, selectors: [["aida-switch-project"]], decls: 50, vars: 52, consts: [["signIn", ""], ["id", "wb-cont"], ["severity", "info", "styleClass", "mb-2 sticky top-0 z-2"], [1, "flex", "flex-column-reverse", "xl:flex-row", "justify-content-between", "align-items-start", "gap-2", "mb-3"], [1, "flex", "flex-column", "lg:flex-row", "gap-2", "w-full"], ["styleClass", "w-full secondary-outline white-space-nowrap", 3, "ngModelChange", "allowEmpty", "ngModel", "options"], ["inputId", "filter", 1, "min-w-15rem", 3, "ngModelChange", "onClick", "ngModel", "group", "options"], ["for", "filter"], ["id", "search", "pInputText", "", "type", "text", 1, "min-w-15rem", 3, "ngModelChange", "ngModel"], [1, "pi", "pi-search"], ["for", "search"], ["id", "sort", 1, "min-w-15rem", 3, "ngModelChange", "ngModel", "options"], ["for", "sort"], [1, "flex", "flex-row", "xl:flex-column", "gap-2"], ["icon", "pi pi-plus", "outlined", "", "styleClass", "white-space-nowrap secondary-outline w-full", 3, "onClick", "label"], ["disabled", "", "icon", "pi pi-upload", "label", "Import project", "outlined", "", "styleClass", "white-space-nowrap secondary-outline w-full"], ["outlined", "", "styleClass", "white-space-nowrap secondary-outline w-full", 3, "icon", "label"], [1, "mt-0", "text-sm", "text-color-secondary"], [1, "grid"], [1, "text-color-secondary", "ml-2"], ["styleClass", "max-w-25rem", 3, "visibleChange", "visible", "header", "modal"], [1, "text-color-secondary", "-mt-1"], [1, "flex", "justify-end", "gap-2", "mt-2"], ["severity", "secondary", 3, "onClick", "label"], [3, "onClick", "disabled", "label"], ["key", "delete"], ["styleClass", "max-w-max", 3, "header", "modal", "visible"], [1, "flex", "align-items-center", "gap-2"], [1, "pi", "pi-info-circle", "font-bold"], ["outlined", "", "styleClass", "white-space-nowrap secondary-outline w-full", 3, "onClick", "icon", "label"], [1, "col-12", "md:col-6", "lg:col-4"], ["tabindex", "0", 1, "h-full", 3, "click", "keydown.enter"], [1, "flex", "h-full"], [1, "flex", "flex-column", "justify-content-between", "flex-1"], [1, "p-2", "m-2", "h-2rem"], [1, "flex", "gap-2"], ["icon", "pi pi-desktop", "severity", "secondary", 3, "value"], ["icon", "pi pi-cloud", "severity", "info", 3, "value"], [3, "customContent"], ["icon", "pi pi-eye", "severity", "warn", 3, "value"], ["icon", "pi pi-exclamation-triangle", "severity", "danger", 3, "value"], ["icon", "pi pi-check", "severity", "success", 3, "value"], [1, "px-2", "mx-2"], [1, "text-xl"], [1, "flex", "gap-2", "justify-content-center", "mt-5"], [1, "flex", "flex-column", "gap-2", "text-sm", "text-color-secondary"], [1, "p-2", "m-2"], [1, "border-left-1", "surface-border", "surface-50", "border-round-right", "p-2", "w-4rem"], [1, "flex", "flex-column", "gap-1"], ["icon", "pi pi-save", "outlined", "", "rounded", "", "severity", "success", "size", "large", "styleClass", "secondary-outline", 3, "aidaTooltip"], ["icon", "pi pi-cloud-upload", "outlined", "", "rounded", "", "size", "large", "styleClass", "secondary-outline", 3, "aidaTooltip", "disabled"], ["icon", "pi pi-trash", "outlined", "", "rounded", "", "severity", "danger", "size", "large", "styleClass", "secondary-outline", 3, "aidaTooltip"], ["icon", "pi pi-sign-in", "severity", "warn", "tabindex", "0", 3, "click", "keydown.enter", "value"], [1, "pi", "pi-spin", "pi-spinner", "text-primary-500", "text-2xl"], [1, "text-sm", "text-color-secondary", 3, "innerHTML"], [1, "pi", "pi-github", "text-lg"], [1, "pi", "pi-copy", "text-lg"], [1, "pi", "pi-clock", "text-lg"], [1, "pi", "pi-lock", "text-lg"], ["align", "left"], [1, "text-color-secondary"], [1, "pi", "pi-users", "text-lg"], ["mode", "switch", 3, "collabs"], ["icon", "pi pi-save", "outlined", "", "rounded", "", "severity", "success", "size", "large", "styleClass", "secondary-outline", 3, "onClick", "aidaTooltip"], ["icon", "pi pi-cloud-upload", "outlined", "", "rounded", "", "size", "large", "styleClass", "secondary-outline", 3, "onClick", "aidaTooltip", "disabled"], ["icon", "pi pi-trash", "outlined", "", "rounded", "", "severity", "danger", "size", "large", "styleClass", "secondary-outline", 3, "onClick", "aidaTooltip"], ["styleClass", "max-w-max", 3, "visibleChange", "header", "modal", "visible"], ["icon", "pi pi-exclamation-triangle", "severity", "warn"], [1, "flex", "justify-content-end", "gap-2", "mt-3"], ["outlined", "", "severity", "secondary", 3, "onClick", "label"], ["severity", "danger", 3, "label"], ["mode", "view", 3, "collabs"], [1, "mt-3"], ["mode", "cloud"], ["severity", "danger", 3, "onClick", "label"]], template: function SwitchProjectComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "h1", 1);
       \u0275\u0275text(1);
@@ -7530,9 +7532,9 @@ var SwitchProjectComponent = class _SwitchProjectComponent {
 
     <div class="flex flex-row xl:flex-column gap-2">
       <!--New-->
-      <p-button [label]="'project._nav.new' | translate" (onClick)="newProject()" icon="pi pi-plus" outlined size="small" styleClass="white-space-nowrap secondary-outline w-full" />
+      <p-button [label]="'project._nav.new' | translate" (onClick)="newProject()" icon="pi pi-plus" outlined styleClass="white-space-nowrap secondary-outline w-full" />
       <!--Import-->
-      <p-button disabled icon="pi pi-upload" label="Import project" outlined size="small" styleClass="white-space-nowrap secondary-outline w-full" />
+      <p-button disabled icon="pi pi-upload" label="Import project" outlined styleClass="white-space-nowrap secondary-outline w-full" />
       <!--RECYCLE BIN-->
       @if (projectStorageService.getLocalProjectList('deleted').length > 0) {
         <p-button
@@ -7540,7 +7542,6 @@ var SwitchProjectComponent = class _SwitchProjectComponent {
           [label]="currentMode() === 'deleted' ? ('switch.viewSaved' | translate) : ('switch.viewDeleted' | translate)"
           (onClick)="toggleProjectView()"
           outlined
-          size="small"
           styleClass="white-space-nowrap secondary-outline w-full"
         />
       }
@@ -8155,41 +8156,46 @@ var routes = [
       },
       {
         path: "add-pages",
-        loadComponent: () => import("./chunk-NUV72F65.js").then((m) => m.AddOrViewPagesComponent),
+        loadComponent: () => import("./chunk-DUZ6XSDI.js").then((m) => m.AddOrViewPagesComponent),
         title: "addPages._title"
       },
       {
         path: "ia-diagram",
         canActivate: [iaDiagramGuard],
-        loadComponent: () => import("./chunk-R2RIDZOE.js").then((m) => m.IaDiagramComponent),
+        loadComponent: () => import("./chunk-ZU5ADCEG.js").then((m) => m.IaDiagramComponent),
         title: "iaDiagram._title"
       },
       {
         path: "inventory",
-        loadComponent: () => import("./chunk-DZ6VJRJH.js").then((m) => m.InventoryComponent),
+        loadComponent: () => import("./chunk-LSQDVBR6.js").then((m) => m.InventoryComponent),
         title: "inventory._title"
       },
       {
         path: "metadata",
-        loadComponent: () => import("./chunk-4R7CHNLL.js").then((m) => m.MetadataComponent),
+        loadComponent: () => import("./chunk-2YA6WUPF.js").then((m) => m.MetadataComponent),
         title: "metadata._title"
       },
       {
         path: "export-pages",
-        loadComponent: () => import("./chunk-MBPKIPSB.js").then((m) => m.ExportPagesComponent),
+        loadComponent: () => import("./chunk-ZOZUYK74.js").then((m) => m.ExportPagesComponent),
         title: "exportPages._nav"
       },
       {
         path: "edit-pages",
-        loadComponent: () => import("./chunk-NONVGCSD.js").then((m) => m.CompareComponent),
+        loadComponent: () => import("./chunk-DQFYNVA3.js").then((m) => m.CompareComponent),
         title: "editPages._title",
         data: { mode: "ai" }
       },
       {
         path: "compare-pages",
-        loadComponent: () => import("./chunk-NONVGCSD.js").then((m) => m.CompareComponent),
+        loadComponent: () => import("./chunk-DQFYNVA3.js").then((m) => m.CompareComponent),
         title: "compare._title",
         data: { mode: "compare" }
+      },
+      {
+        path: "review-languages",
+        loadComponent: () => import("./chunk-4LFB23NL.js").then((m) => m.ReviewLanguagesComponent),
+        title: "languages._title"
       }
     ]
   },
@@ -8234,7 +8240,7 @@ var routes = [
   //HELP CONTENT
   {
     path: "help",
-    loadComponent: () => import("./chunk-6PWUP6K4.js").then((m) => m.HelpComponent),
+    loadComponent: () => import("./chunk-SP367M5R.js").then((m) => m.HelpComponent),
     title: "help._title",
     data: { breadcrumbKey: "home" }
   },
@@ -8248,7 +8254,7 @@ var routes = [
   {
     path: "standalone",
     pathMatch: "full",
-    loadComponent: () => import("./chunk-R5FSDKJN.js").then((m) => m.StandaloneComponent),
+    loadComponent: () => import("./chunk-6ODJ2TUE.js").then((m) => m.StandaloneComponent),
     title: "standalone._title"
   },
   {
@@ -8257,7 +8263,7 @@ var routes = [
     children: [
       {
         path: "compare-pages",
-        loadComponent: () => import("./chunk-R2FWTJEO.js").then((m) => m.StandaloneCompareComponent),
+        loadComponent: () => import("./chunk-J7MTFJ33.js").then((m) => m.StandaloneCompareComponent),
         title: "compare._title"
       }
     ]
@@ -8266,7 +8272,7 @@ var routes = [
   {
     path: "dev",
     pathMatch: "full",
-    loadComponent: () => import("./chunk-UMUH6EMR.js").then((m) => m.DevToolsComponent),
+    loadComponent: () => import("./chunk-APT6ZM6E.js").then((m) => m.DevToolsComponent),
     title: "dev._title"
   },
   {
@@ -8275,22 +8281,22 @@ var routes = [
     children: [
       {
         path: "monitoring",
-        loadComponent: () => import("./chunk-4MKZZVWJ.js").then((m) => m.UsageMonitoringComponent),
+        loadComponent: () => import("./chunk-6LUDL632.js").then((m) => m.UsageMonitoringComponent),
         title: "dev.monitoring._title"
       },
       {
         path: "colour-generator",
-        loadComponent: () => import("./chunk-6IDIFESP.js").then((m) => m.ColorGeneratorComponent),
+        loadComponent: () => import("./chunk-HV52HNYJ.js").then((m) => m.ColorGeneratorComponent),
         title: "dev.colors._title"
       },
       {
         path: "design-patterns",
-        loadComponent: () => import("./chunk-5AXIVMBU.js").then((m) => m.DesignPatternsComponent),
+        loadComponent: () => import("./chunk-XS4O37ZU.js").then((m) => m.DesignPatternsComponent),
         title: "dev.patterns._title"
       },
       {
         path: "prompt-editor",
-        loadComponent: () => import("./chunk-RN3NQOCL.js").then((m) => m.PromptEditorComponent),
+        loadComponent: () => import("./chunk-VUN4WNZN.js").then((m) => m.PromptEditorComponent),
         title: "dev.prompts._title"
       }
     ]
