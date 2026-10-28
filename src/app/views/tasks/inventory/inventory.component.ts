@@ -10,7 +10,6 @@ import { ConfirmationService, MenuItem, SelectItemGroup, SortEvent, TreeNode } f
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ContextMenu, ContextMenuModule } from 'primeng/contextmenu';
-import { DialogModule } from 'primeng/dialog';
 import { IconFieldModule } from 'primeng/iconfield';
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { InputIconModule } from 'primeng/inputicon';
@@ -68,7 +67,6 @@ export interface BooleanToggleItem extends MenuItem {
     ButtonModule,
     ConfirmDialogModule,
     ContextMenuModule,
-    DialogModule,
     IconFieldModule,
     IftaLabelModule,
     InputIconModule,
