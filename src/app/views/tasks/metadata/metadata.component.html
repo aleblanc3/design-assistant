@@ -1,11 +1,11 @@
 <h1 id="wb-cont">{{ 'metadata._title' | translate }}</h1>
 <p>{{ 'metadata.description' | translate }}{{ 'metadata.description2' | translate }}</p>
 <div class="flex flex-column gap-2">
-  <div [class]="styleCardService.cardStyles(undefined, undefined, undefined, undefined, selectedRow()?.approved ? 'border-green' : 'border-red')" class="flex flex-column gap-2">
+  <div [class]="styleCardService.cardStyles(undefined, undefined, undefined, undefined, selectedRow()?.approved ? 'border-green' : undefined)" class="flex flex-column gap-2">
     <div class="flex justify-content-between align-items-start">
       <div class="flex gap-3 align-items-end">
         <aida-compare-select [description]="'metadata.pageOptions.description' | translate" [versionsToShow]="0" />
-        <aida-project-settings [allowBoth]="true" [showLang]="true" />
+        <aida-project-settings [allowBoth]="true" [allowLive]="true" [allowPreview]="true" [showLang]="true" />
         @if (selectedRow(); as row) {
           <div
             [class.no-preview]="noPreviewPath() === row.label[uiLang()].path"
@@ -101,8 +101,8 @@
         <aida-menu-bulk-page-actions [selectedNodes]="selectedNodes()" />
         <span>{{ 'common.pagesSelected' | translate: { count: selectedNodes().length } }}</span>
       </div>
-      <aida-project-settings [allowBoth]="true" [showLang]="true" [showMeta]="true" />
-      <aida-project-settings [allowBoth]="true" [showFilter]="true">
+      <aida-project-settings [allowBoth]="true" [allowLive]="true" [allowPreview]="true" [showLang]="true" [showMeta]="true" />
+      <aida-project-settings [allowBoth]="true" [allowLive]="true" [allowPreview]="true" [showFilter]="true">
         <p-iconfield>
           <input
             id="search"
@@ -151,7 +151,7 @@
           <tr>
             <th class="sticky-table sticky-table-group-header sticky-table-checkbox" rowspan="2"><p-tableHeaderCheckbox /></th>
             <th class="text-xl sticky-table sticky-table-group-header sticky-table-column" rowspan="2">{{ 'pageOptions.page' | translate }}</th>
-            <th class="text-xl sticky-table sticky-table-group-header border-left-3" rowspan="2">{{ 'common.approved' | translate }}</th>
+            <th class="text-xl sticky-table sticky-table-group-header border-left-3" rowspan="2">{{ 'common.reviewed' | translate }}</th>
             @for (group of groups(); track group.name) {
               <th [attr.colspan]="group.span" class="text-lg border-left-3 sticky-table sticky-table-group-header">{{ group.name }}</th>
             }
