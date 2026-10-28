@@ -790,7 +790,7 @@
 	"metadata.description": "Create or update metadata for your pages to improve findability",
 	"metadata.description2": ".",
 	"metadata.editProto.description": "Use these fields to plan any changes you want to make to the metadata. The character count will update as you type.",
-	"metadata.editProto.header": "Edit your prototype metadata",
+	"metadata.editProto.header": "Planned metadata for your prototype",
 	"metadata.loading.generatingMeta": "Generating metadata with AI",
 	"metadata.loading.refreshingMeta": "Refreshing metadata from source",
 	"metadata.pageOptions.description": "Choose a page from your project to view or update the metadata",

@@ -790,7 +790,7 @@
 	"metadata.description": "Créez ou mettez à jour les métadonnées de vos pages pour améliorer leur repérabilité",
 	"metadata.description2": ".",
 	"metadata.editProto.description": "Utilisez ces champs pour planifier les changements que vous souhaitez apporter aux métadonnées. Le nombre de caractères se mettra à jour pendant que vous tapez.",
-	"metadata.editProto.header": "Modifier les métadonnées du prototype",
+	"metadata.editProto.header": "Métadonnées prévues pour votre prototype",
 	"metadata.loading.generatingMeta": "Génération des métadonnées par l'IA",
 	"metadata.loading.refreshingMeta": "Actualisation des métadonnées à partir de la source",
 	"metadata.pageOptions.description": "Choisissez une page de votre projet pour consulter ou mettre à jour les métadonnées",

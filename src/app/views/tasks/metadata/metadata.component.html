@@ -32,7 +32,7 @@
       }
     </div>
     @if (selectedNode()?.data; as nodeData) {
-      <div class="flex align-items-center gap-3">
+      <div id="edit-metadata" class="flex align-items-center gap-3">
         <div>
           @if (nodeData.prototype?.[uiLang()]?.doubleH1; as doubleH1) {
             <p class="mb-0">{{ doubleH1 }}</p>
@@ -201,20 +201,25 @@
                   >
                     <i class="pi pi-spinner pi-spin text-xl text-primary"></i>
                   </div>
-                } @else if (row[column.key].content === 'noChange') {
-                  <div class="px-3 py-1 h-2rem border-bottom-1 border-300 white-space-nowrap min-w-max text-center">
-                    {{ 'common.noChange' | translate }}
-                  </div>
-                  <div [aidaTooltip]="'common.noChange' | translate" class="flex justify-content-center p-3">
-                    <i class="pi pi-minus text-xl text-color-secondary"></i>
-                  </div>
                 } @else {
-                  <div [class]="countClasses(row[column.key].content, column.key)" class="px-3 py-1 h-2rem border-bottom-1 border-300 white-space-nowrap min-w-max text-center">
-                    {{ row[column.key].content.length }}/{{ column.key.startsWith('title') ? '60' : '160' }} {{ 'common.characters' | translate }}
-                  </div>
-                  <div [aidaTooltip]="tooltip(row[column.key].content, row.label, column.key) | translate" [class.text-red]="isRed(row[column.key].content, row.label, column.key)" class="px-3 py-1">
-                    {{ row[column.key].content }}
-                  </div>
+                  @if (row[column.key].content === 'noChange') {
+                    <div class="px-3 py-1 h-2rem border-bottom-1 border-300 white-space-nowrap min-w-max text-center">
+                      {{ 'common.noChange' | translate }}
+                    </div>
+                    <div [aidaTooltip]="'common.noChange' | translate" class="flex justify-content-center p-3">
+                      <i class="pi pi-minus text-xl text-color-secondary"></i>
+                    </div>
+                  } @else {
+                    <div [class]="countClasses(row[column.key].content, column.key)" class="px-3 py-1 h-2rem border-bottom-1 border-300 white-space-nowrap min-w-max text-center">
+                      {{ row[column.key].content.length }}/{{ column.key.startsWith('title') ? '60' : '160' }} {{ 'common.characters' | translate }}
+                    </div>
+                    <div [aidaTooltip]="tooltip(row[column.key].content, row.label, column.key) | translate" [class.text-red]="isRed(row[column.key].content, row.label, column.key)" class="px-3 py-1">
+                      {{ row[column.key].content }}
+                    </div>
+                  }
+                  @if (column.type === 'prototype') {
+                    <p-button [label]="'common.edit' | translate" (onClick)="editMeta(row.label[uiLang()].path)" class="flex justify-content-center px-5 py-2" fluid />
+                  }
                 }
               </td>
             }
