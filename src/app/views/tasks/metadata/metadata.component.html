@@ -52,7 +52,7 @@
               }
               <h3 class="mb-0">{{ 'metadata.editProto.header' | translate }}</h3>
               <p class="my-0">{{ 'metadata.editProto.description' | translate }}</p>
-              <aida-edit-metadata [meta]="protoMeta" (changed)="onMetaChanged()" />
+              <aida-edit-metadata [isProto]="true" [meta]="protoMeta" (changed)="onMetaChanged()" />
             </p-fieldset>
           }
         }
@@ -66,7 +66,7 @@
               }
               <h3 class="mb-0">{{ 'metadata.editProto.header' | translate }}</h3>
               <p class="my-0">{{ 'metadata.editProto.description' | translate }}</p>
-              <aida-edit-metadata [meta]="protoMeta" (changed)="onMetaChanged()" />
+              <aida-edit-metadata [isProto]="true" [meta]="protoMeta" (changed)="onMetaChanged()" />
             </p-fieldset>
           }
         }
@@ -120,16 +120,6 @@
             {{ 'common.showingRows' | translate: { shown: dt.filteredValue.length, total: dt.value.length } }}
           </span>
         }
-        <div class="flex flex-wrap gap-3 min-w-min">
-          @for (item of legendItems; track item.text) {
-            <div class="flex align-items-center gap-1">
-              @for (colour of item.context; track $index) {
-                <div [ngClass]="colour" class="legend-box border-2 surface-border border-round shadow-2"></div>
-              }
-              <span class="legend-text">{{ item.text | translate }}</span>
-            </div>
-          }
-        </div>
       </aida-project-settings>
     </div>
 
@@ -150,7 +140,21 @@
         <ng-template pTemplate="header">
           <tr>
             <th class="sticky-table sticky-table-group-header sticky-table-checkbox" rowspan="2"><p-tableHeaderCheckbox /></th>
-            <th class="text-xl sticky-table sticky-table-group-header sticky-table-column" rowspan="2">{{ 'pageOptions.page' | translate }}</th>
+            <th class="text-xl sticky-table sticky-table-group-header sticky-table-column" rowspan="2">
+              <div class="flex justify-content-between gap-4">
+                {{ 'pageOptions.page' | translate }}
+                <div class="flex gap-3 min-w-min font-normal">
+                  @for (item of legendItems; track item.text) {
+                    <div class="flex align-items-center gap-1">
+                      @for (colour of item.context; track $index) {
+                        <div [ngClass]="colour" class="legend-box border-2 surface-border border-round shadow-2"></div>
+                      }
+                      <span class="text-base">{{ item.text | translate }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+            </th>
             <th class="text-xl sticky-table sticky-table-group-header border-left-3" rowspan="2">{{ 'common.reviewed' | translate }}</th>
             @for (group of groups(); track group.name) {
               <th [attr.colspan]="group.span" class="text-lg border-left-3 sticky-table sticky-table-group-header">{{ group.name }}</th>
