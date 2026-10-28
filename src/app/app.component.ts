@@ -4,7 +4,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
 
 import { PrimeNG } from 'primeng/config';
-import { ConfirmDialog } from 'primeng/confirmdialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 
 import { BreadcrumbComponent } from './template/breadcrumb/breadcrumb.component';
@@ -24,7 +24,7 @@ import { CustomTitleStrategy } from './common/custom-title-strategy';
 
 @Component({
   selector: 'aida-root',
-  imports: [CommonModule, RouterModule, RouterOutlet, ConfirmDialog, ToastModule, BreadcrumbComponent, FooterComponent, HeaderComponent, SidebarComponent],
+  imports: [CommonModule, RouterModule, RouterOutlet, ConfirmDialogModule, ToastModule, BreadcrumbComponent, FooterComponent, HeaderComponent, SidebarComponent],
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
