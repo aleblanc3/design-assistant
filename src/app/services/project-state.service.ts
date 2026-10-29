@@ -14,6 +14,7 @@ import { CollaboratorService } from './github/collaborator.service';
 import { ExportGitHubService } from './github/export-github.service';
 import { SignInService } from './github/sign-in.service';
 import { UsageService } from './usage.service';
+import { UserSettingsService } from './user-settings.service';
 
 import { version as appVersion } from '../../../package.json';
 import { environment } from '../../environments/environment';
@@ -62,6 +63,7 @@ export class ProjectStateService {
   private readonly usageService = inject(UsageService);
   private readonly exportGitHubService = inject(ExportGitHubService);
   private readonly signInService = inject(SignInService);
+  private readonly settingsService = inject(UserSettingsService);
 
   private readonly currentLang = signal<string>(this.translate.currentLang() ?? 'en');
 
@@ -655,6 +657,7 @@ export class ProjectStateService {
           sticky: true,
         });
         this.setStorageType('local');
+        this.settingsService.hasCloudToo.set(true);
       }
     }
 
