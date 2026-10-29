@@ -31,7 +31,7 @@ concurrency:
 jobs:
   build:
     name: Build ${{ matrix.function }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
@@ -41,10 +41,10 @@ jobs:
         working-directory: backend/functions/${{ matrix.function }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
  
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: npm
@@ -71,7 +71,7 @@ jobs:
           ls -lh ../lambda.zip
  
       - name: Upload package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.function }}
           path: backend/functions/${{ matrix.function }}/lambda.zip
@@ -81,7 +81,7 @@ jobs:
   deploy:
     name: Terraform deploy
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       id-token: write
       contents: read
@@ -93,10 +93,10 @@ jobs:
         working-directory: backend/terraform
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
  
       - name: Download Lambda packages
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           path: backend/functions
  
@@ -104,13 +104,13 @@ jobs:
         run: ls -lh ../functions/*/lambda.zip
  
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6.3.0
         with:
           role-to-assume: arn:aws:iam::013957137556:role/GitHubActionsRole-Backend-design-assistant
           aws-region: ca-central-1
  
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+        uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: 1.13.5
           terraform_wrapper: false
