@@ -132,3 +132,8 @@ th {
   border-radius: 4px;
   flex-shrink: 0;
 }
+
+td:has([data-tooltip]:hover),
+th:has([data-tooltip]:hover) {
+  z-index: 20;
+}
