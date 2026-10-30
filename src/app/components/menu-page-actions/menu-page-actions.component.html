@@ -3,7 +3,14 @@
 } @else if (metadataOnly()) {
   <p-button [label]="'metadata.generateButton' | translate" (onClick)="generateMetadata()" fluid icon="pi pi-sparkles" />
 } @else {
-  <p-button [label]="'common.bulkActions' | translate" (onClick)="updateDropdown(); menu.toggle($event)" icon="pi pi-chevron-down" iconPos="right" outlined styleClass="secondary-outline h-3rem" />
+  <p-button
+    [label]="'common.bulkActions' | translate"
+    (onClick)="updateDropdown(); menu.toggle($event)"
+    icon="pi pi-chevron-down"
+    iconPos="right"
+    outlined
+    styleClass="secondary-outline h-3rem min-w-max"
+  />
 }
 
 <p-menu [model]="itemsDropdown" [popup]="true" #menu appendTo="body">
