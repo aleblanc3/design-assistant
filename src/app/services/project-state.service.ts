@@ -641,7 +641,14 @@ export class ProjectStateService {
 
     // Convert to local if user does NOT have permission for cloud save
     if (project.storageType === 'cloud') {
-      const { isSignedIn, isCollaborator, isLocked } = this.collaboratorService.getUploadAccessInfo(project);
+      // Offer PAT sign-in for collaborators before converting to local copy
+      let access = this.collaboratorService.getUploadAccessInfo(project);
+      if (access.isCollaborator && !access.isSignedIn && !this.signInService.isApiGatewayAccessible()) {
+        await this.signInService.requestSignIn(); // resolves to true or false
+        access = this.collaboratorService.getUploadAccessInfo(project); // re-check access
+      }
+
+      const { isSignedIn, isCollaborator, isLocked } = access;
       const isLockedByOther = !!(isLocked && isLocked !== 'byMe');
       if (!this.collaboratorService.canEditProject(project) || isLockedByOther) {
         const message =
