@@ -224,7 +224,7 @@
                         <aida-menu-page-actions [metadataOnly]="true" [selectedNodes]="node" />
                       </div>
                     } @else if (column.type === 'prototype') {
-                      <p-button [label]="'metadata.editButton' | translate" (onClick)="editMeta(row.label[uiLang()].path)" class="flex justify-content-center p-5" fluid />
+                      <p-button [label]="'metadata.editButton' | translate" (onClick)="editMeta(row.label[uiLang()].path)" class="flex justify-content-center p-5" fluid icon="pi pi-pen-to-square" />
                     } @else {
                       <div [aidaTooltip]="'common.noChange' | translate" class="flex justify-content-center p-3">
                         <i class="pi pi-minus text-xl text-color-secondary"></i>
