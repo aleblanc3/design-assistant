@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 
+import { getCanadaCaStylePromptRules } from '../../../../../common/prompts/canada-ca-style.prompt';
+import { getLinkWritingPromptRules } from '../../../../../common/prompts/link-writing.prompt';
 import { ChatMessage } from '../../../../../services/ai/openrouter.service';
-import { LinkWritingRulesService } from './link-writing-rules.service';
 
 import { getAlertRewriteRules } from './alert-rewrite-rules';
-import { getCanadaCaStyleRules } from './canada-ca-style-rules';
 
 export interface AlertRewriteIssueInput {
   alertIndex?: number;
@@ -97,7 +97,6 @@ export interface AlertRewriteInput {
 
 @Injectable({ providedIn: 'root' })
 export class AlertRewriteService {
-  private readonly linkWritingRules = inject(LinkWritingRulesService);
   private readonly examplesPath = new URL('skills/alerts/alerts-rewriting/references/examples.json', document.baseURI).toString();
   private examplesCache: AlertRewriteExample[] | null = null;
 
@@ -225,11 +224,11 @@ export class AlertRewriteService {
     const linkManifest = this.buildAlertLinkManifest(params.originalAlertHtml, hasTooManyLinksIssue);
     const [linkRules, canadaCaStyleRules, rules] = await Promise.all([
       originalHasLink
-        ? this.linkWritingRules.getLinkWritingRules({
+        ? getLinkWritingPromptRules({
             hasTooManyLinksIssue,
           })
-        : Promise.resolve([]),
-      getCanadaCaStyleRules({
+        : [],
+      getCanadaCaStylePromptRules({
         includeExamples: true,
       }),
       getAlertRewriteRules(),
