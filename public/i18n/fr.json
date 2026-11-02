@@ -86,6 +86,8 @@
 	"aiPrompt.problem.translateIssueDetails": "Traduire les détails des problèmes",
 	"alertRewrite.fallback.detail": "La réécriture de {{count}} alerte n'a pas pu être validée de façon sécuritaire; son contenu original a donc été conservé",
 	"alertRewrite.fallback.summary": "Certaines alertes n'ont pas été modifiées",
+	"alertRewrite.placement.detail": "Vous devrez peut-être déplacer l'alerte. Consultez le rapport sur les problèmes liés aux alertes pour obtenir des conseils.",
+	"alertRewrite.placement.summary": "Vérifiez l'emplacement de l'alerte suivante",
 	"collaborators._": "------------------------------COLLABORATORS------------------------------",
 	"collaborators._title": "Gérer les collaborateurs",
 	"collaborators.addCollab": "Ajouter des collaborateurs",

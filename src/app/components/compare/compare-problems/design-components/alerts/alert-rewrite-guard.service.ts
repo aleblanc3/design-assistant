@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 
 import { TranslateService } from '@ngx-translate/core';
 
+import { removeAlertRewritePlacementReviewNotices } from '../../../../../common/alert-rewrite-status.utils';
 import { AlertRewriteExample, AlertRewriteIssueInput, AlertRewritePlan, AlertRewriteRepairCandidate, AlertRewriteResult, AlertRewriteService } from './alert-rewrite.service';
 
 import { coerceInteractiveResultLeadIns, getReportableAlerts } from './alert-reportable.utils';
@@ -322,6 +323,7 @@ export class AlertRewriteGuardService {
 
     const parser = new DOMParser();
     const doc = parser.parseFromString(originalHtml, 'text/html');
+    removeAlertRewritePlacementReviewNotices(doc);
     const alerts = getReportableAlerts(doc, {
       interactiveResultLeadIns: this.getInteractiveResultLeadIns(),
     });

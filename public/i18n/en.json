@@ -86,6 +86,8 @@
 	"aiPrompt.problem.translateIssueDetails": "Translate issue details",
 	"alertRewrite.fallback.detail": "{{count}} alert rewrite could not be safely validated, so its original content was preserved",
 	"alertRewrite.fallback.summary": "Some alerts were not changed",
+	"alertRewrite.placement.detail": "You may need to move the alert. Refer to the alert problems report for guidance.",
+	"alertRewrite.placement.summary": "Review the following alert's placement",
 	"collaborators._": "------------------------------COLLABORATORS------------------------------",
 	"collaborators._title": "Manage collaborators",
 	"collaborators.addCollab": "Add collaborators",

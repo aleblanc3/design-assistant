@@ -80,6 +80,28 @@ export class AlertRewriteOrchestratorService {
     }
   }
 
+  private buildPlacementReviewNoticeHtml(): string {
+    const doc = document.implementation.createHTMLDocument('');
+    const notice = doc.createElement('div');
+    notice.className = 'alert-rewrite-placement-notice';
+    notice.setAttribute('data-alert-rewrite-status', 'placement-review');
+    notice.setAttribute('role', 'note');
+    notice.style.cssText =
+      'display: block; width: fit-content; max-width: 100%; border: 1px solid #d8d8d8; border-left: 5px solid #a94442; border-radius: 6px; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18); padding: 9px 12px; margin: 0 0 16px; background-color: #fff7f7;';
+
+    const summary = doc.createElement('p');
+    summary.className = 'text-danger';
+    summary.style.cssText = 'font-size: 16px; font-weight: 600; line-height: 1.25; margin: 0 0 4px;';
+    summary.textContent = this.translate.instant('alertRewrite.placement.summary');
+
+    const detail = doc.createElement('p');
+    detail.style.cssText = 'font-size: 14px; line-height: 1.35; margin: 0;';
+    detail.textContent = this.translate.instant('alertRewrite.placement.detail');
+
+    notice.append(summary, detail);
+    return notice.outerHTML;
+  }
+
   // Runs the full alert-rewrite workflow:
   // plan each alert, generate rewrites, apply retry/repair guards, then patch the page HTML.
   async generateRecommendations(params: {
@@ -129,6 +151,7 @@ export class AlertRewriteOrchestratorService {
       if (!alertElement) continue;
       const alertIndex = i + 1;
       const relevantIssues = this.alertRewriteGuard.getIssuesForAlertIndex(params.issues, alertIndex);
+      const needsPlacementReview = relevantIssues.some((issue) => (issue.category || '').trim().toLowerCase() === 'wrong placement');
       if (!params.includeExamples && !relevantIssues.length) {
         console.info('Alert rewrite skipped for alert without selected issues', {
           alertIndex,
@@ -430,6 +453,9 @@ export class AlertRewriteOrchestratorService {
       rewriteResult.rewrittenAlertHtml = this.alertRewriteGuard.removeRedundantLeadInsBeforeActionLinks(rewriteResult.rewrittenAlertHtml);
       rewriteResult.rewrittenAlertHtml = this.alertRewriteGuard.preserveOriginalStandaloneLinkLeadIns(rewriteResult.rewrittenAlertHtml, alertHtml);
       rewriteResult.rewrittenAlertHtml = this.alertRewriteGuard.removeStandaloneLinkTerminalPunctuation(rewriteResult.rewrittenAlertHtml);
+      if (needsPlacementReview) {
+        rewriteResult.rewrittenAlertHtml = `${this.buildPlacementReviewNoticeHtml()}\n${rewriteResult.rewrittenAlertHtml}`;
+      }
 
       // At this point we have exactly one final rewrite for the current alert,
       // whether it came from the model, local repair, or passthrough fallback.

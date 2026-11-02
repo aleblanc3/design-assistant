@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 
 import { TranslateService } from '@ngx-translate/core';
 
+import { removeAlertRewritePlacementReviewNotices } from '../../../../../common/alert-rewrite-status.utils';
 import { coerceInteractiveResultLeadIns, getReportableAlerts } from './alert-reportable.utils';
 
 @Injectable({ providedIn: 'root' })
@@ -65,6 +66,8 @@ export class AlertContextService {
     pageTypeSignal: string;
     alertsBeforeFirstH2Count: number;
   } {
+    removeAlertRewritePlacementReviewNotices(sourceDoc);
+
     const alerts = getReportableAlerts(sourceDoc, {
       interactiveResultLeadIns: this.getInteractiveResultLeadIns(),
     });

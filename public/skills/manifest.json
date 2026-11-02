@@ -9,15 +9,12 @@
       "includedSkillIds": [],
       "defaultReferencePaths": [
         "alerts/alerts-rewriting/references/shared-rewrite-guidance.json",
-        "alerts/alerts-rewriting/references/rewrite-instructions.json",
         "alerts/alerts-rewriting/references/runtime-rewrite-rules.json"
       ],
       "optionalReferencePaths": [
         "alerts/alerts-rewriting/references/examples.json"
       ],
-      "defaultAssetPaths": [
-        "alerts/alerts-rewriting/assets/rewriting-output-schema.json"
-      ],
+      "defaultAssetPaths": [],
       "outputModes": [
         "json"
       ]

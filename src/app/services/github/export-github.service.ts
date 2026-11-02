@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 
 import { TreeNode } from 'primeng/api';
 
+import { removeAlertRewritePlacementReviewNotices } from '../../common/alert-rewrite-status.utils';
 import { FetchService } from '../fetch.service';
 import { HtmlNormalizationService } from '../html-normalization.service';
 import { SignInService } from './sign-in.service';
@@ -23,6 +24,8 @@ export class ExportGitHubService {
   private readonly templateOrg = environment.templateOrg;
 
   public async formatDocumentAsJekyll(doc: Document, url: string, owner: string, repo: string, breadcrumbs?: { title: string; link: string }[]): Promise<string> {
+    removeAlertRewritePlacementReviewNotices(doc);
+
     let layout = 'default';
 
     // Extract metadata
