@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, effect, inject, input, OnInit, sign
 import { FormsModule } from '@angular/forms';
 import { Params, Router } from '@angular/router';
 
+import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { MenuItem, MessageService } from 'primeng/api';
@@ -325,5 +326,11 @@ export class CompareSelectComponent implements OnInit {
     } finally {
       this.compareService.loadingAll.set(false);
     }
+  }
+
+  markForTranslation() {
+    marker('pageOptions.description.0');
+    marker('pageOptions.description.1');
+    marker('pageOptions.description.2');
   }
 }

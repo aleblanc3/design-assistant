@@ -53,6 +53,7 @@ export class DevToolsComponent {
     marker('project.repo._');
     marker('project.setup._');
     marker('save._');
+    marker('scratchPad._');
     marker('search._');
     marker('settings._');
     marker('standalone._');
@@ -68,5 +69,10 @@ export class DevToolsComponent {
     marker('common.new');
     marker('common.problems');
     marker('common.selected');
+    //Orgs
+    marker('org._');
+    marker('org.cra');
+    marker('org.test');
+    marker('org.admin');
   }
 }

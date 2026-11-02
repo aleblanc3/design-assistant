@@ -10,7 +10,6 @@ import { ConfirmationService, MenuItem, SelectItemGroup, SortEvent, TreeNode } f
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ContextMenu, ContextMenuModule } from 'primeng/contextmenu';
-import { DialogModule } from 'primeng/dialog';
 import { IconFieldModule } from 'primeng/iconfield';
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { InputIconModule } from 'primeng/inputicon';
@@ -68,7 +67,6 @@ export interface BooleanToggleItem extends MenuItem {
     ButtonModule,
     ConfirmDialogModule,
     ContextMenuModule,
-    DialogModule,
     IconFieldModule,
     IftaLabelModule,
     InputIconModule,
@@ -906,7 +904,7 @@ export class InventoryComponent implements OnInit {
             ],
           },
           {
-            label: this.translate.instant('inventory.menu.updateStatus'),
+            label: this.translate.instant('inventory.menu.updateStatus', { pageCount: numPages }),
             styleClass: 'text-primary-500',
             items: this.bulkEditableFields.map(
               (field) =>
@@ -1333,7 +1331,7 @@ export class InventoryComponent implements OnInit {
         acceptButtonStyleClass: 'p-button-danger',
         rejectButtonStyleClass: 'p-button-secondary',
         accept: () => {
-          this.projectState.deleteNodes(this.selectedNodes, true);
+          this.projectState.deleteFlatNodes(this.selectedNodes, true);
           this.selectedNodes = [];
         },
       });
@@ -1389,7 +1387,7 @@ export class InventoryComponent implements OnInit {
       acceptButtonStyleClass: 'p-button-danger',
       rejectButtonStyleClass: 'p-button-secondary',
       accept: () => {
-        this.projectState.deleteNodes(this.selectedNodes, true);
+        this.projectState.deleteFlatNodes(this.selectedNodes, true);
         this.selectedNodes = []; // Clear selection after delete
       },
     });

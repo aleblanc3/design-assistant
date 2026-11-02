@@ -12,6 +12,7 @@
   --surface-ground: light-dark(var(--p-zinc-50), var(--p-zinc-950));
   --surface-border: light-dark(var(--p-surface-400), var(--p-surface-500)) !important;
   --border-radius: 0.375rem;
+  --p-iftalabel-font-size: 0.75rem !important;
 }
 
 *,
@@ -254,7 +255,7 @@ font-family: 'Noto Sans';
   background-color: light-dark(var(--p-red-100), var(--p-red-800)) !important;
 }
 
-.bg-red.hover\:bg-green:hover {
+.bg-green.hover\:bg-green:hover {
   background-color: light-dark(var(--p-green-100), var(--p-green-800)) !important;
 }
 
@@ -340,6 +341,11 @@ font-family: 'Noto Sans';
   background: var(--p-content-background);
 }
 
+/*Hover colour for outlined buttons*/
+.p-button.p-button-outlined:not(:disabled):hover {
+  background: color-mix(in srgb, var(--p-primary-color) 16%, var(--p-content-background));
+}
+
 /*Add option to center text in chips and inherit text color*/
 .center-chip {
   display: flex;
@@ -410,8 +416,10 @@ font-family: 'Noto Sans';
   width: auto !important;
   z-index: 1 !important;
   text-shadow:
-    0 0 3px rgba(0, 0, 0, 1),
-    0 0 6px rgba(0, 0, 0, 0.7) !important;
+    0 0 2px rgba(0, 0, 0, 1),
+    0 0 4px rgba(0, 0, 0, 0.7) !important;
+  -webkit-text-stroke: 1px var(--p-surface-900) !important;
+  paint-order: stroke fill;
 }
 
 .transparent .p-toolbar {
@@ -602,7 +610,9 @@ h1:not(.noline) {
 }
 
 /*After H1*/
-h1 + p {
+h1 + p,
+h2 + p,
+h3 + p {
   margin-top: 0.5rem;
   max-width: 130ch;
 }
