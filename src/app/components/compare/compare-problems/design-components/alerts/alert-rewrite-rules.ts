@@ -7,7 +7,6 @@ export interface AlertRewriteRulesJson {
     systemPromptWithoutExamplesLines: string[];
     retryInstructions: {
       invalidWrapperHtml: string;
-      placeholderLinks: string;
       noLinksAllowed: string;
       mustKeepLink: string;
       mustHaveHeading: string;
@@ -35,7 +34,6 @@ const ALERT_REWRITE_RULES_FALLBACK: AlertRewriteRulesJson = {
     systemPromptWithoutExamplesLines: [],
     retryInstructions: {
       invalidWrapperHtml: '',
-      placeholderLinks: '',
       noLinksAllowed: '',
       mustKeepLink: '',
       mustHaveHeading: '',
@@ -68,7 +66,6 @@ function toValidatedRules(raw: unknown): AlertRewriteRulesJson | null {
     return null;
   }
   const invalidWrapperHtml = retryInstructionsRaw['invalidWrapperHtml'];
-  const placeholderLinks = retryInstructionsRaw['placeholderLinks'];
   const noLinksAllowed = retryInstructionsRaw['noLinksAllowed'];
   const mustKeepLink = retryInstructionsRaw['mustKeepLink'];
   const mustHaveHeading = retryInstructionsRaw['mustHaveHeading'];
@@ -76,14 +73,12 @@ function toValidatedRules(raw: unknown): AlertRewriteRulesJson | null {
   const fullSentenceLinksNeedLeadIn = retryInstructionsRaw['fullSentenceLinksNeedLeadIn'];
   if (
     typeof invalidWrapperHtml !== 'string' ||
-    typeof placeholderLinks !== 'string' ||
     typeof noLinksAllowed !== 'string' ||
     typeof mustKeepLink !== 'string' ||
     typeof mustHaveHeading !== 'string' ||
     typeof avoidExampleCopy !== 'string' ||
     typeof fullSentenceLinksNeedLeadIn !== 'string' ||
     !invalidWrapperHtml.trim() ||
-    !placeholderLinks.trim() ||
     !noLinksAllowed.trim() ||
     !mustKeepLink.trim() ||
     !mustHaveHeading.trim() ||
@@ -102,7 +97,6 @@ function toValidatedRules(raw: unknown): AlertRewriteRulesJson | null {
       systemPromptWithoutExamplesLines: systemWithoutExamples,
       retryInstructions: {
         invalidWrapperHtml,
-        placeholderLinks,
         noLinksAllowed,
         mustKeepLink,
         mustHaveHeading,

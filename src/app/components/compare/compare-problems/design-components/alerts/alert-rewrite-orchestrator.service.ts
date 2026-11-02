@@ -280,23 +280,14 @@ export class AlertRewriteOrchestratorService {
           addRetryInstruction('mustHaveHeading', retryInstructions.mustHaveHeading);
         }
 
-        // Guard 2: placeholder tokens are never valid final output. This catches
-        // cases where the model copied a prompt convention instead of returning
-        // real HTML anchors or plain text.
-        const hasLinkPlaceholders =
-          this.alertRewriteGuard.containsLinkPlaceholderSyntax(parsedResult.rewrittenAlertHtml) || this.alertRewriteGuard.containsLinkPlaceholderSyntax(parsedResult.rewrittenAlert);
-        if (hasLinkPlaceholders) {
-          addRetryInstruction('placeholderLinks', retryInstructions.placeholderLinks);
-        }
-
-        // Guard 3: compare link presence before vs after rewrite so we do not
+        // Guard 2: compare link presence before vs after rewrite so we do not
         // accidentally add links that were never in the source alert.
         const rewrittenHasAnchor = /<a\b/i.test(parsedResult.rewrittenAlertHtml);
         if (!originalHasAnchor && rewrittenHasAnchor) {
           addRetryInstruction('noLinksAllowed', retryInstructions.noLinksAllowed);
         }
 
-        // Guard 4: if the source alert had links, do not let the rewrite drop
+        // Guard 3: if the source alert had links, do not let the rewrite drop
         // every link. Link-removal issues may remove extras, not all links.
         if (originalHasAnchor && !rewrittenHasAnchor) {
           addRetryInstruction('mustKeepLink', retryInstructions.mustKeepLink);

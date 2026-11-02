@@ -50,12 +50,6 @@ export class AlertRewriteGuardService {
     return globalIssues;
   }
 
-  // Placeholder link tokens are always invalid at this stage because the final
-  // rewrite contract expects real anchors or plain text.
-  containsLinkPlaceholderSyntax(value: string): boolean {
-    return /\[(?:\/?\s*LINK|END\s+LINK)\]/i.test(value || '');
-  }
-
   // Alerts must expose a semantic heading for screen reader navigation.
   hasSemanticHeading(alertHtml: string): boolean {
     try {
@@ -285,10 +279,6 @@ export class AlertRewriteGuardService {
       params.selectedExamples,
     );
     if (!repaired?.rewrittenAlertHtml) return null;
-
-    if (this.containsLinkPlaceholderSyntax(repaired.rewrittenAlertHtml) || this.containsLinkPlaceholderSyntax(repaired.rewrittenAlert)) {
-      return null;
-    }
 
     const repairedHasAnchor = /<a\b/i.test(repaired.rewrittenAlertHtml);
     if (!this.hasSemanticHeading(repaired.rewrittenAlertHtml)) return null;

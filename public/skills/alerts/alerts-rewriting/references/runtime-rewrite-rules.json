@@ -3,7 +3,6 @@
   "alertRewrite": {
       "styleRulesBase": [
       "Do not add new links. If the original alert has one or more <a> links, rewrittenAlertHtml must include at least one real <a> element with an original href. Do not convert every link to plain text, omit all links, or replace links with placeholder text. You may rewrite anchor text only if it improves clarity and still describes the same destination. If the original alert has multiple links, only remove extra links when the selected issues or plan identify too many links or link removal.",
-      "Do not output [LINK] or [END LINK]. Use real anchors: <a href=\"...\">text</a>.",
       "Set rewrittenAlertHtml to full .alert wrapper HTML (for example: <div class=\"alert alert-info\">...</div>)."
     ],
     "styleRulesWithExamples": [],
@@ -28,7 +27,6 @@
     ],
     "retryInstructions": {
       "invalidWrapperHtml": "Return valid rewrittenAlertHtml as a full .alert wrapper element.",
-      "placeholderLinks": "Do not output [LINK] or [END LINK]. Use real HTML anchors (<a href=\"...\">text</a>) in rewrittenAlertHtml.",
       "noLinksAllowed": "The original alert has no links. Do not add hyperlinks. Return rewrittenAlertHtml without any <a> tags.",
       "mustKeepLink": "The original alert has one or more required <a> links. Your previous rewrittenAlertHtml removed every link. Return rewrittenAlertHtml with at least one real <a> element using an original href. If the issue is too many links, remove only extra links and keep the most useful original link.",
       "mustHaveHeading": "Alerts must include a semantic heading element in rewrittenAlertHtml. Add a short, descriptive heading using <h2 class=\"h3\"> or <h3> to <h6> as needed, and place it before the body text.",
