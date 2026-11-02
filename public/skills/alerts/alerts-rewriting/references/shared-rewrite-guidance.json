@@ -1,16 +1,9 @@
 {
   "name": "alerts-shared-rewrite-guidance",
   "purpose": "Shared behavioural guidance for Canada.ca alert rewriting in the current AWS-AIDA per-alert runtime.",
-  "rewriteRules": [
-    "Edit only the alert content needed to resolve the provided issues.",
-    "Edit only inside each .alert container.",
-    "Prefer preserving the original meaning and existing links.",
-    "Prefer original wording and meaning. Edit text only when required by issues such as too wordy, multiple links, unclear impact, missing heading, or wrong type.",
-    "Do not invent facts, dates, URLs, program names, or destination details.",
-    "Do not add new links. Only keep, rename, or remove links from the original alert HTML. If the original alert has links, keep at least one original link.",
-    "Do not use placeholder tokens such as [LINK] or [END LINK]. Use real anchors: <a href=\"...\">text</a>."
-  ],
   "styleRules": [
+    "Keep edits proportionate. Resolve selected issues and use selected examples only as style guidance. Preserve the alert's supported meaning, facts, and purpose.",
+    "Do not invent facts, dates, URLs, program names, or destination details.",
     "Prefer short sentences. Use 1 or 2 sentences when the sentences are short, or 1 sentence when the sentence is longer. Treat these as flexible guidance, not hard limits.",
     "Do not use semicolons to combine ideas just to reduce the sentence count.",
     "If the alert includes a standalone lead-in to a link, first include one substantive sentence that explains the alert.",
