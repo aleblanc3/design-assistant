@@ -1,6 +1,6 @@
 {
   "id": "alerts-rewriting",
-  "includes": ["link-writing", "canada-ca-style"],
+  "includes": [],
   "references": [
     "references/shared-rewrite-guidance.json",
     "references/rewrite-instructions.json",

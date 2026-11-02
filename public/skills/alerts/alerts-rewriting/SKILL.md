@@ -16,7 +16,6 @@ Use this skill only for alert rewriting. Do not return issue-analysis payloads.
 - Read `references/shared-rewrite-guidance.json` for shared rewrite, style, link, example, and self-check guidance.
 - Read `references/rewrite-instructions.json` for the rewrite contract, alert scope, markup rules, and output rules.
 - Use `references/examples.json` for pattern guidance only. Do not copy wording.
-- Apply the included `link-writing` skill for reusable link-writing rules.
 - Match `assets/rewriting-output-schema.json` exactly.
 
 ## Source of Truth

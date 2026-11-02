@@ -42,6 +42,18 @@ export const CanadaCaStyleRules: readonly CanadaCaStyleRule[] = [
     condition: 'always',
     text: 'Preserve legal, eligibility, deadline, service, and policy meaning. Do not simplify content in a way that changes who qualifies, what action is required, when something happens, or what a service provides.',
   },
+  {
+    id: 'C5_do_not_invent_operational_details',
+    severity: 'must',
+    condition: 'always',
+    text: 'Do not invent service standards, contact channels, or other operational details that are not supported by the source content.',
+  },
+  {
+    id: 'C6_no_unverified_qa_claims',
+    severity: 'must',
+    condition: 'always',
+    text: 'Do not claim that content passed a full quality assurance review unless the request explicitly states that a full review was performed.',
+  },
 ];
 
 export const CanadaCaStyleExamples: readonly CanadaCaStyleExample[] = [
