@@ -14,7 +14,6 @@ import { ProblemPromptKey } from '../../../../../common/prompts/prompt.model';
 import { coerceInteractiveResultLeadIns, getReportableAlerts } from './alert-reportable.utils';
 import { AlertIssue, isNoAlertIssue } from './alert.config';
 import fallbackSeverityJson from './severity-include-fallback.json';
-import { marker } from '@colsen1991/ngx-translate-extract-marker';
 
 const ALERT_SEVERITY_ALIASES: Record<string, 'High' | 'Medium' | 'Low'> = {
   high: 'High',
@@ -474,9 +473,4 @@ export class AlertService {
   private cloneIssues(issues: AlertIssue[]): AlertIssue[] {
     return issues.map((issue) => ({ ...issue }));
   }
-
-  private markForTranslation(): void {
-    marker('problems.alerts.recommendation.missingAlertSemantics');
-  }
 }
-

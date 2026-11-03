@@ -183,6 +183,7 @@ export class DesignComponentsComponent {
     marker('problems.alerts.categoryValue.contentClarity');
     marker('problems.alerts.categoryValue.nonTextContent');
     marker('problems.alerts.categoryValue.missingAlertSemantics');
+    marker('problems.alerts.recommendation.missingAlertSemantics');
     marker('problems.alerts.categoryValue.accessibilityCode');
     marker('problems.alerts.categoryValue.noIssues');
     marker('problems.alerts.severityValue.high');
