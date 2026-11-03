@@ -32,11 +32,6 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               {
-                "glob": ".nojekyll",
-                "input": "public",
-                "output": "/"
-              },
-              {
                 "glob": "**/*",
                 "input": "public"
               },
