@@ -1,5 +1,4 @@
 export interface AlertRewritePromptRules {
-  version: string;
   alertRewrite: {
     styleRulesBase: string[];
     styleRulesWithExamples: string[];
@@ -17,13 +16,32 @@ export interface AlertRewritePromptRules {
 }
 
 export const AlertRewriteRules: AlertRewritePromptRules = {
-  version: '2026-02-28',
   alertRewrite: {
     styleRulesBase: [
+      "Keep edits proportionate. Resolve selected issues and use selected examples only as style guidance. Preserve the alert's supported meaning, facts, and purpose.",
+      'Preserve the original alert type, such as info, warning, danger, or success, unless a selected issue explicitly identifies the alert type as incorrect.',
+      'Do not invent facts, dates, URLs, program names, or destination details.',
+      'Prefer short sentences. Use 1 or 2 sentences when the sentences are short, or 1 sentence when the sentence is longer. Treat these as flexible guidance, not hard limits.',
+      'Do not use semicolons to combine ideas just to reduce the sentence count.',
+      'If the alert includes a standalone lead-in to a link, first include one substantive sentence that explains the alert.',
+      'Do not output an alert whose only body text is a link-introduction sentence such as Learn about: or Refer to:.',
+      'Add or preserve a short, descriptive heading.',
+      'Do not rewrite alert content into accordions, disclosure widgets, expand-collapse components, or other containers that hide content from visual display. Inline assistive text that uses the wb-inv class is allowed: preserve it when it is needed, keep it in its original reading order, and make sure it flows with the surrounding visible text. Do not treat wb-inv text as prohibited hidden content.',
+      'Do not add new images or icons. Preserve meaningful non-text content and useful existing text alternatives. When a selected issue identifies a missing or incorrect text alternative for retained non-text content, add or correct it using only information supported by the source content. Keep decorative non-text content hidden from assistive technology with an empty text alternative where appropriate.',
+      'State what happened, then what to do.',
+      'Use plain, active, neutral language.',
+      'Include a next step when possible.',
+      'Keep alert content concise for UI.',
+      'Ensure each applicable selected issue that can be fixed within the alert results in a meaningful change. Do not claim an issue is fixed when the alert is unchanged, or alter valid content merely to show a change. Issues outside the alert, including placement, do not by themselves require a content change.',
       'Do not add new links. If the original alert has one or more <a> links, rewrittenAlertHtml must include at least one real <a> element with an original href. Do not convert every link to plain text, omit all links, or replace links with placeholder text. You may rewrite anchor text only if it improves clarity and still describes the same destination. If the original alert has multiple links, only remove extra links when the selected issues or plan identify too many links or link removal.',
       'Set rewrittenAlertHtml to full .alert wrapper HTML (for example: <div class="alert alert-info">...</div>).',
     ],
-    styleRulesWithExamples: [],
+    styleRulesWithExamples: [
+      'Use examples as pattern guidance only.',
+      "When examples include egHtml, use that field as the example's final HTML pattern.",
+      'Do not copy example wording.',
+      "Keep wording specific to the input alert's own facts and wording.",
+    ],
     systemPromptWithExamplesLines: [
       'You are an expert in Canada.ca alerts, accessibility, content design, and alert HTML rewriting.',
       'Use examples as pattern guidance, not copy/paste text.',

@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 
 import { TranslateService } from '@ngx-translate/core';
 
+import { AlertRewriteRules } from '../../../../../common/prompts/alert-rewrite.prompt';
 import { OpenRouterService } from '../../../../../services/ai/openrouter.service';
 import { HtmlNormalizationService } from '../../../../../services/html-normalization.service';
 import { AlertContextService } from './alert-context.service';
@@ -9,7 +10,6 @@ import { AlertRewriteGuardService } from './alert-rewrite-guard.service';
 import { AlertRewriteIssueInput, AlertRewriteRepairCandidate, AlertRewriteResult, AlertRewriteService } from './alert-rewrite.service';
 
 import { coerceInteractiveResultLeadIns, getReportableAlerts } from './alert-reportable.utils';
-import { getAlertRewriteRules } from './alert-rewrite-rules';
 
 export interface AlertRewriteFallbackNotice {
   alertIndex: number;
@@ -17,7 +17,6 @@ export interface AlertRewriteFallbackNotice {
 }
 
 type AlertRewriteTimingKey =
-  | 'loadRulesMs'
   | 'parseAlertsMs'
   | 'loadExamplesMs'
   | 'buildCompactContextMs'
@@ -45,7 +44,6 @@ export class AlertRewriteOrchestratorService {
 
   private createTimings(): AlertRewriteTimings {
     return {
-      loadRulesMs: 0,
       parseAlertsMs: 0,
       loadExamplesMs: 0,
       buildCompactContextMs: 0,
@@ -117,12 +115,10 @@ export class AlertRewriteOrchestratorService {
   }> {
     const start = performance.now();
     const timings = this.createTimings();
-    let timingStart = performance.now();
-    const rewriteRules = await getAlertRewriteRules();
-    this.addElapsed(timings, 'loadRulesMs', timingStart);
+    const rewriteRules = AlertRewriteRules;
     const retryInstructions = rewriteRules.alertRewrite.retryInstructions;
 
-    timingStart = performance.now();
+    let timingStart = performance.now();
     const alertDoc = new DOMParser().parseFromString(params.html, 'text/html');
     const alertEls = getReportableAlerts(alertDoc, {
       interactiveResultLeadIns: this.getInteractiveResultLeadIns(),

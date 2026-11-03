@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 import { Injectable } from '@angular/core';
 
+import { AlertRewriteExamples, type AlertRewriteExample, type AlertRewriteExampleLink } from '../../../../../common/prompts/alert-rewrite.examples';
+import { AlertRewriteRules } from '../../../../../common/prompts/alert-rewrite.prompt';
 import { getCanadaCaStylePromptRules } from '../../../../../common/prompts/canada-ca-style.prompt';
 import { getLinkWritingPromptRules } from '../../../../../common/prompts/link-writing.prompt';
 import { ChatMessage } from '../../../../../services/ai/openrouter.service';
-
-import { getAlertRewriteRules } from './alert-rewrite-rules';
 
 export interface AlertRewriteIssueInput {
   alertIndex?: number;
@@ -29,24 +29,7 @@ export interface AlertRewritePlan {
   directives: AlertRewriteDirective[];
 }
 
-export interface AlertRewriteExample {
-  id: string;
-  alertType: string;
-  tags: string[];
-  purposeTags?: string[];
-  criteria: string[];
-  egText: string;
-  egHeading?: string;
-  egHtml?: string;
-  egLinks?: AlertRewriteExampleLink[];
-  notes?: string;
-}
-
-export interface AlertRewriteExampleLink {
-  id: string;
-  text: string;
-  href?: string;
-}
+export type { AlertRewriteExample, AlertRewriteExampleLink } from '../../../../../common/prompts/alert-rewrite.examples';
 
 export interface AlertRewriteLinkManifestItem {
   index: number;
@@ -97,32 +80,8 @@ export interface AlertRewriteInput {
 
 @Injectable({ providedIn: 'root' })
 export class AlertRewriteService {
-  private readonly examplesPath = new URL('skills/alerts/alerts-rewriting/references/examples.json', document.baseURI).toString();
-  private examplesCache: AlertRewriteExample[] | null = null;
-
-  async loadExamples(): Promise<AlertRewriteExample[]> {
-    if (this.examplesCache) {
-      return this.examplesCache;
-    }
-    try {
-      const response = await fetch(this.examplesPath);
-      if (!response.ok) {
-        throw new Error(`Failed to load alert examples (${response.status}).`);
-      }
-      const payload = (await response.json()) as unknown;
-      const rawExamples = Array.isArray(payload)
-        ? payload
-        : payload && typeof payload === 'object' && Array.isArray((payload as Record<string, unknown>)['examples'])
-          ? ((payload as Record<string, unknown>)['examples'] as unknown[])
-          : [];
-      const parsed = rawExamples.map((raw) => this.toExample(raw)).filter((example): example is AlertRewriteExample => !!example);
-      this.examplesCache = parsed;
-      return parsed;
-    } catch (err) {
-      console.warn('Unable to load alert rewrite examples:', err);
-      this.examplesCache = [];
-      return [];
-    }
+  loadExamples(): Promise<AlertRewriteExample[]> {
+    return Promise.resolve(AlertRewriteExamples);
   }
 
   inferAlertType(alertHtml: string): string {
@@ -222,7 +181,7 @@ export class AlertRewriteService {
       params.plan.directives.some((directive) => directive.op === 'limit_links');
     const originalHasLink = /<a\b/i.test(params.originalAlertHtml || '');
     const linkManifest = this.buildAlertLinkManifest(params.originalAlertHtml, hasTooManyLinksIssue);
-    const [linkRules, canadaCaStyleRules, rules] = await Promise.all([
+    const [linkRules, canadaCaStyleRules] = await Promise.all([
       originalHasLink
         ? getLinkWritingPromptRules({
             hasTooManyLinksIssue,
@@ -231,8 +190,8 @@ export class AlertRewriteService {
       getCanadaCaStylePromptRules({
         includeExamples: true,
       }),
-      getAlertRewriteRules(),
     ]);
+    const rules = AlertRewriteRules;
     this.debugLog('Alert rewrite link rules', {
       originalHasLink,
       hasTooManyLinksIssue,
@@ -309,7 +268,6 @@ export class AlertRewriteService {
     const serializedUserPayload = JSON.stringify(userPayload);
 
     this.debugLog('Alert rewrite prompt payload', {
-      rulesVersion: rules.version,
       examplesProvided: params.examples.length,
       selectedExampleIds: params.examples.map((example) => example.id),
       retryInstructionCount: retryInstructions.length,
@@ -741,27 +699,6 @@ export class AlertRewriteService {
     return Math.min(2.5, distinctiveMatches * 0.35 + containment);
   }
 
-  private toExample(raw: unknown): AlertRewriteExample | null {
-    if (!raw || typeof raw !== 'object') return null;
-    const root = raw as Record<string, unknown>;
-    const id = this.cleanString(root['id']);
-    const alertType = this.cleanString(root['alertType']);
-    const egText = this.cleanString(root['egText']);
-    if (!id || !alertType || !egText) return null;
-    return {
-      id,
-      alertType,
-      tags: this.toStringArray(root['tags']),
-      purposeTags: this.toStringArray(root['purposeTags']),
-      criteria: this.toStringArray(root['criteria']),
-      egText,
-      egHeading: this.cleanString(root['egHeading']) || undefined,
-      egHtml: this.cleanString(root['egHtml']) || undefined,
-      egLinks: this.toExampleLinkArray(root['egLinks']),
-      notes: this.cleanString(root['notes']) || undefined,
-    };
-  }
-
   private toDirective(raw: unknown): AlertRewriteDirective | null {
     if (!raw || typeof raw !== 'object') return null;
     const root = raw as Record<string, unknown>;
@@ -1076,18 +1013,4 @@ export class AlertRewriteService {
     }
   }
 
-  private toExampleLinkArray(raw: unknown): AlertRewriteExampleLink[] {
-    if (!Array.isArray(raw)) return [];
-    const links: AlertRewriteExampleLink[] = [];
-    for (const item of raw) {
-      if (!item || typeof item !== 'object') continue;
-      const root = item as Record<string, unknown>;
-      const id = this.cleanString(root['id']);
-      const text = this.cleanString(root['text']);
-      const href = this.cleanString(root['href']) || undefined;
-      if (!id || !text) continue;
-      links.push(href ? { id, text, href } : { id, text });
-    }
-    return links;
-  }
 }

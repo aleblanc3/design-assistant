@@ -1,8 +1,0 @@
-{
-  "id": "missing-resource",
-  "includes": [],
-  "references": ["references/does-not-exist.json"],
-  "optionalReferences": [],
-  "assets": [],
-  "outputModes": ["json"]
-}

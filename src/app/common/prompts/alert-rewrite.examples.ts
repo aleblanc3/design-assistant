@@ -1,4 +1,23 @@
-[
+export interface AlertRewriteExample {
+  id: string;
+  alertType: string;
+  tags: string[];
+  purposeTags?: string[];
+  criteria: string[];
+  egText: string;
+  egHeading?: string;
+  egHtml?: string;
+  egLinks?: AlertRewriteExampleLink[];
+  notes?: string;
+}
+
+export interface AlertRewriteExampleLink {
+  id: string;
+  text: string;
+  href?: string;
+}
+
+export const AlertRewriteExamples: AlertRewriteExample[] = [
   {
     "id": "ex-001",
     "alertType": "info",
@@ -64,6 +83,7 @@
       "support-info",
       "keep-support-link"
     ],
+    "criteria": [],
     "egHeading": "Support for Canadians affected by wildfires",
     "egText": "If you've been impacted by wildfires, visit our disaster support page for information on managing your taxes and accessing benefit and credit payments during and after a disaster.",
     "egHtml": "<section class=\"alert alert-info\"><h2 class=\"h3\">Support for Canadians affected by wildfires</h2><p>If you've been impacted by wildfires, visit our <a href=\"https://www.canada.ca/en/revenue-agency/corporate/about-canada-revenue-agency-cra/managing-tax-affairs-during-after-disaster.html\">disaster support page</a> for information on managing your taxes and accessing benefit and credit payments during and after a disaster.</p></section>",
@@ -389,4 +409,4 @@
     ],
     "notes": "Gives a direct filing action and consolidates repeated sign-in links into one standalone account action link."
   }
-]
+];
