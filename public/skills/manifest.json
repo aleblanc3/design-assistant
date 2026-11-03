@@ -8,8 +8,7 @@
       "skillMdPath": "alerts/alerts-rewriting/SKILL.md",
       "includedSkillIds": [],
       "defaultReferencePaths": [
-        "alerts/alerts-rewriting/references/shared-rewrite-guidance.json",
-        "alerts/alerts-rewriting/references/runtime-rewrite-rules.json"
+        "alerts/alerts-rewriting/references/shared-rewrite-guidance.json"
       ],
       "optionalReferencePaths": [
         "alerts/alerts-rewriting/references/examples.json"

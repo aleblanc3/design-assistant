@@ -14,8 +14,11 @@ Use this skill only for alert rewriting. Do not return issue-analysis payloads.
 
 ## Resources
 - Read `references/shared-rewrite-guidance.json` for shared rewrite, style, example, and self-check guidance.
-- Read `references/runtime-rewrite-rules.json` for the live per-alert prompt contract, output fields, and retry instructions.
 - Use `references/examples.json` for pattern guidance only. Do not copy wording.
+
+The AWS-AIDA runtime supplies the live per-alert prompt contract, output
+fields, and retry instructions from
+`src/app/common/prompts/alert-rewrite.prompt.ts`.
 
 The AWS-AIDA runtime supplies shared link-writing guidance from
 `src/app/common/prompts/link-writing.prompt.ts`; it is not duplicated in this
@@ -26,9 +29,9 @@ skill package.
 `references/shared-rewrite-guidance.json` defines the shared behavioural
 guidance used by the current AWS-AIDA runtime.
 
-`references/runtime-rewrite-rules.json` defines the live per-alert prompt
-and output contract used by the AWS-AIDA alert rewrite service, which has
-custom parsing, retry, and repair behaviour.
+`src/app/common/prompts/alert-rewrite.prompt.ts` defines the live per-alert
+prompt and output contract used by the AWS-AIDA alert rewrite service, which
+has custom parsing, retry, and repair behaviour.
 
 ## Output Boundary
 - Return rewrite payloads only.

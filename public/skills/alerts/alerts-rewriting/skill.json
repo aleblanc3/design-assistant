@@ -2,8 +2,7 @@
   "id": "alerts-rewriting",
   "includes": [],
   "references": [
-    "references/shared-rewrite-guidance.json",
-    "references/runtime-rewrite-rules.json"
+    "references/shared-rewrite-guidance.json"
   ],
   "optionalReferences": ["references/examples.json"],
   "assets": [],
