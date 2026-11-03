@@ -13,16 +13,7 @@ import { TableModule } from 'primeng/table';
 import { AlertService } from './alert.service';
 
 import { coerceInteractiveResultLeadIns, getReportableAlertsFromHtml } from './alert-reportable.utils';
-import {
-  ALERT_SEVERITY_RANK,
-  AlertGuidanceState,
-  AlertIssue,
-  computeAlertCategories,
-  computeAlertMaxSeverity,
-  getAlertCategoryI18nKey,
-  getAlertSeverityI18nKey,
-  isNoAlertIssue,
-} from './alert.config';
+import { ALERT_SEVERITY_RANK, AlertGuidanceState, AlertIssue, computeAlertCategories, computeAlertMaxSeverity, getAlertCategoryI18nKey, getAlertSeverityI18nKey, isNoAlertIssue } from './alert.config';
 
 @Component({
   selector: 'aida-alerts',
@@ -94,13 +85,7 @@ export class AlertsComponent {
       this.frenchReportComplete.set(hasCompleteFrenchReport);
       const completeFrenchIssues = cached && hasCompleteFrenchReport ? this.sortIssues(this.alertService.getIssuesForDisplay(cached, 'fr')) : null;
       if (completeFrenchIssues) this.lastFrenchIssues.set(completeFrenchIssues);
-      this.issues.set(
-        this.isFrench()
-          ? completeFrenchIssues ?? this.lastFrenchIssues()
-          : cached
-            ? this.sortIssues(this.alertService.getIssuesForDisplay(cached, currentLanguage))
-            : [],
-      );
+      this.issues.set(this.isFrench() ? (completeFrenchIssues ?? this.lastFrenchIssues()) : cached ? this.sortIssues(this.alertService.getIssuesForDisplay(cached, currentLanguage)) : []);
       this.analyzedHtmlHash.set(cached?.analyzedHtmlHash ?? '');
       this.analysisCurrent.set(cached?.isCurrent ?? false);
       this.error.set(null);

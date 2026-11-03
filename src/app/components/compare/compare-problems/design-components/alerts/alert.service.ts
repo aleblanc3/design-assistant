@@ -7,13 +7,14 @@ import { FetchService } from '../../../../../services/fetch.service';
 import { ProjectStateService } from '../../../../../services/project-state.service';
 import { AlertContextService } from './alert-context.service';
 
-import { AlertIssuesReport, AlertIssueTranslationData } from '../../../../../common/data.model';
 import { AI_ALERT_TRANSLATION_MODEL } from '../../../../../common/ai-models.config';
+import { AlertIssuesReport, AlertIssueTranslationData } from '../../../../../common/data.model';
 import { ProblemPrompts } from '../../../../../common/prompts/problems.prompts';
 import { ProblemPromptKey } from '../../../../../common/prompts/prompt.model';
 import { coerceInteractiveResultLeadIns, getReportableAlerts } from './alert-reportable.utils';
 import { AlertIssue, isNoAlertIssue } from './alert.config';
 import fallbackSeverityJson from './severity-include-fallback.json';
+import { marker } from '@colsen1991/ngx-translate-extract-marker';
 
 const ALERT_SEVERITY_ALIASES: Record<string, 'High' | 'Medium' | 'Low'> = {
   high: 'High',
@@ -355,12 +356,7 @@ export class AlertService {
       preferredModel: AI_ALERT_TRANSLATION_MODEL,
       itemCount: items.length,
     });
-    const response = await this.openRouter.sendToAI(
-      ProblemPrompts[ProblemPromptKey.TranslateIssueDetails],
-      JSON.stringify({ target_language: 'fr-CA', items }),
-      AI_ALERT_TRANSLATION_MODEL,
-      0,
-    );
+    const response = await this.openRouter.sendToAI(ProblemPrompts[ProblemPromptKey.TranslateIssueDetails], JSON.stringify({ target_language: 'fr-CA', items }), AI_ALERT_TRANSLATION_MODEL, 0);
     const responseText = response.choices?.[0]?.message?.content ?? '';
     const translatedIssues = this.parseFrenchTranslations(responseText, items);
     if (translatedIssues.length !== items.length) {
@@ -397,10 +393,7 @@ export class AlertService {
     });
   }
 
-  private parseFrenchTranslations(
-    responseText: string,
-    expectedItems: { translation_id: string; description: string; recommendation: string }[],
-  ): AlertIssueTranslationData[] {
+  private parseFrenchTranslations(responseText: string, expectedItems: { translation_id: string; description: string; recommendation: string }[]): AlertIssueTranslationData[] {
     const parsed = this.looseJsonParse(this.stripCodeFences(responseText));
     const root = parsed && typeof parsed === 'object' ? (parsed as Record<string, unknown>) : null;
     const rawItems = Array.isArray(root?.['items']) ? root['items'] : [];
@@ -481,4 +474,9 @@ export class AlertService {
   private cloneIssues(issues: AlertIssue[]): AlertIssue[] {
     return issues.map((issue) => ({ ...issue }));
   }
+
+  private markForTranslation(): void {
+    marker('problems.alerts.recommendation.missingAlertSemantics');
+  }
 }
+

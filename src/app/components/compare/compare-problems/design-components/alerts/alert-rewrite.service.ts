@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 import { Injectable } from '@angular/core';
 
-import { AlertRewriteExamples, type AlertRewriteExample, type AlertRewriteExampleLink } from '../../../../../common/prompts/alert-rewrite.examples';
+import { ChatMessage } from '../../../../../services/ai/openrouter.service';
+
+import { AlertRewriteExamples, type AlertRewriteExample } from '../../../../../common/prompts/alert-rewrite.examples';
 import { AlertRewriteRules } from '../../../../../common/prompts/alert-rewrite.prompt';
 import { getCanadaCaStylePromptRules } from '../../../../../common/prompts/canada-ca-style.prompt';
 import { getLinkWritingPromptRules } from '../../../../../common/prompts/link-writing.prompt';
-import { ChatMessage } from '../../../../../services/ai/openrouter.service';
 
 export interface AlertRewriteIssueInput {
   alertIndex?: number;
@@ -1012,5 +1013,4 @@ export class AlertRewriteService {
       return '';
     }
   }
-
 }

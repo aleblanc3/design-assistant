@@ -2,12 +2,12 @@ import { inject, Injectable } from '@angular/core';
 
 import { TreeNode } from 'primeng/api';
 
-import { removeAlertRewritePlacementReviewNotices } from '../../common/alert-rewrite-status.utils';
 import { FetchService } from '../fetch.service';
 import { HtmlNormalizationService } from '../html-normalization.service';
 import { SignInService } from './sign-in.service';
 
 import { environment } from '../../../environments/environment';
+import { removeAlertRewritePlacementReviewNotices } from '../../common/alert-rewrite-status.utils';
 
 export interface GitHubFileRequest {
   message: string;

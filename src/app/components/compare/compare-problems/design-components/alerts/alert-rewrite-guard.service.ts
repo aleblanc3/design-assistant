@@ -3,9 +3,9 @@ import { inject, Injectable } from '@angular/core';
 
 import { TranslateService } from '@ngx-translate/core';
 
-import { removeAlertRewritePlacementReviewNotices } from '../../../../../common/alert-rewrite-status.utils';
 import { AlertRewriteExample, AlertRewriteIssueInput, AlertRewritePlan, AlertRewriteRepairCandidate, AlertRewriteResult, AlertRewriteService } from './alert-rewrite.service';
 
+import { removeAlertRewritePlacementReviewNotices } from '../../../../../common/alert-rewrite-status.utils';
 import { coerceInteractiveResultLeadIns, getReportableAlerts } from './alert-reportable.utils';
 
 export interface AlertHtmlRewrite {

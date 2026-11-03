@@ -2,13 +2,13 @@ import { inject, Injectable } from '@angular/core';
 
 import { TranslateService } from '@ngx-translate/core';
 
-import { AlertRewriteRules } from '../../../../../common/prompts/alert-rewrite.prompt';
 import { OpenRouterService } from '../../../../../services/ai/openrouter.service';
 import { HtmlNormalizationService } from '../../../../../services/html-normalization.service';
 import { AlertContextService } from './alert-context.service';
 import { AlertRewriteGuardService } from './alert-rewrite-guard.service';
 import { AlertRewriteIssueInput, AlertRewriteRepairCandidate, AlertRewriteResult, AlertRewriteService } from './alert-rewrite.service';
 
+import { AlertRewriteRules } from '../../../../../common/prompts/alert-rewrite.prompt';
 import { coerceInteractiveResultLeadIns, getReportableAlerts } from './alert-reportable.utils';
 
 export interface AlertRewriteFallbackNotice {

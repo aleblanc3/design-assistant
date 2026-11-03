@@ -1,10 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 
-import { removeAlertRewritePlacementReviewNotices } from '../common/alert-rewrite-status.utils';
-import { SourceVersion } from '../common/data.model';
-
 //import * as parserHtml from 'prettier/parser-html';
 import { FetchService } from './fetch.service';
+
+import { removeAlertRewritePlacementReviewNotices } from '../common/alert-rewrite-status.utils';
+import { SourceVersion } from '../common/data.model';
 
 export interface htmlProcessingResult {
   html: string;
