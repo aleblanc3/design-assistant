@@ -1,0 +1,156 @@
+:host {
+  --group-header-height: 3rem;
+  --checkbox-width: 5rem;
+  --padding-left: 1.5rem;
+  --margin-left: -1.5rem;
+}
+
+td,
+th {
+  vertical-align: top;
+}
+
+/* Allows sticky table columns */
+::ng-deep .p-datatable-table-container {
+  overflow: visible !important;
+}
+
+/* Sets stacking context for table headers */
+:host ::ng-deep .p-datatable-thead {
+  z-index: 10;
+}
+
+/* Table */
+.sticky-table {
+  margin-left: calc(var(--margin-left));
+  padding-left: calc(var(--padding-left));
+  position: sticky;
+}
+
+/* Inherit table body background colours */
+.sticky-table:not(.sticky-table-header):not(.sticky-table-group-header) {
+  background-color: inherit;
+}
+
+/* Selected rows: add opaque base under the translucent highlight */
+:host ::ng-deep .p-datatable-tbody > tr.p-datatable-row-selected > .sticky-table {
+  background-color: var(--p-content-background);
+  background-image: linear-gradient(var(--p-highlight-background), var(--p-highlight-background));
+}
+
+.sticky-table-checkbox {
+  left: var(--mobile-nav-width);
+  width: var(--checkbox-width);
+  z-index: 2;
+}
+
+.sticky-table-column {
+  left: calc(var(--mobile-nav-width) + var(--checkbox-width));
+  z-index: 1;
+}
+
+.sticky-table-group-header {
+  top: 0;
+  height: var(--group-header-height);
+  z-index: 2;
+}
+
+.sticky-table-header {
+  top: var(--group-header-height);
+  z-index: 1;
+}
+
+.sticky-table-column.sticky-table-header,
+.sticky-table-column.sticky-table-group-header,
+.sticky-table-checkbox.sticky-table-header,
+.sticky-table-checkbox.sticky-table-group-header {
+  z-index: 3;
+}
+
+/* Approval icon toggle */
+.icon-toggle .icon-preview {
+  display: none;
+}
+.icon-toggle:not(.no-preview):hover .icon-current {
+  display: none;
+}
+.icon-toggle:not(.no-preview):hover .icon-preview {
+  display: inline-block;
+}
+
+/* Shadow when sticky content is stuck */
+.sticky-table::before,
+.sticky-table::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+/* Right edge of the sticky column */
+.sticky-table-column::after {
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 8px;
+  transform: translateX(100%);
+  background: linear-gradient(to right, rgb(0 0 0 / 0.16), transparent);
+}
+
+/* Bottom edge of the sticky headers */
+.sticky-table-header::before,
+.sticky-table-group-header[rowspan='2']::before {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 8px;
+  transform: translateY(100%);
+  background: linear-gradient(to bottom, rgb(0 0 0 / 0.16), transparent);
+}
+
+.stuck-x .sticky-table-column::after,
+.stuck-y .sticky-table-header::before,
+.stuck-y .sticky-table-group-header[rowspan='2']::before {
+  opacity: 1;
+}
+
+.legend-box {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+td:has([data-tooltip]:hover),
+th:has([data-tooltip]:hover) {
+  z-index: 20;
+}
+
+.sticky-container {
+  width: calc(100vw - var(--mobile-nav-width) - 3rem);
+}
+
+.sticky-content {
+  position: sticky;
+  width: fit-content;
+  left: var(--mobile-nav-width);
+  margin-left: calc(var(--margin-left));
+  padding-left: calc(var(--padding-left));
+}
+
+/* Table - desktop adjustments */
+@media screen and (min-width: 768px) {
+  .sticky-table-column {
+    left: calc(var(--desktop-nav-width) + var(--checkbox-width));
+  }
+
+  .sticky-table-checkbox,
+  .sticky-content {
+    left: var(--desktop-nav-width);
+  }
+
+  .sticky-container {
+    width: calc(100vw - var(--desktop-nav-width) - 10rem);
+  }
+}

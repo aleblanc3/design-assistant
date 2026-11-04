@@ -734,3 +734,7 @@ p:has(+ h1) {
 .surface-border {
   border-color: var(--surface-border) !important;
 }
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
