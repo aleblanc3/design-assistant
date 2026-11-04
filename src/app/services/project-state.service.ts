@@ -18,21 +18,8 @@ import { UserSettingsService } from './user-settings.service';
 
 import { version as appVersion } from '../../../package.json';
 import { environment } from '../../environments/environment';
-import {
-  FlattenedTreeNode,
-  GitHubRepo,
-  GitHubUser,
-  LangData,
-  MetadataReview,
-  PageTemplate,
-  Project,
-  ProjectPhase,
-  SourceVersion,
-  TableColumn,
-  TreeNodeAction,
-  TreeNodeData,
-  TreeNodeTypes,
-} from '../common/data.model';
+import { FlattenedTreeNode, TableColumn } from '../common/data-patch.model';
+import { GitHubRepo, GitHubUser, LangData, MetadataReview, PageTemplate, Project, ProjectPhase, SourceVersion, TreeNodeAction, TreeNodeData, TreeNodeTypes } from '../common/data.model';
 import { STOP_WORDS } from '../common/url-word-exclusions.config';
 
 export type SaveStatus = 'saved' | 'saving' | 'unsaved' | 'error';
