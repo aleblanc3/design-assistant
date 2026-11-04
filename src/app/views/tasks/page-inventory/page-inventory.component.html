@@ -8,7 +8,16 @@
     <div class="sticky-content mb-1">
       <h2 class="text-2xl my-1">{{ `inventory.table.header.${projectCache.selectedScope()}` | translate }}</h2>
       <div class="flex gap-2 align-items-center">
-        <p-button [label]="'common.filter' | translate" (click)="showDrawer = true" icon="pi pi-sliders-h" outlined size="large" styleClass="secondary-outline" />
+        <p-button
+          [badge]="filterCount()"
+          [label]="'common.filter' | translate"
+          (click)="showDrawer = true"
+          badgeSeverity="primary"
+          icon="pi pi-sliders-h"
+          outlined
+          size="large"
+          styleClass="secondary-outline"
+        />
         <aida-menu-page-actions [selectedNodes]="selection.selectedNodes()" />
         <span>{{ 'common.pagesSelected' | translate: { count: selection.selectedNodes().length } }}</span>
       </div>
@@ -17,12 +26,14 @@
     <div [class.stuck-x]="stuck.stuckX()" [class.stuck-y]="stuck.stuckY()">
       <p-table
         [(selection)]="selection.selectedRows"
+        [customSort]="true"
         [globalFilterFields]="filterFields()"
         [paginator]="visibleRows().length > 25"
         [rows]="50"
         [rowsPerPageOptions]="rowsPerPageOptions"
         [scrollable]="false"
         [value]="visibleRows()"
+        (sortFunction)="customSort($event)"
         #dt
         dataKey="label.en.path"
         selectionMode="multiple"
@@ -56,11 +67,16 @@
           </tr>
           <tr>
             @for (column of visibleColumns(); track column.key) {
-              <th [class.border-left-1]="!column.isGroupStart" [class.border-left-3]="column.isGroupStart" class="sticky-table sticky-table-header">
-                {{ column.column }}
-                @if (column.key.endsWith('En') || column.key.endsWith('Fr')) {
-                  ({{ column.key.endsWith('En') ? ('common.language.english' | translate) : ('common.language.french' | translate) }})
-                }
+              <th [class.border-left-1]="!column.isGroupStart" [class.border-left-3]="column.isGroupStart" [pSortableColumn]="column.key" class="sticky-table sticky-table-header">
+                <div class="flex justify-content-between gap-2">
+                  <div>
+                    {{ column.column }}
+                    @if (column.key.endsWith('En') || column.key.endsWith('Fr')) {
+                      ({{ column.key.endsWith('En') ? ('common.language.english' | translate) : ('common.language.french' | translate) }})
+                    }
+                  </div>
+                  <p-sortIcon [field]="column.key" />
+                </div>
               </th>
             }
           </tr>
