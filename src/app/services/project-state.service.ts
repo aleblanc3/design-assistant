@@ -377,6 +377,39 @@ export class ProjectStateService {
     }));
   }
 
+  public getAlertIssuesReport(path: string): AlertIssuesReport | null {
+    const match = this.findNodeAndLanguageByPath(path);
+    const report = match?.node.data?.issueReports?.[match.lang]?.alerts;
+    return report ? structuredClone(report) : null;
+  }
+
+  public setAlertIssuesReport(path: string, report: AlertIssuesReport): boolean {
+    const match = this.findNodeAndLanguageByPath(path);
+    if (!match?.node.data) {
+      console.warn(`Unable to store alert issues report: project page not found for path "${path}".`);
+      return false;
+    }
+
+    match.node.data.issueReports ??= {};
+    const languageReports = (match.node.data.issueReports[match.lang] ??= {});
+    languageReports.alerts = structuredClone(report);
+    this.project.update((project) => ({
+      ...project,
+      projectData: [...project.projectData],
+      lastModified: new Date(),
+    }));
+    return true;
+  }
+
+  private findNodeAndLanguageByPath(path: string): { node: TreeNode<TreeNodeData>; lang: 'en' | 'fr' } | null {
+    const tree = this.getProjectTree();
+    const enNode = this.findNodeByPath(tree, path, 'en') as TreeNode<TreeNodeData> | null;
+    if (enNode) return { node: enNode, lang: 'en' };
+
+    const frNode = this.findNodeByPath(tree, path, 'fr') as TreeNode<TreeNodeData> | null;
+    return frNode ? { node: frNode, lang: 'fr' } : null;
+  }
+
   // Count pages
   private countPages(mode: 'inScope' | 'baseline' = 'inScope'): number {
     let count = 0;

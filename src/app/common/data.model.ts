@@ -115,6 +115,38 @@ export interface PageNotes {
   solution: string;
 }
 
+export interface AlertIssueData {
+  translationId?: string;
+  alertIndex?: number;
+  category: string;
+  severity: string;
+  description: string;
+  recommendation: string;
+  include: boolean;
+}
+
+export interface AlertIssueTranslationData {
+  translationId: string;
+  description: string;
+  recommendation: string;
+}
+
+export interface AlertIssuesTranslationData {
+  translatedAt: string;
+  model?: string;
+  issues: AlertIssueTranslationData[];
+}
+
+export interface AlertIssuesReport {
+  analyzedHtmlHash: string;
+  analyzedAt: string;
+  model?: string;
+  issues: AlertIssueData[];
+  translations?: {
+    fr?: AlertIssuesTranslationData;
+  };
+}
+
 // All types used by TreeNodeData
 export type TreeNodeTypes = string | number | boolean | string[] | PageTemplate | PageProblem | undefined;
 
@@ -157,6 +189,11 @@ export interface TreeNodeData {
   metadataReview?: MetadataReview;
   // User notes
   notes?: PageNotes;
+  // Persisted issue-analysis reports
+  issueReports?: {
+    en?: { alerts?: AlertIssuesReport };
+    fr?: { alerts?: AlertIssuesReport };
+  };
   // Approval tracking
   approved?: ApprovalData;
   //Hidden tracking info
