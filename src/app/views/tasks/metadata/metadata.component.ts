@@ -90,6 +90,15 @@ export class MetadataComponent implements OnInit {
     persisted('metaLang', this.projectCache.selectedLang, ['en', 'fr', 'both'] as const),
     persisted('metaMeta', this.projectCache.selectedMeta, ['title', 'description', 'keywords'] as const),
   ]);
+  /** Count of how many filters are applied */
+  protected readonly filterCount = computed(() => {
+    const filterFilter = this.projectCache.selectedFilter() !== 'all' ? 1 : 0;
+    const langFilter = this.projectCache.selectedLang() !== 'both' ? 1 : 0;
+    const metaFilter = this.projectCache.selectedMeta() ? 1 : 0;
+    const colFilter = this.visibleColumns().length !== this.columns().length ? 1 : 0;
+    const searchFilter = this.searchTerm() ? 1 : 0;
+    return (filterFilter + langFilter + metaFilter + colFilter + searchFilter).toString();
+  });
   /** Controls visibility of row and column filter drawer */
   protected showDrawer = false;
 

@@ -1,17 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslatePipe } from '@ngx-translate/core';
 
+import { SortEvent } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DrawerModule } from 'primeng/drawer';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import { TableModule } from 'primeng/table';
+import { Table, TableModule } from 'primeng/table';
 
 import { AddPagesComponent } from '../../../components/add-pages/add-pages.component';
 import { MenuPageActionsComponent } from '../../../components/menu-page-actions/menu-page-actions.component';
@@ -20,7 +21,7 @@ import { ViewPagesComponent } from '../../../components/view-pages/view-pages.co
 
 import { FetchService } from '../../../services/fetch.service';
 import { ProjectCacheService } from '../../../services/project-cache.service';
-import { ProjectInventoryService, TableItem } from '../../../services/project-inventory.service';
+import { FlattenedInventory, ProjectInventoryService, TableItem } from '../../../services/project-inventory.service';
 import { ProjectStateService } from '../../../services/project-state.service';
 import { StyleCardService } from '../../../services/style-card.service';
 import { buildFilterFields, ColumnVisibility, createRowSelection, groupSpans, persisted, rowsPerPageOptions, TableService, trackStuck } from '../../../services/style-table.service';
@@ -80,6 +81,14 @@ export class PageInventoryComponent implements OnInit {
     persisted('invLang', this.projectCache.selectedLang, ['en', 'fr', 'both'] as const),
     persisted('invScope', this.projectCache.selectedScope, ['inScope', 'all'] as const),
   ]);
+  /** Count of how many filters are applied */
+  protected readonly filterCount = computed(() => {
+    const scopeFilter = this.projectCache.selectedScope() !== 'all' ? 1 : 0;
+    const langFilter = this.projectCache.selectedLang() !== 'both' ? 1 : 0;
+    const colFilter = this.visibleColumns().length !== this.columns().length ? 1 : 0;
+    const searchFilter = this.searchTerm() ? 1 : 0;
+    return (scopeFilter + langFilter + colFilter + searchFilter).toString();
+  });
   /** Controls visibility of row and column filter drawer */
   protected showDrawer = false;
 
@@ -104,7 +113,12 @@ export class PageInventoryComponent implements OnInit {
       rows = rows.filter((row) => !(row.inScope.type === 'boolean' && row.inScope.content !== true));
     }
 
-    return rows;
+    //Apply sorting
+    const col = this.sortColumn();
+    if (!col) return rows;
+
+    const order = this.sortOrder();
+    return [...rows].sort((a, b) => order * this.compareRows(a, b, col));
   });
 
   /** All table columns (keys, groups, version, & an indicator for first column in group) */
@@ -156,5 +170,73 @@ export class PageInventoryComponent implements OnInit {
   private markForTranslation() {
     marker('inventory.table.header.all');
     marker('inventory.table.header.inScope');
+  }
+
+  /** Sort */
+  protected readonly dt = viewChild.required<Table>('dt');
+  private readonly sortColumn = signal<string | null>(null);
+  private readonly sortOrder = signal<number>(1); // 1 = ascending, -1 = descending
+  private lastSortField: string | null = null;
+  private lastSortOrder: number | null = null;
+
+  protected customSort(event: SortEvent): void {
+    if (event.field === this.lastSortField && event.order === 1 && this.lastSortOrder === -1) {
+      this.sortColumn.set(null);
+      this.sortOrder.set(1);
+      this.lastSortField = null;
+      this.lastSortOrder = null;
+      this.dt().reset();
+    } else {
+      this.sortColumn.set(event.field ?? null);
+      this.sortOrder.set(event.order ?? 1);
+      this.lastSortField = event.field ?? null;
+      this.lastSortOrder = event.order ?? null;
+    }
+  }
+
+  private compareRows(a: FlattenedInventory, b: FlattenedInventory, col: string): number {
+    const cellA = this.sortCell(a, col);
+    const cellB = this.sortCell(b, col);
+    const type = cellA.type ?? cellB.type;
+
+    const emptyA = this.isEmpty(cellA.content);
+    const emptyB = this.isEmpty(cellB.content);
+    if (emptyA && emptyB) return 0;
+
+    const emptyFirst = type === 'date' || type === 'number'; // empties are sorted as smallest for dates and numbers
+    if (emptyA) return emptyFirst ? -1 : 1;
+    if (emptyB) return emptyFirst ? 1 : -1;
+
+    const x = cellA.content;
+    const y = cellB.content;
+
+    switch (type) {
+      case 'date':
+        return new Date(x as string).getTime() - new Date(y as string).getTime();
+      case 'number':
+        return (x as number) - (y as number);
+      case 'boolean':
+        return Number(x) - Number(y); // false before true
+      case 'array':
+        return this.joinArray(x).localeCompare(this.joinArray(y), this.projectCache.uiLang());
+      default:
+        return String(x).toLowerCase().localeCompare(String(y).toLowerCase(), this.projectCache.uiLang(), { numeric: true });
+    }
+  }
+
+  /** Returns type & content for a given cell */
+  private sortCell(row: FlattenedInventory, col: string): { type?: string; content: unknown } {
+    const value = col.split('.').reduce<unknown>((current, key) => (current as Record<string, unknown> | undefined)?.[key], row);
+    return typeof value === 'object' && value !== null && !Array.isArray(value) && 'content' in value ? (value as { type?: string; content: unknown }) : { content: value };
+  }
+
+  /** Detects if cell is empty */
+  private isEmpty(value: unknown): boolean {
+    return value == null || value === '' || (Array.isArray(value) && value.length === 0);
+  }
+
+  /** Converts an array to a string so value can be sorted alphabetically */
+  private joinArray(value: unknown): string {
+    return (value as unknown[]).map(String).join(', ').toLowerCase();
   }
 }

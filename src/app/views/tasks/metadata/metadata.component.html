@@ -108,8 +108,16 @@
       <p class="my-0">{{ 'metadata.allPages.description' | translate }}</p>
       <div class="flex flex-column gap-2">
         <div class="flex gap-2 align-items-center">
-          <p-button [label]="'common.filter' | translate" (click)="showDrawer = true" icon="pi pi-sliders-h" outlined size="large" styleClass="secondary-outline" />
-
+          <p-button
+            [badge]="filterCount()"
+            [label]="'common.filter' | translate"
+            (click)="showDrawer = true"
+            badgeSeverity="primary"
+            icon="pi pi-sliders-h"
+            outlined
+            size="large"
+            styleClass="secondary-outline"
+          />
           <aida-menu-page-actions [selectedNodes]="selection.selectedNodes()" />
           <span>{{ 'common.pagesSelected' | translate: { count: selection.selectedNodes().length } }}</span>
         </div>
@@ -291,7 +299,14 @@
             </p-iconfield>
           </aida-project-settings>
         </div>
-        <h2 class="mb-0">{{ 'common.columnFilters' | translate }}</h2>
+        <div class="flex align-items-end gap-4">
+          <h2 class="mb-0">{{ 'common.columnFilters' | translate }}</h2>
+          @if (visibleColumns().length !== columns().length) {
+            <span>
+              {{ 'common.showingColumns' | translate: { shown: visibleColumns().length, total: columns().length } }}
+            </span>
+          }
+        </div>
         <aida-project-settings [allowBoth]="true" [allowLive]="true" [allowPreview]="true" [showLang]="true" />
         <aida-project-settings [allowBoth]="true" [allowLive]="true" [allowPreview]="true" [showMeta]="true" />
         <p class="mb-0">{{ 'common.chooseColumns' | translate }}</p>
