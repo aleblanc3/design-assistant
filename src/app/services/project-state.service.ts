@@ -18,9 +18,9 @@ import { UserSettingsService } from './user-settings.service';
 
 import { version as appVersion } from '../../../package.json';
 import { environment } from '../../environments/environment';
+import { FlattenedTreeNode, TableColumn } from '../common/data-patch.model';
 import {
   AlertIssuesReport,
-  FlattenedTreeNode,
   GitHubRepo,
   GitHubUser,
   LangData,
@@ -29,7 +29,6 @@ import {
   Project,
   ProjectPhase,
   SourceVersion,
-  TableColumn,
   TreeNodeAction,
   TreeNodeData,
   TreeNodeTypes,
