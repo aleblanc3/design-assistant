@@ -245,6 +245,10 @@ font-family: 'Noto Sans';
   color: light-dark(var(--p-green-500), var(--p-green-400)) !important;
 }
 
+.text-blue {
+  color: light-dark(var(--p-blue-500), var(--p-blue-400)) !important;
+}
+
 .bg-red {
   background-color: light-dark(var(--p-red-50), var(--p-red-900)) !important;
 }
@@ -480,6 +484,10 @@ font-family: 'Noto Sans';
   max-height: 75vh;
 }
 
+.h-75vh {
+  height: 75vh;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -591,6 +599,9 @@ code.custom {
 
 .h-1\.5 {
   height: 1.5rem;
+}
+.h-2\.75rem {
+  height: 2.75rem;
 }
 .min-h-1\.5 {
   min-height: 1.5rem;
