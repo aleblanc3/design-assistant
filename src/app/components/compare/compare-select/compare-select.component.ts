@@ -20,7 +20,7 @@ import { FetchService } from '../../../services/fetch.service';
 import { HtmlNormalizationService, htmlProcessingResult } from '../../../services/html-normalization.service';
 import { ProjectCacheService } from '../../../services/project-cache.service';
 import { ProjectStateService } from '../../../services/project-state.service';
-import { CompareService } from '../../../views/tasks/compare/compare.service';
+import { CompareService } from '../../../views/tasks/compare-versions/compare-versions.service';
 
 import { AidaLinks } from '../../../common/aidaLinks.config';
 import { ALL_SOURCES, SourceVersion } from '../../../common/data.model';

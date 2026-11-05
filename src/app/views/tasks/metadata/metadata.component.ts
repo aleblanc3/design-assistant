@@ -28,7 +28,7 @@ import { FlattenedMetadata, ProjectMetadataService, TableItem } from '../../../s
 import { LoadingTypes, ProjectStateService } from '../../../services/project-state.service';
 import { StyleCardService } from '../../../services/style-card.service';
 import { buildFilterFields, ColumnVisibility, createRowSelection, groupSpans, LabelItem, persisted, rowsPerPageOptions, TableService, trackStuck } from '../../../services/style-table.service';
-import { CompareService } from '../compare/compare.service';
+import { CompareService } from '../compare-versions/compare-versions.service';
 
 import { TreeNodeData } from '../../../common/data.model';
 import { TooltipDirective } from '../../../common/tooltip.directive';
