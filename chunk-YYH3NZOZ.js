@@ -8,7 +8,7 @@ import {
 } from "./chunk-JVUCP7VY.js";
 import {
   CompareLanguagesComponent
-} from "./chunk-JAD4TOED.js";
+} from "./chunk-NRHYFW7F.js";
 import "./chunk-ZPEHUCGY.js";
 import {
   CompareSelectComponent
@@ -7190,4 +7190,4 @@ var CompareComponent = class _CompareComponent {
 export {
   CompareComponent
 };
-//# sourceMappingURL=chunk-IS2UWUPS.js.map
+//# sourceMappingURL=chunk-YYH3NZOZ.js.map

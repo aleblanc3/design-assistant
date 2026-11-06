@@ -1579,7 +1579,7 @@ var WORDS = {
 };
 var DIGITS = {
   en: String.raw`(?<![\d.,])\d{1,3}(?:,\d{3})+(?:\.\d+)?(?!\d)|\d+(?:\.\d+)?`,
-  fr: String.raw`(?<![\d.,])\d{1,3}(?:[ \u00A0\u202F]\d{3})+(?:,\d+)?(?!\d)|\d+(?:,\d+)?`
+  fr: String.raw`(?<![\d.,])\d{1,3}(?:[ \u00A0\u2009\u202F]\d{3})+(?:,\d+)?(?!\d)|\d+(?:,\d+)?`
 };
 var TIME = {
   en: String.raw`(?<![\d.,:])(?:1[01]|[1-9])[ \u00A0]pm(?![\p{L}\d])`,
@@ -1607,7 +1607,7 @@ function normalize(raw, lang) {
   const word = WORDS[lang][raw.toLowerCase()];
   if (word !== void 0)
     return String(word);
-  const cleaned = lang === "en" ? raw.replace(/,/g, "") : raw.replace(/[ \u00A0\u202F]/g, "").replace(",", ".");
+  const cleaned = lang === "en" ? raw.replace(/,/g, "") : raw.replace(/[ \u00A0\u2009\u202F]/g, "").replace(",", ".");
   return String(parseFloat(cleaned));
 }
 function extractNumbers(doc, lang) {
@@ -2662,4 +2662,4 @@ var CompareLanguagesComponent = class _CompareLanguagesComponent {
 export {
   CompareLanguagesComponent
 };
-//# sourceMappingURL=chunk-JAD4TOED.js.map
+//# sourceMappingURL=chunk-NRHYFW7F.js.map

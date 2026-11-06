@@ -8245,19 +8245,19 @@ var routes = [
       },
       {
         path: "edit-pages",
-        loadComponent: () => import("./chunk-IS2UWUPS.js").then((m) => m.CompareComponent),
+        loadComponent: () => import("./chunk-YYH3NZOZ.js").then((m) => m.CompareComponent),
         title: "editPages._title",
         data: { mode: "ai" }
       },
       {
         path: "compare-pages",
-        loadComponent: () => import("./chunk-IS2UWUPS.js").then((m) => m.CompareComponent),
+        loadComponent: () => import("./chunk-YYH3NZOZ.js").then((m) => m.CompareComponent),
         title: "compare._title",
         data: { mode: "compare" }
       },
       {
         path: "compare-languages",
-        loadComponent: () => import("./chunk-755D3IUO.js").then((m) => m.CompareLanguagesComponent),
+        loadComponent: () => import("./chunk-ESO55NRA.js").then((m) => m.CompareLanguagesComponent),
         title: "languages._title"
       }
     ]
@@ -8417,4 +8417,4 @@ var appConfig = {
 
 // src/main.ts
 bootstrapApplication(AppComponent, appConfig).catch((err) => console.error(err));
-//# sourceMappingURL=main-G7QEHSWL.js.map
+//# sourceMappingURL=main-JKV7TWA7.js.map
