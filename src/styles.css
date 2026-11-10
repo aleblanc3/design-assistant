@@ -309,6 +309,29 @@ font-family: 'Noto Sans';
   color: light-dark(var(--p-green-900), var(--p-green-50)) !important;
 }
 
+.hover\:text-primary.text-primary:hover {
+  color: light-dark(var(--p-primary-700), var(--p-primary-300)) !important;
+}
+
+.hover\:text-primary.text-primary a {
+  color: inherit;
+}
+
+.bg-primary-light {
+  background-color: light-dark(var(--p-primary-50), var(--p-primary-900)) !important;
+  color: light-dark(var(--p-primary-800), var(--p-primary-100)) !important;
+}
+
+.hover\:bg-primary-light:hover {
+  background-color: light-dark(var(--p-primary-50), var(--p-primary-900)) !important;
+  color: light-dark(var(--p-primary-900), var(--p-primary-50)) !important;
+}
+
+.hover\:bg-primary-light.bg-primary-light:hover {
+  background-color: light-dark(var(--p-primary-100), var(--p-primary-800)) !important;
+  color: light-dark(var(--p-primary-900), var(--p-primary-50)) !important;
+}
+
 .border-primary-50 {
   border-color: var(--p-primary-50);
 }
