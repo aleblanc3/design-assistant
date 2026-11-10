@@ -109,6 +109,7 @@ import {
   ɵɵreference,
   ɵɵrepeater,
   ɵɵrepeaterCreate,
+  ɵɵrepeaterTrackByIndex,
   ɵɵresetView,
   ɵɵresolveDocument,
   ɵɵrestoreView,
@@ -387,7 +388,7 @@ ${this.aiFrench()}`;
   static \u0275fac = function CompareAiLangComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _CompareAiLangComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CompareAiLangComponent, selectors: [["aida-compare-ai-lang"]], inputs: { aiEnglish: [1, "aiEnglish"], aiFrench: [1, "aiFrench"], is404: [1, "is404"] }, decls: 15, vars: 14, consts: [["header", ""], ["body", ""], [1, "flex", "justify-content-between", "gap-2"], [1, "mt-0"], ["icon", "pi pi-sparkles", "styleClass", "secondary-outline", 3, "onClick", "disabled", "label", "loading", "outlined"], ["icon", "pi pi-times-circle font-bold", "severity", "error"], ["role", "status", 1, "mt-2"], [1, "flex", "justify-content-center", "align-items-center", "gap-2"], [1, "pi", "pi-spinner", "pi-spin", "text-5xl", "text-primary"], [1, "loading-dots"], ["size", "small", "stripedRows", "", 3, "value"], ["icon", "pi pi-check-circle font-bold", "severity", "success"], [1, "w-4"], [1, "pi", "pi-minus", "text-xl"]], template: function CompareAiLangComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CompareAiLangComponent, selectors: [["aida-compare-ai-lang"]], inputs: { aiEnglish: [1, "aiEnglish"], aiFrench: [1, "aiFrench"], is404: [1, "is404"] }, decls: 15, vars: 14, consts: [["header", ""], ["body", ""], [1, "flex", "justify-content-between", "gap-2"], [1, "mt-0"], ["icon", "pi pi-sparkles", "styleClass", "secondary-outline", 3, "onClick", "disabled", "label", "loading", "outlined"], ["icon", "pi pi-times-circle font-bold", "severity", "error"], ["role", "status", 1, "mt-2"], [1, "flex", "justify-content-center", "align-items-center", "gap-2"], [1, "pi", "pi-spinner", "pi-spin", "text-5xl", "text-primary"], [1, "loading-dots"], ["scrollable", "", "scrollHeight", "30rem", "size", "small", "stripedRows", "", 3, "value"], ["icon", "pi pi-check-circle font-bold", "severity", "success"], [1, "w-4"], [1, "pi", "pi-minus", "text-xl"]], template: function CompareAiLangComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "div", 2)(1, "div")(2, "h2", 3);
       \u0275\u0275text(3);
@@ -459,7 +460,7 @@ ${this.aiFrench()}`;
     @case ('done') {
       @let diffs = reviewLanguagesService.getAiResponse(compareService.selectedPage());
       @if (diffs.length > 0) {
-        <p-table [value]="diffs" size="small" stripedRows>
+        <p-table [value]="diffs" scrollable scrollHeight="30rem" size="small" stripedRows>
           <ng-template #header>
             <tr>
               <th class="w-4">{{ 'inventory.header.issue' | translate }}</th>
@@ -504,39 +505,51 @@ ${this.aiFrench()}`;
 var _c0 = (a0, a1) => ({ title: "baseline", rows: a0, loading: a1 });
 var _c1 = (a0, a1) => ({ title: "prototype", rows: a0, loading: a1 });
 var _c2 = (a0, a1) => ({ title: "live", rows: a0, loading: a1 });
-function CompareDataComponent_Conditional_13_Template(rf, ctx) {
+function CompareDataComponent_For_10_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementContainer(0, 8);
+    \u0275\u0275elementStart(0, "li");
+    \u0275\u0275text(1);
+    \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
-    const mismatchTable_r2 = \u0275\u0275reference(18);
-    \u0275\u0275property("ngTemplateOutlet", mismatchTable_r2)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c0, ctx_r0.selectedBase(), ctx_r0.projectState.refreshing().baseline));
+    const listItem_r1 = ctx.$implicit;
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(listItem_r1);
   }
 }
-function CompareDataComponent_Conditional_14_Template(rf, ctx) {
+function CompareDataComponent_Conditional_20_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementContainer(0, 8);
+    \u0275\u0275elementContainer(0, 10);
   }
   if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
-    const mismatchTable_r2 = \u0275\u0275reference(18);
-    \u0275\u0275property("ngTemplateOutlet", mismatchTable_r2)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c1, ctx_r0.selectedProto(), ctx_r0.projectState.refreshing().prototype));
+    const ctx_r1 = \u0275\u0275nextContext();
+    const mismatchTable_r3 = \u0275\u0275reference(25);
+    \u0275\u0275property("ngTemplateOutlet", mismatchTable_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c0, ctx_r1.selectedBase(), ctx_r1.projectState.refreshing().baseline));
   }
 }
-function CompareDataComponent_Conditional_15_Template(rf, ctx) {
+function CompareDataComponent_Conditional_21_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementContainer(0, 8);
+    \u0275\u0275elementContainer(0, 10);
   }
   if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
-    const mismatchTable_r2 = \u0275\u0275reference(18);
-    \u0275\u0275property("ngTemplateOutlet", mismatchTable_r2)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c2, ctx_r0.selectedLive(), ctx_r0.projectState.refreshing().live));
+    const ctx_r1 = \u0275\u0275nextContext();
+    const mismatchTable_r3 = \u0275\u0275reference(25);
+    \u0275\u0275property("ngTemplateOutlet", mismatchTable_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c1, ctx_r1.selectedProto(), ctx_r1.projectState.refreshing().prototype));
   }
 }
-function CompareDataComponent_Conditional_16_Template(rf, ctx) {
+function CompareDataComponent_Conditional_22_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p-message", 9);
+    \u0275\u0275elementContainer(0, 10);
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext();
+    const mismatchTable_r3 = \u0275\u0275reference(25);
+    \u0275\u0275property("ngTemplateOutlet", mismatchTable_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c2, ctx_r1.selectedLive(), ctx_r1.projectState.refreshing().live));
+  }
+}
+function CompareDataComponent_Conditional_23_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "p-message", 11);
     \u0275\u0275text(1);
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275elementEnd();
@@ -546,17 +559,17 @@ function CompareDataComponent_Conditional_16_Template(rf, ctx) {
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 1, "pageOptions.description.0"));
   }
 }
-function CompareDataComponent_ng_template_17_ng_template_4_Template(rf, ctx) {
+function CompareDataComponent_ng_template_24_ng_template_4_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "tr")(1, "th", 11);
+    \u0275\u0275elementStart(0, "tr")(1, "th", 13);
     \u0275\u0275text(2);
     \u0275\u0275pipe(3, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(4, "th", 12);
+    \u0275\u0275elementStart(4, "th", 14);
     \u0275\u0275text(5);
     \u0275\u0275pipe(6, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(7, "th", 12);
+    \u0275\u0275elementStart(7, "th", 14);
     \u0275\u0275text(8);
     \u0275\u0275pipe(9, "translate");
     \u0275\u0275elementEnd()();
@@ -570,107 +583,107 @@ function CompareDataComponent_ng_template_17_ng_template_4_Template(rf, ctx) {
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(9, 7, "common.language.french"));
   }
 }
-function CompareDataComponent_ng_template_17_ng_template_6_Conditional_2_Template(rf, ctx) {
+function CompareDataComponent_ng_template_24_ng_template_6_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "i", 13);
+    \u0275\u0275element(0, "i", 15);
   }
 }
-function CompareDataComponent_ng_template_17_ng_template_6_Conditional_3_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275text(0);
-    \u0275\u0275pipe(1, "translate");
-  }
-  if (rf & 2) {
-    const row_r3 = \u0275\u0275nextContext().$implicit;
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(1, 1, "inventory.header." + row_r3.label), " ");
-  }
-}
-function CompareDataComponent_ng_template_17_ng_template_6_Conditional_5_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275element(0, "i", 13);
-  }
-}
-function CompareDataComponent_ng_template_17_ng_template_6_Conditional_6_Conditional_0_Template(rf, ctx) {
+function CompareDataComponent_ng_template_24_ng_template_6_Conditional_3_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275text(0);
     \u0275\u0275pipe(1, "translate");
   }
   if (rf & 2) {
-    const row_r3 = \u0275\u0275nextContext(2).$implicit;
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(1, 1, row_r3.en), " ");
+    const row_r4 = \u0275\u0275nextContext().$implicit;
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(1, 1, "inventory.header." + row_r4.label), " ");
   }
 }
-function CompareDataComponent_ng_template_17_ng_template_6_Conditional_6_Conditional_1_Template(rf, ctx) {
+function CompareDataComponent_ng_template_24_ng_template_6_Conditional_5_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "i", 14);
+    \u0275\u0275element(0, "i", 15);
   }
 }
-function CompareDataComponent_ng_template_17_ng_template_6_Conditional_6_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275conditionalCreate(0, CompareDataComponent_ng_template_17_ng_template_6_Conditional_6_Conditional_0_Template, 2, 3)(1, CompareDataComponent_ng_template_17_ng_template_6_Conditional_6_Conditional_1_Template, 1, 0, "i", 14);
-  }
-  if (rf & 2) {
-    const row_r3 = \u0275\u0275nextContext().$implicit;
-    \u0275\u0275conditional(row_r3.en ? 0 : 1);
-  }
-}
-function CompareDataComponent_ng_template_17_ng_template_6_Conditional_8_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275element(0, "i", 13);
-  }
-}
-function CompareDataComponent_ng_template_17_ng_template_6_Conditional_9_Conditional_0_Template(rf, ctx) {
+function CompareDataComponent_ng_template_24_ng_template_6_Conditional_6_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275text(0);
     \u0275\u0275pipe(1, "translate");
   }
   if (rf & 2) {
-    const row_r3 = \u0275\u0275nextContext(2).$implicit;
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(1, 1, row_r3.fr), " ");
+    const row_r4 = \u0275\u0275nextContext(2).$implicit;
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(1, 1, row_r4.en), " ");
   }
 }
-function CompareDataComponent_ng_template_17_ng_template_6_Conditional_9_Conditional_1_Template(rf, ctx) {
+function CompareDataComponent_ng_template_24_ng_template_6_Conditional_6_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "i", 14);
+    \u0275\u0275element(0, "i", 16);
   }
 }
-function CompareDataComponent_ng_template_17_ng_template_6_Conditional_9_Template(rf, ctx) {
+function CompareDataComponent_ng_template_24_ng_template_6_Conditional_6_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275conditionalCreate(0, CompareDataComponent_ng_template_17_ng_template_6_Conditional_9_Conditional_0_Template, 2, 3)(1, CompareDataComponent_ng_template_17_ng_template_6_Conditional_9_Conditional_1_Template, 1, 0, "i", 14);
+    \u0275\u0275conditionalCreate(0, CompareDataComponent_ng_template_24_ng_template_6_Conditional_6_Conditional_0_Template, 2, 3)(1, CompareDataComponent_ng_template_24_ng_template_6_Conditional_6_Conditional_1_Template, 1, 0, "i", 16);
   }
   if (rf & 2) {
-    const row_r3 = \u0275\u0275nextContext().$implicit;
-    \u0275\u0275conditional(row_r3.fr ? 0 : 1);
+    const row_r4 = \u0275\u0275nextContext().$implicit;
+    \u0275\u0275conditional(row_r4.en ? 0 : 1);
   }
 }
-function CompareDataComponent_ng_template_17_ng_template_6_Template(rf, ctx) {
+function CompareDataComponent_ng_template_24_ng_template_6_Conditional_8_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275element(0, "i", 15);
+  }
+}
+function CompareDataComponent_ng_template_24_ng_template_6_Conditional_9_Conditional_0_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275text(0);
+    \u0275\u0275pipe(1, "translate");
+  }
+  if (rf & 2) {
+    const row_r4 = \u0275\u0275nextContext(2).$implicit;
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(1, 1, row_r4.fr), " ");
+  }
+}
+function CompareDataComponent_ng_template_24_ng_template_6_Conditional_9_Conditional_1_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275element(0, "i", 16);
+  }
+}
+function CompareDataComponent_ng_template_24_ng_template_6_Conditional_9_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275conditionalCreate(0, CompareDataComponent_ng_template_24_ng_template_6_Conditional_9_Conditional_0_Template, 2, 3)(1, CompareDataComponent_ng_template_24_ng_template_6_Conditional_9_Conditional_1_Template, 1, 0, "i", 16);
+  }
+  if (rf & 2) {
+    const row_r4 = \u0275\u0275nextContext().$implicit;
+    \u0275\u0275conditional(row_r4.fr ? 0 : 1);
+  }
+}
+function CompareDataComponent_ng_template_24_ng_template_6_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "tr")(1, "td");
-    \u0275\u0275conditionalCreate(2, CompareDataComponent_ng_template_17_ng_template_6_Conditional_2_Template, 1, 0, "i", 13)(3, CompareDataComponent_ng_template_17_ng_template_6_Conditional_3_Template, 2, 3);
+    \u0275\u0275conditionalCreate(2, CompareDataComponent_ng_template_24_ng_template_6_Conditional_2_Template, 1, 0, "i", 15)(3, CompareDataComponent_ng_template_24_ng_template_6_Conditional_3_Template, 2, 3);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(4, "td");
-    \u0275\u0275conditionalCreate(5, CompareDataComponent_ng_template_17_ng_template_6_Conditional_5_Template, 1, 0, "i", 13)(6, CompareDataComponent_ng_template_17_ng_template_6_Conditional_6_Template, 2, 1);
+    \u0275\u0275conditionalCreate(5, CompareDataComponent_ng_template_24_ng_template_6_Conditional_5_Template, 1, 0, "i", 15)(6, CompareDataComponent_ng_template_24_ng_template_6_Conditional_6_Template, 2, 1);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(7, "td");
-    \u0275\u0275conditionalCreate(8, CompareDataComponent_ng_template_17_ng_template_6_Conditional_8_Template, 1, 0, "i", 13)(9, CompareDataComponent_ng_template_17_ng_template_6_Conditional_9_Template, 2, 1);
+    \u0275\u0275conditionalCreate(8, CompareDataComponent_ng_template_24_ng_template_6_Conditional_8_Template, 1, 0, "i", 15)(9, CompareDataComponent_ng_template_24_ng_template_6_Conditional_9_Template, 2, 1);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
-    const loading_r4 = \u0275\u0275nextContext().loading;
+    const loading_r5 = \u0275\u0275nextContext().loading;
     \u0275\u0275advance(2);
-    \u0275\u0275conditional(loading_r4 ? 2 : 3);
+    \u0275\u0275conditional(loading_r5 ? 2 : 3);
     \u0275\u0275advance(3);
-    \u0275\u0275conditional(loading_r4 ? 5 : 6);
+    \u0275\u0275conditional(loading_r5 ? 5 : 6);
     \u0275\u0275advance(3);
-    \u0275\u0275conditional(loading_r4 ? 8 : 9);
+    \u0275\u0275conditional(loading_r5 ? 8 : 9);
   }
 }
-function CompareDataComponent_ng_template_17_ng_template_8_Conditional_2_Template(rf, ctx) {
+function CompareDataComponent_ng_template_24_ng_template_8_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "i", 13);
+    \u0275\u0275element(0, "i", 15);
   }
 }
-function CompareDataComponent_ng_template_17_ng_template_8_Conditional_3_Template(rf, ctx) {
+function CompareDataComponent_ng_template_24_ng_template_8_Conditional_3_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275text(0);
     \u0275\u0275pipe(1, "translate");
@@ -679,35 +692,35 @@ function CompareDataComponent_ng_template_17_ng_template_8_Conditional_3_Templat
     \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(1, 1, "languages.noMismatch"), " ");
   }
 }
-function CompareDataComponent_ng_template_17_ng_template_8_Template(rf, ctx) {
+function CompareDataComponent_ng_template_24_ng_template_8_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "tr")(1, "td", 15);
-    \u0275\u0275conditionalCreate(2, CompareDataComponent_ng_template_17_ng_template_8_Conditional_2_Template, 1, 0, "i", 13)(3, CompareDataComponent_ng_template_17_ng_template_8_Conditional_3_Template, 2, 3);
+    \u0275\u0275elementStart(0, "tr")(1, "td", 17);
+    \u0275\u0275conditionalCreate(2, CompareDataComponent_ng_template_24_ng_template_8_Conditional_2_Template, 1, 0, "i", 15)(3, CompareDataComponent_ng_template_24_ng_template_8_Conditional_3_Template, 2, 3);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
-    const loading_r4 = \u0275\u0275nextContext().loading;
+    const loading_r5 = \u0275\u0275nextContext().loading;
     \u0275\u0275advance(2);
-    \u0275\u0275conditional(loading_r4 ? 2 : 3);
+    \u0275\u0275conditional(loading_r5 ? 2 : 3);
   }
 }
-function CompareDataComponent_ng_template_17_Template(rf, ctx) {
+function CompareDataComponent_ng_template_24_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "h3");
     \u0275\u0275text(1);
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "p-table", 10);
-    \u0275\u0275template(4, CompareDataComponent_ng_template_17_ng_template_4_Template, 10, 9, "ng-template", null, 1, \u0275\u0275templateRefExtractor)(6, CompareDataComponent_ng_template_17_ng_template_6_Template, 10, 3, "ng-template", null, 2, \u0275\u0275templateRefExtractor)(8, CompareDataComponent_ng_template_17_ng_template_8_Template, 4, 1, "ng-template", null, 3, \u0275\u0275templateRefExtractor);
+    \u0275\u0275elementStart(3, "p-table", 12);
+    \u0275\u0275template(4, CompareDataComponent_ng_template_24_ng_template_4_Template, 10, 9, "ng-template", null, 1, \u0275\u0275templateRefExtractor)(6, CompareDataComponent_ng_template_24_ng_template_6_Template, 10, 3, "ng-template", null, 2, \u0275\u0275templateRefExtractor)(8, CompareDataComponent_ng_template_24_ng_template_8_Template, 4, 1, "ng-template", null, 3, \u0275\u0275templateRefExtractor);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const rows_r5 = ctx.rows;
-    const title_r6 = ctx.title;
+    const rows_r6 = ctx.rows;
+    const title_r7 = ctx.title;
     \u0275\u0275advance();
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 2, "common.version." + title_r6));
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 2, "common.version." + title_r7));
     \u0275\u0275advance(2);
-    \u0275\u0275property("value", rows_r5);
+    \u0275\u0275property("value", rows_r6);
   }
 }
 var CompareDataComponent = class _CompareDataComponent {
@@ -758,53 +771,65 @@ var CompareDataComponent = class _CompareDataComponent {
   static \u0275fac = function CompareDataComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _CompareDataComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CompareDataComponent, selectors: [["aida-compare-data"]], inputs: { selectedNode: [1, "selectedNode"], selectedBase: [1, "selectedBase"], selectedProto: [1, "selectedProto"], selectedLive: [1, "selectedLive"], is404: [1, "is404"] }, decls: 19, vars: 20, consts: [["mismatchTable", ""], ["header", ""], ["body", ""], ["emptymessage", ""], [1, "flex", "justify-content-between", "gap-2"], [1, "mt-0"], [1, "flex", "flex-column", "gap-2"], ["fluid", "", "icon", "pi pi-refresh", "outlined", "", "styleClass", "secondary-outline min-w-15rem", 3, "onClick", "disabled", "label", "loading"], [3, "ngTemplateOutlet", "ngTemplateOutletContext"], ["icon", "pi pi-info-circle", "severity", "info"], ["size", "small", "stripedRows", "", 3, "value"], [1, "w-2"], [1, "w-5"], [1, "pi", "pi-spinner", "pi-spin", "text-xl"], [1, "pi", "pi-minus", "text-xl"], ["colspan", "3", 1, "text-center"]], template: function CompareDataComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CompareDataComponent, selectors: [["aida-compare-data"]], inputs: { selectedNode: [1, "selectedNode"], selectedBase: [1, "selectedBase"], selectedProto: [1, "selectedProto"], selectedLive: [1, "selectedLive"], is404: [1, "is404"] }, decls: 26, vars: 25, consts: [["mismatchTable", ""], ["header", ""], ["body", ""], ["emptymessage", ""], [1, "flex", "justify-content-between", "gap-2"], [1, "mt-0"], [1, "mb-1"], [1, "mt-1"], [1, "flex", "flex-column", "gap-2"], ["fluid", "", "icon", "pi pi-refresh", "outlined", "", "styleClass", "secondary-outline min-w-15rem", 3, "onClick", "disabled", "label", "loading"], [3, "ngTemplateOutlet", "ngTemplateOutletContext"], ["icon", "pi pi-info-circle", "severity", "info"], ["size", "small", "stripedRows", "", 3, "value"], [1, "w-2"], [1, "w-5"], [1, "pi", "pi-spinner", "pi-spin", "text-xl"], [1, "pi", "pi-minus", "text-xl"], ["colspan", "3", 1, "text-center"]], template: function CompareDataComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "div", 4)(1, "div")(2, "h2", 5);
       \u0275\u0275text(3);
       \u0275\u0275pipe(4, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(5, "p");
+      \u0275\u0275elementStart(5, "p", 6);
       \u0275\u0275text(6);
       \u0275\u0275pipe(7, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(8, "ul", 7);
+      \u0275\u0275repeaterCreate(9, CompareDataComponent_For_10_Template, 2, 1, "li", null, \u0275\u0275repeaterTrackByIndex);
+      \u0275\u0275pipe(11, "translate");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(12, "p");
+      \u0275\u0275text(13);
+      \u0275\u0275pipe(14, "translate");
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(8, "div", 6)(9, "p-button", 7);
-      \u0275\u0275pipe(10, "translate");
-      \u0275\u0275listener("onClick", function CompareDataComponent_Template_p_button_onClick_9_listener() {
+      \u0275\u0275elementStart(15, "div", 8)(16, "p-button", 9);
+      \u0275\u0275pipe(17, "translate");
+      \u0275\u0275listener("onClick", function CompareDataComponent_Template_p_button_onClick_16_listener() {
         return ctx.refresh("prototype");
       });
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(11, "p-button", 7);
-      \u0275\u0275pipe(12, "translate");
-      \u0275\u0275listener("onClick", function CompareDataComponent_Template_p_button_onClick_11_listener() {
+      \u0275\u0275elementStart(18, "p-button", 9);
+      \u0275\u0275pipe(19, "translate");
+      \u0275\u0275listener("onClick", function CompareDataComponent_Template_p_button_onClick_18_listener() {
         return ctx.refresh("live");
       });
       \u0275\u0275elementEnd()()();
-      \u0275\u0275conditionalCreate(13, CompareDataComponent_Conditional_13_Template, 1, 5, "ng-container", 8);
-      \u0275\u0275conditionalCreate(14, CompareDataComponent_Conditional_14_Template, 1, 5, "ng-container", 8);
-      \u0275\u0275conditionalCreate(15, CompareDataComponent_Conditional_15_Template, 1, 5, "ng-container", 8);
-      \u0275\u0275conditionalCreate(16, CompareDataComponent_Conditional_16_Template, 3, 3, "p-message", 9);
-      \u0275\u0275template(17, CompareDataComponent_ng_template_17_Template, 10, 4, "ng-template", null, 0, \u0275\u0275templateRefExtractor);
+      \u0275\u0275conditionalCreate(20, CompareDataComponent_Conditional_20_Template, 1, 5, "ng-container", 10);
+      \u0275\u0275conditionalCreate(21, CompareDataComponent_Conditional_21_Template, 1, 5, "ng-container", 10);
+      \u0275\u0275conditionalCreate(22, CompareDataComponent_Conditional_22_Template, 1, 5, "ng-container", 10);
+      \u0275\u0275conditionalCreate(23, CompareDataComponent_Conditional_23_Template, 3, 3, "p-message", 11);
+      \u0275\u0275template(24, CompareDataComponent_ng_template_24_Template, 10, 4, "ng-template", null, 0, \u0275\u0275templateRefExtractor);
     }
     if (rf & 2) {
-      let tmp_9_0;
+      let tmp_11_0;
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 12, "languages.dataCompare.header"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 13, "languages.dataCompare.header"));
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(7, 14, "languages.dataCompare.description"));
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(7, 15, "languages.dataCompare.description.p1"));
       \u0275\u0275advance(3);
-      \u0275\u0275property("disabled", ctx.noRefresh().proto)("label", \u0275\u0275pipeBind1(10, 16, "languages.refreshProto"))("loading", ctx.projectState.refreshing().prototype);
+      \u0275\u0275repeater(\u0275\u0275pipeBind1(11, 17, "languages.dataCompare.description.list").split("|"));
+      \u0275\u0275advance(4);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(14, 19, "languages.dataCompare.description.p2"));
+      \u0275\u0275advance(3);
+      \u0275\u0275property("disabled", ctx.noRefresh().proto)("label", \u0275\u0275pipeBind1(17, 21, "languages.refreshProto"))("loading", ctx.projectState.refreshing().prototype);
       \u0275\u0275advance(2);
-      \u0275\u0275property("disabled", ctx.noRefresh().live)("label", \u0275\u0275pipeBind1(12, 18, "languages.refreshLive"))("loading", ctx.projectState.refreshing().live);
-      const data_r7 = (tmp_9_0 = ctx.selectedNode()) == null ? null : tmp_9_0.data;
+      \u0275\u0275property("disabled", ctx.noRefresh().live)("label", \u0275\u0275pipeBind1(19, 23, "languages.refreshLive"))("loading", ctx.projectState.refreshing().live);
+      const data_r8 = (tmp_11_0 = ctx.selectedNode()) == null ? null : tmp_11_0.data;
       \u0275\u0275advance(2);
-      \u0275\u0275conditional((data_r7 == null ? null : data_r7.baseline) ? 13 : -1);
+      \u0275\u0275conditional((data_r8 == null ? null : data_r8.baseline) ? 20 : -1);
       \u0275\u0275advance();
-      \u0275\u0275conditional((data_r7 == null ? null : data_r7.prototype) ? 14 : -1);
+      \u0275\u0275conditional((data_r8 == null ? null : data_r8.prototype) ? 21 : -1);
       \u0275\u0275advance();
-      \u0275\u0275conditional((data_r7 == null ? null : data_r7.live) ? 15 : -1);
+      \u0275\u0275conditional((data_r8 == null ? null : data_r8.live) ? 22 : -1);
       \u0275\u0275advance();
-      \u0275\u0275conditional(!data_r7 ? 16 : -1);
+      \u0275\u0275conditional(!data_r8 ? 23 : -1);
     }
   }, dependencies: [NgTemplateOutlet, ButtonModule, Button, MessageModule, Message, TableModule, Table, TranslatePipe], encapsulation: 2, changeDetection: 0 });
 };
@@ -814,7 +839,13 @@ var CompareDataComponent = class _CompareDataComponent {
     args: [{ selector: "aida-compare-data", imports: [NgTemplateOutlet, TranslatePipe, ButtonModule, MessageModule, TableModule], changeDetection: ChangeDetectionStrategy.OnPush, template: `<div class="flex justify-content-between gap-2">
   <div>
     <h2 class="mt-0">{{ 'languages.dataCompare.header' | translate }}</h2>
-    <p>{{ 'languages.dataCompare.description' | translate }}</p>
+    <p class="mb-1">{{ 'languages.dataCompare.description.p1' | translate }}</p>
+    <ul class="mt-1">
+      @for (listItem of ('languages.dataCompare.description.list' | translate).split('|'); track $index) {
+        <li>{{ listItem }}</li>
+      }
+    </ul>
+    <p>{{ 'languages.dataCompare.description.p2' | translate }}</p>
   </div>
   <div class="flex flex-column gap-2">
     <p-button
@@ -1249,7 +1280,7 @@ var CompareHtmlComponent = class _CompareHtmlComponent {
   static \u0275fac = function CompareHtmlComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _CompareHtmlComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CompareHtmlComponent, selectors: [["aida-compare-html"]], inputs: { htmlRows: [1, "htmlRows"], is404: [1, "is404"] }, decls: 13, vars: 14, consts: [["header", ""], ["body", ""], ["emptymessage", ""], [1, "flex", "justify-content-between", "gap-2"], [1, "mt-0"], ["offIcon", "pi pi-filter-slash", "onIcon", "pi pi-filter", 1, "h-2.75rem", "w-14rem", "min-w-max", 3, "ngModelChange", "ngModel", "offLabel", "onLabel"], ["icon", "pi pi-times-circle font-bold", "severity", "error"], ["scrollable", "", "scrollHeight", "12rem", "size", "small", "stripedRows", "", 3, "value"], [1, "w-4"], [1, "w-2", "text-right"], [1, "text-right"], ["colspan", "4", 1, "text-center"]], template: function CompareHtmlComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CompareHtmlComponent, selectors: [["aida-compare-html"]], inputs: { htmlRows: [1, "htmlRows"], is404: [1, "is404"] }, decls: 13, vars: 14, consts: [["header", ""], ["body", ""], ["emptymessage", ""], [1, "flex", "justify-content-between", "gap-2"], [1, "mt-0"], ["offIcon", "pi pi-filter-slash", "onIcon", "pi pi-filter", 1, "h-2.75rem", "w-14rem", "min-w-max", 3, "ngModelChange", "ngModel", "offLabel", "onLabel"], ["icon", "pi pi-times-circle font-bold", "severity", "error"], ["scrollable", "", "scrollHeight", "30rem", "size", "small", "stripedRows", "", 3, "value"], [1, "w-4"], [1, "w-2", "text-right"], [1, "text-right"], ["colspan", "4", 1, "text-center"]], template: function CompareHtmlComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "div", 3)(1, "div")(2, "h2", 4);
       \u0275\u0275text(3);
@@ -1301,7 +1332,7 @@ var CompareHtmlComponent = class _CompareHtmlComponent {
 @if (is404()) {
   <p-message icon="pi pi-times-circle font-bold" severity="error">{{ 'languages.is404' | translate }}</p-message>
 } @else {
-  <p-table [value]="visibleHtmlRows()" scrollable scrollHeight="12rem" size="small" stripedRows>
+  <p-table [value]="visibleHtmlRows()" scrollable scrollHeight="30rem" size="small" stripedRows>
     <ng-template #header>
       <tr>
         <th class="w-4">{{ 'common.type' | translate }}</th>
@@ -1502,7 +1533,7 @@ var CompareNumbersComponent = class _CompareNumbersComponent {
   static \u0275fac = function CompareNumbersComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _CompareNumbersComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CompareNumbersComponent, selectors: [["aida-compare-numbers"]], inputs: { numberRows: [1, "numberRows"], is404: [1, "is404"] }, decls: 13, vars: 14, consts: [["header", ""], ["body", ""], ["emptymessage", ""], [1, "flex", "justify-content-between"], [1, "mt-0"], ["offIcon", "pi pi-filter-slash", "onIcon", "pi pi-filter", 1, "h-2.75rem", "w-14rem", "min-w-max", 3, "ngModelChange", "ngModel", "offLabel", "onLabel"], ["icon", "pi pi-times-circle font-bold", "severity", "error"], ["size", "small", "stripedRows", "", 3, "value"], [1, "w-6"], [1, "pi", "pi-minus", "text-xl"], [1, "text-color-secondary"], ["colspan", "3", 1, "text-center"]], template: function CompareNumbersComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CompareNumbersComponent, selectors: [["aida-compare-numbers"]], inputs: { numberRows: [1, "numberRows"], is404: [1, "is404"] }, decls: 13, vars: 14, consts: [["header", ""], ["body", ""], ["emptymessage", ""], [1, "flex", "justify-content-between"], [1, "mt-0"], ["offIcon", "pi pi-filter-slash", "onIcon", "pi pi-filter", 1, "h-2.75rem", "w-14rem", "min-w-max", 3, "ngModelChange", "ngModel", "offLabel", "onLabel"], ["icon", "pi pi-times-circle font-bold", "severity", "error"], ["scrollable", "", "scrollHeight", "30rem", "size", "small", "stripedRows", "", 3, "value"], [1, "w-6"], [1, "pi", "pi-minus", "text-xl"], [1, "text-color-secondary"], ["colspan", "3", 1, "text-center"]], template: function CompareNumbersComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "div", 3)(1, "div")(2, "h2", 4);
       \u0275\u0275text(3);
@@ -1554,7 +1585,7 @@ var CompareNumbersComponent = class _CompareNumbersComponent {
 @if (is404()) {
   <p-message icon="pi pi-times-circle font-bold" severity="error">{{ 'languages.is404' | translate }}</p-message>
 } @else {
-  <p-table [value]="visibleRows()" size="small" stripedRows>
+  <p-table [value]="visibleRows()" scrollable scrollHeight="30rem" size="small" stripedRows>
     <ng-template #header>
       <tr>
         <th class="w-6">{{ 'common.language.english' | translate }}</th>
@@ -1872,7 +1903,7 @@ var CompareWebComponent = class _CompareWebComponent {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CompareWebComponent, { className: "CompareWebComponent", filePath: "src/app/views/tasks/compare-languages/compare-web/compare-web.component.ts", lineNumber: 17 });
 })();
 
-// src/app/views/tasks/compare-languages/compare-hidden/hidden-compare.ts
+// src/app/views/tasks/compare-languages/compare-hidden/compare-hidden.ts
 var ALL_CLASSES = /* @__PURE__ */ new Set(["hidden", "hide"]);
 var VISUAL_CLASSES = /* @__PURE__ */ new Set(["wb-inv", "sr-only"]);
 var TYPE_ORDER = ["all", "visual", "screenreaders"];
@@ -2012,43 +2043,42 @@ function compareHidden(docEN, docFR) {
   return [...rows, ...wrongLanguageLinks(docEN, docFR)].sort((x, y) => TYPE_ORDER.indexOf(x.type) - TYPE_ORDER.indexOf(y.type));
 }
 
-// src/app/views/tasks/compare-languages/compare-html/html-compare.ts
-var MAP_KEY = { element: "elements", class: "classes", attribute: "attributes" };
+// src/app/views/tasks/compare-languages/compare-html/compare-html.ts
+var COUNT_TYPES = ["element", "class", "attribute"];
+var IGNORED_TAGS = "script,style,noscript";
+var TRACKED_ATTRIBUTES = ["role", "style", "id"];
+var TRACKED_ATTRIBUTE_PREFIXES = ["data-", "aria-"];
+function isTrackedAttribute(name) {
+  return TRACKED_ATTRIBUTES.includes(name) || TRACKED_ATTRIBUTE_PREFIXES.some((prefix) => name.startsWith(prefix));
+}
+function increment(map, key) {
+  map.set(key, (map.get(key) ?? 0) + 1);
+}
 function count(doc) {
   const root = (doc.querySelector("main") ?? doc.body).cloneNode(true);
-  root.querySelectorAll("script,style,noscript").forEach((n) => n.remove());
-  const elements = /* @__PURE__ */ new Map();
-  const classes = /* @__PURE__ */ new Map();
-  const attributes = /* @__PURE__ */ new Map();
-  const bump = (m, k) => m.set(k, (m.get(k) ?? 0) + 1);
+  root.querySelectorAll(IGNORED_TAGS).forEach((n) => n.remove());
+  const counts = { element: /* @__PURE__ */ new Map(), class: /* @__PURE__ */ new Map(), attribute: /* @__PURE__ */ new Map() };
   root.querySelectorAll("*").forEach((el) => {
-    bump(elements, el.tagName.toLowerCase());
-    el.classList.forEach((c) => bump(classes, c));
-    for (const name of el.getAttributeNames()) {
-      if (name === "class")
-        continue;
-      if (name.startsWith("data-") || name.startsWith("aria-") || ["role", "style", "id"].includes(name)) {
-        bump(attributes, name);
-      }
-    }
+    increment(counts.element, el.tagName.toLowerCase());
+    el.classList.forEach((c) => increment(counts.class, c));
+    el.getAttributeNames().filter(isTrackedAttribute).forEach((a) => increment(counts.attribute, a));
   });
-  return { elements, classes, attributes };
+  return counts;
 }
 function compareHTML(docEN, docFR) {
   const en = count(docEN);
   const fr = count(docFR);
   const rows = [];
-  for (const type of ["element", "class", "attribute"]) {
-    const a = en[MAP_KEY[type]];
-    const b = fr[MAP_KEY[type]];
-    for (const name of /* @__PURE__ */ new Set([...a.keys(), ...b.keys()])) {
-      rows.push({ type, name, en: a.get(name) ?? 0, fr: b.get(name) ?? 0 });
+  for (const type of COUNT_TYPES) {
+    const names = /* @__PURE__ */ new Set([...en[type].keys(), ...fr[type].keys()]);
+    for (const name of names) {
+      rows.push({ type, name, en: en[type].get(name) ?? 0, fr: fr[type].get(name) ?? 0 });
     }
   }
   return rows.sort((x, y) => Math.abs(y.en - y.fr) - Math.abs(x.en - x.fr) || x.name.localeCompare(y.name));
 }
 
-// src/app/views/tasks/compare-languages/compare-numbers/number-compare.ts
+// src/app/views/tasks/compare-languages/compare-numbers/compare-numbers.ts
 var BLOCK = "h1,h2,h3,h4,h5,h6,p,li,td,th,dt,dd,caption,figcaption,summary,div,blockquote,address,pre";
 var CONTEXT = 40;
 var HYPHEN = String.raw`\-\u2010\u2011\u2012\u2013\u2212`;
@@ -2072,7 +2102,7 @@ function timeValue(raw, lang) {
     const m2 = raw.match(/^(\d{1,2})(?::00)? ?([ap])m$/i);
     if (!m2)
       return null;
-    const hour = +m2[1];
+    const hour = parseInt(m2[1], 10);
     return m2[2].toLowerCase() === "p" && hour < 12 ? `time:${hour + 12}` : String(hour);
   }
   const m = raw.match(/^(\d{2}) ?h$/i);
@@ -2096,22 +2126,29 @@ function normalize(raw, lang) {
   const cleaned = lang === "en" ? raw.replace(/,/g, "") : raw.replace(/ /g, "").replace(",", ".");
   return String(parseFloat(cleaned));
 }
+function cleanWhitespace(text) {
+  return text.replace(/[\u00AD\u200B-\u200D\uFEFF]/g, "").replace(SPACES2, " ").replace(/[ \t\r\n]+/g, " ").trim();
+}
+function getText(el) {
+  const clone = el.cloneNode(true);
+  clone.querySelectorAll(`${BLOCK},script,style`).forEach((n) => n.remove());
+  clone.querySelectorAll("br").forEach((br) => br.replaceWith(" "));
+  return cleanWhitespace(clone.textContent ?? "");
+}
 function extractNumbers(doc, lang) {
   const root = doc.querySelector("main") ?? doc.body;
   const regex = numberRegex(lang);
   const hits = [];
   root.querySelectorAll(BLOCK).forEach((el) => {
-    const clone = el.cloneNode(true);
-    clone.querySelectorAll(`${BLOCK},script,style`).forEach((n) => n.remove());
-    clone.querySelectorAll("br").forEach((br) => br.replaceWith(" "));
-    const text = (clone.textContent ?? "").replace(/[\u00AD\u200B-\u200D\uFEFF]/g, "").replace(SPACES2, " ").replace(/[ \t\r\n]+/g, " ").trim();
-    for (const m of text.matchAll(regex)) {
-      const start = m.index;
+    const text = getText(el);
+    for (const match of text.matchAll(regex)) {
+      const start = match.index;
+      const end = start + match[0].length;
       hits.push({
-        raw: m[0],
-        value: normalize(m[0], lang),
+        raw: match[0],
+        value: normalize(match[0], lang),
         before: text.slice(Math.max(0, start - CONTEXT), start),
-        after: text.slice(start + m[0].length, start + m[0].length + CONTEXT)
+        after: text.slice(end, end + CONTEXT)
       });
     }
   });
@@ -2983,7 +3020,7 @@ var CompareLanguagesComponent = class _CompareLanguagesComponent {
     if (rf & 2) {
       \u0275\u0275queryAdvance(5);
     }
-  }, inputs: { summaryMode: [1, "summaryMode"] }, decls: 14, vars: 1, consts: [["summary", ""], ["data", ""], ["html", ""], ["hidden", ""], ["numbers", ""], ["ai", ""], ["headless", ""], [4, "ngTemplateOutlet"], ["id", "wb-cont"], [1, "flex", "flex-column", "gap-2"], [1, "flex", "flex-column", "xl:flex-row", "gap-2"], [3, "versionsToShow"], [1, "min-w-max"], ["id", "compare-tools", 1, "mt-0"], ["icon", "pi pi-info-circle", "severity", "info"], [1, "mt-3", 3, "value"], ["value", "0"], [1, "flex", "align-items-center", "gap-2"], [1, "material-icons-outlined"], [1, "pi", "pi-spin", "pi-spinner", "text-primary", "text-lg"], [3, "severity", "value"], ["value", "1"], ["value", "2"], ["value", "3"], ["value", "4"], [1, "pi", "pi-exclamation-circle", "text-red", "text-lg"], [1, "pi", "pi-question-circle", "text-blue", "text-lg"], ["value", "5"], [1, "border-1", "border-top-none", "border-round-bottom", "surface-border"], [3, "iframeEnglish", "iframeFrench", "is404"], [1, "mt-0"], [1, "flex", "justify-content-between", "align-items-center", "gap-4"], [1, "m-0"], [1, "text-green", "pr-2"], [1, "text-red", "pr-2"], [1, "list-none", "mx-0", "my-1", "p-0"], [1, "flex", "justify-content-end", "align-items-center", "gap-2", "mt-4", "text-primary", "hover:text-primary"], ["fluid", "", 3, "onClick", "styleClass", "text"], [1, "flex", "gap-2", "align-items-center"], [1, "flex", "gap-1", "align-items-center"], [1, "loading-dots", "-ml-1"], ["styleClass", "w-6", 3, "header", "maximizable", "modal", "visible"], ["styleClass", "w-6", 3, "visibleChange", "header", "maximizable", "modal", "visible"], [1, "flex", "flex-column", "gap-2", "px-4", "pt-4", "pb-2"], ["outlined", "", "severity", "secondary", "styleClass", "secondary-outline", 1, "align-self-end", 3, "onClick", "label"], [3, "routerLink"], [1, "pi", "pi-arrow-right"], [3, "is404", "selectedBase", "selectedLive", "selectedNode", "selectedProto"], [3, "htmlRows", "is404"], [3, "hiddenRows", "is404"], [3, "is404", "numberRows"], [3, "aiEnglish", "aiFrench", "is404"]], template: function CompareLanguagesComponent_Template(rf, ctx) {
+  }, inputs: { summaryMode: [1, "summaryMode"] }, decls: 14, vars: 1, consts: [["summary", ""], ["data", ""], ["html", ""], ["hidden", ""], ["numbers", ""], ["ai", ""], ["headless", ""], [4, "ngTemplateOutlet"], ["id", "wb-cont"], [1, "flex", "flex-column", "gap-2"], [1, "flex", "flex-column", "xl:flex-row", "gap-2"], [3, "versionsToShow"], [1, "min-w-max"], ["id", "compare-tools", 1, "mt-0"], ["icon", "pi pi-info-circle", "severity", "info"], [1, "mt-3", 3, "value"], ["value", "0"], [1, "flex", "align-items-center", "gap-2"], [1, "material-icons-outlined"], [1, "pi", "pi-spin", "pi-spinner", "text-primary", "text-lg"], [3, "severity", "value"], ["value", "1"], ["value", "2"], ["value", "3"], ["value", "4"], [1, "pi", "pi-exclamation-circle", "text-red", "text-lg"], [1, "pi", "pi-question-circle", "text-blue", "text-lg"], ["value", "5"], [1, "border-1", "border-top-none", "border-round-bottom", "surface-border"], [3, "iframeEnglish", "iframeFrench", "is404"], [1, "mt-0"], [1, "flex", "justify-content-between", "align-items-center", "gap-4"], [1, "m-0"], [1, "text-green", "pr-2"], [1, "text-red", "pr-2"], [1, "list-none", "mx-0", "my-1", "p-0"], [1, "flex", "justify-content-end", "align-items-center", "gap-2", "mt-4", "text-primary", "hover:text-primary"], ["fluid", "", 3, "onClick", "styleClass", "text"], [1, "flex", "gap-2", "align-items-center"], [1, "flex", "gap-1", "align-items-center"], [1, "loading-dots", "-ml-1"], ["styleClass", "w-10", 3, "header", "maximizable", "modal", "visible"], ["styleClass", "w-10", 3, "visibleChange", "header", "maximizable", "modal", "visible"], [1, "flex", "flex-column", "gap-2", "px-4", "pt-4", "pb-2"], ["outlined", "", "severity", "secondary", "styleClass", "secondary-outline", 1, "align-self-end", 3, "onClick", "label"], [3, "routerLink"], [1, "pi", "pi-arrow-right"], [3, "is404", "selectedBase", "selectedLive", "selectedNode", "selectedProto"], [3, "htmlRows", "is404"], [3, "hiddenRows", "is404"], [3, "is404", "numberRows"], [3, "aiEnglish", "aiFrench", "is404"]], template: function CompareLanguagesComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275conditionalCreate(0, CompareLanguagesComponent_Conditional_0_Template, 1, 1, "ng-container")(1, CompareLanguagesComponent_Conditional_1_Template, 19, 21);
       \u0275\u0275template(2, CompareLanguagesComponent_ng_template_2_Template, 5, 4, "ng-template", null, 0, \u0275\u0275templateRefExtractor)(4, CompareLanguagesComponent_ng_template_4_Template, 1, 5, "ng-template", null, 1, \u0275\u0275templateRefExtractor)(6, CompareLanguagesComponent_ng_template_6_Template, 1, 2, "ng-template", null, 2, \u0275\u0275templateRefExtractor)(8, CompareLanguagesComponent_ng_template_8_Template, 1, 2, "ng-template", null, 3, \u0275\u0275templateRefExtractor)(10, CompareLanguagesComponent_ng_template_10_Template, 1, 2, "ng-template", null, 4, \u0275\u0275templateRefExtractor)(12, CompareLanguagesComponent_ng_template_12_Template, 1, 3, "ng-template", null, 5, \u0275\u0275templateRefExtractor);
@@ -3192,7 +3229,7 @@ var CompareLanguagesComponent = class _CompareLanguagesComponent {
           </p-button>
         </li>
         @if (openDialog(); as row) {
-          <p-dialog [header]="row.label | translate" [maximizable]="true" [modal]="true" [visible]="true" (visibleChange)="$event || openDialog.set(null)" styleClass="w-6">
+          <p-dialog [header]="row.label | translate" [maximizable]="true" [modal]="true" [visible]="true" (visibleChange)="$event || openDialog.set(null)" styleClass="w-10">
             <ng-template #headless>
               <div class="flex flex-column gap-2 px-4 pt-4 pb-2">
                 <ng-container *ngTemplateOutlet="row.template" />
@@ -3241,4 +3278,4 @@ var CompareLanguagesComponent = class _CompareLanguagesComponent {
 export {
   CompareLanguagesComponent
 };
-//# sourceMappingURL=chunk-GHBAMCVS.js.map
+//# sourceMappingURL=chunk-OJTYFUPG.js.map

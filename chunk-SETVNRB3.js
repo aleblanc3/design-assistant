@@ -1,6 +1,6 @@
 import {
   CompareLanguagesComponent
-} from "./chunk-GHBAMCVS.js";
+} from "./chunk-OJTYFUPG.js";
 import "./chunk-JOS4JEB7.js";
 import "./chunk-ZXBKKAN6.js";
 import "./chunk-UAQUVN4B.js";
@@ -46,4 +46,4 @@ import "./chunk-YCXP4XZS.js";
 export {
   CompareLanguagesComponent
 };
-//# sourceMappingURL=chunk-OGQ4FXIM.js.map
+//# sourceMappingURL=chunk-SETVNRB3.js.map

@@ -4138,6 +4138,7 @@ var _c132 = (a0, a1) => ({ path: a0, icon: "source", text: a1, isOutlined: true 
 var _c142 = (a0, a1, a2) => ({ path: a0, icon: "drive_folder_upload", text: a1, isOutlined: true, onClick: a2 });
 var _c15 = (a0, a1, a2) => ({ path: a0, icon: "auto_fix_high", text: a1, isOutlined: true, onClick: a2 });
 var _c16 = (a0, a1, a2) => ({ path: a0, icon: "library_books", text: a1, isOutlined: true, onClick: a2 });
+var _c17 = (a0, a1) => ({ path: a0, icon: "language", text: a1 });
 function SidebarComponent_ng_container_11_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementContainer(0);
@@ -4198,6 +4199,11 @@ function SidebarComponent_Conditional_18_ng_container_26_Template(rf, ctx) {
     \u0275\u0275elementContainer(0);
   }
 }
+function SidebarComponent_Conditional_18_ng_container_28_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementContainer(0);
+  }
+}
 function SidebarComponent_Conditional_18_Template(rf, ctx) {
   if (rf & 1) {
     const _r1 = \u0275\u0275getCurrentView();
@@ -4240,6 +4246,8 @@ function SidebarComponent_Conditional_18_Template(rf, ctx) {
     \u0275\u0275pipe(25, "translate");
     \u0275\u0275template(26, SidebarComponent_Conditional_18_ng_container_26_Template, 1, 0, "ng-container", 8);
     \u0275\u0275pipe(27, "translate");
+    \u0275\u0275template(28, SidebarComponent_Conditional_18_ng_container_28_Template, 1, 0, "ng-container", 8);
+    \u0275\u0275pipe(29, "translate");
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
@@ -4248,7 +4256,7 @@ function SidebarComponent_Conditional_18_Template(rf, ctx) {
     \u0275\u0275advance();
     \u0275\u0275attribute("aria-expanded", ctx_r1.isExpanded.tasks);
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 24, "nav.activeProject"));
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 26, "nav.activeProject"));
     \u0275\u0275advance(3);
     \u0275\u0275textInterpolate(ctx_r1.isExpanded.tasks ? "expand_less" : "expand_more");
     \u0275\u0275advance(2);
@@ -4256,23 +4264,25 @@ function SidebarComponent_Conditional_18_Template(rf, ctx) {
     \u0275\u0275advance();
     \u0275\u0275classProp("md:hidden", !ctx_r1.isExpanded.tasks);
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(44, _c8, ctx_r1.AidaLinks.ProjectDashboard, \u0275\u0275pipeBind1(11, 26, "dashboard._nav")));
+    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(48, _c8, ctx_r1.AidaLinks.ProjectDashboard, \u0275\u0275pipeBind1(11, 28, "dashboard._nav")));
     \u0275\u0275advance(2);
-    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(47, _c9, ctx_r1.AidaLinks.ProjectSearch, \u0275\u0275pipeBind1(13, 28, "search._nav")));
+    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(51, _c9, ctx_r1.AidaLinks.ProjectSearch, \u0275\u0275pipeBind1(13, 30, "search._nav")));
     \u0275\u0275advance(2);
-    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(50, _c10, ctx_r1.AidaLinks.ProjectProblems, \u0275\u0275pipeBind1(15, 30, "problems._nav")));
+    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(54, _c10, ctx_r1.AidaLinks.ProjectProblems, \u0275\u0275pipeBind1(15, 32, "problems._nav")));
     \u0275\u0275advance(2);
-    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(53, _c11, ctx_r1.AidaLinks.ProjectDiagram, \u0275\u0275pipeBind1(17, 32, "iaDiagram._nav")));
+    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(57, _c11, ctx_r1.AidaLinks.ProjectDiagram, \u0275\u0275pipeBind1(17, 34, "iaDiagram._nav")));
     \u0275\u0275advance(2);
-    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(56, _c122, ctx_r1.AidaLinks.ProjectInventory, \u0275\u0275pipeBind1(19, 34, "inventory._nav")));
+    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(60, _c122, ctx_r1.AidaLinks.ProjectInventory, \u0275\u0275pipeBind1(19, 36, "inventory._nav")));
     \u0275\u0275advance(2);
-    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(59, _c132, ctx_r1.AidaLinks.ProjectMetadata, \u0275\u0275pipeBind1(21, 36, "metadata._nav")));
+    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(63, _c132, ctx_r1.AidaLinks.ProjectMetadata, \u0275\u0275pipeBind1(21, 38, "metadata._nav")));
     \u0275\u0275advance(2);
-    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction3(62, _c142, ctx_r1.AidaLinks.ProjectExport, \u0275\u0275pipeBind1(23, 38, "exportPages._nav"), ctx_r1.exportPages));
+    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction3(66, _c142, ctx_r1.AidaLinks.ProjectExport, \u0275\u0275pipeBind1(23, 40, "exportPages._nav"), ctx_r1.exportPages));
     \u0275\u0275advance(2);
-    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction3(66, _c15, ctx_r1.AidaLinks.ProjectEdit, \u0275\u0275pipeBind1(25, 40, "editPages._nav"), ctx_r1.editPages));
+    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction3(70, _c15, ctx_r1.AidaLinks.ProjectEdit, \u0275\u0275pipeBind1(25, 42, "editPages._nav"), ctx_r1.editPages));
     \u0275\u0275advance(2);
-    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction3(70, _c16, ctx_r1.AidaLinks.ProjectCompare, \u0275\u0275pipeBind1(27, 42, "compare._nav"), ctx_r1.compareVersions));
+    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction3(74, _c16, ctx_r1.AidaLinks.ProjectCompare, \u0275\u0275pipeBind1(27, 44, "compare._nav"), ctx_r1.compareVersions));
+    \u0275\u0275advance(2);
+    \u0275\u0275property("ngTemplateOutlet", link_r3)("ngTemplateOutletContext", \u0275\u0275pureFunction2(78, _c17, ctx_r1.AidaLinks.ProjectLanguages, \u0275\u0275pipeBind1(29, 46, "languages._nav")));
   }
 }
 function SidebarComponent_ng_container_20_Template(rf, ctx) {
@@ -4453,7 +4463,7 @@ var SidebarComponent = class _SidebarComponent {
       \u0275\u0275pipe(16, "translate");
       \u0275\u0275elementEnd();
       \u0275\u0275element(17, "hr", 9);
-      \u0275\u0275conditionalCreate(18, SidebarComponent_Conditional_18_Template, 28, 74, "div", 7);
+      \u0275\u0275conditionalCreate(18, SidebarComponent_Conditional_18_Template, 30, 81, "div", 7);
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(19, "div");
       \u0275\u0275template(20, SidebarComponent_ng_container_20_Template, 1, 0, "ng-container", 8);
@@ -4565,6 +4575,7 @@ var SidebarComponent = class _SidebarComponent {
             <ng-container
               *ngTemplateOutlet="link; context: { path: AidaLinks.ProjectCompare, icon: 'library_books', text: ('compare._nav' | translate), isOutlined: true, onClick: compareVersions }"
             />
+            <ng-container *ngTemplateOutlet="link; context: { path: AidaLinks.ProjectLanguages, icon: 'language', text: ('languages._nav' | translate) }" />
           </div>
         </div>
       }
@@ -5217,7 +5228,7 @@ var HomeComponent = class _HomeComponent {
 
 // src/app/views/navigation/dashboard/dashboard.component.ts
 var _c09 = (a0, a1, a2) => ({ path: a0, phase: a1, icon: "pi pi-search text-orange-500", stats: a2, ready: true });
-var _c17 = (a0, a1, a2) => ({ path: a0, phase: a1, icon: "pi pi-chart-line text-blue-500", stats: a2, ready: false });
+var _c18 = (a0, a1, a2) => ({ path: a0, phase: a1, icon: "pi pi-chart-line text-blue-500", stats: a2, ready: false });
 var _c25 = (a0, a1, a2) => ({ path: a0, phase: a1, icon: "pi pi-pencil text-purple-500", stats: a2, ready: false });
 var _c35 = (a0, a1, a2, a3, a4) => ({ path: a0, phase: a1, icon: a2, stats: a3, content: a4, ready: false });
 var _c44 = (a0) => ({ phase: a0 });
@@ -5758,7 +5769,7 @@ var DashboardComponent = class _DashboardComponent {
       \u0275\u0275advance(5);
       \u0275\u0275property("ngTemplateOutlet", phase_r17)("ngTemplateOutletContext", \u0275\u0275pureFunction3(44, _c09, ctx.AidaLinks.PhaseDiscover, ctx.ProjectPhase.Discover, discover_r12));
       \u0275\u0275advance();
-      \u0275\u0275property("ngTemplateOutlet", phase_r17)("ngTemplateOutletContext", \u0275\u0275pureFunction3(48, _c17, ctx.AidaLinks.PhaseAssess, ctx.ProjectPhase.Assess, assess_r13));
+      \u0275\u0275property("ngTemplateOutlet", phase_r17)("ngTemplateOutletContext", \u0275\u0275pureFunction3(48, _c18, ctx.AidaLinks.PhaseAssess, ctx.ProjectPhase.Assess, assess_r13));
       \u0275\u0275advance(3);
       \u0275\u0275property("ngTemplateOutlet", phase_r17)("ngTemplateOutletContext", \u0275\u0275pureFunction3(52, _c25, ctx.AidaLinks.PhaseDesign, ctx.ProjectPhase.Design, design_r14));
       \u0275\u0275advance();
@@ -8249,19 +8260,19 @@ var routes = [
       },
       {
         path: "edit-pages",
-        loadComponent: () => import("./chunk-TP7BTRSZ.js").then((m) => m.CompareComponent),
+        loadComponent: () => import("./chunk-STTXD3DP.js").then((m) => m.CompareComponent),
         title: "editPages._title",
         data: { mode: "ai" }
       },
       {
         path: "compare-pages",
-        loadComponent: () => import("./chunk-TP7BTRSZ.js").then((m) => m.CompareComponent),
+        loadComponent: () => import("./chunk-STTXD3DP.js").then((m) => m.CompareComponent),
         title: "compare._title",
         data: { mode: "compare" }
       },
       {
         path: "compare-languages",
-        loadComponent: () => import("./chunk-OGQ4FXIM.js").then((m) => m.CompareLanguagesComponent),
+        loadComponent: () => import("./chunk-SETVNRB3.js").then((m) => m.CompareLanguagesComponent),
         title: "languages._title"
       }
     ]
@@ -8421,4 +8432,4 @@ var appConfig = {
 
 // src/main.ts
 bootstrapApplication(AppComponent, appConfig).catch((err) => console.error(err));
-//# sourceMappingURL=main-7Y6KRHWQ.js.map
+//# sourceMappingURL=main-H5OTGJYA.js.map

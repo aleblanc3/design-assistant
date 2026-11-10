@@ -8,7 +8,7 @@ import {
 } from "./chunk-6IOVERL5.js";
 import {
   CompareLanguagesComponent
-} from "./chunk-GHBAMCVS.js";
+} from "./chunk-OJTYFUPG.js";
 import "./chunk-ZPEHUCGY.js";
 import {
   CompareSelectComponent
@@ -3478,7 +3478,7 @@ var CompareProblemsComponent = class _CompareProblemsComponent {
         description: this.translate.instant("problems.data.description"),
         template: this.dataTemplate(),
         icon: "analytics",
-        visible: false
+        visible: true
       },
       {
         key: "components",
@@ -6927,24 +6927,11 @@ function CompareComponent_Conditional_6_Template(rf, ctx) {
     \u0275\u0275property("jobPending", ctx_r0.aiJobPending);
   }
 }
-function CompareComponent_Conditional_22_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "p-tab", 11);
-    \u0275\u0275element(1, "i", 20);
-    \u0275\u0275text(2);
-    \u0275\u0275pipe(3, "translate");
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(3, 1, "compare.tab.problems"));
-  }
-}
-function CompareComponent_Conditional_28_Template(rf, ctx) {
+function CompareComponent_Conditional_31_Template(rf, ctx) {
   if (rf & 1) {
     const _r2 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "p-tabpanel", 14)(1, "aida-edit-node", 21);
-    \u0275\u0275listener("dialogClose", function CompareComponent_Conditional_28_Template_aida_edit_node_dialogClose_1_listener() {
+    \u0275\u0275elementStart(0, "p-tabpanel", 15)(1, "aida-edit-node", 20);
+    \u0275\u0275listener("dialogClose", function CompareComponent_Conditional_31_Template_aida_edit_node_dialogClose_1_listener() {
       \u0275\u0275restoreView(_r2);
       const ctx_r0 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r0.editNode = false);
@@ -7027,7 +7014,7 @@ var CompareComponent = class _CompareComponent {
   static \u0275fac = function CompareComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _CompareComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CompareComponent, selectors: [["aida-compare-versions"]], inputs: { mode: [1, "mode"] }, decls: 31, vars: 31, consts: [[1, "flex", "flex-column", "gap-3"], [1, "flex", "flex-column", "xl:flex-row", "gap-3", "min-w-min"], [3, "showLang", "versionsToShow"], [1, "xl:w-6", 3, "class"], ["value", "0", 1, "mt-3"], ["value", "0"], [1, "pi", "pi-eye", "mr-1"], ["value", "1"], [1, "pi", "pi-code", "mr-1"], ["value", "2", 3, "click", "keydown.enter"], [1, "pi", "pi-pen-to-square", "mr-1"], ["value", "3", 1, "text-red"], [1, "shadow-1"], [3, "contentChanged", "hasChanges", "undoChanges", "afterContent", "beforeContent", "canUndo", "jobPending"], ["value", "2"], ["value", "3"], [3, "afterContent", "beforeContent"], ["id", "wb-cont"], [1, "xl:w-6"], [3, "jobPending"], [1, "pi", "pi-exclamation-triangle", "mr-1"], [3, "dialogClose", "isOpen", "node"]], template: function CompareComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CompareComponent, selectors: [["aida-compare-versions"]], inputs: { mode: [1, "mode"] }, decls: 34, vars: 33, consts: [[1, "flex", "flex-column", "gap-3"], [1, "flex", "flex-column", "xl:flex-row", "gap-3", "min-w-min"], [3, "showLang", "versionsToShow"], [1, "xl:w-6", 3, "class"], ["value", "0", 1, "mt-3"], ["value", "0"], [1, "pi", "pi-eye", "mr-1"], ["value", "1"], [1, "pi", "pi-code", "mr-1"], ["value", "2", 3, "click", "keydown.enter"], [1, "pi", "pi-pen-to-square", "mr-1"], ["value", "3"], [1, "pi", "pi-exclamation-triangle", "mr-1"], [1, "shadow-1"], [3, "contentChanged", "hasChanges", "undoChanges", "afterContent", "beforeContent", "canUndo", "jobPending"], ["value", "2"], [3, "afterContent", "beforeContent"], ["id", "wb-cont"], [1, "xl:w-6"], [3, "jobPending"], [3, "dialogClose", "isOpen", "node"]], template: function CompareComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275conditionalCreate(0, CompareComponent_Conditional_0_Template, 7, 9)(1, CompareComponent_Conditional_1_Template, 7, 9);
       \u0275\u0275elementStart(2, "div", 0)(3, "div", 1)(4, "div");
@@ -7055,29 +7042,32 @@ var CompareComponent = class _CompareComponent {
       \u0275\u0275text(20);
       \u0275\u0275pipe(21, "translate");
       \u0275\u0275elementEnd();
-      \u0275\u0275conditionalCreate(22, CompareComponent_Conditional_22_Template, 4, 3, "p-tab", 11);
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(23, "p-tabpanels", 12)(24, "p-tabpanel", 5)(25, "aida-compare-rendered", 13);
-      \u0275\u0275listener("contentChanged", function CompareComponent_Template_aida_compare_rendered_contentChanged_25_listener($event) {
+      \u0275\u0275elementStart(22, "p-tab", 11);
+      \u0275\u0275element(23, "i", 12);
+      \u0275\u0275text(24);
+      \u0275\u0275pipe(25, "translate");
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(26, "p-tabpanels", 13)(27, "p-tabpanel", 5)(28, "aida-compare-rendered", 14);
+      \u0275\u0275listener("contentChanged", function CompareComponent_Template_aida_compare_rendered_contentChanged_28_listener($event) {
         return ctx.onContentChanged($event);
-      })("hasChanges", function CompareComponent_Template_aida_compare_rendered_hasChanges_25_listener($event) {
+      })("hasChanges", function CompareComponent_Template_aida_compare_rendered_hasChanges_28_listener($event) {
         return ctx.onHasChanges($event);
-      })("undoChanges", function CompareComponent_Template_aida_compare_rendered_undoChanges_25_listener() {
+      })("undoChanges", function CompareComponent_Template_aida_compare_rendered_undoChanges_28_listener() {
         return ctx.onUndo();
       });
       \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(26, "p-tabpanel", 7)(27, "aida-compare-source", 13);
-      \u0275\u0275listener("contentChanged", function CompareComponent_Template_aida_compare_source_contentChanged_27_listener($event) {
+      \u0275\u0275elementStart(29, "p-tabpanel", 7)(30, "aida-compare-source", 14);
+      \u0275\u0275listener("contentChanged", function CompareComponent_Template_aida_compare_source_contentChanged_30_listener($event) {
         return ctx.onContentChanged($event);
-      })("hasChanges", function CompareComponent_Template_aida_compare_source_hasChanges_27_listener($event) {
+      })("hasChanges", function CompareComponent_Template_aida_compare_source_hasChanges_30_listener($event) {
         return ctx.onHasChanges($event);
-      })("undoChanges", function CompareComponent_Template_aida_compare_source_undoChanges_27_listener() {
+      })("undoChanges", function CompareComponent_Template_aida_compare_source_undoChanges_30_listener() {
         return ctx.onUndo();
       });
       \u0275\u0275elementEnd()();
-      \u0275\u0275conditionalCreate(28, CompareComponent_Conditional_28_Template, 2, 2, "p-tabpanel", 14);
-      \u0275\u0275elementStart(29, "p-tabpanel", 15);
-      \u0275\u0275element(30, "aida-compare-problems", 16);
+      \u0275\u0275conditionalCreate(31, CompareComponent_Conditional_31_Template, 2, 2, "p-tabpanel", 15);
+      \u0275\u0275elementStart(32, "p-tabpanel", 11);
+      \u0275\u0275element(33, "aida-compare-problems", 16);
       \u0275\u0275elementEnd()()()()();
     }
     if (rf & 2) {
@@ -7097,14 +7087,14 @@ var CompareComponent = class _CompareComponent {
       \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(17, 27, "compare.tab.source"));
       \u0275\u0275advance(4);
       \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(21, 29, "compare.tab.editNode"));
-      \u0275\u0275advance(2);
-      \u0275\u0275conditional(!ctx.production ? 22 : -1);
-      \u0275\u0275advance(3);
+      \u0275\u0275advance(4);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(25, 31, "compare.tab.problems"));
+      \u0275\u0275advance(4);
       \u0275\u0275property("afterContent", ctx.compareService.modifiedHtml())("beforeContent", ctx.compareService.originalHtml())("canUndo", ctx.canUndo)("jobPending", ctx.aiJobPending);
       \u0275\u0275advance(2);
       \u0275\u0275property("afterContent", ctx.compareService.modifiedHtml())("beforeContent", ctx.compareService.originalHtml())("canUndo", ctx.canUndo)("jobPending", ctx.aiJobPending);
       \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.selectedNode() ? 28 : -1);
+      \u0275\u0275conditional(ctx.selectedNode() ? 31 : -1);
       \u0275\u0275advance(2);
       \u0275\u0275property("afterContent", ctx.compareService.modifiedHtml())("beforeContent", ctx.compareService.originalHtml());
     }
@@ -7138,9 +7128,7 @@ var CompareComponent = class _CompareComponent {
         <p-tab value="0"><i class="pi pi-eye mr-1"></i>{{ 'compare.tab.rendered' | translate }}</p-tab>
         <p-tab value="1"><i class="pi pi-code mr-1"></i>{{ 'compare.tab.source' | translate }}</p-tab>
         <p-tab value="2" (click)="editNode = true" (keydown.enter)="editNode = true"><i class="pi pi-pen-to-square mr-1"></i>{{ 'compare.tab.editNode' | translate }}</p-tab>
-        @if (!production) {
-          <p-tab value="3" class="text-red"><i class="pi pi-exclamation-triangle mr-1"></i>{{ 'compare.tab.problems' | translate }}</p-tab>
-        }
+        <p-tab value="3"><i class="pi pi-exclamation-triangle mr-1"></i>{{ 'compare.tab.problems' | translate }}</p-tab>
       </p-tablist>
       <p-tabpanels class="shadow-1">
         <!-- Rendered page -->
@@ -7190,4 +7178,4 @@ var CompareComponent = class _CompareComponent {
 export {
   CompareComponent
 };
-//# sourceMappingURL=chunk-TP7BTRSZ.js.map
+//# sourceMappingURL=chunk-STTXD3DP.js.map
