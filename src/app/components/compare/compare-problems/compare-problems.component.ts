@@ -17,7 +17,7 @@ import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'aida-compare-problems',
-  imports: [CommonModule, AccordionModule, ComparePageDataComponent, CompareLanguagesComponent, DesignComponentsComponent],
+  imports: [CommonModule, AccordionModule, CompareLanguagesComponent, ComparePageDataComponent, DesignComponentsComponent],
   templateUrl: './compare-problems.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
