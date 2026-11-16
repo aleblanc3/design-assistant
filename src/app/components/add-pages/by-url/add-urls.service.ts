@@ -338,13 +338,13 @@ export class AddUrlsService {
       detail: this.translate.instant('addPages.done.detail', { count: this.urlState().urlsToAdd.filter((url) => url.status === 'added').length }),
       life: 5000,
     });
-    if (this.urlState().urlsToAdd.filter((url) => url.status !== 'added').length) {
+    if (this.urlState().urlsToReview.filter((url) => url.status === 'bad').length || this.duplicatesSkipped().length) {
       this.messageService.add({
         severity: 'warn',
         summary: this.translate.instant('addPages.done.summary'),
         detail: this.translate.instant('addPages.done.error', {
-          error: this.urlState().urlsToAdd.filter((url) => url.status === 'error'),
-          skipped: this.urlState().urlsToAdd.filter((url) => url.status === 'skipped'),
+          error: this.urlState().urlsToReview.filter((url) => url.status === 'bad').length,
+          skipped: this.duplicatesSkipped().length,
         }),
         life: 5000,
       });
