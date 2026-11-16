@@ -144,7 +144,7 @@ export class AddUrlsService {
 
   // Step 0: Normalize incomplete URLs
   private normalizeUrl(input: string): string {
-    let url = input;
+    let url = input.trim().split(/[?#]/)[0];
 
     // Fix domain
     if (url.match('/content/canadasite')) {
@@ -338,6 +338,17 @@ export class AddUrlsService {
       detail: this.translate.instant('addPages.done.detail', { count: this.urlState().urlsToAdd.filter((url) => url.status === 'added').length }),
       life: 5000,
     });
+    if (this.urlState().urlsToAdd.filter((url) => url.status !== 'added').length) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: this.translate.instant('addPages.done.summary'),
+        detail: this.translate.instant('addPages.done.error', {
+          error: this.urlState().urlsToAdd.filter((url) => url.status === 'error'),
+          skipped: this.urlState().urlsToAdd.filter((url) => url.status === 'skipped'),
+        }),
+        life: 5000,
+      });
+    }
     this.setUrlState({ isAdding: false, urlsToAdd: [], rawUrls: '' });
   }
 
