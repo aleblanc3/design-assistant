@@ -7,6 +7,7 @@ export interface CraTerminologyEntryConfig {
   termKey: string;
   introduction: CraTerminologyIntroductionPolicy;
   disallowedShortFormKeys: string[];
+  additionalInstructions?: readonly string[];
 }
 
 export interface ResolvedCraTerminologyEntry extends CraTerminologyEntryConfig {
@@ -23,6 +24,8 @@ export const CraTerminologyInstructions = {
   preserveAtomic: 'If retained, keep these source expressions complete and unchanged; they may be removed with the ideas they name, but do not shorten or replace them: {{terms}}.',
   retryAtomic: 'If the related idea remains, use the complete source expression instead of a shortened form: {{terms}}.',
   retrySourceOnly: 'Do not introduce these source-only expressions because they do not appear in the source: {{terms}}.',
+  royalAssentStatus:
+    'Royal Assent does not by itself establish that related legislation is in force or that a program, rebate, benefit, service, application, or claim process is available. Do not add such a status unless the source states it.',
 } as const;
 
 export const CraTerminologyEntries: readonly CraTerminologyEntryConfig[] = [
@@ -32,6 +35,7 @@ export const CraTerminologyEntries: readonly CraTerminologyEntryConfig[] = [
     termKey: 'aiPrompt.craTerminology.terms.royalAssent',
     introduction: 'source-only',
     disallowedShortFormKeys: ['aiPrompt.craTerminology.shortForms.royalAssent'],
+    additionalInstructions: [CraTerminologyInstructions.royalAssentStatus],
   },
   {
     id: 'sanction-royale-fr',
@@ -39,6 +43,7 @@ export const CraTerminologyEntries: readonly CraTerminologyEntryConfig[] = [
     termKey: 'aiPrompt.craTerminology.terms.royalAssent',
     introduction: 'source-only',
     disallowedShortFormKeys: ['aiPrompt.craTerminology.shortForms.royalAssent'],
+    additionalInstructions: [CraTerminologyInstructions.royalAssentStatus],
   },
   {
     id: 'retenues-sur-la-paie-fr',

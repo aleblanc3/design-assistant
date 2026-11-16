@@ -184,7 +184,12 @@ export class AlertRewriteOrchestratorService {
         issues: relevantIssues,
       });
       const matchedTerminology = getMatchedCraTerminology(alertHtml, terminologyEntries);
-      const terminologyRules = matchedTerminology.length ? [this.buildTerminologyInstruction(CraTerminologyInstructions.preserveAtomic, matchedTerminology)] : [];
+      const terminologyRules = matchedTerminology.length
+        ? [
+            this.buildTerminologyInstruction(CraTerminologyInstructions.preserveAtomic, matchedTerminology),
+            ...Array.from(new Set(matchedTerminology.flatMap((entry) => entry.additionalInstructions ?? []))),
+          ]
+        : [];
 
       const selectedExamples = params.includeExamples
         ? this.alertRewrite.selectExamples(initialPlan, examples, 2, {
