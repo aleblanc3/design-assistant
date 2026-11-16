@@ -288,7 +288,6 @@ export class CompareRenderedService {
     this.undoInitTabs(clone);
     //this.undoInitFieldFlow(shadowRoot);
     //this.undoInitDetails(shadowRoot);
-    this.htmlNormalizationService.formatHtml(clone.toString());
     return clone;
   }
 
