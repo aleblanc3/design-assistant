@@ -26,10 +26,10 @@ import { ExportGitHubService } from '../../../../services/github/export-github.s
 import { UserSettingsService } from '../../../../services/user-settings.service';
 
 import { AlertRewriteExamples, type AlertRewriteExample } from '../../../../common/prompts/alert-rewrite.examples';
-import { AlertRewriteRules } from '../../../../common/prompts/alert-rewrite.prompt';
+import { AlertRewriteRules, FullSentenceLinksNeedLeadInLines } from '../../../../common/prompts/alert-rewrite.prompt';
 import { CanadaCaStyleRules } from '../../../../common/prompts/canada-ca-style.prompt';
 import { InventoryPrompts } from '../../../../common/prompts/inventory.prompts';
-import { getLinkWritingPromptRules } from '../../../../common/prompts/link-writing.prompt';
+import { LinkWritingPromptRuleGroups } from '../../../../common/prompts/link-writing.prompt';
 import { PagePrompts } from '../../../../common/prompts/page.prompts';
 import { ProblemPrompts } from '../../../../common/prompts/problems.prompts';
 import { InventoryPromptKey, OutputKey, PagePromptKey, ProblemPromptKey, PromptConfig, RoleKey, RubricKey } from '../../../../common/prompts/prompt.model';
@@ -52,11 +52,25 @@ interface TabConfig {
 
 interface PromptPipelineSection {
   key: string;
-  label: string;
+  label?: string;
+  hideLabel?: boolean;
   content?: string;
   bulletItems?: string[];
+  conditionItems?: PromptConditionItem[];
   collapsed?: boolean;
   options?: PromptPipelineOption[];
+}
+
+interface PromptPipelineGroup {
+  key: string;
+  label: string;
+  sections: PromptPipelineSection[];
+}
+
+interface PromptConditionItem {
+  condition: string;
+  instruction?: string;
+  bulletItems?: readonly string[];
 }
 
 interface PromptPipelineOption {
@@ -106,6 +120,20 @@ interface PromptPipelineOption {
       gap: 0.4rem;
       margin: 0;
       padding-inline-start: 1.5rem;
+    }
+
+    .prompt-condition-list {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .prompt-condition-item {
+      display: grid;
+      gap: 0.25rem;
+    }
+
+    .prompt-condition-item p {
+      margin: 0;
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -226,7 +254,7 @@ export class PromptEditorComponent {
     promptText: ProblemPrompts[ProblemPromptKey[enumKey as keyof typeof ProblemPromptKey]],
   }));
 
-  protected readonly alertRewritePipelineSections: PromptPipelineSection[] = this.buildAlertRewritePipelineSections();
+  protected readonly alertRewritePipelineGroups: PromptPipelineGroup[] = this.buildAlertRewritePipelineGroups();
   protected readonly alertProblemsSections: PromptPipelineSection[] = this.buildAlertProblemsSections();
   protected readonly alertRewriteExamples = AlertRewriteExamples;
 
@@ -289,92 +317,153 @@ export class PromptEditorComponent {
     return this.aiPromptService.composePrompt(selected.promptText);
   });
 
-  private buildAlertRewritePipelineSections(): PromptPipelineSection[] {
+  private buildAlertRewritePipelineGroups(): PromptPipelineGroup[] {
     const rules = AlertRewriteRules.alertRewrite;
     return [
       {
-        key: 'role',
-        label: 'dev.prompts.alertRewrite.role',
-        content: rules.role,
-        collapsed: false,
-      },
-      {
-        key: 'aiInstructions',
-        label: 'dev.prompts.alertRewrite.aiInstructions',
-        options: [
+        key: 'alertRewrite',
+        label: 'dev.prompts.alertRewrite.group.alertRewrite',
+        sections: [
           {
-            key: 'systemWithExamples',
-            label: 'dev.prompts.alertRewrite.examplesIncluded',
-            bulletItems: rules.systemPromptWithExamplesLines,
+            key: 'role',
+            label: 'dev.prompts.alertRewrite.role',
+            content: rules.role,
             collapsed: false,
           },
           {
-            key: 'systemWithoutExamples',
-            label: 'dev.prompts.alertRewrite.examplesNotIncluded',
-            bulletItems: rules.systemPromptWithoutExamplesLines,
+            key: 'aiInstructions',
+            hideLabel: true,
+            options: [
+              {
+                key: 'systemWithExamples',
+                label: 'dev.prompts.alertRewrite.examplesIncluded',
+                bulletItems: rules.systemPromptWithExamplesLines,
+                collapsed: false,
+              },
+              {
+                key: 'systemWithoutExamples',
+                label: 'dev.prompts.alertRewrite.examplesNotIncluded',
+                bulletItems: rules.systemPromptWithoutExamplesLines,
+                collapsed: false,
+              },
+            ],
+          },
+          {
+            key: 'baseRules',
+            label: 'dev.prompts.alertRewrite.baseRules',
+            bulletItems: rules.styleRulesBase,
+            collapsed: false,
+          },
+          {
+            key: 'outputRequirement',
+            label: 'dev.prompts.alertRewrite.outputRequirement',
+            content: rules.outputRequirement,
+            collapsed: false,
+          },
+          {
+            key: 'outputSchemas',
+            hideLabel: true,
+            options: [
+              {
+                key: 'outputSchemaWithExamples',
+                label: 'dev.prompts.alertRewrite.outputSchemaWithExamples',
+                content: this.formatPromptSchema(rules.outputSchemas.withExamples),
+                collapsed: false,
+              },
+              {
+                key: 'outputSchemaWithoutExamples',
+                label: 'dev.prompts.alertRewrite.outputSchemaWithoutExamples',
+                content: this.formatPromptSchema(rules.outputSchemas.withoutExamples),
+                collapsed: false,
+              },
+            ],
+          },
+          {
+            key: 'retryInstructions',
+            label: 'dev.prompts.alertRewrite.retryInstructions',
+            conditionItems: [
+              {
+                condition: 'dev.prompts.alertRewrite.retry.invalidWrapperHtml',
+                instruction: rules.retryInstructions.invalidWrapperHtml,
+              },
+              {
+                condition: 'dev.prompts.alertRewrite.retry.noLinksAllowed',
+                instruction: rules.retryInstructions.noLinksAllowed,
+              },
+              {
+                condition: 'dev.prompts.alertRewrite.retry.mustKeepLink',
+                instruction: rules.retryInstructions.mustKeepLink,
+              },
+              {
+                condition: 'dev.prompts.alertRewrite.retry.mustHaveHeading',
+                instruction: rules.retryInstructions.mustHaveHeading,
+              },
+              {
+                condition: 'dev.prompts.alertRewrite.retry.avoidExampleCopy',
+                instruction: rules.retryInstructions.avoidExampleCopy,
+              },
+              {
+                condition: 'dev.prompts.alertRewrite.retry.fullSentenceLinksNeedLeadIn',
+                bulletItems: FullSentenceLinksNeedLeadInLines,
+              },
+            ],
             collapsed: false,
           },
         ],
       },
       {
-        key: 'outputRequirement',
-        label: 'dev.prompts.alertRewrite.outputRequirement',
-        content: rules.outputRequirement,
-        collapsed: false,
-      },
-      {
-        key: 'outputSchemas',
-        label: 'dev.prompts.alertRewrite.outputSchemas',
-        options: [
+        key: 'style',
+        label: 'dev.prompts.alertRewrite.group.style',
+        sections: [
           {
-            key: 'outputSchemaWithExamples',
-            label: 'dev.prompts.alertRewrite.examplesIncluded',
-            content: this.formatPromptSchema(rules.outputSchemas.withExamples),
-            collapsed: false,
-          },
-          {
-            key: 'outputSchemaWithoutExamples',
-            label: 'dev.prompts.alertRewrite.examplesNotIncluded',
-            content: this.formatPromptSchema(rules.outputSchemas.withoutExamples),
+            key: 'canadaCaStyleRules',
+            label: 'dev.prompts.alertRewrite.canadaCaStyle',
+            content: this.formatCanadaCaStyleRulesJson(),
             collapsed: false,
           },
         ],
       },
       {
-        key: 'baseRules',
-        label: 'dev.prompts.alertRewrite.baseRules',
-        bulletItems: rules.styleRulesBase,
-        collapsed: false,
-      },
-      {
-        key: 'canadaCaStyleRules',
-        label: 'dev.prompts.alertRewrite.canadaCaStyle',
-        content: this.formatCanadaCaStyleRulesJson(),
-        collapsed: false,
-      },
-      {
-        key: 'linkRulesDefault',
-        label: 'dev.prompts.alertRewrite.linkRulesDefault',
-        content: this.formatPromptJson(getLinkWritingPromptRules({ hasTooManyLinksIssue: false })),
-        collapsed: false,
-      },
-      {
-        key: 'linkRulesTooMany',
-        label: 'dev.prompts.alertRewrite.linkRulesTooMany',
-        content: this.formatPromptJson(getLinkWritingPromptRules({ hasTooManyLinksIssue: true })),
-        collapsed: false,
-      },
-      {
-        key: 'conditionalInstructions',
-        label: 'dev.prompts.alertRewrite.conditionalInstructions',
-        content: this.formatPromptJson(rules.conditionalInstructions),
-        collapsed: false,
-      },
-      {
-        key: 'retryInstructions',
-        label: 'dev.prompts.alertRewrite.retryInstructions',
-        content: this.formatPromptJson(rules.retryInstructions),
-        collapsed: false,
+        key: 'links',
+        label: 'dev.prompts.alertRewrite.group.links',
+        sections: [
+          {
+            key: 'linkRulesCommon',
+            label: 'dev.prompts.alertRewrite.linkRulesCommon',
+            bulletItems: LinkWritingPromptRuleGroups.common.map((rule) => rule.text),
+            collapsed: false,
+          },
+          {
+            key: 'linkRules',
+            hideLabel: true,
+            options: [
+              {
+                key: 'linkRulesDefault',
+                label: 'dev.prompts.alertRewrite.linkRulesDefault',
+                bulletItems: LinkWritingPromptRuleGroups.preserveLinks.map((rule) => rule.text),
+                collapsed: false,
+              },
+              {
+                key: 'linkRulesTooMany',
+                label: 'dev.prompts.alertRewrite.linkRulesTooMany',
+                bulletItems: LinkWritingPromptRuleGroups.tooManyLinks.map((rule) => rule.text),
+                collapsed: false,
+              },
+            ],
+          },
+          {
+            key: 'preserveFinalStandaloneLink',
+            label: 'dev.prompts.alertRewrite.condition.finalStandaloneLink',
+            content: rules.conditionalInstructions.preserveFinalStandaloneLink,
+            collapsed: false,
+          },
+          {
+            key: 'enforceLinkManifest',
+            label: 'dev.prompts.alertRewrite.condition.originalHasLinks',
+            content: rules.conditionalInstructions.enforceLinkManifest,
+            collapsed: false,
+          },
+        ],
       },
     ];
   }
@@ -473,14 +562,25 @@ export class PromptEditorComponent {
     marker('dev.prompts.button.openPR');
     marker('dev.prompts.alertRewrite.baseRules');
     marker('dev.prompts.alertRewrite.canadaCaStyle');
-    marker('dev.prompts.alertRewrite.conditionalInstructions');
     marker('dev.prompts.alertRewrite.linkRulesDefault');
     marker('dev.prompts.alertRewrite.linkRulesTooMany');
     marker('dev.prompts.alertRewrite.outputRequirement');
-    marker('dev.prompts.alertRewrite.outputSchemas');
+    marker('dev.prompts.alertRewrite.outputSchemaWithExamples');
+    marker('dev.prompts.alertRewrite.outputSchemaWithoutExamples');
+    marker('dev.prompts.alertRewrite.linkRulesCommon');
+    marker('dev.prompts.alertRewrite.group.alertRewrite');
+    marker('dev.prompts.alertRewrite.group.style');
+    marker('dev.prompts.alertRewrite.group.links');
+    marker('dev.prompts.alertRewrite.condition.finalStandaloneLink');
+    marker('dev.prompts.alertRewrite.condition.originalHasLinks');
+    marker('dev.prompts.alertRewrite.retry.invalidWrapperHtml');
+    marker('dev.prompts.alertRewrite.retry.noLinksAllowed');
+    marker('dev.prompts.alertRewrite.retry.mustKeepLink');
+    marker('dev.prompts.alertRewrite.retry.mustHaveHeading');
+    marker('dev.prompts.alertRewrite.retry.avoidExampleCopy');
+    marker('dev.prompts.alertRewrite.retry.fullSentenceLinksNeedLeadIn');
     marker('dev.prompts.alertRewrite.retryInstructions');
     marker('dev.prompts.alertRewrite.role');
-    marker('dev.prompts.alertRewrite.aiInstructions');
     marker('dev.prompts.alertRewrite.examplesIncluded');
     marker('dev.prompts.alertRewrite.examplesNotIncluded');
     marker('dev.prompts.alertRewrite.testUnavailable');

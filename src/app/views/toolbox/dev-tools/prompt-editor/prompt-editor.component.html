@@ -59,10 +59,15 @@
                 <!-- Config editor -->
                 @if (isPromptConfig(prompt) && isPromptVisible(prompt.enumKey) && isAlertRewritePipeline(prompt)) {
                   <h2 class="my-0">{{ prompt.translationKey | translate }}</h2>
-                  @for (section of alertRewritePipelineSections; track section.key) {
+                  @for (group of alertRewritePipelineGroups; track group.key) {
+                    <section class="prompt-pipeline-group">
+                      <h3>{{ group.label | translate }}</h3>
+                      @for (section of group.sections; track section.key) {
                     @if (section.options?.length) {
                       <section>
-                        <h3>{{ section.label | translate }}</h3>
+                        @if (!section.hideLabel && section.label) {
+                          <h4>{{ section.label | translate }}</h4>
+                        }
                         <div class="grid">
                           @for (option of section.options; track option.key) {
                             <div class="col-12 lg:col-6">
@@ -82,8 +87,25 @@
                         </div>
                       </section>
                     } @else {
-                      <p-fieldset [collapsed]="section.collapsed" [legend]="section.label | translate" [toggleable]="true">
-                        @if (section.bulletItems?.length) {
+                      <p-fieldset [collapsed]="section.collapsed" [legend]="(section.label ?? '') | translate" [toggleable]="true">
+                        @if (section.conditionItems?.length) {
+                          <div class="prompt-condition-list">
+                            @for (item of section.conditionItems; track $index) {
+                              <div class="prompt-condition-item">
+                                <strong>{{ item.condition | translate }}</strong>
+                                @if (item.bulletItems?.length) {
+                                  <ul class="prompt-bullet-list">
+                                    @for (line of item.bulletItems; track $index) {
+                                      <li>{{ line }}</li>
+                                    }
+                                  </ul>
+                                } @else {
+                                  <p>{{ item.instruction }}</p>
+                                }
+                              </div>
+                            }
+                          </div>
+                        } @else if (section.bulletItems?.length) {
                           <ul class="prompt-bullet-list">
                             @for (item of section.bulletItems; track $index) {
                               <li>{{ item }}</li>
@@ -93,7 +115,9 @@
                           <pre class="prompt-preview">{{ section.content }}</pre>
                         }
                       </p-fieldset>
-                    }
+                        }
+                      }
+                    </section>
                   }
                 }
                 @if (isPromptConfig(prompt) && isPromptVisible(prompt.enumKey) && !isAlertRewritePipeline(prompt)) {
@@ -202,10 +226,15 @@
 </p-select>
 @if (selectedPromptIsAlertRewritePipeline()) {
   <p>{{ 'dev.prompts.alertRewrite.testUnavailable' | translate }}</p>
-  @for (section of alertRewritePipelineSections; track section.key) {
+  @for (group of alertRewritePipelineGroups; track group.key) {
+    <section class="prompt-pipeline-group">
+      <h3>{{ group.label | translate }}</h3>
+      @for (section of group.sections; track section.key) {
     @if (section.options?.length) {
       <section>
-        <h3>{{ section.label | translate }}</h3>
+        @if (!section.hideLabel && section.label) {
+          <h4>{{ section.label | translate }}</h4>
+        }
         <div class="grid">
           @for (option of section.options; track option.key) {
             <div class="col-12 lg:col-6">
@@ -225,8 +254,25 @@
         </div>
       </section>
     } @else {
-      <p-fieldset [collapsed]="section.collapsed" [legend]="section.label | translate" [toggleable]="true">
-        @if (section.bulletItems?.length) {
+      <p-fieldset [collapsed]="section.collapsed" [legend]="(section.label ?? '') | translate" [toggleable]="true">
+        @if (section.conditionItems?.length) {
+          <div class="prompt-condition-list">
+            @for (item of section.conditionItems; track $index) {
+              <div class="prompt-condition-item">
+                <strong>{{ item.condition | translate }}</strong>
+                @if (item.bulletItems?.length) {
+                  <ul class="prompt-bullet-list">
+                    @for (line of item.bulletItems; track $index) {
+                      <li>{{ line }}</li>
+                    }
+                  </ul>
+                } @else {
+                  <p>{{ item.instruction }}</p>
+                }
+              </div>
+            }
+          </div>
+        } @else if (section.bulletItems?.length) {
           <ul class="prompt-bullet-list">
             @for (item of section.bulletItems; track $index) {
               <li>{{ item }}</li>
@@ -236,7 +282,9 @@
           <pre class="prompt-preview">{{ section.content }}</pre>
         }
       </p-fieldset>
-    }
+        }
+      }
+    </section>
   }
 } @else if (selectedPromptIsAlertRewriteExamples()) {
   <div class="flex flex-column gap-3 mt-3">
@@ -248,7 +296,7 @@
   </div>
 } @else if (selectedPromptIsAlertProblems()) {
   @for (section of alertProblemsSections; track section.key) {
-    <p-fieldset [collapsed]="section.collapsed" [legend]="section.label | translate" [toggleable]="true">
+    <p-fieldset [collapsed]="section.collapsed" [legend]="(section.label ?? '') | translate" [toggleable]="true">
       <pre class="prompt-preview">{{ section.content }}</pre>
     </p-fieldset>
   }
