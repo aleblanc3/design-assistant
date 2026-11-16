@@ -27,7 +27,7 @@ import { UserSettingsService } from '../../../../services/user-settings.service'
 
 import { AlertRewriteExamples, type AlertRewriteExample } from '../../../../common/prompts/alert-rewrite.examples';
 import { AlertRewriteRules } from '../../../../common/prompts/alert-rewrite.prompt';
-import { CanadaCaStyleExamples, CanadaCaStyleRules } from '../../../../common/prompts/canada-ca-style.prompt';
+import { CanadaCaStyleRules } from '../../../../common/prompts/canada-ca-style.prompt';
 import { InventoryPrompts } from '../../../../common/prompts/inventory.prompts';
 import { getLinkWritingPromptRules } from '../../../../common/prompts/link-writing.prompt';
 import { PagePrompts } from '../../../../common/prompts/page.prompts';
@@ -353,12 +353,6 @@ export class PromptEditorComponent {
         collapsed: false,
       },
       {
-        key: 'canadaCaStyleExamples',
-        label: 'dev.prompts.alertRewrite.canadaCaStyleExamples',
-        content: this.formatCanadaCaStyleExamplesJson(),
-        collapsed: false,
-      },
-      {
         key: 'linkRulesDefault',
         label: 'dev.prompts.alertRewrite.linkRulesDefault',
         content: this.formatPromptJson(getLinkWritingPromptRules({ hasTooManyLinksIssue: false })),
@@ -463,14 +457,6 @@ export class PromptEditorComponent {
     return `{ "rules": [ ${rules} ]}`;
   }
 
-  private formatCanadaCaStyleExamplesJson(): string {
-    const examples = CanadaCaStyleExamples.map(
-      (example) => `{ "ruleId": ${JSON.stringify(example.ruleId)},\n      "avoid": ${JSON.stringify(example.avoid)},\n      "prefer": ${JSON.stringify(example.prefer)} }`,
-    ).join(',\n    ');
-
-    return `{ "examples": [\n    ${examples} ]}`;
-  }
-
   markForTranslation() {
     marker('aiPrompt.shared._title');
     marker('aiPrompt.alerts._title');
@@ -487,7 +473,6 @@ export class PromptEditorComponent {
     marker('dev.prompts.button.openPR');
     marker('dev.prompts.alertRewrite.baseRules');
     marker('dev.prompts.alertRewrite.canadaCaStyle');
-    marker('dev.prompts.alertRewrite.canadaCaStyleExamples');
     marker('dev.prompts.alertRewrite.conditionalInstructions');
     marker('dev.prompts.alertRewrite.linkRulesDefault');
     marker('dev.prompts.alertRewrite.linkRulesTooMany');

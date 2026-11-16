@@ -189,9 +189,7 @@ export class AlertRewriteService {
             hasTooManyLinksIssue,
           })
         : [],
-      getCanadaCaStylePromptRules({
-        includeExamples: true,
-      }),
+      getCanadaCaStylePromptRules(),
     ]);
     const rules = AlertRewriteRules;
     this.debugLog('Alert rewrite link rules', {

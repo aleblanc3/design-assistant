@@ -430,7 +430,6 @@
 	"dev.prompts.alertRewrite.aiInstructions": "AI instructions",
 	"dev.prompts.alertRewrite.baseRules": "Base rewrite rules",
 	"dev.prompts.alertRewrite.canadaCaStyle": "Canada.ca style rules",
-	"dev.prompts.alertRewrite.canadaCaStyleExamples": "Canada.ca style examples",
 	"dev.prompts.alertRewrite.conditionalInstructions": "Conditional runtime instructions",
 	"dev.prompts.alertRewrite.examplesIncluded": "Examples included",
 	"dev.prompts.alertRewrite.examplesNotIncluded": "Examples not included",

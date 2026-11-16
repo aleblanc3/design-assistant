@@ -6,16 +6,6 @@ export interface CanadaCaStyleRule {
   text: string;
 }
 
-export interface CanadaCaStyleExample {
-  ruleId: string;
-  avoid: string;
-  prefer: string;
-}
-
-export interface CanadaCaStylePromptOptions {
-  includeExamples?: boolean;
-}
-
 export const CanadaCaStyleRules: readonly CanadaCaStyleRule[] = [
   {
     id: 'C1_avoid_please',
@@ -44,20 +34,6 @@ export const CanadaCaStyleRules: readonly CanadaCaStyleRule[] = [
   },
 ];
 
-export const CanadaCaStyleExamples: readonly CanadaCaStyleExample[] = [
-  { ruleId: 'C1_avoid_please', avoid: 'Please note that processing times may vary.', prefer: 'Processing times may vary.' },
-  { ruleId: 'C1_avoid_please', avoid: 'Please ensure your information is accurate.', prefer: 'Make sure your information is accurate.' },
-  {
-    ruleId: 'C3_plain_language',
-    avoid: 'Prior to submitting your application, verify that all required fields have been completed.',
-    prefer: 'Before you submit your application, make sure you have completed all required fields.',
-  },
-];
-
-export function getCanadaCaStylePromptRules(options: CanadaCaStylePromptOptions = {}): string[] {
-  const rules = CanadaCaStyleRules.map((rule) => `[Canada.ca style ${rule.id} ${rule.severity}] ${rule.text}`);
-  if (options.includeExamples === false) return rules;
-
-  const examples = CanadaCaStyleExamples.map((example) => `[Canada.ca style example ${example.ruleId}] Avoid: "${example.avoid}" Prefer: "${example.prefer}"`);
-  return [...rules, ...examples];
+export function getCanadaCaStylePromptRules(): string[] {
+  return CanadaCaStyleRules.map((rule) => `[Canada.ca style ${rule.id} ${rule.severity}] ${rule.text}`);
 }
