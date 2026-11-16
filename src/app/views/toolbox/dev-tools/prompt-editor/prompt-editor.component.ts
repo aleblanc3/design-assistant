@@ -26,10 +26,10 @@ import { ExportGitHubService } from '../../../../services/github/export-github.s
 import { UserSettingsService } from '../../../../services/user-settings.service';
 
 import { AlertRewriteExamples, type AlertRewriteExample } from '../../../../common/prompts/alert-rewrite.examples';
-import { AlertRewriteRules, FullSentenceLinksNeedLeadInLines } from '../../../../common/prompts/alert-rewrite.prompt';
-import { CanadaCaStyleRules } from '../../../../common/prompts/canada-ca-style.prompt';
+import { AlertRewriteRules } from '../../../../common/prompts/alert-rewrite.prompt';
+import { getCanadaCaStylePromptRules } from '../../../../common/prompts/canada-ca-style.prompt';
 import { InventoryPrompts } from '../../../../common/prompts/inventory.prompts';
-import { LinkWritingPromptRuleGroups } from '../../../../common/prompts/link-writing.prompt';
+import { getLinkWritingPromptRules } from '../../../../common/prompts/link-writing.prompt';
 import { PagePrompts } from '../../../../common/prompts/page.prompts';
 import { ProblemPrompts } from '../../../../common/prompts/problems.prompts';
 import { InventoryPromptKey, OutputKey, PagePromptKey, ProblemPromptKey, PromptConfig, RoleKey, RubricKey } from '../../../../common/prompts/prompt.model';
@@ -52,33 +52,15 @@ interface TabConfig {
 
 interface PromptPipelineSection {
   key: string;
-  label?: string;
-  hideLabel?: boolean;
-  content?: string;
-  bulletItems?: string[];
-  conditionItems?: PromptConditionItem[];
-  collapsed?: boolean;
-  options?: PromptPipelineOption[];
-}
-
-interface PromptPipelineGroup {
-  key: string;
   label: string;
-  sections: PromptPipelineSection[];
-}
-
-interface PromptConditionItem {
-  condition: string;
-  instruction?: string;
-  bulletItems?: readonly string[];
+  content?: string;
+  options?: PromptPipelineOption[];
 }
 
 interface PromptPipelineOption {
   key: string;
   label: string;
-  content?: string;
-  bulletItems?: string[];
-  collapsed: boolean;
+  content: string;
 }
 
 @Component({
@@ -113,27 +95,6 @@ interface PromptPipelineOption {
       overflow-wrap: anywhere;
       word-break: break-word;
       overflow-x: hidden;
-    }
-
-    .prompt-bullet-list {
-      display: grid;
-      gap: 0.4rem;
-      margin: 0;
-      padding-inline-start: 1.5rem;
-    }
-
-    .prompt-condition-list {
-      display: grid;
-      gap: 0.75rem;
-    }
-
-    .prompt-condition-item {
-      display: grid;
-      gap: 0.25rem;
-    }
-
-    .prompt-condition-item p {
-      margin: 0;
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -254,11 +215,10 @@ export class PromptEditorComponent {
     promptText: ProblemPrompts[ProblemPromptKey[enumKey as keyof typeof ProblemPromptKey]],
   }));
 
-  protected readonly alertRewritePipelineGroups: PromptPipelineGroup[] = this.buildAlertRewritePipelineGroups();
-  protected readonly alertProblemsSections: PromptPipelineSection[] = this.buildAlertProblemsSections();
+  protected readonly alertRewritePipelineSections: PromptPipelineSection[] = this.buildAlertRewritePipelineSections();
   protected readonly alertRewriteExamples = AlertRewriteExamples;
 
-  selectedPrompts = new Set<string>([this.pagePrompts[0]?.enumKey, this.problemPrompts[0]?.enumKey].filter(Boolean));
+  selectedPrompts = new Set<string>([this.inventoryPrompts[0]?.enumKey, this.pagePrompts[0]?.enumKey, this.problemPrompts[0]?.enumKey].filter(Boolean));
 
   togglePrompt(enumKey: string) {
     if (this.selectedPrompts.has(enumKey)) {
@@ -301,7 +261,7 @@ export class PromptEditorComponent {
       items: this.pagePrompts.filter((prompt) => prompt.enumKey !== 'AlertRewrite'),
     },
   ];
-  protected readonly selectedPrompt = signal<PromptEntry | undefined>(this.pagePrompts.find((prompt) => prompt.enumKey === 'AlertRewrite'));
+  protected readonly selectedPrompt = signal<PromptEntry | undefined>(this.problemPrompts.find((prompt) => prompt.enumKey === 'Alerts'));
   protected readonly selectedPromptIsAlertRewritePipeline = computed(() => {
     const selected = this.selectedPrompt();
     return !!selected && this.isAlertRewritePipeline(selected);
@@ -310,207 +270,87 @@ export class PromptEditorComponent {
     const selected = this.selectedPrompt();
     return !!selected && this.isAlertRewriteExamples(selected);
   });
-  protected readonly selectedPromptIsAlertProblems = computed(() => this.selectedPrompt()?.enumKey === 'AlertsProblems');
   protected readonly aiPrompt = computed(() => {
     const selected = this.selectedPrompt();
     if (!selected || !this.isPromptConfig(selected)) return '';
     return this.aiPromptService.composePrompt(selected.promptText);
   });
 
-  private buildAlertRewritePipelineGroups(): PromptPipelineGroup[] {
+  private buildAlertRewritePipelineSections(): PromptPipelineSection[] {
     const rules = AlertRewriteRules.alertRewrite;
     return [
       {
-        key: 'alertRewrite',
-        label: 'dev.prompts.alertRewrite.group.alertRewrite',
-        sections: [
-          {
-            key: 'role',
-            label: 'dev.prompts.alertRewrite.role',
-            content: rules.role,
-            collapsed: false,
-          },
-          {
-            key: 'aiInstructions',
-            hideLabel: true,
-            options: [
-              {
-                key: 'systemWithExamples',
-                label: 'dev.prompts.alertRewrite.examplesIncluded',
-                bulletItems: rules.systemPromptWithExamplesLines,
-                collapsed: false,
-              },
-              {
-                key: 'systemWithoutExamples',
-                label: 'dev.prompts.alertRewrite.examplesNotIncluded',
-                bulletItems: rules.systemPromptWithoutExamplesLines,
-                collapsed: false,
-              },
-            ],
-          },
-          {
-            key: 'baseRules',
-            label: 'dev.prompts.alertRewrite.baseRules',
-            bulletItems: rules.styleRulesBase,
-            collapsed: false,
-          },
-          {
-            key: 'outputRequirement',
-            label: 'dev.prompts.alertRewrite.outputRequirement',
-            content: rules.outputRequirement,
-            collapsed: false,
-          },
-          {
-            key: 'outputSchemas',
-            hideLabel: true,
-            options: [
-              {
-                key: 'outputSchemaWithExamples',
-                label: 'dev.prompts.alertRewrite.outputSchemaWithExamples',
-                content: this.formatPromptSchema(rules.outputSchemas.withExamples),
-                collapsed: false,
-              },
-              {
-                key: 'outputSchemaWithoutExamples',
-                label: 'dev.prompts.alertRewrite.outputSchemaWithoutExamples',
-                content: this.formatPromptSchema(rules.outputSchemas.withoutExamples),
-                collapsed: false,
-              },
-            ],
-          },
-          {
-            key: 'retryInstructions',
-            label: 'dev.prompts.alertRewrite.retryInstructions',
-            conditionItems: [
-              {
-                condition: 'dev.prompts.alertRewrite.retry.invalidWrapperHtml',
-                instruction: rules.retryInstructions.invalidWrapperHtml,
-              },
-              {
-                condition: 'dev.prompts.alertRewrite.retry.noLinksAllowed',
-                instruction: rules.retryInstructions.noLinksAllowed,
-              },
-              {
-                condition: 'dev.prompts.alertRewrite.retry.mustKeepLink',
-                instruction: rules.retryInstructions.mustKeepLink,
-              },
-              {
-                condition: 'dev.prompts.alertRewrite.retry.mustHaveHeading',
-                instruction: rules.retryInstructions.mustHaveHeading,
-              },
-              {
-                condition: 'dev.prompts.alertRewrite.retry.avoidExampleCopy',
-                instruction: rules.retryInstructions.avoidExampleCopy,
-              },
-              {
-                condition: 'dev.prompts.alertRewrite.retry.fullSentenceLinksNeedLeadIn',
-                bulletItems: FullSentenceLinksNeedLeadInLines,
-              },
-            ],
-            collapsed: false,
-          },
-        ],
-      },
-      {
-        key: 'style',
-        label: 'dev.prompts.alertRewrite.group.style',
-        sections: [
-          {
-            key: 'canadaCaStyleRules',
-            label: 'dev.prompts.alertRewrite.canadaCaStyle',
-            content: this.formatCanadaCaStyleRulesJson(),
-            collapsed: false,
-          },
-        ],
-      },
-      {
-        key: 'links',
-        label: 'dev.prompts.alertRewrite.group.links',
-        sections: [
-          {
-            key: 'linkRulesCommon',
-            label: 'dev.prompts.alertRewrite.linkRulesCommon',
-            bulletItems: LinkWritingPromptRuleGroups.common.map((rule) => rule.text),
-            collapsed: false,
-          },
-          {
-            key: 'linkRules',
-            hideLabel: true,
-            options: [
-              {
-                key: 'linkRulesDefault',
-                label: 'dev.prompts.alertRewrite.linkRulesDefault',
-                bulletItems: LinkWritingPromptRuleGroups.preserveLinks.map((rule) => rule.text),
-                collapsed: false,
-              },
-              {
-                key: 'linkRulesTooMany',
-                label: 'dev.prompts.alertRewrite.linkRulesTooMany',
-                bulletItems: LinkWritingPromptRuleGroups.tooManyLinks.map((rule) => rule.text),
-                collapsed: false,
-              },
-            ],
-          },
-          {
-            key: 'preserveFinalStandaloneLink',
-            label: 'dev.prompts.alertRewrite.condition.finalStandaloneLink',
-            content: rules.conditionalInstructions.preserveFinalStandaloneLink,
-            collapsed: false,
-          },
-          {
-            key: 'enforceLinkManifest',
-            label: 'dev.prompts.alertRewrite.condition.originalHasLinks',
-            content: rules.conditionalInstructions.enforceLinkManifest,
-            collapsed: false,
-          },
-        ],
-      },
-    ];
-  }
-
-  private buildAlertProblemsSections(): PromptPipelineSection[] {
-    const prompt = ProblemPrompts[ProblemPromptKey.AlertsProblems];
-    const rubric = prompt.rubric.flatMap((key) => RubricFragment[key]);
-
-    return [
-      {
         key: 'role',
-        label: 'aiPrompt.component.role',
-        content: RoleFragment[prompt.role],
-        collapsed: false,
+        label: 'dev.prompts.alertRewrite.role',
+        content: this.formatPromptJson(rules.role),
       },
       {
-        key: 'task',
-        label: 'aiPrompt.component.task',
-        content: prompt.task,
-        collapsed: false,
+        key: 'aiInstructions',
+        label: 'dev.prompts.alertRewrite.aiInstructions',
+        options: [
+          {
+            key: 'systemWithExamples',
+            label: 'dev.prompts.alertRewrite.examplesIncluded',
+            content: this.formatPromptJson(rules.systemPromptWithExamplesLines),
+          },
+          {
+            key: 'systemWithoutExamples',
+            label: 'dev.prompts.alertRewrite.examplesNotIncluded',
+            content: this.formatPromptJson(rules.systemPromptWithoutExamplesLines),
+          },
+        ],
       },
-      ...(rubric.length
-        ? [
-            {
-              key: 'rubric',
-              label: 'aiPrompt.component.rubric',
-              content: rubric.map((criterion, index) => `${index + 1}. ${criterion}`).join('\n'),
-              collapsed: false,
-            },
-          ]
-        : []),
       {
         key: 'outputRequirement',
         label: 'dev.prompts.alertRewrite.outputRequirement',
-        content: OutputFragment[prompt.output],
-        collapsed: false,
+        content: this.formatPromptJson(rules.outputRequirement),
       },
-      ...(prompt.jsonSchema
-        ? [
-            {
-              key: 'jsonSchema',
-              label: 'aiPrompt.component.jsonSchema',
-              content: prompt.jsonSchema,
-              collapsed: false,
-            },
-          ]
-        : []),
+      {
+        key: 'outputSchemas',
+        label: 'dev.prompts.alertRewrite.outputSchemas',
+        options: [
+          {
+            key: 'outputSchemaWithExamples',
+            label: 'dev.prompts.alertRewrite.examplesIncluded',
+            content: this.formatPromptJson(rules.outputSchemas.withExamples),
+          },
+          {
+            key: 'outputSchemaWithoutExamples',
+            label: 'dev.prompts.alertRewrite.examplesNotIncluded',
+            content: this.formatPromptJson(rules.outputSchemas.withoutExamples),
+          },
+        ],
+      },
+      {
+        key: 'baseRules',
+        label: 'dev.prompts.alertRewrite.baseRules',
+        content: this.formatPromptJson(rules.styleRulesBase),
+      },
+      {
+        key: 'canadaCaStyle',
+        label: 'dev.prompts.alertRewrite.canadaCaStyle',
+        content: this.formatPromptJson(getCanadaCaStylePromptRules()),
+      },
+      {
+        key: 'linkRulesDefault',
+        label: 'dev.prompts.alertRewrite.linkRulesDefault',
+        content: this.formatPromptJson(getLinkWritingPromptRules({ hasTooManyLinksIssue: false })),
+      },
+      {
+        key: 'linkRulesTooMany',
+        label: 'dev.prompts.alertRewrite.linkRulesTooMany',
+        content: this.formatPromptJson(getLinkWritingPromptRules({ hasTooManyLinksIssue: true })),
+      },
+      {
+        key: 'conditionalInstructions',
+        label: 'dev.prompts.alertRewrite.conditionalInstructions',
+        content: this.formatPromptJson(rules.conditionalInstructions),
+      },
+      {
+        key: 'retryInstructions',
+        label: 'dev.prompts.alertRewrite.retryInstructions',
+        content: this.formatPromptJson(rules.retryInstructions),
+      },
     ];
   }
 
@@ -520,30 +360,6 @@ export class PromptEditorComponent {
 
   private formatPromptJson(value: unknown): string {
     return JSON.stringify(value, null, 2);
-  }
-
-  private formatPromptSchema(schema: string): string {
-    try {
-      const lines = JSON.stringify(JSON.parse(schema), null, 2)
-        .replace(/\[\n\s+("(?:\\.|[^"\\])*")\n\s+\]/g, '[$1]')
-        .split('\n');
-
-      if (lines.length < 3) return lines.join('\n');
-
-      lines[1] = `{ ${lines[1].trimStart()}`;
-      lines[lines.length - 2] = `${lines[lines.length - 2]} }`;
-      return lines.slice(1, -1).join('\n');
-    } catch {
-      return schema;
-    }
-  }
-
-  private formatCanadaCaStyleRulesJson(): string {
-    const rules = CanadaCaStyleRules.map((rule) => `{\n      "id": ${JSON.stringify(rule.id)}, "severity": ${JSON.stringify(rule.severity)},\n      "text": ${JSON.stringify(rule.text)} }`).join(
-      ',\n    ',
-    );
-
-    return `{ "rules": [ ${rules} ]}`;
   }
 
   markForTranslation() {
@@ -562,25 +378,14 @@ export class PromptEditorComponent {
     marker('dev.prompts.button.openPR');
     marker('dev.prompts.alertRewrite.baseRules');
     marker('dev.prompts.alertRewrite.canadaCaStyle');
+    marker('dev.prompts.alertRewrite.conditionalInstructions');
     marker('dev.prompts.alertRewrite.linkRulesDefault');
     marker('dev.prompts.alertRewrite.linkRulesTooMany');
     marker('dev.prompts.alertRewrite.outputRequirement');
-    marker('dev.prompts.alertRewrite.outputSchemaWithExamples');
-    marker('dev.prompts.alertRewrite.outputSchemaWithoutExamples');
-    marker('dev.prompts.alertRewrite.linkRulesCommon');
-    marker('dev.prompts.alertRewrite.group.alertRewrite');
-    marker('dev.prompts.alertRewrite.group.style');
-    marker('dev.prompts.alertRewrite.group.links');
-    marker('dev.prompts.alertRewrite.condition.finalStandaloneLink');
-    marker('dev.prompts.alertRewrite.condition.originalHasLinks');
-    marker('dev.prompts.alertRewrite.retry.invalidWrapperHtml');
-    marker('dev.prompts.alertRewrite.retry.noLinksAllowed');
-    marker('dev.prompts.alertRewrite.retry.mustKeepLink');
-    marker('dev.prompts.alertRewrite.retry.mustHaveHeading');
-    marker('dev.prompts.alertRewrite.retry.avoidExampleCopy');
-    marker('dev.prompts.alertRewrite.retry.fullSentenceLinksNeedLeadIn');
+    marker('dev.prompts.alertRewrite.outputSchemas');
     marker('dev.prompts.alertRewrite.retryInstructions');
     marker('dev.prompts.alertRewrite.role');
+    marker('dev.prompts.alertRewrite.aiInstructions');
     marker('dev.prompts.alertRewrite.examplesIncluded');
     marker('dev.prompts.alertRewrite.examplesNotIncluded');
     marker('dev.prompts.alertRewrite.testUnavailable');
