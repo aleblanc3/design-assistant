@@ -16,15 +16,15 @@ import { Table, TableModule } from 'primeng/table';
 
 import { AddPagesComponent } from '../../../components/add-pages/add-pages.component';
 import { MenuPageActionsComponent } from '../../../components/menu-page-actions/menu-page-actions.component';
-import { ProjectSettingsComponent } from '../../../components/project-settings/project-settings.component';
+import { SettingsProjectComponent } from '../../../components/settings-project/settings-project.component';
 import { ViewPagesComponent } from '../../../components/view-pages/view-pages.component';
 
 import { FetchService } from '../../../services/fetch.service';
 import { ProjectCacheService } from '../../../services/project-cache.service';
-import { FlattenedInventory, ProjectInventoryService, TableItem } from '../../../services/project-inventory.service';
 import { ProjectStateService } from '../../../services/project-state.service';
 import { StyleCardService } from '../../../services/style-card.service';
 import { buildFilterFields, ColumnVisibility, createRowSelection, groupSpans, persisted, rowsPerPageOptions, TableService, trackStuck } from '../../../services/style-table.service';
+import { FlattenedInventory, TableInventoryService, TableItem } from '../../../services/table-inventory.service';
 
 import { TooltipDirective } from '../../../common/tooltip.directive';
 
@@ -42,7 +42,7 @@ import { TooltipDirective } from '../../../common/tooltip.directive';
  ** add sorting & filtering?
  */
 @Component({
-  selector: 'aida-page-inventory',
+  selector: 'aida-table-inventory',
   imports: [
     CommonModule,
     FormsModule,
@@ -56,18 +56,18 @@ import { TooltipDirective } from '../../../common/tooltip.directive';
     TableModule,
     AddPagesComponent,
     MenuPageActionsComponent,
-    ProjectSettingsComponent,
+    SettingsProjectComponent,
     TooltipDirective,
     ViewPagesComponent,
   ],
-  templateUrl: 'page-inventory.component.html',
+  templateUrl: 'table-inventory.component.html',
   styleUrl: '../../../../sticky.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PageInventoryComponent implements OnInit {
+export class TableInventoryComponent implements OnInit {
   protected readonly projectState = inject(ProjectStateService);
   protected readonly projectCache = inject(ProjectCacheService);
-  protected readonly projectInventory = inject(ProjectInventoryService);
+  protected readonly tableInventory = inject(TableInventoryService);
   protected readonly tableService = inject(TableService);
   protected readonly styleCardService = inject(StyleCardService);
   protected readonly fetchService = inject(FetchService);
@@ -78,13 +78,13 @@ export class PageInventoryComponent implements OnInit {
   protected readonly stuck = trackStuck();
   /** Unique instance of visibility class */
   protected readonly visible = new ColumnVisibility('invHidden', [
-    persisted('invLang', this.projectCache.selectedLang, ['en', 'fr', 'both'] as const),
+    persisted('invLang', this.projectCache.selectedLangs, ['en', 'fr', 'both'] as const),
     persisted('invScope', this.projectCache.selectedScope, ['inScope', 'all'] as const),
   ]);
   /** Count of how many filters are applied */
   protected readonly filterCount = computed(() => {
     const scopeFilter = this.projectCache.selectedScope() !== 'all' ? 1 : 0;
-    const langFilter = this.projectCache.selectedLang() !== 'both' ? 1 : 0;
+    const langFilter = this.projectCache.selectedLangs() !== 'both' ? 1 : 0;
     const colFilter = this.visibleColumns().length !== this.columns().length ? 1 : 0;
     const searchFilter = this.searchTerm() ? 1 : 0;
     return (scopeFilter + langFilter + colFilter + searchFilter).toString();
@@ -99,7 +99,7 @@ export class PageInventoryComponent implements OnInit {
 
   /** All table rows */
   protected readonly rows = computed(() => {
-    return this.projectInventory.flattenInventory(this.projectState.getProject().projectData);
+    return this.tableInventory.flattenInventory(this.projectState.getProject().projectData);
   });
 
   /** Selected table rows */
@@ -126,7 +126,7 @@ export class PageInventoryComponent implements OnInit {
     const first = this.rows()[0] as unknown as Record<string, TableItem> | undefined;
     if (!first) return [];
 
-    const selectedLang = this.projectCache.selectedLang();
+    const selectedLang = this.projectCache.selectedLangs();
 
     const excluded = selectedLang === 'en' ? ['Fr'] : selectedLang === 'fr' ? ['En'] : [];
 

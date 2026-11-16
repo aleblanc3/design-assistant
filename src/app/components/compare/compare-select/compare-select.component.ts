@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, effect, inject, input, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, OnInit, signal, untracked } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Params, Router } from '@angular/router';
 
@@ -13,14 +13,14 @@ import { MenuModule } from 'primeng/menu';
 import { SelectModule } from 'primeng/select';
 
 import { AddPagesLinkComponent } from '../../add-pages/add-pages-link/add-pages-link.component';
-import { ProjectSettingsComponent } from '../../project-settings/project-settings.component';
-import { UserSettingsComponent } from '../../user-settings/user-settings.component';
+import { SettingsProjectComponent } from '../../settings-project/settings-project.component';
+import { SettingsUserComponent } from '../../settings-user/settings-user.component';
 
 import { FetchService } from '../../../services/fetch.service';
 import { HtmlNormalizationService, htmlProcessingResult } from '../../../services/html-normalization.service';
 import { ProjectCacheService } from '../../../services/project-cache.service';
 import { ProjectStateService } from '../../../services/project-state.service';
-import { CompareService } from '../../../views/tasks/compare/compare.service';
+import { CompareService } from '../../../views/tasks/compare-versions/compare-versions.service';
 
 import { AidaLinks } from '../../../common/aidaLinks.config';
 import { ALL_SOURCES, SourceVersion } from '../../../common/data.model';
@@ -32,7 +32,7 @@ import { ALL_SOURCES, SourceVersion } from '../../../common/data.model';
  */
 @Component({
   selector: 'aida-compare-select',
-  imports: [CommonModule, FormsModule, TranslatePipe, ButtonModule, IftaLabelModule, MenuModule, SelectModule, AddPagesLinkComponent, ProjectSettingsComponent, UserSettingsComponent],
+  imports: [CommonModule, FormsModule, TranslatePipe, ButtonModule, IftaLabelModule, MenuModule, SelectModule, AddPagesLinkComponent, SettingsProjectComponent, SettingsUserComponent],
   templateUrl: './compare-select.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -76,22 +76,27 @@ export class CompareSelectComponent implements OnInit {
       if (!hasVersion(this.compareService.selectedSource())) this.compareService.selectedSource.set(firstOption);
     });
     effect(() => {
-      void this.projectCache.selectedLang();
-      const bothPaths = this.projectState.getBothPaths(this.compareService.selectedPage());
-      if (!bothPaths) return;
-      const newPath = this.projectCache.selectedLang() === 'fr' ? bothPaths.fr : bothPaths.en;
-      this.compareService.selectedPage.set(newPath);
-      this.onPageSelectionChange(newPath);
+      const lang = this.projectCache.selectedLang();
+      untracked(() => {
+        const currentPath = this.compareService.selectedPage();
+        const bothPaths = this.projectState.getBothPaths(currentPath);
+        if (!bothPaths) return;
+
+        const newPath = lang === 'fr' ? bothPaths.fr : bothPaths.en;
+        this.compareService.selectedPage.set(newPath);
+        if (newPath === currentPath) return;
+
+        void this.onPageSelectionChange(newPath);
+      });
     });
   }
 
   /** Page dropdown options */
   get pageOptions() {
-    const selectedLang = this.projectCache.selectedLang() === 'fr' ? 'fr' : 'en';
     return this.projectState.getPairedPages('live', 'inScope').map((pair) => ({
       label: pair[this.projectCache.uiLang()].label,
       path: pair[this.projectCache.uiLang()].path,
-      value: pair[selectedLang].path,
+      value: pair[this.projectCache.selectedLang()].path,
     }));
   }
 

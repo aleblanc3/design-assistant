@@ -12,7 +12,8 @@
   --surface-ground: light-dark(var(--p-zinc-50), var(--p-zinc-950));
   --surface-border: light-dark(var(--p-surface-400), var(--p-surface-500)) !important;
   --border-radius: 0.375rem;
-  --p-iftalabel-font-size: 0.75rem !important;
+  --p-iftalabel-font-size: 1rem !important;
+  --p-iftalabel-input-padding-top: 1.75rem !important;
   --p-button-badge-size: 1.25rem !important;
   --p-badge-font-size: 0.75rem !important;
 }
@@ -227,6 +228,14 @@ font-family: 'Noto Sans';
   margin: 0 !important;
 }
 
+/*override for input text size */
+p-iftalabel .p-inputtext,
+p-iftalabel .p-textarea,
+p-iftalabel .p-select-label,
+p-iftalabel .p-multiselect-label {
+  font-size: 1.25rem !important;
+}
+
 /*custom grey border for buttons and split buttons*/
 .secondary-outline .p-splitbutton-button,
 .secondary-outline .p-splitbutton-dropdown,
@@ -243,6 +252,10 @@ font-family: 'Noto Sans';
 
 .text-green {
   color: light-dark(var(--p-green-500), var(--p-green-400)) !important;
+}
+
+.text-blue {
+  color: light-dark(var(--p-blue-500), var(--p-blue-400)) !important;
 }
 
 .bg-red {
@@ -303,6 +316,29 @@ font-family: 'Noto Sans';
 .hover\:bg-green:hover.text-green,
 .hover\:bg-green:hover .text-green {
   color: light-dark(var(--p-green-900), var(--p-green-50)) !important;
+}
+
+.hover\:text-primary.text-primary:hover {
+  color: light-dark(var(--p-primary-700), var(--p-primary-300)) !important;
+}
+
+.hover\:text-primary.text-primary a {
+  color: inherit;
+}
+
+.bg-primary-light {
+  background-color: light-dark(var(--p-primary-50), var(--p-primary-900)) !important;
+  color: light-dark(var(--p-primary-800), var(--p-primary-100)) !important;
+}
+
+.hover\:bg-primary-light:hover {
+  background-color: light-dark(var(--p-primary-50), var(--p-primary-900)) !important;
+  color: light-dark(var(--p-primary-900), var(--p-primary-50)) !important;
+}
+
+.hover\:bg-primary-light.bg-primary-light:hover {
+  background-color: light-dark(var(--p-primary-100), var(--p-primary-800)) !important;
+  color: light-dark(var(--p-primary-900), var(--p-primary-50)) !important;
 }
 
 .border-primary-50 {
@@ -480,6 +516,10 @@ font-family: 'Noto Sans';
   max-height: 75vh;
 }
 
+.h-75vh {
+  height: 75vh;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -591,6 +631,9 @@ code.custom {
 
 .h-1\.5 {
   height: 1.5rem;
+}
+.h-2\.75rem {
+  height: 2.75rem;
 }
 .min-h-1\.5 {
   min-height: 1.5rem;
