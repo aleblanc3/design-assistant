@@ -15,7 +15,7 @@
     }
     <p-tab [value]="10" class="ml-auto surface-card border-1 border-bottom-none surface-border hover:bg-primary-light">
       <div class="flex align-content-center gap-2">
-        Preview and test
+        {{ 'dev.prompts.preview._title' | translate }}
         @if (hasChanges()) {
           <span class="material-icons-outlined text-primary">preview</span>
         }
@@ -23,7 +23,7 @@
     </p-tab>
     <p-tab [value]="11" class="surface-card border-1 border-bottom-none surface-border hover:bg-primary-light">
       <div class="flex align-content-center gap-2">
-        Open pull request
+        {{ 'dev.prompts.pr._title' | translate }}
         @if (hasChanges()) {
           <span class="material-icons-outlined text-primary">change_circle</span>
         }
@@ -35,6 +35,7 @@
       <p-tabpanel [value]="tab.value">
         <div [class]="styleCardService.cardStyles(undefined, undefined, undefined, undefined, undefined, 'border-top-none border-noround-top')" class="w-limited">
           @if (tab.value === selectedTab()) {
+            <p class="mt-0">{{ tab.description | translate }}</p>
             <!--Checkboxes-->
             <div class="flex flex-row flex-wrap gap-4 mt-0 mb-4">
               @if (isFragmentsTab(tab)) {
@@ -180,8 +181,8 @@
       <div [class]="styleCardService.cardStyles(undefined, undefined, undefined, undefined, undefined, 'border-top-none border-noround-top')" class="w-limited">
         <div class="flex flex-column gap-2">
           <div>
-            <h2 class="my-0">Prompt preview</h2>
-            <p class="my-1">Select a prompt to preview what would be sent to the AI.</p>
+            <h2 class="my-0">{{ 'dev.prompts.preview.header' | translate }}</h2>
+            <p class="my-1">{{ 'dev.prompts.preview.description' | translate }}</p>
             <p-select
               [group]="true"
               [ngModel]="selectedPrompt()"
@@ -202,16 +203,15 @@
             <pre class="prompt-preview">{{ aiPrompt() }}</pre>
           </div>
           <div>
-            <h2 class="my-0">Test content</h2>
-            <p class="my-1">Paste the content that you want to test with your selected prompt.</p>
+            <h3 class="my-1">{{ 'dev.prompts.preview.testContent' | translate }}</h3>
             <p-iftalabel>
               <textarea id="content" [(ngModel)]="description" class="secondary-outline min-h-6rem" autoResize="true" fluid pTextarea rows="3" variant="outlined"></textarea>
-              <label for="content">Your test content</label>
+              <label for="content">{{ 'dev.prompts.preview.testContentLabel' | translate }}</label>
             </p-iftalabel>
           </div>
           <div class="flex gap-2">
-            <p-button [disabled]="!getSelectedPromptConfig()" (onClick)="testResult()">Test result</p-button>
-            <p-button [disabled]="!getSelectedPromptConfig()" (onClick)="testResponse()">Test response</p-button>
+            <p-button [disabled]="!getSelectedPromptConfig()" (onClick)="testResult()">{{ 'dev.prompts.preview.getResult' | translate }}</p-button>
+            <p-button [disabled]="!getSelectedPromptConfig()" (onClick)="testResponse()">{{ 'dev.prompts.preview.getResponse' | translate }}</p-button>
           </div>
           @if (aiState().loading) {
             <p-progressspinner />
@@ -233,26 +233,19 @@
     </p-tabpanel>
     <p-tabpanel [value]="11">
       <div [class]="styleCardService.cardStyles(undefined, undefined, undefined, undefined, undefined, 'border-top-none border-noround-top')" class="w-limited">
-        <h2 class="my-1">Review changes and open a pull request</h2>
+        <h2 class="my-1">{{ 'dev.prompts.pr.header' | translate }}</h2>
         @if (hasChanges()) {
           @let prompts = tabs[selectedPromptTab()].prompts;
           <!--Review-->
           <div #diffContainer></div>
           <!--Export-->
-          @if (prompts) {
-            <p-fieldset [collapsed]="true" [toggleable]="true" legend="Full File Preview" styleClass="secondary-outline mb-3">
-              <pre #filePreview><code class="language-typescript">{{ rebuildPromptFile(tabs[selectedPromptTab()].tool, prompts) }}</code></pre>
-            </p-fieldset>
-          }
+          <p-fieldset [collapsed]="true" [legend]="'dev.prompts.pr.filePreview' | translate" [toggleable]="true" styleClass="secondary-outline mb-3">
+            <pre #filePreview><code class="language-typescript">{{ prompts ? rebuildPromptFile(tabs[selectedPromptTab()].tool, prompts) : rebuildSharedFile() }}</code></pre>
+          </p-fieldset>
           <!--Open PR-->
-          <p-button
-            [disabled]="!prompts || !signInService.user()"
-            [label]="'dev.prompts.button.openPR' | translate"
-            (onClick)="prompts ? openPullRequest(tabs[selectedPromptTab()].tool, prompts) : undefined"
-            icon="pi pi-send"
-          />
+          <p-button [disabled]="!signInService.user()" [label]="'dev.prompts.button.openPR' | translate" (onClick)="openPullRequest(tabs[selectedPromptTab()].tool, prompts)" icon="pi pi-send" />
         } @else {
-          <p-message icon="pi pi-info-circle" severity="info">No changes detected. Edit a prompt to review a diff and open a pull request.</p-message>
+          <p-message icon="pi pi-info-circle" severity="info">{{ 'dev.prompts.pr.noChangesMessage' | translate }}</p-message>
         }
       </div>
     </p-tabpanel>

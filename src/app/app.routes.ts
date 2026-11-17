@@ -277,7 +277,7 @@ export const routes: Routes = [
       {
         path: 'skill-editor',
         loadComponent: () => import('./views/toolbox/dev-tools/skill-editor/skill-editor.component').then((m) => m.SkillEditorComponent),
-        title: 'dev.prompts._title',
+        title: 'dev.skills._title',
       },
     ],
   },
