@@ -220,8 +220,8 @@ export class PromptEditorComponent {
       description: marker('aiPrompt.tools._description'),
       value: 1,
       prompts: this.inventoryPrompts,
-      tool: 'Inventory',
-      original: this.rebuildPromptFile('Inventory', this.inventoryPrompts),
+      tool: 'Tools',
+      original: this.rebuildPromptFile('Tools', this.inventoryPrompts),
     },
     {
       title: marker('aiPrompt.page._title'),
