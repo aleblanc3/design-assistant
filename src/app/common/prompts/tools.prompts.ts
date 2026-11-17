@@ -1,6 +1,6 @@
 import { OutputKey, PromptConfig, RoleKey, RubricKey, ToolsPromptKey } from './prompt.model';
 
-export const InventoryPrompts: Record<ToolsPromptKey, PromptConfig> = {
+export const ToolsPrompts: Record<ToolsPromptKey, PromptConfig> = {
   [ToolsPromptKey.Metadata]: {
     role: RoleKey.SeoExpert,
     task: 'Generate a new SEO meta description and a list of target keywords for a webpage in both English and French. The French and English versions should be closely aligned in meaning but localized appropriately, not just translated word-for-word.',

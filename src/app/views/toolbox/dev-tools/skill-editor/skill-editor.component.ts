@@ -28,12 +28,12 @@ import { UserSettingsService } from '../../../../services/user-settings.service'
 import { AlertRewriteExamples, type AlertRewriteExample } from '../../../../common/prompts/alert-rewrite.examples';
 import { AlertRewriteRules } from '../../../../common/prompts/alert-rewrite.prompt';
 import { getCanadaCaStylePromptRules } from '../../../../common/prompts/canada-ca-style.prompt';
-import { InventoryPrompts } from '../../../../common/prompts/inventory.prompts';
 import { getLinkWritingPromptRules } from '../../../../common/prompts/link-writing.prompt';
 import { PagePrompts } from '../../../../common/prompts/page.prompts';
 import { ProblemPrompts } from '../../../../common/prompts/problems.prompts';
-import { InventoryPromptKey, OutputKey, PagePromptKey, ProblemPromptKey, PromptConfig, RoleKey, RubricKey } from '../../../../common/prompts/prompt.model';
+import { OutputKey, PagePromptKey, ProblemPromptKey, PromptConfig, RoleKey, RubricKey, ToolsPromptKey } from '../../../../common/prompts/prompt.model';
 import { OutputFragment, RoleFragment, RubricFragment } from '../../../../common/prompts/shared.prompts';
+import { ToolsPrompts } from '../../../../common/prompts/tools.prompts';
 
 interface PromptEntry {
   enumKey: string;
@@ -197,10 +197,10 @@ export class SkillEditorComponent {
   }));
 
   // Prompts
-  inventoryPrompts: PromptEntry[] = Object.keys(InventoryPromptKey).map((enumKey) => ({
+  inventoryPrompts: PromptEntry[] = Object.keys(ToolsPromptKey).map((enumKey) => ({
     enumKey,
-    translationKey: InventoryPromptKey[enumKey as keyof typeof InventoryPromptKey],
-    promptText: InventoryPrompts[InventoryPromptKey[enumKey as keyof typeof InventoryPromptKey]],
+    translationKey: ToolsPromptKey[enumKey as keyof typeof ToolsPromptKey],
+    promptText: ToolsPrompts[ToolsPromptKey[enumKey as keyof typeof ToolsPromptKey]],
   }));
 
   pagePrompts: PromptEntry[] = Object.keys(PagePromptKey).map((enumKey) => ({
@@ -236,8 +236,8 @@ export class SkillEditorComponent {
   selectedTab = 1;
   tabs: TabConfig[] = [
     { title: 'aiPrompt.shared._title', value: 0, fragments: this.fragments, tool: 'Shared', original: this.rebuildSharedFile() },
-    { title: 'aiPrompt.inventory._title', value: 1, prompts: this.inventoryPrompts, tool: 'Inventory', original: this.rebuildPromptFile('Inventory', this.inventoryPrompts) },
-    { title: 'aiPrompt.pages._title', value: 2, prompts: this.pagePrompts, tool: 'Page', original: this.rebuildPromptFile('Page', this.pagePrompts) },
+    { title: 'aiPrompt.tools._title', value: 1, prompts: this.inventoryPrompts, tool: 'Inventory', original: this.rebuildPromptFile('Inventory', this.inventoryPrompts) },
+    { title: 'aiPrompt.page._title', value: 2, prompts: this.pagePrompts, tool: 'Page', original: this.rebuildPromptFile('Page', this.pagePrompts) },
     { title: 'aiPrompt.problems._title', value: 3, prompts: this.problemPrompts, tool: 'Problem', original: this.rebuildPromptFile('Problem', this.problemPrompts) },
   ];
 
@@ -255,9 +255,9 @@ export class SkillEditorComponent {
         },
       ],
     },
-    { label: 'aiPrompt.inventory._title', items: this.inventoryPrompts },
+    { label: 'aiPrompt.tools._title', items: this.inventoryPrompts },
     {
-      label: 'aiPrompt.pages._title',
+      label: 'aiPrompt.page._title',
       items: this.pagePrompts.filter((prompt) => prompt.enumKey !== 'AlertRewrite'),
     },
   ];
@@ -363,19 +363,8 @@ export class SkillEditorComponent {
   }
 
   markForTranslation() {
-    marker('aiPrompt.shared._title');
     marker('aiPrompt.alerts._title');
-    marker('aiPrompt.inventory._title');
-    marker('aiPrompt.pages._title');
-    marker('aiPrompt.problems._title');
 
-    marker('aiPrompt.component.role');
-    marker('aiPrompt.component.output');
-    marker('aiPrompt.component.rubric');
-    marker('aiPrompt.component.task');
-    marker('aiPrompt.component.jsonSchema');
-
-    marker('dev.prompts.button.openPR');
     marker('dev.prompts.alertRewrite.baseRules');
     marker('dev.prompts.alertRewrite.canadaCaStyle');
     marker('dev.prompts.alertRewrite.conditionalInstructions');
@@ -394,7 +383,7 @@ export class SkillEditorComponent {
 
   // Test prompts
   readonly aiState = this.openRouterService.state;
-  //aiPrompt = this.aiPromptService.composePrompt(InventoryPrompts[InventoryPromptKey.Metadata]);
+  //aiPrompt = this.aiPromptService.composePrompt(InventoryPrompts[ToolsPromptKey.Metadata]);
   description = 'Official CRA information on Canadian taxes. File your return, manage payments, and explore credits and deductions for individuals and businesses.';
   response: OpenRouterResponse | null = null;
   result = '';

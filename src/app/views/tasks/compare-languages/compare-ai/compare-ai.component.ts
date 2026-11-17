@@ -12,7 +12,7 @@ import { LanguageDifference, ReviewLanguagesService } from '../compare-languages
 
 import { AI_PAID_MODELS } from '../../../../common/ai-models.config';
 import { ToolsPromptKey } from '../../../../common/prompts/prompt.model';
-import { InventoryPrompts } from '../../../../common/prompts/tools.prompts';
+import { ToolsPrompts } from '../../../../common/prompts/tools.prompts';
 
 @Component({
   selector: 'aida-compare-ai-lang',
@@ -37,7 +37,7 @@ export class CompareAiLangComponent {
     try {
       const content = `### English HTML\n${this.aiEnglish()}\n### French HTML\n${this.aiFrench()}`;
       console.log('AI request start', path);
-      const response = await this.openRouterService.getTextFromAI(InventoryPrompts[ToolsPromptKey.Languages], content, AI_PAID_MODELS[0].value);
+      const response = await this.openRouterService.getTextFromAI(ToolsPrompts[ToolsPromptKey.Languages], content, AI_PAID_MODELS[0].value);
       console.log('AI response received', response);
       this.reviewLanguagesService.setAiResponse(path, this.parseDifferences(response));
       this.reviewLanguagesService.setAiJobStatus(path, 'done');
