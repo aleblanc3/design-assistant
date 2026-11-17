@@ -16,6 +16,7 @@ export const InventoryPrompts: Record<InventoryPromptKey, PromptConfig> = {
 "keywords": ["string", "string", "string", "string", "string", "string", "string", "string", "string", "string"]
 }
 }`,
+    available: true,
   },
   [InventoryPromptKey.Description]: {
     role: RoleKey.SeoExpert,
@@ -50,6 +51,7 @@ export const InventoryPrompts: Record<InventoryPromptKey, PromptConfig> = {
     }
   ]
 }`,
+    available: true,
   },
 };
 
