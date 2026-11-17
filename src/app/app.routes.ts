@@ -131,11 +131,6 @@ export const routes: Routes = [
         title: 'iaDiagram._title',
       },
       {
-        path: 'fieldflow-diagram',
-        loadComponent: () => import('./views/tasks/diagram-fieldflow/diagram-fieldflow.component').then((m) => m.DiagramFieldflowComponent),
-        title: 'fieldflow._title',
-      },
-      {
         path: 'old-inventory',
         loadComponent: () => import('./views/tasks/old-inventory/inventory.component').then((m) => m.InventoryComponent),
         title: 'inventory._title',
