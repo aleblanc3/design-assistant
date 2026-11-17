@@ -26,7 +26,6 @@ import { ExportGitHubService } from '../../../../services/github/export-github.s
 import { UserSettingsService } from '../../../../services/user-settings.service';
 
 import { AlertRewriteExamples, type AlertRewriteExample } from '../../../../common/prompts/alert-rewrite.examples';
-import { AlertRewriteRules, FullSentenceLinksNeedLeadInLines } from '../../../../common/prompts/alert-rewrite.prompt';
 import { CanadaCaStyleRules } from '../../../../common/prompts/canada-ca-style.prompt';
 import { InventoryPrompts } from '../../../../common/prompts/inventory.prompts';
 import { LinkWritingPromptRuleGroups } from '../../../../common/prompts/link-writing.prompt';
@@ -318,7 +317,8 @@ export class PromptEditorComponent {
   });
 
   private buildAlertRewritePipelineGroups(): PromptPipelineGroup[] {
-    const rules = AlertRewriteRules.alertRewrite;
+    const promptConfig = PagePrompts[PagePromptKey.AlertRewrite];
+    const rules = promptConfig.pipeline;
     return [
       {
         key: 'alertRewrite',
@@ -327,7 +327,7 @@ export class PromptEditorComponent {
           {
             key: 'role',
             label: 'dev.prompts.alertRewrite.role',
-            content: rules.role,
+            content: RoleFragment[promptConfig.role],
             collapsed: false,
           },
           {
@@ -357,7 +357,7 @@ export class PromptEditorComponent {
           {
             key: 'outputRequirement',
             label: 'dev.prompts.alertRewrite.outputRequirement',
-            content: rules.outputRequirement,
+            content: OutputFragment[promptConfig.output],
             collapsed: false,
           },
           {
@@ -404,7 +404,7 @@ export class PromptEditorComponent {
               },
               {
                 condition: 'dev.prompts.alertRewrite.retry.fullSentenceLinksNeedLeadIn',
-                bulletItems: FullSentenceLinksNeedLeadInLines,
+                bulletItems: rules.retryInstructions.fullSentenceLinksNeedLeadIn,
               },
             ],
             collapsed: false,
@@ -611,7 +611,7 @@ export class PromptEditorComponent {
       .map((prompt) => {
         let value: string;
         if (this.isPromptConfig(prompt)) {
-          value = this.serializePromptConfig(prompt.promptText);
+          value = this.serializePromptConfig(prompt.promptText, prompt.enumKey);
         } else if (this.isPromptString(prompt)) {
           value = this.toTemplateLiteral(prompt.promptText);
         } else {
@@ -621,7 +621,11 @@ export class PromptEditorComponent {
       })
       .join('\n');
 
-    return `import { OutputKey, ${tool}PromptKey, PromptConfig, RoleKey, RubricKey } from './prompt.model';\n\nexport const ${tool}Prompts: Record<${tool}PromptKey, PromptConfig> = {\n${updatedPrompts}\n};\n`;
+    const isPagePrompts = tool === 'Page';
+    const configType = isPagePrompts ? 'PagePromptConfigs' : `Record<${tool}PromptKey, PromptConfig>`;
+    const configImport = isPagePrompts ? 'PagePromptConfigs' : 'PromptConfig';
+    const pipelineImport = isPagePrompts ? `import { AlertRewritePipeline } from './alert-rewrite.prompt';\n` : '';
+    return `${pipelineImport}import { OutputKey, ${tool}PromptKey, ${configImport}, RoleKey, RubricKey } from './prompt.model';\n\nexport const ${tool}Prompts: ${configType} = {\n${updatedPrompts}\n};\n`;
   }
 
   private getSelectedPromptConfig(): PromptConfig | null {
@@ -629,7 +633,7 @@ export class PromptEditorComponent {
     return selected && this.isPromptConfig(selected) ? selected.promptText : null;
   }
 
-  private serializePromptConfig(config: PromptConfig): string {
+  private serializePromptConfig(config: PromptConfig, enumKey: string): string {
     const lines = [
       '{',
       `    role: RoleKey.${this.getEnumKey(RoleKey, config.role)},`,
@@ -641,6 +645,17 @@ export class PromptEditorComponent {
     if (config.jsonSchema !== undefined) lines.push(`    jsonSchema: ${this.toTemplateLiteral(config.jsonSchema)},`);
     if (config.examples !== undefined) lines.push(`    examples: ${this.toTemplateLiteral(config.examples)},`);
     if (config.available !== undefined) lines.push(`    available: ${config.available},`);
+    if (config.pipeline !== undefined) {
+      if (enumKey === 'AlertRewrite') {
+        lines.push('    pipeline: AlertRewritePipeline,');
+      } else {
+        const pipeline = JSON.stringify(config.pipeline, null, 2)
+          .split('\n')
+          .map((line, index) => (index === 0 ? line : `    ${line}`))
+          .join('\n');
+        lines.push(`    pipeline: ${pipeline},`);
+      }
+    }
     lines.push('  }');
     return lines.join('\n');
   }

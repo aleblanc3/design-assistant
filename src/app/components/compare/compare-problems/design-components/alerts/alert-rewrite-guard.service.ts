@@ -60,6 +60,65 @@ export class AlertRewriteGuardService {
     }
   }
 
+  getExpectedAlertHeadingTag(alertElement: Element): string {
+    const doc = alertElement.ownerDocument;
+    let nearestPageHeading: Element | null = null;
+    const pageHeadings = Array.from(doc.querySelectorAll('h1, h2, h3, h4, h5, h6')).filter((heading) => !heading.closest('.alert'));
+    for (const heading of pageHeadings) {
+      if (heading.compareDocumentPosition(alertElement) & Node.DOCUMENT_POSITION_FOLLOWING) {
+        nearestPageHeading = heading;
+      }
+    }
+
+    const parentLevel = Number(nearestPageHeading?.tagName.slice(1)) || 1;
+    return `h${Math.min(parentLevel + 1, 6)}`;
+  }
+
+  hasAlertHeadingHierarchy(alertHtml: string, expectedTag: string): boolean {
+    try {
+      const doc = new DOMParser().parseFromString(alertHtml, 'text/html');
+      const heading = doc.body.querySelector<HTMLElement>('h1, h2, h3, h4, h5, h6');
+      if (!heading || heading.tagName.toLowerCase() !== expectedTag.toLowerCase()) return false;
+
+      return expectedTag.toLowerCase() === 'h2' ? heading.className.trim() === 'h3' : !heading.hasAttribute('class');
+    } catch {
+      return false;
+    }
+  }
+
+  ensureAlertHeadingHierarchy(alertHtml: string, expectedTag: string, headingText: string): string {
+    try {
+      if (!/^h[1-6]$/i.test(expectedTag)) return alertHtml;
+      const doc = new DOMParser().parseFromString(alertHtml, 'text/html');
+      const root = doc.body.firstElementChild as HTMLElement | null;
+      if (!root) return alertHtml;
+
+      let heading = root.querySelector<HTMLElement>('h1, h2, h3, h4, h5, h6');
+      if (!heading) {
+        const normalizedHeading = (headingText || '').trim();
+        if (!normalizedHeading) return root.outerHTML.trim();
+        heading = doc.createElement(expectedTag.toLowerCase());
+        heading.textContent = normalizedHeading;
+        root.insertBefore(heading, root.firstChild);
+      } else if (heading.tagName.toLowerCase() !== expectedTag.toLowerCase()) {
+        const replacement = doc.createElement(expectedTag.toLowerCase());
+        Array.from(heading.attributes).forEach((attribute) => replacement.setAttribute(attribute.name, attribute.value));
+        replacement.append(...Array.from(heading.childNodes));
+        heading.replaceWith(replacement);
+        heading = replacement;
+      }
+
+      if (expectedTag.toLowerCase() === 'h2') {
+        heading.setAttribute('class', 'h3');
+      } else {
+        heading.removeAttribute('class');
+      }
+      return root.outerHTML.trim();
+    } catch {
+      return alertHtml;
+    }
+  }
+
   // Final heading insertion keeps the wrapper valid if retries and local repair
   // still return body-only content.
   ensureSemanticHeading(alertHtml: string, headingText: string): string {
@@ -162,6 +221,7 @@ export class AlertRewriteGuardService {
             return 'fullSentenceLinksNeedLeadIn';
           }
           if (linkSentenceOnly && this.hasStandaloneActionVerbLinkText(sentence, markerPrefix, markerSuffix)) {
+            if (sentences.length > 1) return 'linkLeadInNotStandalone';
             continue;
           }
 
@@ -208,6 +268,15 @@ export class AlertRewriteGuardService {
         const beforeText = beforeNode.textContent || '';
         const afterText = afterNodes.map((node) => node.textContent || '').join('');
         if (afterText.replace(/[:;,.!?\s]/g, '')) return;
+
+        if (/[.!?]\s*$/.test(beforeText) && this.containsActionVerbLinkText(anchor.textContent || '')) {
+          beforeNode.textContent = beforeText.trimEnd();
+          const linkParagraph = doc.createElement('p');
+          linkParagraph.appendChild(anchor);
+          afterNodes.forEach((node) => node.remove());
+          paragraph.insertAdjacentElement('afterend', linkParagraph);
+          return;
+        }
 
         const split = beforeText.match(/^([\s\S]*[.!?])\s+([^.!?]+)$/);
         if (split) {
@@ -269,6 +338,7 @@ export class AlertRewriteGuardService {
     selectedExamples: AlertRewriteExample[];
     allowLinkRemoval: boolean;
     contentLanguage?: 'en' | 'fr';
+    expectedHeadingTag: string;
   }): AlertRewriteResult | null {
     const originalHasAnchor = /<a\b/i.test(params.originalAlertHtml);
 
@@ -317,6 +387,9 @@ export class AlertRewriteGuardService {
     if (!this.hasSemanticHeading(repairedHtml)) {
       repairedHtml = this.ensureSemanticHeading(repairedHtml, candidate.rewrittenHeading || params.originalHeading || '');
     }
+    repairedHtml = this.ensureAlertHeadingHierarchy(repairedHtml, params.expectedHeadingTag, candidate.rewrittenHeading || params.originalHeading || '');
+    repairedHtml = this.moveAddedLearnAboutLeadInOutsideLink(repairedHtml, params.originalAlertHtml);
+    repairedHtml = this.repairEmbeddedStandaloneLeadInParagraphs(repairedHtml, params.contentLanguage ?? 'en');
     repairedHtml = this.stripRedundantLeadInsBeforeActionLinks(repairedHtml);
     repairedHtml = this.stripStandaloneLinkTerminalPunctuation(repairedHtml);
 
@@ -335,6 +408,7 @@ export class AlertRewriteGuardService {
 
     const repairedHasAnchor = /<a\b/i.test(repaired.rewrittenAlertHtml);
     if (!this.hasSemanticHeading(repaired.rewrittenAlertHtml)) return null;
+    if (!this.hasAlertHeadingHierarchy(repaired.rewrittenAlertHtml, params.expectedHeadingTag)) return null;
     if (!originalHasAnchor && repairedHasAnchor) return null;
     if (originalHasAnchor && !repairedHasAnchor) {
       return null;
@@ -454,6 +528,76 @@ export class AlertRewriteGuardService {
     }
   }
 
+  moveAddedLearnAboutLeadInOutsideLink(rewrittenHtml: string, originalAlertHtml: string): string {
+    try {
+      const originalDoc = new DOMParser().parseFromString(originalAlertHtml || '', 'text/html');
+      const originalTextByHref = new Map<string, string>();
+      const originalTextByNormalizedHref = new Map<string, string>();
+      originalDoc.body.querySelectorAll('a[href]').forEach((anchor) => {
+        const href = anchor.getAttribute('href') || '';
+        const text = (anchor.textContent || '').replace(/\s+/g, ' ').trim();
+        if (!href || !text) return;
+        originalTextByHref.set(href, text);
+        originalTextByNormalizedHref.set(this.normalizeHrefForLeadInMatch(href), text);
+      });
+      if (!originalTextByHref.size) return rewrittenHtml;
+
+      const rewrittenDoc = new DOMParser().parseFromString(rewrittenHtml || '', 'text/html');
+      const root = rewrittenDoc.body.firstElementChild as HTMLElement | null;
+      if (!root) return rewrittenHtml;
+
+      root.querySelectorAll('a[href]').forEach((anchor) => {
+        const href = anchor.getAttribute('href') || '';
+        const originalText = originalTextByHref.get(href) || originalTextByNormalizedHref.get(this.normalizeHrefForLeadInMatch(href));
+        if (!originalText) return;
+
+        const rewrittenText = (anchor.textContent || '').replace(/\s+/g, ' ').trim();
+        const match = rewrittenText.match(/^learn about(\s+the)?\s+(.+)$/i);
+        if (!match) return;
+        const destinationText = (match[2] || '').trim();
+        if (this.normalizeLinkTextForLeadInMatch(destinationText) !== this.normalizeLinkTextForLeadInMatch(originalText)) return;
+
+        const paragraph = anchor.closest('p');
+        if (!paragraph || anchor.parentElement !== paragraph) return;
+        const beforeRange = rewrittenDoc.createRange();
+        beforeRange.setStart(paragraph, 0);
+        beforeRange.setEndBefore(anchor);
+        const beforeText = beforeRange.toString().trim();
+        beforeRange.detach();
+
+        const afterRange = rewrittenDoc.createRange();
+        afterRange.setStartAfter(anchor);
+        afterRange.setEnd(paragraph, paragraph.childNodes.length);
+        const afterText = afterRange.toString();
+        afterRange.detach();
+        if (afterText.replace(/[.!?\s]/g, '')) return;
+
+        anchor.textContent = originalText;
+        const leadIn = match[1] ? 'Learn about the' : 'Learn about';
+        if (!beforeText) {
+          paragraph.insertBefore(rewrittenDoc.createTextNode(`${leadIn} `), anchor);
+          this.removeTextAfterNode(anchor);
+          return;
+        }
+        if (!/[.!?]$/.test(beforeText)) return;
+
+        const linkParagraph = rewrittenDoc.createElement('p');
+        linkParagraph.appendChild(rewrittenDoc.createTextNode(`${leadIn} `));
+        this.removeTextAfterNode(anchor);
+        linkParagraph.appendChild(anchor);
+        const finalTextNode = Array.from(paragraph.childNodes)
+          .reverse()
+          .find((node) => node.nodeType === Node.TEXT_NODE);
+        if (finalTextNode) finalTextNode.textContent = (finalTextNode.textContent || '').trimEnd();
+        paragraph.insertAdjacentElement('afterend', linkParagraph);
+      });
+
+      return root.outerHTML.trim();
+    } catch {
+      return rewrittenHtml;
+    }
+  }
+
   // The remaining helpers support the guard logic above and stay private so the
   // orchestration layer only depends on the high-level validation/repair API.
   private normalizeLeadInText(value: string): string {
@@ -527,7 +671,10 @@ export class AlertRewriteGuardService {
 
   private getRepairedStandaloneLinkLeadIn(leadInText: string): string | null {
     const normalized = this.normalizeLeadInText(leadInText.replace(/[.!?]\s*$/g, ''));
-    if (normalized === 'refer to' || normalized === 'refer to:' || /^(?:for details|for more information),?\s+refer to:?$/.test(normalized)) {
+    if (/^(?:for details|for more information),?\s+(?:refer to|visit)(?:\s+(?:the|this|that))?:?$/.test(normalized)) {
+      return 'For details:';
+    }
+    if (/^refer to(?:\s+(?:the|this|that))?:?$/.test(normalized)) {
       return 'Refer to:';
     }
     if (

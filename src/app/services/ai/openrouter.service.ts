@@ -8,12 +8,7 @@ import { AiPromptService } from './prompt.service';
 
 import { environment } from '../../../environments/environment';
 import { AI_FREE_MODELS } from '../../common/ai-models.config';
-import { OutputKey, PromptConfig } from '../../common/prompts/prompt.model';
-
-export interface ChatMessage {
-  role: 'user' | 'assistant' | 'system';
-  content: string;
-}
+import { ChatMessage, OutputKey, PromptConfig } from '../../common/prompts/prompt.model';
 
 export interface OpenRouterResponse {
   id: string;
@@ -37,7 +32,6 @@ export interface AiRequestState {
 
 type KeyType = 'paid' | 'free' | 'devp';
 
-/** TODO: see if we can merge sendMessages with getTextFromAI or choose better names for each (getTextFromAI cleans and formats an HTML response, sendMessages skips the cleanup and also returns the model) */
 @Injectable({ providedIn: 'root' })
 export class OpenRouterService {
   private http = inject(HttpClient);
@@ -54,23 +48,18 @@ export class OpenRouterService {
 
   // Returns full OpenRouter response
   async sendToAI(config: PromptConfig, content: string, preferredModel?: string, temperature = 0, keyType: KeyType = 'paid'): Promise<OpenRouterResponse> {
-    // Compose the configured system prompt before sending the request.
-    const systemPrompt = this.aiPromptService.composePrompt(config);
-    console.log(systemPrompt);
-    return await this.sendRawPrompt(systemPrompt, content, preferredModel, temperature, keyType);
+    const messages = this.aiPromptService.composeMessages(config, content);
+    console.log(messages[0]?.content ?? '');
+    return await this.sendMessages(messages, preferredModel, temperature, keyType);
   }
 
-  // Sends the first precomposed system/user pair, as used by alert rewriting.
-  async sendMessages(messages: ChatMessage[], preferredModel?: string, temperature = 0, keyType: KeyType = 'paid'): Promise<{ text: string; usedModel: string }> {
+  // Sends the first precomposed system/user pair.
+  async sendMessages(messages: ChatMessage[], preferredModel?: string, temperature = 0, keyType: KeyType = 'paid'): Promise<OpenRouterResponse> {
     const systemPrompt = messages.find((message) => message.role === 'system')?.content ?? '';
     const content = messages.find((message) => message.role === 'user')?.content ?? '';
     if (!systemPrompt) throw new Error('A system message is required.');
 
-    const response = await this.sendRawPrompt(systemPrompt, content, preferredModel, temperature, keyType);
-    return {
-      text: response.choices?.[0]?.message?.content ?? '',
-      usedModel: response.model ?? preferredModel ?? 'unknown',
-    };
+    return await this.sendRawPrompt(systemPrompt, content, preferredModel, temperature, keyType);
   }
 
   // Returns just the text from the OpenRouter response

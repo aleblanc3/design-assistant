@@ -4,6 +4,7 @@ import { marker } from '@colsen1991/ngx-translate-extract-marker';
 function markForTranslation() {
   marker('aiPrompt.alerts._title');
   marker('aiPrompt.role.none');
+  marker('aiPrompt.role.alertRewrite');
   marker('aiPrompt.role.contentDesigner');
   marker('aiPrompt.role.seoExpert');
   marker('aiPrompt.role.accessibilityExpert');
@@ -44,7 +45,7 @@ function markForTranslation() {
   marker('aiPrompt.craTerminology.terms.royalAssent');
 }
 
-export interface PromptConfig {
+export interface PromptConfig<TPipeline = unknown> {
   role: RoleKey; // Shared
   task: string; // Unique task
   rubric: RubricKey[]; // Shared
@@ -52,11 +53,48 @@ export interface PromptConfig {
   jsonSchema?: string; // Unique schema
   examples?: string; // reference to example set for additional prompt set-up
   available?: boolean; // Hides prompt in prod if not ready
+  pipeline?: TPipeline; // Optional workflow-specific prompt configuration
 }
+
+export interface ChatMessage {
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+}
+
+export interface AlertRewritePipelineConfig {
+  styleRulesBase: string[];
+  systemPromptWithExamplesLines: string[];
+  systemPromptWithoutExamplesLines: string[];
+  outputSchemas: {
+    withExamples: string;
+    withoutExamples: string;
+  };
+  conditionalInstructions: {
+    preserveFinalStandaloneLink: string;
+    enforceLinkManifest: string;
+  };
+  retryInstructions: {
+    invalidWrapperHtml: string;
+    noLinksAllowed: string;
+    mustKeepLink: string;
+    mustHaveHeading: string;
+    avoidExampleCopy: string;
+    fullSentenceLinksNeedLeadIn: readonly string[];
+  };
+}
+
+export type AlertRewritePromptConfig = PromptConfig<AlertRewritePipelineConfig> & {
+  pipeline: AlertRewritePipelineConfig;
+};
+
+export type PagePromptConfigs = Record<PagePromptKey, PromptConfig> & {
+  [PagePromptKey.AlertRewrite]: AlertRewritePromptConfig;
+};
 
 //Shared role fragments
 export enum RoleKey {
   None = 'aiPrompt.role.none',
+  AlertRewrite = 'aiPrompt.role.alertRewrite',
   ContentDesigner = 'aiPrompt.role.contentDesigner',
   SeoExpert = 'aiPrompt.role.seoExpert',
   AccessibilityExpert = 'aiPrompt.role.accessibilityExpert',

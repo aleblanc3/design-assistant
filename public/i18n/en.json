@@ -76,6 +76,7 @@
 	"aiPrompt.problem.translateIssueDetails": "Translate problem details",
 	"aiPrompt.problems._title": "Problems",
 	"aiPrompt.role.accessibilityExpert": "Accessibility expert",
+	"aiPrompt.role.alertRewrite": "Alert rewrite expert",
 	"aiPrompt.role.contentDesigner": "Content designer",
 	"aiPrompt.role.none": "None",
 	"aiPrompt.role.seoExpert": "SEO expert",

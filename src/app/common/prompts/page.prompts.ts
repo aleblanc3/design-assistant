@@ -1,12 +1,14 @@
-import { OutputKey, PagePromptKey, PromptConfig, RoleKey, RubricKey } from './prompt.model';
+import { AlertRewritePipeline } from './alert-rewrite.prompt';
+import { OutputKey, PagePromptConfigs, PagePromptKey, RoleKey, RubricKey } from './prompt.model';
 
-export const PagePrompts: Record<PagePromptKey, PromptConfig> = {
+export const PagePrompts: PagePromptConfigs = {
   [PagePromptKey.AlertRewrite]: {
-    role: RoleKey.ContentDesigner,
+    role: RoleKey.AlertRewrite,
     task: 'Rewrite the supplied alerts, using identified issues where available, preserving valid content and returning safe alert replacements.',
     rubric: [RubricKey.NoCommentary],
     output: OutputKey.Json,
     available: true,
+    pipeline: AlertRewritePipeline,
   },
   [PagePromptKey.Headings]: {
     role: RoleKey.ContentDesigner,

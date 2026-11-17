@@ -76,6 +76,7 @@
 	"aiPrompt.problem.translateIssueDetails": "Traduire les détails des problèmes",
 	"aiPrompt.problems._title": "Problèmes",
 	"aiPrompt.role.accessibilityExpert": "Expert en accessibilité",
+	"aiPrompt.role.alertRewrite": "Expert en réécriture d’alertes",
 	"aiPrompt.role.contentDesigner": "Concepteur de contenu",
 	"aiPrompt.role.none": "Aucun",
 	"aiPrompt.role.seoExpert": "Expert en référencement",

@@ -74,7 +74,7 @@ export const AlertIssuesInstructions = `{
       "rule": "On home, landing, or broad overview pages, alerts should apply to more than half of the audience. Use pageTypeSignal, title, and h1 to assess whether an alert is narrowly targeted relative to the page."
     },
     { "name": "Incorrect hierarchy",
-      "rule": "Alert headings must follow the heading structure of the page (e.g., there should never be an H4 after an H2). Use has_heading, heading_level, heading_source, heading_tag, h2Headings, nearest_h2_above, and nearest_h2_below to compare the alert heading pattern with nearby page headings and section position, not just the alert markup in isolation."
+      "rule": "Alert headings must be one semantic level below the nearest preceding page heading outside any alert. An alert directly after the H1 and before a non-alert H2 correctly uses <h2 class=\"h3\">; class h3 controls visual size and does not make the heading a semantic H3. Adjacent alerts in that location should all use H2, so ignore headings inside other alerts when determining hierarchy. Inside an H2 section use H3 with no class, inside an H3 section use H4 with no class, and continue one level deeper as needed. Do not flag a correct H2 with class h3. Use has_heading, heading_level, heading_source, heading_tag, h2Headings, nearest_h2_above, and nearest_h2_below to compare the alert with the page outline."
     },
     { "name": "Nothing actionable",
       "rule": "If no next-step link exists, flag the alert to confirm that none is needed or whether it needs to be deleted and the information added to the page instead."

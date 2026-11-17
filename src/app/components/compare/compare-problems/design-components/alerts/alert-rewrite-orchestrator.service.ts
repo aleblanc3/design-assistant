@@ -10,7 +10,6 @@ import { AlertContextService } from './alert-context.service';
 import { AlertRewriteGuardService } from './alert-rewrite-guard.service';
 import { AlertRewriteIssueInput, AlertRewriteRepairCandidate, AlertRewriteResult, AlertRewriteService } from './alert-rewrite.service';
 
-import { AlertRewriteRules } from '../../../../../common/prompts/alert-rewrite.prompt';
 import {
   CraTerminologyEntries,
   CraTerminologyInstructions,
@@ -20,6 +19,8 @@ import {
   type CraTerminologyLanguage,
   type ResolvedCraTerminologyEntry,
 } from '../../../../../common/prompts/cra-terminology.prompt';
+import { PagePrompts } from '../../../../../common/prompts/page.prompts';
+import { PagePromptKey } from '../../../../../common/prompts/prompt.model';
 import { coerceInteractiveResultLeadIns, getReportableAlerts } from './alert-reportable.utils';
 
 export interface AlertRewriteFallbackNotice {
@@ -127,8 +128,8 @@ export class AlertRewriteOrchestratorService {
   }> {
     const start = performance.now();
     const timings = this.createTimings();
-    const rewriteRules = AlertRewriteRules;
-    const retryInstructions = rewriteRules.alertRewrite.retryInstructions;
+    const rewriteConfig = PagePrompts[PagePromptKey.AlertRewrite].pipeline;
+    const retryInstructions = rewriteConfig.retryInstructions;
 
     let timingStart = performance.now();
     const alertDoc = new DOMParser().parseFromString(params.html, 'text/html');
@@ -162,6 +163,7 @@ export class AlertRewriteOrchestratorService {
       if (!alertElement) continue;
       const alertIndex = i + 1;
       const relevantIssues = this.alertRewriteGuard.getIssuesForAlertIndex(params.issues, alertIndex);
+      const expectedHeadingTag = this.alertRewriteGuard.getExpectedAlertHeadingTag(alertElement);
       const needsPlacementReview = relevantIssues.some((issue) => (issue.category || '').trim().toLowerCase() === 'wrong placement');
       const mayChangeAlertType = relevantIssues.some((issue) => /^(?:wrong|incorrect) (?:alert )?type$/.test((issue.category || '').trim().toLowerCase()));
       if (!params.includeExamples && !relevantIssues.length) {
@@ -231,23 +233,24 @@ export class AlertRewriteOrchestratorService {
 
         timingStart = performance.now();
         const rewriteResponse = await this.openRouter.sendMessages(alertRewriteMessages, params.preferredModel, attempt > 0 ? 0.2 : 0);
+        const rewriteResponseText = rewriteResponse.choices?.[0]?.message?.content ?? '';
         const rewriteAiElapsedMs = performance.now() - timingStart;
         timings.rewriteAiMs += rewriteAiElapsedMs;
-        rewriteModelName = rewriteResponse.usedModel;
+        rewriteModelName = rewriteResponse.model ?? params.preferredModel ?? 'unknown';
         this.debugLog('Alert rewrite AI call timing', {
           alertIndex,
           attempt: attempt + 1,
           requestedModel: params.preferredModel,
           usedModel: rewriteModelName,
           elapsedMs: Math.round(rewriteAiElapsedMs),
-          responseCharacters: rewriteResponse.text.length,
+          responseCharacters: rewriteResponseText.length,
         });
 
         // Parse the model response back into the normalized rewrite contract
         // used by the rest of the pipeline. If parsing fails we cannot safely
         // patch the alert into the page, so we retry with a structure-specific instruction.
         timingStart = performance.now();
-        let parsedResult = this.alertRewrite.parseAlertRewriteResponse(rewriteResponse.text, initialPlan, selectedExamples);
+        let parsedResult = this.alertRewrite.parseAlertRewriteResponse(rewriteResponseText, initialPlan, selectedExamples);
         this.debugLog('Alert rewrite parsed model output', {
           alertIndex,
           attempt: attempt + 1,
@@ -255,7 +258,7 @@ export class AlertRewriteOrchestratorService {
           rewrittenAlert: parsedResult?.rewrittenAlert,
         });
         if (!parsedResult?.rewrittenAlertHtml) {
-          const repairCandidate = this.alertRewrite.parseAlertRewriteRepairCandidate(rewriteResponse.text, selectedExamples);
+          const repairCandidate = this.alertRewrite.parseAlertRewriteRepairCandidate(rewriteResponseText, selectedExamples);
           if (repairCandidate) {
             lastRepairCandidate = repairCandidate;
           }
@@ -272,12 +275,15 @@ export class AlertRewriteOrchestratorService {
           continue;
         }
 
-        const preservedLeadInHtml = this.alertRewriteGuard.preserveOriginalStandaloneLinkLeadIns(parsedResult.rewrittenAlertHtml, alertHtml);
-        if (preservedLeadInHtml !== parsedResult.rewrittenAlertHtml) {
+        const normalizedLearnAboutHtml = this.alertRewriteGuard.moveAddedLearnAboutLeadInOutsideLink(parsedResult.rewrittenAlertHtml, alertHtml);
+        const preservedLeadInHtml = this.alertRewriteGuard.preserveOriginalStandaloneLinkLeadIns(normalizedLearnAboutHtml, alertHtml);
+        const normalizedHeadingHtml = this.alertRewriteGuard.ensureAlertHeadingHierarchy(preservedLeadInHtml, expectedHeadingTag, parsedResult.rewrittenHeading || originalHeading);
+        const deterministicAdjustmentApplied = normalizedHeadingHtml !== parsedResult.rewrittenAlertHtml;
+        if (deterministicAdjustmentApplied) {
           const leadInPreservedResult = this.alertRewrite.parseAlertRewriteResponse(
             JSON.stringify({
               ...parsedResult,
-              rewrittenAlertHtml: preservedLeadInHtml,
+              rewrittenAlertHtml: normalizedHeadingHtml,
             }),
             initialPlan,
             selectedExamples,
@@ -298,6 +304,13 @@ export class AlertRewriteOrchestratorService {
         // Guard 1: semantic alert headings are required for accessibility.
         if (!this.alertRewriteGuard.hasSemanticHeading(parsedResult.rewrittenAlertHtml)) {
           addRetryInstruction('mustHaveHeading', retryInstructions.mustHaveHeading);
+        } else if (!this.alertRewriteGuard.hasAlertHeadingHierarchy(parsedResult.rewrittenAlertHtml, expectedHeadingTag)) {
+          addRetryInstruction(
+            'mustRespectPageHeadingHierarchy',
+            expectedHeadingTag === 'h2'
+              ? 'The page hierarchy requires a semantic <h2 class="h3"> alert heading. Use an actual H2; class h3 controls only its visual size.'
+              : `The page hierarchy requires a semantic <${expectedHeadingTag}> alert heading with no class.`,
+          );
         }
 
         // Guard 2: compare link presence before vs after rewrite so we do not
@@ -330,7 +343,7 @@ export class AlertRewriteOrchestratorService {
         // "refer to <link>" or link-only sentence patterns trigger a retry.
         const linkLeadInIssue = rewrittenHasAnchor ? this.alertRewriteGuard.getFullSentenceLinkLeadInIssue(parsedResult.rewrittenAlertHtml) : null;
         if (linkLeadInIssue) {
-          addRetryInstruction(linkLeadInIssue, retryInstructions.fullSentenceLinksNeedLeadIn);
+          addRetryInstruction(linkLeadInIssue, retryInstructions.fullSentenceLinksNeedLeadIn.join(' '));
         }
 
         // Guard 6: if examples are enabled, reject outputs that are too close
@@ -377,6 +390,7 @@ export class AlertRewriteOrchestratorService {
               }).isCopy
             ) {
               rewriteResult = repairedResult;
+              rewriteResultSource = 'local-repair';
               lastRepairCandidate = repairedResult;
               this.addElapsed(timings, 'parseAndGuardMs', timingStart);
               break;
@@ -385,7 +399,7 @@ export class AlertRewriteOrchestratorService {
         }
 
         if (retryReasons.length) {
-          const hardRetryReasons = retryReasons.filter((reason) => reason !== 'mustHaveHeading' && reason !== 'fullSentenceLinksNeedLeadIn' && reason !== 'linkLeadInNotStandalone');
+          const hardRetryReasons = retryReasons.filter((reason) => reason !== 'mustHaveHeading');
           if (!hardRetryReasons.length) {
             softRejectedResult = parsedResult;
             softRejectedReasons = [...retryReasons];
@@ -410,7 +424,7 @@ export class AlertRewriteOrchestratorService {
             break;
           }
           rewriteResult = parsedResult;
-          rewriteResultSource = 'model';
+          rewriteResultSource = deterministicAdjustmentApplied ? 'local-repair' : 'model';
           this.addElapsed(timings, 'parseAndGuardMs', timingStart);
           break;
         }
@@ -436,6 +450,7 @@ export class AlertRewriteOrchestratorService {
           selectedExamples,
           allowLinkRemoval,
           contentLanguage,
+          expectedHeadingTag,
         });
         if (rewriteResult) {
           rewriteResultSource = 'local-repair';
