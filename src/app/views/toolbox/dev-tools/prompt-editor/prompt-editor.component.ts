@@ -23,13 +23,11 @@ import { TextareaModule } from 'primeng/textarea';
 import { OpenRouterResponse, OpenRouterService } from '../../../../services/ai/openrouter.service';
 import { AiPromptService } from '../../../../services/ai/prompt.service';
 import { ExportGitHubService } from '../../../../services/github/export-github.service';
+import { SignInService } from '../../../../services/github/sign-in.service';
+import { StyleCardService } from '../../../../services/style-card.service';
 import { UserSettingsService } from '../../../../services/user-settings.service';
 
-import { AlertRewriteExamples, type AlertRewriteExample } from '../../../../common/prompts/alert-rewrite.examples';
-import { AlertRewriteRules } from '../../../../common/prompts/alert-rewrite.prompt';
-import { getCanadaCaStylePromptRules } from '../../../../common/prompts/canada-ca-style.prompt';
 import { InventoryPrompts } from '../../../../common/prompts/inventory.prompts';
-import { getLinkWritingPromptRules } from '../../../../common/prompts/link-writing.prompt';
 import { PagePrompts } from '../../../../common/prompts/page.prompts';
 import { ProblemPrompts } from '../../../../common/prompts/problems.prompts';
 import { InventoryPromptKey, OutputKey, PagePromptKey, ProblemPromptKey, PromptConfig, RoleKey, RubricKey } from '../../../../common/prompts/prompt.model';
@@ -48,19 +46,6 @@ interface TabConfig {
   fragments?: { key: string; label: string; data: PromptEntry[] }[];
   tool: string;
   original: string;
-}
-
-interface PromptPipelineSection {
-  key: string;
-  label: string;
-  content?: string;
-  options?: PromptPipelineOption[];
-}
-
-interface PromptPipelineOption {
-  key: string;
-  label: string;
-  content: string;
 }
 
 @Component({
@@ -105,16 +90,19 @@ export class PromptEditorComponent {
   private readonly settingsService = inject(UserSettingsService);
   private readonly openRouterService = inject(OpenRouterService);
   private readonly aiPromptService = inject(AiPromptService);
+  protected readonly signInService = inject(SignInService);
+  protected readonly styleCardService = inject(StyleCardService);
 
   constructor() {
     effect(() => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const isDarkMode = this.settingsService.darkMode(); //watching for changes to dark mode to update diff theme
+      void this.settingsService.darkMode(); //watching for changes to dark mode to update diff theme
       this.updateDiff();
     });
     effect(() => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const tab = this.selectedTab; //watching for changes to selected tab
+      const tab = this.selectedTab(); //watching for changes to selected tab
+      if (tab < 5) {
+        this.selectedPromptTab.set(tab);
+      }
       this.updateDiff();
     });
   }
@@ -126,14 +114,6 @@ export class PromptEditorComponent {
 
   protected isPromptString(entry: PromptEntry): entry is PromptEntry & { promptText: string } {
     return typeof entry.promptText === 'string';
-  }
-
-  protected isAlertRewritePipeline(entry: PromptEntry): boolean {
-    return entry.enumKey === 'AlertRewrite';
-  }
-
-  protected isAlertRewriteExamples(entry: PromptEntry): boolean {
-    return entry.enumKey === 'AlertExamples';
   }
 
   protected isFragmentsTab(tab: TabConfig): boolean {
@@ -215,9 +195,6 @@ export class PromptEditorComponent {
     promptText: ProblemPrompts[ProblemPromptKey[enumKey as keyof typeof ProblemPromptKey]],
   }));
 
-  protected readonly alertRewritePipelineSections: PromptPipelineSection[] = this.buildAlertRewritePipelineSections();
-  protected readonly alertRewriteExamples = AlertRewriteExamples;
-
   selectedPrompts = new Set<string>([this.inventoryPrompts[0]?.enumKey, this.pagePrompts[0]?.enumKey, this.problemPrompts[0]?.enumKey].filter(Boolean));
 
   togglePrompt(enumKey: string) {
@@ -233,7 +210,8 @@ export class PromptEditorComponent {
   }
 
   // Tabs
-  selectedTab = 1;
+  protected readonly selectedTab = signal<number>(1);
+  protected readonly selectedPromptTab = signal<number>(1);
   tabs: TabConfig[] = [
     { title: 'aiPrompt.shared._title', value: 0, fragments: this.fragments, tool: 'Shared', original: this.rebuildSharedFile() },
     { title: 'aiPrompt.inventory._title', value: 1, prompts: this.inventoryPrompts, tool: 'Inventory', original: this.rebuildPromptFile('Inventory', this.inventoryPrompts) },
@@ -243,128 +221,19 @@ export class PromptEditorComponent {
 
   // Dropdown
   protected readonly promptGroups = [
-    {
-      label: 'aiPrompt.alerts._title',
-      items: [
-        ...this.problemPrompts.filter((prompt) => prompt.enumKey === 'AlertsProblems' || prompt.enumKey === 'TranslateIssueDetails'),
-        ...this.pagePrompts.filter((prompt) => prompt.enumKey === 'AlertRewrite'),
-        {
-          enumKey: 'AlertExamples',
-          translationKey: 'aiPrompt.page.alertExamples',
-          promptText: '',
-        },
-      ],
-    },
     { label: 'aiPrompt.inventory._title', items: this.inventoryPrompts },
-    {
-      label: 'aiPrompt.pages._title',
-      items: this.pagePrompts.filter((prompt) => prompt.enumKey !== 'AlertRewrite'),
-    },
+    { label: 'aiPrompt.pages._title', items: this.pagePrompts },
+    { label: 'aiPrompt.problems._title', items: this.problemPrompts },
   ];
-  protected readonly selectedPrompt = signal<PromptEntry | undefined>(this.problemPrompts.find((prompt) => prompt.enumKey === 'Alerts'));
-  protected readonly selectedPromptIsAlertRewritePipeline = computed(() => {
-    const selected = this.selectedPrompt();
-    return !!selected && this.isAlertRewritePipeline(selected);
-  });
-  protected readonly selectedPromptIsAlertRewriteExamples = computed(() => {
-    const selected = this.selectedPrompt();
-    return !!selected && this.isAlertRewriteExamples(selected);
-  });
+  protected readonly selectedPrompt = signal<PromptEntry | undefined>(this.problemPrompts.find((p) => p.enumKey === 'Alerts'));
   protected readonly aiPrompt = computed(() => {
     const selected = this.selectedPrompt();
     if (!selected || !this.isPromptConfig(selected)) return '';
     return this.aiPromptService.composePrompt(selected.promptText);
   });
 
-  private buildAlertRewritePipelineSections(): PromptPipelineSection[] {
-    const rules = AlertRewriteRules.alertRewrite;
-    return [
-      {
-        key: 'role',
-        label: 'dev.prompts.alertRewrite.role',
-        content: this.formatPromptJson(rules.role),
-      },
-      {
-        key: 'aiInstructions',
-        label: 'dev.prompts.alertRewrite.aiInstructions',
-        options: [
-          {
-            key: 'systemWithExamples',
-            label: 'dev.prompts.alertRewrite.examplesIncluded',
-            content: this.formatPromptJson(rules.systemPromptWithExamplesLines),
-          },
-          {
-            key: 'systemWithoutExamples',
-            label: 'dev.prompts.alertRewrite.examplesNotIncluded',
-            content: this.formatPromptJson(rules.systemPromptWithoutExamplesLines),
-          },
-        ],
-      },
-      {
-        key: 'outputRequirement',
-        label: 'dev.prompts.alertRewrite.outputRequirement',
-        content: this.formatPromptJson(rules.outputRequirement),
-      },
-      {
-        key: 'outputSchemas',
-        label: 'dev.prompts.alertRewrite.outputSchemas',
-        options: [
-          {
-            key: 'outputSchemaWithExamples',
-            label: 'dev.prompts.alertRewrite.examplesIncluded',
-            content: this.formatPromptJson(rules.outputSchemas.withExamples),
-          },
-          {
-            key: 'outputSchemaWithoutExamples',
-            label: 'dev.prompts.alertRewrite.examplesNotIncluded',
-            content: this.formatPromptJson(rules.outputSchemas.withoutExamples),
-          },
-        ],
-      },
-      {
-        key: 'baseRules',
-        label: 'dev.prompts.alertRewrite.baseRules',
-        content: this.formatPromptJson(rules.styleRulesBase),
-      },
-      {
-        key: 'canadaCaStyle',
-        label: 'dev.prompts.alertRewrite.canadaCaStyle',
-        content: this.formatPromptJson(getCanadaCaStylePromptRules()),
-      },
-      {
-        key: 'linkRulesDefault',
-        label: 'dev.prompts.alertRewrite.linkRulesDefault',
-        content: this.formatPromptJson(getLinkWritingPromptRules({ hasTooManyLinksIssue: false })),
-      },
-      {
-        key: 'linkRulesTooMany',
-        label: 'dev.prompts.alertRewrite.linkRulesTooMany',
-        content: this.formatPromptJson(getLinkWritingPromptRules({ hasTooManyLinksIssue: true })),
-      },
-      {
-        key: 'conditionalInstructions',
-        label: 'dev.prompts.alertRewrite.conditionalInstructions',
-        content: this.formatPromptJson(rules.conditionalInstructions),
-      },
-      {
-        key: 'retryInstructions',
-        label: 'dev.prompts.alertRewrite.retryInstructions',
-        content: this.formatPromptJson(rules.retryInstructions),
-      },
-    ];
-  }
-
-  protected getAlertRewriteExampleLegend(example: AlertRewriteExample): string {
-    return `${example.id} — ${example.egHeading || example.egText}`;
-  }
-
-  private formatPromptJson(value: unknown): string {
-    return JSON.stringify(value, null, 2);
-  }
-
   markForTranslation() {
     marker('aiPrompt.shared._title');
-    marker('aiPrompt.alerts._title');
     marker('aiPrompt.inventory._title');
     marker('aiPrompt.pages._title');
     marker('aiPrompt.problems._title');
@@ -376,20 +245,6 @@ export class PromptEditorComponent {
     marker('aiPrompt.component.jsonSchema');
 
     marker('dev.prompts.button.openPR');
-    marker('dev.prompts.alertRewrite.baseRules');
-    marker('dev.prompts.alertRewrite.canadaCaStyle');
-    marker('dev.prompts.alertRewrite.conditionalInstructions');
-    marker('dev.prompts.alertRewrite.linkRulesDefault');
-    marker('dev.prompts.alertRewrite.linkRulesTooMany');
-    marker('dev.prompts.alertRewrite.outputRequirement');
-    marker('dev.prompts.alertRewrite.outputSchemas');
-    marker('dev.prompts.alertRewrite.retryInstructions');
-    marker('dev.prompts.alertRewrite.role');
-    marker('dev.prompts.alertRewrite.aiInstructions');
-    marker('dev.prompts.alertRewrite.examplesIncluded');
-    marker('dev.prompts.alertRewrite.examplesNotIncluded');
-    marker('dev.prompts.alertRewrite.testUnavailable');
-    marker('aiPrompt.page.alertExamples');
   }
 
   // Test prompts
@@ -426,10 +281,12 @@ export class PromptEditorComponent {
       })
       .join('\n');
 
-    return `import { OutputKey, ${tool}PromptKey, PromptConfig, RoleKey, RubricKey } from './prompt.model';\n\nexport const ${tool}Prompts: Record<${tool}PromptKey, PromptConfig> = {\n${updatedPrompts}\n};\n`;
+    const imports = ['OutputKey', `${tool}PromptKey`, 'PromptConfig', 'RoleKey', 'RubricKey'].sort();
+
+    return `import { ${imports.join(', ')} } from './prompt.model';\n\nexport const ${tool}Prompts: Record<${tool}PromptKey, PromptConfig> = {\n${updatedPrompts}\n};\n`;
   }
 
-  private getSelectedPromptConfig(): PromptConfig | null {
+  protected getSelectedPromptConfig(): PromptConfig | null {
     const selected = this.selectedPrompt();
     return selected && this.isPromptConfig(selected) ? selected.promptText : null;
   }
@@ -489,19 +346,19 @@ export class PromptEditorComponent {
                 }`;
   }
 
-  // Tracks if changes have been made to current tab
-  hasChanges(): boolean {
-    if (!this.selectedTab) return false;
-    const prompts = this.tabs[this.selectedTab].prompts;
-    if (!prompts) return false;
-    const tab = this.tabs[this.selectedTab];
-    const updatedContent = this.rebuildPromptFile(tab.tool, prompts);
+  /** Tracks if changes have been made to current tab */
+  hasChanges(promptTab?: number): boolean {
+    const tabNumber = promptTab ?? this.selectedPromptTab();
+    const tab = this.tabs[tabNumber];
+    if (!tab?.prompts) return false;
+    const updatedContent = this.rebuildPromptFile(tab.tool, tab.prompts);
     const originalContent = tab.original;
     return updatedContent !== originalContent;
   }
 
   // Open pull request
   pullRequestUrl: string | null = null;
+  /** Open pull request for selected tab */
   async openPullRequest(tool: string, prompts: PromptEntry[]) {
     const content = this.rebuildPromptFile(tool, prompts);
     const toolLC = tool.toLowerCase();
@@ -513,16 +370,16 @@ export class PromptEditorComponent {
     }
   }
 
-  // Update prompts diff
+  /** Update prompts diff */
   protected readonly diffContainer = viewChild<ElementRef<HTMLElement>>('diffContainer');
   async updateDiff() {
     const diffContainer = this.diffContainer();
     if (!diffContainer) return;
-    const prompts = this.tabs[this.selectedTab].prompts;
+    const prompts = this.tabs[this.selectedPromptTab()].prompts;
     if (!prompts) return;
     // Lazy load both modules
     const [{ createPatch }, { Diff2HtmlUI }] = await Promise.all([import('diff'), import('diff2html/lib/ui/js/diff2html-ui-slim')]);
-    const tab = this.tabs[this.selectedTab];
+    const tab = this.tabs[this.selectedPromptTab()];
     const updatedContent = this.rebuildPromptFile(tab.tool, prompts);
     const originalContent = tab.original;
 
@@ -544,12 +401,12 @@ export class PromptEditorComponent {
     this.highlightFilePreview();
   }
 
-  // Highlight code for export preview
+  /** Highlight code for export preview */
   protected readonly filePreview = viewChild<ElementRef<HTMLPreElement>>('filePreview');
   async highlightFilePreview(): Promise<void> {
     const filePreview = this.filePreview();
     if (!filePreview) return;
-    const prompts = this.tabs[this.selectedTab].prompts;
+    const prompts = this.tabs[this.selectedPromptTab()].prompts;
     if (!prompts) return;
 
     try {
@@ -566,7 +423,7 @@ export class PromptEditorComponent {
         pre.removeAttribute('data-highlighted');
         pre.removeAttribute('tabindex');
         codeBlock.className = 'language-typescript';
-        codeBlock.textContent = this.rebuildPromptFile(this.tabs[this.selectedTab].tool, prompts);
+        codeBlock.textContent = this.rebuildPromptFile(this.tabs[this.selectedPromptTab()].tool, prompts);
         Prism.highlightElement(codeBlock);
       }
     } catch (error) {
@@ -574,7 +431,7 @@ export class PromptEditorComponent {
     }
   }
 
-  // Load light/dark prism theme
+  /** Load light/dark prism theme */
   private loadPrismTheme(isDarkMode: boolean): void {
     const existingLink = document.getElementById('prism-theme') as HTMLLinkElement;
     const newHref = isDarkMode ? 'css/prism-okaidia.min.css' : 'css/prism.min.css';
