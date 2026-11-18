@@ -1,7 +1,7 @@
-import { InventoryPromptKey, OutputKey, PromptConfig, RoleKey, RubricKey } from './prompt.model';
+import { OutputKey, PromptConfig, RoleKey, RubricKey, ToolsPromptKey } from './prompt.model';
 
-export const InventoryPrompts: Record<InventoryPromptKey, PromptConfig> = {
-  [InventoryPromptKey.Metadata]: {
+export const ToolsPrompts: Record<ToolsPromptKey, PromptConfig> = {
+  [ToolsPromptKey.Metadata]: {
     role: RoleKey.SeoExpert,
     task: 'Generate a new SEO meta description and a list of target keywords for a webpage in both English and French. The French and English versions should be closely aligned in meaning but localized appropriately, not just translated word-for-word.',
     rubric: [RubricKey.Description, RubricKey.DescriptionEN, RubricKey.DescriptionFR, RubricKey.Keywords, RubricKey.CraTermTranslations],
@@ -18,7 +18,7 @@ export const InventoryPrompts: Record<InventoryPromptKey, PromptConfig> = {
 }`,
     available: true,
   },
-  [InventoryPromptKey.Description]: {
+  [ToolsPromptKey.Description]: {
     role: RoleKey.SeoExpert,
     task: 'Generate a concise meta description in English for the following web page content. The description must capture the main topic and use terminology found in the content.',
     rubric: [RubricKey.CharacterLimit, RubricKey.NoCommentary],
@@ -29,13 +29,13 @@ export const InventoryPrompts: Record<InventoryPromptKey, PromptConfig> = {
   "keywords": ["string", "string", ...]
 }`,
   },
-  [InventoryPromptKey.Keywords]: {
+  [ToolsPromptKey.Keywords]: {
     role: RoleKey.SeoExpert,
     task: 'Generate 10 meaningful, topic-specific meta keywords that are DIRECTLY EXTRACTED from or strongly implied by the content. Return only a comma separated list of keywords.',
     rubric: [RubricKey.CharacterLimit, RubricKey.NoCommentary],
     output: OutputKey.Text,
   },
-  [InventoryPromptKey.Languages]: {
+  [ToolsPromptKey.Languages]: {
     role: RoleKey.Translator,
     task: `Compare the English and French content and return an array of any semantic differences. If no differences are found, return { "differences": [] }. 
     For every difference you report, quote the exact English text and the exact French text it refers to, and say what the problem is. 

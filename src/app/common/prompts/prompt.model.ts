@@ -2,7 +2,6 @@ import { marker } from '@colsen1991/ngx-translate-extract-marker';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function markForTranslation() {
-  marker('aiPrompt.alerts._title');
   marker('aiPrompt.role.none');
   marker('aiPrompt.role.contentDesigner');
   marker('aiPrompt.role.seoExpert');
@@ -22,10 +21,10 @@ function markForTranslation() {
   marker('aiPrompt.rubric.keywords');
   marker('aiPrompt.rubric.craTermTranslations');
 
-  marker('aiPrompt.inventory.metadata');
-  marker('aiPrompt.inventory.description');
-  marker('aiPrompt.inventory.keywords');
-  marker('aiPrompt.inventory.languages');
+  marker('aiPrompt.tools.metadata');
+  marker('aiPrompt.tools.description');
+  marker('aiPrompt.tools.keywords');
+  marker('aiPrompt.tools.languages');
 
   marker('aiPrompt.page.headings');
   marker('aiPrompt.page.doormats');
@@ -71,7 +70,7 @@ export enum OutputKey {
   Json = 'aiPrompt.output.json',
 }
 
-//Shared rubric fragmens
+//Shared rubric fragments
 export enum RubricKey {
   NoCommentary = 'aiPrompt.rubric.noCommentary',
   PreserveHtmlStructure = 'aiPrompt.rubric.preserveHtmlStructure',
@@ -83,12 +82,12 @@ export enum RubricKey {
   CraTermTranslations = 'aiPrompt.rubric.craTermTranslations',
 }
 
-//Inventory task fragments
-export enum InventoryPromptKey {
-  Metadata = 'aiPrompt.inventory.metadata',
-  Description = 'aiPrompt.inventory.description',
-  Keywords = 'aiPrompt.inventory.keywords',
-  Languages = 'aiPrompt.inventory.languages',
+//Tools task fragments
+export enum ToolsPromptKey {
+  Metadata = 'aiPrompt.tools.metadata',
+  Description = 'aiPrompt.tools.description',
+  Keywords = 'aiPrompt.tools.keywords',
+  Languages = 'aiPrompt.tools.languages',
 }
 
 //Page task fragments
