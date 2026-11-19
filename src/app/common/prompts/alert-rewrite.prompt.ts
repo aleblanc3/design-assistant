@@ -2,19 +2,16 @@ import { AlertRewritePipelineConfig } from './prompt.model';
 
 export const AlertRewritePipeline: AlertRewritePipelineConfig = {
   styleRulesBase: [
-    "Keep edits proportionate. Resolve selected issues and use selected examples only as style guidance. Preserve the alert's supported meaning, facts, and purpose.",
+    'Keep edits proportionate. Resolve selected issues and use selected examples only as style guidance.',
     'Preserve the original alert type, such as info, warning, danger, or success, unless a selected issue explicitly identifies the alert type as incorrect.',
-    'Do not invent facts, dates, URLs, program names, or destination details.',
-    'Prefer short sentences. Use 1 or 2 sentences when the sentences are short, or 1 sentence when the sentence is longer. Treat these as flexible guidance, not hard limits.',
+    'For alert body text, aim for 1 or 2 sentences. Treat this as flexible guidance, not a hard limit.',
     'Do not use semicolons to combine ideas just to reduce the sentence count.',
     'If the alert includes a standalone link lead-in, include at least one substantive sentence that explains the alert. Do not return body text consisting only of a link-introduction sentence such as "Learn about:" or "Refer to:".',
     'Add or preserve a short, descriptive heading.',
     'Match the semantic alert heading level to the page outline using the nearest preceding heading outside any alert. Directly after an H1, use <h2>. Inside an H2 section, use <h3>; continue one semantic level deeper for nested sections. Ignore headings inside adjacent alerts when determining the level. Preserve existing classes when the semantic heading level remains unchanged. When correcting the semantic heading level, you may remove the existing styling class, but do not add or remove styling classes for their own sake.',
     'Do not rewrite alert content into accordions, disclosure widgets, expand-collapse components, or other containers that hide content from visual display. Inline assistive text that uses the wb-inv class is allowed: preserve it when it is needed, keep it in its original reading order, and make sure it flows with the surrounding visible text. Do not treat wb-inv text as prohibited hidden content.',
     'Do not add new images or icons. Preserve meaningful non-text content and useful existing text alternatives. When a selected issue identifies a missing or incorrect text alternative for retained non-text content, add or correct it using only information supported by the source content. Keep decorative non-text content hidden from assistive technology with an empty text alternative where appropriate.',
-    'State what happened. Include a clear next step only when supported by the source; do not invent an action merely to make the alert actionable.',
-    'Use plain, active, neutral language.',
-    'Keep alert content concise for UI.',
+    'State what happened. Include a clear next step when the source supports one.',
     'Ensure each applicable selected issue that can be fixed within the alert results in a meaningful change. Do not claim an issue is fixed when the alert is unchanged, or alter valid content merely to show a change. Issues outside the alert, including placement, do not by themselves require a content change.',
     'Do not add new links.',
     'Set rewrittenAlertHtml to full .alert wrapper HTML (for example: <div class="alert alert-info">...</div>).',

@@ -15,22 +15,22 @@ export const CanadaCaStyleRules: readonly CanadaCaStyleRule[] = [
   {
     id: 'C2_direct_instructions',
     severity: 'should',
-    text: 'Use direct imperative wording for task instructions. Lead with the action users need to take and avoid unnecessary introductory phrases.',
+    text: 'Use active voice. For task instructions, use direct imperative wording, lead with the action users need to take, and avoid unnecessary introductory phrases.',
   },
   {
     id: 'C3_plain_language',
     severity: 'should',
-    text: 'Use plain, concise language. Prefer familiar words and short sentences when meaning and required detail are preserved.',
+    text: 'Use plain, concise, neutral language. Prefer familiar words and short sentences when meaning and required detail are preserved.',
   },
   {
     id: 'C4_preserve_required_meaning',
     severity: 'must',
-    text: 'Preserve legal, eligibility, deadline, service, and policy meaning. Do not simplify content in a way that changes who qualifies, what action is required, when something happens, or what a service provides.',
+    text: "Preserve the source content's supported meaning, facts, and purpose, especially legal, eligibility, deadline, service, and policy meaning. Do not simplify content in a way that changes who qualifies, what action is required, when something happens, or what a service provides.",
   },
   {
     id: 'C5_do_not_invent_operational_details',
     severity: 'must',
-    text: 'Do not invent service standards, contact channels, or other operational details that are not supported by the source content.',
+    text: 'Do not invent facts, dates, URLs, program names, destination details, actions, service standards, contact channels, or other operational details that are not supported by the source content.',
   },
   {
     id: 'C6_no_unverified_qa_claims',
