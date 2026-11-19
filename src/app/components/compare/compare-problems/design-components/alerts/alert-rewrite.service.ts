@@ -241,6 +241,10 @@ export class AlertRewriteService {
 
     const userPayload = {
       styleRules,
+      // Keep the separate example representations even though egHtml contains
+      // the heading, text, and links. A-B testing showed that an egHtml-only
+      // payload increased rigid action-link imitation (for example, copying
+      // "Review the" from an unrelated example) and weakened source tense.
       examples: params.examples.map((example) => ({
         id: example.id,
         egHeading: example.egHeading || '',
