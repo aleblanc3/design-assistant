@@ -30,8 +30,8 @@ export const AlertRewritePipeline: AlertRewritePipelineConfig = {
   ],
   systemPromptWithoutExamplesLines: ['No examples are provided for this request.', 'Return exampleIdsUsed as an empty array: [].'],
   outputSchemas: {
-    withExamples: '{"rewrittenAlertHtml":"string","rewrittenHeading":"string","rewrittenAlert":"string","exampleIdsUsed":["ex-XXX"]}',
-    withoutExamples: '{"rewrittenAlertHtml":"string","rewrittenHeading":"string","rewrittenAlert":"string","exampleIdsUsed":[]}',
+    withExamples: '{"rewrittenAlertHtml":"string","rewrittenHeading":"string","exampleIdsUsed":["ex-XXX"]}',
+    withoutExamples: '{"rewrittenAlertHtml":"string","rewrittenHeading":"string","exampleIdsUsed":[]}',
   },
   conditionalInstructions: {
     preserveFinalStandaloneLink:
