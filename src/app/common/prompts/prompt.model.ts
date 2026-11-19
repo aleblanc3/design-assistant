@@ -77,6 +77,7 @@ export interface AlertRewritePipelineConfig {
     invalidWrapperHtml: string;
     noLinksAllowed: string;
     mustKeepLink: string;
+    mustKeepAllLinks: string;
     mustHaveHeading: string;
     avoidExampleCopy: string;
     fullSentenceLinksNeedLeadIn: readonly string[];

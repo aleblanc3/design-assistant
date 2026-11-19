@@ -426,6 +426,9 @@ export class AlertRewriteGuardService {
     if (originalHasAnchor && !repairedHasAnchor) {
       return null;
     }
+    if (originalHasAnchor && !params.allowLinkRemoval && this.getMissingOriginalLinkHrefs(params.originalAlertHtml, repaired.rewrittenAlertHtml).length) {
+      return null;
+    }
     if (repairedHasAnchor && this.hasFullSentenceLinkWithoutAllowedLeadIn(repaired.rewrittenAlertHtml)) {
       return null;
     }
@@ -445,6 +448,24 @@ export class AlertRewriteGuardService {
   shouldAllowAlertLinkRemoval(issues: AlertRewriteIssueInput[], plan: AlertRewritePlan): boolean {
     const hasTooManyLinksIssue = issues.some((issue) => (issue.category || '').toLowerCase().includes('too many links'));
     return hasTooManyLinksIssue || plan.criteriaMatched.includes('C3_too_many_links') || plan.directives.some((directive) => directive.op === 'limit_links');
+  }
+
+  getMissingOriginalLinkHrefs(originalAlertHtml: string, rewrittenAlertHtml: string): string[] {
+    try {
+      const originalDoc = new DOMParser().parseFromString(originalAlertHtml || '', 'text/html');
+      const rewrittenDoc = new DOMParser().parseFromString(rewrittenAlertHtml || '', 'text/html');
+      const originalHrefs = Array.from(originalDoc.body.querySelectorAll('a[href]'))
+        .map((anchor) => (anchor.getAttribute('href') || '').trim())
+        .filter((href) => !!href);
+      const rewrittenHrefs = new Set(
+        Array.from(rewrittenDoc.body.querySelectorAll('a[href]'))
+          .map((anchor) => (anchor.getAttribute('href') || '').trim())
+          .filter((href) => !!href),
+      );
+      return Array.from(new Set(originalHrefs.filter((href) => !rewrittenHrefs.has(href))));
+    } catch {
+      return [];
+    }
   }
 
   // Applies the successful per-alert rewrites back onto the original document.

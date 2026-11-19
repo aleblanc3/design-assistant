@@ -37,13 +37,15 @@ export const AlertRewritePipeline: AlertRewritePipelineConfig = {
     preserveFinalStandaloneLink:
       'The original alert already ends with an acceptable standalone final link sentence or paragraph. Preserve that wording and placement unless a selected issue clearly requires a change. Do not rewrite a valid existing lead-in such as "For details:" to "Refer to:" when it already reads naturally.',
     enforceLinkManifest:
-      'Use linkManifest as the source of truth for original links. If linkManifest.mustPreserveAtLeastOne is true, rewrittenAlertHtml must include at least one real <a> element whose href exactly matches one of linkManifest.items[].href values. If linkManifest.allowRemoval is true, you may remove extra links, but you must still keep at least one original link.',
+      'Use linkManifest as the source of truth for original links. If linkManifest.mustPreserveAll is true, rewrittenAlertHtml must include a real <a> element for every linkManifest.items[].href value. If linkManifest.mustPreserveAtLeastOne is true, rewrittenAlertHtml must include at least one real <a> element whose href exactly matches one of linkManifest.items[].href values. If linkManifest.allowRemoval is true, you may remove extra links, but you must still keep at least one original link.',
   },
   retryInstructions: {
     invalidWrapperHtml: 'Return valid rewrittenAlertHtml as a full .alert wrapper element.',
     noLinksAllowed: 'The original alert has no links. Do not add hyperlinks. Return rewrittenAlertHtml without any <a> tags.',
     mustKeepLink:
       'An earlier rewrite attempt removed every original link. In this rewrite, retain the appropriate original link or links using the link-selection rule. Use only original href values and do not introduce new links.',
+    mustKeepAllLinks:
+      'An earlier rewrite attempt removed one or more required original links. No too-many-links issue permits their removal, so retain every linkManifest.items[].href value in a real <a> element. Link text and placement may be improved, but each original href must remain unchanged.',
     mustHaveHeading:
       'Alerts must include a semantic heading element in rewrittenAlertHtml. Add a short, descriptive heading using <h2> to <h6> as required by the page hierarchy, and place it before the body text.',
     avoidExampleCopy: 'Your previous output matched example wording. Rewrite using alert-specific wording and facts only.',

@@ -322,6 +322,8 @@ export class AlertRewriteOrchestratorService {
         // every link. Link-removal issues may remove extras, not all links.
         if (originalHasAnchor && !rewrittenHasAnchor) {
           addRetryInstruction('mustKeepLink', retryInstructions.mustKeepLink);
+        } else if (originalHasAnchor && !allowLinkRemoval && this.alertRewriteGuard.getMissingOriginalLinkHrefs(alertHtml, parsedResult.rewrittenAlertHtml).length) {
+          addRetryInstruction('mustKeepAllLinks', retryInstructions.mustKeepAllLinks);
         }
 
         // Guard 4: protected CRA expressions are atomic when retained. Terms

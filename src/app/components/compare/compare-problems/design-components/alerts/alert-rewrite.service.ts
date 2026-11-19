@@ -43,6 +43,7 @@ export interface AlertRewriteLinkManifest {
   count: number;
   hasLinks: boolean;
   allowRemoval: boolean;
+  mustPreserveAll: boolean;
   mustPreserveAtLeastOne: boolean;
   items: AlertRewriteLinkManifestItem[];
 }
@@ -279,6 +280,7 @@ export class AlertRewriteService {
       originalAlertTextCharacters: (params.originalAlertText || '').length,
       compactAlertPayloadIncluded: !!params.compactAlertPayload,
       linkManifestCount: linkManifest.count,
+      linkManifestMustPreserveAll: linkManifest.mustPreserveAll,
       linkManifestMustPreserveAtLeastOne: linkManifest.mustPreserveAtLeastOne,
       linkManifestAllowRemoval: linkManifest.allowRemoval,
     });
@@ -403,7 +405,8 @@ export class AlertRewriteService {
       count: items.length,
       hasLinks: items.length > 0,
       allowRemoval: canRemoveLinks,
-      mustPreserveAtLeastOne: items.length > 0,
+      mustPreserveAll: items.length > 0 && !canRemoveLinks,
+      mustPreserveAtLeastOne: items.length > 0 && canRemoveLinks,
       items,
     };
   }
