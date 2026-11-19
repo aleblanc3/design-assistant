@@ -16,6 +16,11 @@ export const AlertRewritePipeline: AlertRewritePipelineConfig = {
     'Do not add new links.',
     'Set rewrittenAlertHtml to full .alert wrapper HTML (for example: <div class="alert alert-info">...</div>).',
   ],
+  // Keep example guidance intentionally reinforced in both the base rules and
+  // the system prompt. Keep the two source-wording instructions below separate:
+  // egHtml should anchor structure, while the input alert should anchor wording.
+  // A-B-A testing showed that consolidating them caused generic example actions
+  // to leak into rewrites and made other internal guidance more likely to surface.
   systemPromptWithExamplesLines: [
     'Use examples as pattern guidance only.',
     "When examples include egHtml, use that field as the example's final HTML pattern.",
@@ -42,6 +47,9 @@ export const AlertRewritePipeline: AlertRewritePipelineConfig = {
     mustHaveHeading:
       'Alerts must include a semantic heading element in rewrittenAlertHtml. Add a short, descriptive heading using <h2> to <h6> as required by the page hierarchy, and place it before the body text.',
     avoidExampleCopy: 'Your previous output matched example wording. Rewrite using alert-specific wording and facts only.',
+    // This intentionally reinforces permanent link rules on a fresh retry call.
+    // A-B testing showed that suppressing it when noLinksAllowed also applied
+    // caused the regenerated alert to weaken a precise source timing distinction.
     fullSentenceLinksNeedLeadIn: [
       'If a link stands alone as its own sentence or paragraph, or if a sentence mainly directs the user to a link, place that link direction in its own paragraph.',
       'Prefer putting a standalone link sentence or paragraph last in the alert content, but do not treat placement as a hard requirement.',
