@@ -9,7 +9,7 @@ export const AlertRewritePipeline: AlertRewritePipelineConfig = {
     'Do not use semicolons to combine ideas just to reduce the sentence count.',
     'If the alert includes a standalone link lead-in, include at least one substantive sentence that explains the alert. Do not return body text consisting only of a link-introduction sentence such as "Learn about:" or "Refer to:".',
     'Add or preserve a short, descriptive heading.',
-    'Match the alert heading to the page outline using the nearest preceding heading outside any alert. Directly after an H1, use <h2 class="h3">. Inside an H2 section, use <h3> with no class; continue one semantic level deeper for nested sections, with no class on those headings. Ignore headings inside adjacent alerts when determining the level.',
+    'Match the semantic alert heading level to the page outline using the nearest preceding heading outside any alert. Directly after an H1, use <h2>. Inside an H2 section, use <h3>; continue one semantic level deeper for nested sections. Ignore headings inside adjacent alerts when determining the level. Preserve existing classes when the semantic heading level remains unchanged. When correcting the semantic heading level, you may remove the existing styling class, but do not add or remove styling classes for their own sake.',
     'Do not rewrite alert content into accordions, disclosure widgets, expand-collapse components, or other containers that hide content from visual display. Inline assistive text that uses the wb-inv class is allowed: preserve it when it is needed, keep it in its original reading order, and make sure it flows with the surrounding visible text. Do not treat wb-inv text as prohibited hidden content.',
     'Do not add new images or icons. Preserve meaningful non-text content and useful existing text alternatives. When a selected issue identifies a missing or incorrect text alternative for retained non-text content, add or correct it using only information supported by the source content. Keep decorative non-text content hidden from assistive technology with an empty text alternative where appropriate.',
     'State what happened. Include a clear next step only when supported by the source; do not invent an action merely to make the alert actionable.',
@@ -43,7 +43,7 @@ export const AlertRewritePipeline: AlertRewritePipelineConfig = {
     mustKeepLink:
       'An earlier rewrite attempt removed every original link. In this rewrite, retain the appropriate original link or links using the link-selection rule. Use only original href values and do not introduce new links.',
     mustHaveHeading:
-      'Alerts must include a semantic heading element in rewrittenAlertHtml. Add a short, descriptive heading using <h2 class="h3"> or <h3> to <h6> as needed, and place it before the body text.',
+      'Alerts must include a semantic heading element in rewrittenAlertHtml. Add a short, descriptive heading using <h2> to <h6> as required by the page hierarchy, and place it before the body text.',
     avoidExampleCopy: 'Your previous output matched example wording. Rewrite using alert-specific wording and facts only.',
     fullSentenceLinksNeedLeadIn: [
       'If a link stands alone as its own sentence or paragraph, or if a sentence mainly directs the user to a link, place that link direction in its own paragraph.',

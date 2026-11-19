@@ -307,9 +307,7 @@ export class AlertRewriteOrchestratorService {
         } else if (!this.alertRewriteGuard.hasAlertHeadingHierarchy(parsedResult.rewrittenAlertHtml, expectedHeadingTag)) {
           addRetryInstruction(
             'mustRespectPageHeadingHierarchy',
-            expectedHeadingTag === 'h2'
-              ? 'The page hierarchy requires a semantic <h2 class="h3"> alert heading. Use an actual H2; class h3 controls only its visual size.'
-              : `The page hierarchy requires a semantic <${expectedHeadingTag}> alert heading with no class.`,
+            `The page hierarchy requires a semantic <${expectedHeadingTag}> alert heading. Use an actual <${expectedHeadingTag}> element. Preserve existing classes when the semantic heading level remains unchanged; when correcting the semantic level, you may remove the existing styling class.`,
           );
         }
 

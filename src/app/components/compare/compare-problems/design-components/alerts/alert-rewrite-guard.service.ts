@@ -80,7 +80,13 @@ export class AlertRewriteGuardService {
       const heading = doc.body.querySelector<HTMLElement>('h1, h2, h3, h4, h5, h6');
       if (!heading || heading.tagName.toLowerCase() !== expectedTag.toLowerCase()) return false;
 
-      return expectedTag.toLowerCase() === 'h2' ? heading.className.trim() === 'h3' : !heading.hasAttribute('class');
+      if (expectedTag.toLowerCase() === 'h2') return heading.className.trim() === 'h3';
+
+      const semanticLevel = Number(expectedTag.slice(1));
+      return Array.from(heading.classList).every((className) => {
+        const headingSizeClass = className.match(/^h([1-6])$/i);
+        return !headingSizeClass || Number(headingSizeClass[1]) > semanticLevel;
+      });
     } catch {
       return false;
     }
@@ -111,7 +117,14 @@ export class AlertRewriteGuardService {
       if (expectedTag.toLowerCase() === 'h2') {
         heading.setAttribute('class', 'h3');
       } else {
-        heading.removeAttribute('class');
+        const semanticLevel = Number(expectedTag.slice(1));
+        Array.from(heading.classList).forEach((className) => {
+          const headingSizeClass = className.match(/^h([1-6])$/i);
+          if (headingSizeClass && Number(headingSizeClass[1]) <= semanticLevel) {
+            heading.classList.remove(className);
+          }
+        });
+        if (!heading.className.trim()) heading.removeAttribute('class');
       }
       return root.outerHTML.trim();
     } catch {
