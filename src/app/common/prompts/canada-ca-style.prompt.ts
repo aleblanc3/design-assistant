@@ -25,7 +25,7 @@ export const CanadaCaStyleRules: readonly CanadaCaStyleRule[] = [
   {
     id: 'C4_preserve_required_meaning',
     severity: 'must',
-    text: "Preserve the source content's supported meaning, facts, and purpose, especially legal, eligibility, deadline, service, and policy meaning. Do not simplify content in a way that changes who qualifies, what action is required, when something happens, or what a service provides.",
+    text: "Preserve the source content's essential supported meaning, facts, and purpose. Do not change or weaken material legal, eligibility, deadline, service, or policy information. Preserve precise qualifiers and relationships that determine who qualifies, what action is required, when an action or outcome occurs, or what a service provides, including distinctions between an event and the year in which it occurs. When the task calls for concise content, secondary details may be omitted only when their removal does not alter or obscure any of those elements.",
   },
   {
     id: 'C5_do_not_invent_operational_details',
