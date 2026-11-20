@@ -116,6 +116,27 @@ interface PromptPipelineOption {
       word-break: break-word;
       overflow-x: hidden;
     }
+
+    .prompt-bullet-list {
+      display: grid;
+      gap: 0.4rem;
+      margin: 0;
+      padding-inline-start: 1.5rem;
+    }
+
+    .prompt-condition-list {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .prompt-condition-item {
+      display: grid;
+      gap: 0.25rem;
+    }
+
+    .prompt-condition-item p {
+      margin: 0;
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -552,6 +573,36 @@ export class PromptEditorComponent {
     );
 
     return `{ "rules": [ ${rules} ]}`;
+  }
+
+  markForTranslation() {
+    marker('aiPrompt.alerts._title');
+    marker('aiPrompt.page.alertExamples');
+    marker('dev.prompts.alertRewrite.baseRules');
+    marker('dev.prompts.alertRewrite.canadaCaStyle');
+    marker('dev.prompts.alertRewrite.linkRulesDefault');
+    marker('dev.prompts.alertRewrite.linkRulesTooMany');
+    marker('dev.prompts.alertRewrite.outputRequirement');
+    marker('dev.prompts.alertRewrite.outputSchemaWithExamples');
+    marker('dev.prompts.alertRewrite.outputSchemaWithoutExamples');
+    marker('dev.prompts.alertRewrite.linkRulesCommon');
+    marker('dev.prompts.alertRewrite.group.alertRewrite');
+    marker('dev.prompts.alertRewrite.group.style');
+    marker('dev.prompts.alertRewrite.group.links');
+    marker('dev.prompts.alertRewrite.condition.finalStandaloneLink');
+    marker('dev.prompts.alertRewrite.condition.originalHasLinks');
+    marker('dev.prompts.alertRewrite.retry.invalidWrapperHtml');
+    marker('dev.prompts.alertRewrite.retry.noLinksAllowed');
+    marker('dev.prompts.alertRewrite.retry.mustKeepLink');
+    marker('dev.prompts.alertRewrite.retry.mustKeepAllLinks');
+    marker('dev.prompts.alertRewrite.retry.mustHaveHeading');
+    marker('dev.prompts.alertRewrite.retry.avoidExampleCopy');
+    marker('dev.prompts.alertRewrite.retry.fullSentenceLinksNeedLeadIn');
+    marker('dev.prompts.alertRewrite.retryInstructions');
+    marker('dev.prompts.alertRewrite.role');
+    marker('dev.prompts.alertRewrite.examplesIncluded');
+    marker('dev.prompts.alertRewrite.examplesNotIncluded');
+    marker('dev.prompts.alertRewrite.testUnavailable');
   }
 
   // Test prompts
