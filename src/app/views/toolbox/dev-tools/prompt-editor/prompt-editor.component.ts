@@ -122,27 +122,6 @@ interface PromptPipelineOption {
       overflow-x: hidden;
     }
 
-    .prompt-bullet-list {
-      display: grid;
-      gap: 0.4rem;
-      margin: 0;
-      padding-inline-start: 1.5rem;
-    }
-
-    .prompt-condition-list {
-      display: grid;
-      gap: 0.75rem;
-    }
-
-    .prompt-condition-item {
-      display: grid;
-      gap: 0.25rem;
-    }
-
-    .prompt-condition-item p {
-      margin: 0;
-    }
-
     .prompt-content-sized {
       field-sizing: content;
       min-height: 24rem;
@@ -565,6 +544,21 @@ export class PromptEditorComponent {
 
   protected getAlertRewriteExampleLegend(example: AlertRewriteExample): string {
     return `${example.id} — ${example.egHeading || example.egText}`;
+  }
+
+  protected getPipelineOptionContent(option: PromptPipelineOption): string {
+    return option.content ?? option.bulletItems?.map((item) => `- ${item}`).join('\n') ?? '';
+  }
+
+  protected getPipelineSectionContent(section: PromptPipelineSection): string {
+    if (section.content) return section.content;
+    if (section.bulletItems?.length) return section.bulletItems.map((item) => `- ${item}`).join('\n');
+    return (section.conditionItems ?? [])
+      .map((item) => {
+        const instruction = item.bulletItems?.length ? item.bulletItems.map((line) => `- ${line}`).join('\n') : (item.instruction ?? '');
+        return `${this.translate.instant(item.condition)}\n${instruction}`.trim();
+      })
+      .join('\n\n');
   }
 
   private formatPromptSchema(schema: string): string {

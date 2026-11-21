@@ -86,64 +86,20 @@
                   @if (isPromptConfig(prompt) && isPromptVisible(prompt.enumKey) && isAlertRewritePipeline(prompt)) {
                     <h2 class="my-0">{{ prompt.translationKey | translate }}</h2>
                     @for (group of alertRewritePipelineGroups; track group.key) {
-                      <section class="prompt-pipeline-group">
-                        <h3>{{ group.label | translate }}</h3>
-                        @for (section of group.sections; track section.key) {
-                          @if (section.options?.length) {
-                            <section>
-                              @if (!section.hideLabel && section.label) {
-                                <h4>{{ section.label | translate }}</h4>
-                              }
-                              <div class="grid">
-                                @for (option of section.options; track option.key) {
-                                  <div class="col-12 lg:col-6">
-                                    <p-fieldset [collapsed]="option.collapsed" [legend]="option.label | translate" [toggleable]="true" styleClass="h-full">
-                                      @if (option.bulletItems?.length) {
-                                        <ul class="prompt-bullet-list">
-                                          @for (item of option.bulletItems; track $index) {
-                                            <li>{{ item }}</li>
-                                          }
-                                        </ul>
-                                      } @else {
-                                        <pre class="prompt-preview">{{ option.content }}</pre>
-                                      }
-                                    </p-fieldset>
-                                  </div>
-                                }
-                              </div>
-                            </section>
-                          } @else {
-                            <p-fieldset [collapsed]="section.collapsed" [legend]="section.label ?? '' | translate" [toggleable]="true">
-                              @if (section.conditionItems?.length) {
-                                <div class="prompt-condition-list">
-                                  @for (item of section.conditionItems; track $index) {
-                                    <div class="prompt-condition-item">
-                                      <strong>{{ item.condition | translate }}</strong>
-                                      @if (item.bulletItems?.length) {
-                                        <ul class="prompt-bullet-list">
-                                          @for (line of item.bulletItems; track $index) {
-                                            <li>{{ line }}</li>
-                                          }
-                                        </ul>
-                                      } @else {
-                                        <p>{{ item.instruction }}</p>
-                                      }
-                                    </div>
-                                  }
-                                </div>
-                              } @else if (section.bulletItems?.length) {
-                                <ul class="prompt-bullet-list">
-                                  @for (item of section.bulletItems; track $index) {
-                                    <li>{{ item }}</li>
-                                  }
-                                </ul>
-                              } @else {
-                                <pre class="prompt-preview">{{ section.content }}</pre>
-                              }
-                            </p-fieldset>
+                      @for (section of group.sections; track section.key) {
+                        @if (section.options?.length) {
+                          @if (!section.hideLabel && section.label) {
+                            <h3>{{ section.label | translate }}</h3>
                           }
+                          @for (option of section.options; track option.key) {
+                            <h4>{{ option.label | translate }}</h4>
+                            <pre class="prompt-preview">{{ getPipelineOptionContent(option) }}</pre>
+                          }
+                        } @else {
+                          <h3>{{ section.label ?? '' | translate }}</h3>
+                          <pre class="prompt-preview">{{ getPipelineSectionContent(section) }}</pre>
                         }
-                      </section>
+                      }
                     }
                   }
                   @if (isPromptConfig(prompt) && isPromptVisible(prompt.enumKey) && !isAlertRewritePipeline(prompt)) {
@@ -275,78 +231,30 @@
             @if (selectedPromptIsAlertRewritePipeline()) {
               <p>{{ 'dev.prompts.alertRewrite.testUnavailable' | translate }}</p>
               @for (group of alertRewritePipelineGroups; track group.key) {
-                <section class="prompt-pipeline-group">
-                  <h3>{{ group.label | translate }}</h3>
-                  @for (section of group.sections; track section.key) {
-                    @if (section.options?.length) {
-                      <section>
-                        @if (!section.hideLabel && section.label) {
-                          <h4>{{ section.label | translate }}</h4>
-                        }
-                        <div class="grid">
-                          @for (option of section.options; track option.key) {
-                            <div class="col-12 lg:col-6">
-                              <p-fieldset [collapsed]="option.collapsed" [legend]="option.label | translate" [toggleable]="true" styleClass="h-full">
-                                @if (option.bulletItems?.length) {
-                                  <ul class="prompt-bullet-list">
-                                    @for (item of option.bulletItems; track $index) {
-                                      <li>{{ item }}</li>
-                                    }
-                                  </ul>
-                                } @else {
-                                  <pre class="prompt-preview">{{ option.content }}</pre>
-                                }
-                              </p-fieldset>
-                            </div>
-                          }
-                        </div>
-                      </section>
-                    } @else {
-                      <p-fieldset [collapsed]="section.collapsed" [legend]="section.label ?? '' | translate" [toggleable]="true">
-                        @if (section.conditionItems?.length) {
-                          <div class="prompt-condition-list">
-                            @for (item of section.conditionItems; track $index) {
-                              <div class="prompt-condition-item">
-                                <strong>{{ item.condition | translate }}</strong>
-                                @if (item.bulletItems?.length) {
-                                  <ul class="prompt-bullet-list">
-                                    @for (line of item.bulletItems; track $index) {
-                                      <li>{{ line }}</li>
-                                    }
-                                  </ul>
-                                } @else {
-                                  <p>{{ item.instruction }}</p>
-                                }
-                              </div>
-                            }
-                          </div>
-                        } @else if (section.bulletItems?.length) {
-                          <ul class="prompt-bullet-list">
-                            @for (item of section.bulletItems; track $index) {
-                              <li>{{ item }}</li>
-                            }
-                          </ul>
-                        } @else {
-                          <pre class="prompt-preview">{{ section.content }}</pre>
-                        }
-                      </p-fieldset>
+                @for (section of group.sections; track section.key) {
+                  @if (section.options?.length) {
+                    @if (!section.hideLabel && section.label) {
+                      <h3>{{ section.label | translate }}</h3>
                     }
+                    @for (option of section.options; track option.key) {
+                      <h4>{{ option.label | translate }}</h4>
+                      <pre class="prompt-preview">{{ getPipelineOptionContent(option) }}</pre>
+                    }
+                  } @else {
+                    <h3>{{ section.label ?? '' | translate }}</h3>
+                    <pre class="prompt-preview">{{ getPipelineSectionContent(section) }}</pre>
                   }
-                </section>
+                }
               }
             } @else if (selectedPromptIsAlertRewriteExamples()) {
-              <div class="flex flex-column gap-3 mt-3">
-                @for (example of alertRewriteExamples; track example.id) {
-                  <p-fieldset [collapsed]="true" [legend]="getAlertRewriteExampleLegend(example)" [toggleable]="true">
-                    <pre class="prompt-preview">{{ example | json }}</pre>
-                  </p-fieldset>
-                }
-              </div>
+              @for (example of alertRewriteExamples; track example.id) {
+                <h3>{{ getAlertRewriteExampleLegend(example) }}</h3>
+                <pre class="prompt-preview">{{ example | json }}</pre>
+              }
             } @else if (selectedPromptIsAlertProblems()) {
               @for (section of alertProblemsSections; track section.key) {
-                <p-fieldset [collapsed]="section.collapsed" [legend]="section.label ?? '' | translate" [toggleable]="true">
-                  <pre class="prompt-preview">{{ section.content }}</pre>
-                </p-fieldset>
+                <h3>{{ section.label ?? '' | translate }}</h3>
+                <pre class="prompt-preview">{{ section.content }}</pre>
               }
             } @else {
               <pre class="prompt-preview">{{ aiPrompt() }}</pre>
