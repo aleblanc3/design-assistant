@@ -22,7 +22,7 @@ export class AlertContextService {
 
     // Alert signals capture the structural facts that usually drive issue
     // decisions: type, heading, text density, links, hidden content, adjacency.
-    const alertSignals = context.alerts.map((alertEl, index) => this.buildCompactAlertSignals(alertEl, index + 1));
+    const alertSignals = context.alerts.map((alertEl, index) => this.buildCompactAlertSignals(alertEl, index + 1, context));
 
     // Roll up repeated structural patterns that can indicate page-level alert
     // problems, such as too many alerts before content or clustered alerts.
@@ -75,6 +75,8 @@ export class AlertContextService {
 
     // H2s act as section landmarks; their text and DOM position let us describe
     // alert placement in useful page terms.
+    // Follow-up: evaluate excluding utility headings such as "On this page" and
+    // "Page details" from the model-facing h2Headings summary.
     const h2Elements = Array.from(main.querySelectorAll<HTMLElement>('h2')).filter((h2) => !h2.closest('.alert'));
     const h2Headings = h2Elements
       .map((h2) => this.truncateContextText(h2.textContent || '', 120))
@@ -148,13 +150,14 @@ export class AlertContextService {
   }
 
   // Builds the per-alert facts that commonly drive issue decisions.
-  private buildCompactAlertSignals(alertElement: Element, alertIndex: number) {
+  private buildCompactAlertSignals(alertElement: Element, alertIndex: number, context: ReturnType<AlertContextService['buildCompactPageContext']>) {
     const heading = this.getAlertHeadingMetadata(alertElement);
     const links = this.getAlertLinks(alertElement);
     const paragraphCount = this.getAlertParagraphCount(alertElement);
     const visibleText = this.truncateContextText(alertElement.textContent || '', 400);
-    const previousSiblingIsAlert = alertElement.previousElementSibling?.classList.contains('alert') ?? false;
-    const nextSiblingIsAlert = alertElement.nextElementSibling?.classList.contains('alert') ?? false;
+    const flowElement = this.getMainFlowElement(alertElement, context.main);
+    const previousSiblingIsAlert = this.containsReportableAlert(flowElement.previousElementSibling, context.alerts);
+    const nextSiblingIsAlert = this.containsReportableAlert(flowElement.nextElementSibling, context.alerts);
 
     return {
       alert_index: alertIndex,
@@ -173,7 +176,7 @@ export class AlertContextService {
       has_hidden_content: this.hasHiddenAlertContent(alertElement),
       previous_sibling_is_alert: previousSiblingIsAlert,
       next_sibling_is_alert: nextSiblingIsAlert,
-      adjacent_alert_cluster_size: this.getAdjacentAlertClusterSize(alertElement),
+      adjacent_alert_cluster_size: this.getAdjacentAlertClusterSize(flowElement, context.alerts),
     };
   }
 
@@ -237,9 +240,9 @@ export class AlertContextService {
 
   // Pulls nearby sibling text so alerts carry a little surrounding context
   // without shipping the whole DOM back to the model.
-  private collectSiblingTextSnippet(alertEl: Element, direction: 'before' | 'after', maxChars: number): string {
+  private collectSiblingTextSnippet(alertElement: Element, direction: 'before' | 'after', maxChars: number): string {
     const collected: string[] = [];
-    let node = direction === 'before' ? alertEl.previousElementSibling : alertEl.nextElementSibling;
+    let node = direction === 'before' ? alertElement.previousElementSibling : alertElement.nextElementSibling;
     let hops = 0;
 
     while (node && hops < 4) {
@@ -363,7 +366,7 @@ export class AlertContextService {
   }
 
   private buildCompactAlertRewritePayloadFromContext(alertElement: Element, alertIndex: number, context: ReturnType<AlertContextService['buildCompactPageContext']>): Record<string, unknown> {
-    const alertSignals = this.buildCompactAlertSignals(alertElement, alertIndex);
+    const alertSignals = this.buildCompactAlertSignals(alertElement, alertIndex, context);
 
     // adjacent_alert_cluster_size includes the current alert; adjacentAlertCount
     // exposes only neighbouring alerts so isolated alerts report zero.
@@ -374,11 +377,11 @@ export class AlertContextService {
     return {
       alertIndex,
       alertType: this.getAlertTypeClass(alertElement),
-      pageContext: `Title: ${context.title || 'N/A'}\nH1: ${context.h1 || 'N/A'}\nPage type signal: ${context.pageTypeSignal}\nMain intro: ${context.introSnippet || 'N/A'}\nH2 headings (${context.h2Headings.length}): ${context.h2Headings.join(' | ') || 'N/A'}`,
       pageSignals: {
         title: context.title,
         h1: context.h1,
         pageTypeSignal: context.pageTypeSignal,
+        introSnippet: context.introSnippet,
         h2Headings: context.h2Headings,
         alertCount: context.alerts.length,
         hasMultipleAlerts: context.alerts.length > 1,
@@ -415,21 +418,37 @@ export class AlertContextService {
   }
 
   // Counts the contiguous alert run that contains this alert, including itself.
-  private getAdjacentAlertClusterSize(alertElement: Element): number {
+  private getAdjacentAlertClusterSize(flowElement: Element, reportableAlerts: Element[]): number {
     let clusterSize = 1;
 
-    let previous = alertElement.previousElementSibling;
-    while (previous?.classList.contains('alert')) {
+    let previous = flowElement.previousElementSibling;
+    while (this.containsReportableAlert(previous, reportableAlerts)) {
       clusterSize += 1;
-      previous = previous.previousElementSibling;
+      previous = previous?.previousElementSibling ?? null;
     }
 
-    let next = alertElement.nextElementSibling;
-    while (next?.classList.contains('alert')) {
+    let next = flowElement.nextElementSibling;
+    while (this.containsReportableAlert(next, reportableAlerts)) {
       clusterSize += 1;
-      next = next.nextElementSibling;
+      next = next?.nextElementSibling ?? null;
     }
 
     return clusterSize;
+  }
+
+  // AEM and prototype pages often wrap an alert in a component div. Use the
+  // direct child of <main> as the alert's page-flow element so adjacency
+  // reflects rendered components rather than inner markup.
+  private getMainFlowElement(element: Element, main: Element): Element {
+    let flowElement = element;
+    while (flowElement.parentElement && flowElement.parentElement !== main) {
+      flowElement = flowElement.parentElement;
+    }
+    return flowElement;
+  }
+
+  private containsReportableAlert(element: Element | null, reportableAlerts: Element[]): boolean {
+    if (!element) return false;
+    return reportableAlerts.some((alertElement) => element === alertElement || element.contains(alertElement));
   }
 }

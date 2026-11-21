@@ -37,8 +37,8 @@ export const ToolsPrompts: Record<ToolsPromptKey, PromptConfig> = {
   },
   [ToolsPromptKey.Languages]: {
     role: RoleKey.Translator,
-    task: `Compare the English and French content and return an array of any semantic differences. If no differences are found, return { "differences": [] }. 
-    For every difference you report, quote the exact English text and the exact French text it refers to, and say what the problem is. 
+    task: `Compare the English and French content and return an array of any semantic differences. If no differences are found, return { "differences": [] }.
+    For every difference you report, quote the exact English text and the exact French text it refers to, and say what the problem is.
     Acronyms and abbreviations are expected to differ between English and French and don't need to be reported if correct for the language (for example GST/HST and TPS/TVH, or CCR and RCC).`,
     rubric: [RubricKey.CraTermTranslations, RubricKey.NoCommentary],
     output: OutputKey.Json,

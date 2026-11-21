@@ -1,6 +1,7 @@
 import { OutputKey, RoleKey, RubricKey } from './prompt.model';
 
 export const RoleFragment: Record<RoleKey, string> = {
+  [RoleKey.AlertRewrite]: 'You are an expert in Canada.ca alerts, accessibility, content design, and alert HTML rewriting.',
   [RoleKey.SeoExpert]: 'You are a bilingual search engine optimization expert (Canadian French and English).',
   [RoleKey.ContentDesigner]: 'You are an expert web content designer with 10 years of experience in the Canadian public service.',
   [RoleKey.AccessibilityExpert]: 'You are a web accessibility expert.',

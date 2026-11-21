@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 import { Injectable } from '@angular/core';
 
-import { ChatMessage } from '../../../../../services/ai/openrouter.service';
-
 import { AlertRewriteExamples, type AlertRewriteExample } from '../../../../../common/prompts/alert-rewrite.examples';
-import { AlertRewriteRules } from '../../../../../common/prompts/alert-rewrite.prompt';
 import { getCanadaCaStylePromptRules } from '../../../../../common/prompts/canada-ca-style.prompt';
 import { getLinkWritingPromptRules } from '../../../../../common/prompts/link-writing.prompt';
+import { PagePrompts } from '../../../../../common/prompts/page.prompts';
+import { ChatMessage, PagePromptKey } from '../../../../../common/prompts/prompt.model';
+import { OutputFragment, RoleFragment } from '../../../../../common/prompts/shared.prompts';
 
 export interface AlertRewriteIssueInput {
   alertIndex?: number;
@@ -43,6 +43,7 @@ export interface AlertRewriteLinkManifest {
   count: number;
   hasLinks: boolean;
   allowRemoval: boolean;
+  mustPreserveAll: boolean;
   mustPreserveAtLeastOne: boolean;
   items: AlertRewriteLinkManifestItem[];
 }
@@ -191,19 +192,20 @@ export class AlertRewriteService {
         : [],
       getCanadaCaStylePromptRules(),
     ]);
-    const rules = AlertRewriteRules;
+    const promptConfig = PagePrompts[PagePromptKey.AlertRewrite];
+    const rules = promptConfig.pipeline;
     this.debugLog('Alert rewrite link rules', {
       originalHasLink,
       hasTooManyLinksIssue,
       linkRulesIncluded: originalHasLink,
       linkRuleCount: linkRules.length,
     });
-    const styleRules = [...rules.alertRewrite.styleRulesBase, ...(params.terminologyRules || []), ...canadaCaStyleRules, ...linkRules];
+    const styleRules = [...rules.styleRulesBase, ...(params.terminologyRules || []), ...canadaCaStyleRules, ...linkRules];
     if (this.hasAcceptableFinalStandaloneLinkSentence(params.originalAlertHtml)) {
-      styleRules.push(rules.alertRewrite.conditionalInstructions.preserveFinalStandaloneLink);
+      styleRules.push(rules.conditionalInstructions.preserveFinalStandaloneLink);
     }
     if (linkManifest.hasLinks) {
-      styleRules.push(rules.alertRewrite.conditionalInstructions.enforceLinkManifest);
+      styleRules.push(rules.conditionalInstructions.enforceLinkManifest);
     }
     const retryInstructions = Array.from(new Set((params.retryInstructions || []).map((instruction) => (instruction || '').trim()).filter((instruction) => !!instruction)));
     if (retryInstructions.length) {
@@ -233,12 +235,16 @@ export class AlertRewriteService {
       })
       .filter((issue): issue is NonNullable<typeof issue> => !!issue);
 
-    const systemPromptLines = params.examples.length ? rules.alertRewrite.systemPromptWithExamplesLines : rules.alertRewrite.systemPromptWithoutExamplesLines;
-    const outputSchema = params.examples.length ? rules.alertRewrite.outputSchemas.withExamples : rules.alertRewrite.outputSchemas.withoutExamples;
-    const systemPrompt = [rules.alertRewrite.role, ...systemPromptLines, rules.alertRewrite.outputRequirement, 'Output schema:', outputSchema].join('\n');
+    const systemPromptLines = params.examples.length ? rules.systemPromptWithExamplesLines : rules.systemPromptWithoutExamplesLines;
+    const outputSchema = params.examples.length ? rules.outputSchemas.withExamples : rules.outputSchemas.withoutExamples;
+    const systemPrompt = [RoleFragment[promptConfig.role], ...systemPromptLines, OutputFragment[promptConfig.output], 'Output schema:', outputSchema].join('\n');
 
     const userPayload = {
       styleRules,
+      // Keep the separate example representations even though egHtml contains
+      // the heading, text, and links. A-B testing showed that an egHtml-only
+      // payload increased rigid action-link imitation (for example, copying
+      // "Review the" from an unrelated example) and weakened source tense.
       examples: params.examples.map((example) => ({
         id: example.id,
         egHeading: example.egHeading || '',
@@ -268,7 +274,7 @@ export class AlertRewriteService {
       examplesProvided: params.examples.length,
       selectedExampleIds: params.examples.map((example) => example.id),
       retryInstructionCount: retryInstructions.length,
-      baseStyleRuleCount: rules.alertRewrite.styleRulesBase.length,
+      baseStyleRuleCount: rules.styleRulesBase.length,
       canadaCaStyleRuleCount: canadaCaStyleRules.length,
       linkRuleCount: linkRules.length,
       finalStyleRuleCount: styleRules.length,
@@ -278,6 +284,7 @@ export class AlertRewriteService {
       originalAlertTextCharacters: (params.originalAlertText || '').length,
       compactAlertPayloadIncluded: !!params.compactAlertPayload,
       linkManifestCount: linkManifest.count,
+      linkManifestMustPreserveAll: linkManifest.mustPreserveAll,
       linkManifestMustPreserveAtLeastOne: linkManifest.mustPreserveAtLeastOne,
       linkManifestAllowRemoval: linkManifest.allowRemoval,
     });
@@ -402,7 +409,8 @@ export class AlertRewriteService {
       count: items.length,
       hasLinks: items.length > 0,
       allowRemoval: canRemoveLinks,
-      mustPreserveAtLeastOne: items.length > 0,
+      mustPreserveAll: items.length > 0 && !canRemoveLinks,
+      mustPreserveAtLeastOne: items.length > 0 && canRemoveLinks,
       items,
     };
   }

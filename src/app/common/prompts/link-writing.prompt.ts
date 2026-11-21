@@ -51,11 +51,15 @@ export const LinkWritingPromptRuleGroups: Readonly<Record<'common' | 'preserveLi
     },
     {
       id: 'L12_lead_in_selection',
-      text: 'Choose the lead-in that matches the destination. Prefer "Refer to:" when the link is needed to complete a task, access a service, sign in, apply, register, submit, get a code, or take a required next step. Prefer "For details:" when the link provides supporting detail, reference, explanation, or more context. Prefer "Learn more:" when the link provides optional background, status, or update information. Use "Learn about" without a colon when the linked text naturally completes the phrase for explainer or topic pages. If the phrase needs an article, place it before the anchor, for example "Learn about the <a>Canada Groceries and Essentials Benefit</a>". Avoid repeating the topic noun outside the link if the anchor already names it.',
+      text: 'Choose exactly one link treatment based on the intended user action; none is the default. Use "Refer to:" when the user must consult a specific reference, form, service, requirement, or procedure. Use "For details:" when the destination provides supporting detail or additional context. Use "Learn about" without a colon when the destination is an explanatory topic or overview page and the anchor text naturally completes the phrase. Use the plain-text lead-in "Learn more:" before the anchor when the destination provides optional background or status information. Use no lead-in when the anchor text already expresses a clear action. Keep "Learn about" and any required article outside the anchor; keep only the destination name inside the anchor, for example "Learn about the <a>Canada Groceries and Essentials Benefit</a>". Avoid repeating the topic noun outside the link if the anchor already names it.',
+    },
+    {
+      id: 'L12a_avoid_combined_lead_ins',
+      text: 'Use one concise lead-in when one is needed. Avoid combining lead-ins that serve the same purpose, such as "For details, refer to". When replacing a wordy "For more information" construction containing "visit", "refer to", or "go to", remove the wordy construction, infer the link purpose from the alert, anchor text, and URL, and select exactly one meaning-based treatment. Do not automatically map these constructions to any one lead-in. Preserve an existing concise "For details:" lead-in when it reads naturally. Combine lead-in phrases only when each phrase adds meaning that is necessary to understand the link.',
     },
     {
       id: 'L13_action_link_no_lead_in',
-      text: 'If a standalone link already contains a clear action verb, do not add lead-in text such as "Refer to:", "For details:", or "Learn more:". Examples include standalone links such as "View CRA processing times", "Get an access code", "Apply for benefits", "Register a business", "Sign in or register for a CRA account", "File your return online", "Review the proposed rates", "Learn about the Canada Groceries and Essentials Benefit", "Find out how to get an access code", and "How to get an access code".',
+      text: 'If a standalone link already contains a clear action verb, do not add lead-in text such as "Refer to:", "For details:", or "Learn more:". Examples include standalone links such as "View CRA processing times", "Get an access code", "Apply for benefits", "Register a business", "Sign in or register for a CRA account", "File your return online", "Review the proposed rates", "Find out how to get an access code", and "How to get an access code".',
     },
   ],
   preserveLinks: [
