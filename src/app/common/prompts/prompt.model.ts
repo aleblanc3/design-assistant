@@ -141,7 +141,7 @@ export enum PagePromptKey {
 
 //Problem task fragments
 export enum ProblemPromptKey {
-  AlertsRewrite = 'aiPrompt.problem.alertsRewrite',
   AlertsProblems = 'aiPrompt.problem.alertsProblems',
   TranslateIssueDetails = 'aiPrompt.problem.translateIssueDetails',
+  AlertsRewrite = 'aiPrompt.problem.alertsRewrite',
 }

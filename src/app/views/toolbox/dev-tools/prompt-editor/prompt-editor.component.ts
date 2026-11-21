@@ -721,11 +721,11 @@ export class PromptEditorComponent {
         if (this.isPromptConfig(prompt)) {
           value = this.serializePromptConfig(prompt.promptText, prompt.enumKey);
         } else if (this.isPromptString(prompt)) {
-          value = this.toTemplateLiteral(prompt.promptText);
+          value = this.toSourceStringLiteral(prompt.promptText);
         } else {
           throw new Error(`Unsupported prompt value for ${prompt.enumKey}`);
         }
-        return `\t[${tool}PromptKey.${prompt.enumKey}]: ${value},`;
+        return `  [${tool}PromptKey.${prompt.enumKey}]: ${value},`;
       })
       .join('\n');
 
@@ -746,24 +746,24 @@ export class PromptEditorComponent {
   private serializePromptConfig(config: PromptConfig, enumKey: string): string {
     const lines = [
       '{',
-      `\t\trole: RoleKey.${this.getEnumKey(RoleKey, config.role)},`,
-      `\t\ttask: ${this.toTemplateLiteral(config.task)},`,
-      `\t\trubric: [${config.rubric.map((rubric) => `RubricKey.${this.getEnumKey(RubricKey, rubric)}`).join(', ')}],`,
-      `\t\toutput: OutputKey.${this.getEnumKey(OutputKey, config.output)},`,
+      `    role: RoleKey.${this.getEnumKey(RoleKey, config.role)},`,
+      `    task: ${this.toSourceStringLiteral(config.task)},`,
+      `    rubric: [${config.rubric.map((rubric) => `RubricKey.${this.getEnumKey(RubricKey, rubric)}`).join(', ')}],`,
+      `    output: OutputKey.${this.getEnumKey(OutputKey, config.output)},`,
     ];
 
-    if (config.jsonSchema !== undefined) lines.push(`\t\tjsonSchema: ${this.toTemplateLiteral(config.jsonSchema)},`);
-    if (config.examples !== undefined) lines.push(`\t\texamples: ${this.toTemplateLiteral(config.examples)},`);
-    if (config.available !== undefined) lines.push(`\t\tavailable: ${config.available},`);
+    if (config.jsonSchema !== undefined) lines.push(`    jsonSchema: ${this.toSourceStringLiteral(config.jsonSchema)},`);
+    if (config.examples !== undefined) lines.push(`    examples: ${this.toSourceStringLiteral(config.examples)},`);
+    if (config.available !== undefined) lines.push(`    available: ${config.available},`);
     if (config.pipeline !== undefined) {
       if (enumKey === 'AlertRewrite') {
-        lines.push('\t\tpipeline: AlertRewritePipeline,');
+        lines.push('    pipeline: AlertRewritePipeline,');
       } else {
         const pipeline = JSON.stringify(config.pipeline, null, 2)
           .split('\n')
-          .map((line, index) => (index === 0 ? line : `\t\t${line}`))
+          .map((line, index) => (index === 0 ? line : `    ${line}`))
           .join('\n');
-        lines.push(`\t\tpipeline: ${pipeline},`);
+        lines.push(`    pipeline: ${pipeline},`);
       }
     }
     lines.push('  }');
@@ -776,7 +776,10 @@ export class PromptEditorComponent {
     return key;
   }
 
-  private toTemplateLiteral(value: string): string {
+  private toSourceStringLiteral(value: string): string {
+    if (!/[\r\n]/.test(value)) {
+      return `'${value.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`;
+    }
     return `\`${value.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$\{/g, '\\${')}\``;
   }
 
