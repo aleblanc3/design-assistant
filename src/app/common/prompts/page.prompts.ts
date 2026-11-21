@@ -4,6 +4,11 @@ import { OutputKey, PagePromptConfigs, PagePromptKey, RoleKey, RubricKey } from 
 export const PagePrompts: PagePromptConfigs = {
   [PagePromptKey.AlertRewrite]: {
     role: RoleKey.AlertRewrite,
+    // Placeholder for the future PromptConfig migration. The working alert rewrite
+    // prompt is currently assembled from pipeline fragments and runtime context in
+    // AlertRewriteService.buildAlertRewriteMessages(). Do not add this task text to
+    // the system prompt as-is; replace it with the working payload-generation
+    // structure when the alert rewrite prompt is consolidated into PromptConfig.
     task: 'Rewrite the supplied alerts, using identified issues where available, preserving valid content and returning safe alert replacements.',
     rubric: [RubricKey.NoCommentary],
     output: OutputKey.Json,
