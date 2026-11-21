@@ -12,6 +12,7 @@ import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FieldsetModule } from 'primeng/fieldset';
 import { IftaLabelModule } from 'primeng/iftalabel';
+import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -24,8 +25,10 @@ import { OpenRouterResponse, OpenRouterService } from '../../../../services/ai/o
 import { AiPromptService } from '../../../../services/ai/prompt.service';
 import { ExportGitHubService } from '../../../../services/github/export-github.service';
 import { SignInService } from '../../../../services/github/sign-in.service';
+import { FetchService } from '../../../../services/fetch.service';
 import { StyleCardService } from '../../../../services/style-card.service';
 import { UserSettingsService } from '../../../../services/user-settings.service';
+import { CompareService } from '../../../tasks/compare-versions/compare-versions.service';
 
 import { AlertRewriteExamples, type AlertRewriteExample } from '../../../../common/prompts/alert-rewrite.examples';
 import { CanadaCaStyleRules } from '../../../../common/prompts/canada-ca-style.prompt';
@@ -35,6 +38,7 @@ import { ProblemPrompts } from '../../../../common/prompts/problems.prompts';
 import { OutputKey, PagePromptKey, ProblemPromptKey, PromptConfig, RoleKey, RubricKey, ToolsPromptKey } from '../../../../common/prompts/prompt.model';
 import { OutputFragment, RoleFragment, RubricFragment } from '../../../../common/prompts/shared.prompts';
 import { ToolsPrompts } from '../../../../common/prompts/tools.prompts';
+import { AlertContextService } from '../../../../components/compare/compare-problems/design-components/alerts/alert-context.service';
 
 interface PromptEntry {
   enumKey: string;
@@ -94,6 +98,7 @@ interface PromptPipelineOption {
     CheckboxModule,
     FieldsetModule,
     IftaLabelModule,
+    InputTextModule,
     MessageModule,
     MultiSelectModule,
     ProgressSpinnerModule,
@@ -137,15 +142,24 @@ interface PromptPipelineOption {
     .prompt-condition-item p {
       margin: 0;
     }
+
+    .prompt-content-sized {
+      field-sizing: content;
+      min-height: 24rem;
+      overflow-y: auto;
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PromptEditorComponent {
   private readonly translate = inject(TranslateService);
   private readonly exportGitHubService = inject(ExportGitHubService);
+  private readonly fetchService = inject(FetchService);
   private readonly settingsService = inject(UserSettingsService);
   private readonly openRouterService = inject(OpenRouterService);
   private readonly aiPromptService = inject(AiPromptService);
+  private readonly alertContextService = inject(AlertContextService);
+  private readonly compareService = inject(CompareService);
   protected readonly signInService = inject(SignInService);
   protected readonly styleCardService = inject(StyleCardService);
 
@@ -260,7 +274,9 @@ export class PromptEditorComponent {
   }));
 
   protected readonly alertRewritePipelineGroups: PromptPipelineGroup[] = this.buildAlertRewritePipelineGroups();
-  protected readonly alertProblemsSections: PromptPipelineSection[] = this.buildAlertProblemsSections();
+  protected get alertProblemsSections(): PromptPipelineSection[] {
+    return this.buildAlertProblemsSections();
+  }
   protected readonly alertRewriteExamples = AlertRewriteExamples;
 
   selectedPrompts = new Set<string>([this.inventoryPrompts[0]?.enumKey, this.pagePrompts[0]?.enumKey, this.problemPrompts[0]?.enumKey].filter(Boolean));
@@ -608,18 +624,93 @@ export class PromptEditorComponent {
   // Test prompts
   readonly aiState = this.openRouterService.state;
   description = 'Official CRA information on Canadian taxes. File your return, manage payments, and explore credits and deductions for individuals and businesses.';
+  protected alertProblemsTestUrl = '';
+  protected alertProblemsTestContent = '';
+  protected readonly alertProblemsTestLoading = signal(false);
+  protected readonly alertProblemsTestError = signal<string | null>(null);
+  protected readonly alertProblemsTestPayloadInvalid = signal(false);
   response: OpenRouterResponse | null = null;
   result = '';
+
+  protected onAlertProblemsTestUrlChange(url: string) {
+    this.alertProblemsTestUrl = url;
+    this.alertProblemsTestContent = '';
+    this.alertProblemsTestError.set(null);
+    this.alertProblemsTestPayloadInvalid.set(false);
+    this.response = null;
+    this.result = '';
+  }
+
+  protected async loadAlertProblemsTestPage() {
+    const url = this.alertProblemsTestUrl.trim();
+    this.alertProblemsTestError.set(null);
+    this.alertProblemsTestPayloadInvalid.set(false);
+    this.alertProblemsTestContent = '';
+    this.response = null;
+    this.result = '';
+
+    if (!url) return;
+
+    this.alertProblemsTestLoading.set(true);
+    try {
+      let doc: Document;
+      try {
+        doc = await this.fetchService.fetchContent(url, 'both', 3, 'none');
+      } catch {
+        doc = this.fetchService.stringToDoc(await this.fetchService.fetchViaProxy(url));
+      }
+
+      const payload = this.alertContextService.buildCompactAlertsIssuesPayload(doc.documentElement.outerHTML);
+      const alerts = payload['alerts'];
+      if (!Array.isArray(alerts) || alerts.length === 0) {
+        throw new Error(this.translate.instant('dev.prompts.preview.alertProblems.noAlerts'));
+      }
+      this.alertProblemsTestContent = JSON.stringify(payload, null, 2);
+    } catch (error) {
+      this.alertProblemsTestError.set(error instanceof Error ? error.message : String(error));
+    } finally {
+      this.alertProblemsTestLoading.set(false);
+    }
+  }
+
+  protected hasTestContent(): boolean {
+    return (this.selectedPromptIsAlertProblems() ? this.alertProblemsTestContent : this.description).trim().length > 0;
+  }
+
+  private getTestContent(): string | null {
+    if (!this.selectedPromptIsAlertProblems()) return this.description;
+
+    try {
+      const compactPayload = JSON.stringify(JSON.parse(this.alertProblemsTestContent));
+      this.alertProblemsTestPayloadInvalid.set(false);
+      return compactPayload;
+    } catch {
+      this.alertProblemsTestPayloadInvalid.set(true);
+      return null;
+    }
+  }
+
+  protected formatTestResult(result: string): string {
+    try {
+      return JSON.stringify(JSON.parse(result), null, 2);
+    } catch {
+      return result;
+    }
+  }
 
   async testResponse() {
     const config = this.getSelectedPromptConfig();
     if (!config) return;
-    this.response = await this.openRouterService.sendToAI(config, this.description);
+    const testContent = this.getTestContent();
+    if (testContent === null) return;
+    this.response = await this.openRouterService.sendToAI(config, testContent, this.compareService.selectedModel());
   }
   async testResult() {
     const config = this.getSelectedPromptConfig();
     if (!config) return;
-    this.result = await this.openRouterService.getTextFromAI(config, this.description);
+    const testContent = this.getTestContent();
+    if (testContent === null) return;
+    this.result = await this.openRouterService.getTextFromAI(config, testContent, this.compareService.selectedModel());
   }
 
   // Rebuild prompt file
