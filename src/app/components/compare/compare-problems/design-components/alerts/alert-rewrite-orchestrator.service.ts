@@ -531,7 +531,6 @@ export class AlertRewriteOrchestratorService {
       const compactExampleDetails = (examples: typeof selectedExamples) =>
         examples.map((example) => ({
           id: example.id,
-          alertType: example.alertType,
           criteria: example.criteria,
           tags: example.tags,
           egHeading: example.egHeading || '',

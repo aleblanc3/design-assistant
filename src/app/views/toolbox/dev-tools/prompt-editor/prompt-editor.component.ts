@@ -56,6 +56,17 @@ interface SkillGroupEntry {
   rules: readonly SkillPromptRule[];
 }
 
+interface ExampleSetEntry {
+  key: string;
+  kind: 'alertRewrite';
+  title: string;
+  description: string;
+  sourcePath: string;
+  fileName: string;
+  examples: AlertRewriteExample[];
+  original: string;
+}
+
 type PreviewEntry = PromptEntry | SkillEntry;
 
 interface TabConfig {
@@ -65,6 +76,7 @@ interface TabConfig {
   prompts?: PromptEntry[];
   skills?: SkillEntry[];
   fragments?: { key: string; label: string; data: PromptEntry[] }[];
+  exampleSets?: ExampleSetEntry[];
   tool: string;
   original: string;
 }
@@ -140,6 +152,18 @@ interface PromptPipelineOption {
       min-height: 24rem;
       overflow-y: auto;
     }
+
+    .example-json-editor {
+      field-sizing: content;
+      min-height: 8rem;
+      overflow-y: auto;
+      font-size: 1.25rem !important;
+    }
+
+    .example-metadata {
+      margin: 0.5rem 0;
+      font-size: 1.25rem !important;
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -162,7 +186,7 @@ export class PromptEditorComponent {
     });
     effect(() => {
       const tab = this.selectedTab(); //watching for changes to selected tab
-      if (tab < 5) {
+      if (this.tabs.some((candidate) => candidate.value === tab)) {
         this.selectedPromptTab.set(tab);
       }
       this.updateDiff();
@@ -192,6 +216,10 @@ export class PromptEditorComponent {
 
   protected isSkillsTab(tab: TabConfig): tab is TabConfig & { skills: SkillEntry[] } {
     return tab.skills !== undefined;
+  }
+
+  protected isExamplesTab(tab: TabConfig): tab is TabConfig & { exampleSets: ExampleSetEntry[] } {
+    return tab.exampleSets !== undefined;
   }
 
   protected isSkillEntry(entry: PreviewEntry): entry is SkillEntry {
@@ -284,6 +312,25 @@ export class PromptEditorComponent {
     promptText: SkillPrompts[SkillPromptKey[enumKey as keyof typeof SkillPromptKey]],
   }));
 
+  protected readonly exampleSets: ExampleSetEntry[] = [
+    {
+      key: 'alertRewrite',
+      kind: 'alertRewrite',
+      title: marker('aiPrompt.examples.alertRewrite'),
+      description: marker('aiPrompt.examples.alertRewriteDescription'),
+      sourcePath: 'src/app/common/prompts/alert-rewrite.examples.ts',
+      fileName: 'alert-rewrite.examples.ts',
+      examples: AlertRewriteExamples,
+      original: this.rebuildAlertRewriteExamplesFile(AlertRewriteExamples),
+    },
+  ];
+  protected readonly selectedExampleSet = signal<ExampleSetEntry>(this.exampleSets[0]);
+  private readonly exampleJsonDrafts = signal<Record<string, string>>(
+    Object.fromEntries(AlertRewriteExamples.map((example) => [example.id, this.formatExampleJson(example)])),
+  );
+  private readonly exampleJsonErrors = signal<Record<string, string>>({});
+  protected readonly hasInvalidExampleJson = computed(() => Object.keys(this.exampleJsonErrors()).length > 0);
+
   protected get alertRewritePipelineGroups(): PromptPipelineGroup[] {
     return this.buildAlertRewritePipelineGroups();
   }
@@ -342,6 +389,14 @@ export class PromptEditorComponent {
       skills: this.skillPrompts,
       tool: 'Skills',
       original: this.rebuildSkillsFile(),
+    },
+    {
+      title: marker('aiPrompt.examples._title'),
+      description: marker('aiPrompt.examples._description'),
+      value: 5,
+      exampleSets: this.exampleSets,
+      tool: 'Examples',
+      original: '',
     },
   ];
 
@@ -894,6 +949,178 @@ export function getLinkWritingPromptRules(options: LinkWritingPromptOptions): st
     return `'${value.replace(/\\/g, '\\\\')}'`;
   }
 
+  rebuildAlertRewriteExamplesFile(examples: AlertRewriteExample[]): string {
+    const serializedExamples = examples.map((example) => this.serializeAlertRewriteExample(example)).join('\n');
+    return `export interface AlertRewriteExample {
+  id: string;
+  tags: string[];
+  purposeTags?: string[];
+  criteria: string[];
+  egText: string;
+  egHeading?: string;
+  egHtml?: string;
+  egLinks?: AlertRewriteExampleLink[];
+  notes?: string;
+}
+
+export interface AlertRewriteExampleLink {
+  id: string;
+  text: string;
+  href?: string;
+}
+
+export const AlertRewriteExamples: AlertRewriteExample[] = [
+${serializedExamples}
+];
+`;
+  }
+
+  private serializeAlertRewriteExample(example: AlertRewriteExample): string {
+    const properties = [
+      `    id: ${this.toExampleStringLiteral(example.id)},`,
+      this.serializeExampleArrayProperty('tags', example.tags),
+      ...(example.purposeTags ? [this.serializeExampleArrayProperty('purposeTags', example.purposeTags)] : []),
+      this.serializeExampleArrayProperty('criteria', example.criteria),
+      ...(example.egHeading !== undefined ? [this.serializeExampleStringProperty('egHeading', example.egHeading)] : []),
+      this.serializeExampleStringProperty('egText', example.egText),
+      ...(example.egHtml !== undefined ? [this.serializeExampleStringProperty('egHtml', example.egHtml)] : []),
+      ...(example.egLinks !== undefined ? [this.serializeExampleLinks(example.egLinks)] : []),
+      ...(example.notes !== undefined ? [this.serializeExampleStringProperty('notes', example.notes)] : []),
+    ];
+    return `  {\n${properties.join('\n')}\n  },`;
+  }
+
+  private serializeExampleStringProperty(name: string, value: string): string {
+    const literal = this.toExampleStringLiteral(value);
+    const singleLine = `    ${name}: ${literal},`;
+    return singleLine.length <= 200 ? singleLine : `    ${name}:\n      ${literal},`;
+  }
+
+  private serializeExampleArrayProperty(name: string, values: string[]): string {
+    const literals = values.map((value) => this.toExampleStringLiteral(value));
+    const singleLine = `    ${name}: [${literals.join(', ')}],`;
+    if (singleLine.length <= 200) return singleLine;
+    return `    ${name}: [\n${literals.map((literal) => `      ${literal},`).join('\n')}\n    ],`;
+  }
+
+  private serializeExampleLinks(links: AlertRewriteExample['egLinks']): string {
+    if (!links?.length) return '    egLinks: [],';
+    const serializedLinks = links
+      .map((link) => {
+        const properties = [`        id: ${this.toExampleStringLiteral(link.id)},`, `        text: ${this.toExampleStringLiteral(link.text)},`];
+        if (link.href !== undefined) properties.push(`        href: ${this.toExampleStringLiteral(link.href)},`);
+        return `      {\n${properties.join('\n')}\n      },`;
+      })
+      .join('\n');
+    return `    egLinks: [\n${serializedLinks}\n    ],`;
+  }
+
+  private toExampleStringLiteral(value: string): string {
+    if (value.includes("'") && !value.includes('"')) return JSON.stringify(value);
+    return `'${value.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`;
+  }
+
+  protected getExampleJsonDraft(example: AlertRewriteExample): string {
+    return this.exampleJsonDrafts()[example.id] ?? this.formatExampleJson(example);
+  }
+
+  private formatExampleJson(example: AlertRewriteExample): string {
+    const editableExample = {
+      ...(example.egHeading !== undefined ? { egHeading: example.egHeading } : {}),
+      egText: example.egText,
+      ...(example.egHtml !== undefined ? { egHtml: example.egHtml } : {}),
+      ...(example.egLinks !== undefined ? { egLinks: example.egLinks } : {}),
+    };
+    return this.formatJsonWithInlineStringArrays(editableExample);
+  }
+
+  private formatJsonWithInlineStringArrays(value: unknown): string {
+    return JSON.stringify(value, null, 2).replace(/\[\n((?:\s+"(?:\\.|[^"\\])*",?\n)+)\s*\]/g, (_match, items: string) => {
+      const values = items.match(/"(?:\\.|[^"\\])*"/g) ?? [];
+      return `[${values.join(', ')}]`;
+    });
+  }
+
+  protected getExampleSelectionMetadata(example: AlertRewriteExample): string {
+    return this.formatJsonWithInlineStringArrays({
+      id: example.id,
+      tags: example.tags,
+      purposeTags: example.purposeTags,
+      criteria: example.criteria,
+      notes: example.notes,
+    });
+  }
+
+  protected getFormattedExamplePreview(example: AlertRewriteExample): string {
+    return this.formatJsonWithInlineStringArrays(example);
+  }
+
+  protected getExampleJsonError(example: AlertRewriteExample): string | undefined {
+    return this.exampleJsonErrors()[example.id];
+  }
+
+  protected updateExampleJsonDraft(example: AlertRewriteExample, value: string): void {
+    this.exampleJsonDrafts.update((drafts) => ({ ...drafts, [example.id]: value }));
+
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(value);
+    } catch {
+      this.setExampleJsonError(example.id, 'dev.prompts.examples.invalidJson');
+      return;
+    }
+
+    if (!this.isValidAlertRewriteExample(parsed)) {
+      this.setExampleJsonError(example.id, 'dev.prompts.examples.invalidStructure');
+      return;
+    }
+    const mutableExample = example as unknown as Record<string, unknown>;
+    for (const key of ['egHeading', 'egText', 'egHtml', 'egLinks']) delete mutableExample[key];
+    Object.assign(mutableExample, parsed);
+    this.exampleJsonErrors.update((errors) => {
+      const updated = { ...errors };
+      delete updated[example.id];
+      return updated;
+    });
+    void this.updateDiff();
+  }
+
+  private setExampleJsonError(exampleId: string, translationKey: string): void {
+    this.exampleJsonErrors.update((errors) => ({ ...errors, [exampleId]: translationKey }));
+  }
+
+  private isValidAlertRewriteExample(value: unknown): value is AlertRewriteExample {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+    const example = value as Record<string, unknown>;
+    const allowedKeys = new Set(['egText', 'egHeading', 'egHtml', 'egLinks']);
+    if (Object.keys(example).some((key) => !allowedKeys.has(key))) return false;
+    if (typeof example['egText'] !== 'string') return false;
+    for (const key of ['egHeading', 'egHtml']) {
+      if (example[key] !== undefined && typeof example[key] !== 'string') return false;
+    }
+    if (example['egLinks'] !== undefined) {
+      if (!Array.isArray(example['egLinks'])) return false;
+      if (
+        example['egLinks'].some(
+          (link) =>
+            !link ||
+            typeof link !== 'object' ||
+            Array.isArray(link) ||
+            typeof (link as Record<string, unknown>)['id'] !== 'string' ||
+            typeof (link as Record<string, unknown>)['text'] !== 'string' ||
+            ((link as Record<string, unknown>)['href'] !== undefined && typeof (link as Record<string, unknown>)['href'] !== 'string'),
+        )
+      )
+        return false;
+    }
+    return true;
+  }
+
+  protected selectExampleSet(exampleSet: ExampleSetEntry): void {
+    this.selectedExampleSet.set(exampleSet);
+    void this.updateDiff();
+  }
+
   // Rebuild prompt file (older version)
   rebuildPromptFileOld(tool: string, prompts: PromptEntry[]) {
     const updatedPrompts = prompts.map((p) => ` [${tool}PromptKey.${p.enumKey}]: \`${p.promptText}\`,`).join('\n');
@@ -926,6 +1153,7 @@ ${rubricEntries}
   protected rebuildTabFile(tab: TabConfig): string {
     if (tab.fragments) return this.rebuildSharedFile();
     if (tab.skills) return this.rebuildSkillsFile();
+    if (tab.exampleSets) return this.rebuildAlertRewriteExamplesFile(this.selectedExampleSet().examples);
     if (tab.prompts) return this.rebuildPromptFile(tab.tool, tab.prompts);
     return '';
   }
@@ -935,7 +1163,8 @@ ${rubricEntries}
     const tabNumber = promptTab ?? this.selectedPromptTab();
     const tab = this.tabs[tabNumber];
     if (!tab) return false;
-    return this.rebuildTabFile(tab) !== tab.original;
+    const original = tab.exampleSets ? this.selectedExampleSet().original : tab.original;
+    return this.rebuildTabFile(tab) !== original;
   }
 
   // Open pull request
@@ -943,6 +1172,16 @@ ${rubricEntries}
   /** Open pull request for selected tab */
   async openPullRequest(tab: TabConfig) {
     const content = this.rebuildTabFile(tab);
+    if (tab.exampleSets) {
+      const exampleSet = this.selectedExampleSet();
+      try {
+        const result = await this.exportGitHubService.createPullRequestForPrompts(exampleSet.key.toLowerCase(), exampleSet.sourcePath, exampleSet.fileName, content);
+        this.pullRequestUrl = result.prUrl;
+      } catch (error) {
+        console.error('Failed to create PR:', error);
+      }
+      return;
+    }
     const toolLC = tab.tool.toLowerCase();
     try {
       const result = await this.exportGitHubService.createPullRequestForPrompts(toolLC, `src/app/common/prompts/${toolLC}.prompts.ts`, `${toolLC}.prompts.ts`, content);
@@ -962,10 +1201,11 @@ ${rubricEntries}
     const [{ createPatch }, { Diff2HtmlUI }] = await Promise.all([import('diff'), import('diff2html/lib-esm/ui/js/diff2html-ui-slim')]);
     const tab = this.tabs[this.selectedPromptTab()];
     const updatedContent = this.rebuildTabFile(tab);
-    const originalContent = tab.original;
+    const originalContent = tab.exampleSets ? this.selectedExampleSet().original : tab.original;
 
     // Create the patch
-    const patch = createPatch(`${tab.tool.toLowerCase()}.prompts.ts`, originalContent, updatedContent);
+    const diffFileName = tab.exampleSets ? this.selectedExampleSet().fileName : `${tab.tool.toLowerCase()}.prompts.ts`;
+    const patch = createPatch(diffFileName, originalContent, updatedContent);
 
     // Render it
     const config: Diff2HtmlUIConfig = {

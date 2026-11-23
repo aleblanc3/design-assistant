@@ -52,6 +52,18 @@
                     <label [for]="'show_' + skill.enumKey" class="cursor-pointer font-semibold">{{ skill.translationKey | translate }}</label>
                   </div>
                 }
+              } @else if (isExamplesTab(tab)) {
+                @for (exampleSet of tab.exampleSets; track exampleSet.key) {
+                  <div class="flex flex-row align-items-center gap-2">
+                    <p-radiobutton
+                      [binary]="true"
+                      [inputId]="'show_example_set_' + exampleSet.key"
+                      [ngModel]="selectedExampleSet().key === exampleSet.key"
+                      (ngModelChange)="selectExampleSet(exampleSet)"
+                    />
+                    <label [for]="'show_example_set_' + exampleSet.key" class="cursor-pointer font-semibold">{{ exampleSet.title | translate }}</label>
+                  </div>
+                }
               } @else {
                 @for (prompt of tab.prompts; track prompt.enumKey) {
                   <div class="flex flex-row align-content-center gap-2">
@@ -124,8 +136,29 @@
                   }
                 }
               }
+              <!--Examples-->
+              @if (isExamplesTab(tab)) {
+                <p>{{ selectedExampleSet().description | translate }}</p>
+                @for (example of selectedExampleSet().examples; track example.id) {
+                  <h2 [id]="example.id + '_heading'" class="my-0">{{ getAlertRewriteExampleLegend(example) }}</h2>
+                  <pre class="prompt-preview example-metadata" [attr.aria-label]="'dev.prompts.examples.selectionMetadata' | translate">{{ getExampleSelectionMetadata(example) }}</pre>
+                  <textarea
+                    [attr.aria-label]="'dev.prompts.examples.editableFinalExample' | translate"
+                    [id]="example.id + '_json'"
+                    [ngModel]="getExampleJsonDraft(example)"
+                    (ngModelChange)="updateExampleJsonDraft(example, $event)"
+                    class="example-json-editor"
+                    fluid
+                    pTextarea
+                    rows="6"
+                  ></textarea>
+                  @if (getExampleJsonError(example); as errorKey) {
+                    <p-message severity="error">{{ errorKey | translate }}</p-message>
+                  }
+                }
+              }
               <!--Full prompts-->
-              @if (!isFragmentsTab(tab) && !isSkillsTab(tab)) {
+              @if (!isFragmentsTab(tab) && !isSkillsTab(tab) && !isExamplesTab(tab)) {
                 @for (prompt of tab.prompts; track prompt.enumKey) {
                   <!-- String editor -->
                   @if (isPromptString(prompt)) {
@@ -301,7 +334,7 @@
             } @else if (selectedPromptIsAlertRewriteExamples()) {
               @for (example of alertRewriteExamples; track example.id) {
                 <h3>{{ getAlertRewriteExampleLegend(example) }}</h3>
-                <pre class="prompt-preview">{{ example | json }}</pre>
+                <pre class="prompt-preview">{{ getFormattedExamplePreview(example) }}</pre>
               }
             } @else if (selectedPromptIsAlertProblems()) {
               @for (section of alertProblemsSections; track section.key) {
@@ -415,7 +448,12 @@
             <pre #filePreview><code class="language-typescript">{{ rebuildTabFile(tabs[selectedPromptTab()]) }}</code></pre>
           </p-fieldset>
           <!--Open PR-->
-          <p-button [disabled]="!signInService.user()" [label]="'dev.prompts.button.openPR' | translate" (onClick)="openPullRequest(tabs[selectedPromptTab()])" icon="pi pi-send" />
+          <p-button
+            [disabled]="!signInService.user() || (isExamplesTab(tabs[selectedPromptTab()]) && hasInvalidExampleJson())"
+            [label]="'dev.prompts.button.openPR' | translate"
+            (onClick)="openPullRequest(tabs[selectedPromptTab()])"
+            icon="pi pi-send"
+          />
         } @else {
           <p-message icon="pi pi-info-circle" severity="info">{{ 'dev.prompts.pr.noChangesMessage' | translate }}</p-message>
         }
