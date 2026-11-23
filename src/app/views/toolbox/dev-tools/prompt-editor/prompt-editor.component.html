@@ -45,6 +45,13 @@
                     <label [for]="'show_' + fragment.key" class="cursor-pointer font-semibold">{{ fragment.label | translate }}</label>
                   </div>
                 }
+              } @else if (isSkillsTab(tab)) {
+                @for (skill of tab.skills; track skill.enumKey) {
+                  <div class="flex flex-row align-content-center gap-2">
+                    <p-checkbox [binary]="true" [inputId]="'show_' + skill.enumKey" [ngModel]="isPromptVisible(skill.enumKey)" (ngModelChange)="togglePrompt(skill.enumKey)" />
+                    <label [for]="'show_' + skill.enumKey" class="cursor-pointer font-semibold">{{ skill.translationKey | translate }}</label>
+                  </div>
+                }
               } @else {
                 @for (prompt of tab.prompts; track prompt.enumKey) {
                   <div class="flex flex-row align-content-center gap-2">
@@ -72,8 +79,53 @@
                   }
                 }
               }
+              <!--Skills-->
+              @if (isSkillsTab(tab)) {
+                @for (skill of tab.skills; track skill.enumKey) {
+                  @if (isPromptVisible(skill.enumKey)) {
+                    <h2 class="my-0">{{ skill.translationKey | translate }}</h2>
+                    @for (group of getSkillGroups(skill); track group.key) {
+                      <h3>{{ getSkillGroupLabel(group.key) | translate }}</h3>
+                      @for (rule of group.rules; track rule.id) {
+                        <div class="flex flex-column gap-2">
+                          @if (rule.severity) {
+                            <p-iftalabel class="w-12rem">
+                              <p-select
+                                [(ngModel)]="rule.severity"
+                                [id]="skill.enumKey + '_' + rule.id + '_severity'"
+                                [options]="skillSeverityOptions"
+                                (onChange)="updateDiff()"
+                                appendTo="body"
+                                fluid
+                                optionLabel="label"
+                                optionValue="value"
+                              >
+                                <ng-template let-option pTemplate="item">{{ option.label | translate }}</ng-template>
+                                <ng-template let-option pTemplate="selectedItem">{{ option.label | translate }}</ng-template>
+                              </p-select>
+                              <label [for]="skill.enumKey + '_' + rule.id + '_severity'">{{ 'dev.prompts.skills.severity._label' | translate }}</label>
+                            </p-iftalabel>
+                          }
+                          <p-iftalabel>
+                            <textarea
+                              [(ngModel)]="rule.text"
+                              [autoResize]="true"
+                              [id]="skill.enumKey + '_' + rule.id"
+                              (ngModelChange)="updateDiff()"
+                              fluid
+                              pTextarea
+                              rows="2"
+                            ></textarea>
+                            <label [for]="skill.enumKey + '_' + rule.id">{{ rule.id }}</label>
+                          </p-iftalabel>
+                        </div>
+                      }
+                    }
+                  }
+                }
+              }
               <!--Full prompts-->
-              @if (!isFragmentsTab(tab)) {
+              @if (!isFragmentsTab(tab) && !isSkillsTab(tab)) {
                 @for (prompt of tab.prompts; track prompt.enumKey) {
                   <!-- String editor -->
                   @if (isPromptString(prompt)) {
@@ -256,11 +308,20 @@
                 <h3>{{ section.label ?? '' | translate }}</h3>
                 <pre class="prompt-preview">{{ section.content }}</pre>
               }
+            } @else if (selectedPromptIsSkill()) {
+              <p>{{ 'dev.prompts.skills.testUnavailable' | translate }}</p>
+              @for (group of getSelectedSkillGroups(); track group.key) {
+                <h3>{{ getSkillGroupLabel(group.key) | translate }}</h3>
+                @for (rule of group.rules; track rule.id) {
+                  <h4>{{ rule.id }}</h4>
+                  <pre class="prompt-preview">{{ rule.text }}</pre>
+                }
+              }
             } @else {
               <pre class="prompt-preview">{{ aiPrompt() }}</pre>
             }
           </div>
-          @if (!selectedPromptIsAlertRewritePipeline() && !selectedPromptIsAlertRewriteExamples()) {
+          @if (!selectedPromptIsAlertRewritePipeline() && !selectedPromptIsAlertRewriteExamples() && !selectedPromptIsSkill()) {
             <div>
               @if (selectedPromptIsAlertProblems()) {
                 <h3 class="my-1">{{ 'dev.prompts.preview.alertProblems.testPage' | translate }}</h3>
@@ -347,15 +408,14 @@
       <div [class]="styleCardService.cardStyles(undefined, undefined, undefined, undefined, undefined, 'border-top-none border-noround-top')" class="w-limited">
         <h2 class="my-1">{{ 'dev.prompts.pr.header' | translate }}</h2>
         @if (hasChanges()) {
-          @let prompts = tabs[selectedPromptTab()].prompts;
           <!--Review-->
           <div #diffContainer></div>
           <!--Export-->
           <p-fieldset [collapsed]="true" [legend]="'dev.prompts.pr.filePreview' | translate" [toggleable]="true" styleClass="secondary-outline mb-3">
-            <pre #filePreview><code class="language-typescript">{{ prompts ? rebuildPromptFile(tabs[selectedPromptTab()].tool, prompts) : rebuildSharedFile() }}</code></pre>
+            <pre #filePreview><code class="language-typescript">{{ rebuildTabFile(tabs[selectedPromptTab()]) }}</code></pre>
           </p-fieldset>
           <!--Open PR-->
-          <p-button [disabled]="!signInService.user()" [label]="'dev.prompts.button.openPR' | translate" (onClick)="openPullRequest(tabs[selectedPromptTab()].tool, prompts)" icon="pi pi-send" />
+          <p-button [disabled]="!signInService.user()" [label]="'dev.prompts.button.openPR' | translate" (onClick)="openPullRequest(tabs[selectedPromptTab()])" icon="pi pi-send" />
         } @else {
           <p-message icon="pi pi-info-circle" severity="info">{{ 'dev.prompts.pr.noChangesMessage' | translate }}</p-message>
         }

@@ -36,7 +36,7 @@ import { PagePrompts } from '../../../../common/prompts/page.prompts';
 import { ProblemPrompts } from '../../../../common/prompts/problems.prompts';
 import { OutputKey, PagePromptKey, ProblemPromptKey, PromptConfig, RoleKey, RubricKey, SkillPromptKey, ToolsPromptKey } from '../../../../common/prompts/prompt.model';
 import { OutputFragment, RoleFragment, RubricFragment } from '../../../../common/prompts/shared.prompts';
-import { SkillPrompts } from '../../../../common/prompts/skills.prompts';
+import { SkillPromptConfig, SkillPromptRule, SkillPrompts } from '../../../../common/prompts/skills.prompts';
 import { ToolsPrompts } from '../../../../common/prompts/tools.prompts';
 
 interface PromptEntry {
@@ -45,11 +45,25 @@ interface PromptEntry {
   promptText: string | string[] | PromptConfig;
 }
 
+interface SkillEntry {
+  enumKey: string;
+  translationKey: string;
+  promptText: SkillPromptConfig;
+}
+
+interface SkillGroupEntry {
+  key: string;
+  rules: readonly SkillPromptRule[];
+}
+
+type PreviewEntry = PromptEntry | SkillEntry;
+
 interface TabConfig {
   title: string;
   description: string;
   value: number;
   prompts?: PromptEntry[];
+  skills?: SkillEntry[];
   fragments?: { key: string; label: string; data: PromptEntry[] }[];
   tool: string;
   original: string;
@@ -156,24 +170,32 @@ export class PromptEditorComponent {
   }
 
   // Type guard
-  protected isPromptConfig(entry: PromptEntry): entry is PromptEntry & { promptText: PromptConfig } {
-    return typeof entry.promptText === 'object' && entry.promptText !== null;
+  protected isPromptConfig(entry: PreviewEntry): entry is PromptEntry & { promptText: PromptConfig } {
+    return typeof entry.promptText === 'object' && entry.promptText !== null && 'role' in entry.promptText && 'task' in entry.promptText;
   }
 
   protected isPromptString(entry: PromptEntry): entry is PromptEntry & { promptText: string } {
     return typeof entry.promptText === 'string';
   }
 
-  protected isAlertRewritePipeline(entry: PromptEntry): boolean {
+  protected isAlertRewritePipeline(entry: PreviewEntry): boolean {
     return entry.enumKey === 'AlertRewrite';
   }
 
-  protected isAlertRewriteExamples(entry: PromptEntry): boolean {
+  protected isAlertRewriteExamples(entry: PreviewEntry): boolean {
     return entry.enumKey === 'AlertExamples';
   }
 
   protected isFragmentsTab(tab: TabConfig): boolean {
     return tab.fragments !== undefined;
+  }
+
+  protected isSkillsTab(tab: TabConfig): tab is TabConfig & { skills: SkillEntry[] } {
+    return tab.skills !== undefined;
+  }
+
+  protected isSkillEntry(entry: PreviewEntry): entry is SkillEntry {
+    return typeof entry.promptText === 'object' && entry.promptText !== null && 'groups' in entry.promptText;
   }
 
   protected readonly OutputKey = OutputKey;
@@ -232,6 +254,11 @@ export class PromptEditorComponent {
     label: key,
   }));
 
+  protected readonly skillSeverityOptions = [
+    { value: 'must', label: marker('dev.prompts.skills.severity.must') },
+    { value: 'should', label: marker('dev.prompts.skills.severity.should') },
+  ];
+
   // Prompts
   inventoryPrompts: PromptEntry[] = Object.keys(ToolsPromptKey).map((enumKey) => ({
     enumKey,
@@ -251,13 +278,21 @@ export class PromptEditorComponent {
     promptText: ProblemPrompts[ProblemPromptKey[enumKey as keyof typeof ProblemPromptKey]],
   }));
 
-  protected readonly alertRewritePipelineGroups: PromptPipelineGroup[] = this.buildAlertRewritePipelineGroups();
+  skillPrompts: SkillEntry[] = Object.keys(SkillPromptKey).map((enumKey) => ({
+    enumKey,
+    translationKey: SkillPromptKey[enumKey as keyof typeof SkillPromptKey],
+    promptText: SkillPrompts[SkillPromptKey[enumKey as keyof typeof SkillPromptKey]],
+  }));
+
+  protected get alertRewritePipelineGroups(): PromptPipelineGroup[] {
+    return this.buildAlertRewritePipelineGroups();
+  }
   protected get alertProblemsSections(): PromptPipelineSection[] {
     return this.buildAlertProblemsSections();
   }
   protected readonly alertRewriteExamples = AlertRewriteExamples;
 
-  selectedPrompts = new Set<string>([this.inventoryPrompts[0]?.enumKey, this.pagePrompts[0]?.enumKey, this.problemPrompts[0]?.enumKey].filter(Boolean));
+  selectedPrompts = new Set<string>([this.inventoryPrompts[0]?.enumKey, this.pagePrompts[0]?.enumKey, this.problemPrompts[0]?.enumKey, this.skillPrompts[0]?.enumKey].filter(Boolean));
 
   togglePrompt(enumKey: string) {
     if (this.selectedPrompts.has(enumKey)) {
@@ -300,6 +335,14 @@ export class PromptEditorComponent {
       tool: 'Problem',
       original: this.rebuildPromptFile('Problem', this.problemPrompts),
     },
+    {
+      title: marker('aiPrompt.skills._title'),
+      description: marker('aiPrompt.skills._description'),
+      value: 4,
+      skills: this.skillPrompts,
+      tool: 'Skills',
+      original: this.rebuildSkillsFile(),
+    },
   ];
 
   // Dropdown
@@ -317,13 +360,14 @@ export class PromptEditorComponent {
       ],
     },
     { label: 'aiPrompt.tools._title', items: this.inventoryPrompts },
+    { label: 'aiPrompt.skills._title', items: this.skillPrompts },
     { label: 'aiPrompt.page._title', items: this.pagePrompts.filter((prompt) => prompt.enumKey !== 'AlertRewrite') },
     {
       label: 'aiPrompt.problems._title',
       items: this.problemPrompts.filter((prompt) => prompt.enumKey !== 'AlertsProblems'),
     },
   ];
-  protected readonly selectedPrompt = signal<PromptEntry | undefined>(this.pagePrompts.find((prompt) => prompt.enumKey === 'AlertRewrite'));
+  protected readonly selectedPrompt = signal<PreviewEntry | undefined>(this.pagePrompts.find((prompt) => prompt.enumKey === 'AlertRewrite'));
   protected readonly selectedPromptIsAlertRewritePipeline = computed(() => {
     const selected = this.selectedPrompt();
     return !!selected && this.isAlertRewritePipeline(selected);
@@ -333,10 +377,27 @@ export class PromptEditorComponent {
     return !!selected && this.isAlertRewriteExamples(selected);
   });
   protected readonly selectedPromptIsAlertProblems = computed(() => this.selectedPrompt()?.enumKey === 'AlertsProblems');
+  protected readonly selectedPromptIsSkill = computed(() => {
+    const selected = this.selectedPrompt();
+    return !!selected && this.isSkillEntry(selected);
+  });
   protected aiPrompt(): string {
     const selected = this.selectedPrompt();
-    if (!selected || !this.isPromptConfig(selected)) return '';
+    if (!selected || this.isSkillEntry(selected) || !this.isPromptConfig(selected)) return '';
     return this.aiPromptService.composePrompt(selected.promptText);
+  }
+
+  protected getSkillGroups(skill: SkillEntry): SkillGroupEntry[] {
+    return Object.entries(skill.promptText.groups).map(([key, rules]) => ({ key, rules }));
+  }
+
+  protected getSelectedSkillGroups(): SkillGroupEntry[] {
+    const selected = this.selectedPrompt();
+    return selected && this.isSkillEntry(selected) ? this.getSkillGroups(selected) : [];
+  }
+
+  protected getSkillGroupLabel(groupKey: string): string {
+    return `dev.prompts.skills.group.${groupKey}`;
   }
 
   private buildAlertRewritePipelineGroups(): PromptPipelineGroup[] {
@@ -733,7 +794,7 @@ export class PromptEditorComponent {
 
   protected getSelectedPromptConfig(): PromptConfig | null {
     const selected = this.selectedPrompt();
-    return selected && this.isPromptConfig(selected) ? selected.promptText : null;
+    return selected && !this.isSkillEntry(selected) && this.isPromptConfig(selected) ? selected.promptText : null;
   }
 
   private serializePromptConfig(config: PromptConfig, enumKey: string): string {
@@ -776,6 +837,63 @@ export class PromptEditorComponent {
     return `\`${value.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$\{/g, '\\${')}\``;
   }
 
+  rebuildSkillsFile(): string {
+    const skillEntries = this.skillPrompts
+      .map((skill) => {
+        const groupEntries = this.getSkillGroups(skill)
+          .map((group) => {
+            const ruleEntries = group.rules
+              .map((rule) => {
+                const severity = rule.severity ? `\n          severity: '${rule.severity}',` : '';
+                return `        {\n          id: '${rule.id}',${severity}\n          text: ${this.toSkillStringLiteral(rule.text)},\n        },`;
+              })
+              .join('\n');
+            return `      ${group.key}: [\n${ruleEntries}\n      ],`;
+          })
+          .join('\n');
+        return `  [SkillPromptKey.${skill.enumKey}]: {\n    groups: {\n${groupEntries}\n    },\n  },`;
+      })
+      .join('\n');
+
+    return `import { SkillPromptKey } from './prompt.model';
+
+export type SkillPromptRuleSeverity = 'must' | 'should';
+
+export interface SkillPromptRule {
+  id: string;
+  severity?: SkillPromptRuleSeverity;
+  text: string;
+}
+
+export interface SkillPromptConfig {
+  groups: Readonly<Record<string, readonly SkillPromptRule[]>>;
+}
+
+export const SkillPrompts = {
+${skillEntries}
+} satisfies Record<SkillPromptKey, SkillPromptConfig>;
+
+export interface LinkWritingPromptOptions {
+  hasTooManyLinksIssue: boolean;
+}
+
+export function getCanadaCaStylePromptRules(): string[] {
+  return SkillPrompts[SkillPromptKey.CanadaCaStyle].groups.common.map((rule) => \`[Canada.ca style \${rule.id} \${rule.severity}] \${rule.text}\`);
+}
+
+export function getLinkWritingPromptRules(options: LinkWritingPromptOptions): string[] {
+  const groups = SkillPrompts[SkillPromptKey.LinkWriting].groups;
+  const conditionalRules = options.hasTooManyLinksIssue ? groups.tooManyLinks : groups.preserveLinks;
+  return [...groups.common, ...conditionalRules].map((rule) => rule.text);
+}
+`;
+  }
+
+  private toSkillStringLiteral(value: string): string {
+    if (value.includes("'")) return JSON.stringify(value);
+    return `'${value.replace(/\\/g, '\\\\')}'`;
+  }
+
   // Rebuild prompt file (older version)
   rebuildPromptFileOld(tool: string, prompts: PromptEntry[]) {
     const updatedPrompts = prompts.map((p) => ` [${tool}PromptKey.${p.enumKey}]: \`${p.promptText}\`,`).join('\n');
@@ -805,27 +923,27 @@ ${rubricEntries}
 }`;
   }
 
+  protected rebuildTabFile(tab: TabConfig): string {
+    if (tab.fragments) return this.rebuildSharedFile();
+    if (tab.skills) return this.rebuildSkillsFile();
+    if (tab.prompts) return this.rebuildPromptFile(tab.tool, tab.prompts);
+    return '';
+  }
+
   /** Tracks if changes have been made to current tab */
   hasChanges(promptTab?: number): boolean {
     const tabNumber = promptTab ?? this.selectedPromptTab();
     const tab = this.tabs[tabNumber];
-    if (tabNumber === 0) {
-      const updatedContent = this.rebuildSharedFile();
-      const originalContent = tab.original;
-      return updatedContent !== originalContent;
-    }
-    if (!tab?.prompts) return false;
-    const updatedContent = this.rebuildPromptFile(tab.tool, tab.prompts);
-    const originalContent = tab.original;
-    return updatedContent !== originalContent;
+    if (!tab) return false;
+    return this.rebuildTabFile(tab) !== tab.original;
   }
 
   // Open pull request
   pullRequestUrl: string | null = null;
   /** Open pull request for selected tab */
-  async openPullRequest(tool: string, prompts?: PromptEntry[]) {
-    const content = !prompts ? this.rebuildSharedFile() : this.rebuildPromptFile(tool, prompts);
-    const toolLC = tool.toLowerCase();
+  async openPullRequest(tab: TabConfig) {
+    const content = this.rebuildTabFile(tab);
+    const toolLC = tab.tool.toLowerCase();
     try {
       const result = await this.exportGitHubService.createPullRequestForPrompts(toolLC, `src/app/common/prompts/${toolLC}.prompts.ts`, `${toolLC}.prompts.ts`, content);
       this.pullRequestUrl = result.prUrl;
@@ -843,7 +961,7 @@ ${rubricEntries}
     // Lazy load both modules
     const [{ createPatch }, { Diff2HtmlUI }] = await Promise.all([import('diff'), import('diff2html/lib-esm/ui/js/diff2html-ui-slim')]);
     const tab = this.tabs[this.selectedPromptTab()];
-    const updatedContent = this.selectedPromptTab() === 0 ? this.rebuildSharedFile() : tab.prompts ? this.rebuildPromptFile(tab.tool, tab.prompts) : '';
+    const updatedContent = this.rebuildTabFile(tab);
     const originalContent = tab.original;
 
     // Create the patch
@@ -869,8 +987,8 @@ ${rubricEntries}
   async highlightFilePreview(): Promise<void> {
     const filePreview = this.filePreview();
     if (!filePreview) return;
-    const prompts = this.tabs[this.selectedPromptTab()].prompts;
-    if (!prompts) return;
+    const tab = this.tabs[this.selectedPromptTab()];
+    if (!tab) return;
 
     try {
       const { default: Prism } = await import('prismjs');
@@ -886,7 +1004,7 @@ ${rubricEntries}
         pre.removeAttribute('data-highlighted');
         pre.removeAttribute('tabindex');
         codeBlock.className = 'language-typescript';
-        codeBlock.textContent = this.rebuildPromptFile(this.tabs[this.selectedPromptTab()].tool, prompts);
+        codeBlock.textContent = this.rebuildTabFile(tab);
         Prism.highlightElement(codeBlock);
       }
     } catch (error) {
