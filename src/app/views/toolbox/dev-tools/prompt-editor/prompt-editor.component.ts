@@ -21,11 +21,12 @@ import { SelectModule } from 'primeng/select';
 import { TabsModule } from 'primeng/tabs';
 import { TextareaModule } from 'primeng/textarea';
 
+import { AlertContextService } from '../../../../components/compare/compare-problems/design-components/alerts/alert-context.service';
 import { OpenRouterResponse, OpenRouterService } from '../../../../services/ai/openrouter.service';
 import { AiPromptService } from '../../../../services/ai/prompt.service';
+import { FetchService } from '../../../../services/fetch.service';
 import { ExportGitHubService } from '../../../../services/github/export-github.service';
 import { SignInService } from '../../../../services/github/sign-in.service';
-import { FetchService } from '../../../../services/fetch.service';
 import { StyleCardService } from '../../../../services/style-card.service';
 import { UserSettingsService } from '../../../../services/user-settings.service';
 import { CompareService } from '../../../tasks/compare-versions/compare-versions.service';
@@ -38,7 +39,6 @@ import { ProblemPrompts } from '../../../../common/prompts/problems.prompts';
 import { OutputKey, PagePromptKey, ProblemPromptKey, PromptConfig, RoleKey, RubricKey, ToolsPromptKey } from '../../../../common/prompts/prompt.model';
 import { OutputFragment, RoleFragment, RubricFragment } from '../../../../common/prompts/shared.prompts';
 import { ToolsPrompts } from '../../../../common/prompts/tools.prompts';
-import { AlertContextService } from '../../../../components/compare/compare-problems/design-components/alerts/alert-context.service';
 
 interface PromptEntry {
   enumKey: string;
