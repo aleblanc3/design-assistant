@@ -32,12 +32,11 @@ import { UserSettingsService } from '../../../../services/user-settings.service'
 import { CompareService } from '../../../tasks/compare-versions/compare-versions.service';
 
 import { AlertRewriteExamples, type AlertRewriteExample } from '../../../../common/prompts/alert-rewrite.examples';
-import { CanadaCaStyleRules } from '../../../../common/prompts/canada-ca-style.prompt';
-import { LinkWritingPromptRuleGroups } from '../../../../common/prompts/link-writing.prompt';
 import { PagePrompts } from '../../../../common/prompts/page.prompts';
 import { ProblemPrompts } from '../../../../common/prompts/problems.prompts';
-import { OutputKey, PagePromptKey, ProblemPromptKey, PromptConfig, RoleKey, RubricKey, ToolsPromptKey } from '../../../../common/prompts/prompt.model';
+import { OutputKey, PagePromptKey, ProblemPromptKey, PromptConfig, RoleKey, RubricKey, SkillPromptKey, ToolsPromptKey } from '../../../../common/prompts/prompt.model';
 import { OutputFragment, RoleFragment, RubricFragment } from '../../../../common/prompts/shared.prompts';
+import { SkillPrompts } from '../../../../common/prompts/skills.prompts';
 import { ToolsPrompts } from '../../../../common/prompts/tools.prompts';
 
 interface PromptEntry {
@@ -458,7 +457,7 @@ export class PromptEditorComponent {
           {
             key: 'linkRulesCommon',
             label: 'dev.prompts.alertRewrite.linkRulesCommon',
-            bulletItems: LinkWritingPromptRuleGroups.common.map((rule) => rule.text),
+            bulletItems: SkillPrompts[SkillPromptKey.LinkWriting].groups.common.map((rule) => rule.text),
             collapsed: false,
           },
           {
@@ -468,13 +467,13 @@ export class PromptEditorComponent {
               {
                 key: 'linkRulesDefault',
                 label: 'dev.prompts.alertRewrite.linkRulesDefault',
-                bulletItems: LinkWritingPromptRuleGroups.preserveLinks.map((rule) => rule.text),
+                bulletItems: SkillPrompts[SkillPromptKey.LinkWriting].groups.preserveLinks.map((rule) => rule.text),
                 collapsed: false,
               },
               {
                 key: 'linkRulesTooMany',
                 label: 'dev.prompts.alertRewrite.linkRulesTooMany',
-                bulletItems: LinkWritingPromptRuleGroups.tooManyLinks.map((rule) => rule.text),
+                bulletItems: SkillPrompts[SkillPromptKey.LinkWriting].groups.tooManyLinks.map((rule) => rule.text),
                 collapsed: false,
               },
             ],
@@ -578,7 +577,7 @@ export class PromptEditorComponent {
   }
 
   private formatCanadaCaStyleRulesJson(): string {
-    const rules = CanadaCaStyleRules.map((rule) => `{\n      "id": ${JSON.stringify(rule.id)}, "severity": ${JSON.stringify(rule.severity)},\n      "text": ${JSON.stringify(rule.text)} }`).join(
+    const rules = SkillPrompts[SkillPromptKey.CanadaCaStyle].groups.common.map((rule) => `{\n      "id": ${JSON.stringify(rule.id)}, "severity": ${JSON.stringify(rule.severity)},\n      "text": ${JSON.stringify(rule.text)} }`).join(
       ',\n    ',
     );
 

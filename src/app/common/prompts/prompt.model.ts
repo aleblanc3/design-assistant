@@ -29,6 +29,9 @@ function markForTranslation() {
   marker('aiPrompt.tools.languages');
   marker('aiPrompt.tools.translateIssueDetails');
 
+  marker('aiPrompt.skills.canadaCaStyle');
+  marker('aiPrompt.skills.linkWriting');
+
   marker('aiPrompt.page.headings');
   marker('aiPrompt.page.doormats');
   marker('aiPrompt.page.plainLanguage');
@@ -129,6 +132,12 @@ export enum ToolsPromptKey {
   Keywords = 'aiPrompt.tools.keywords',
   Languages = 'aiPrompt.tools.languages',
   TranslateIssueDetails = 'aiPrompt.tools.translateIssueDetails',
+}
+
+//Reusable instruction skill fragments
+export enum SkillPromptKey {
+  CanadaCaStyle = 'aiPrompt.skills.canadaCaStyle',
+  LinkWriting = 'aiPrompt.skills.linkWriting',
 }
 
 //Page task fragments

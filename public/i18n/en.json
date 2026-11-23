@@ -87,6 +87,8 @@
 	"aiPrompt.rubric.preserveHtmlStructure": "Preserve HTML structure",
 	"aiPrompt.shared._description": "These fragments can be reused by all the other prompts.",
 	"aiPrompt.shared._title": "Shared fragments",
+	"aiPrompt.skills.canadaCaStyle": "Canada.ca style",
+	"aiPrompt.skills.linkWriting": "Link writing",
 	"aiPrompt.tools._description": "These prompts are used by various tools in AIDA.",
 	"aiPrompt.tools._title": "Tools",
 	"aiPrompt.tools.description": "Description",

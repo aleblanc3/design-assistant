@@ -2,11 +2,10 @@
 import { Injectable } from '@angular/core';
 
 import { AlertRewriteExamples, type AlertRewriteExample } from '../../../../../common/prompts/alert-rewrite.examples';
-import { getCanadaCaStylePromptRules } from '../../../../../common/prompts/canada-ca-style.prompt';
-import { getLinkWritingPromptRules } from '../../../../../common/prompts/link-writing.prompt';
 import { PagePrompts } from '../../../../../common/prompts/page.prompts';
 import { ChatMessage, PagePromptKey } from '../../../../../common/prompts/prompt.model';
 import { OutputFragment, RoleFragment } from '../../../../../common/prompts/shared.prompts';
+import { getCanadaCaStylePromptRules, getLinkWritingPromptRules } from '../../../../../common/prompts/skills.prompts';
 
 export interface AlertRewriteIssueInput {
   alertIndex?: number;
