@@ -10,7 +10,8 @@ import { AlertContextService } from './alert-context.service';
 import { AI_ALERT_TRANSLATION_MODEL } from '../../../../../common/ai-models.config';
 import { AlertIssuesReport, AlertIssueTranslationData } from '../../../../../common/data.model';
 import { ProblemPrompts } from '../../../../../common/prompts/problems.prompts';
-import { ProblemPromptKey } from '../../../../../common/prompts/prompt.model';
+import { ProblemPromptKey, ToolsPromptKey } from '../../../../../common/prompts/prompt.model';
+import { ToolsPrompts } from '../../../../../common/prompts/tools.prompts';
 import { coerceInteractiveResultLeadIns, getReportableAlerts } from './alert-reportable.utils';
 import { AlertIssue, isNoAlertIssue } from './alert.config';
 import fallbackSeverityJson from './severity-include-fallback.json';
@@ -355,7 +356,7 @@ export class AlertService {
       preferredModel: AI_ALERT_TRANSLATION_MODEL,
       itemCount: items.length,
     });
-    const response = await this.openRouter.sendToAI(ProblemPrompts[ProblemPromptKey.TranslateIssueDetails], JSON.stringify({ target_language: 'fr-CA', items }), AI_ALERT_TRANSLATION_MODEL, 0);
+    const response = await this.openRouter.sendToAI(ToolsPrompts[ToolsPromptKey.TranslateIssueDetails], JSON.stringify({ target_language: 'fr-CA', items }), AI_ALERT_TRANSLATION_MODEL, 0);
     const responseText = response.choices?.[0]?.message?.content ?? '';
     const translatedIssues = this.parseFrenchTranslations(responseText, items);
     if (translatedIssues.length !== items.length) {

@@ -308,7 +308,7 @@ export class PromptEditorComponent {
     {
       label: 'aiPrompt.alerts._title',
       items: [
-        ...this.problemPrompts.filter((prompt) => prompt.enumKey === 'AlertsProblems' || prompt.enumKey === 'TranslateIssueDetails'),
+        ...this.problemPrompts.filter((prompt) => prompt.enumKey === 'AlertsProblems'),
         ...this.pagePrompts.filter((prompt) => prompt.enumKey === 'AlertRewrite'),
         {
           enumKey: 'AlertExamples',
@@ -321,7 +321,7 @@ export class PromptEditorComponent {
     { label: 'aiPrompt.page._title', items: this.pagePrompts.filter((prompt) => prompt.enumKey !== 'AlertRewrite') },
     {
       label: 'aiPrompt.problems._title',
-      items: this.problemPrompts.filter((prompt) => prompt.enumKey !== 'AlertsProblems' && prompt.enumKey !== 'TranslateIssueDetails'),
+      items: this.problemPrompts.filter((prompt) => prompt.enumKey !== 'AlertsProblems'),
     },
   ];
   protected readonly selectedPrompt = signal<PromptEntry | undefined>(this.pagePrompts.find((prompt) => prompt.enumKey === 'AlertRewrite'));
@@ -334,11 +334,11 @@ export class PromptEditorComponent {
     return !!selected && this.isAlertRewriteExamples(selected);
   });
   protected readonly selectedPromptIsAlertProblems = computed(() => this.selectedPrompt()?.enumKey === 'AlertsProblems');
-  protected readonly aiPrompt = computed(() => {
+  protected aiPrompt(): string {
     const selected = this.selectedPrompt();
     if (!selected || !this.isPromptConfig(selected)) return '';
     return this.aiPromptService.composePrompt(selected.promptText);
-  });
+  }
 
   private buildAlertRewritePipelineGroups(): PromptPipelineGroup[] {
     const promptConfig = PagePrompts[PagePromptKey.AlertRewrite];

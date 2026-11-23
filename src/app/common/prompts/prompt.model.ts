@@ -27,6 +27,7 @@ function markForTranslation() {
   marker('aiPrompt.tools.description');
   marker('aiPrompt.tools.keywords');
   marker('aiPrompt.tools.languages');
+  marker('aiPrompt.tools.translateIssueDetails');
 
   marker('aiPrompt.page.headings');
   marker('aiPrompt.page.doormats');
@@ -37,7 +38,6 @@ function markForTranslation() {
 
   marker('aiPrompt.problem.alertsRewrite');
   marker('aiPrompt.problem.alertsProblems');
-  marker('aiPrompt.problem.translateIssueDetails');
 
   marker('aiPrompt.craTerminology.shortForms.payrollDeductions');
   marker('aiPrompt.craTerminology.shortForms.royalAssent');
@@ -128,6 +128,7 @@ export enum ToolsPromptKey {
   Description = 'aiPrompt.tools.description',
   Keywords = 'aiPrompt.tools.keywords',
   Languages = 'aiPrompt.tools.languages',
+  TranslateIssueDetails = 'aiPrompt.tools.translateIssueDetails',
 }
 
 //Page task fragments
@@ -142,6 +143,5 @@ export enum PagePromptKey {
 //Problem task fragments
 export enum ProblemPromptKey {
   AlertsProblems = 'aiPrompt.problem.alertsProblems',
-  TranslateIssueDetails = 'aiPrompt.problem.translateIssueDetails',
   AlertsRewrite = 'aiPrompt.problem.alertsRewrite',
 }

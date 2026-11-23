@@ -245,7 +245,7 @@ export class SkillEditorComponent {
     {
       label: 'aiPrompt.alerts._title',
       items: [
-        ...this.problemPrompts.filter((prompt) => prompt.enumKey === 'AlertsProblems' || prompt.enumKey === 'TranslateIssueDetails'),
+        ...this.problemPrompts.filter((prompt) => prompt.enumKey === 'AlertsProblems'),
         ...this.pagePrompts.filter((prompt) => prompt.enumKey === 'AlertRewrite'),
         {
           enumKey: 'AlertExamples',

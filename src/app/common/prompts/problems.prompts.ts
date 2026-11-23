@@ -142,33 +142,6 @@ Return issue reports only. Do not rewrite alert HTML.
 }`,
     available: false,
   },
-  [ProblemPromptKey.TranslateIssueDetails]: {
-    role: RoleKey.Translator,
-    task: `Translate only the description and recommendation values in the supplied JSON from English into Canadian French.
-Return only valid JSON with this exact shape: {"items":[{"translation_id":"1","description":"...","recommendation":"..."}]}.
-Preserve every translation_id exactly. Do not add, remove, combine, split, or reorder items.
-Preserve HTML tags and attributes, URLs, code, placeholders, CSS classes, ARIA attributes, and quoted source text exactly.`,
-    rubric: [],
-    output: OutputKey.Json,
-    jsonSchema: `{
-  "type": "object",
-  "required": ["items"],
-  "properties": {
-    "items": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["translation_id", "description", "recommendation"],
-        "properties": {
-          "translation_id": { "type": "string" },
-          "description": { "type": "string" },
-          "recommendation": { "type": "string" }
-        }
-      }
-    }
-  }
-}`,
-  },
   [ProblemPromptKey.AlertsRewrite]: {
     role: RoleKey.ContentDesigner,
     task: 'Analyze the reportable alerts in the supplied page context and identify applicable content design, accessibility, and markup issues.',
