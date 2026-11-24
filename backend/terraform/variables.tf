@@ -31,3 +31,8 @@ variable "allowed_origins" {
   description = "Allowed CORS origins"
   type        = list(string)
 }
+
+variable "link_index_sitemap_urls" {
+  description = "Comma-separated sitemap URLs for the link index"
+  type        = string
+}

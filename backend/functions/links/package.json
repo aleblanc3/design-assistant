@@ -1,0 +1,22 @@
+{
+    "name": "links-function",
+    "version": "1.0.0",
+    "description": "Lambda function for managing link lookups",
+    "main": "index.js",
+    "scripts": {
+        "build": "tsc",
+        "clean": "rm -rf dist"
+    },
+    "dependencies": {
+        "@aws-sdk/client-dynamodb": "^3.1159.0",
+        "@aws-sdk/lib-dynamodb": "^3.1159.0",
+        "@aws-sdk/client-sqs": "^3.1159.0",
+        "cheerio": "^1.2.0",
+        "fast-xml-parser": "^5.12.0"
+    },
+    "devDependencies": {
+        "@types/aws-lambda": "^8.10.164",
+        "@types/node": "^22.20.5",
+        "typescript": "~5.9.0"
+    }
+}
