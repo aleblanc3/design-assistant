@@ -34,6 +34,7 @@ export interface PageMetadata {
   linksToPortal: boolean; // True if page links to a portal
   linksToSignIn: boolean; // True if page links to the CRA sign-in page
   hasChatbot: boolean; // True if page has chatbot
+  hasFieldflow: boolean; // True if page has fieldflow
   //Data
   parentPath?: string; // For page move detection
   wordCount?: number; // Count of words on page
@@ -293,6 +294,9 @@ export class FetchService {
     //Has ChatBot
     const hasChatbot = !!doc.querySelector('chatbot');
 
+    //Has fieldflow
+    const hasFieldflow = !!doc.querySelector('.wb-fieldflow');
+
     //Parent URL
     const parentUrl = this.getBreadcrumb(doc, url)?.at(-1)?.url;
     const parentPath = parentUrl ? this.generatePath(parentUrl) : undefined;
@@ -441,6 +445,7 @@ export class FetchService {
       linksToPortal,
       linksToSignIn,
       hasChatbot,
+      hasFieldflow,
       parentPath,
       wordCount,
       linkCount,

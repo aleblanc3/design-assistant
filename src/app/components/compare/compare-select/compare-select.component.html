@@ -10,7 +10,7 @@
   }
 </div>
 
-@if (pageOptions.length > 0) {
+@if (pageOptions.length > 0 || onlyFF()) {
   <div class="flex flex-column lg:flex-row lg:align-items-end gap-2">
     @if (versionsToShow() === 2) {
       <!--Selection-->

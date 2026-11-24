@@ -759,6 +759,7 @@
 	"inventory.header.enH1": "Titre de page (H1)",
 	"inventory.header.enPath": "Chemin de la page",
 	"inventory.header.enVanity": "URL de redirection",
+	"inventory.header.fieldflow": "Fieldflow",
 	"inventory.header.fleschKincaid": "Flesch-Kincaid",
 	"inventory.header.frDoubleH1": "Titre de section (double H1)",
 	"inventory.header.frH1": "Titre de page (H1)",

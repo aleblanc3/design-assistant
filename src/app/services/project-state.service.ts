@@ -515,6 +515,7 @@ export class ProjectStateService {
   public getPairedPages(
     urlVersion: SourceVersion = 'protoGH',
     scope: 'all' | 'inScope' = 'all',
+    onlyFieldflows = false,
   ): { en: { label: string; path: string; url: string; group: string }; fr: { label: string; path: string; url: string; group: string }; status: string }[] {
     const version = urlVersion.startsWith('proto') ? 'prototype' : urlVersion.startsWith('base') ? 'baseline' : 'live';
     const pages: { en: { label: string; path: string; url: string; group: string }; fr: { label: string; path: string; url: string; group: string }; status: string }[] = [];
@@ -531,14 +532,16 @@ export class ProjectStateService {
         const status = !node.data?.status.inScope ? 'isBaseline' : node.data?.status.isNew ? 'isNew' : node.data?.status.isROT ? 'isROT' : node.data?.status.isMoved ? 'isMoved' : '';
         const hasAllData = !!(enPath && enH1 && enUrl && frPath && frH1 && frUrl);
         const inScope = !!node.data?.status?.inScope;
+        const hasFieldflow = node.data?.live?.en?.hasFieldflow ?? node.data?.live?.fr?.hasFieldflow ?? node.data?.prototype?.en?.hasFieldflow ?? node.data?.prototype?.fr?.hasFieldflow ?? false;
+        const onlyFF = onlyFieldflows ? hasFieldflow : true;
         if (hasAllData) {
-          if (scope === 'inScope' && inScope) {
+          if (scope === 'inScope' && inScope && onlyFF) {
             pages.push({
               en: { label: enH1, path: enPath, url: enUrl, group: enSection },
               fr: { label: frH1, path: frPath, url: frUrl, group: frSection },
               status: status,
             });
-          } else if (scope === 'all') {
+          } else if (scope === 'all' && onlyFF) {
             pages.push({
               en: { label: enH1, path: enPath, url: enUrl, group: enSection },
               fr: { label: frH1, path: frPath, url: frUrl, group: frSection },
@@ -1544,6 +1547,7 @@ export class ProjectStateService {
             linksToPortal: pageData.linksToPortal ?? false,
             linksToSignIn: pageData?.linksToSignIn ?? false,
             hasChatbot: pageData.hasChatbot ?? false,
+            hasFieldflow: pageData.hasFieldflow ?? false,
             //Data
             parentPath: pageData.parentPath,
             wordCount: pageData.wordCount,
@@ -1618,6 +1622,7 @@ export class ProjectStateService {
             linksToPortal: pageData.linksToPortal ?? false,
             linksToSignIn: pageData?.linksToSignIn ?? false,
             hasChatbot: pageData.hasChatbot ?? false,
+            hasFieldflow: pageData.hasFieldflow ?? false,
             //Data
             parentPath: pageData.parentPath,
             wordCount: pageData.wordCount,

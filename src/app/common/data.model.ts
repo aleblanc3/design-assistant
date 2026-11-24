@@ -231,6 +231,7 @@ export interface LangData {
   linksToPortal: boolean; // True if page links to a portal
   linksToSignIn: boolean; // True if page links to a sign-in page
   hasChatbot: boolean; // True if page has chatbot
+  hasFieldflow?: boolean; // True if page has fieldflow
   // jrc:content.json
   owner?: string; // gcContributor
   email?: string; // gcBranch

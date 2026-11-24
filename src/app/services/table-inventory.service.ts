@@ -56,6 +56,8 @@ export interface FlattenedInventory {
   tasksFr: TableItem;
   phoneNumbersEn: TableItem;
   phoneNumbersFr: TableItem;
+  hasFieldflowEn: TableItem;
+  hasFieldflowFr: TableItem;
   lastModifiedEn: TableItem;
   lastModifiedFr: TableItem;
   lastPublishedEn: TableItem;
@@ -160,6 +162,7 @@ export class TableInventoryService {
     const visits = this.translate.instant('inventory.header.visits');
     const tasks = this.translate.instant('inventory.header.tasks');
     const phoneNumbers = this.translate.instant('inventory.header.phoneNumbers');
+    const fieldflow = this.translate.instant('inventory.header.fieldflow');
     const lastModified = this.translate.instant('inventory.header.lastModified');
     const lastPublished = this.translate.instant('inventory.header.lastPublished');
     //Owner Columns
@@ -318,6 +321,18 @@ export class TableInventoryService {
             column: phoneNumbers,
             type: 'array',
             content: data.prototype?.fr.phoneNumbers ?? data.live?.fr.phoneNumbers ?? [],
+          },
+          hasFieldflowEn: {
+            group: pageData,
+            column: fieldflow,
+            type: 'boolean',
+            content: data.prototype?.en.hasFieldflow ?? data.live?.en.hasFieldflow ?? false,
+          },
+          hasFieldflowFr: {
+            group: pageData,
+            column: fieldflow,
+            type: 'boolean',
+            content: data.prototype?.fr.hasFieldflow ?? data.live?.fr.hasFieldflow ?? false,
           },
           lastModifiedEn: {
             group: pageData,
