@@ -24,6 +24,7 @@ export enum AidaLinks {
   Standalone = '/standalone',
   StandaloneCompare = '/standalone/compare-pages',
   StandaloneScratchPad = '/standalone/scratch-pad',
+  StandaloneRefLinks = '/standalone/referring-links',
   //Dev
   Dev = '/dev',
   DevMonitoring = '/dev/monitoring',

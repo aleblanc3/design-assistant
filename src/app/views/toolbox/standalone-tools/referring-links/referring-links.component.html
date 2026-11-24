@@ -1,0 +1,110 @@
+<h1 id="wb-cont">{{ 'refLinks._title' | translate }}</h1>
+<p>{{ 'refLinks.description' | translate }}{{ 'refLinks.description2' | translate }}</p>
+
+<div class="flex flex-column gap-2">
+  <p-input-group>
+    <p-iftalabel class="w-full">
+      <input id="page" [(ngModel)]="pageUrl" (blur)="getLinkCounts(pageUrl)" class="secondary-outline" fluid pInputText type="text" variant="outlined" />
+      <label for="page">{{ 'common.path' | translate }}</label>
+    </p-iftalabel>
+    <p-inputgroup-addon>
+      <p-button [label]="'refLinks.getCount' | translate" (onClick)="getLinkCounts(pageUrl)" class="h-full" text />
+    </p-inputgroup-addon>
+  </p-input-group>
+  @if (loadingCount()) {
+    <i class="pi pi-spinner pi-spin text-2xl"></i>
+  } @else if (hasCountError()) {
+    <p-message icon="pi pi-times" severity="error">{{ 'refLinks.countError' | translate }}</p-message>
+  } @else if (linkCounts()) {
+    <h2 class="mb-0">{{ 'refLinks.for' | translate }}</h2>
+    <p class="mt-0">{{ linkCounts()?.path }}</p>
+    <p-table [value]="[linkCounts()]" bordered size="small" stripedRows>
+      <ng-template #header>
+        <tr class="text-center">
+          <th>{{ 'refLinks.count.referring' | translate }}</th>
+          <th>{{ 'refLinks.count.breadcrumb' | translate }}</th>
+          <th>{{ 'refLinks.count.children' | translate }}</th>
+          <th>{{ 'refLinks.count.outgoing' | translate }}</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-count>
+        <tr>
+          <td>
+            <div class="flex gap-5 text-2xl">
+              {{ count.referrers }}
+              <p-button [label]="'common.view' | translate" (onClick)="getLinks(count.path, 'referrers')" icon="pi pi-eye" />
+            </div>
+          </td>
+          <td>
+            <div class="flex gap-5 text-2xl">
+              {{ count.breadcrumb }}
+              <p-button [label]="'common.view' | translate" (onClick)="getLinks(count.path, 'breadcrumb')" icon="pi pi-eye" />
+            </div>
+          </td>
+          <td>
+            <div class="flex gap-5 text-2xl">
+              {{ count.children }}
+              <p-button [label]="'common.view' | translate" (onClick)="getLinks(count.path, 'children')" icon="pi pi-eye" />
+            </div>
+          </td>
+          <td>
+            <div class="flex gap-5 text-2xl">
+              {{ count.outgoing }}
+              <p-button [label]="'common.view' | translate" (onClick)="getLinks(count.path, 'outgoing')" icon="pi pi-eye" />
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    @if (referrers() && view() === 'referrers') {
+      <h2 class="mb-0">{{ 'refLinks.count.referring' | translate }}</h2>
+      @if (referrers()?.items?.length) {
+        <ul class="mt-0">
+          @for (link of referrers()?.items; track link.fromPath) {
+            <li>{{ link.fromPath }}</li>
+          }
+        </ul>
+      } @else {
+        <p-message icon="pi pi-info-circle" severity="info">{{ 'refLinks.noReferringLinks' | translate }}</p-message>
+      }
+    }
+    @if (breadcrumb() && view() === 'breadcrumb') {
+      <h2 class="mb-0">{{ 'refLinks.count.breadcrumb' | translate }}</h2>
+      @if (breadcrumb()?.items?.length) {
+        <ul class="mt-0">
+          @for (link of breadcrumb()?.items; track link.fromPath) {
+            <li>{{ link.fromPath }}</li>
+          }
+        </ul>
+      } @else {
+        <p-message icon="pi pi-info-circle" severity="info">{{ 'refLinks.noBreadcrumbLinks' | translate }}</p-message>
+      }
+    }
+    @if (children() && view() === 'children') {
+      <h2 class="mb-0">{{ 'refLinks.count.children' | translate }}</h2>
+      @if (children()?.items?.length) {
+        <ul class="mt-0">
+          @for (link of children()?.items; track link.path) {
+            <li>{{ link.path }}</li>
+          }
+        </ul>
+      } @else {
+        <p-message icon="pi pi-info-circle" severity="info">{{ 'refLinks.noChildPages' | translate }}</p-message>
+      }
+    }
+    @if (outgoing() && view() === 'outgoing') {
+      <h2 class="mb-0">{{ 'refLinks.count.outgoing' | translate }}</h2>
+      @if (outgoing()?.items?.length) {
+        <ul class="mt-0">
+          @for (link of outgoing()?.items; track link.toPath) {
+            <li [class.text-red]="link.state === 'unpublished'">{{ link.toPath }}</li>
+          }
+        </ul>
+      } @else if (outgoing()) {
+        <p-message icon="pi pi-info-circle" severity="info">{{ 'refLinks.noOutgoingLinks' | translate }}</p-message>
+      }
+    }
+  } @else {
+    <p-message icon="pi pi-info-circle" severity="info">{{ 'refLinks.noPathMessage' | translate }}</p-message>
+  }
+</div>

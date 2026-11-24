@@ -1,5 +1,4 @@
 import { OutputKey, ProblemPromptKey, PromptConfig, RoleKey, RubricKey } from './prompt.model';
-import { AlertIssuesInstructions } from './reference.prompt';
 
 export const ProblemPrompts: Record<ProblemPromptKey, PromptConfig> = {
   [ProblemPromptKey.AlertsProblems]: {
@@ -7,8 +6,7 @@ export const ProblemPrompts: Record<ProblemPromptKey, PromptConfig> = {
     task: `Analyze the reportable alerts in the supplied page context and identify applicable content design, accessibility, and markup issues.
 Return issue reports only. Do not rewrite alert HTML.
 
-### Analysis instructions
-${AlertIssuesInstructions}`,
+### Analysis instructions`,
     rubric: [],
     output: OutputKey.Json,
     jsonSchema: `{
