@@ -131,11 +131,6 @@ export const routes: Routes = [
         title: 'iaDiagram._title',
       },
       {
-        path: 'fieldflow-diagram',
-        loadComponent: () => import('./views/tasks/diagram-fieldflow/diagram-fieldflow.component').then((m) => m.DiagramFieldflowComponent),
-        title: 'fieldflow._title',
-      },
-      {
         path: 'old-inventory',
         loadComponent: () => import('./views/tasks/old-inventory/inventory.component').then((m) => m.InventoryComponent),
         title: 'inventory._title',
@@ -280,9 +275,9 @@ export const routes: Routes = [
         title: 'dev.prompts._title',
       },
       {
-        path: 'prompt-editor',
+        path: 'prompt-editor-backup',
         loadComponent: () => import('./views/toolbox/dev-tools/prompt-editor-backup/prompt-editor.component').then((m) => m.PromptEditorBackupComponent),
-        title: 'dev.prompts._title',
+        title: 'dev.prompts._title.backup',
       },
       {
         path: 'skill-editor',
