@@ -120,15 +120,7 @@
                               </p-iftalabel>
                             }
                             <p-iftalabel>
-                              <textarea
-                                [(ngModel)]="rule.text"
-                                [autoResize]="true"
-                                [id]="skill.enumKey + '_' + rule.id"
-                                (ngModelChange)="updateDiff()"
-                                fluid
-                                pTextarea
-                                rows="2"
-                              ></textarea>
+                              <textarea [(ngModel)]="rule.text" [autoResize]="true" [id]="skill.enumKey + '_' + rule.id" (ngModelChange)="updateDiff()" fluid pTextarea rows="2"></textarea>
                               <label [for]="skill.enumKey + '_' + rule.id">{{ rule.id }}</label>
                             </p-iftalabel>
                           </div>
@@ -146,7 +138,7 @@
                   @for (example of selectedExampleSet().examples; track example.id) {
                     <h3 [id]="example.id + '_heading'">{{ getAlertRewriteExampleLegend(example) }}</h3>
                     <div class="example-json-object">
-                      <pre class="prompt-preview example-metadata" [attr.aria-label]="'dev.prompts.examples.selectionMetadata' | translate">{{ getExampleSelectionMetadata(example) }}</pre>
+                      <pre [attr.aria-label]="'dev.prompts.examples.selectionMetadata' | translate" class="prompt-preview example-metadata">{{ getExampleSelectionMetadata(example) }}</pre>
                       <textarea
                         [attr.aria-label]="'dev.prompts.examples.editableFinalExample' | translate"
                         [id]="example.id + '_json'"
@@ -181,122 +173,122 @@
                       <h2 class="my-0">{{ prompt.translationKey | translate }}</h2>
                       @for (group of alertRewritePipelineGroups; track group.key) {
                         @for (section of group.sections; track section.key) {
-                        @if (section.options?.length) {
-                          @if (!section.hideLabel && section.label) {
-                            <h3>{{ section.label | translate }}</h3>
-                          }
-                          @for (option of section.options; track option.key) {
-                            <h4>{{ option.label | translate }}</h4>
-                            @if ((option.key === 'systemWithExamples' || option.key === 'systemWithoutExamples') && option.bulletItems) {
-                              @for (instruction of option.bulletItems; track $index; let instructionIndex = $index) {
-                                <p-iftalabel>
-                                  <textarea
-                                    [ngModel]="instruction"
-                                    [autoResize]="true"
-                                    [id]="'alert_rewrite_' + option.key + '_' + instructionIndex"
-                                    (ngModelChange)="updateAlertRewriteSystemInstruction(option.key, instructionIndex, $event)"
-                                  class="rewrite-prompt-editor"
-                                    fluid
-                                    pTextarea
-                                    rows="2"
-                                  ></textarea>
-                                  <label [for]="'alert_rewrite_' + option.key + '_' + instructionIndex">
-                                    {{ 'dev.prompts.alertRewrite.instructionLabel' | translate: { number: instructionIndex + 1 } }}
-                                  </label>
-                                </p-iftalabel>
-                              }
-                            } @else if (option.key === 'outputSchemaWithExamples' || option.key === 'outputSchemaWithoutExamples') {
-                              <p-iftalabel>
-                                <textarea
-                                  [ngModel]="getAlertRewriteOutputSchemaDraft(option.key)"
-                                  [autoResize]="true"
-                                  [id]="'alert_rewrite_' + option.key"
-                                  (ngModelChange)="updateAlertRewriteOutputSchema(option.key, $event)"
-                                  class="rewrite-prompt-editor"
-                                  fluid
-                                  pTextarea
-                                  rows="3"
-                                ></textarea>
-                                <label [for]="'alert_rewrite_' + option.key">{{ 'dev.prompts.alertRewrite.outputSchemaLabel' | translate }}</label>
-                              </p-iftalabel>
-                              @if (getAlertRewriteOutputSchemaError(option.key); as errorKey) {
-                                <p-message severity="error">{{ errorKey | translate }}</p-message>
-                              }
-                            } @else {
-                              <pre class="prompt-preview">{{ getPipelineOptionContent(option) }}</pre>
+                          @if (section.options?.length) {
+                            @if (!section.hideLabel && section.label) {
+                              <h3>{{ section.label | translate }}</h3>
                             }
-                          }
-                        } @else {
-                          <h3>{{ section.label ?? '' | translate }}</h3>
-                          @if (section.key === 'retryInstructions' && section.conditionItems) {
-                            @for (retry of section.conditionItems; track retry.key) {
-                              <h4>{{ retry.condition | translate }}</h4>
-                              @if (retry.bulletItems) {
-                                @for (instruction of retry.bulletItems; track $index; let instructionIndex = $index) {
+                            @for (option of section.options; track option.key) {
+                              <h4>{{ option.label | translate }}</h4>
+                              @if ((option.key === 'systemWithExamples' || option.key === 'systemWithoutExamples') && option.bulletItems) {
+                                @for (instruction of option.bulletItems; track $index; let instructionIndex = $index) {
                                   <p-iftalabel>
                                     <textarea
-                                      [ngModel]="instruction"
                                       [autoResize]="true"
-                                      [id]="'alert_rewrite_retry_' + retry.key + '_' + instructionIndex"
-                                      (ngModelChange)="updateAlertRewriteRetryInstruction(retry.key, $event, instructionIndex)"
+                                      [id]="'alert_rewrite_' + option.key + '_' + instructionIndex"
+                                      [ngModel]="instruction"
+                                      (ngModelChange)="updateAlertRewriteSystemInstruction(option.key, instructionIndex, $event)"
                                       class="rewrite-prompt-editor"
                                       fluid
                                       pTextarea
                                       rows="2"
                                     ></textarea>
-                                    <label [for]="'alert_rewrite_retry_' + retry.key + '_' + instructionIndex">
+                                    <label [for]="'alert_rewrite_' + option.key + '_' + instructionIndex">
                                       {{ 'dev.prompts.alertRewrite.instructionLabel' | translate: { number: instructionIndex + 1 } }}
                                     </label>
                                   </p-iftalabel>
                                 }
+                              } @else if (option.key === 'outputSchemaWithExamples' || option.key === 'outputSchemaWithoutExamples') {
+                                <p-iftalabel>
+                                  <textarea
+                                    [autoResize]="true"
+                                    [id]="'alert_rewrite_' + option.key"
+                                    [ngModel]="getAlertRewriteOutputSchemaDraft(option.key)"
+                                    (ngModelChange)="updateAlertRewriteOutputSchema(option.key, $event)"
+                                    class="rewrite-prompt-editor"
+                                    fluid
+                                    pTextarea
+                                    rows="3"
+                                  ></textarea>
+                                  <label [for]="'alert_rewrite_' + option.key">{{ 'dev.prompts.alertRewrite.outputSchemaLabel' | translate }}</label>
+                                </p-iftalabel>
+                                @if (getAlertRewriteOutputSchemaError(option.key); as errorKey) {
+                                  <p-message severity="error">{{ errorKey | translate }}</p-message>
+                                }
                               } @else {
-                                <textarea
-                                  [ngModel]="retry.instruction"
-                                  [autoResize]="true"
-                                  [id]="'alert_rewrite_retry_' + retry.key"
-                                  [attr.aria-label]="retry.condition | translate"
-                                  (ngModelChange)="updateAlertRewriteRetryInstruction(retry.key, $event)"
-                                  class="rewrite-prompt-editor"
-                                  fluid
-                                  pTextarea
-                                  rows="2"
-                                ></textarea>
+                                <pre class="prompt-preview">{{ getPipelineOptionContent(option) }}</pre>
                               }
                             }
-                          } @else if (section.key === 'baseRules' && section.bulletItems) {
-                            @for (rule of section.bulletItems; track $index; let ruleIndex = $index) {
-                              <p-iftalabel>
-                                <textarea
-                                  [ngModel]="rule"
-                                  [autoResize]="true"
-                                  [id]="'alert_rewrite_base_rule_' + ruleIndex"
-                                  (ngModelChange)="updateAlertRewriteBaseRule(ruleIndex, $event)"
-                                  class="rewrite-prompt-editor"
-                                  fluid
-                                  pTextarea
-                                  rows="2"
-                                ></textarea>
-                                <label [for]="'alert_rewrite_base_rule_' + ruleIndex">
-                                  {{ 'dev.prompts.alertRewrite.baseRuleLabel' | translate: { number: ruleIndex + 1 } }}
-                                </label>
-                              </p-iftalabel>
-                            }
-                          } @else if (section.key === 'preserveFinalStandaloneLink' || section.key === 'enforceLinkManifest') {
-                            <textarea
-                              [ngModel]="section.content"
-                              [autoResize]="true"
-                              [id]="'alert_rewrite_' + section.key"
-                              [attr.aria-label]="(section.label ?? '') | translate"
-                              (ngModelChange)="updateAlertRewriteConditionalInstruction(section.key, $event)"
-                              class="rewrite-prompt-editor"
-                              fluid
-                              pTextarea
-                              rows="2"
-                            ></textarea>
                           } @else {
-                            <pre class="prompt-preview">{{ getPipelineSectionContent(section) }}</pre>
+                            <h3>{{ section.label ?? '' | translate }}</h3>
+                            @if (section.key === 'retryInstructions' && section.conditionItems) {
+                              @for (retry of section.conditionItems; track retry.key) {
+                                <h4>{{ retry.condition | translate }}</h4>
+                                @if (retry.bulletItems) {
+                                  @for (instruction of retry.bulletItems; track $index; let instructionIndex = $index) {
+                                    <p-iftalabel>
+                                      <textarea
+                                        [autoResize]="true"
+                                        [id]="'alert_rewrite_retry_' + retry.key + '_' + instructionIndex"
+                                        [ngModel]="instruction"
+                                        (ngModelChange)="updateAlertRewriteRetryInstruction(retry.key, $event, instructionIndex)"
+                                        class="rewrite-prompt-editor"
+                                        fluid
+                                        pTextarea
+                                        rows="2"
+                                      ></textarea>
+                                      <label [for]="'alert_rewrite_retry_' + retry.key + '_' + instructionIndex">
+                                        {{ 'dev.prompts.alertRewrite.instructionLabel' | translate: { number: instructionIndex + 1 } }}
+                                      </label>
+                                    </p-iftalabel>
+                                  }
+                                } @else {
+                                  <textarea
+                                    [attr.aria-label]="retry.condition | translate"
+                                    [autoResize]="true"
+                                    [id]="'alert_rewrite_retry_' + retry.key"
+                                    [ngModel]="retry.instruction"
+                                    (ngModelChange)="updateAlertRewriteRetryInstruction(retry.key, $event)"
+                                    class="rewrite-prompt-editor"
+                                    fluid
+                                    pTextarea
+                                    rows="2"
+                                  ></textarea>
+                                }
+                              }
+                            } @else if (section.key === 'baseRules' && section.bulletItems) {
+                              @for (rule of section.bulletItems; track $index; let ruleIndex = $index) {
+                                <p-iftalabel>
+                                  <textarea
+                                    [autoResize]="true"
+                                    [id]="'alert_rewrite_base_rule_' + ruleIndex"
+                                    [ngModel]="rule"
+                                    (ngModelChange)="updateAlertRewriteBaseRule(ruleIndex, $event)"
+                                    class="rewrite-prompt-editor"
+                                    fluid
+                                    pTextarea
+                                    rows="2"
+                                  ></textarea>
+                                  <label [for]="'alert_rewrite_base_rule_' + ruleIndex">
+                                    {{ 'dev.prompts.alertRewrite.baseRuleLabel' | translate: { number: ruleIndex + 1 } }}
+                                  </label>
+                                </p-iftalabel>
+                              }
+                            } @else if (section.key === 'preserveFinalStandaloneLink' || section.key === 'enforceLinkManifest') {
+                              <textarea
+                                [attr.aria-label]="section.label ?? '' | translate"
+                                [autoResize]="true"
+                                [id]="'alert_rewrite_' + section.key"
+                                [ngModel]="section.content"
+                                (ngModelChange)="updateAlertRewriteConditionalInstruction(section.key, $event)"
+                                class="rewrite-prompt-editor"
+                                fluid
+                                pTextarea
+                                rows="2"
+                              ></textarea>
+                            } @else {
+                              <pre class="prompt-preview">{{ getPipelineSectionContent(section) }}</pre>
+                            }
                           }
-                        }
                         }
                       }
                     </div>
@@ -564,9 +556,7 @@
           <!--Open PR-->
           <p-button
             [disabled]="
-              !signInService.user() ||
-              (isExamplesTab(tabs[selectedPromptTab()]) && hasInvalidExampleJson()) ||
-              (tabs[selectedPromptTab()].tool === 'Page' && hasInvalidAlertRewriteOutputSchema())
+              !signInService.user() || (isExamplesTab(tabs[selectedPromptTab()]) && hasInvalidExampleJson()) || (tabs[selectedPromptTab()].tool === 'Page' && hasInvalidAlertRewriteOutputSchema())
             "
             [label]="'dev.prompts.button.openPR' | translate"
             (onClick)="openPullRequest(tabs[selectedPromptTab()])"

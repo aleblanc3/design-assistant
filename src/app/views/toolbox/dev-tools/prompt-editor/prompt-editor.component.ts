@@ -354,9 +354,7 @@ export class PromptEditorComponent {
     },
   ];
   protected readonly selectedExampleSet = signal<ExampleSetEntry>(this.exampleSets[0]);
-  private readonly exampleJsonDrafts = signal<Record<string, string>>(
-    Object.fromEntries(AlertRewriteExamples.map((example) => [example.id, this.formatExampleJson(example)])),
-  );
+  private readonly exampleJsonDrafts = signal<Record<string, string>>(Object.fromEntries(AlertRewriteExamples.map((example) => [example.id, this.formatExampleJson(example)])));
   private readonly exampleJsonErrors = signal<Record<string, string>>({});
   protected readonly hasInvalidExampleJson = computed(() => Object.keys(this.exampleJsonErrors()).length > 0);
   private readonly alertRewriteOutputSchemaDrafts = signal<Record<string, string>>({
@@ -374,9 +372,7 @@ export class PromptEditorComponent {
   }
   protected readonly alertRewriteExamples = AlertRewriteExamples;
 
-  selectedPrompts = new Set<string>(
-    [this.inventoryPrompts[0]?.enumKey, this.pagePrompts[0]?.enumKey, this.problemPrompts[0]?.enumKey, this.skillPrompts[0]?.enumKey].filter(Boolean),
-  );
+  selectedPrompts = new Set<string>([this.inventoryPrompts[0]?.enumKey, this.pagePrompts[0]?.enumKey, this.problemPrompts[0]?.enumKey, this.skillPrompts[0]?.enumKey].filter(Boolean));
 
   togglePrompt(enumKey: string) {
     if (this.selectedPrompts.has(enumKey)) {
@@ -810,9 +806,9 @@ export class PromptEditorComponent {
   }
 
   private formatCanadaCaStyleRulesJson(): string {
-    const rules = SkillPrompts[SkillPromptKey.CanadaCaStyle].groups.common.map((rule) => `{\n      "id": ${JSON.stringify(rule.id)}, "severity": ${JSON.stringify(rule.severity)},\n      "text": ${JSON.stringify(rule.text)} }`).join(
-      ',\n    ',
-    );
+    const rules = SkillPrompts[SkillPromptKey.CanadaCaStyle].groups.common
+      .map((rule) => `{\n      "id": ${JSON.stringify(rule.id)}, "severity": ${JSON.stringify(rule.severity)},\n      "text": ${JSON.stringify(rule.text)} }`)
+      .join(',\n    ');
 
     return `{ "rules": [ ${rules} ]}`;
   }
@@ -827,6 +823,7 @@ export class PromptEditorComponent {
     marker('dev.prompts.alertRewrite.outputRequirement');
     marker('dev.prompts.alertRewrite.outputSchemaWithExamples');
     marker('dev.prompts.alertRewrite.outputSchemaWithoutExamples');
+    marker('dev.prompts.alertRewrite.invalidOutputSchema');
     marker('dev.prompts.alertRewrite.linkRulesCommon');
     marker('dev.prompts.alertRewrite.group.alertRewrite');
     marker('dev.prompts.alertRewrite.group.style');
@@ -845,6 +842,11 @@ export class PromptEditorComponent {
     marker('dev.prompts.alertRewrite.examplesIncluded');
     marker('dev.prompts.alertRewrite.examplesNotIncluded');
     marker('dev.prompts.alertRewrite.testUnavailable');
+    marker('dev.prompts.examples.invalidJson');
+    marker('dev.prompts.examples.invalidStructure');
+    marker('dev.prompts.skills.group.common');
+    marker('dev.prompts.skills.group.preserveLinks');
+    marker('dev.prompts.skills.group.tooManyLinks');
   }
 
   // Test prompts
