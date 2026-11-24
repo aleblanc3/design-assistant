@@ -83,7 +83,26 @@
                     </p-iftalabel>
                   }
                   <!-- Config editor -->
-                  @if (isPromptConfig(prompt) && isPromptVisible(prompt.enumKey)) {
+                  @if (isPromptConfig(prompt) && isPromptVisible(prompt.enumKey) && isAlertRewritePipeline(prompt)) {
+                    <h2 class="my-0">{{ prompt.translationKey | translate }}</h2>
+                    @for (group of alertRewritePipelineGroups; track group.key) {
+                      @for (section of group.sections; track section.key) {
+                        @if (section.options?.length) {
+                          @if (!section.hideLabel && section.label) {
+                            <h3>{{ section.label | translate }}</h3>
+                          }
+                          @for (option of section.options; track option.key) {
+                            <h4>{{ option.label | translate }}</h4>
+                            <pre class="prompt-preview">{{ getPipelineOptionContent(option) }}</pre>
+                          }
+                        } @else {
+                          <h3>{{ section.label ?? '' | translate }}</h3>
+                          <pre class="prompt-preview">{{ getPipelineSectionContent(section) }}</pre>
+                        }
+                      }
+                    }
+                  }
+                  @if (isPromptConfig(prompt) && isPromptVisible(prompt.enumKey) && !isAlertRewritePipeline(prompt)) {
                     <h2 class="my-0">{{ prompt.translationKey | translate }}</h2>
                     <!--Fragment dropdowns-->
                     <div class="flex flex-column lg:flex-row gap-2">
@@ -150,7 +169,16 @@
                     </div>
                     <!-- Task textarea -->
                     <p-iftalabel>
-                      <textarea [(ngModel)]="prompt.promptText.task" [autoResize]="true" [id]="prompt.enumKey + '_task'" (ngModelChange)="updateDiff()" fluid pTextarea rows="2"></textarea>
+                      <textarea
+                        [(ngModel)]="prompt.promptText.task"
+                        [autoResize]="prompt.enumKey !== 'AlertsProblems'"
+                        [class.prompt-content-sized]="prompt.enumKey === 'AlertsProblems'"
+                        [id]="prompt.enumKey + '_task'"
+                        (ngModelChange)="updateDiff()"
+                        fluid
+                        pTextarea
+                        rows="2"
+                      ></textarea>
                       <label [for]="prompt.enumKey + '_task'">{{ 'aiPrompt.component.task' | translate }}</label>
                     </p-iftalabel>
 
@@ -200,33 +228,117 @@
                 <span [class.text-red]="!prompt.promptText.available">{{ prompt.translationKey | translate }}</span>
               </ng-template>
             </p-select>
-            <pre class="prompt-preview">{{ aiPrompt() }}</pre>
+            @if (selectedPromptIsAlertRewritePipeline()) {
+              <p>{{ 'dev.prompts.alertRewrite.testUnavailable' | translate }}</p>
+              @for (group of alertRewritePipelineGroups; track group.key) {
+                @for (section of group.sections; track section.key) {
+                  @if (section.options?.length) {
+                    @if (!section.hideLabel && section.label) {
+                      <h3>{{ section.label | translate }}</h3>
+                    }
+                    @for (option of section.options; track option.key) {
+                      <h4>{{ option.label | translate }}</h4>
+                      <pre class="prompt-preview">{{ getPipelineOptionContent(option) }}</pre>
+                    }
+                  } @else {
+                    <h3>{{ section.label ?? '' | translate }}</h3>
+                    <pre class="prompt-preview">{{ getPipelineSectionContent(section) }}</pre>
+                  }
+                }
+              }
+            } @else if (selectedPromptIsAlertRewriteExamples()) {
+              @for (example of alertRewriteExamples; track example.id) {
+                <h3>{{ getAlertRewriteExampleLegend(example) }}</h3>
+                <pre class="prompt-preview">{{ example | json }}</pre>
+              }
+            } @else if (selectedPromptIsAlertProblems()) {
+              @for (section of alertProblemsSections; track section.key) {
+                <h3>{{ section.label ?? '' | translate }}</h3>
+                <pre class="prompt-preview">{{ section.content }}</pre>
+              }
+            } @else {
+              <pre class="prompt-preview">{{ aiPrompt() }}</pre>
+            }
           </div>
-          <div>
-            <h3 class="my-1">{{ 'dev.prompts.preview.testContent' | translate }}</h3>
-            <p-iftalabel>
-              <textarea id="content" [(ngModel)]="description" class="secondary-outline min-h-6rem" autoResize="true" fluid pTextarea rows="3" variant="outlined"></textarea>
-              <label for="content">{{ 'dev.prompts.preview.testContentLabel' | translate }}</label>
-            </p-iftalabel>
-          </div>
-          <div class="flex gap-2">
-            <p-button [disabled]="!getSelectedPromptConfig()" (onClick)="testResult()">{{ 'dev.prompts.preview.getResult' | translate }}</p-button>
-            <p-button [disabled]="!getSelectedPromptConfig()" (onClick)="testResponse()">{{ 'dev.prompts.preview.getResponse' | translate }}</p-button>
-          </div>
-          @if (aiState().loading) {
-            <p-progressspinner />
-          }
-          @if (aiState().error) {
-            <p-message severity="error">{{ aiState().error! }}</p-message>
-          }
-          @if (aiState().respondingModel) {
-            <small>Answered by: {{ aiState().respondingModel }}</small>
-          }
-          @if (result) {
-            {{ result }}
-          }
-          @if (response) {
-            <pre class="prompt-preview">{{ response | json }}</pre>
+          @if (!selectedPromptIsAlertRewritePipeline() && !selectedPromptIsAlertRewriteExamples()) {
+            <div>
+              @if (selectedPromptIsAlertProblems()) {
+                <h3 class="my-1">{{ 'dev.prompts.preview.alertProblems.testPage' | translate }}</h3>
+                <div class="flex flex-column md:flex-row gap-2 align-items-start">
+                  <div class="flex-1 w-full">
+                    <input
+                      id="alertProblemsTestUrl"
+                      [attr.aria-label]="'dev.prompts.preview.alertProblems.enterTestPageUrl' | translate"
+                      [ngModel]="alertProblemsTestUrl"
+                      [placeholder]="'dev.prompts.preview.alertProblems.enterTestPageUrl' | translate"
+                      (ngModelChange)="onAlertProblemsTestUrlChange($event)"
+                      class="w-full"
+                      fluid
+                      pInputText
+                      type="url"
+                    />
+                  </div>
+                  <p-button
+                    [disabled]="!alertProblemsTestUrl.trim() || alertProblemsTestLoading()"
+                    [label]="'dev.prompts.preview.alertProblems.loadPage' | translate"
+                    (onClick)="loadAlertProblemsTestPage()"
+                    icon="pi pi-download"
+                  />
+                </div>
+                @if (alertProblemsTestLoading()) {
+                  <p-progressspinner />
+                }
+                @if (alertProblemsTestError()) {
+                  <p-message severity="error">
+                    {{ 'dev.prompts.preview.alertProblems.loadError' | translate: { error: alertProblemsTestError() } }}
+                  </p-message>
+                }
+                <h3>{{ 'dev.prompts.preview.alertProblems.generatedPayload' | translate }}</h3>
+                <textarea
+                  id="alertProblemsTestContent"
+                  [(ngModel)]="alertProblemsTestContent"
+                  [attr.aria-label]="'dev.prompts.preview.alertProblems.generatedPayload' | translate"
+                  (ngModelChange)="alertProblemsTestPayloadInvalid.set(false)"
+                  class="secondary-outline min-h-6rem"
+                  fluid
+                  pTextarea
+                  rows="12"
+                  variant="outlined"
+                ></textarea>
+                @if (alertProblemsTestPayloadInvalid()) {
+                  <p-message severity="error">{{ 'dev.prompts.preview.alertProblems.invalidPayload' | translate }}</p-message>
+                }
+              } @else {
+                <h3 class="my-1">{{ 'dev.prompts.preview.testContent' | translate }}</h3>
+                <p-iftalabel>
+                  <textarea id="content" [(ngModel)]="description" class="secondary-outline min-h-6rem" autoResize="true" fluid pTextarea rows="3" variant="outlined"></textarea>
+                  <label for="content">{{ 'dev.prompts.preview.testContentLabel' | translate }}</label>
+                </p-iftalabel>
+              }
+            </div>
+            <div class="flex gap-2">
+              <p-button [disabled]="!getSelectedPromptConfig() || !hasTestContent() || alertProblemsTestLoading()" (onClick)="testResult()" type="button">
+                {{ 'dev.prompts.preview.getResult' | translate }}
+              </p-button>
+              <p-button [disabled]="!getSelectedPromptConfig() || !hasTestContent() || alertProblemsTestLoading()" (onClick)="testResponse()" type="button">
+                {{ 'dev.prompts.preview.getResponse' | translate }}
+              </p-button>
+            </div>
+            @if (aiState().loading) {
+              <p-progressspinner />
+            }
+            @if (aiState().error) {
+              <p-message severity="error">{{ aiState().error! }}</p-message>
+            }
+            @if (aiState().respondingModel) {
+              <small>Answered by: {{ aiState().respondingModel }}</small>
+            }
+            @if (result) {
+              <pre class="prompt-preview">{{ formatTestResult(result) }}</pre>
+            }
+            @if (response) {
+              <pre class="prompt-preview">{{ response | json }}</pre>
+            }
           }
         </div>
       </div>

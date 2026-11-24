@@ -26,7 +26,6 @@ import { ExportGitHubService } from '../../../../services/github/export-github.s
 import { UserSettingsService } from '../../../../services/user-settings.service';
 
 import { AlertRewriteExamples, type AlertRewriteExample } from '../../../../common/prompts/alert-rewrite.examples';
-import { AlertRewriteRules } from '../../../../common/prompts/alert-rewrite.prompt';
 import { getCanadaCaStylePromptRules } from '../../../../common/prompts/canada-ca-style.prompt';
 import { getLinkWritingPromptRules } from '../../../../common/prompts/link-writing.prompt';
 import { PagePrompts } from '../../../../common/prompts/page.prompts';
@@ -277,12 +276,13 @@ export class SkillEditorComponent {
   });
 
   private buildAlertRewritePipelineSections(): PromptPipelineSection[] {
-    const rules = AlertRewriteRules.alertRewrite;
+    const promptConfig = PagePrompts[PagePromptKey.AlertRewrite];
+    const rules = promptConfig.pipeline;
     return [
       {
         key: 'role',
         label: 'dev.prompts.alertRewrite.role',
-        content: this.formatPromptJson(rules.role),
+        content: this.formatPromptJson(RoleFragment[promptConfig.role]),
       },
       {
         key: 'aiInstructions',
@@ -303,7 +303,7 @@ export class SkillEditorComponent {
       {
         key: 'outputRequirement',
         label: 'dev.prompts.alertRewrite.outputRequirement',
-        content: this.formatPromptJson(rules.outputRequirement),
+        content: this.formatPromptJson(OutputFragment[promptConfig.output]),
       },
       {
         key: 'outputSchemas',

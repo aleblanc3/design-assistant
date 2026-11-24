@@ -1,10 +1,17 @@
 import { Injectable } from '@angular/core';
 
-import { PromptConfig, RubricKey } from '../../common/prompts/prompt.model';
+import { ChatMessage, PromptConfig, RubricKey } from '../../common/prompts/prompt.model';
 import { OutputFragment, RoleFragment, RubricFragment } from '../../common/prompts/shared.prompts';
 
 @Injectable({ providedIn: 'root' })
 export class AiPromptService {
+  composeMessages(config: PromptConfig, content: string): ChatMessage[] {
+    return [
+      { role: 'system', content: this.composePrompt(config) },
+      { role: 'user', content },
+    ];
+  }
+
   composePrompt(config: PromptConfig): string {
     const parts = [
       config.role ? `### Role\n${RoleFragment[config.role]}` : null,

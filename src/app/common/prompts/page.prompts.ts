@@ -1,12 +1,19 @@
-import { OutputKey, PagePromptKey, PromptConfig, RoleKey, RubricKey } from './prompt.model';
+import { AlertRewritePipeline } from './alert-rewrite.prompt';
+import { OutputKey, PagePromptConfigs, PagePromptKey, RoleKey, RubricKey } from './prompt.model';
 
-export const PagePrompts: Record<PagePromptKey, PromptConfig> = {
+export const PagePrompts: PagePromptConfigs = {
   [PagePromptKey.AlertRewrite]: {
-    role: RoleKey.ContentDesigner,
+    role: RoleKey.AlertRewrite,
+    // Placeholder for the future PromptConfig migration. The working alert rewrite
+    // prompt is currently assembled from pipeline fragments and runtime context in
+    // AlertRewriteService.buildAlertRewriteMessages(). Do not add this task text to
+    // the system prompt as-is; replace it with the working payload-generation
+    // structure when the alert rewrite prompt is consolidated into PromptConfig.
     task: 'Rewrite the supplied alerts, using identified issues where available, preserving valid content and returning safe alert replacements.',
     rubric: [RubricKey.NoCommentary],
     output: OutputKey.Json,
     available: true,
+    pipeline: AlertRewritePipeline,
   },
   [PagePromptKey.Headings]: {
     role: RoleKey.ContentDesigner,

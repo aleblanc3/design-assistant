@@ -25,7 +25,7 @@ export const CraTerminologyInstructions = {
   retryAtomic: 'If the related idea remains, use the complete source expression instead of a shortened form: {{terms}}.',
   retrySourceOnly: 'Do not introduce these source-only expressions because they do not appear in the source: {{terms}}.',
   royalAssentStatus:
-    'Royal Assent does not by itself establish that related legislation is in force or that a program, rebate, benefit, service, application, or claim process is available. Do not add such a status unless the source states it.',
+    'Do not infer from Royal Assent that legislation is in force or that a related program, rebate, benefit, service, application, or claim process is available. State those statuses only when the source explicitly supports them.',
 } as const;
 
 export const CraTerminologyEntries: readonly CraTerminologyEntryConfig[] = [
