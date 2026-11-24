@@ -432,6 +432,7 @@
 	"dev.patterns.tab.inputs": "Input Fields",
 	"dev.patterns.tab.messages": "Messages",
 	"dev.prompts._title": "Prompt editor",
+	"dev.prompts._title.backup": "Prompt editor (backup from 2026-11-19)",
 	"dev.prompts.alertRewrite.aiInstructions": "AI instructions",
 	"dev.prompts.alertRewrite.baseRules": "Base rewrite rules",
 	"dev.prompts.alertRewrite.canadaCaStyle": "Canada.ca style rules",

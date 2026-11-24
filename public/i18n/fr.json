@@ -432,6 +432,7 @@
 	"dev.patterns.tab.inputs": "Champs de saisie",
 	"dev.patterns.tab.messages": "Messages",
 	"dev.prompts._title": "Éditeur de messages-guides",
+	"dev.prompts._title.backup": "Éditeur de messages-guides (sauvegarde du 2026-11-19)",
 	"dev.prompts.alertRewrite.aiInstructions": "Instructions pour l'IA",
 	"dev.prompts.alertRewrite.baseRules": "Règles de base pour la réécriture",
 	"dev.prompts.alertRewrite.canadaCaStyle": "Règles de style Canada.ca",
