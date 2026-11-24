@@ -3,10 +3,9 @@ import { OutputKey, ProblemPromptKey, PromptConfig, RoleKey } from './prompt.mod
 export const ProblemPrompts: Record<ProblemPromptKey, PromptConfig> = {
   [ProblemPromptKey.AlertsProblems]: {
     role: RoleKey.ContentDesigner,
-    // The valid top-level H2 exception is intentionally stated in both the
-    // category rule and the output requirements. The model previously ignored
-    // it when it appeared only in the category rule. Do not deduplicate these
-    // instructions without rerunning the alert-problems quality baseline.
+    // Some exceptions are intentionally repeated in the category and output rules
+    // because the model previously ignored or narrowed single mentions.
+    // Do not deduplicate without retesting top-level headings and temporary updates.
     task: `Analyze the reportable alerts in the supplied page context and identify applicable content design, accessibility, and markup issues.
 Return issue reports only. Do not rewrite alert HTML.
 
@@ -47,7 +46,7 @@ Return issue reports only. Do not rewrite alert HTML.
   ],
   "simpleIssueCategories": [
     { "name": "Misuse",
-      "rule": "Do not use alerts for standard process steps, low-risk warnings, routine information, or emphasis. Use pageTypeSignal, title, and h1 to assess page-wide appropriateness."
+      "rule": "Do not use alerts for standard process steps, permanent or routine page content, low-risk warnings, decorative emphasis, or low-significance facts that do not represent a meaningful change for users. Alerts may appropriately communicate important temporary legislative or policy developments, legislation receiving Royal Assent, changes to benefits or rebates, filing or payment obligations, deadlines, relief measures, transitional rules, or service availability and processing. Do not report Misuse solely because an alert is informational or is not an urgent warning or service disruption. Use the alert content, pageTypeSignal, title, and h1 to assess whether the update is significant, temporary, and appropriate for the page."
     },
     { "name": "Too wordy",
       "rule": "Alerts must be short and easy to scan. Flag multiple paragraphs, avoidable detail, or more than 2 sentences unless the sentences are short. Do not flag based on character count alone; use paragraph_count and text_length_chars as supporting evidence. For longer content, recommend a short summary linking to the full details."
@@ -113,6 +112,7 @@ Return issue reports only. Do not rewrite alert HTML.
     "requirements": [
       "Include the alert number in the description, for example: Alert 2: ...",
       "Emit a separate issue item for every category that applies to each alert.",
+      "Do not emit Misuse solely because an alert is informational or is not an urgent warning or service disruption. Important temporary legislative, policy, benefit, rebate, filing, payment, deadline, relief, transitional, or service updates may appropriately use an alert.",
       "Do not emit Incorrect hierarchy when pageSignals.h1 is present and the matching structured evidence shows is_before_first_h2 is true, nearest_h2_above is empty, heading_source is semantic, heading_tag is h2, and heading_level is 2. This is a valid top-level alert heading, including for adjacent alerts in that location."
     ]
   }
