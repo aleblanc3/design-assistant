@@ -491,25 +491,25 @@ resource "aws_iam_role_policy" "lambda_s3_policy" {
 # -------------------------------------------------------------------------------------
 
 # Crawl queue with a dead-letter queue for pages that keep failing
-resource "aws_sqs_queue" "link_index_dlq" {
-  name                      = "${var.app_name}-${var.environment}-link-index-dlq"
+resource "aws_sqs_queue" "links_dlq" {
+  name                      = "${var.app_name}-${var.environment}-links-dlq"
   message_retention_seconds = 1209600 # 14 days
 }
 
-resource "aws_sqs_queue" "link_index_crawl" {
-  name                       = "${var.app_name}-${var.environment}-link-index-crawl"
+resource "aws_sqs_queue" "links_crawl" {
+  name                       = "${var.app_name}-${var.environment}-links-crawl"
   visibility_timeout_seconds = 360 # 6x the worker timeout, as AWS recommends for SQS triggers
   message_retention_seconds  = 345600
 
   redrive_policy = jsonencode({
-    deadLetterTargetArn = aws_sqs_queue.link_index_dlq.arn
+    deadLetterTargetArn = aws_sqs_queue.links_dlq.arn
     maxReceiveCount     = 3
   })
 }
 
 # Permissions for the new tables and queue (the role is shared with the other Lambdas)
-resource "aws_iam_role_policy" "lambda_link_index_policy" {
-  name = "${var.app_name}-lambda-link-index-policy"
+resource "aws_iam_role_policy" "lambda_links_policy" {
+  name = "${var.app_name}-lambda-links-policy"
   role = aws_iam_role.lambda_role.id
 
   policy = jsonencode({
@@ -542,19 +542,19 @@ resource "aws_iam_role_policy" "lambda_link_index_policy" {
           "sqs:DeleteMessage",
           "sqs:GetQueueAttributes"
         ]
-        Resource = aws_sqs_queue.link_index_crawl.arn
+        Resource = aws_sqs_queue.links_crawl.arn
       }
     ]
   })
 }
 
 # Sync Lambda: diffs the sitemap against the pages table and queues crawl jobs
-resource "aws_lambda_function" "link_index_sync" {
-  filename         = "${path.module}/../functions/link-index/lambda.zip"
-  function_name    = "${var.app_name}-${var.environment}-link-index-sync"
+resource "aws_lambda_function" "links_sync" {
+  filename         = "${path.module}/../functions/links/lambda.zip"
+  function_name    = "${var.app_name}-${var.environment}-links-sync"
   role             = aws_iam_role.lambda_role.arn
   handler          = "sync.handler"
-  source_code_hash = filebase64sha256("${path.module}/../functions/link-index/lambda.zip")
+  source_code_hash = filebase64sha256("${path.module}/../functions/links/lambda.zip")
   runtime          = "nodejs22.x"
   timeout          = 900
   memory_size      = 512
@@ -563,8 +563,8 @@ resource "aws_lambda_function" "link_index_sync" {
     variables = {
       PAGES_TABLE  = aws_dynamodb_table.pages.name
       LINKS_TABLE  = aws_dynamodb_table.links.name
-      QUEUE_URL    = aws_sqs_queue.link_index_crawl.url
-      SITEMAP_URLS = var.link_index_sitemap_urls
+      QUEUE_URL    = aws_sqs_queue.links_crawl.url
+      SITEMAP_URLS = var.links_sitemap_urls
       MAX_UNPUBLISH_RATIO = "0.1"
       MAX_CRAWL_JOBS = "10" # TODO: Increase to 500 or more after reviewing DB
     }
@@ -572,12 +572,12 @@ resource "aws_lambda_function" "link_index_sync" {
 }
 
 # Crawl worker: fetches one page, extracts hreflang pair and links, writes to DynamoDB
-resource "aws_lambda_function" "link_index_crawl" {
-  filename         = "${path.module}/../functions/link-index/lambda.zip"
-  function_name    = "${var.app_name}-${var.environment}-link-index-crawl"
+resource "aws_lambda_function" "links_crawl" {
+  filename         = "${path.module}/../functions/links/lambda.zip"
+  function_name    = "${var.app_name}-${var.environment}-links-crawl"
   role             = aws_iam_role.lambda_role.arn
   handler          = "crawl.handler"
-  source_code_hash = filebase64sha256("${path.module}/../functions/link-index/lambda.zip")
+  source_code_hash = filebase64sha256("${path.module}/../functions/links/lambda.zip")
   runtime          = "nodejs22.x"
   timeout          = 60
   memory_size      = 512
@@ -590,9 +590,9 @@ resource "aws_lambda_function" "link_index_crawl" {
   }
 }
 
-resource "aws_lambda_event_source_mapping" "link_index_crawl" {
-  event_source_arn        = aws_sqs_queue.link_index_crawl.arn
-  function_name           = aws_lambda_function.link_index_crawl.arn
+resource "aws_lambda_event_source_mapping" "links_crawl" {
+  event_source_arn        = aws_sqs_queue.links_crawl.arn
+  function_name           = aws_lambda_function.links_crawl.arn
   batch_size              = 5
   function_response_types = ["ReportBatchItemFailures"]
 
@@ -601,24 +601,24 @@ resource "aws_lambda_event_source_mapping" "link_index_crawl" {
     maximum_concurrency = 2
   }
 
-  depends_on = [aws_iam_role_policy.lambda_link_index_policy]
+  depends_on = [aws_iam_role_policy.lambda_links_policy]
 }
 
 # Schedule: daily at 07:00 UTC
-resource "aws_cloudwatch_event_rule" "link_index_sync" {
-  name                = "${var.app_name}-${var.environment}-link-index-sync"
+resource "aws_cloudwatch_event_rule" "links_sync" {
+  name                = "${var.app_name}-${var.environment}-links-sync"
   schedule_expression = "cron(0 7 * * ? *)"
 }
 
-resource "aws_cloudwatch_event_target" "link_index_sync" {
-  rule = aws_cloudwatch_event_rule.link_index_sync.name
-  arn  = aws_lambda_function.link_index_sync.arn
+resource "aws_cloudwatch_event_target" "links_sync" {
+  rule = aws_cloudwatch_event_rule.links_sync.name
+  arn  = aws_lambda_function.links_sync.arn
 }
 
-resource "aws_lambda_permission" "link_index_sync_schedule" {
+resource "aws_lambda_permission" "links_sync_schedule" {
   statement_id  = "AllowEventBridgeInvoke"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.link_index_sync.function_name
+  function_name = aws_lambda_function.links_sync.function_name
   principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_rule.link_index_sync.arn
+  source_arn    = aws_cloudwatch_event_rule.links_sync.arn
 }
