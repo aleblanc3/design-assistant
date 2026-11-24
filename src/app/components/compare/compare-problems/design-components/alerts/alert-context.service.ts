@@ -5,6 +5,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { removeAlertRewritePlacementReviewNotices } from '../../../../../common/alert-rewrite-status.utils';
 import { coerceInteractiveResultLeadIns, getReportableAlerts } from './alert-reportable.utils';
 
+const UTILITY_H2_LABELS = new Set(['on this page', 'sur cette page']);
+
 @Injectable({ providedIn: 'root' })
 export class AlertContextService {
   private readonly translate = inject(TranslateService);
@@ -73,11 +75,13 @@ export class AlertContextService {
     });
     const main = (sourceDoc.querySelector('main') as HTMLElement | null) ?? sourceDoc.body;
 
-    // H2s act as section landmarks; their text and DOM position let us describe
-    // alert placement in useful page terms.
-    // Follow-up: evaluate excluding utility headings such as "On this page" and
-    // "Page details" from the model-facing h2Headings summary.
-    const h2Elements = Array.from(main.querySelectorAll<HTMLElement>('h2')).filter((h2) => !h2.closest('.alert'));
+    // Keep content and component headings such as Subway navigation, but remove
+    // utility headings that do not identify a substantive page section.
+    const h2Elements = Array.from(main.querySelectorAll<HTMLElement>('h2')).filter((h2) => {
+      if (h2.closest('.alert, .pagedetails')) return false;
+      const label = (h2.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+      return !UTILITY_H2_LABELS.has(label);
+    });
     const h2Headings = h2Elements
       .map((h2) => this.truncateContextText(h2.textContent || '', 120))
       .filter((value) => !!value)
