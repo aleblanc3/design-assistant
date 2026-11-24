@@ -35,7 +35,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        function: [github-oauth, projects, airtable, openrouter, usage] # Add any new function folders here
+        function: [github-oauth, projects, airtable, openrouter, usage, links] # Add any new function folders here
     defaults:
       run:
         working-directory: backend/functions/${{ matrix.function }}
