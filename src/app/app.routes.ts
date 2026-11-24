@@ -241,6 +241,11 @@ export const routes: Routes = [
         loadComponent: () => import('./views/toolbox/standalone-tools/scratch-pad/scratch-pad.component').then((m) => m.ScratchPadComponent),
         title: 'scratchPad._title',
       },
+      {
+        path: 'referring-links',
+        loadComponent: () => import('./views/toolbox/standalone-tools/referring-links/referring-links.component').then((m) => m.ReferringLinksComponent),
+        title: 'refLinks._title',
+      },
     ],
   },
   //DEV PAGES
@@ -275,7 +280,7 @@ export const routes: Routes = [
         title: 'dev.prompts._title',
       },
       {
-        path: 'prompt-editor-backup',
+        path: 'prompt-backup-editor',
         loadComponent: () => import('./views/toolbox/dev-tools/prompt-editor-backup/prompt-editor.component').then((m) => m.PromptEditorBackupComponent),
         title: 'dev.prompts._title.backup',
       },

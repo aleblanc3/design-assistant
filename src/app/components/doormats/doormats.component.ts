@@ -55,11 +55,12 @@ export const DOORMATS = {
   //Standalone
   standaloneCompare: { path: AidaLinks.StandaloneCompare, titleKey: 'compare._title', descriptionKey: 'compare.description' },
   scratchPad: { path: AidaLinks.StandaloneScratchPad, titleKey: 'scratchPad._title', descriptionKey: 'scratchPad.description' },
+  refLinks: { path: AidaLinks.StandaloneRefLinks, titleKey: 'refLinks._title', descriptionKey: 'refLinks.description', hideInProd: true },
   //Dev
   monitoring: { path: AidaLinks.DevMonitoring, titleKey: 'dev.monitoring._title', descriptionKey: 'dev.monitoring.description' },
   colors: { path: AidaLinks.DevColours, titleKey: 'dev.colors._title', descriptionKey: 'dev.colors.description' },
   patterns: { path: AidaLinks.DevPatterns, titleKey: 'dev.patterns._title', descriptionKey: 'dev.patterns.description' },
-  prompts: { path: AidaLinks.DevPrompts, titleKey: 'dev.prompts._title', descriptionKey: 'dev.prompts.description' },
+  prompts: { path: AidaLinks.DevPrompts, titleKey: 'dev.prompts._title', descriptionKey: 'dev.prompts.description', hideInProd: true },
   promptsBackup: { path: AidaLinks.DevPromptsBackup, titleKey: 'dev.prompts._title.backup', descriptionKey: 'dev.prompts.description' },
   skills: { path: AidaLinks.DevSkills, titleKey: 'dev.skills._title', descriptionKey: 'dev.skills.description', hideInProd: true },
   //External
