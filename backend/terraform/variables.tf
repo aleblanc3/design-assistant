@@ -32,7 +32,7 @@ variable "allowed_origins" {
   type        = list(string)
 }
 
-variable "link_index_sitemap_urls" {
+variable "links_sitemap_urls" {
   description = "Comma-separated sitemap URLs for the link index"
   type        = string
 }
