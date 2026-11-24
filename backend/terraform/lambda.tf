@@ -622,3 +622,104 @@ resource "aws_lambda_permission" "links_sync_schedule" {
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.links_sync.arn
 }
+
+# -------------------------------------------------------------------------------------
+# Referring link & page DB: readonly lookups for front end
+# -------------------------------------------------------------------------------------
+
+# Dedicated read-only role, separate from the shared lambda_role
+resource "aws_iam_role" "links_api_role" {
+  name = "${var.app_name}-links-api-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "lambda.amazonaws.com"
+      }
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "links_api_basic_execution" {
+  role       = aws_iam_role.links_api_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+resource "aws_iam_role_policy" "links_api_policy" {
+  name = "${var.app_name}-links-api-policy"
+  role = aws_iam_role.links_api_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "dynamodb:GetItem",
+          "dynamodb:BatchGetItem",
+          "dynamodb:Query"
+        ]
+        Resource = [
+          aws_dynamodb_table.pages.arn,
+          "${aws_dynamodb_table.pages.arn}/index/*",
+          aws_dynamodb_table.links.arn,
+          "${aws_dynamodb_table.links.arn}/index/*",
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_lambda_function" "links_api" {
+  filename         = "${path.module}/../functions/links/lambda.zip"
+  function_name    = "${var.app_name}-${var.environment}-links-api"
+  role             = aws_iam_role.links_api_role.arn
+  handler          = "lookups.handler"
+  source_code_hash = filebase64sha256("${path.module}/../functions/links/lambda.zip")
+  runtime          = "nodejs22.x"
+  timeout          = 30
+  memory_size      = 512
+
+  environment {
+    variables = {
+      PAGES_TABLE = aws_dynamodb_table.pages.name
+      LINKS_TABLE = aws_dynamodb_table.links.name
+    }
+  }
+}
+
+# Lambda Function URL for the links API
+resource "aws_lambda_function_url" "links_api" {
+  function_name      = aws_lambda_function.links_api.function_name
+  authorization_type = "NONE"
+
+  cors {
+    allow_origins = var.allowed_origins
+    allow_methods = ["GET", "POST"]
+    allow_headers = ["content-type"]
+    max_age       = 86400
+  }
+}
+
+resource "aws_lambda_permission" "links_api_function_url" {
+  statement_id           = "AllowPublicFunctionURLInvoke"
+  action                 = "lambda:InvokeFunctionUrl"
+  function_name          = aws_lambda_function.links_api.function_name
+  principal              = "*"
+  function_url_auth_type = "NONE"
+}
+
+resource "aws_lambda_permission" "links_api_function_invoke" {
+  statement_id  = "AllowPublicInvokeFunction"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.links_api.function_name
+  principal     = "*"
+}
+
+output "links_api_function_url" {
+  description = "Direct Lambda Function URL for link lookups"
+  value       = aws_lambda_function_url.links_api.function_url
+}
