@@ -142,11 +142,4 @@ Return issue reports only. Do not rewrite alert HTML.
 }`,
     available: false,
   },
-  [ProblemPromptKey.AlertsRewrite]: {
-    role: RoleKey.ContentDesigner,
-    task: 'Analyze the reportable alerts in the supplied page context and identify applicable content design, accessibility, and markup issues.',
-    rubric: [RubricKey.NoCommentary],
-    output: OutputKey.Json,
-    available: false,
-  },
 };

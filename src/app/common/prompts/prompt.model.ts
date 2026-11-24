@@ -39,7 +39,6 @@ function markForTranslation() {
   marker('aiPrompt.page.alertRewrite');
   marker('aiPrompt.page.alertExamples');
 
-  marker('aiPrompt.problem.alertsRewrite');
   marker('aiPrompt.problem.alertsProblems');
 
   marker('aiPrompt.craTerminology.shortForms.payrollDeductions');
@@ -152,5 +151,4 @@ export enum PagePromptKey {
 //Problem task fragments
 export enum ProblemPromptKey {
   AlertsProblems = 'aiPrompt.problem.alertsProblems',
-  AlertsRewrite = 'aiPrompt.problem.alertsRewrite',
 }

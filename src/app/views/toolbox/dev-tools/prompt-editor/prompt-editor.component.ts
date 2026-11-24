@@ -99,6 +99,7 @@ interface PromptPipelineGroup {
 }
 
 interface PromptConditionItem {
+  key: string;
   condition: string;
   instruction?: string;
   bulletItems?: readonly string[];
@@ -163,6 +164,30 @@ interface PromptPipelineOption {
     .example-metadata {
       margin: 0.5rem 0;
       font-size: 1.25rem !important;
+    }
+
+    .example-json-object {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .rewrite-prompt-editor {
+      font-size: 1.25rem !important;
+    }
+
+    .compact-prompt-editor {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .compact-prompt-editor h2,
+    .compact-prompt-editor h3,
+    .compact-prompt-editor h4,
+    .compact-prompt-editor p,
+    .compact-prompt-editor pre.prompt-preview {
+      margin-block: 0;
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -300,6 +325,10 @@ export class PromptEditorComponent {
     promptText: PagePrompts[PagePromptKey[enumKey as keyof typeof PagePromptKey]],
   }));
 
+  private get alertRewritePipeline() {
+    return PagePrompts[PagePromptKey.AlertRewrite].pipeline;
+  }
+
   problemPrompts: PromptEntry[] = Object.keys(ProblemPromptKey).map((enumKey) => ({
     enumKey,
     translationKey: ProblemPromptKey[enumKey as keyof typeof ProblemPromptKey],
@@ -330,6 +359,12 @@ export class PromptEditorComponent {
   );
   private readonly exampleJsonErrors = signal<Record<string, string>>({});
   protected readonly hasInvalidExampleJson = computed(() => Object.keys(this.exampleJsonErrors()).length > 0);
+  private readonly alertRewriteOutputSchemaDrafts = signal<Record<string, string>>({
+    outputSchemaWithExamples: this.formatPromptSchema(this.alertRewritePipeline.outputSchemas.withExamples),
+    outputSchemaWithoutExamples: this.formatPromptSchema(this.alertRewritePipeline.outputSchemas.withoutExamples),
+  });
+  private readonly alertRewriteOutputSchemaErrors = signal<Record<string, string>>({});
+  protected readonly hasInvalidAlertRewriteOutputSchema = computed(() => Object.keys(this.alertRewriteOutputSchemaErrors()).length > 0);
 
   protected get alertRewritePipelineGroups(): PromptPipelineGroup[] {
     return this.buildAlertRewritePipelineGroups();
@@ -339,7 +374,9 @@ export class PromptEditorComponent {
   }
   protected readonly alertRewriteExamples = AlertRewriteExamples;
 
-  selectedPrompts = new Set<string>([this.inventoryPrompts[0]?.enumKey, this.pagePrompts[0]?.enumKey, this.problemPrompts[0]?.enumKey, this.skillPrompts[0]?.enumKey].filter(Boolean));
+  selectedPrompts = new Set<string>(
+    [this.inventoryPrompts[0]?.enumKey, this.pagePrompts[0]?.enumKey, this.problemPrompts[0]?.enumKey, this.skillPrompts[0]?.enumKey].filter(Boolean),
+  );
 
   togglePrompt(enumKey: string) {
     if (this.selectedPrompts.has(enumKey)) {
@@ -417,10 +454,6 @@ export class PromptEditorComponent {
     { label: 'aiPrompt.tools._title', items: this.inventoryPrompts },
     { label: 'aiPrompt.skills._title', items: this.skillPrompts },
     { label: 'aiPrompt.page._title', items: this.pagePrompts.filter((prompt) => prompt.enumKey !== 'AlertRewrite') },
-    {
-      label: 'aiPrompt.problems._title',
-      items: this.problemPrompts.filter((prompt) => prompt.enumKey !== 'AlertsProblems'),
-    },
   ];
   protected readonly selectedPrompt = signal<PreviewEntry | undefined>(this.pagePrompts.find((prompt) => prompt.enumKey === 'AlertRewrite'));
   protected readonly selectedPromptIsAlertRewritePipeline = computed(() => {
@@ -522,30 +555,37 @@ export class PromptEditorComponent {
             label: 'dev.prompts.alertRewrite.retryInstructions',
             conditionItems: [
               {
+                key: 'invalidWrapperHtml',
                 condition: 'dev.prompts.alertRewrite.retry.invalidWrapperHtml',
                 instruction: rules.retryInstructions.invalidWrapperHtml,
               },
               {
+                key: 'noLinksAllowed',
                 condition: 'dev.prompts.alertRewrite.retry.noLinksAllowed',
                 instruction: rules.retryInstructions.noLinksAllowed,
               },
               {
+                key: 'mustKeepLink',
                 condition: 'dev.prompts.alertRewrite.retry.mustKeepLink',
                 instruction: rules.retryInstructions.mustKeepLink,
               },
               {
+                key: 'mustKeepAllLinks',
                 condition: 'dev.prompts.alertRewrite.retry.mustKeepAllLinks',
                 instruction: rules.retryInstructions.mustKeepAllLinks,
               },
               {
+                key: 'mustHaveHeading',
                 condition: 'dev.prompts.alertRewrite.retry.mustHaveHeading',
                 instruction: rules.retryInstructions.mustHaveHeading,
               },
               {
+                key: 'avoidExampleCopy',
                 condition: 'dev.prompts.alertRewrite.retry.avoidExampleCopy',
                 instruction: rules.retryInstructions.avoidExampleCopy,
               },
               {
+                key: 'fullSentenceLinksNeedLeadIn',
                 condition: 'dev.prompts.alertRewrite.retry.fullSentenceLinksNeedLeadIn',
                 bulletItems: rules.retryInstructions.fullSentenceLinksNeedLeadIn,
               },
@@ -609,6 +649,83 @@ export class PromptEditorComponent {
         ],
       },
     ];
+  }
+
+  protected updateAlertRewriteBaseRule(index: number, value: string): void {
+    this.alertRewritePipeline.styleRulesBase[index] = value;
+    void this.updateDiff();
+  }
+
+  protected updateAlertRewriteSystemInstruction(optionKey: string, index: number, value: string): void {
+    const instructions = optionKey === 'systemWithExamples' ? this.alertRewritePipeline.systemPromptWithExamplesLines : this.alertRewritePipeline.systemPromptWithoutExamplesLines;
+    instructions[index] = value;
+    void this.updateDiff();
+  }
+
+  protected updateAlertRewriteConditionalInstruction(sectionKey: string, value: string): void {
+    if (sectionKey === 'preserveFinalStandaloneLink') {
+      this.alertRewritePipeline.conditionalInstructions.preserveFinalStandaloneLink = value;
+    } else {
+      this.alertRewritePipeline.conditionalInstructions.enforceLinkManifest = value;
+    }
+    void this.updateDiff();
+  }
+
+  protected updateAlertRewriteRetryInstruction(key: string, value: string, index?: number): void {
+    const retryInstructions = this.alertRewritePipeline.retryInstructions;
+    if (key === 'fullSentenceLinksNeedLeadIn' && index !== undefined) {
+      retryInstructions.fullSentenceLinksNeedLeadIn = retryInstructions.fullSentenceLinksNeedLeadIn.map((instruction, instructionIndex) => (instructionIndex === index ? value : instruction));
+    } else if (key === 'invalidWrapperHtml') {
+      retryInstructions.invalidWrapperHtml = value;
+    } else if (key === 'noLinksAllowed') {
+      retryInstructions.noLinksAllowed = value;
+    } else if (key === 'mustKeepLink') {
+      retryInstructions.mustKeepLink = value;
+    } else if (key === 'mustKeepAllLinks') {
+      retryInstructions.mustKeepAllLinks = value;
+    } else if (key === 'mustHaveHeading') {
+      retryInstructions.mustHaveHeading = value;
+    } else if (key === 'avoidExampleCopy') {
+      retryInstructions.avoidExampleCopy = value;
+    }
+    void this.updateDiff();
+  }
+
+  protected getAlertRewriteOutputSchemaDraft(optionKey: string): string {
+    return this.alertRewriteOutputSchemaDrafts()[optionKey] ?? '';
+  }
+
+  protected getAlertRewriteOutputSchemaError(optionKey: string): string | undefined {
+    return this.alertRewriteOutputSchemaErrors()[optionKey];
+  }
+
+  protected updateAlertRewriteOutputSchema(optionKey: string, value: string): void {
+    this.alertRewriteOutputSchemaDrafts.update((drafts) => ({ ...drafts, [optionKey]: value }));
+
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(value);
+    } catch {
+      this.alertRewriteOutputSchemaErrors.update((errors) => ({ ...errors, [optionKey]: 'dev.prompts.alertRewrite.invalidOutputSchema' }));
+      return;
+    }
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+      this.alertRewriteOutputSchemaErrors.update((errors) => ({ ...errors, [optionKey]: 'dev.prompts.alertRewrite.invalidOutputSchema' }));
+      return;
+    }
+
+    const schema = JSON.stringify(parsed);
+    if (optionKey === 'outputSchemaWithExamples') {
+      this.alertRewritePipeline.outputSchemas.withExamples = schema;
+    } else {
+      this.alertRewritePipeline.outputSchemas.withoutExamples = schema;
+    }
+    this.alertRewriteOutputSchemaErrors.update((errors) => {
+      const updated = { ...errors };
+      delete updated[optionKey];
+      return updated;
+    });
+    void this.updateDiff();
   }
 
   private buildAlertProblemsSections(): PromptPipelineSection[] {
@@ -842,9 +959,7 @@ export class PromptEditorComponent {
     const configType = isPagePrompts ? 'PagePromptConfigs' : `Record<${tool}PromptKey, PromptConfig>`;
     const configImport = isPagePrompts ? 'PagePromptConfigs' : 'PromptConfig';
     const imports = ['OutputKey', `${tool}PromptKey`, configImport, 'RoleKey', 'RubricKey'].sort();
-    const pipelineImport = isPagePrompts ? `import { AlertRewritePipeline } from './alert-rewrite.prompt';\n` : '';
-
-    return `${pipelineImport}import { ${imports.join(', ')} } from './prompt.model';\n\nexport const ${tool}Prompts: ${configType} = {\n${updatedPrompts}\n};\n`;
+    return `import { ${imports.join(', ')} } from './prompt.model';\n\nexport const ${tool}Prompts: ${configType} = {\n${updatedPrompts}\n};\n`;
   }
 
   protected getSelectedPromptConfig(): PromptConfig | null {
@@ -853,20 +968,30 @@ export class PromptEditorComponent {
   }
 
   private serializePromptConfig(config: PromptConfig, enumKey: string): string {
-    const lines = [
-      '{',
-      `    role: RoleKey.${this.getEnumKey(RoleKey, config.role)},`,
+    const lines = ['{', `    role: RoleKey.${this.getEnumKey(RoleKey, config.role)},`];
+
+    if (enumKey === 'AlertRewrite') {
+      lines.push(
+        '    // Placeholder for the future PromptConfig migration. The working alert rewrite',
+        '    // prompt is currently assembled from pipeline fragments and runtime context in',
+        '    // AlertRewriteService.buildAlertRewriteMessages(). Do not add this task text to',
+        '    // the system prompt as-is; replace it with the working payload-generation',
+        '    // structure when the alert rewrite prompt is consolidated into PromptConfig.',
+      );
+    }
+
+    lines.push(
       `    task: ${this.toSourceStringLiteral(config.task)},`,
       `    rubric: [${config.rubric.map((rubric) => `RubricKey.${this.getEnumKey(RubricKey, rubric)}`).join(', ')}],`,
       `    output: OutputKey.${this.getEnumKey(OutputKey, config.output)},`,
-    ];
+    );
 
     if (config.jsonSchema !== undefined) lines.push(`    jsonSchema: ${this.toSourceStringLiteral(config.jsonSchema)},`);
     if (config.examples !== undefined) lines.push(`    examples: ${this.toSourceStringLiteral(config.examples)},`);
     if (config.available !== undefined) lines.push(`    available: ${config.available},`);
     if (config.pipeline !== undefined) {
       if (enumKey === 'AlertRewrite') {
-        lines.push('    pipeline: AlertRewritePipeline,');
+        lines.push(`    pipeline: ${this.serializeAlertRewritePipeline()},`);
       } else {
         const pipeline = JSON.stringify(config.pipeline, null, 2)
           .split('\n')
@@ -947,6 +1072,54 @@ export function getLinkWritingPromptRules(options: LinkWritingPromptOptions): st
   private toSkillStringLiteral(value: string): string {
     if (value.includes("'")) return JSON.stringify(value);
     return `'${value.replace(/\\/g, '\\\\')}'`;
+  }
+
+  private serializeAlertRewritePipeline(): string {
+    const rules = this.alertRewritePipeline;
+    const arrayLines = (values: readonly string[], indentation = '        '): string => values.map((value) => `${indentation}${this.toExampleStringLiteral(value)},`).join('\n');
+    const inlineArray = (values: readonly string[]): string => `[${values.map((value) => this.toExampleStringLiteral(value)).join(', ')}]`;
+
+    return `{
+      styleRulesBase: [
+${arrayLines(rules.styleRulesBase)}
+      ],
+      // Keep example guidance intentionally reinforced in both the base rules and
+      // the system prompt. Keep the two source-wording instructions below separate:
+      // egHtml should anchor structure, while the input alert should anchor wording.
+      // A-B-A testing showed that consolidating them caused generic example actions
+      // to leak into rewrites and made other internal guidance more likely to surface.
+      systemPromptWithExamplesLines: [
+${arrayLines(rules.systemPromptWithExamplesLines)}
+      ],
+      systemPromptWithoutExamplesLines: ${inlineArray(rules.systemPromptWithoutExamplesLines)},
+      outputSchemas: {
+        withExamples: ${this.toExampleStringLiteral(rules.outputSchemas.withExamples)},
+        withoutExamples: ${this.toExampleStringLiteral(rules.outputSchemas.withoutExamples)},
+      },
+      conditionalInstructions: {
+        preserveFinalStandaloneLink:
+          ${this.toExampleStringLiteral(rules.conditionalInstructions.preserveFinalStandaloneLink)},
+        enforceLinkManifest:
+          ${this.toExampleStringLiteral(rules.conditionalInstructions.enforceLinkManifest)},
+      },
+      retryInstructions: {
+        invalidWrapperHtml: ${this.toExampleStringLiteral(rules.retryInstructions.invalidWrapperHtml)},
+        noLinksAllowed: ${this.toExampleStringLiteral(rules.retryInstructions.noLinksAllowed)},
+        mustKeepLink:
+          ${this.toExampleStringLiteral(rules.retryInstructions.mustKeepLink)},
+        mustKeepAllLinks:
+          ${this.toExampleStringLiteral(rules.retryInstructions.mustKeepAllLinks)},
+        mustHaveHeading:
+          ${this.toExampleStringLiteral(rules.retryInstructions.mustHaveHeading)},
+        avoidExampleCopy: ${this.toExampleStringLiteral(rules.retryInstructions.avoidExampleCopy)},
+        // This intentionally reinforces permanent link rules on a fresh retry call.
+        // A-B testing showed that suppressing it when noLinksAllowed also applied
+        // caused the regenerated alert to weaken a precise source timing distinction.
+        fullSentenceLinksNeedLeadIn: [
+${arrayLines(rules.retryInstructions.fullSentenceLinksNeedLeadIn, '          ')}
+        ],
+      },
+    }`;
   }
 
   rebuildAlertRewriteExamplesFile(examples: AlertRewriteExample[]): string {
@@ -1031,7 +1204,7 @@ ${serializedExamples}
       ...(example.egHtml !== undefined ? { egHtml: example.egHtml } : {}),
       ...(example.egLinks !== undefined ? { egLinks: example.egLinks } : {}),
     };
-    return this.formatJsonWithInlineStringArrays(editableExample);
+    return this.formatJsonWithInlineStringArrays(editableExample).split('\n').slice(1, -1).join('\n');
   }
 
   private formatJsonWithInlineStringArrays(value: unknown): string {
@@ -1042,13 +1215,16 @@ ${serializedExamples}
   }
 
   protected getExampleSelectionMetadata(example: AlertRewriteExample): string {
-    return this.formatJsonWithInlineStringArrays({
+    const lines = this.formatJsonWithInlineStringArrays({
       id: example.id,
       tags: example.tags,
       purposeTags: example.purposeTags,
       criteria: example.criteria,
       notes: example.notes,
-    });
+    }).split('\n');
+    lines.splice(-1, 1);
+    lines[lines.length - 1] += ',';
+    return lines.join('\n');
   }
 
   protected getFormattedExamplePreview(example: AlertRewriteExample): string {
@@ -1064,7 +1240,7 @@ ${serializedExamples}
 
     let parsed: unknown;
     try {
-      parsed = JSON.parse(value);
+      parsed = JSON.parse(`{\n${value}\n}`);
     } catch {
       this.setExampleJsonError(example.id, 'dev.prompts.examples.invalidJson');
       return;
@@ -1154,6 +1330,7 @@ ${rubricEntries}
     if (tab.fragments) return this.rebuildSharedFile();
     if (tab.skills) return this.rebuildSkillsFile();
     if (tab.exampleSets) return this.rebuildAlertRewriteExamplesFile(this.selectedExampleSet().examples);
+    if (tab.tool === 'Page') return this.rebuildPromptFile('Page', this.pagePrompts);
     if (tab.prompts) return this.rebuildPromptFile(tab.tool, tab.prompts);
     return '';
   }
