@@ -1,0 +1,108 @@
+import { marker } from '@colsen1991/ngx-translate-extract-marker';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function markForTranslation() {
+  marker('aiPrompt.role.none');
+  marker('aiPrompt.role.contentDesigner');
+  marker('aiPrompt.role.seoExpert');
+  marker('aiPrompt.role.accessibilityExpert');
+  marker('aiPrompt.role.translator');
+  marker('aiPrompt.role.htmlEditor');
+
+  marker('aiPrompt.output.text');
+  marker('aiPrompt.output.html');
+  marker('aiPrompt.output.json');
+
+  marker('aiPrompt.rubric.noCommentary');
+  marker('aiPrompt.rubric.preserveHtmlStructure');
+  marker('aiPrompt.rubric.characterLimit');
+  marker('aiPrompt.rubric.description');
+  marker('aiPrompt.rubric.descriptionEN');
+  marker('aiPrompt.rubric.descriptionFR');
+  marker('aiPrompt.rubric.keywords');
+  marker('aiPrompt.rubric.craTermTranslations');
+
+  marker('aiPrompt.tools.metadata');
+  marker('aiPrompt.tools.description');
+  marker('aiPrompt.tools.keywords');
+  marker('aiPrompt.tools.languages');
+
+  marker('aiPrompt.page.headings');
+  marker('aiPrompt.page.doormats');
+  marker('aiPrompt.page.plainLanguage');
+  marker('aiPrompt.page.tense');
+  marker('aiPrompt.page.alertRewrite');
+  marker('aiPrompt.page.alertExamples');
+
+  marker('aiPrompt.problem.alertsRewrite');
+  marker('aiPrompt.problem.alertsProblems');
+  marker('aiPrompt.problem.translateIssueDetails');
+
+  marker('aiPrompt.craTerminology.shortForms.payrollDeductions');
+  marker('aiPrompt.craTerminology.shortForms.royalAssent');
+  marker('aiPrompt.craTerminology.terms.payrollDeductions');
+  marker('aiPrompt.craTerminology.terms.royalAssent');
+}
+
+export interface PromptConfig {
+  role: RoleKey; // Shared
+  task: string; // Unique task
+  rubric: RubricKey[]; // Shared
+  output: OutputKey; // Shared
+  jsonSchema?: string; // Unique schema
+  examples?: string; // reference to example set for additional prompt set-up
+  available?: boolean; // Hides prompt in prod if not ready
+}
+
+//Shared role fragments
+export enum RoleKey {
+  None = 'aiPrompt.role.none',
+  ContentDesigner = 'aiPrompt.role.contentDesigner',
+  SeoExpert = 'aiPrompt.role.seoExpert',
+  AccessibilityExpert = 'aiPrompt.role.accessibilityExpert',
+  Translator = 'aiPrompt.role.translator',
+  HTMLeditor = 'aiPrompt.role.htmlEditor',
+}
+
+//Shared output fragments
+export enum OutputKey {
+  Text = 'aiPrompt.output.text',
+  Html = 'aiPrompt.output.html',
+  Json = 'aiPrompt.output.json',
+}
+
+//Shared rubric fragments
+export enum RubricKey {
+  NoCommentary = 'aiPrompt.rubric.noCommentary',
+  PreserveHtmlStructure = 'aiPrompt.rubric.preserveHtmlStructure',
+  CharacterLimit = 'aiPrompt.rubric.characterLimit',
+  Description = 'aiPrompt.rubric.description',
+  DescriptionEN = 'aiPrompt.rubric.descriptionEN',
+  DescriptionFR = 'aiPrompt.rubric.descriptionFR',
+  Keywords = 'aiPrompt.rubric.keywords',
+  CraTermTranslations = 'aiPrompt.rubric.craTermTranslations',
+}
+
+//Tools task fragments
+export enum ToolsPromptKey {
+  Metadata = 'aiPrompt.tools.metadata',
+  Description = 'aiPrompt.tools.description',
+  Keywords = 'aiPrompt.tools.keywords',
+  Languages = 'aiPrompt.tools.languages',
+}
+
+//Page task fragments
+export enum PagePromptKey {
+  AlertRewrite = 'aiPrompt.page.alertRewrite',
+  Headings = 'aiPrompt.page.headings',
+  Doormats = 'aiPrompt.page.doormats',
+  PlainLanguage = 'aiPrompt.page.plainLanguage',
+  Tense = 'aiPrompt.page.tense',
+}
+
+//Problem task fragments
+export enum ProblemPromptKey {
+  AlertsRewrite = 'aiPrompt.problem.alertsRewrite',
+  AlertsProblems = 'aiPrompt.problem.alertsProblems',
+  TranslateIssueDetails = 'aiPrompt.problem.translateIssueDetails',
+}
