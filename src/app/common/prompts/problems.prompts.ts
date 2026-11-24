@@ -3,6 +3,10 @@ import { OutputKey, ProblemPromptKey, PromptConfig, RoleKey } from './prompt.mod
 export const ProblemPrompts: Record<ProblemPromptKey, PromptConfig> = {
   [ProblemPromptKey.AlertsProblems]: {
     role: RoleKey.ContentDesigner,
+    // The valid top-level H2 exception is intentionally stated in both the
+    // category rule and the output requirements. The model previously ignored
+    // it when it appeared only in the category rule. Do not deduplicate these
+    // instructions without rerunning the alert-problems quality baseline.
     task: `Analyze the reportable alerts in the supplied page context and identify applicable content design, accessibility, and markup issues.
 Return issue reports only. Do not rewrite alert HTML.
 
@@ -108,7 +112,8 @@ Return issue reports only. Do not rewrite alert HTML.
   "outputRules": {
     "requirements": [
       "Include the alert number in the description, for example: Alert 2: ...",
-      "Emit a separate issue item for every category that applies to each alert."
+      "Emit a separate issue item for every category that applies to each alert.",
+      "Do not emit Incorrect hierarchy when pageSignals.h1 is present and the matching structured evidence shows is_before_first_h2 is true, nearest_h2_above is empty, heading_source is semantic, heading_tag is h2, and heading_level is 2. This is a valid top-level alert heading, including for adjacent alerts in that location."
     ]
   }
 }`,

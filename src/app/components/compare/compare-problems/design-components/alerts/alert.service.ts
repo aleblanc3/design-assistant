@@ -88,7 +88,8 @@ export class AlertService {
     const responseText = await this.openRouter.getTextFromAI(ProblemPrompts[ProblemPromptKey.AlertsProblems], JSON.stringify(payload), preferredModel, 0);
     const parsedIssues = this.parseIssues(responseText);
     const visibleIssues = this.suppressDeferredIssues(parsedIssues);
-    const validatedIssues = this.validateAlertIssuesAgainstHtml(visibleIssues, sourceHtml);
+    const contextValidatedIssues = this.suppressStructurallyInvalidHierarchyIssues(visibleIssues, payload);
+    const validatedIssues = this.validateAlertIssuesAgainstHtml(contextValidatedIssues, sourceHtml);
     const issues = this.addNoIssuePlaceholders(validatedIssues, alerts.length);
     const report = this.saveAnalysis(sourceHtml, pagePath, issues, preferredModel);
     this.requestFrenchTranslation(pagePath, report, translationRunId);
@@ -240,6 +241,62 @@ export class AlertService {
       if (claimIsTrue) return true;
       return false;
     });
+  }
+
+  private suppressStructurallyInvalidHierarchyIssues(issues: AlertIssue[], payload: Record<string, unknown>): AlertIssue[] {
+    const pageSignals = this.asRecord(payload['pageSignals']);
+    if (!this.cleanString(pageSignals?.['h1'])) return issues;
+
+    const placements = Array.isArray(payload['alertPlacementContext']) ? payload['alertPlacementContext'] : [];
+    const signals = Array.isArray(payload['alertSignals']) ? payload['alertSignals'] : [];
+    const placementByAlertIndex = new Map<number, Record<string, unknown>>();
+    const signalsByAlertIndex = new Map<number, Record<string, unknown>>();
+
+    for (const placement of placements) {
+      const record = this.asRecord(placement);
+      const alertIndex = Number(record?.['alert_index']);
+      if (record && Number.isInteger(alertIndex)) placementByAlertIndex.set(alertIndex, record);
+    }
+    for (const signal of signals) {
+      const record = this.asRecord(signal);
+      const alertIndex = Number(record?.['alert_index']);
+      if (record && Number.isInteger(alertIndex)) signalsByAlertIndex.set(alertIndex, record);
+    }
+
+    const suppressedAlertIndexes: number[] = [];
+    const validatedIssues = issues.filter((issue) => {
+      if (this.cleanString(issue.category).toLowerCase() !== 'incorrect hierarchy') return true;
+      const alertIndex = Number(issue.alertIndex);
+      if (!Number.isInteger(alertIndex)) return true;
+
+      const placement = placementByAlertIndex.get(alertIndex);
+      const signal = signalsByAlertIndex.get(alertIndex);
+      if (!placement || !signal) return true;
+
+      const isValidTopLevelHeading =
+        placement['is_before_first_h2'] === true &&
+        !this.cleanString(placement['nearest_h2_above']) &&
+        this.cleanString(signal['heading_source']).toLowerCase() === 'semantic' &&
+        this.cleanString(signal['heading_tag']).toLowerCase() === 'h2' &&
+        Number(signal['heading_level']) === 2;
+      if (!isValidTopLevelHeading) return true;
+
+      suppressedAlertIndexes.push(alertIndex);
+      return false;
+    });
+
+    if (suppressedAlertIndexes.length) {
+      console.info('[Alert analysis] Suppressed structurally invalid hierarchy findings.', {
+        count: suppressedAlertIndexes.length,
+        alertIndexes: suppressedAlertIndexes,
+      });
+    }
+
+    return validatedIssues;
+  }
+
+  private asRecord(value: unknown): Record<string, unknown> | null {
+    return value && typeof value === 'object' && !Array.isArray(value) ? (value as Record<string, unknown>) : null;
   }
 
   private addNoIssuePlaceholders(issues: AlertIssue[], alertCount: number): AlertIssue[] {
