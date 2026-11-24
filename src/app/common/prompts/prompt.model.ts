@@ -9,6 +9,7 @@ function markForTranslation() {
   marker('aiPrompt.role.seoExpert');
   marker('aiPrompt.role.accessibilityExpert');
   marker('aiPrompt.role.translator');
+  marker('aiPrompt.role.htmlEditor');
 
   marker('aiPrompt.output.text');
   marker('aiPrompt.output.html');

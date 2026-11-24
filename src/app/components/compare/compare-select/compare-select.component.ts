@@ -50,6 +50,7 @@ export class CompareSelectComponent implements OnInit {
   public readonly description = input<string | undefined>(undefined);
   public readonly showLang = input<boolean>(false);
   public readonly allowBoth = input<boolean>(false);
+  public readonly onlyFF = input<boolean>(false);
 
   async ngOnInit(): Promise<void> {
     // Initialize to 1st page in project if none selected
@@ -93,7 +94,7 @@ export class CompareSelectComponent implements OnInit {
 
   /** Page dropdown options */
   get pageOptions() {
-    return this.projectState.getPairedPages('protoGH', 'inScope').map((pair) => ({
+    return this.projectState.getPairedPages('protoGH', 'inScope', this.onlyFF()).map((pair) => ({
       label: pair[this.projectCache.uiLang()].label,
       path: pair[this.projectCache.uiLang()].path,
       value: pair[this.projectCache.selectedLang()].path,

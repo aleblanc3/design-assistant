@@ -438,6 +438,7 @@ export class AddUrlsService {
       linksToPortal: pageDataEN?.linksToPortal ?? false,
       linksToSignIn: pageDataEN?.linksToSignIn ?? false,
       hasChatbot: pageDataEN?.hasChatbot ?? false,
+      hasFieldflow: pageDataEN?.hasFieldflow ?? false,
       // jrc:content.json
       owner: jsonDataEN?.owner,
       email: jsonDataEN?.email,
@@ -475,6 +476,7 @@ export class AddUrlsService {
       linksToPortal: pageDataFR?.linksToPortal ?? false,
       linksToSignIn: pageDataFR?.linksToSignIn ?? false,
       hasChatbot: pageDataFR?.hasChatbot ?? false,
+      hasFieldflow: pageDataFR?.hasFieldflow ?? false,
       // jrc:content.json
       owner: jsonDataFR?.owner,
       email: jsonDataFR?.email,
