@@ -74,6 +74,7 @@
 	"aiPrompt.problems._title": "Problèmes",
 	"aiPrompt.role.accessibilityExpert": "Expert en accessibilité",
 	"aiPrompt.role.contentDesigner": "Concepteur de contenu",
+	"aiPrompt.role.htmlEditor": "Éditeur HTML",
 	"aiPrompt.role.none": "Aucun",
 	"aiPrompt.role.seoExpert": "Expert en référencement",
 	"aiPrompt.role.translator": "Traducteur",
