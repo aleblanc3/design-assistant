@@ -62,6 +62,17 @@ export function outgoingKeys(fromPath: string) {
   });
 }
 
+/** Outgoing edges of a page: keys plus link texts, for comparing against a fresh crawl */
+export function outgoingEdges(fromPath: string) {
+  return queryAll({
+    TableName: LINKS,
+    KeyConditionExpression: 'fromPath = :f',
+    ExpressionAttributeValues: { ':f': fromPath },
+    ProjectionExpression: 'fromPath, kindTo, #t',
+    ExpressionAttributeNames: { '#t': 'texts' },
+  });
+}
+
 /** BatchWrite in chunks of 25, retrying unprocessed items with backoff */
 export async function batchWrite(table: string, requests: Record<string, any>[]): Promise<void> {
   for (let i = 0; i < requests.length; i += 25) {
