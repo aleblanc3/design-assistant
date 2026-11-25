@@ -18,9 +18,12 @@
   } @else if (linkCounts()) {
     <h2 class="mb-0">{{ 'refLinks.for' | translate }}</h2>
     <p class="mt-0">{{ linkCounts()?.path }}</p>
-    <p-table [value]="[linkCounts()]" bordered size="small" stripedRows>
+    @if (oppUrl()) {
+      <p class="mt-0">{{ oppUrl() }}</p>
+    }
+    <p-table [value]="[linkCounts()]" size="small" stripedRows>
       <ng-template #header>
-        <tr class="text-center">
+        <tr>
           <th>{{ 'refLinks.count.referring' | translate }}</th>
           <th>{{ 'refLinks.count.breadcrumb' | translate }}</th>
           <th>{{ 'refLinks.count.children' | translate }}</th>
@@ -59,11 +62,26 @@
     @if (referrers() && view() === 'referrers') {
       <h2 class="mb-0">{{ 'refLinks.count.referring' | translate }}</h2>
       @if (referrers()?.items?.length) {
-        <ul class="mt-0">
-          @for (link of referrers()?.items; track link.fromPath) {
-            <li>{{ link.fromPath }}</li>
-          }
-        </ul>
+        <p-table [value]="referrers()!.items" size="small" stripedRows>
+          <ng-template #header>
+            <tr>
+              <th>{{ 'refLinks.th.referencedFrom' | translate }}</th>
+              <th>{{ 'refLinks.th.linkText' | translate }}</th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-link>
+            <tr>
+              <td>{{ link.fromPath }}</td>
+              <td>
+                <ul class="mt-0">
+                  @for (text of link.texts; track $index) {
+                    <li>{{ text }}</li>
+                  }
+                </ul>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
       } @else {
         <p-message icon="pi pi-info-circle" severity="info">{{ 'refLinks.noReferringLinks' | translate }}</p-message>
       }
@@ -71,11 +89,26 @@
     @if (breadcrumb() && view() === 'breadcrumb') {
       <h2 class="mb-0">{{ 'refLinks.count.breadcrumb' | translate }}</h2>
       @if (breadcrumb()?.items?.length) {
-        <ul class="mt-0">
-          @for (link of breadcrumb()?.items; track link.fromPath) {
-            <li>{{ link.fromPath }}</li>
-          }
-        </ul>
+        <p-table [value]="breadcrumb()!.items" size="small" stripedRows>
+          <ng-template #header>
+            <tr>
+              <th>{{ 'refLinks.th.referencedFrom' | translate }}</th>
+              <th>{{ 'refLinks.th.linkText' | translate }}</th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-link>
+            <tr>
+              <td>{{ link.fromPath }}</td>
+              <td>
+                <ul class="mt-0">
+                  @for (text of link.texts; track $index) {
+                    <li>{{ text }}</li>
+                  }
+                </ul>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
       } @else {
         <p-message icon="pi pi-info-circle" severity="info">{{ 'refLinks.noBreadcrumbLinks' | translate }}</p-message>
       }
@@ -83,11 +116,20 @@
     @if (children() && view() === 'children') {
       <h2 class="mb-0">{{ 'refLinks.count.children' | translate }}</h2>
       @if (children()?.items?.length) {
-        <ul class="mt-0">
-          @for (link of children()?.items; track link.path) {
-            <li>{{ link.path }}</li>
-          }
-        </ul>
+        <p-table [value]="children()!.items" size="small" stripedRows>
+          <ng-template #header>
+            <tr>
+              <th>{{ 'refLinks.th.childPath' | translate }}</th>
+              <th>{{ 'common.status' | translate }}</th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-link>
+            <tr>
+              <td>{{ link.path }}</td>
+              <td>{{ 'refLinks.status.' + link.status | translate }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
       } @else {
         <p-message icon="pi pi-info-circle" severity="info">{{ 'refLinks.noChildPages' | translate }}</p-message>
       }
@@ -100,6 +142,26 @@
             <li [class.text-red]="link.state === 'unpublished'">{{ link.toPath }}</li>
           }
         </ul>
+        <p-table [value]="outgoing()!.items" size="small" stripedRows>
+          <ng-template #header>
+            <tr>
+              <th>{{ 'refLinks.th.linksTo' | translate }}</th>
+              <th>{{ 'refLinks.th.linkText' | translate }}</th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-link>
+            <tr>
+              <td>{{ link.toPath }}</td>
+              <td>
+                <ul class="mt-0">
+                  @for (text of link.texts; track $index) {
+                    <li>{{ text }}</li>
+                  }
+                </ul>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
       } @else if (outgoing()) {
         <p-message icon="pi pi-info-circle" severity="info">{{ 'refLinks.noOutgoingLinks' | translate }}</p-message>
       }

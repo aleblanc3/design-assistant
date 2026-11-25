@@ -163,7 +163,8 @@ resource "aws_dynamodb_table" "links" {
     name            = "referrers"
     hash_key        = "toPath"
     range_key       = "kindFrom"
-    projection_type = "KEYS_ONLY"
+    projection_type    = "INCLUDE"
+    non_key_attributes = ["texts"]
   }
 
   # No point-in-time recovery: edges can be rebuilt by recrawling

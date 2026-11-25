@@ -8,11 +8,12 @@ import { environment } from '../../../environments/environment';
 export type LinkKind = 'main' | 'breadcrumb';
 export type TargetState = 'published' | 'unpublished' | 'notInSitemap';
 
-/** List responses are capped by the API; `truncated` is true when `total` is larger than `items` */
-export interface Capped<T> {
+/** One page of a list (backend caps a page to 2000 items to keep under 6MB transfer limit).
+ *  `nextCursor` is present when more pages remain. Pass it back to get the next page.
+ */
+export interface Paged<T> {
   items: T[];
-  total: number;
-  truncated: boolean;
+  nextCursor?: string;
 }
 
 export interface PageItem {
@@ -29,20 +30,22 @@ export interface PageItem {
 export interface Referrer {
   kind: LinkKind;
   fromPath: string;
+  texts: string[]; // array of link text used on the referring page
 }
 
 export interface OutgoingLink {
   kind: LinkKind;
   toPath: string;
+  texts: string[];
   state: TargetState;
 }
 
 export interface LinkCounts {
   path: string;
-  referrers: number; // <main> links pointing here
+  referrers: number; // <main> links pointing to the page
   outgoing: number; // <main> links on the page
-  breadcrumb: number; // breadcrumb links pointing here (move report)
-  children: number; // indexed pages under the path (move report)
+  breadcrumb: number; // referring links from breadcrumbs (for move report)
+  children: number; // child pages based on URL structure (for move report)
 }
 
 export interface BatchCounts {
@@ -61,31 +64,46 @@ export class LinksService {
 
   private readonly FUNCTION_URL = environment.linksFunctionUrl;
 
-  private get<T>(lookup: string, path?: string, extra: Record<string, string> = {}): Promise<T> {
-    let params = new HttpParams({ fromObject: { lookup, ...extra } });
+  /** Builds query string for various link lookups */
+  private get<T>(lookup: string, path?: string, extra: Record<string, string | undefined> = {}): Promise<T> {
+    let params = new HttpParams({ fromObject: { lookup } });
     if (path !== undefined) params = params.set('path', path);
+    for (const [key, value] of Object.entries(extra)) {
+      if (value !== undefined) params = params.set(key, value);
+    }
     return firstValueFrom(this.http.get<T>(this.FUNCTION_URL, { params }));
   }
 
-  /** Returns ths opposite-language path, or null if the page or its pair isn't indexed */
+  /** All pages are fetched consecutively using cursor from the previous response */
+  private async loadAll<T>(getPage: (cursor?: string) => Promise<Paged<T>>, cursor?: string): Promise<T[]> {
+    const items: T[] = [];
+    do {
+      const page = await getPage(cursor);
+      items.push(...page.items);
+      cursor = page.nextCursor;
+    } while (cursor);
+    return items;
+  }
+
+  /** Returns the opposite-language path, or null if the page or its pair isn't indexed */
   async getPair(path: string): Promise<string | null> {
     const result = await this.get<{ path: string; pairPath: string | null }>('pair', path);
     return result.pairPath;
   }
 
   /** Returns all child pages under the path, including unpublished ones since they impact move references */
-  getChildren(path: string): Promise<Capped<PageItem>> {
-    return this.get('children', path);
+  getChildren(path: string, cursor?: string): Promise<Paged<PageItem>> {
+    return this.get('children', path, { cursor });
   }
 
   /** Returns all referring links for the path. Defaults to <main> links only but can include breadcrumb or both */
-  getReferrers(path: string, kinds: LinkKind[] = ['main']): Promise<Capped<Referrer>> {
-    return this.get('referrers', path, { kinds: kinds.join(',') });
+  getReferrers(path: string, kinds: LinkKind[] = ['main'], cursor?: string): Promise<Paged<Referrer>> {
+    return this.get('referrers', path, { kinds: kinds.join(','), cursor });
   }
 
   /** <main> and breadcrumb links on the page, each tagged with its target's state (published, unpublished, notInSitemap) */
-  getOutgoing(path: string): Promise<Capped<OutgoingLink>> {
-    return this.get('outgoing', path);
+  getOutgoing(path: string, cursor?: string): Promise<Paged<OutgoingLink>> {
+    return this.get('outgoing', path, { cursor });
   }
 
   /** Counts only, for one page */
@@ -105,7 +123,31 @@ export class LinksService {
   }
 
   /** Pages that dropped out of the sitemap, oldest first */
-  getUnpublished(): Promise<Capped<PageItem>> {
-    return this.get('unpublished');
+  getUnpublished(cursor?: string): Promise<Paged<PageItem>> {
+    return this.get('unpublished', undefined, { cursor });
+  }
+
+  /** The getAll functions send one request per 2000 items.
+   *  Avoid using these until the data is actually needed. Load time will be much slower for top level pages.
+   */
+
+  /** All remaining referring links, from `cursor` onward (or from the start). */
+  getAllReferrers(path: string, kinds: LinkKind[] = ['main'], cursor?: string): Promise<Referrer[]> {
+    return this.loadAll((next) => this.getReferrers(path, kinds, next), cursor);
+  }
+
+  /** All remaining outgoing links, from `cursor` onward (or from the start) */
+  getAllOutgoing(path: string, cursor?: string): Promise<OutgoingLink[]> {
+    return this.loadAll((next) => this.getOutgoing(path, next), cursor);
+  }
+
+  /** All remaining child pages, from `cursor` onward (or from the start) */
+  getAllChildren(path: string, cursor?: string): Promise<PageItem[]> {
+    return this.loadAll((next) => this.getChildren(path, next), cursor);
+  }
+
+  /** All remaining unpublished pages, from `cursor` onward (or from the start) */
+  getAllUnpublished(cursor?: string): Promise<PageItem[]> {
+    return this.loadAll((next) => this.getUnpublished(next), cursor);
   }
 }

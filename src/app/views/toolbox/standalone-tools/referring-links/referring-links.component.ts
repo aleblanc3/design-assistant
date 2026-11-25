@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+import { marker } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { ButtonModule } from 'primeng/button';
@@ -11,7 +12,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { TableModule } from 'primeng/table';
 
-import { Capped, LinkCounts, LinksService, OutgoingLink, PageItem, Referrer } from '../../../../services/data-sources/links.service';
+import { LinkCounts, LinksService, OutgoingLink, Paged, PageItem, Referrer } from '../../../../services/data-sources/links.service';
 
 @Component({
   selector: 'aida-referring-links',
@@ -28,20 +29,23 @@ export class ReferringLinksComponent {
   protected readonly loadingCount = signal<boolean>(false);
 
   protected readonly view = signal<'referrers' | 'outgoing' | 'children' | 'breadcrumb' | 'oppLang' | null>(null);
-  protected readonly referrers = signal<Capped<Referrer> | null>(null);
-  protected readonly outgoing = signal<Capped<OutgoingLink> | null>(null);
-  protected readonly children = signal<Capped<PageItem> | null>(null);
-  protected readonly breadcrumb = signal<Capped<Referrer> | null>(null);
+  protected readonly referrers = signal<Paged<Referrer> | null>(null);
+  protected readonly outgoing = signal<Paged<OutgoingLink> | null>(null);
+  protected readonly children = signal<Paged<PageItem> | null>(null);
+  protected readonly breadcrumb = signal<Paged<Referrer> | null>(null);
+  protected readonly oppUrl = signal<string | null>(null);
 
   async getLinkCounts(path: string) {
     this.referrers.set(null);
     this.outgoing.set(null);
     this.children.set(null);
     this.breadcrumb.set(null);
+    this.oppUrl.set(null);
     this.hasCountError.set(false);
     this.loadingCount.set(true);
     try {
       this.linkCounts.set(await this.linksService.getCounts(path));
+      this.oppUrl.set(await this.linksService.getPair(path));
     } catch {
       this.hasCountError.set(true);
     } finally {
@@ -49,7 +53,7 @@ export class ReferringLinksComponent {
     }
   }
 
-  async getLinks(path: string, mode: 'referrers' | 'outgoing' | 'children' | 'breadcrumb' | 'oppLang') {
+  async getLinks(path: string, mode: 'referrers' | 'outgoing' | 'children' | 'breadcrumb') {
     this.view.set(mode);
     switch (mode) {
       case 'referrers':
@@ -72,10 +76,12 @@ export class ReferringLinksComponent {
           this.breadcrumb.set(await this.linksService.getReferrers(path, ['breadcrumb']));
         }
         break;
-      case 'oppLang':
-        return this.linksService.getPair(path);
-        break;
     }
     return;
+  }
+
+  markForTranslation() {
+    marker('refLinks.status.unpublished');
+    marker('refLinks.status.published');
   }
 }
