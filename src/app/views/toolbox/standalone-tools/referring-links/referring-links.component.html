@@ -17,7 +17,7 @@
     <p-message icon="pi pi-times" severity="error">{{ 'refLinks.countError' | translate }}</p-message>
   } @else if (linkCounts()) {
     <h2 class="mb-0">{{ 'refLinks.for' | translate }}</h2>
-    <p class="mt-0">{{ linkCounts()?.path }}</p>
+    <p class="my-0">{{ linkCounts()?.path }}</p>
     @if (oppUrl()) {
       <p class="mt-0">{{ oppUrl() }}</p>
     }
@@ -137,11 +137,6 @@
     @if (outgoing() && view() === 'outgoing') {
       <h2 class="mb-0">{{ 'refLinks.count.outgoing' | translate }}</h2>
       @if (outgoing()?.items?.length) {
-        <ul class="mt-0">
-          @for (link of outgoing()?.items; track link.toPath) {
-            <li [class.text-red]="link.state === 'unpublished'">{{ link.toPath }}</li>
-          }
-        </ul>
         <p-table [value]="outgoing()!.items" size="small" stripedRows>
           <ng-template #header>
             <tr>
