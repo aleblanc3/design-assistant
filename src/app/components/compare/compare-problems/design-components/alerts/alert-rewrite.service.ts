@@ -613,6 +613,7 @@ export class AlertRewriteService {
     const combined = `${lower} ${issueText}`;
     const criteria = new Set(criteriaMatched || []);
     const linkCount = (alertHtml.match(/<a\b/gi) || []).length;
+    const standaloneLinkCount = this.countStructurallyStandaloneLinks(alertHtml);
 
     const maybeAdd = (tag: string, pattern: RegExp): void => {
       if (pattern.test(combined)) {
@@ -626,10 +627,12 @@ export class AlertRewriteService {
     if (criteria.has('C3_too_many_links')) {
       tags.add('remove-secondary-link');
       if (linkCount > 1) {
-        tags.add('multiple-detail-links');
         tags.add('duplicate-link-cleanup');
       }
     }
+    // Multiple valid detail links need a structural example even when link
+    // removal is not authorized. Inline contextual links do not count here.
+    if (standaloneLinkCount > 1) tags.add('multiple-detail-links');
     if (linkCount === 1) tags.add('standalone-action-link');
 
     maybeAdd('service-delay', /\bdelay|processing time|service standard\b/);
@@ -650,6 +653,29 @@ export class AlertRewriteService {
     maybeAdd('official-source-warning', /\bofficial government|official source|official web\b/);
 
     return Array.from(tags).slice(0, 8);
+  }
+
+  private countStructurallyStandaloneLinks(alertHtml: string): number {
+    try {
+      const doc = new DOMParser().parseFromString(alertHtml || '', 'text/html');
+      return Array.from(doc.body.querySelectorAll('a')).filter((anchor) => {
+        const block = anchor.closest('p, li');
+        if (!block || block.querySelectorAll('a').length !== 1) return false;
+
+        const blockWithoutLink = block.cloneNode(true) as HTMLElement;
+        blockWithoutLink.querySelector('a')?.remove();
+        const remainingText = (blockWithoutLink.textContent || '')
+          .replace(/[\s\u00a0]+/g, ' ')
+          .replace(/[:;,.!?\s]+$/g, '')
+          .trim()
+          .toLowerCase();
+
+        if (!remainingText) return true;
+        return /^(?:for details|learn more|learn about(?: the)?|refer to|en savoir plus|pour en savoir plus|consultez|d[eé]tails)$/.test(remainingText);
+      }).length;
+    } catch {
+      return 0;
+    }
   }
 
   private calculateExampleTextRelevance(sourceText: string, example: AlertRewriteExample): number {
