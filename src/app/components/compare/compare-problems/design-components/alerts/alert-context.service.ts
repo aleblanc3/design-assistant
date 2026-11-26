@@ -3,9 +3,8 @@ import { inject, Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 import { removeAlertRewritePlacementReviewNotices } from '../../../../../common/alert-rewrite-status.utils';
+import { getExpectedAlertHeadingTag, isAlertHierarchyUtilityHeading } from './alert-heading-hierarchy.utils';
 import { coerceInteractiveResultLeadIns, getReportableAlerts } from './alert-reportable.utils';
-
-const UTILITY_H2_LABELS = new Set(['on this page', 'sur cette page']);
 
 @Injectable({ providedIn: 'root' })
 export class AlertContextService {
@@ -79,8 +78,7 @@ export class AlertContextService {
     // utility headings that do not identify a substantive page section.
     const h2Elements = Array.from(main.querySelectorAll<HTMLElement>('h2')).filter((h2) => {
       if (h2.closest('.alert, .pagedetails')) return false;
-      const label = (h2.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
-      return !UTILITY_H2_LABELS.has(label);
+      return !isAlertHierarchyUtilityHeading(h2);
     });
     const h2Headings = h2Elements
       .map((h2) => this.truncateContextText(h2.textContent || '', 120))
@@ -156,6 +154,7 @@ export class AlertContextService {
   // Builds the per-alert facts that commonly drive issue decisions.
   private buildCompactAlertSignals(alertElement: Element, alertIndex: number, context: ReturnType<AlertContextService['buildCompactPageContext']>) {
     const heading = this.getAlertHeadingMetadata(alertElement);
+    const expectedHeadingTag = getExpectedAlertHeadingTag(alertElement);
     const links = this.getAlertLinks(alertElement);
     const paragraphCount = this.getAlertParagraphCount(alertElement);
     const visibleText = this.truncateContextText(alertElement.textContent || '', 400);
@@ -170,6 +169,8 @@ export class AlertContextService {
       heading_level: heading.level,
       heading_source: heading.source,
       heading_tag: heading.tag,
+      expected_heading_tag: expectedHeadingTag,
+      heading_hierarchy_valid: heading.source === 'semantic' && heading.tag === expectedHeadingTag,
       has_heading: heading.source !== 'none',
       paragraph_count: paragraphCount,
       has_multiple_paragraphs: paragraphCount > 1,

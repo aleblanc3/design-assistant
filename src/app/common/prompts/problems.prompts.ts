@@ -23,7 +23,7 @@ Return issue reports only. Do not rewrite alert HTML.
     },
     "alertSignals": {
       "optional": true,
-      "description": "Precomputed per-alert structural signals such as alert_type, heading metadata, paragraph count, link count, links, hidden-content flags, and adjacency flags."
+      "description": "Precomputed per-alert structural signals such as alert_type, heading metadata, expected_heading_tag, heading_hierarchy_valid, paragraph count, link count, links, hidden-content flags, and adjacency flags."
     }
   },
   "workflow": [
@@ -85,7 +85,7 @@ Return issue reports only. Do not rewrite alert HTML.
       "rule": "On home, landing, or broad overview pages, alerts should apply to more than half of the audience. Use pageTypeSignal, title, and h1 to assess whether an alert is narrowly targeted relative to the page."
     },
     { "name": "Incorrect hierarchy",
-      "rule": "Alert headings must be one semantic level below the nearest preceding page heading outside any alert. An alert directly after the H1 and before a non-alert H2 correctly uses H2. Adjacent alerts in that location should all use H2, so ignore headings inside other alerts when determining hierarchy. Inside an H2 section use H3, inside an H3 section use H4, and continue one semantic level deeper as needed. Determine hierarchy from semantic heading elements, not styling classes. Do not report styling-class differences as hierarchy problems. Use has_heading, heading_level, heading_source, heading_tag, h2Headings, nearest_h2_above, and nearest_h2_below to compare the alert with the page outline."
+      "rule": "Alert headings must be one semantic level below their structural parent section heading. Use expected_heading_tag and heading_hierarchy_valid as the primary evidence. An alert directly after the H1 correctly uses H2. Inside an H2 section use H3, inside an H3 section use H4, and continue one semantic level deeper as needed. Ignore headings inside other alerts, utility headings such as Note or Notes, and headings contained in a preceding closed panel when the alert is outside that panel. A heading in a sibling component does not make the alert its subsection. Determine hierarchy from semantic heading elements, not styling classes. Do not report styling-class differences as hierarchy problems."
     },
     { "name": "Nothing actionable",
       "rule": "If no next-step link exists, flag the alert to confirm that none is needed or whether it needs to be deleted and the information added to the page instead."
@@ -113,7 +113,7 @@ Return issue reports only. Do not rewrite alert HTML.
       "Include the alert number in the description, for example: Alert 2: ...",
       "Emit a separate issue item for every category that applies to each alert.",
       "Do not emit Misuse solely because an alert is informational or is not an urgent warning or service disruption. Important temporary legislative, policy, benefit, rebate, filing, payment, deadline, relief, transitional, or service updates may appropriately use an alert.",
-      "Do not emit Incorrect hierarchy when pageSignals.h1 is present and the matching structured evidence shows is_before_first_h2 is true, nearest_h2_above is empty, heading_source is semantic, heading_tag is h2, and heading_level is 2. This is a valid top-level alert heading, including for adjacent alerts in that location."
+      "Do not emit Incorrect hierarchy when the matching alertSignals entry has heading_hierarchy_valid set to true."
     ]
   }
 }`,

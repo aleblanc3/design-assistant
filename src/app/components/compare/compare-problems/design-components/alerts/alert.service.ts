@@ -244,19 +244,8 @@ export class AlertService {
   }
 
   private suppressStructurallyInvalidHierarchyIssues(issues: AlertIssue[], payload: Record<string, unknown>): AlertIssue[] {
-    const pageSignals = this.asRecord(payload['pageSignals']);
-    if (!this.cleanString(pageSignals?.['h1'])) return issues;
-
-    const placements = Array.isArray(payload['alertPlacementContext']) ? payload['alertPlacementContext'] : [];
     const signals = Array.isArray(payload['alertSignals']) ? payload['alertSignals'] : [];
-    const placementByAlertIndex = new Map<number, Record<string, unknown>>();
     const signalsByAlertIndex = new Map<number, Record<string, unknown>>();
-
-    for (const placement of placements) {
-      const record = this.asRecord(placement);
-      const alertIndex = Number(record?.['alert_index']);
-      if (record && Number.isInteger(alertIndex)) placementByAlertIndex.set(alertIndex, record);
-    }
     for (const signal of signals) {
       const record = this.asRecord(signal);
       const alertIndex = Number(record?.['alert_index']);
@@ -269,17 +258,17 @@ export class AlertService {
       const alertIndex = Number(issue.alertIndex);
       if (!Number.isInteger(alertIndex)) return true;
 
-      const placement = placementByAlertIndex.get(alertIndex);
       const signal = signalsByAlertIndex.get(alertIndex);
-      if (!placement || !signal) return true;
+      if (!signal) return true;
 
-      const isValidTopLevelHeading =
-        placement['is_before_first_h2'] === true &&
-        !this.cleanString(placement['nearest_h2_above']) &&
+      const expectedHeadingTag = this.cleanString(signal['expected_heading_tag']).toLowerCase();
+      const headingTag = this.cleanString(signal['heading_tag']).toLowerCase();
+      const hasValidSemanticHierarchy =
+        !!expectedHeadingTag &&
+        signal['heading_hierarchy_valid'] === true &&
         this.cleanString(signal['heading_source']).toLowerCase() === 'semantic' &&
-        this.cleanString(signal['heading_tag']).toLowerCase() === 'h2' &&
-        Number(signal['heading_level']) === 2;
-      if (!isValidTopLevelHeading) return true;
+        headingTag === expectedHeadingTag;
+      if (!hasValidSemanticHierarchy) return true;
 
       suppressedAlertIndexes.push(alertIndex);
       return false;
