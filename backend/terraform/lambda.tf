@@ -566,7 +566,7 @@ resource "aws_lambda_function" "links_sync" {
       QUEUE_URL    = aws_sqs_queue.links_crawl.url
       SITEMAP_URLS = var.links_sitemap_urls
       MAX_UNPUBLISH_RATIO = "0.1"
-      MAX_CRAWL_JOBS = "500" # Review costs before increasing this further
+      MAX_CRAWL_JOBS = "5000" # TODO: Review costs before increasing this further
     }
   }
 }
