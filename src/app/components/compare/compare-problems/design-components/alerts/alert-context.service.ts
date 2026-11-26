@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { removeAlertRewritePlacementReviewNotices } from '../../../../../common/alert-rewrite-status.utils';
 import { getExpectedAlertHeadingTag, isAlertHierarchyUtilityHeading } from './alert-heading-hierarchy.utils';
+import { getAlertProseMetrics } from './alert-link-structure.utils';
 import { coerceInteractiveResultLeadIns, getReportableAlerts } from './alert-reportable.utils';
 
 @Injectable({ providedIn: 'root' })
@@ -156,7 +157,7 @@ export class AlertContextService {
     const heading = this.getAlertHeadingMetadata(alertElement);
     const expectedHeadingTag = getExpectedAlertHeadingTag(alertElement);
     const links = this.getAlertLinks(alertElement);
-    const paragraphCount = this.getAlertParagraphCount(alertElement);
+    const proseMetrics = getAlertProseMetrics(alertElement);
     const visibleText = this.truncateContextText(alertElement.textContent || '', 400);
     const flowElement = this.getMainFlowElement(alertElement, context.main);
     const previousSiblingIsAlert = this.containsReportableAlert(flowElement.previousElementSibling, context.alerts);
@@ -172,8 +173,13 @@ export class AlertContextService {
       expected_heading_tag: expectedHeadingTag,
       heading_hierarchy_valid: heading.source === 'semantic' && heading.tag === expectedHeadingTag,
       has_heading: heading.source !== 'none',
-      paragraph_count: paragraphCount,
-      has_multiple_paragraphs: paragraphCount > 1,
+      paragraph_count: proseMetrics.paragraphCount,
+      has_multiple_paragraphs: proseMetrics.paragraphCount > 1,
+      substantive_paragraph_count: proseMetrics.substantiveParagraphCount,
+      link_support_paragraph_count: proseMetrics.linkSupportParagraphCount,
+      substantive_sentence_count: proseMetrics.substantiveSentenceCount,
+      substantive_text_length_chars: proseMetrics.substantiveTextLengthChars,
+      standalone_link_count: proseMetrics.standaloneLinkCount,
       text_length_chars: visibleText.length,
       link_count: links.length,
       has_multiple_links: links.length > 1,
@@ -412,14 +418,6 @@ export class AlertContextService {
   // Hidden or collapsible content inside an alert is a useful accessibility signal.
   private hasHiddenAlertContent(alertElement: Element): boolean {
     return Boolean(alertElement.querySelector('details, [hidden], [aria-hidden="true"], [aria-expanded], .wb-toggle, .collapse, .collapsible, .accordion, [data-toggle]'));
-  }
-
-  // Counts body paragraphs while ignoring utility-class heading wrappers.
-  private getAlertParagraphCount(alertElement: Element): number {
-    return Array.from(alertElement.querySelectorAll('p')).filter((paragraph) => {
-      const text = this.truncateContextText(paragraph.textContent || '', 80);
-      return !!text && !this.getHeadingUtilityLevel(paragraph);
-    }).length;
   }
 
   // Counts the contiguous alert run that contains this alert, including itself.

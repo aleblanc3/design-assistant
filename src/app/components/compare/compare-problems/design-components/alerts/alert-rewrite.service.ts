@@ -6,6 +6,7 @@ import { PagePrompts } from '../../../../../common/prompts/page.prompts';
 import { ChatMessage, PagePromptKey } from '../../../../../common/prompts/prompt.model';
 import { OutputFragment, RoleFragment } from '../../../../../common/prompts/shared.prompts';
 import { getCanadaCaStylePromptRules, getLinkWritingPromptRules } from '../../../../../common/prompts/skills.prompts';
+import { countStructurallyStandaloneLinks } from './alert-link-structure.utils';
 
 export interface AlertRewriteIssueInput {
   alertIndex?: number;
@@ -613,7 +614,7 @@ export class AlertRewriteService {
     const combined = `${lower} ${issueText}`;
     const criteria = new Set(criteriaMatched || []);
     const linkCount = (alertHtml.match(/<a\b/gi) || []).length;
-    const standaloneLinkCount = this.countStructurallyStandaloneLinks(alertHtml);
+    const standaloneLinkCount = countStructurallyStandaloneLinks(new DOMParser().parseFromString(alertHtml || '', 'text/html').body);
 
     const maybeAdd = (tag: string, pattern: RegExp): void => {
       if (pattern.test(combined)) {
@@ -653,29 +654,6 @@ export class AlertRewriteService {
     maybeAdd('official-source-warning', /\bofficial government|official source|official web\b/);
 
     return Array.from(tags).slice(0, 8);
-  }
-
-  private countStructurallyStandaloneLinks(alertHtml: string): number {
-    try {
-      const doc = new DOMParser().parseFromString(alertHtml || '', 'text/html');
-      return Array.from(doc.body.querySelectorAll('a')).filter((anchor) => {
-        const block = anchor.closest('p, li');
-        if (!block || block.querySelectorAll('a').length !== 1) return false;
-
-        const blockWithoutLink = block.cloneNode(true) as HTMLElement;
-        blockWithoutLink.querySelector('a')?.remove();
-        const remainingText = (blockWithoutLink.textContent || '')
-          .replace(/[\s\u00a0]+/g, ' ')
-          .replace(/[:;,.!?\s]+$/g, '')
-          .trim()
-          .toLowerCase();
-
-        if (!remainingText) return true;
-        return /^(?:for details|learn more|learn about(?: the)?|refer to|en savoir plus|pour en savoir plus|consultez|d[eé]tails)$/.test(remainingText);
-      }).length;
-    } catch {
-      return 0;
-    }
   }
 
   private calculateExampleTextRelevance(sourceText: string, example: AlertRewriteExample): number {

@@ -23,7 +23,7 @@ Return issue reports only. Do not rewrite alert HTML.
     },
     "alertSignals": {
       "optional": true,
-      "description": "Precomputed per-alert structural signals such as alert_type, heading metadata, expected_heading_tag, heading_hierarchy_valid, paragraph count, link count, links, hidden-content flags, and adjacency flags."
+      "description": "Precomputed per-alert structural signals such as alert_type, heading metadata, expected_heading_tag, heading_hierarchy_valid, paragraph_count, substantive_paragraph_count, link_support_paragraph_count, substantive_sentence_count, substantive_text_length_chars, standalone_link_count, link count, links, hidden-content flags, and adjacency flags."
     }
   },
   "workflow": [
@@ -49,7 +49,7 @@ Return issue reports only. Do not rewrite alert HTML.
       "rule": "Do not use alerts for standard process steps, permanent or routine page content, low-risk warnings, decorative emphasis, or low-significance facts that do not represent a meaningful change for users. Alerts may appropriately communicate important temporary legislative or policy developments, legislation receiving Royal Assent, changes to benefits or rebates, filing or payment obligations, deadlines, relief measures, transitional rules, or service availability and processing. Do not report Misuse solely because an alert is informational or is not an urgent warning or service disruption. Use the alert content, pageTypeSignal, title, and h1 to assess whether the update is significant, temporary, and appropriate for the page."
     },
     { "name": "Too wordy",
-      "rule": "Alerts must be short and easy to scan. Flag multiple paragraphs, avoidable detail, or more than 2 sentences unless the sentences are short. Do not flag based on character count alone; use paragraph_count and text_length_chars as supporting evidence. For longer content, recommend a short summary linking to the full details."
+      "rule": "Assess wordiness using substantive explanatory prose. Use substantive_paragraph_count, substantive_sentence_count, and substantive_text_length_chars as primary evidence when available; use paragraph_count and text_length_chars only as fallback supporting evidence. link_support_paragraph_count and standalone_link_count describe link structure, not additional prose. Flag avoidable detail, multiple substantive paragraphs, or more than 2 substantive sentences unless the sentences are short. Do not count a short standalone link lead-in, a paragraph containing only a standalone link, or link-only list items toward paragraph or sentence thresholds. Do not report Too wordy solely because an alert contains one substantive paragraph followed by valid link-support structure. For genuinely long content, recommend a short summary linking to the full details."
     },
     { "name": "Generic titles",
       "rule": "Flag headings such as Note, Info, Important, or New. Alert titles must be descriptive."
