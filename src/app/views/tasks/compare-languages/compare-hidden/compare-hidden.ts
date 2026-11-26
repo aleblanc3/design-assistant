@@ -96,7 +96,7 @@ function classify(el: Element): { type: HiddenType; reasons: string[] } | null {
   return { type, reasons: [...all, ...visual, ...sr, ...web, ...print, ...responsive] };
 }
 
-function normalizeText(s: string): string {
+export function normalizeText(s: string): string {
   return s
     .replace(/[\u00AD\u200B-\u200D\uFEFF]/g, '')
     .replace(SPACES, ' ')
@@ -142,44 +142,6 @@ export function extractHidden(doc: Document): HiddenHit[] {
   return hits;
 }
 
-/** Language of a URL's path (/en/ or /fr/), or null for anchors, mailto/tel, and URLs with neither */
-function urlLang(href: string): 'en' | 'fr' | null {
-  if (!href || href.startsWith('#') || /^(mailto|tel|javascript):/i.test(href)) return null;
-  try {
-    const path = new URL(href, 'https://www.canada.ca').pathname;
-    if (/\/en(\/|$)/.test(path)) return 'en';
-    if (/\/fr(\/|$)/.test(path)) return 'fr';
-  } catch {
-    // unparseable URL, ignore
-  }
-  return null;
-}
-
-function getLinks(doc: Document): string[] {
-  const root = doc.querySelector('main') ?? doc.body;
-  return Array.from(root.querySelectorAll('a[href]')).map((a) => a.getAttribute('href') ?? '');
-}
-
-/** English links pointing to /fr/ and French links pointing to /en/.
- *  If both pages have the same number of links, the link at the same position on the other page is shown alongside; otherwise it's left blank. */
-function wrongLanguageLinks(docEN: Document, docFR: Document): HiddenRow[] {
-  const en = getLinks(docEN);
-  const fr = getLinks(docFR);
-  const aligned = en.length === fr.length;
-  const rows: HiddenRow[] = [];
-  const row = (e?: string, f?: string): HiddenRow => ({ type: 'all', name: 'attribute: href', en: e, fr: f, status: 'wrongLanguage' });
-
-  en.forEach((href, i) => {
-    if (urlLang(href) === 'fr') rows.push(row(href, aligned ? fr[i] : undefined));
-  });
-  fr.forEach((href, i) => {
-    if (urlLang(href) !== 'en') return;
-    if (aligned && urlLang(en[i]) === 'fr') return; // already added from the English side
-    rows.push(row(aligned ? en[i] : undefined, href));
-  });
-  return rows;
-}
-
 const keyOf = (h: HiddenHit) => `${h.type}|${h.name}`;
 
 /** Text with no letters and no language-specific number formatting reads the same in both languages (2026, 123-4567-3456) */
@@ -219,5 +181,5 @@ export function compareHidden(docEN: Document, docFR: Document): HiddenRow[] {
   while (j < fr.length) push(undefined, fr[j++]);
 
   // Array.sort is stable, so document order is kept within each type
-  return [...rows, ...wrongLanguageLinks(docEN, docFR)].sort((x, y) => TYPE_ORDER.indexOf(x.type) - TYPE_ORDER.indexOf(y.type));
+  return rows.sort((x, y) => TYPE_ORDER.indexOf(x.type) - TYPE_ORDER.indexOf(y.type));
 }
