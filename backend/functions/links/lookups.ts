@@ -34,6 +34,12 @@ export interface OutgoingLink {
   state: TargetState;
 }
 
+export interface PairInfo {
+  path: string;
+  pairPath: string | null; // opposite-language path, or null when unknown
+  indexed: boolean; // false when the page isn't in the index (yet)
+}
+
 export class BadRequestError extends Error {}
 
 /** Every key attribute in both tables is a string, so a cursor is a base64url JSON object of strings.
@@ -68,6 +74,25 @@ async function queryPage(input: QueryCommandInput, cursor?: string): Promise<Pag
 export async function getPair(path: string): Promise<string | undefined> {
   const response = await db.send(new GetCommand({ TableName: PAGES, Key: { pk: pagePk(path), path } }));
   return response.Item?.pairPath;
+}
+
+/** Opposite-language paths for many pages at once */
+export async function getPairs(paths: string[]): Promise<Map<string, PairInfo>> {
+  const unique = [...new Set(paths)];
+  const found = new Map<string, Record<string, any>>();
+  for (let i = 0; i < unique.length; i += 100) {
+    let keys: Record<string, any>[] = unique.slice(i, i + 100).map((p) => ({ pk: pagePk(p), path: p }));
+    while (keys.length) {
+      const res = await db.send(
+        new BatchGetCommand({
+          RequestItems: { [PAGES]: { Keys: keys, ProjectionExpression: '#p, pairPath', ExpressionAttributeNames: { '#p': 'path' } } },
+        }),
+      );
+      for (const item of res.Responses?.[PAGES] ?? []) found.set(item.path, item);
+      keys = res.UnprocessedKeys?.[PAGES]?.Keys ?? [];
+    }
+  }
+  return new Map(unique.map((path) => [path, { path, pairPath: (found.get(path)?.pairPath as string | undefined) ?? null, indexed: found.has(path) }]));
 }
 
 /** Every page under a path (at any depth). Includes unpublished pages so filter on status! */
@@ -212,36 +237,44 @@ const json = (statusCode: number, body: unknown): APIGatewayProxyResultV2 => ({
   body: JSON.stringify(body),
 });
 
-/** POST { paths: string[] } --> counts per path. Invalid paths are listed, not failed. */
-async function batchCounts(event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> {
-  let paths: unknown;
+/** POST { lookup?: 'counts' | 'pairs', paths: string[] }. Invalid paths are listed, not failed. */
+async function batchLookup(event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> {
+  let body: any;
   try {
     const text = event.isBase64Encoded && event.body ? Buffer.from(event.body, 'base64').toString('utf-8') : event.body;
-    paths = JSON.parse(text || '{}').paths;
+    body = JSON.parse(text || '{}');
   } catch {
     return json(400, { error: 'Body must be JSON' });
   }
+
+  const kind = body?.lookup ?? 'counts';
+  if (kind !== 'counts' && kind !== 'pairs') return json(400, { error: "lookup must be 'counts' or 'pairs'" });
+  const paths: unknown = body?.paths;
   if (!Array.isArray(paths) || !paths.length || paths.length > MAX_BATCH || paths.some((p) => typeof p !== 'string')) {
     return json(400, { error: `paths must be an array of 1-${MAX_BATCH} strings` });
   }
 
-  const valid = new Map<string, string>();
+  const inputs: { input: string; path: string }[] = [];
   const invalid: string[] = [];
   for (const raw of paths as string[]) {
     const path = normalizePath(raw);
-    if (path) valid.set(path, raw);
+    if (path) inputs.push({ input: raw, path });
     else invalid.push(raw);
   }
+  const unique = [...new Set(inputs.map((i) => i.path))];
 
   try {
-    const unique = [...valid.keys()];
+    if (kind === 'pairs') {
+      const pairs = await getPairs(unique);
+      return json(200, { items: inputs.map(({ input, path }) => ({ input, ...pairs.get(path)! })), invalid });
+    }
     const results: LinkCounts[] = [];
     for (let i = 0; i < unique.length; i += 10) {
       results.push(...(await Promise.all(unique.slice(i, i + 10).map(getCounts))));
     }
     return json(200, { items: results, invalid });
   } catch (error) {
-    console.error('Batch counts error:', error);
+    console.error('Batch lookup error:', error);
     return json(500, { error: 'Lookup failed' });
   }
 }
@@ -249,7 +282,7 @@ async function batchCounts(event: APIGatewayProxyEventV2): Promise<APIGatewayPro
 export const handler = async (event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> => {
   const method = event.requestContext.http.method;
   if (method === 'OPTIONS') return { statusCode: 200, body: '' };
-  if (method === 'POST') return batchCounts(event);
+  if (method === 'POST') return batchLookup(event);
   if (method !== 'GET') return json(405, { error: 'Method not allowed' });
 
   const { lookup, path: rawPath, kinds, cursor } = event.queryStringParameters ?? {};
