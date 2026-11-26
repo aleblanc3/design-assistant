@@ -79,7 +79,7 @@ Return issue reports only. Do not rewrite alert HTML.
       "rule": "Flag only when an alert applies to specific content but is placed globally or far from the relevant section. Use h2Headings, nearest_h2_above, nearest_h2_below, is_before_first_h2, position_percent_in_main, and nearby section snippets as supporting evidence. Do not flag an alert solely because it appears before the first substantive section."
     },
     { "name": "Alert overload",
-      "rule": "Flag multiple stacked or clustered alerts that may create alert fatigue. Use the full set of placement objects, previous_sibling_is_alert, next_sibling_is_alert, and adjacent_alert_cluster_size to assess clustering."
+      "rule": "Flag multiple stacked or clustered alerts that may create alert fatigue. Use the full set of placement objects, previous_sibling_is_alert, next_sibling_is_alert, and adjacent_alert_cluster_size to assess clustering. Return only one Alert overload issue for each adjacent cluster and assign it to the first alert in that cluster; describe the cluster rather than treating each alert as an independent overload issue. Recommend reviewing whether each alert is still necessary and current, removing outdated alerts, incorporating ongoing information into the relevant page content, or moving it to a more relevant page. Retain alerts only for important, time-sensitive information."
     },
     { "name": "Low relevance",
       "rule": "On home, landing, or broad overview pages, alerts should apply to more than half of the audience. Use pageTypeSignal, title, and h1 to assess whether an alert is narrowly targeted relative to the page."
@@ -111,7 +111,7 @@ Return issue reports only. Do not rewrite alert HTML.
   "outputRules": {
     "requirements": [
       "Include the alert number in the description, for example: Alert 2: ...",
-      "Emit a separate issue item for every category that applies to each alert.",
+      "Emit a separate issue item for every category that applies to each alert, except Alert overload, which must be emitted only once per adjacent alert cluster.",
       "Do not emit Misuse solely because an alert is informational or is not an urgent warning or service disruption. Important temporary legislative, policy, benefit, rebate, filing, payment, deadline, relief, transitional, or service updates may appropriately use an alert.",
       "Do not emit Incorrect hierarchy when the matching alertSignals entry has heading_hierarchy_valid set to true."
     ]
