@@ -338,10 +338,9 @@ export class AlertRewriteOrchestratorService {
           addRetryInstruction('protectedTerminologyShortened', this.buildTerminologyInstruction(CraTerminologyInstructions.retryAtomic, shortenedTerms));
         }
 
-        // Guard 5: enforce the paragraph-level link-direction conventions
-        // handled by AlertRewriteGuardService. This is where malformed
-        // "refer to <link>" or link-only sentence patterns trigger a retry.
-        const linkLeadInIssue = rewrittenHasAnchor ? this.alertRewriteGuard.getFullSentenceLinkLeadInIssue(parsedResult.rewrittenAlertHtml) : null;
+        // Guard 5: enforce paragraph-level link-direction conventions only for
+        // source links. Invented links are handled solely by noLinksAllowed.
+        const linkLeadInIssue = originalHasAnchor && rewrittenHasAnchor ? this.alertRewriteGuard.getFullSentenceLinkLeadInIssue(parsedResult.rewrittenAlertHtml) : null;
         if (linkLeadInIssue) {
           addRetryInstruction(linkLeadInIssue, retryInstructions.fullSentenceLinksNeedLeadIn.join(' '));
         }

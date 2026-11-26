@@ -61,9 +61,7 @@ export const PagePrompts: PagePromptConfigs = {
         mustHaveHeading:
           'Alerts must include a semantic heading element in rewrittenAlertHtml. Add a short, descriptive heading using <h2> to <h6> as required by the page hierarchy, and place it before the body text.',
         avoidExampleCopy: 'Your previous output matched example wording. Rewrite using alert-specific wording and facts only.',
-        // This intentionally reinforces permanent link rules on a fresh retry call.
-        // A-B testing showed that suppressing it when noLinksAllowed also applied
-        // caused the regenerated alert to weaken a precise source timing distinction.
+        // Reinforce permanent link-formatting rules when a source link needs a retry.
         fullSentenceLinksNeedLeadIn: [
           'If a link stands alone as its own sentence or paragraph, or if a sentence mainly directs the user to a link, place that link direction in its own paragraph.',
           'Prefer putting a standalone link sentence or paragraph last in the alert content, but do not treat placement as a hard requirement.',

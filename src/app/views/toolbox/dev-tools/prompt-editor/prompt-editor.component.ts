@@ -1114,9 +1114,7 @@ ${arrayLines(rules.systemPromptWithExamplesLines)}
         mustHaveHeading:
           ${this.toExampleStringLiteral(rules.retryInstructions.mustHaveHeading)},
         avoidExampleCopy: ${this.toExampleStringLiteral(rules.retryInstructions.avoidExampleCopy)},
-        // This intentionally reinforces permanent link rules on a fresh retry call.
-        // A-B testing showed that suppressing it when noLinksAllowed also applied
-        // caused the regenerated alert to weaken a precise source timing distinction.
+        // Reinforce permanent link-formatting rules when a source link needs a retry.
         fullSentenceLinksNeedLeadIn: [
 ${arrayLines(rules.retryInstructions.fullSentenceLinksNeedLeadIn, '          ')}
         ],
