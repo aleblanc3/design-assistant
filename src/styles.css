@@ -280,6 +280,10 @@ p-iftalabel .p-multiselect-label {
   background-color: light-dark(var(--p-green-50), var(--p-green-900)) !important;
 }
 
+.bg-yellow {
+  background-color: light-dark(var(--p-yellow-50), var(--p-yellow-900)) !important;
+}
+
 .bg-red.hover\:bg-red:hover {
   background-color: light-dark(var(--p-red-100), var(--p-red-800)) !important;
 }
