@@ -48,6 +48,12 @@ export interface LinkCounts {
   children: number; // child pages based on URL structure (for move report)
 }
 
+export interface LinkPair {
+  path: string;
+  pairPath: string | null; // null when unknown
+  indexed: boolean; // false when the page isn't in the index yet
+}
+
 export interface BatchCounts {
   items: LinkCounts[];
   invalid: string[]; // inputs that weren't canada.ca paths or URLs
@@ -120,6 +126,23 @@ export class LinksService {
       result.invalid.push(...batch.invalid);
     }
     return result;
+  }
+
+  /** Returns opposite-language paths for many links (paths or full URLs). */
+  async getPairs(links: string[]): Promise<Map<string, LinkPair>> {
+    const unique = [...new Set(links)];
+    const batches: string[][] = [];
+    for (let i = 0; i < unique.length; i += BATCH_SIZE) batches.push(unique.slice(i, i + BATCH_SIZE));
+
+    const responses = await Promise.all(
+      batches.map((paths) => firstValueFrom(this.http.post<{ items: (LinkPair & { input: string })[]; invalid: string[] }>(this.FUNCTION_URL, { lookup: 'pairs', paths }))),
+    );
+
+    const pairs = new Map<string, LinkPair>();
+    for (const { items } of responses) {
+      for (const { input, ...pair } of items) pairs.set(input, pair);
+    }
+    return pairs;
   }
 
   /** Pages that dropped out of the sitemap, oldest first */
