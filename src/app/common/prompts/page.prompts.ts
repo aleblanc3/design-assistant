@@ -1,5 +1,6 @@
-import { AlertRewritePipeline } from './alert-rewrite.prompt';
 import { OutputKey, PagePromptConfigs, PagePromptKey, RoleKey, RubricKey } from './prompt.model';
+
+import { AlertRewritePipeline } from './alert-rewrite.prompt';
 
 export const PagePrompts: PagePromptConfigs = {
   [PagePromptKey.AlertRewrite]: {

@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 import { Injectable } from '@angular/core';
 
+import { ChatMessage, PagePromptKey } from '../../../../../common/prompts/prompt.model';
+
 import { AlertRewriteExamples, type AlertRewriteExample } from '../../../../../common/prompts/alert-rewrite.examples';
 import { getCanadaCaStylePromptRules } from '../../../../../common/prompts/canada-ca-style.prompt';
 import { getLinkWritingPromptRules } from '../../../../../common/prompts/link-writing.prompt';
 import { PagePrompts } from '../../../../../common/prompts/page.prompts';
-import { ChatMessage, PagePromptKey } from '../../../../../common/prompts/prompt.model';
 import { OutputFragment, RoleFragment } from '../../../../../common/prompts/shared.prompts';
 
 export interface AlertRewriteIssueInput {
