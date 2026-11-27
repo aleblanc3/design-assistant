@@ -1,6 +1,5 @@
 export interface AlertRewriteExample {
   id: string;
-  alertType: string;
   tags: string[];
   purposeTags?: string[];
   criteria: string[];
@@ -20,7 +19,6 @@ export interface AlertRewriteExampleLink {
 export const AlertRewriteExamples: AlertRewriteExample[] = [
   {
     id: 'ex-001',
-    alertType: 'info',
     tags: ['housing', 'gst', 'rebate', 'legislation', 'policy-update', 'missing-heading'],
     purposeTags: ['policy-caveat', 'legislative-update', 'missing-heading', 'remove-boilerplate'],
     criteria: ['C2_too_wordy', 'C4_missing_heading', 'C7_too_vague'],
@@ -31,7 +29,6 @@ export const AlertRewriteExamples: AlertRewriteExample[] = [
   },
   {
     id: 'ex-002',
-    alertType: 'info',
     tags: ['tax', 'slips', 'filing', 'cra-account', 'action-required'],
     purposeTags: ['action-required', 'account-service', 'remove-process-detail', 'replace-vague-heading'],
     criteria: ['C1_missing_next_step', 'C2_too_wordy'],
@@ -43,7 +40,6 @@ export const AlertRewriteExamples: AlertRewriteExample[] = [
   },
   {
     id: 'ex-003',
-    alertType: 'info',
     tags: ['wildfire', 'disaster-support', 'benefits', 'tax-affairs'],
     purposeTags: ['support-info', 'keep-support-link'],
     criteria: [],
@@ -62,7 +58,6 @@ export const AlertRewriteExamples: AlertRewriteExample[] = [
   },
   {
     id: 'ex-004',
-    alertType: 'info',
     tags: ['business', 'tariffs', 'tax-relief', 'support'],
     purposeTags: ['support-info', 'missing-source-context', 'standalone-action-link'],
     criteria: ['C4_missing_heading', 'C7_too_vague'],
@@ -81,7 +76,6 @@ export const AlertRewriteExamples: AlertRewriteExample[] = [
   },
   {
     id: 'ex-005',
-    alertType: 'info',
     tags: ['luxury-tax', 'aircraft', 'vessels', 'legislation', 'date-sensitive'],
     purposeTags: ['legislative-update', 'date-sensitive', 'remove-secondary-link', 'reference-link'],
     criteria: ['C2_too_wordy', 'C7_too_vague'],
@@ -101,7 +95,6 @@ export const AlertRewriteExamples: AlertRewriteExample[] = [
   },
   {
     id: 'ex-006',
-    alertType: 'info',
     tags: ['business', 'gst', 'hst', 'access-code', 'cra-account', 'filing'],
     purposeTags: ['account-service', 'action-required', 'standalone-action-link', 'missing-heading'],
     criteria: ['C1_missing_next_step', 'C4_missing_heading'],
@@ -120,7 +113,6 @@ export const AlertRewriteExamples: AlertRewriteExample[] = [
   },
   {
     id: 'ex-007',
-    alertType: 'warning',
     tags: ['postal-service', 'labour-disruption', 'service-update', 'mail-service'],
     purposeTags: ['service-update', 'status-change', 'remove-secondary-link', 'shorten-alert'],
     criteria: ['C2_too_wordy', 'C7_too_vague'],
@@ -132,7 +124,6 @@ export const AlertRewriteExamples: AlertRewriteExample[] = [
   },
   {
     id: 'ex-008',
-    alertType: 'warning',
     tags: ['dtc', 'disability-tax-credit', 'processing-delay', 'form-t2201', 'service-standard'],
     purposeTags: ['service-delay', 'action-required', 'standalone-action-link', 'remove-secondary-link'],
     criteria: ['C1_missing_next_step', 'C4_missing_heading'],
@@ -151,7 +142,6 @@ export const AlertRewriteExamples: AlertRewriteExample[] = [
   },
   {
     id: 'ex-009',
-    alertType: 'info',
     tags: ['benefits', 'gst', 'hst', 'groceries', 'essentials', 'payment', 'date-sensitive'],
     purposeTags: ['benefit-change', 'date-sensitive', 'multiple-detail-links', 'new-program'],
     criteria: ['C1_missing_next_step', 'C2_too_wordy'],
@@ -176,7 +166,6 @@ export const AlertRewriteExamples: AlertRewriteExample[] = [
   },
   {
     id: 'ex-010',
-    alertType: 'warning',
     tags: ['benefits', 'disinformation', 'fraud-awareness', 'payments', 'official-sources'],
     purposeTags: ['fraud-warning', 'correction', 'official-source-warning', 'missing-heading'],
     criteria: ['C4_missing_heading', 'C7_too_vague'],
@@ -190,7 +179,6 @@ export const AlertRewriteExamples: AlertRewriteExample[] = [
   },
   {
     id: 'ex-011',
-    alertType: 'warning',
     tags: ['business', 'registration', 'business-number', 'program-account', 'service-change', 'date-sensitive'],
     purposeTags: ['service-change', 'date-sensitive', 'action-required', 'standalone-action-link'],
     criteria: ['C1_missing_next_step', 'C4_missing_heading'],
@@ -210,7 +198,6 @@ export const AlertRewriteExamples: AlertRewriteExample[] = [
   },
   {
     id: 'ex-012',
-    alertType: 'info',
     tags: ['excise-tax', 'fuel', 'legislation', 'rates', 'technical-information'],
     purposeTags: ['legislative-update', 'technical-notice', 'remove-secondary-link', 'standalone-action-link'],
     criteria: ['C1_missing_next_step', 'C4_missing_heading'],
@@ -228,7 +215,6 @@ export const AlertRewriteExamples: AlertRewriteExample[] = [
   },
   {
     id: 'ex-013',
-    alertType: 'info',
     tags: ['tax-return', 'filing', 'cra-account', 'online-services', 'action-required'],
     purposeTags: ['online-service', 'action-required', 'duplicate-link-cleanup', 'standalone-action-link'],
     criteria: ['C1_missing_next_step', 'C4_missing_heading'],
