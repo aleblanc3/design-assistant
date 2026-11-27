@@ -28,6 +28,10 @@ function markForTranslation() {
   marker('aiPrompt.tools.description');
   marker('aiPrompt.tools.keywords');
   marker('aiPrompt.tools.languages');
+  marker('aiPrompt.tools.translateIssueDetails');
+
+  marker('aiPrompt.skills.canadaCaStyle');
+  marker('aiPrompt.skills.linkWriting');
 
   marker('aiPrompt.page.headings');
   marker('aiPrompt.page.doormats');
@@ -36,9 +40,7 @@ function markForTranslation() {
   marker('aiPrompt.page.alertRewrite');
   marker('aiPrompt.page.alertExamples');
 
-  marker('aiPrompt.problem.alertsRewrite');
   marker('aiPrompt.problem.alertsProblems');
-  marker('aiPrompt.problem.translateIssueDetails');
 
   marker('aiPrompt.craTerminology.shortForms.payrollDeductions');
   marker('aiPrompt.craTerminology.shortForms.royalAssent');
@@ -129,6 +131,13 @@ export enum ToolsPromptKey {
   Description = 'aiPrompt.tools.description',
   Keywords = 'aiPrompt.tools.keywords',
   Languages = 'aiPrompt.tools.languages',
+  TranslateIssueDetails = 'aiPrompt.tools.translateIssueDetails',
+}
+
+//Reusable instruction skill fragments
+export enum SkillPromptKey {
+  CanadaCaStyle = 'aiPrompt.skills.canadaCaStyle',
+  LinkWriting = 'aiPrompt.skills.linkWriting',
 }
 
 //Page task fragments
@@ -143,6 +152,4 @@ export enum PagePromptKey {
 //Problem task fragments
 export enum ProblemPromptKey {
   AlertsProblems = 'aiPrompt.problem.alertsProblems',
-  TranslateIssueDetails = 'aiPrompt.problem.translateIssueDetails',
-  AlertsRewrite = 'aiPrompt.problem.alertsRewrite',
 }

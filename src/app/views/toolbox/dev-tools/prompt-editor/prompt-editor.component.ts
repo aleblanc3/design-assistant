@@ -36,11 +36,10 @@ import { stringToDoc } from '../../../../utilities/html/extract-content.util';
 import { OutputKey, PagePromptKey, ProblemPromptKey, PromptConfig, RoleKey, RubricKey, ToolsPromptKey } from '../../../../common/prompts/prompt.model';
 
 import { AlertRewriteExamples, type AlertRewriteExample } from '../../../../common/prompts/alert-rewrite.examples';
-import { CanadaCaStyleRules } from '../../../../common/prompts/canada-ca-style.prompt';
-import { LinkWritingPromptRuleGroups } from '../../../../common/prompts/link-writing.prompt';
 import { PagePrompts } from '../../../../common/prompts/page.prompts';
 import { ProblemPrompts } from '../../../../common/prompts/problems.prompts';
 import { OutputFragment, RoleFragment, RubricFragment } from '../../../../common/prompts/shared.prompts';
+import { SkillPromptConfig, SkillPromptRule, SkillPrompts } from '../../../../common/prompts/skills.prompts';
 import { ToolsPrompts } from '../../../../common/prompts/tools.prompts';
 
 interface PromptEntry {
@@ -49,12 +48,38 @@ interface PromptEntry {
   promptText: string | string[] | PromptConfig;
 }
 
+interface SkillEntry {
+  enumKey: string;
+  translationKey: string;
+  promptText: SkillPromptConfig;
+}
+
+interface SkillGroupEntry {
+  key: string;
+  rules: readonly SkillPromptRule[];
+}
+
+interface ExampleSetEntry {
+  key: string;
+  kind: 'alertRewrite';
+  title: string;
+  description: string;
+  sourcePath: string;
+  fileName: string;
+  examples: AlertRewriteExample[];
+  original: string;
+}
+
+type PreviewEntry = PromptEntry | SkillEntry;
+
 interface TabConfig {
   title: string;
   description: string;
   value: number;
   prompts?: PromptEntry[];
+  skills?: SkillEntry[];
   fragments?: { key: string; label: string; data: PromptEntry[] }[];
+  exampleSets?: ExampleSetEntry[];
   tool: string;
   original: string;
 }
@@ -77,6 +102,7 @@ interface PromptPipelineGroup {
 }
 
 interface PromptConditionItem {
+  key: string;
   condition: string;
   instruction?: string;
   bulletItems?: readonly string[];
@@ -130,6 +156,42 @@ interface PromptPipelineOption {
       min-height: 24rem;
       overflow-y: auto;
     }
+
+    .example-json-editor {
+      field-sizing: content;
+      min-height: 8rem;
+      overflow-y: auto;
+      font-size: 1.25rem !important;
+    }
+
+    .example-metadata {
+      margin: 0.5rem 0;
+      font-size: 1.25rem !important;
+    }
+
+    .example-json-object {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .rewrite-prompt-editor {
+      font-size: 1.25rem !important;
+    }
+
+    .compact-prompt-editor {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .compact-prompt-editor h2,
+    .compact-prompt-editor h3,
+    .compact-prompt-editor h4,
+    .compact-prompt-editor p,
+    .compact-prompt-editor pre.prompt-preview {
+      margin-block: 0;
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -152,7 +214,7 @@ export class PromptEditorComponent {
     });
     effect(() => {
       const tab = this.selectedTab(); //watching for changes to selected tab
-      if (tab < 5) {
+      if (this.tabs.some((candidate) => candidate.value === tab)) {
         this.selectedPromptTab.set(tab);
       }
       this.updateDiff();
@@ -160,24 +222,36 @@ export class PromptEditorComponent {
   }
 
   // Type guard
-  protected isPromptConfig(entry: PromptEntry): entry is PromptEntry & { promptText: PromptConfig } {
-    return typeof entry.promptText === 'object' && entry.promptText !== null;
+  protected isPromptConfig(entry: PreviewEntry): entry is PromptEntry & { promptText: PromptConfig } {
+    return typeof entry.promptText === 'object' && entry.promptText !== null && 'role' in entry.promptText && 'task' in entry.promptText;
   }
 
   protected isPromptString(entry: PromptEntry): entry is PromptEntry & { promptText: string } {
     return typeof entry.promptText === 'string';
   }
 
-  protected isAlertRewritePipeline(entry: PromptEntry): boolean {
+  protected isAlertRewritePipeline(entry: PreviewEntry): boolean {
     return entry.enumKey === 'AlertRewrite';
   }
 
-  protected isAlertRewriteExamples(entry: PromptEntry): boolean {
+  protected isAlertRewriteExamples(entry: PreviewEntry): boolean {
     return entry.enumKey === 'AlertExamples';
   }
 
   protected isFragmentsTab(tab: TabConfig): boolean {
     return tab.fragments !== undefined;
+  }
+
+  protected isSkillsTab(tab: TabConfig): tab is TabConfig & { skills: SkillEntry[] } {
+    return tab.skills !== undefined;
+  }
+
+  protected isExamplesTab(tab: TabConfig): tab is TabConfig & { exampleSets: ExampleSetEntry[] } {
+    return tab.exampleSets !== undefined;
+  }
+
+  protected isSkillEntry(entry: PreviewEntry): entry is SkillEntry {
+    return typeof entry.promptText === 'object' && entry.promptText !== null && 'groups' in entry.promptText;
   }
 
   protected readonly OutputKey = OutputKey;
@@ -236,6 +310,11 @@ export class PromptEditorComponent {
     label: key,
   }));
 
+  protected readonly skillSeverityOptions = [
+    { value: 'must', label: marker('dev.prompts.skills.severity.must') },
+    { value: 'should', label: marker('dev.prompts.skills.severity.should') },
+  ];
+
   // Prompts
   inventoryPrompts: PromptEntry[] = Object.keys(ToolsPromptKey).map((enumKey) => ({
     enumKey,
@@ -249,19 +328,54 @@ export class PromptEditorComponent {
     promptText: PagePrompts[PagePromptKey[enumKey as keyof typeof PagePromptKey]],
   }));
 
+  private get alertRewritePipeline() {
+    return PagePrompts[PagePromptKey.AlertRewrite].pipeline;
+  }
+
   problemPrompts: PromptEntry[] = Object.keys(ProblemPromptKey).map((enumKey) => ({
     enumKey,
     translationKey: ProblemPromptKey[enumKey as keyof typeof ProblemPromptKey],
     promptText: ProblemPrompts[ProblemPromptKey[enumKey as keyof typeof ProblemPromptKey]],
   }));
 
-  protected readonly alertRewritePipelineGroups: PromptPipelineGroup[] = this.buildAlertRewritePipelineGroups();
+  skillPrompts: SkillEntry[] = Object.keys(SkillPromptKey).map((enumKey) => ({
+    enumKey,
+    translationKey: SkillPromptKey[enumKey as keyof typeof SkillPromptKey],
+    promptText: SkillPrompts[SkillPromptKey[enumKey as keyof typeof SkillPromptKey]],
+  }));
+
+  protected readonly exampleSets: ExampleSetEntry[] = [
+    {
+      key: 'alertRewrite',
+      kind: 'alertRewrite',
+      title: marker('aiPrompt.examples.alertRewrite'),
+      description: marker('aiPrompt.examples.alertRewriteDescription'),
+      sourcePath: 'src/app/common/prompts/alert-rewrite.examples.ts',
+      fileName: 'alert-rewrite.examples.ts',
+      examples: AlertRewriteExamples,
+      original: this.rebuildAlertRewriteExamplesFile(AlertRewriteExamples),
+    },
+  ];
+  protected readonly selectedExampleSet = signal<ExampleSetEntry>(this.exampleSets[0]);
+  private readonly exampleJsonDrafts = signal<Record<string, string>>(Object.fromEntries(AlertRewriteExamples.map((example) => [example.id, this.formatExampleJson(example)])));
+  private readonly exampleJsonErrors = signal<Record<string, string>>({});
+  protected readonly hasInvalidExampleJson = computed(() => Object.keys(this.exampleJsonErrors()).length > 0);
+  private readonly alertRewriteOutputSchemaDrafts = signal<Record<string, string>>({
+    outputSchemaWithExamples: this.formatPromptSchema(this.alertRewritePipeline.outputSchemas.withExamples),
+    outputSchemaWithoutExamples: this.formatPromptSchema(this.alertRewritePipeline.outputSchemas.withoutExamples),
+  });
+  private readonly alertRewriteOutputSchemaErrors = signal<Record<string, string>>({});
+  protected readonly hasInvalidAlertRewriteOutputSchema = computed(() => Object.keys(this.alertRewriteOutputSchemaErrors()).length > 0);
+
+  protected get alertRewritePipelineGroups(): PromptPipelineGroup[] {
+    return this.buildAlertRewritePipelineGroups();
+  }
   protected get alertProblemsSections(): PromptPipelineSection[] {
     return this.buildAlertProblemsSections();
   }
   protected readonly alertRewriteExamples = AlertRewriteExamples;
 
-  selectedPrompts = new Set<string>([this.inventoryPrompts[0]?.enumKey, this.pagePrompts[0]?.enumKey, this.problemPrompts[0]?.enumKey].filter(Boolean));
+  selectedPrompts = new Set<string>([this.inventoryPrompts[0]?.enumKey, this.pagePrompts[0]?.enumKey, this.problemPrompts[0]?.enumKey, this.skillPrompts[0]?.enumKey].filter(Boolean));
 
   togglePrompt(enumKey: string) {
     if (this.selectedPrompts.has(enumKey)) {
@@ -304,6 +418,22 @@ export class PromptEditorComponent {
       tool: 'Problem',
       original: this.rebuildPromptFile('Problem', this.problemPrompts),
     },
+    {
+      title: marker('aiPrompt.skills._title'),
+      description: marker('aiPrompt.skills._description'),
+      value: 4,
+      skills: this.skillPrompts,
+      tool: 'Skills',
+      original: this.rebuildSkillsFile(),
+    },
+    {
+      title: marker('aiPrompt.examples._title'),
+      description: marker('aiPrompt.examples._description'),
+      value: 5,
+      exampleSets: this.exampleSets,
+      tool: 'Examples',
+      original: '',
+    },
   ];
 
   // Dropdown
@@ -311,7 +441,7 @@ export class PromptEditorComponent {
     {
       label: 'aiPrompt.alerts._title',
       items: [
-        ...this.problemPrompts.filter((prompt) => prompt.enumKey === 'AlertsProblems' || prompt.enumKey === 'TranslateIssueDetails'),
+        ...this.problemPrompts.filter((prompt) => prompt.enumKey === 'AlertsProblems'),
         ...this.pagePrompts.filter((prompt) => prompt.enumKey === 'AlertRewrite'),
         {
           enumKey: 'AlertExamples',
@@ -321,13 +451,10 @@ export class PromptEditorComponent {
       ],
     },
     { label: 'aiPrompt.tools._title', items: this.inventoryPrompts },
+    { label: 'aiPrompt.skills._title', items: this.skillPrompts },
     { label: 'aiPrompt.page._title', items: this.pagePrompts.filter((prompt) => prompt.enumKey !== 'AlertRewrite') },
-    {
-      label: 'aiPrompt.problems._title',
-      items: this.problemPrompts.filter((prompt) => prompt.enumKey !== 'AlertsProblems' && prompt.enumKey !== 'TranslateIssueDetails'),
-    },
   ];
-  protected readonly selectedPrompt = signal<PromptEntry | undefined>(this.pagePrompts.find((prompt) => prompt.enumKey === 'AlertRewrite'));
+  protected readonly selectedPrompt = signal<PreviewEntry | undefined>(this.pagePrompts.find((prompt) => prompt.enumKey === 'AlertRewrite'));
   protected readonly selectedPromptIsAlertRewritePipeline = computed(() => {
     const selected = this.selectedPrompt();
     return !!selected && this.isAlertRewritePipeline(selected);
@@ -337,11 +464,28 @@ export class PromptEditorComponent {
     return !!selected && this.isAlertRewriteExamples(selected);
   });
   protected readonly selectedPromptIsAlertProblems = computed(() => this.selectedPrompt()?.enumKey === 'AlertsProblems');
-  protected readonly aiPrompt = computed(() => {
+  protected readonly selectedPromptIsSkill = computed(() => {
     const selected = this.selectedPrompt();
-    if (!selected || !this.isPromptConfig(selected)) return '';
-    return this.aiPromptService.composePrompt(selected.promptText);
+    return !!selected && this.isSkillEntry(selected);
   });
+  protected aiPrompt(): string {
+    const selected = this.selectedPrompt();
+    if (!selected || this.isSkillEntry(selected) || !this.isPromptConfig(selected)) return '';
+    return this.aiPromptService.composePrompt(selected.promptText);
+  }
+
+  protected getSkillGroups(skill: SkillEntry): SkillGroupEntry[] {
+    return Object.entries(skill.promptText.groups).map(([key, rules]) => ({ key, rules }));
+  }
+
+  protected getSelectedSkillGroups(): SkillGroupEntry[] {
+    const selected = this.selectedPrompt();
+    return selected && this.isSkillEntry(selected) ? this.getSkillGroups(selected) : [];
+  }
+
+  protected getSkillGroupLabel(groupKey: string): string {
+    return `dev.prompts.skills.group.${groupKey}`;
+  }
 
   private buildAlertRewritePipelineGroups(): PromptPipelineGroup[] {
     const promptConfig = PagePrompts[PagePromptKey.AlertRewrite];
@@ -410,30 +554,37 @@ export class PromptEditorComponent {
             label: 'dev.prompts.alertRewrite.retryInstructions',
             conditionItems: [
               {
+                key: 'invalidWrapperHtml',
                 condition: 'dev.prompts.alertRewrite.retry.invalidWrapperHtml',
                 instruction: rules.retryInstructions.invalidWrapperHtml,
               },
               {
+                key: 'noLinksAllowed',
                 condition: 'dev.prompts.alertRewrite.retry.noLinksAllowed',
                 instruction: rules.retryInstructions.noLinksAllowed,
               },
               {
+                key: 'mustKeepLink',
                 condition: 'dev.prompts.alertRewrite.retry.mustKeepLink',
                 instruction: rules.retryInstructions.mustKeepLink,
               },
               {
+                key: 'mustKeepAllLinks',
                 condition: 'dev.prompts.alertRewrite.retry.mustKeepAllLinks',
                 instruction: rules.retryInstructions.mustKeepAllLinks,
               },
               {
+                key: 'mustHaveHeading',
                 condition: 'dev.prompts.alertRewrite.retry.mustHaveHeading',
                 instruction: rules.retryInstructions.mustHaveHeading,
               },
               {
+                key: 'avoidExampleCopy',
                 condition: 'dev.prompts.alertRewrite.retry.avoidExampleCopy',
                 instruction: rules.retryInstructions.avoidExampleCopy,
               },
               {
+                key: 'fullSentenceLinksNeedLeadIn',
                 condition: 'dev.prompts.alertRewrite.retry.fullSentenceLinksNeedLeadIn',
                 bulletItems: rules.retryInstructions.fullSentenceLinksNeedLeadIn,
               },
@@ -461,7 +612,7 @@ export class PromptEditorComponent {
           {
             key: 'linkRulesCommon',
             label: 'dev.prompts.alertRewrite.linkRulesCommon',
-            bulletItems: LinkWritingPromptRuleGroups.common.map((rule) => rule.text),
+            bulletItems: SkillPrompts[SkillPromptKey.LinkWriting].groups.common.map((rule) => rule.text),
             collapsed: false,
           },
           {
@@ -471,13 +622,13 @@ export class PromptEditorComponent {
               {
                 key: 'linkRulesDefault',
                 label: 'dev.prompts.alertRewrite.linkRulesDefault',
-                bulletItems: LinkWritingPromptRuleGroups.preserveLinks.map((rule) => rule.text),
+                bulletItems: SkillPrompts[SkillPromptKey.LinkWriting].groups.preserveLinks.map((rule) => rule.text),
                 collapsed: false,
               },
               {
                 key: 'linkRulesTooMany',
                 label: 'dev.prompts.alertRewrite.linkRulesTooMany',
-                bulletItems: LinkWritingPromptRuleGroups.tooManyLinks.map((rule) => rule.text),
+                bulletItems: SkillPrompts[SkillPromptKey.LinkWriting].groups.tooManyLinks.map((rule) => rule.text),
                 collapsed: false,
               },
             ],
@@ -497,6 +648,83 @@ export class PromptEditorComponent {
         ],
       },
     ];
+  }
+
+  protected updateAlertRewriteBaseRule(index: number, value: string): void {
+    this.alertRewritePipeline.styleRulesBase[index] = value;
+    void this.updateDiff();
+  }
+
+  protected updateAlertRewriteSystemInstruction(optionKey: string, index: number, value: string): void {
+    const instructions = optionKey === 'systemWithExamples' ? this.alertRewritePipeline.systemPromptWithExamplesLines : this.alertRewritePipeline.systemPromptWithoutExamplesLines;
+    instructions[index] = value;
+    void this.updateDiff();
+  }
+
+  protected updateAlertRewriteConditionalInstruction(sectionKey: string, value: string): void {
+    if (sectionKey === 'preserveFinalStandaloneLink') {
+      this.alertRewritePipeline.conditionalInstructions.preserveFinalStandaloneLink = value;
+    } else {
+      this.alertRewritePipeline.conditionalInstructions.enforceLinkManifest = value;
+    }
+    void this.updateDiff();
+  }
+
+  protected updateAlertRewriteRetryInstruction(key: string, value: string, index?: number): void {
+    const retryInstructions = this.alertRewritePipeline.retryInstructions;
+    if (key === 'fullSentenceLinksNeedLeadIn' && index !== undefined) {
+      retryInstructions.fullSentenceLinksNeedLeadIn = retryInstructions.fullSentenceLinksNeedLeadIn.map((instruction, instructionIndex) => (instructionIndex === index ? value : instruction));
+    } else if (key === 'invalidWrapperHtml') {
+      retryInstructions.invalidWrapperHtml = value;
+    } else if (key === 'noLinksAllowed') {
+      retryInstructions.noLinksAllowed = value;
+    } else if (key === 'mustKeepLink') {
+      retryInstructions.mustKeepLink = value;
+    } else if (key === 'mustKeepAllLinks') {
+      retryInstructions.mustKeepAllLinks = value;
+    } else if (key === 'mustHaveHeading') {
+      retryInstructions.mustHaveHeading = value;
+    } else if (key === 'avoidExampleCopy') {
+      retryInstructions.avoidExampleCopy = value;
+    }
+    void this.updateDiff();
+  }
+
+  protected getAlertRewriteOutputSchemaDraft(optionKey: string): string {
+    return this.alertRewriteOutputSchemaDrafts()[optionKey] ?? '';
+  }
+
+  protected getAlertRewriteOutputSchemaError(optionKey: string): string | undefined {
+    return this.alertRewriteOutputSchemaErrors()[optionKey];
+  }
+
+  protected updateAlertRewriteOutputSchema(optionKey: string, value: string): void {
+    this.alertRewriteOutputSchemaDrafts.update((drafts) => ({ ...drafts, [optionKey]: value }));
+
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(value);
+    } catch {
+      this.alertRewriteOutputSchemaErrors.update((errors) => ({ ...errors, [optionKey]: 'dev.prompts.alertRewrite.invalidOutputSchema' }));
+      return;
+    }
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+      this.alertRewriteOutputSchemaErrors.update((errors) => ({ ...errors, [optionKey]: 'dev.prompts.alertRewrite.invalidOutputSchema' }));
+      return;
+    }
+
+    const schema = JSON.stringify(parsed);
+    if (optionKey === 'outputSchemaWithExamples') {
+      this.alertRewritePipeline.outputSchemas.withExamples = schema;
+    } else {
+      this.alertRewritePipeline.outputSchemas.withoutExamples = schema;
+    }
+    this.alertRewriteOutputSchemaErrors.update((errors) => {
+      const updated = { ...errors };
+      delete updated[optionKey];
+      return updated;
+    });
+    void this.updateDiff();
   }
 
   private buildAlertProblemsSections(): PromptPipelineSection[] {
@@ -581,9 +809,9 @@ export class PromptEditorComponent {
   }
 
   private formatCanadaCaStyleRulesJson(): string {
-    const rules = CanadaCaStyleRules.map((rule) => `{\n      "id": ${JSON.stringify(rule.id)}, "severity": ${JSON.stringify(rule.severity)},\n      "text": ${JSON.stringify(rule.text)} }`).join(
-      ',\n    ',
-    );
+    const rules = SkillPrompts[SkillPromptKey.CanadaCaStyle].groups.common
+      .map((rule) => `{\n      "id": ${JSON.stringify(rule.id)}, "severity": ${JSON.stringify(rule.severity)},\n      "text": ${JSON.stringify(rule.text)} }`)
+      .join(',\n    ');
 
     return `{ "rules": [ ${rules} ]}`;
   }
@@ -598,6 +826,7 @@ export class PromptEditorComponent {
     marker('dev.prompts.alertRewrite.outputRequirement');
     marker('dev.prompts.alertRewrite.outputSchemaWithExamples');
     marker('dev.prompts.alertRewrite.outputSchemaWithoutExamples');
+    marker('dev.prompts.alertRewrite.invalidOutputSchema');
     marker('dev.prompts.alertRewrite.linkRulesCommon');
     marker('dev.prompts.alertRewrite.group.alertRewrite');
     marker('dev.prompts.alertRewrite.group.style');
@@ -616,6 +845,11 @@ export class PromptEditorComponent {
     marker('dev.prompts.alertRewrite.examplesIncluded');
     marker('dev.prompts.alertRewrite.examplesNotIncluded');
     marker('dev.prompts.alertRewrite.testUnavailable');
+    marker('dev.prompts.examples.invalidJson');
+    marker('dev.prompts.examples.invalidStructure');
+    marker('dev.prompts.skills.group.common');
+    marker('dev.prompts.skills.group.preserveLinks');
+    marker('dev.prompts.skills.group.tooManyLinks');
   }
 
   // Test prompts
@@ -730,31 +964,39 @@ export class PromptEditorComponent {
     const configType = isPagePrompts ? 'PagePromptConfigs' : `Record<${tool}PromptKey, PromptConfig>`;
     const configImport = isPagePrompts ? 'PagePromptConfigs' : 'PromptConfig';
     const imports = ['OutputKey', `${tool}PromptKey`, configImport, 'RoleKey', 'RubricKey'].sort();
-    const pipelineImport = isPagePrompts ? `import { AlertRewritePipeline } from './alert-rewrite.prompt';\n` : '';
-
-    return `${pipelineImport}import { ${imports.join(', ')} } from './prompt.model';\n\nexport const ${tool}Prompts: ${configType} = {\n${updatedPrompts}\n};\n`;
+    return `import { ${imports.join(', ')} } from './prompt.model';\n\nexport const ${tool}Prompts: ${configType} = {\n${updatedPrompts}\n};\n`;
   }
 
   protected getSelectedPromptConfig(): PromptConfig | null {
     const selected = this.selectedPrompt();
-    return selected && this.isPromptConfig(selected) ? selected.promptText : null;
+    return selected && !this.isSkillEntry(selected) && this.isPromptConfig(selected) ? selected.promptText : null;
   }
 
   private serializePromptConfig(config: PromptConfig, enumKey: string): string {
-    const lines = [
-      '{',
-      `    role: RoleKey.${this.getEnumKey(RoleKey, config.role)},`,
+    const lines = ['{', `    role: RoleKey.${this.getEnumKey(RoleKey, config.role)},`];
+
+    if (enumKey === 'AlertRewrite') {
+      lines.push(
+        '    // Placeholder for the future PromptConfig migration. The working alert rewrite',
+        '    // prompt is currently assembled from pipeline fragments and runtime context in',
+        '    // AlertRewriteService.buildAlertRewriteMessages(). Do not add this task text to',
+        '    // the system prompt as-is; replace it with the working payload-generation',
+        '    // structure when the alert rewrite prompt is consolidated into PromptConfig.',
+      );
+    }
+
+    lines.push(
       `    task: ${this.toSourceStringLiteral(config.task)},`,
       `    rubric: [${config.rubric.map((rubric) => `RubricKey.${this.getEnumKey(RubricKey, rubric)}`).join(', ')}],`,
       `    output: OutputKey.${this.getEnumKey(OutputKey, config.output)},`,
-    ];
+    );
 
     if (config.jsonSchema !== undefined) lines.push(`    jsonSchema: ${this.toSourceStringLiteral(config.jsonSchema)},`);
     if (config.examples !== undefined) lines.push(`    examples: ${this.toSourceStringLiteral(config.examples)},`);
     if (config.available !== undefined) lines.push(`    available: ${config.available},`);
     if (config.pipeline !== undefined) {
       if (enumKey === 'AlertRewrite') {
-        lines.push('    pipeline: AlertRewritePipeline,');
+        lines.push(`    pipeline: ${this.serializeAlertRewritePipeline()},`);
       } else {
         const pipeline = JSON.stringify(config.pipeline, null, 2)
           .split('\n')
@@ -778,6 +1020,284 @@ export class PromptEditorComponent {
       return `'${value.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`;
     }
     return `\`${value.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$\{/g, '\\${')}\``;
+  }
+
+  rebuildSkillsFile(): string {
+    const skillEntries = this.skillPrompts
+      .map((skill) => {
+        const groupEntries = this.getSkillGroups(skill)
+          .map((group) => {
+            const ruleEntries = group.rules
+              .map((rule) => {
+                const severity = rule.severity ? `\n          severity: '${rule.severity}',` : '';
+                return `        {\n          id: '${rule.id}',${severity}\n          text: ${this.toSkillStringLiteral(rule.text)},\n        },`;
+              })
+              .join('\n');
+            return `      ${group.key}: [\n${ruleEntries}\n      ],`;
+          })
+          .join('\n');
+        return `  [SkillPromptKey.${skill.enumKey}]: {\n    groups: {\n${groupEntries}\n    },\n  },`;
+      })
+      .join('\n');
+
+    return `import { SkillPromptKey } from './prompt.model';
+
+export type SkillPromptRuleSeverity = 'must' | 'should';
+
+export interface SkillPromptRule {
+  id: string;
+  severity?: SkillPromptRuleSeverity;
+  text: string;
+}
+
+export interface SkillPromptConfig {
+  groups: Readonly<Record<string, readonly SkillPromptRule[]>>;
+}
+
+export const SkillPrompts = {
+${skillEntries}
+} satisfies Record<SkillPromptKey, SkillPromptConfig>;
+
+export interface LinkWritingPromptOptions {
+  hasTooManyLinksIssue: boolean;
+}
+
+export function getCanadaCaStylePromptRules(): string[] {
+  return SkillPrompts[SkillPromptKey.CanadaCaStyle].groups.common.map((rule) => \`[Canada.ca style \${rule.id} \${rule.severity}] \${rule.text}\`);
+}
+
+export function getLinkWritingPromptRules(options: LinkWritingPromptOptions): string[] {
+  const groups = SkillPrompts[SkillPromptKey.LinkWriting].groups;
+  const conditionalRules = options.hasTooManyLinksIssue ? groups.tooManyLinks : groups.preserveLinks;
+  return [...groups.common, ...conditionalRules].map((rule) => rule.text);
+}
+`;
+  }
+
+  private toSkillStringLiteral(value: string): string {
+    if (value.includes("'")) return JSON.stringify(value);
+    return `'${value.replace(/\\/g, '\\\\')}'`;
+  }
+
+  private serializeAlertRewritePipeline(): string {
+    const rules = this.alertRewritePipeline;
+    const arrayLines = (values: readonly string[], indentation = '        '): string => values.map((value) => `${indentation}${this.toExampleStringLiteral(value)},`).join('\n');
+    const inlineArray = (values: readonly string[]): string => `[${values.map((value) => this.toExampleStringLiteral(value)).join(', ')}]`;
+
+    return `{
+      styleRulesBase: [
+${arrayLines(rules.styleRulesBase)}
+      ],
+      // Keep example guidance intentionally reinforced in both the base rules and
+      // the system prompt. Keep the two source-wording instructions below separate:
+      // egHtml should anchor structure, while the input alert should anchor wording.
+      // A-B-A testing showed that consolidating them caused generic example actions
+      // to leak into rewrites and made other internal guidance more likely to surface.
+      systemPromptWithExamplesLines: [
+${arrayLines(rules.systemPromptWithExamplesLines)}
+      ],
+      systemPromptWithoutExamplesLines: ${inlineArray(rules.systemPromptWithoutExamplesLines)},
+      outputSchemas: {
+        withExamples: ${this.toExampleStringLiteral(rules.outputSchemas.withExamples)},
+        withoutExamples: ${this.toExampleStringLiteral(rules.outputSchemas.withoutExamples)},
+      },
+      conditionalInstructions: {
+        preserveFinalStandaloneLink:
+          ${this.toExampleStringLiteral(rules.conditionalInstructions.preserveFinalStandaloneLink)},
+        enforceLinkManifest:
+          ${this.toExampleStringLiteral(rules.conditionalInstructions.enforceLinkManifest)},
+      },
+      retryInstructions: {
+        invalidWrapperHtml: ${this.toExampleStringLiteral(rules.retryInstructions.invalidWrapperHtml)},
+        noLinksAllowed: ${this.toExampleStringLiteral(rules.retryInstructions.noLinksAllowed)},
+        mustKeepLink:
+          ${this.toExampleStringLiteral(rules.retryInstructions.mustKeepLink)},
+        mustKeepAllLinks:
+          ${this.toExampleStringLiteral(rules.retryInstructions.mustKeepAllLinks)},
+        mustHaveHeading:
+          ${this.toExampleStringLiteral(rules.retryInstructions.mustHaveHeading)},
+        avoidExampleCopy: ${this.toExampleStringLiteral(rules.retryInstructions.avoidExampleCopy)},
+        // Reinforce permanent link-formatting rules when a source link needs a retry.
+        fullSentenceLinksNeedLeadIn: [
+${arrayLines(rules.retryInstructions.fullSentenceLinksNeedLeadIn, '          ')}
+        ],
+      },
+    }`;
+  }
+
+  rebuildAlertRewriteExamplesFile(examples: AlertRewriteExample[]): string {
+    const serializedExamples = examples.map((example) => this.serializeAlertRewriteExample(example)).join('\n');
+    return `export interface AlertRewriteExample {
+  id: string;
+  tags: string[];
+  purposeTags?: string[];
+  criteria: string[];
+  egText: string;
+  egHeading?: string;
+  egHtml?: string;
+  egLinks?: AlertRewriteExampleLink[];
+  notes?: string;
+}
+
+export interface AlertRewriteExampleLink {
+  id: string;
+  text: string;
+  href?: string;
+}
+
+export const AlertRewriteExamples: AlertRewriteExample[] = [
+${serializedExamples}
+];
+`;
+  }
+
+  private serializeAlertRewriteExample(example: AlertRewriteExample): string {
+    const properties = [
+      `    id: ${this.toExampleStringLiteral(example.id)},`,
+      this.serializeExampleArrayProperty('tags', example.tags),
+      ...(example.purposeTags ? [this.serializeExampleArrayProperty('purposeTags', example.purposeTags)] : []),
+      this.serializeExampleArrayProperty('criteria', example.criteria),
+      ...(example.egHeading !== undefined ? [this.serializeExampleStringProperty('egHeading', example.egHeading)] : []),
+      this.serializeExampleStringProperty('egText', example.egText),
+      ...(example.egHtml !== undefined ? [this.serializeExampleStringProperty('egHtml', example.egHtml)] : []),
+      ...(example.egLinks !== undefined ? [this.serializeExampleLinks(example.egLinks)] : []),
+      ...(example.notes !== undefined ? [this.serializeExampleStringProperty('notes', example.notes)] : []),
+    ];
+    return `  {\n${properties.join('\n')}\n  },`;
+  }
+
+  private serializeExampleStringProperty(name: string, value: string): string {
+    const literal = this.toExampleStringLiteral(value);
+    const singleLine = `    ${name}: ${literal},`;
+    return singleLine.length <= 200 ? singleLine : `    ${name}:\n      ${literal},`;
+  }
+
+  private serializeExampleArrayProperty(name: string, values: string[]): string {
+    const literals = values.map((value) => this.toExampleStringLiteral(value));
+    const singleLine = `    ${name}: [${literals.join(', ')}],`;
+    if (singleLine.length <= 200) return singleLine;
+    return `    ${name}: [\n${literals.map((literal) => `      ${literal},`).join('\n')}\n    ],`;
+  }
+
+  private serializeExampleLinks(links: AlertRewriteExample['egLinks']): string {
+    if (!links?.length) return '    egLinks: [],';
+    const serializedLinks = links
+      .map((link) => {
+        const properties = [`        id: ${this.toExampleStringLiteral(link.id)},`, `        text: ${this.toExampleStringLiteral(link.text)},`];
+        if (link.href !== undefined) properties.push(`        href: ${this.toExampleStringLiteral(link.href)},`);
+        return `      {\n${properties.join('\n')}\n      },`;
+      })
+      .join('\n');
+    return `    egLinks: [\n${serializedLinks}\n    ],`;
+  }
+
+  private toExampleStringLiteral(value: string): string {
+    if (value.includes("'") && !value.includes('"')) return JSON.stringify(value);
+    return `'${value.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`;
+  }
+
+  protected getExampleJsonDraft(example: AlertRewriteExample): string {
+    return this.exampleJsonDrafts()[example.id] ?? this.formatExampleJson(example);
+  }
+
+  private formatExampleJson(example: AlertRewriteExample): string {
+    const editableExample = {
+      ...(example.egHeading !== undefined ? { egHeading: example.egHeading } : {}),
+      egText: example.egText,
+      ...(example.egHtml !== undefined ? { egHtml: example.egHtml } : {}),
+      ...(example.egLinks !== undefined ? { egLinks: example.egLinks } : {}),
+    };
+    return this.formatJsonWithInlineStringArrays(editableExample).split('\n').slice(1, -1).join('\n');
+  }
+
+  private formatJsonWithInlineStringArrays(value: unknown): string {
+    return JSON.stringify(value, null, 2).replace(/\[\n((?:\s+"(?:\\.|[^"\\])*",?\n)+)\s*\]/g, (_match, items: string) => {
+      const values = items.match(/"(?:\\.|[^"\\])*"/g) ?? [];
+      return `[${values.join(', ')}]`;
+    });
+  }
+
+  protected getExampleSelectionMetadata(example: AlertRewriteExample): string {
+    const lines = this.formatJsonWithInlineStringArrays({
+      id: example.id,
+      tags: example.tags,
+      purposeTags: example.purposeTags,
+      criteria: example.criteria,
+      notes: example.notes,
+    }).split('\n');
+    lines.splice(-1, 1);
+    lines[lines.length - 1] += ',';
+    return lines.join('\n');
+  }
+
+  protected getFormattedExamplePreview(example: AlertRewriteExample): string {
+    return this.formatJsonWithInlineStringArrays(example);
+  }
+
+  protected getExampleJsonError(example: AlertRewriteExample): string | undefined {
+    return this.exampleJsonErrors()[example.id];
+  }
+
+  protected updateExampleJsonDraft(example: AlertRewriteExample, value: string): void {
+    this.exampleJsonDrafts.update((drafts) => ({ ...drafts, [example.id]: value }));
+
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(`{\n${value}\n}`);
+    } catch {
+      this.setExampleJsonError(example.id, 'dev.prompts.examples.invalidJson');
+      return;
+    }
+
+    if (!this.isValidAlertRewriteExample(parsed)) {
+      this.setExampleJsonError(example.id, 'dev.prompts.examples.invalidStructure');
+      return;
+    }
+    const mutableExample = example as unknown as Record<string, unknown>;
+    for (const key of ['egHeading', 'egText', 'egHtml', 'egLinks']) delete mutableExample[key];
+    Object.assign(mutableExample, parsed);
+    this.exampleJsonErrors.update((errors) => {
+      const updated = { ...errors };
+      delete updated[example.id];
+      return updated;
+    });
+    void this.updateDiff();
+  }
+
+  private setExampleJsonError(exampleId: string, translationKey: string): void {
+    this.exampleJsonErrors.update((errors) => ({ ...errors, [exampleId]: translationKey }));
+  }
+
+  private isValidAlertRewriteExample(value: unknown): value is AlertRewriteExample {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+    const example = value as Record<string, unknown>;
+    const allowedKeys = new Set(['egText', 'egHeading', 'egHtml', 'egLinks']);
+    if (Object.keys(example).some((key) => !allowedKeys.has(key))) return false;
+    if (typeof example['egText'] !== 'string') return false;
+    for (const key of ['egHeading', 'egHtml']) {
+      if (example[key] !== undefined && typeof example[key] !== 'string') return false;
+    }
+    if (example['egLinks'] !== undefined) {
+      if (!Array.isArray(example['egLinks'])) return false;
+      if (
+        example['egLinks'].some(
+          (link) =>
+            !link ||
+            typeof link !== 'object' ||
+            Array.isArray(link) ||
+            typeof (link as Record<string, unknown>)['id'] !== 'string' ||
+            typeof (link as Record<string, unknown>)['text'] !== 'string' ||
+            ((link as Record<string, unknown>)['href'] !== undefined && typeof (link as Record<string, unknown>)['href'] !== 'string'),
+        )
+      )
+        return false;
+    }
+    return true;
+  }
+
+  protected selectExampleSet(exampleSet: ExampleSetEntry): void {
+    this.selectedExampleSet.set(exampleSet);
+    void this.updateDiff();
   }
 
   // Rebuild prompt file (older version)
@@ -809,27 +1329,40 @@ ${rubricEntries}
 }`;
   }
 
+  protected rebuildTabFile(tab: TabConfig): string {
+    if (tab.fragments) return this.rebuildSharedFile();
+    if (tab.skills) return this.rebuildSkillsFile();
+    if (tab.exampleSets) return this.rebuildAlertRewriteExamplesFile(this.selectedExampleSet().examples);
+    if (tab.tool === 'Page') return this.rebuildPromptFile('Page', this.pagePrompts);
+    if (tab.prompts) return this.rebuildPromptFile(tab.tool, tab.prompts);
+    return '';
+  }
+
   /** Tracks if changes have been made to current tab */
   hasChanges(promptTab?: number): boolean {
     const tabNumber = promptTab ?? this.selectedPromptTab();
     const tab = this.tabs[tabNumber];
-    if (tabNumber === 0) {
-      const updatedContent = this.rebuildSharedFile();
-      const originalContent = tab.original;
-      return updatedContent !== originalContent;
-    }
-    if (!tab?.prompts) return false;
-    const updatedContent = this.rebuildPromptFile(tab.tool, tab.prompts);
-    const originalContent = tab.original;
-    return updatedContent !== originalContent;
+    if (!tab) return false;
+    const original = tab.exampleSets ? this.selectedExampleSet().original : tab.original;
+    return this.rebuildTabFile(tab) !== original;
   }
 
   // Open pull request
   pullRequestUrl: string | null = null;
   /** Open pull request for selected tab */
-  async openPullRequest(tool: string, prompts?: PromptEntry[]) {
-    const content = !prompts ? this.rebuildSharedFile() : this.rebuildPromptFile(tool, prompts);
-    const toolLC = tool.toLowerCase();
+  async openPullRequest(tab: TabConfig) {
+    const content = this.rebuildTabFile(tab);
+    if (tab.exampleSets) {
+      const exampleSet = this.selectedExampleSet();
+      try {
+        const result = await this.exportGitHubService.createPullRequestForPrompts(exampleSet.key.toLowerCase(), exampleSet.sourcePath, exampleSet.fileName, content);
+        this.pullRequestUrl = result.prUrl;
+      } catch (error) {
+        console.error('Failed to create PR:', error);
+      }
+      return;
+    }
+    const toolLC = tab.tool.toLowerCase();
     try {
       const result = await this.exportGitHubService.createPullRequestForPrompts(toolLC, `src/app/common/prompts/${toolLC}.prompts.ts`, `${toolLC}.prompts.ts`, content);
       this.pullRequestUrl = result.prUrl;
@@ -847,11 +1380,12 @@ ${rubricEntries}
     // Lazy load both modules
     const [{ createPatch }, { Diff2HtmlUI }] = await Promise.all([import('diff'), import('diff2html/lib-esm/ui/js/diff2html-ui-slim')]);
     const tab = this.tabs[this.selectedPromptTab()];
-    const updatedContent = this.selectedPromptTab() === 0 ? this.rebuildSharedFile() : tab.prompts ? this.rebuildPromptFile(tab.tool, tab.prompts) : '';
-    const originalContent = tab.original;
+    const updatedContent = this.rebuildTabFile(tab);
+    const originalContent = tab.exampleSets ? this.selectedExampleSet().original : tab.original;
 
     // Create the patch
-    const patch = createPatch(`${tab.tool.toLowerCase()}.prompts.ts`, originalContent, updatedContent);
+    const diffFileName = tab.exampleSets ? this.selectedExampleSet().fileName : `${tab.tool.toLowerCase()}.prompts.ts`;
+    const patch = createPatch(diffFileName, originalContent, updatedContent);
 
     // Render it
     const config: Diff2HtmlUIConfig = {
@@ -873,8 +1407,8 @@ ${rubricEntries}
   async highlightFilePreview(): Promise<void> {
     const filePreview = this.filePreview();
     if (!filePreview) return;
-    const prompts = this.tabs[this.selectedPromptTab()].prompts;
-    if (!prompts) return;
+    const tab = this.tabs[this.selectedPromptTab()];
+    if (!tab) return;
 
     try {
       const { default: Prism } = await import('prismjs');
@@ -890,7 +1424,7 @@ ${rubricEntries}
         pre.removeAttribute('data-highlighted');
         pre.removeAttribute('tabindex');
         codeBlock.className = 'language-typescript';
-        codeBlock.textContent = this.rebuildPromptFile(this.tabs[this.selectedPromptTab()].tool, prompts);
+        codeBlock.textContent = this.rebuildTabFile(tab);
         Prism.highlightElement(codeBlock);
       }
     } catch (error) {

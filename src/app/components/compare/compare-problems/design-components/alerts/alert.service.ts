@@ -89,7 +89,9 @@ export class AlertService {
     const responseText = await this.openRouter.getTextFromAI(ProblemPrompts[ProblemPromptKey.AlertsProblems], JSON.stringify(payload), preferredModel, 0);
     const parsedIssues = this.parseIssues(responseText);
     const visibleIssues = this.suppressDeferredIssues(parsedIssues);
-    const validatedIssues = this.validateAlertIssuesAgainstHtml(visibleIssues, sourceHtml);
+    const contextValidatedIssues = this.suppressStructurallyInvalidHierarchyIssues(visibleIssues, payload);
+    const clusterValidatedIssues = this.suppressDuplicateAlertOverloadIssues(contextValidatedIssues, payload);
+    const validatedIssues = this.validateAlertIssuesAgainstHtml(clusterValidatedIssues, sourceHtml);
     const issues = this.addNoIssuePlaceholders(validatedIssues, alerts.length);
     const report = this.saveAnalysis(sourceHtml, pagePath, issues, preferredModel);
     this.requestFrenchTranslation(pagePath, report, translationRunId);
@@ -243,6 +245,112 @@ export class AlertService {
     });
   }
 
+  private suppressStructurallyInvalidHierarchyIssues(issues: AlertIssue[], payload: Record<string, unknown>): AlertIssue[] {
+    const signals = Array.isArray(payload['alertSignals']) ? payload['alertSignals'] : [];
+    const signalsByAlertIndex = new Map<number, Record<string, unknown>>();
+    for (const signal of signals) {
+      const record = this.asRecord(signal);
+      const alertIndex = Number(record?.['alert_index']);
+      if (record && Number.isInteger(alertIndex)) signalsByAlertIndex.set(alertIndex, record);
+    }
+
+    const suppressedAlertIndexes: number[] = [];
+    const validatedIssues = issues.filter((issue) => {
+      if (this.cleanString(issue.category).toLowerCase() !== 'incorrect hierarchy') return true;
+      const alertIndex = Number(issue.alertIndex);
+      if (!Number.isInteger(alertIndex)) return true;
+
+      const signal = signalsByAlertIndex.get(alertIndex);
+      if (!signal) return true;
+
+      const expectedHeadingTag = this.cleanString(signal['expected_heading_tag']).toLowerCase();
+      const headingTag = this.cleanString(signal['heading_tag']).toLowerCase();
+      const hasValidSemanticHierarchy =
+        !!expectedHeadingTag &&
+        signal['heading_hierarchy_valid'] === true &&
+        this.cleanString(signal['heading_source']).toLowerCase() === 'semantic' &&
+        headingTag === expectedHeadingTag;
+      if (!hasValidSemanticHierarchy) return true;
+
+      suppressedAlertIndexes.push(alertIndex);
+      return false;
+    });
+
+    if (suppressedAlertIndexes.length) {
+      console.info('[Alert analysis] Suppressed structurally invalid hierarchy findings.', {
+        count: suppressedAlertIndexes.length,
+        alertIndexes: suppressedAlertIndexes,
+      });
+    }
+
+    return validatedIssues;
+  }
+
+  private suppressDuplicateAlertOverloadIssues(issues: AlertIssue[], payload: Record<string, unknown>): AlertIssue[] {
+    const signals = Array.isArray(payload['alertSignals']) ? payload['alertSignals'] : [];
+    const signalsByAlertIndex = new Map<number, Record<string, unknown>>();
+    for (const signal of signals) {
+      const record = this.asRecord(signal);
+      const alertIndex = Number(record?.['alert_index']);
+      if (record && Number.isInteger(alertIndex)) signalsByAlertIndex.set(alertIndex, record);
+    }
+
+    const clusterStartByAlertIndex = new Map<number, number>();
+    for (const alertIndex of signalsByAlertIndex.keys()) {
+      let clusterStart = alertIndex;
+      while (clusterStart > 1 && signalsByAlertIndex.get(clusterStart)?.['previous_sibling_is_alert'] === true) {
+        clusterStart -= 1;
+      }
+      clusterStartByAlertIndex.set(alertIndex, clusterStart);
+    }
+
+    const lowestIssueIndexByCluster = new Map<number, number>();
+    for (const issue of issues) {
+      if (this.cleanString(issue.category).toLowerCase() !== 'alert overload') continue;
+      const alertIndex = Number(issue.alertIndex);
+      if (!Number.isInteger(alertIndex)) continue;
+      const clusterStart = clusterStartByAlertIndex.get(alertIndex);
+      if (clusterStart === undefined) continue;
+      const lowestIssueIndex = lowestIssueIndexByCluster.get(clusterStart);
+      if (lowestIssueIndex === undefined || alertIndex < lowestIssueIndex) {
+        lowestIssueIndexByCluster.set(clusterStart, alertIndex);
+      }
+    }
+
+    const retainedClusters = new Set<number>();
+    const suppressedAlertIndexes: number[] = [];
+    const validatedIssues = issues.filter((issue) => {
+      if (this.cleanString(issue.category).toLowerCase() !== 'alert overload') return true;
+      const alertIndex = Number(issue.alertIndex);
+      if (!Number.isInteger(alertIndex)) return true;
+      const clusterStart = clusterStartByAlertIndex.get(alertIndex);
+      if (clusterStart === undefined) return true;
+      if (lowestIssueIndexByCluster.get(clusterStart) !== alertIndex) {
+        suppressedAlertIndexes.push(alertIndex);
+        return false;
+      }
+      if (!retainedClusters.has(clusterStart)) {
+        retainedClusters.add(clusterStart);
+        return true;
+      }
+      suppressedAlertIndexes.push(alertIndex);
+      return false;
+    });
+
+    if (suppressedAlertIndexes.length) {
+      console.info('[Alert analysis] Suppressed duplicate alert overload findings.', {
+        count: suppressedAlertIndexes.length,
+        alertIndexes: suppressedAlertIndexes,
+      });
+    }
+
+    return validatedIssues;
+  }
+
+  private asRecord(value: unknown): Record<string, unknown> | null {
+    return value && typeof value === 'object' && !Array.isArray(value) ? (value as Record<string, unknown>) : null;
+  }
+
   private addNoIssuePlaceholders(issues: AlertIssue[], alertCount: number): AlertIssue[] {
     const realIssues = issues.filter((issue) => !isNoAlertIssue(issue));
     const alertIndexesWithIssues = new Set(realIssues.map((issue) => issue.alertIndex).filter((alertIndex): alertIndex is number => Number.isInteger(alertIndex)));
@@ -357,7 +465,7 @@ export class AlertService {
       preferredModel: AI_ALERT_TRANSLATION_MODEL,
       itemCount: items.length,
     });
-    const response = await this.openRouter.sendToAI(ProblemPrompts[ProblemPromptKey.TranslateIssueDetails], JSON.stringify({ target_language: 'fr-CA', items }), AI_ALERT_TRANSLATION_MODEL, 0);
+    const response = await this.openRouter.sendToAI(ToolsPrompts[ToolsPromptKey.TranslateIssueDetails], JSON.stringify({ target_language: 'fr-CA', items }), AI_ALERT_TRANSLATION_MODEL, 0);
     const responseText = response.choices?.[0]?.message?.content ?? '';
     const translatedIssues = this.parseFrenchTranslations(responseText, items);
     if (translatedIssues.length !== items.length) {

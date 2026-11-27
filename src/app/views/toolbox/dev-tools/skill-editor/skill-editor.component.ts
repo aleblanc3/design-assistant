@@ -28,11 +28,10 @@ import { UserSettingsService } from '../../../../services/user-settings.service'
 import { OutputKey, PagePromptKey, ProblemPromptKey, PromptConfig, RoleKey, RubricKey, ToolsPromptKey } from '../../../../common/prompts/prompt.model';
 
 import { AlertRewriteExamples, type AlertRewriteExample } from '../../../../common/prompts/alert-rewrite.examples';
-import { getCanadaCaStylePromptRules } from '../../../../common/prompts/canada-ca-style.prompt';
-import { getLinkWritingPromptRules } from '../../../../common/prompts/link-writing.prompt';
 import { PagePrompts } from '../../../../common/prompts/page.prompts';
 import { ProblemPrompts } from '../../../../common/prompts/problems.prompts';
 import { OutputFragment, RoleFragment, RubricFragment } from '../../../../common/prompts/shared.prompts';
+import { getCanadaCaStylePromptRules, getLinkWritingPromptRules } from '../../../../common/prompts/skills.prompts';
 import { ToolsPrompts } from '../../../../common/prompts/tools.prompts';
 
 interface PromptEntry {
@@ -246,7 +245,7 @@ export class SkillEditorComponent {
     {
       label: 'aiPrompt.alerts._title',
       items: [
-        ...this.problemPrompts.filter((prompt) => prompt.enumKey === 'AlertsProblems' || prompt.enumKey === 'TranslateIssueDetails'),
+        ...this.problemPrompts.filter((prompt) => prompt.enumKey === 'AlertsProblems'),
         ...this.pagePrompts.filter((prompt) => prompt.enumKey === 'AlertRewrite'),
         {
           enumKey: 'AlertExamples',

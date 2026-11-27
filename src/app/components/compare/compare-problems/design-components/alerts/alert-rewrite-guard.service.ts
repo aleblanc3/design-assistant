@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AlertRewriteExample, AlertRewriteIssueInput, AlertRewritePlan, AlertRewriteRepairCandidate, AlertRewriteResult, AlertRewriteService } from './alert-rewrite.service';
 
 import { removeAlertRewritePlacementReviewNotices } from '../../../../../common/alert-rewrite-status.utils';
+import { getExpectedAlertHeadingTag } from './alert-heading-hierarchy.utils';
 import { coerceInteractiveResultLeadIns, getReportableAlerts } from './alert-reportable.utils';
 
 export interface AlertHtmlRewrite {
@@ -61,17 +62,7 @@ export class AlertRewriteGuardService {
   }
 
   getExpectedAlertHeadingTag(alertElement: Element): string {
-    const doc = alertElement.ownerDocument;
-    let nearestPageHeading: Element | null = null;
-    const pageHeadings = Array.from(doc.querySelectorAll('h1, h2, h3, h4, h5, h6')).filter((heading) => !heading.closest('.alert'));
-    for (const heading of pageHeadings) {
-      if (heading.compareDocumentPosition(alertElement) & Node.DOCUMENT_POSITION_FOLLOWING) {
-        nearestPageHeading = heading;
-      }
-    }
-
-    const parentLevel = Number(nearestPageHeading?.tagName.slice(1)) || 1;
-    return `h${Math.min(parentLevel + 1, 6)}`;
+    return getExpectedAlertHeadingTag(alertElement);
   }
 
   hasAlertHeadingHierarchy(alertHtml: string, expectedTag: string): boolean {

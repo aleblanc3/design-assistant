@@ -1,13 +1,16 @@
 const HIDDEN_STYLE_RE = /(display\s*:\s*none|visibility\s*:\s*hidden)/i;
 const HIDDEN_CLASS_NAMES = new Set(['hidden', 'hide', 'd-none', 'is-hidden', 'wb-inv']);
+// Field flow components use #norun for a fallback warning that appears when
+// the component fails to load. Exclude it from alert analysis and rewrites.
 const IGNORED_ALERT_IDS = new Set(['norun']);
 
 export interface AlertReportableOptions {
   interactiveResultLeadIns?: string[];
 }
 
-// Alert reports should ignore decision-tree result panels that are hidden until
-// a user completes a selection path, but still include ordinary page alerts.
+// Alert reports should ignore field flow fallback warnings and decision-tree
+// result panels that are hidden until a user completes a selection path, but
+// still include ordinary page alerts.
 export function getReportableAlerts(root: ParentNode, options?: AlertReportableOptions): HTMLElement[] {
   return Array.from(root.querySelectorAll<HTMLElement>('.alert')).filter((alert) => !alert.parentElement?.closest('.alert') && !isConditionalInteractiveAlert(alert, options));
 }

@@ -4,10 +4,10 @@ import { Injectable } from '@angular/core';
 import { ChatMessage, PagePromptKey } from '../../../../../common/prompts/prompt.model';
 
 import { AlertRewriteExamples, type AlertRewriteExample } from '../../../../../common/prompts/alert-rewrite.examples';
-import { getCanadaCaStylePromptRules } from '../../../../../common/prompts/canada-ca-style.prompt';
-import { getLinkWritingPromptRules } from '../../../../../common/prompts/link-writing.prompt';
 import { PagePrompts } from '../../../../../common/prompts/page.prompts';
 import { OutputFragment, RoleFragment } from '../../../../../common/prompts/shared.prompts';
+import { getCanadaCaStylePromptRules, getLinkWritingPromptRules } from '../../../../../common/prompts/skills.prompts';
+import { countStructurallyStandaloneLinks } from './alert-link-structure.utils';
 
 export interface AlertRewriteIssueInput {
   alertIndex?: number;
@@ -615,6 +615,7 @@ export class AlertRewriteService {
     const combined = `${lower} ${issueText}`;
     const criteria = new Set(criteriaMatched || []);
     const linkCount = (alertHtml.match(/<a\b/gi) || []).length;
+    const standaloneLinkCount = countStructurallyStandaloneLinks(new DOMParser().parseFromString(alertHtml || '', 'text/html').body);
 
     const maybeAdd = (tag: string, pattern: RegExp): void => {
       if (pattern.test(combined)) {
@@ -628,10 +629,12 @@ export class AlertRewriteService {
     if (criteria.has('C3_too_many_links')) {
       tags.add('remove-secondary-link');
       if (linkCount > 1) {
-        tags.add('multiple-detail-links');
         tags.add('duplicate-link-cleanup');
       }
     }
+    // Multiple valid detail links need a structural example even when link
+    // removal is not authorized. Inline contextual links do not count here.
+    if (standaloneLinkCount > 1) tags.add('multiple-detail-links');
     if (linkCount === 1) tags.add('standalone-action-link');
 
     maybeAdd('service-delay', /\bdelay|processing time|service standard\b/);

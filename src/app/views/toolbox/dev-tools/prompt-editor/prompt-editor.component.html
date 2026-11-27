@@ -45,6 +45,25 @@
                     <label [for]="'show_' + fragment.key" class="cursor-pointer font-semibold">{{ fragment.label | translate }}</label>
                   </div>
                 }
+              } @else if (isSkillsTab(tab)) {
+                @for (skill of tab.skills; track skill.enumKey) {
+                  <div class="flex flex-row align-content-center gap-2">
+                    <p-checkbox [binary]="true" [inputId]="'show_' + skill.enumKey" [ngModel]="isPromptVisible(skill.enumKey)" (ngModelChange)="togglePrompt(skill.enumKey)" />
+                    <label [for]="'show_' + skill.enumKey" class="cursor-pointer font-semibold">{{ skill.translationKey | translate }}</label>
+                  </div>
+                }
+              } @else if (isExamplesTab(tab)) {
+                @for (exampleSet of tab.exampleSets; track exampleSet.key) {
+                  <div class="flex flex-row align-items-center gap-2">
+                    <p-radiobutton
+                      [binary]="true"
+                      [inputId]="'show_example_set_' + exampleSet.key"
+                      [ngModel]="selectedExampleSet().key === exampleSet.key"
+                      (ngModelChange)="selectExampleSet(exampleSet)"
+                    />
+                    <label [for]="'show_example_set_' + exampleSet.key" class="cursor-pointer font-semibold">{{ exampleSet.title | translate }}</label>
+                  </div>
+                }
               } @else {
                 @for (prompt of tab.prompts; track prompt.enumKey) {
                   <div class="flex flex-row align-content-center gap-2">
@@ -72,8 +91,74 @@
                   }
                 }
               }
+              <!--Skills-->
+              @if (isSkillsTab(tab)) {
+                <div class="compact-prompt-editor">
+                  @for (skill of tab.skills; track skill.enumKey) {
+                    @if (isPromptVisible(skill.enumKey)) {
+                      <h2 class="my-0">{{ skill.translationKey | translate }}</h2>
+                      @for (group of getSkillGroups(skill); track group.key) {
+                        <h3>{{ getSkillGroupLabel(group.key) | translate }}</h3>
+                        @for (rule of group.rules; track rule.id) {
+                          <div class="flex flex-column gap-2">
+                            @if (rule.severity) {
+                              <p-iftalabel class="w-12rem">
+                                <p-select
+                                  [(ngModel)]="rule.severity"
+                                  [id]="skill.enumKey + '_' + rule.id + '_severity'"
+                                  [options]="skillSeverityOptions"
+                                  (onChange)="updateDiff()"
+                                  appendTo="body"
+                                  fluid
+                                  optionLabel="label"
+                                  optionValue="value"
+                                >
+                                  <ng-template let-option pTemplate="item">{{ option.label | translate }}</ng-template>
+                                  <ng-template let-option pTemplate="selectedItem">{{ option.label | translate }}</ng-template>
+                                </p-select>
+                                <label [for]="skill.enumKey + '_' + rule.id + '_severity'">{{ 'dev.prompts.skills.severity._label' | translate }}</label>
+                              </p-iftalabel>
+                            }
+                            <p-iftalabel>
+                              <textarea [(ngModel)]="rule.text" [autoResize]="true" [id]="skill.enumKey + '_' + rule.id" (ngModelChange)="updateDiff()" fluid pTextarea rows="2"></textarea>
+                              <label [for]="skill.enumKey + '_' + rule.id">{{ rule.id }}</label>
+                            </p-iftalabel>
+                          </div>
+                        }
+                      }
+                    }
+                  }
+                </div>
+              }
+              <!--Examples-->
+              @if (isExamplesTab(tab)) {
+                <div class="compact-prompt-editor">
+                  <h2 class="my-0">{{ selectedExampleSet().title | translate }}</h2>
+                  <p>{{ selectedExampleSet().description | translate }}</p>
+                  @for (example of selectedExampleSet().examples; track example.id) {
+                    <h3 [id]="example.id + '_heading'">{{ getAlertRewriteExampleLegend(example) }}</h3>
+                    <div class="example-json-object">
+                      <pre [attr.aria-label]="'dev.prompts.examples.selectionMetadata' | translate" class="prompt-preview example-metadata">{{ getExampleSelectionMetadata(example) }}</pre>
+                      <textarea
+                        [attr.aria-label]="'dev.prompts.examples.editableFinalExample' | translate"
+                        [id]="example.id + '_json'"
+                        [ngModel]="getExampleJsonDraft(example)"
+                        (ngModelChange)="updateExampleJsonDraft(example, $event)"
+                        class="example-json-editor"
+                        fluid
+                        pTextarea
+                        rows="6"
+                      ></textarea>
+                      <pre class="prompt-preview example-metadata" aria-hidden="true">&#125;</pre>
+                    </div>
+                    @if (getExampleJsonError(example); as errorKey) {
+                      <p-message severity="error">{{ errorKey | translate }}</p-message>
+                    }
+                  }
+                </div>
+              }
               <!--Full prompts-->
-              @if (!isFragmentsTab(tab)) {
+              @if (!isFragmentsTab(tab) && !isSkillsTab(tab) && !isExamplesTab(tab)) {
                 @for (prompt of tab.prompts; track prompt.enumKey) {
                   <!-- String editor -->
                   @if (isPromptString(prompt)) {
@@ -84,23 +169,129 @@
                   }
                   <!-- Config editor -->
                   @if (isPromptConfig(prompt) && isPromptVisible(prompt.enumKey) && isAlertRewritePipeline(prompt)) {
-                    <h2 class="my-0">{{ prompt.translationKey | translate }}</h2>
-                    @for (group of alertRewritePipelineGroups; track group.key) {
-                      @for (section of group.sections; track section.key) {
-                        @if (section.options?.length) {
-                          @if (!section.hideLabel && section.label) {
-                            <h3>{{ section.label | translate }}</h3>
+                    <div class="compact-prompt-editor">
+                      <h2 class="my-0">{{ prompt.translationKey | translate }}</h2>
+                      @for (group of alertRewritePipelineGroups; track group.key) {
+                        @for (section of group.sections; track section.key) {
+                          @if (section.options?.length) {
+                            @if (!section.hideLabel && section.label) {
+                              <h3>{{ section.label | translate }}</h3>
+                            }
+                            @for (option of section.options; track option.key) {
+                              <h4>{{ option.label | translate }}</h4>
+                              @if ((option.key === 'systemWithExamples' || option.key === 'systemWithoutExamples') && option.bulletItems) {
+                                @for (instruction of option.bulletItems; track $index; let instructionIndex = $index) {
+                                  <p-iftalabel>
+                                    <textarea
+                                      [autoResize]="true"
+                                      [id]="'alert_rewrite_' + option.key + '_' + instructionIndex"
+                                      [ngModel]="instruction"
+                                      (ngModelChange)="updateAlertRewriteSystemInstruction(option.key, instructionIndex, $event)"
+                                      class="rewrite-prompt-editor"
+                                      fluid
+                                      pTextarea
+                                      rows="2"
+                                    ></textarea>
+                                    <label [for]="'alert_rewrite_' + option.key + '_' + instructionIndex">
+                                      {{ 'dev.prompts.alertRewrite.instructionLabel' | translate: { number: instructionIndex + 1 } }}
+                                    </label>
+                                  </p-iftalabel>
+                                }
+                              } @else if (option.key === 'outputSchemaWithExamples' || option.key === 'outputSchemaWithoutExamples') {
+                                <p-iftalabel>
+                                  <textarea
+                                    [autoResize]="true"
+                                    [id]="'alert_rewrite_' + option.key"
+                                    [ngModel]="getAlertRewriteOutputSchemaDraft(option.key)"
+                                    (ngModelChange)="updateAlertRewriteOutputSchema(option.key, $event)"
+                                    class="rewrite-prompt-editor"
+                                    fluid
+                                    pTextarea
+                                    rows="3"
+                                  ></textarea>
+                                  <label [for]="'alert_rewrite_' + option.key">{{ 'dev.prompts.alertRewrite.outputSchemaLabel' | translate }}</label>
+                                </p-iftalabel>
+                                @if (getAlertRewriteOutputSchemaError(option.key); as errorKey) {
+                                  <p-message severity="error">{{ errorKey | translate }}</p-message>
+                                }
+                              } @else {
+                                <pre class="prompt-preview">{{ getPipelineOptionContent(option) }}</pre>
+                              }
+                            }
+                          } @else {
+                            <h3>{{ section.label ?? '' | translate }}</h3>
+                            @if (section.key === 'retryInstructions' && section.conditionItems) {
+                              @for (retry of section.conditionItems; track retry.key) {
+                                <h4>{{ retry.condition | translate }}</h4>
+                                @if (retry.bulletItems) {
+                                  @for (instruction of retry.bulletItems; track $index; let instructionIndex = $index) {
+                                    <p-iftalabel>
+                                      <textarea
+                                        [autoResize]="true"
+                                        [id]="'alert_rewrite_retry_' + retry.key + '_' + instructionIndex"
+                                        [ngModel]="instruction"
+                                        (ngModelChange)="updateAlertRewriteRetryInstruction(retry.key, $event, instructionIndex)"
+                                        class="rewrite-prompt-editor"
+                                        fluid
+                                        pTextarea
+                                        rows="2"
+                                      ></textarea>
+                                      <label [for]="'alert_rewrite_retry_' + retry.key + '_' + instructionIndex">
+                                        {{ 'dev.prompts.alertRewrite.instructionLabel' | translate: { number: instructionIndex + 1 } }}
+                                      </label>
+                                    </p-iftalabel>
+                                  }
+                                } @else {
+                                  <textarea
+                                    [attr.aria-label]="retry.condition | translate"
+                                    [autoResize]="true"
+                                    [id]="'alert_rewrite_retry_' + retry.key"
+                                    [ngModel]="retry.instruction"
+                                    (ngModelChange)="updateAlertRewriteRetryInstruction(retry.key, $event)"
+                                    class="rewrite-prompt-editor"
+                                    fluid
+                                    pTextarea
+                                    rows="2"
+                                  ></textarea>
+                                }
+                              }
+                            } @else if (section.key === 'baseRules' && section.bulletItems) {
+                              @for (rule of section.bulletItems; track $index; let ruleIndex = $index) {
+                                <p-iftalabel>
+                                  <textarea
+                                    [autoResize]="true"
+                                    [id]="'alert_rewrite_base_rule_' + ruleIndex"
+                                    [ngModel]="rule"
+                                    (ngModelChange)="updateAlertRewriteBaseRule(ruleIndex, $event)"
+                                    class="rewrite-prompt-editor"
+                                    fluid
+                                    pTextarea
+                                    rows="2"
+                                  ></textarea>
+                                  <label [for]="'alert_rewrite_base_rule_' + ruleIndex">
+                                    {{ 'dev.prompts.alertRewrite.baseRuleLabel' | translate: { number: ruleIndex + 1 } }}
+                                  </label>
+                                </p-iftalabel>
+                              }
+                            } @else if (section.key === 'preserveFinalStandaloneLink' || section.key === 'enforceLinkManifest') {
+                              <textarea
+                                [attr.aria-label]="section.label ?? '' | translate"
+                                [autoResize]="true"
+                                [id]="'alert_rewrite_' + section.key"
+                                [ngModel]="section.content"
+                                (ngModelChange)="updateAlertRewriteConditionalInstruction(section.key, $event)"
+                                class="rewrite-prompt-editor"
+                                fluid
+                                pTextarea
+                                rows="2"
+                              ></textarea>
+                            } @else {
+                              <pre class="prompt-preview">{{ getPipelineSectionContent(section) }}</pre>
+                            }
                           }
-                          @for (option of section.options; track option.key) {
-                            <h4>{{ option.label | translate }}</h4>
-                            <pre class="prompt-preview">{{ getPipelineOptionContent(option) }}</pre>
-                          }
-                        } @else {
-                          <h3>{{ section.label ?? '' | translate }}</h3>
-                          <pre class="prompt-preview">{{ getPipelineSectionContent(section) }}</pre>
                         }
                       }
-                    }
+                    </div>
                   }
                   @if (isPromptConfig(prompt) && isPromptVisible(prompt.enumKey) && !isAlertRewritePipeline(prompt)) {
                     <h2 class="my-0">{{ prompt.translationKey | translate }}</h2>
@@ -249,18 +440,27 @@
             } @else if (selectedPromptIsAlertRewriteExamples()) {
               @for (example of alertRewriteExamples; track example.id) {
                 <h3>{{ getAlertRewriteExampleLegend(example) }}</h3>
-                <pre class="prompt-preview">{{ example | json }}</pre>
+                <pre class="prompt-preview">{{ getFormattedExamplePreview(example) }}</pre>
               }
             } @else if (selectedPromptIsAlertProblems()) {
               @for (section of alertProblemsSections; track section.key) {
                 <h3>{{ section.label ?? '' | translate }}</h3>
                 <pre class="prompt-preview">{{ section.content }}</pre>
               }
+            } @else if (selectedPromptIsSkill()) {
+              <p>{{ 'dev.prompts.skills.testUnavailable' | translate }}</p>
+              @for (group of getSelectedSkillGroups(); track group.key) {
+                <h3>{{ getSkillGroupLabel(group.key) | translate }}</h3>
+                @for (rule of group.rules; track rule.id) {
+                  <h4>{{ rule.id }}</h4>
+                  <pre class="prompt-preview">{{ rule.text }}</pre>
+                }
+              }
             } @else {
               <pre class="prompt-preview">{{ aiPrompt() }}</pre>
             }
           </div>
-          @if (!selectedPromptIsAlertRewritePipeline() && !selectedPromptIsAlertRewriteExamples()) {
+          @if (!selectedPromptIsAlertRewritePipeline() && !selectedPromptIsAlertRewriteExamples() && !selectedPromptIsSkill()) {
             <div>
               @if (selectedPromptIsAlertProblems()) {
                 <h3 class="my-1">{{ 'dev.prompts.preview.alertProblems.testPage' | translate }}</h3>
@@ -347,15 +547,21 @@
       <div [class]="styleCardService.cardStyles(undefined, undefined, undefined, undefined, undefined, 'border-top-none border-noround-top')" class="w-limited">
         <h2 class="my-1">{{ 'dev.prompts.pr.header' | translate }}</h2>
         @if (hasChanges()) {
-          @let prompts = tabs[selectedPromptTab()].prompts;
           <!--Review-->
           <div #diffContainer></div>
           <!--Export-->
           <p-fieldset [collapsed]="true" [legend]="'dev.prompts.pr.filePreview' | translate" [toggleable]="true" styleClass="secondary-outline mb-3">
-            <pre #filePreview><code class="language-typescript">{{ prompts ? rebuildPromptFile(tabs[selectedPromptTab()].tool, prompts) : rebuildSharedFile() }}</code></pre>
+            <pre #filePreview><code class="language-typescript">{{ rebuildTabFile(tabs[selectedPromptTab()]) }}</code></pre>
           </p-fieldset>
           <!--Open PR-->
-          <p-button [disabled]="!signInService.user()" [label]="'dev.prompts.button.openPR' | translate" (onClick)="openPullRequest(tabs[selectedPromptTab()].tool, prompts)" icon="pi pi-send" />
+          <p-button
+            [disabled]="
+              !signInService.user() || (isExamplesTab(tabs[selectedPromptTab()]) && hasInvalidExampleJson()) || (tabs[selectedPromptTab()].tool === 'Page' && hasInvalidAlertRewriteOutputSchema())
+            "
+            [label]="'dev.prompts.button.openPR' | translate"
+            (onClick)="openPullRequest(tabs[selectedPromptTab()])"
+            icon="pi pi-send"
+          />
         } @else {
           <p-message icon="pi pi-info-circle" severity="info">{{ 'dev.prompts.pr.noChangesMessage' | translate }}</p-message>
         }
